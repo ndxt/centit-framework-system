@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>framework-system-parent</artifactId>
+        <groupId>com.centit.framework</groupId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>framework-system-view-easyui</artifactId>
+    <packaging>pom</packaging>
+    <name>com.centit.framework:framework-system-view-easyui</name>
+    <description>基于easyui的前端框架
+    </description>
+    <dependencies>
+        <dependency>
+            <groupId>com.centit.framework</groupId>
+            <artifactId>framework-base-view-easyui</artifactId>
+            <version>${centit.ui.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/webapp</directory>
+                <excludes>
+                    <exclude>WEB-INF/*</exclude>
+                </excludes>
+                <targetPath>META-INF/resources/</targetPath>
+            </resource>
+        </resources>
+    </build>
+
+</project>
