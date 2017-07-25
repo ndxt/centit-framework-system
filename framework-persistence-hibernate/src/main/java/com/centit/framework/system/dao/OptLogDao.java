@@ -57,6 +57,12 @@ public class OptLogDao extends BaseDaoImpl<OptLog, Long> {
         return (List<String>) DatabaseOptUtils.findObjectsByHql(this, hql);
     }
 
+
+    @Transactional
+    public Long createNewLogId(){
+        return DatabaseOptUtils.getNextLongSequence(this, "S_SYS_LOG");
+    }
+
     @Override
     @Transactional
     public OptLog mergeObject(OptLog o) {

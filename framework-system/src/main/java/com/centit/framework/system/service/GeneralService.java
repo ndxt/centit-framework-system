@@ -1,10 +1,10 @@
 package com.centit.framework.system.service;
 
-import java.util.List;
-
-import com.centit.framework.mybatis.dao.DataPowerFilter;
+import com.centit.framework.core.dao.DataPowerFilter;
 import com.centit.framework.security.model.CentitUserDetails;
 import com.centit.framework.system.po.UserQueryFilter;
+
+import java.util.List;
 
 /**
  * 将项目Service层需要用到的通用服务放在这个，供其他业务服务调用。

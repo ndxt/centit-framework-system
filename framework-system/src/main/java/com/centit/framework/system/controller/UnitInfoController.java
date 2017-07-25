@@ -75,60 +75,42 @@ public class UnitInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(method = RequestMethod.GET)
-    public void list(String[] field, boolean struct, String id,HttpServletRequest request, HttpServletResponse response) {
-    	 Map<String, Object> searchColumn = convertSearchColumn(request);
-         String unitName = (String)searchColumn.get("unitName");
-         Map<String,Object> filterMap = new HashMap<String,Object>();
-         List<UnitInfo> listObjects= null;
-         List<UnitInfo> listObjects2 = null;
-     	if(StringUtils.isNotBlank(unitName)&&StringUtils.isBlank(id)){
-     		filterMap.put("NP_TOPUnit", "true");
-     		listObjects= sysUnitManager.listObjects(filterMap);
-     		listObjects2= sysUnitManager.listObjects(searchColumn);
-            sysUnitManager.checkState(listObjects2);//设置state
-             /*for(UnitInfo u :listObjects2){
- 				u.setState(sysUnitManager.hasChildren(u.getUnitCode())?
- 		                  "closed":"open");
-     		}*/
-     		listObjects.addAll(listObjects2);
-     		if(listObjects2!=null)
-     			for(UnitInfo u :listObjects2){
-     				UnitInfo unit = u;
-     				//加载父节点
-     				while(unit!=null && unit.getParentUnit()!=null && !"0".equals(unit.getParentUnit())){
-     					unit = (UnitInfo)CodeRepositoryUtil.getUnitInfoByCode(unit.getParentUnit());
-     					if(unit!=null && !listObjects.contains(unit)&& !"0".equals(unit.getParentUnit()))
-     						listObjects.add(unit);
-     					else break;
-     				}
-     			}
-     		JSONArray ja = SysDaoOptUtils.objectsToJSONArray(listObjects);
-             if(struct){
-             	ja = ListOpt.srotAsTreeAndToJSON(ja, 
-         				new ListOpt.ParentChild<Object>(){
-     						@Override
-     						public boolean parentAndChild(Object p, Object c) {
-     							return StringUtils.equals(
-     									((JSONObject)p).getString("unitCode"),
-     									((JSONObject)c).getString("parentUnit"));
-     						}
+    public void list(String[] field, boolean struct, String id,
+                     HttpServletRequest request,
+                     HttpServletResponse response) {
 
-             			}, "children");
-             }
-             JsonResultUtils.writeSingleDataJson(
-             		ja,
-             		response, JsonPropertyUtils.getIncludePropPreFilter(JSONObject.class, field));
-     	}else{
-     		if (StringUtils.isNotBlank(id)) {        
-     			filterMap.put("PARENTUNIT", id);
-     		}else{
-     			filterMap.put("NP_TOPUnit", "true");
-     		}
-     		listObjects= sysUnitManager.listObjects(filterMap);
-            sysUnitManager.checkState(listObjects);//设置state
-     		JsonResultUtils.writeSingleDataJson(listObjects, response, null);
-     	}
-         
+        Map<String, Object> searchColumn = convertSearchColumn(request);
+        String unitName = (String)searchColumn.get("unitName");
+
+        if(StringUtils.isNotBlank(unitName) && StringUtils.isBlank(id)){
+
+            List<UnitInfo> listObjects= sysUnitManager.listObjects(searchColumn);
+            JSONArray ja = SysDaoOptUtils.objectsToJSONArray(listObjects);
+            if(struct){
+                ja = ListOpt.srotAsTreeAndToJSON(ja, (p, c) ->
+                                StringUtils.equals(
+                                        ((JSONObject)p).getString("unitCode"),
+                                        ((JSONObject)c).getString("parentUnit")),
+                        "children");
+            }
+            JsonResultUtils.writeSingleDataJson(ja,
+                    response, JsonPropertyUtils.getIncludePropPreFilter(JSONObject.class, field));
+        }else{
+            Map<String,Object> filterMap = new HashMap<>();
+            if (StringUtils.isNotBlank(id)) {
+                filterMap.put("PARENTUNIT", id);
+            }else{
+                filterMap.put("NP_TOPUnit", "true");
+            }
+            List<UnitInfo>  listObjects= sysUnitManager.listObjects(filterMap);
+            sysUnitManager.checkState(listObjects);
+     		/*for (UnitInfo unit : listObjects) {
+            	 unit.setState(sysUnitManager.hasChildren(unit.getUnitCode())?
+                   "closed":"open");
+            }*/
+            JSONArray ja = SysDaoOptUtils.objectsToJSONArray(listObjects);
+            JsonResultUtils.writeSingleDataJson(ja, response, null);
+        }
     }
 
     /**

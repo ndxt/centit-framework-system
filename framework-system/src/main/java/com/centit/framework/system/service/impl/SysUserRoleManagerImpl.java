@@ -1,20 +1,18 @@
 package com.centit.framework.system.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.centit.framework.core.dao.PageDesc;
-import com.centit.framework.mybatis.dao.DatabaseOptUtils;
+import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
 import com.centit.framework.system.service.SysUserRoleManager;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,7 +38,7 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
 
 	@Override
 	public List<UserRole> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-		return userRoleDao.pageQuery(DatabaseOptUtils.prepPageParmers(filterMap,pageDesc,userRoleDao.pageCount(filterMap)));
+		return userRoleDao.pageQuery(QueryParameterPrepare.prepPageParmers(filterMap,pageDesc,userRoleDao.pageCount(filterMap)));
 	}
 
 	@Override

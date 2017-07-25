@@ -1,15 +1,14 @@
 package com.centit.test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.centit.framework.hibernate.dao.SysDaoOptUtils;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.common.KeyValuePair;
 import com.centit.support.database.QueryAndNamedParams;
 import com.centit.support.database.QueryUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TestQueryUtils {
 
@@ -35,11 +34,11 @@ public class TestQueryUtils {
 	
 
 	public static void testCreateDictionaryMap() {
-		 Map<String,KeyValuePair<String,String>> m = 
-				 SysDaoOptUtils.createDictionaryMapBuilder("F1", "V1", "D1")
-			.addDictionaryDesc("F2", "V2", "D2")
-			.addDictionaryDesc("F3", "V3", "D3").create();
-		 printDictionaryMap(m);
+//		 Map<String,KeyValuePair<String,String>> m =
+//				 SysDaoOptUtils.createDictionaryMapBuilder("F1", "V1", "D1")
+//			.addDictionaryDesc("F2", "V2", "D2")
+//			.addDictionaryDesc("F3", "V3", "D3").create();
+//		 printDictionaryMap(m);
 	}
 	
 	public static void testGetParams() {

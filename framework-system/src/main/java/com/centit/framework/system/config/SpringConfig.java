@@ -3,7 +3,6 @@ package com.centit.framework.system.config;
 import com.centit.framework.config.H2Config;
 import com.centit.framework.config.RedisConfig;
 import com.centit.framework.listener.InitialWebRuntimeEnvironment;
-import com.centit.framework.mybatis.config.DataSourceConfig;
 import com.centit.framework.security.model.CentitPasswordEncoderImpl;
 import com.centit.framework.security.model.CentitSessionRegistry;
 import com.centit.framework.security.model.MemorySessionRegistryImpl;
@@ -21,8 +20,7 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 @ComponentScan(basePackages = "com.centit.framework",
                excludeFilters = @ComponentScan.Filter(value = org.springframework.stereotype.Controller.class))
 @PropertySource("classpath:system.properties")
-@Import({DataSourceConfig.class,
-        RedisConfig.class, H2Config.class,
+@Import({RedisConfig.class, H2Config.class,
         SpringSecurityDaoConfig.class,
         SpringSecurityCasConfig.class}
         )
