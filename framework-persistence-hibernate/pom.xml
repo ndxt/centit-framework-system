@@ -9,10 +9,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>framework-system</artifactId>
-    <name>com.centit.framework:framework-system</name>
+    <artifactId>framework-persistence-hibernate</artifactId>
+    <name>com.centit.framework:framework-persistence-hibernate</name>
     <packaging>jar</packaging>
-    <description>定义了一组和core兼容的表结构，并用mybatis实现了表的增删改查</description>
+    <description>定义了一组和core兼容的表结构，并用hibernate实现了表的增删改查</description>
 
     <dependencies>
         <dependency>
@@ -31,15 +31,21 @@
 
         <dependency>
             <groupId>com.centit.framework</groupId>
-            <artifactId>framework-persistence-hibernate</artifactId>
+            <artifactId>framework-hibernate</artifactId>
             <version>${centit.framework.version}</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache</artifactId>
             <version>${ehcache.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${commons-codec.version}</version>
         </dependency>
 
         <!-- server runtime library -->
@@ -59,15 +65,4 @@
         </dependency>
 
     </dependencies>
-
-    <build>
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-                <includes>
-                    <include>**/*.xml</include>
-                </includes>
-            </resource>
-        </resources>
-    </build>
 </project>
