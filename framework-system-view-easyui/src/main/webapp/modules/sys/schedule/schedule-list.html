@@ -1,0 +1,13 @@
+<link rel='stylesheet' href='ui/js/plugins/fullcalendar/fullcalendar.css' />
+
+<div id='calendar'></div>
+
+<script>
+requirejs(['jquery', 'fullcalendar'], function($) {
+	$('#calendar').fullCalendar({
+		aspectRatio: 2
+		contentHeight: 480
+    });
+});
+</script>
+

@@ -176,7 +176,8 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 	public List<OptInfo> listUserMenuOptInfos(String userCode, boolean asAdmin) {
 	   // optInfoDao.getMenuFuncByUserID(userCode, asAdmin);
 	    
-	    List<OptInfo> preOpts=optInfoDao.getMenuFuncByOptUrl();
+//	    List<OptInfo> preOpts=optInfoDao.getMenuFuncByOptUrl();
+	    List<OptInfo> preOpts=optInfoDao.getMenuFuncByUserID(userCode, asAdmin);
 	    Map map=new HashMap();
 	    map.put("userCode", userCode);
 	    map.put("optType", asAdmin ? "S" : "O");

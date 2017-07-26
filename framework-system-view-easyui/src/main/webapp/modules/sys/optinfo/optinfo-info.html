@@ -1,0 +1,65 @@
+<form class="centit form" novalidate="true">
+	<div class="two fields">
+		<div class="field required">
+			<label id="b@encoding">编码</label>
+			<input type="text" class="easyui-textbox" name="optId"
+				required 
+			/>
+		</div>
+		<div class="field required">
+			<label id="b@name">名称</label>
+			<input type="text" class="easyui-textbox" name="optName"
+				required />
+		</div>
+	</div>
+	
+	<div class="field">
+		<label id="b@menuLink">菜单链接</label>
+		<input type="text" class="easyui-textbox" name="optRoute" />
+	</div>
+	
+	<div class="two fields">
+		<div class="field">
+			<label id="b@serviceType">业务类型</label>
+			<input type="text" class="easyui-combobox" name="optType" target="dictionary" key="OptType" />
+		</div>
+		
+		<div class="field">
+			<label id="b@parentNode">父级节点</label>
+			<input type="text" class="easyui-textbox" name="preOptId"/>
+		</div>
+	</div>
+	
+	<div class="two fields">
+		<div class="field">
+			<label id="b@openMode">打开方式</label>
+			<select name="pageType" class="easyui-combobox">
+				<option value="D">DIV</option>
+				<option value="I">IFRAME</option>
+			</select>
+		</div>
+		<div class="field">
+			<div class="centit icon radio">
+				<input type="radio" name="isInToolbar" value="Y" />
+				<label id="b@display">显示</label>
+				
+				<input type="radio" name="isInToolbar" value="N" />
+				<label id="b@noDisplay">不显示</label>
+			</div>
+		</div>
+	</div>
+	<div class="two fields">
+		<div class="field">
+			<label id="b@icon">图标</label>
+			<input type="text" class="easyui-textbox" name="icon" />
+		</div>
+		<div class="field">
+			<label>排序字段</label>
+			<input type="text" class="easyui-textbox" name="orderInd" />
+		</div>
+	</div>
+</form>
+
+<script>
+setI18NText();
+</script>

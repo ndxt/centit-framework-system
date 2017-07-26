@@ -1,0 +1,59 @@
+<form class="centit form" novalidate="true">
+	<input type="hidden" name="unitOrder" />
+	
+	<div class="two fields">
+		<div class="field">
+			<label id="a@serialNumber">编号</label>
+			<input type="text" class="easyui-textbox" name="unitCode"
+				readonly="true" />
+		</div>
+		<div class="field">
+			<label id="a@supervisingAuthority">上级机构</label>
+			<input class="easyui-combotree" name="parentUnit" required target="unit" readonly style="height: 30px; width: 300px;" /> 
+		</div>
+	</div>
+	
+	<div class="two fields">
+		<div class="field required">
+			<label id="a@name">名称</label>
+			<input type="text" class="easyui-textbox" name="unitName"
+				required />
+		</div>
+		<div class="field required">
+			<label id="a@shortName">简称</label>
+			<input type="text" class="easyui-textbox" name="unitShortName"
+				required />
+		</div>
+	</div>
+	
+	<div class="field required">
+		<label id="a@encoding">编码</label>
+		<input type="text" class="easyui-textbox" name="unitWord" 
+			required />
+	</div>
+	
+	<div class="two fields">
+		<div class="field">
+			<label id="a@type">类型</label>
+			<input type="text" class="easyui-combobox" name="unitType" target="dictionary" key="UnitType" />
+		</div>
+		
+		<div class="field">
+			<div class="centit radio">
+				<input type="radio" name="isValid" value="T" />
+				<label id="a@inUse">在用</label>
+				
+				<input type="radio" name="isValid" value="F" />
+				<label id="a@forbidden">禁用</label>
+			</div>
+		</div>
+	</div>
+	
+	<div class="field">
+		<label id="a@describe">描述</label>
+		<input type="text" class="easyui-textbox" name="unitDesc" height="100" multiline="true" style="height: 100px; width: 99%"/>
+	</div>
+</form>
+<script>
+setI18NText();
+</script>

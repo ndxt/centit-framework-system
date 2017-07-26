@@ -1,0 +1,48 @@
+<form class="form centit">
+	<div class="two fields">
+		<div class="field required">
+			<label id="d@username">用户名</label>
+			<input type="text" class="easyui-textbox" name="userName" 
+				required readonly="readonly" />
+			<input type="hidden" name="userCode" 
+				/>
+		</div>
+		
+		<div class="field required">
+			<label id="d@organizationName">机构名称</label>
+			<input class="easyui-combotree" name="unitCode" required   target="unit" />
+		</div>
+	</div>
+	
+	<div class="two fields">
+		<div class="field required">
+			<label id="d@post">岗位</label>
+			<input type="text" class="easyui-combobox" name="userStation" required target="dictionary" key="StationType" />
+		</div>
+		
+		<div class="field required">
+			<label id="d@job">职务</label>
+			<input type="text" class="easyui-combobox" name="userRank" required target="dictionary" key="RankType" />
+		</div>
+	</div>
+	
+	<div class="two fields">
+		<div class="field">
+			<label id="d@remarks">备注</label>
+			<input type="text" class="easyui-textbox" name="rankMemo" height="100" multiline="true" style="height: 100px; width: 99%"/>
+		</div>
+		
+		<div class="field">
+			<div class="centit radio">
+				<input type="radio" name="isPrimary" value="T" />
+				<label id="d@primaryOrganization">主机构</label>
+				
+				<input type="radio" name="isPrimary" value="F" />
+				<label id="d@secondaryOrganization">非主机构</label>
+			</div>
+		</div>
+	</div>
+</form>
+<script>
+setI18NText();
+</script>

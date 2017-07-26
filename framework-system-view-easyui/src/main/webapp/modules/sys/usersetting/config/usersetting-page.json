@@ -1,0 +1,14 @@
+[
+  {
+    "title": "系统参数",
+    "url": "/modules/sys/usersetting/usersetting.jsp"
+  },
+  {
+    "title": "业务参数",
+    "url": "/modules/sys/usersetting/usersetting-message.jsp"
+  },
+  {
+    "title": "高级",
+    "url": "/modules/sys/usersetting/usersetting-detail.jsp"
+  }
+]

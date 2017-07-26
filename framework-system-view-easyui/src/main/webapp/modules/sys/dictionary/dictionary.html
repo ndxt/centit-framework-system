@@ -1,0 +1,82 @@
+<div class="easyui-panel search-body" cls="search" style="width: 100%;">
+
+	<form>
+		<div class="search-item">
+			<label id="d@encoding">编码</label>
+			<input type="text" class="easyui-textbox" name="s_catalogCode" />
+		</div>
+		
+		<div class="search-item">
+			<label id="d@name">名称</label>
+			<input type="text" class="easyui-textbox" name="s_catalogName" />
+		</div>
+		
+		<div class="search-item">
+			<label>业务模块</label>
+			<input type="text" class="easyui-combotree" name="s_optId" target="optinfo" />
+		</div>
+			
+		<a class="easyui-linkbutton btn-search" iconCls="icon-search"><p  id="d@btn.search">搜索</p></a>
+		<a class="easyui-linkbutton btn-reset" iconCls="icon-reload"><p>重置</p></a>
+
+	</form>
+</div>
+<table url="system/dictionary?_search=true&field=catalogCode&field=catalogName&field=catalogDesc&field=catalogStyle&field=catalogType&field=optId"
+	idField="catalogCode"
+	sortName="updateDate"
+	sortOrder="desc"
+	search=".search"
+	toolbar=".temp-toolbar"
+	layoutH=".search">
+	<thead data-options="frozen:true">
+		<tr>
+			<th id="d1@encoding" data-options="field:'catalogCode'" width="150" sortable="true">编码</th>
+			<th id="d1@name" data-options="field:'catalogName'" width="150" sortable="true">名称</th>
+			<th id="d1@dictionaryType" data-options="field:'catalogStyle'" width="80" sortable="true" align="center"
+				format="Dictionary:CatalogStyle">字典类型</th>
+			<th id="a@serviceModule" data-options="field:'optId'" target="optinfo" width="80" sortable="true" align="center">业务模块</th>
+			<th id="d1@dictionaryStructure" data-options="field:'catalogType'" width="80" sortable="true" align="center"
+				format="Dictionary:CatalogType">字典结构</th>
+		</tr>
+	</thead>
+	<thead>
+		<tr>
+			<th id="d1@describe" data-options="field:'catalogDesc'" width="600">描述</th>
+		</tr>
+	</thead>
+</table>
+
+<div class="temp-toolbar">
+	<a  iconCls="icon-add" href="modules/sys/dictionary/dictionary-info.html" trigger="none"
+		target="dialog" rel="dictionary_add" title="新增数据字典" width="640" height="480" btnValue="添加"><p id="c@link.add">新增</p></a>
+		
+	<a  iconCls="icon-edit" href="modules/sys/dictionary/dictionary-info.html" trigger="single"
+		target="dialog" rel="dictionary_edit" title="编辑 {{catalogName}} 数据字典" width="640" height="480" btnValue="更新"><p id="c@link.edit">编辑</p></a>
+	<hr>
+	
+	<a iconCls="icon-base icon-base-gear" href="modules/sys/dictionary/dictionary-item.html" trigger="single"
+		target="dialog" rel="dictionary_item" title="编辑 {{catalogName}} 字典明细" width="960" height="480" btnValue="更新"><p  id="d@link.dictionaryDetail">字典明细</p></a>
+		
+	<hr>
+	
+	<a iconCls="icon-base icon-base-ban" trigger="single"
+		target="confirm" rel="dictionary_remove" title="是否确定删除 {{catalogName}}？"><p  id="d@btn.delete">删除</p></a>
+</div>
+
+<script>
+	$.parser.onComplete = function(panel) {
+		
+		$.parser.onComplete = $.noop;
+		requirejs([
+				   'core/filter/filter.dictionary',
+		           'modules/sys/dictionary/ctrl/dictionary',
+		          ], function(FilterDictionary, Dictionary) {
+			
+			FilterDictionary.add(['CatalogStyle', 'CatalogType']).then(function() {
+				new Dictionary('dictionary', panel).load(panel);
+			});
+		});
+	};
+	
+	setI18NText();
+</script>

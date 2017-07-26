@@ -1,0 +1,23 @@
+<form class="form centit">
+	<div class="field required">
+		<label id="f@receiver">收件人</label>
+		<input type="text" class="easyui-combobox" name="receive[]" required target="user"
+				multiple="true" multiline="true" />
+	</div>
+	
+	<div class="field required">
+		<label id="f@title">标题</label>
+		<input type="text" class="easyui-textbox" name="msgTitle" 
+			required />
+	</div>
+	
+	<div class="field required">
+		<label id="f@content">内容</label>
+		<input type="text" class="easyui-textbox text" name="msgContent" height="100" multiline="true"  required
+			style="height: 200px;" />
+	</div>
+</form>
+
+<script>
+setI18NText();
+</script>

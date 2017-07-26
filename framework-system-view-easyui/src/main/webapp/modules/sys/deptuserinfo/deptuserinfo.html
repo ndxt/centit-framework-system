@@ -1,0 +1,76 @@
+<div class="easyui-layout" id="deptuserinfo_panel" fit="true">
+
+	<div data-options="region:'east', split: true, collapsible: false" style="width:60%" title="机构与权限">
+	</div>
+
+	<div data-options="region:'center'"style="width:40%">
+	
+		<div class="easyui-panel search-body" cls="search" style="width: 100%">
+			<form>
+				
+				<div class="search-item">
+					<label id="e@name">名称</label>
+					<input type="text" class="easyui-combobox" name="s_userCode" target="user"/>
+				</div>
+				<a class="easyui-linkbutton btn-search" iconCls="icon-search"><p  id="e@btn.search">搜索</p></a>
+			</form>
+		</div>
+		
+		<table 
+			idField="userCode"
+			id="deptUserInfoTable"
+			width="98%"
+			bottom="0"
+			search=".search"
+			toolbar=".temp-toolbar"
+			layoutH="65"
+			>
+			<thead>
+				<tr>
+					<th id="e1@name" data-options="field:'userCode'" format="AllUser" width="30%" sortable="true">用户名</th>
+<!-- 					<th id="e@loginName" data-options="field:'loginName'" width="20%" sortable="true">登录名</th> -->
+<!-- 					<th data-options="field:'isPrimary'" format="Dictionary:YesOrNo" width="20%">是否主机构</th> -->
+					<th id="e@post" data-options="field:'userStation'" format="Dictionary:StationType" width="45%">岗位</th>
+					<th id="e@job" data-options="field:'userRank'" format="Dictionary:RankType" width="22%">职务</th>
+				</tr>
+			</thead>
+		</table>
+		<div class="temp-toolbar">
+			<a iconCls="icon-add" href="modules/sys/deptuserinfo/deptuserinfo-info.html" trigger="none"
+				target="dialog" rel="deptuserinfo_add" title="新增用户" width="640" height="470" btnValue="添加"><p id="e@link.add">新增</p></a>
+			<hr>
+			<a  iconCls="icon-edit" href="modules/sys/deptuserinfo/deptuserinfo-edit.html" trigger="single"
+				target="dialog" rel="deptuserinfo_edit" title="编辑 {{userName}} 用户" width="640" height="470" btnValue="更新"><p id="e@link.edit">编辑</p></a>
+			<hr>
+			<a  iconCls="icon-base icon-base-ban"  trigger="single"
+				target="confirm" rel="deptuserinfo_delete" title="确定删除 {{userName}}用户" ><p id="e@btn.delete">删除</p></a>
+			<hr>
+			<a iconCls="icon-base icon-base-lock" trigger="single"
+				target="confirm" rel="deptuserinfo_resetpassword" title="确定重置 {{userName}} 用户密码为 000000 吗？"><p  id="e@btn.resetPassword">重置密码</p></a>
+		</div>
+	
+	
+	</div>
+
+
+</div>
+
+
+
+
+<script>
+	
+	$.parser.onComplete = function(panel) {
+		$.parser.onComplete = $.noop;
+		
+		requirejs([
+					'core/filter/filter.dictionary',
+		           'modules/sys/deptuserinfo/ctrl/deptuserinfo'
+		          ], function(FilterDictionary, deptuserinfo) {
+			FilterDictionary.add(['YesOrNo','RankType','StationType']).then(function() {
+				new deptuserinfo('deptuserinfo', panel).load(panel);
+			});
+		});
+	};
+	setI18NText("");
+</script>

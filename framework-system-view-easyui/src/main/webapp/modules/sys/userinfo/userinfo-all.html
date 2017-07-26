@@ -1,0 +1,134 @@
+<form class="form centit">
+	<input type="hidden" name="userCode"/>
+	
+	<div class="fields two">
+		<div class="field ">
+			<label id="a@name">用户名</label>
+			<input type="text" class="easyui-textbox" name="userName"/>
+		</div>
+		<div class="field ">
+			<label id="a@logname">登录名</label>
+			<input type="text" class="easyui-textbox" name="loginName"/>
+		</div>
+	</div>
+	<div class="fields two">
+		<div class="field ">
+			<label id="a@tel">电话</label>
+			<input type="text" class="easyui-textbox" name="regCellPhone" validType="phoneOrMobile" readonly  />
+		</div>
+		<div class="field ">
+			<label id="a@email">邮箱</label>
+			<input type="text" class="easyui-textbox" name="regEmail" validType="email" readonly  />
+		</div>
+	</div>
+	<div class="fields two">
+		<div class="field">
+			<label id="a@describe">描述</label>
+			<input type="text" class="easyui-textbox" name="userDesc" height="20" multiline="true" style="height: 60px;width:99%" readonly />
+		</div>
+		<div class="field">
+				<div class="centit radio">
+					<input type="radio" name="isValid" value="T" disabled/>
+					<label id="a@inUse">在用</label>
+					
+					<input type="radio" name="isValid" value="F" disabled/>
+					<label id="a@forbidden">禁用</label>
+				</div>
+		</div>
+	</div>
+</form>
+
+<div class="easyui-accordion" style="width:96%;margin-left:10px;height:318px;">
+<div title="菜单角色信息">
+<table class="role"  style="width:95%;" data-options="cls: 'role'"
+	pagination="false"
+	border="true"
+	toolbar=".role-toolbar" 
+	min-height="234">
+	<thead frozen="true">
+		<tr>
+			<th id="a@rolename" field="roleCode" format="Role" width="50%">角色名称</th>
+			<th id="a@effectiveDate" field="obtainDate" width="30%" align="center">生效日期</th>
+		</tr>
+	</thead>
+	<thead>
+		<tr>
+			<th id="a@remarks" field="changeDesc" width="20%">备注</th>
+		</tr>
+	</thead>
+</table>
+
+<div class="role-toolbar">
+	<a rel="userinfo_role_add" iconCls="icon-add" href="modules/sys/userinfo/userinfo-role-info.html"
+		target="dialog" trigger="none" title="添加菜单角色" btnValue="添加" width="500" height="370"><p  id="userinfo.a@link.add">新增</p></a>
+	<hr>
+	<a iconCls="icon-base icon-base-gear" href="modules/sys/roleinfo/roleinfo-power.html" trigger="single"
+		target="dialog" rel="roleinfo_operate" title="编辑 {{roleName}} 操作权限" width="720" height="600" btnValue="更新"><p  id="d@link.authorityOpt">操作权限</p></a>
+	<hr>	
+	<a rel="userinfo_role_ban" iconCls="icon-base icon-base-rubbish "
+		target="confirm" trigger="single" title="确定将 {{roleName}} 从用户{{userName}} 的菜单角色中回收吗？"><p  id="userinfo.a@btn.recycle">回收</p></a>
+<!-- 	<hr>
+	<a rel="userinfo_role_remove" iconCls="icon-base icon-base-ban"
+		target="confirm" trigger="single" title="确定将 {{roleName}} 从用户中移出吗？"><p id="userinfo.a@btn.delete">删除</p></a> -->
+</div>
+</div>
+<div title="部门菜单角色">
+<table class="unitRole"  style="width:96%" data-options="cls: 'unitRole'"
+	pagination="false"
+	border="true"
+	min-height="234"
+	toolbar=".unitRole-toolbar" >
+	<thead frozen="true">
+		<tr>
+			<th id="a@rolename" field="roleName" width="50%">角色名称</th>
+			<th id="a@effectiveDate" field="obtainDate" width="30%" align="center">生效日期</th>
+		</tr>
+	</thead>
+	<thead>
+		<tr>
+			<th id="a@remarks" field="changeDesc" width="20%">备注</th>
+		</tr>
+	</thead>
+</table>
+
+<div class="unitRole-toolbar">
+	<a rel="userinfo_role_add" iconCls="icon-add" href="modules/sys/deptuserinfo/deptuserinfo-role-info.html"
+		target="dialog" trigger="none" title="添加部门权限菜单角色" btnValue="添加" width="500" height="370"><p  id="userinfo.a@link.add">新增</p></a>
+	<hr>
+	<a iconCls="icon-base icon-base-gear" href="modules/sys/roleinfo/roleinfo-power.html" trigger="single"
+		target="dialog" rel="roleinfo_operate" title="编辑 {{roleName}} 操作权限" width="320" height="600" btnValue="更新"><p  id="d@link.authorityOpt">操作权限</p></a>	
+	<hr>	
+	<a rel="userinfo_role_ban" iconCls="icon-base icon-base-rubbish "
+		target="confirm" trigger="single" title="确定将 {{roleName}} 从用户{{userName}} 的部门权限菜单角色中回收吗？"><p  id="userinfo.a@btn.recycle">回收</p></a>
+</div>
+</div>
+<div title="岗位信息">
+<table class="unit" style="width:96%" data-options="cls: 'unit'"
+	pagination="false"
+	min-height="234"
+	toolbar=".unit-toolbar">
+	<thead>
+		<tr>
+			<th id="a@organizationName" field="unitCode" width="25%" format="Unit">机构名称</th>
+			<th id="a@post" field="userStation" width="35%" format="Dictionary:StationType">岗位</th>
+			<th id="a@job" field="userRank" width="20%" format="Dictionary:RankType">职务</th>
+			<th id="a@job" field="isPrimary" width="10%" format="Dictionary:YesOrNo">是否主机构</th>
+		</tr>
+	</thead>
+</table>
+
+<div class="unit-toolbar">
+	<a  rel="userinfo_unit_add" iconCls="icon-add" href="modules/sys/userinfo/userinfo-unit-info.html"
+		target="dialog" trigger="none" title="添加人员机构" btnValue="添加" width="500" height="360"><p id="userinfo.a1@link.add">新增</p></a>
+	<hr>
+	<a  rel="userinfo_unit_edit" iconCls="icon-edit" href="modules/sys/userinfo/userinfo-unit-info.html"
+		target="dialog" trigger="single" title="编辑  {{unitName}} 人员机构" btnValue="更新" width="500" height="360"><p id="userinfo.a1@btn.edit">编辑</p></a>
+	<hr>	
+	<a  rel="userinfo_unit_remove" iconCls="icon-base icon-base-ban"
+		target="confirm" trigger="single" title="确定将 {{unitName}} 从用户{{uniName}}的岗位信息中移出吗？"><p id="userinfo.a1@btn.delete">删除</p></a>
+</div>
+</div>
+</div>
+<script>
+setI18NText();
+</script>

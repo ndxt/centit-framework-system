@@ -1,0 +1,21 @@
+<div id="editor" style="height: 256px;      ">
+    <p>Hello World!</p>
+    <p>Some initial <strong>bold</strong> text</p>
+    <p><br></p>
+</div>
+
+<!-- 加载编辑器的容器 -->
+<script id="container" name="content" type="text/plain">
+    这里写你的初始化内容
+</script>
+
+<script>
+    require(['jquery', 'quill', 'ueditor'], function($, Quill, UE) {
+
+        new Quill('#editor', {
+            theme: 'snow'
+        });
+
+        var ue = UE.getEditor('container');
+    })
+</script>

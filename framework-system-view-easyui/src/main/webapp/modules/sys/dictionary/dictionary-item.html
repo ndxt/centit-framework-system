@@ -1,0 +1,49 @@
+<form class="centit form" novalidate="true">
+	<div class="two fields">
+		<div class="field required">
+			<label id="b@encoding">编码</label>
+			<input type="text" class="easyui-textbox" name="catalogCode" 
+				 readonly="true" />
+		</div>
+		
+		<div class="field required">
+			<label id="b@name">名称</label>
+			<input type="text" class="easyui-textbox" name="catalogName"
+				 readonly="true" />
+		</div>
+	</div>
+</form>
+
+<table style="width: 99%; height: 310px; margin: 0 auto;"
+	rownumbers="false"
+	height="310"
+	idField="dataCode" 
+	pagination="false"
+	toolbar=".temp-toolbar">
+<!-- 	<thead data-options="frozen:true">
+		<tr>
+			<th field="dataValue" width="300" data-options="editor:{type:'textbox', options:{required: true}}">数值</th>
+			<th field="dataCode" width="150" data-options="editor:{type:'textbox', options:{required: true}}">编码</th>
+			<th field="dataStyle" align="center" width="100" data-options="editor:{type:'textbox', options:{required: true}}">类型</th>
+		</tr>
+	</thead>
+	<thead>
+		<tr>
+			<th field="dataDesc" width="600" data-options="editor:{type:'textbox'}">描述</th>
+		</tr>
+	</thead> -->
+</table>
+
+<div class="temp-toolbar">
+	<a id="b@btn.add" iconCls="icon-add" trigger="none" 
+		target="custom" rel="dictionary_item_add">新增</a>
+	
+	<hr>
+	
+	<a id="b@btn.delete" iconCls="icon-base icon-base-ban" trigger="single"
+		target="confirm" rel="dictionary_item_remove" title="是否确定删除 {{dataValue}}（{{dataCode}}）？">删除</a>
+</div>
+
+<script>
+setI18NText();
+</script>

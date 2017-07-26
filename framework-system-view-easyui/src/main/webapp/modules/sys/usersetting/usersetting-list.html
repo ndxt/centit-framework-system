@@ -1,0 +1,20 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<ol class="breadcrumb">
+    <li>综合管理</li>
+    <li>系统配置</li>
+    <li class="active">设置中心</li>
+</ol>
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-12">
+            <ul xt-tabset justified="true" key="true" theme="wizard">
+				<li ng-repeat="page in pages" xt-tab heading="{{$index + 1}}.{{page.title}}" url="${ctx }{{page.url}}"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+	
+

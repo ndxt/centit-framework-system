@@ -1,0 +1,27 @@
+[  { 
+        "colors": [
+        "black",
+        "blue",
+        "green",
+        "red",
+        "pink",
+        "purple",
+        "yellow",
+        "gray"
+    ],
+    "theme": "horizontal-glass",
+    "name":"水平布局主题"
+     },
+    {
+        "colors": [
+        "black",
+        "blue",
+        "green",
+        "red",
+        "pink",
+        "purple",
+        "yellow"
+    ],
+    "theme": "vertical-class",
+    "name":"垂直布局主题"
+    } ]

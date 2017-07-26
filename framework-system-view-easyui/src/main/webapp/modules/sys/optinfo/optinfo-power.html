@@ -1,0 +1,79 @@
+<form class="centit form" novalidate="true">
+	<div class="two fields">
+		<div class="field">
+			<label id="d@encoding">编码</label>
+			<input type="text" class="easyui-textbox" name="optId" 
+				readonly="true"
+			/>
+		</div>
+		<div class="field">
+			<label id="d@name">名称</label>
+			<input type="text" class="easyui-textbox" name="optName" 
+				readonly="true"
+			/>
+		</div>
+	</div>
+	<div class="field">
+		<label id="d@askHeadAddr">请求首地址</label>
+		<input type="text" class="easyui-textbox" name="optUrl" />
+	</div>
+</form>
+
+<table style="width:48%;height: 40%; margin: 20px 0;" id="optdef"
+ title="操作定义"	idField="optCode" height="240"
+	pagination="false"
+	toolbar=".temp-toolbar"
+	editable="true">
+	<thead>
+		<tr>
+			<th id="d1@encoding" data-options="field:'optCode'" width="80" align="center">编码</th>
+			<th id="d1@name" data-options="field:'optName',editor:{type:'textbox', options:{required: true}}" width="100" >名称</th>
+			<th id="d1@askAddr" data-options="field:'optUrl',editor:'textbox'" width="100">请求地址</th>
+			<th id="d1@askMethod" data-options="field:'optMethod',editor:'textbox'" width="100">请求方法</th>
+			<th id="d1@askType" data-options="field:'optReq',editor:{type:'textbox', options:{required: true}}" width="100" align="center">请求类型</th>
+			<th id="d1@describe" data-options="field:'optDesc',editor:'textbox'" width="375">描述</th>
+		</tr>
+	</thead>
+</table>
+
+<div class="temp-toolbar">
+	<a id="d@btn.add" iconCls="icon-add" trigger="none"
+		target="custom" rel="optinfo_power_add">新增</a>
+	
+	<hr>
+	
+	<a id="d@btn.delete" iconCls="icon-base icon-base-ban" trigger="single"
+		target="confirm" rel="optinfo_power_remove" title="是否确定删除 {{optName}}（{{optCode}}）？">删除</a>
+</div>
+
+
+<table style="width:48%;height: 40%; margin: 20px 0;" id="datascope"
+ title="数据范围"	idField="optCode" height="240"
+	pagination="false"
+	toolbar=".temp-toolbar_datascope"
+	editable="true">
+	<thead>
+		<tr>
+			<th id="d2@encoding" data-options="field:'optCode'" width="80" align="center">编码</th>
+			<th id="d2@name" data-options="field:'optName',editor:{type:'textbox', options:{required: true}}" width="100" >名称</th>
+			<th id="d2@askAddr" data-options="field:'optUrl',editor:'textbox'" width="100">请求地址</th>
+			<th id="d2@askMethod" data-options="field:'optMethod',editor:'textbox'" width="100">请求方法</th>
+			<th id="d2@askType" data-options="field:'optReq',editor:{type:'textbox', options:{required: true}}" width="100" align="center">请求类型</th>
+			<th id="d2@describe" data-options="field:'optDesc',editor:'textbox'" width="375">描述</th>
+		</tr>
+	</thead>
+</table>
+
+<div class="temp-toolbar_datascope">
+	<a id="d1@btn.add" iconCls="icon-add" trigger="none"
+		target="custom" rel="optinfo_power_add">新增</a>
+	
+	<hr>
+	
+	<a id="d1@btn.delete" iconCls="icon-base icon-base-ban" trigger="single"
+		target="confirm" rel="optinfo_power_remove" title="是否确定删除 {{optName}}（{{optCode}}）？">删除</a>
+</div>
+
+<script>
+setI18NText();
+</script>
