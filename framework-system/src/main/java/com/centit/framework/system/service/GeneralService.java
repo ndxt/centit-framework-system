@@ -1,9 +1,8 @@
 package com.centit.framework.system.service;
 
+import com.centit.framework.system.po.UserQueryFilter;
 import com.centit.framework.core.dao.DataPowerFilter;
 import com.centit.framework.security.model.CentitUserDetails;
-import com.centit.framework.system.po.UserQueryFilter;
-
 import java.util.List;
 
 /**
@@ -22,7 +21,7 @@ public interface GeneralService {
 	 * @param modelCode modelCode
 	 * @return 用户某个模块的查询过滤器类别
 	 */
-	 UserQueryFilter getUserDefaultFilter(String userCode,String modelCode);
+	 UserQueryFilter getUserDefaultFilter(String userCode, String modelCode);
 	/**
 	 * 获取用户某个模块默认查询过滤器
 	 * @param filterNo filterNo
