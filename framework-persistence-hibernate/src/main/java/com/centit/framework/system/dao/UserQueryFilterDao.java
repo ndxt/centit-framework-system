@@ -1,19 +1,9 @@
 package com.centit.framework.system.dao;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.centit.framework.core.dao.CodeBook;
-import com.centit.framework.hibernate.dao.BaseDaoImpl;
-import com.centit.framework.hibernate.dao.DatabaseOptUtils;
+import com.centit.framework.hibernate.dao.BaseDao;
 import com.centit.framework.system.po.UserQueryFilter;
 
+import java.util.List;
 
 
 /**
@@ -23,55 +13,23 @@ import com.centit.framework.system.po.UserQueryFilter;
  * 用户自定义过滤条件表null   
 */
 
-@Repository
-public class UserQueryFilterDao extends BaseDaoImpl<UserQueryFilter,java.lang.Long>
-	{
-	public static final Logger logger = LoggerFactory.getLogger(UserQueryFilterDao.class);
+public interface UserQueryFilterDao extends BaseDao<UserQueryFilter,Long> {
 	
-	@Override
-	public Map<String, String> getFilterField() {
-		if( filterField == null){
-			filterField = new HashMap<String, String>();
-
-			filterField.put("filterNo" , CodeBook.EQUAL_HQL_ID);
-
-			filterField.put("userCode" , CodeBook.EQUAL_HQL_ID);
-			filterField.put("modleCode" , CodeBook.EQUAL_HQL_ID);
-
-			filterField.put("filterName" , CodeBook.EQUAL_HQL_ID);
-
-			filterField.put("filterValue" , CodeBook.EQUAL_HQL_ID);
-			
-		}
-		return filterField;
-	}
+	//"From UserQueryFilter where userCode = ? and modleCode = ? "
+			//+ "order by isDefault desc , createDate desc"
+	// 参数 String userCode,String modelCode
+	List<UserQueryFilter> listUserQueryFilterByModle(String userCode, String modelCode);
 	
-	@Transactional
-	public List<UserQueryFilter> listUserQueryFilterByModle(String userCode,String modelCode){
-		return super.listObjects("From UserQueryFilter where userCode = ? and modleCode = ? "
-				+ "order by isDefault desc , createDate desc",
-				new Object[]{userCode,modelCode});
-	}
+	//super.listObjectsAll("From UserQueryFilter where userCode = ? and modleCode = ? "
+		//+ "and isDefault = 'T' order by isDefault desc , createDate desc",
+	//参数 String userCode,String modelCode
+	List<UserQueryFilter> listUserDefaultFilterByModle(String userCode, String modelCode);
 	
-	@Transactional
-	public List<UserQueryFilter> listUserDefaultFilterByModle(String userCode,String modelCode){
-		return super.listObjects("From UserQueryFilter where userCode = ? and modleCode = ? "
-				+ "and isDefault = 'T' order by isDefault desc , createDate desc",
-				new Object[]{userCode,modelCode});
-	}
+	//= super.listObjectsAll("From UserQueryFilter where userCode = ? and modleCode = ? "
+		//+ "and isDefault = 'T' order by isDefault desc , createDate desc",
+		//new Object[]{userCode,modelCode});
+	//public UserQueryFilter getUserDefaultFilterByModle(String userCode,String modelCode);
 	
-	@Transactional
-	public UserQueryFilter getUserDefaultFilterByModle(String userCode,String modelCode){
-		List<UserQueryFilter> uqfs = super.listObjects("From UserQueryFilter where userCode = ? " +
-						"and modleCode = ? and isDefault = 'T' order by isDefault desc , createDate desc",
-				new Object[]{userCode,modelCode});
-		if(uqfs==null || uqfs.size()==0)
-			return null;
-		return uqfs.get(0);
-	}
-	
-	@Transactional
-    public Long getNextKey() {
-        return DatabaseOptUtils.getNextLongSequence(this, "S_FILTER_NO");
-    }
+	// DatabaseOptUtils.getNextLongSequence(this, "S_FILTER_NO");
+    Long getNextKey();
 }

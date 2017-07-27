@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.centit.framework.system.UserQueryFilterDao">
+<mapper namespace="com.centit.framework.system.dao.UserQueryFilterDao">
 	<resultMap type="com.centit.framework.system.po.UserQueryFilter" id="UserQueryFilter">
        <result property="filterNo" column="FILTERNO" />
 		<result property="userCode" column="USERCODE" />
@@ -179,7 +179,10 @@
 			where USERCODE=#{userCode} and MODLECODE=#modleCode#  and ISDEFAULT = 'T'
 			order by ISDEFAULT desc , CREATEDATE desc
 	</select>
-	<select id="getNextKey" resultType="Long">
+	<select id="getNextKey" databaseId="oracle" resultType="Long">
 		SELECT S_FILTER_NO.nextval from dual
+	</select>
+	<select id="getNextKey" databaseId="mysql" resultType="Long">
+		SELECT sequence_nextval('S_FILTER_NO')
 	</select>
 </mapper>

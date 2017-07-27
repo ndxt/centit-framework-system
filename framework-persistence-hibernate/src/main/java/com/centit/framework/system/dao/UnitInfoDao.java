@@ -1,156 +1,76 @@
 package com.centit.framework.system.dao;
 
-import com.centit.framework.core.dao.CodeBook;
-import com.centit.framework.hibernate.dao.BaseDaoImpl;
-import com.centit.framework.hibernate.dao.DatabaseOptUtils;
+import com.centit.framework.hibernate.dao.BaseDao;
 import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserInfo;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-@Repository
-public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
-    public static final Logger logger = LoggerFactory.getLogger(UnitInfoDao.class);
+public interface UnitInfoDao extends BaseDao<UnitInfo, String> {
 
-    public Map<String, String> getFilterField() {
-        if (filterField == null) {
-            filterField = new HashMap<String, String>();
-            filterField.put("UNITCODE", CodeBook.EQUAL_HQL_ID);
-            filterField.put("UNITNAME", CodeBook.LIKE_HQL_ID);
-            filterField.put("ISVALID", CodeBook.EQUAL_HQL_ID);
-            filterField.put("UNITTAG", CodeBook.EQUAL_HQL_ID);
-            filterField.put("UNITWORD", CodeBook.EQUAL_HQL_ID);
-            filterField.put("PARENTUNIT", CodeBook.EQUAL_HQL_ID);
-            filterField.put("NP_TOPUnit", "(parentUnit is null or parentUnit='0')");
-            filterField.put(CodeBook.ORDER_BY_HQL_ID, " unitOrder, unitCode ");
-        }
-        return filterField;
-    }
+	 int countChildrenSum(String unitCode);
+	
+	// DatabaseOptUtils.getNextKeyBySequence(this, "S_UNITCODE", 6);
+     String getNextKey();
 
-    @Transactional
-    public String getNextKey() {
-	/*	return getNextKeyByHqlStrOfMax("unitCode",
-						"FUnitinfo WHERE unitCode !='99999999'",6);*/
-        return DatabaseOptUtils.getNextKeyBySequence(this, "S_UNITCODE", 6);
-    }
-
-    @Transactional
-    public String getUnitCode(String depno) {
-        List<UnitInfo> ls = listObjects("FROM UnitInfo where depNo=?", depno);
-        if (ls != null) {
-            return ls.get(0).getUnitCode();
-        } else {
-            return null;
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Transactional(propagation=Propagation.MANDATORY) 
-    public List<UserInfo> listUnitUsers(String unitCode) {
-        String sSqlsen = "select a.* " +
-                "from F_USERINFO a join F_USERUNIT b on(a.USERCODE=b.USERCODE) " +
-                "where b.UNITCODE =?";
-
-        return (List<UserInfo>) DatabaseOptUtils.findObjectsBySql(this, sSqlsen, new Object[]{unitCode} ,UserInfo.class);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Transactional(propagation=Propagation.MANDATORY) 
-    public List<UserInfo> listRelationUsers(String unitCode) {
-        String sSqlsen = "select * FROM F_USERINFO ui where ui.USERCODE in " +
-                "(select USERCODE from F_USERUNIT where UNITCODE= ? ) or " +
-                "ui.USERCODE in (select USERCODE from F_USERROLE where ROLECODE like ? ";
-
-        return (List<UserInfo>) DatabaseOptUtils.findObjectsBySql(
-                this, sSqlsen,new Object[]{unitCode,unitCode+ "-%"}, UserInfo.class);
-    }
-
-    @Transactional
-    public String getUnitNameOfCode(String unitcode) {
-       return String.valueOf( DatabaseOptUtils.getSingleObjectBySql(this,
-                "select UNITNAME from F_UNITINFO where UNITCODE=?", unitcode ));
-    }
+    //listObjectsAll("FROM UnitInfo where depNo=?", depno);
+     String getUnitCode(String depno);
 
     /**
-     * 批量添加或更新
-     *
-     * @param unitinfos List
+     * "select a.* " +
+                "from f_Userinfo a join f_userunit b on(a.userCode=b.userCode) " +
+                "where b.unitcode =?"
+     * @param unitCode unitCode
+     * @return List UserInfo
      */
-    @Transactional
-    public void batchSave(List<UnitInfo> unitinfos) {
-        for (int i = 0; i < unitinfos.size(); i++) {
-            saveObject(unitinfos.get(i));
-        }
-    }
-    @Transactional
-    public void batchMerge(List<UnitInfo> unitinfos) {
-        for (int i = 0; i < unitinfos.size(); i++) {
-            this.mergeObject(unitinfos.get(i));
+     List<UserInfo> listUnitUsers(String unitCode);
 
-            if (19 == i % 20) {
-                DatabaseOptUtils.flush(this.getCurrentSession());
-            }
-        }
-    }
-    @Transactional
-    public UnitInfo getUnitByName(String name) {
-        if (StringUtils.isNotBlank(name)) {
-            String hql = "from UnitInfo where unitName = ? or unitShortName = ?"
+    /**
+     * "select * FROM F_Userinfo ui where ui.userCode in " +
+                "(select userCode from f_userunit where unitcode='" + unitCode + "') or " +
+                "ui.userCode in (select userCode from f_userrole where rolecode like ? "
+     * @param unitCode unitCode
+     * @return List UserInfo
+     */
+     List<UserInfo> listRelationUsers(String unitCode);
+
+    // "select unitname from f_unitinfo where unitcode=?", unitcode ));
+     String getUnitNameOfCode(String unitcode);
+    
+
+//     List<UnitInfo> listUnitinfoByUnitcodes(List<String> unitcodes);
+
+    /**
+     * "from UnitInfo where unitName = ? or unitShortName = ?"
             			+ " order by unitOrder asc";
-            List<UnitInfo> list = listObjects(hql,
-            		new Object[]{name,name});
-            if (list !=null && !list.isEmpty()) {
-                return list.get(0);
-            }
-        }
-        return null;
-    }
+     * @param name name
+     * @return UnitInfo
+     */
+     UnitInfo getUnitByName(String name);
     
-    @Transactional
-    public UnitInfo getUnitByTag(String unitTag) {
-    	return super.getObjectByProperty("unitTag", unitTag);
-    }
+    //return super.getObjectByProperty("unitTag", unitTag);
+     UnitInfo getUnitByTag(String unitTag);
     
-    @Transactional
-    public UnitInfo getUnitByWord(String unitWord) {
-    	return super.getObjectByProperty("unitWord", unitWord);
-    }
+    //return super.getObjectByProperty("unitWord", unitWord);
+     UnitInfo getUnitByWord(String unitWord);
     
-    @Transactional
-    public List<UnitInfo> listSubUnits(String unitCode){
-    	return super.listObjectByProperty("parentUnit", unitCode);
-    	/*String hql = "from UnitInfo where parentUnit = ?";
-    	return listObjects(hql,
-    		new Object[]{unitCode,unitCode});*/
-    }
 
-    @Transactional(propagation=Propagation.MANDATORY)
-    public List<UnitInfo> listAllSubUnits(String unitCode){
-        UnitInfo unitInfo = this.getObjectById(unitCode);
-        return listSubUnitsByUnitPaht(unitInfo.getUnitPath());
-    }
     
-    @Transactional(propagation=Propagation.MANDATORY) 
-    public List<UnitInfo> listSubUnitsByUnitPaht(String unitPath){
-    	String hql = "from UnitInfo where unitPath like ?";
-    	return listObjects(hql,
-    		new Object[]{unitPath+"/%"});
-    }
+    /**
+     * @param parentunitcodes List
+     * @return List UnitInfo
+     */
 
-    public List<String> getAllParentUnit(){
-        return (List<String>)DatabaseOptUtils.findObjectsBySql(this, "select distinct t.parentunit from f_unitinfo t ");
-    }
+    /**
+     * 这个方法应该转移到ManagerImpl类中
+     * @param primaryUnit primaryUnit
+     * @return List UnitInfo
+     */
+     List<UnitInfo> listAllSubUnits(String primaryUnit);
 
-    public int countChildrenSum(String unitCode){
-        return (int)DatabaseOptUtils.getSingleObjectBySql(this,
-                "select count(1) as subunits from F_UNITINFO where PARENTUNIT = ?",  unitCode);
-    }
+    
+    //String hql = "from UnitInfo where unitPath like ?";{unitPath+"/%"});
+     List<UnitInfo> listSubUnitsByUnitPaht(String unitPath);
+
+     List<String> getAllParentUnit();
 }

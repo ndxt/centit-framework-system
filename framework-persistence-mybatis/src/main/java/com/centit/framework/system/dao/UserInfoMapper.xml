@@ -335,8 +335,11 @@
 	<select id="listObjectsAll"  resultMap="UserInfo">
 		 <include refid="coreSql" />
 	</select>
-	<select id="getNextKey" resultType="String">
+	<select id="getNextKey" databaseId="oracle" resultType="String">
 		SELECT S_USERCODE.nextval from dual
+	</select>
+	<select id="getNextKey" databaseId="mysql" resultType="String">
+		SELECT sequence_nextval('S_USERCODE')
 	</select>
 	<select id="getAllOptMethodByUser" parameterType="String" resultMap="FvuserOpt">
 			select USERCODE,OPTCODE,OPTNAME,OPTID,OPTMETHOD from F_V_USEROPTLIST  urv where urv.USERCODE=#{userCode}
@@ -390,18 +393,6 @@
 	  </if>
 	</select>
 	<select id="checkIfUserExists" parameterType="map" resultType="Long">
-		select count(1) from userinfo  where userCode != #{userCode} and
-		loginName=#{loginName}
-	</select>
-	<select id="isCellPhoneExist" parameterType="map" resultType="Long">
-		select count(1) from userinfo  where userCode != #{userCode} and
-		REGCELLPHONE=#{regCellPhone}
-	</select>
-	<select id="isEmailExist" parameterType="map" resultType="Long">
-		select count(1) from userinfo  where userCode != #{userCode} and
-		REGEMAIL=#{regEmail}
-	</select>
-	<select id="isAnyOneExist" parameterType="map" resultType="Long">
 		select count(1) from userinfo  where userCode != #{userCode} and
 		(loginName=#{loginName} or REGCELLPHONE=#{regCellPhone} or REGEMAIL=#{regEmail})
 	</select>
