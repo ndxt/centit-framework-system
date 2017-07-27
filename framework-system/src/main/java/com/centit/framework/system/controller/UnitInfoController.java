@@ -7,8 +7,8 @@ import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.common.JsonResultUtils;
 import com.centit.framework.core.common.ResponseData;
 import com.centit.framework.core.controller.BaseController;
+import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.core.dao.PageDesc;
-import com.centit.framework.hibernate.dao.SysDaoOptUtils;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserInfo;
@@ -79,7 +79,7 @@ public class UnitInfoController extends BaseController {
         if(StringUtils.isNotBlank(unitName) && StringUtils.isBlank(id)){
 
             List<UnitInfo> listObjects= sysUnitManager.listObjects(searchColumn);
-            JSONArray ja = SysDaoOptUtils.objectsToJSONArray(listObjects);
+            JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
             if(struct){
                 ja = ListOpt.srotAsTreeAndToJSON(ja, (p, c) ->
                                 StringUtils.equals(
@@ -102,7 +102,7 @@ public class UnitInfoController extends BaseController {
             	 unit.setState(sysUnitManager.hasChildren(unit.getUnitCode())?
                    "closed":"open");
             }*/
-            JSONArray ja = SysDaoOptUtils.objectsToJSONArray(listObjects);
+            JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
             JsonResultUtils.writeSingleDataJson(ja, response, null);
         }
     }
@@ -144,7 +144,7 @@ public class UnitInfoController extends BaseController {
                 return -1;
             }
         });
-        JSONArray ja = SysDaoOptUtils.objectsToJSONArray(listObjects);
+        JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
         if(struct){
         	ja = ListOpt.srotAsTreeAndToJSON(ja, 
     				new ListOpt.ParentChild<Object>(){

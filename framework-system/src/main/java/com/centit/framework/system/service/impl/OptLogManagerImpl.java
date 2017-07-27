@@ -1,9 +1,9 @@
 package com.centit.framework.system.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
+import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
-import com.centit.framework.hibernate.dao.SysDaoOptUtils;
 import com.centit.framework.model.adapter.OperationLogWriter;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.system.dao.OptLogDao;
@@ -118,7 +118,7 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
  			
  		}	
     	List<OptLog> rst=optLogDao.pageQuery(QueryParameterPrepare.prepPageParmers(filterMap, pageDesc,optLogDao.pageCount(filterMap)));
-		return  SysDaoOptUtils.objectsToJSONArray(rst);
+		return  DictionaryMapUtils.objectsToJSONArray(rst);
 		
 //		return SysDaoOptUtils.listObjectsBySqlAsJson(sqlSession,"sql",filterMap, fields,
 //    			(Map<String,KeyValuePair<String,String>> )null, pageDesc);
