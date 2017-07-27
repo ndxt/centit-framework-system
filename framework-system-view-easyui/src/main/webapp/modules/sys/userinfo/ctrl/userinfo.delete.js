@@ -18,6 +18,9 @@ define(function(require) {
 				return require('loaders/cache/loader.system').loadAll()
 			}).then(function() {
 				table.datagrid('reload');
+				var layout = $('#userinfo_panel').layout('panel', 'east');
+				layout.panel('setTitle','机构与权限');
+				layout.panel('clear');
             });
 		};
 	});
