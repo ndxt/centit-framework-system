@@ -49,10 +49,8 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
         }
         for (OptLog optLog : optLogs) {
             //if (null == optLog.getLogId()) {
-
             optLog.setLogId( optLogDao.createNewLogId());
             optLogDao.saveNewObject(optLog);
-
             //}
         }
 

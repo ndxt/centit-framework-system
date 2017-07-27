@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>framework-system</artifactId>
-    <name>com.centit.framework:framework-system</name>
+    <artifactId>framework-system-module</artifactId>
+    <name>com.centit.framework:framework-system-module</name>
     <packaging>jar</packaging>
     <description>定义了一组和core兼容的表结构，并用mybatis实现了表的增删改查</description>
 
