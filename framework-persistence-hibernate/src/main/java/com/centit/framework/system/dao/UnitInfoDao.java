@@ -1,23 +1,20 @@
 package com.centit.framework.system.dao;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.hibernate.dao.BaseDaoImpl;
 import com.centit.framework.hibernate.dao.DatabaseOptUtils;
 import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserInfo;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
@@ -146,5 +143,14 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
     	String hql = "from UnitInfo where unitPath like ?";
     	return listObjects(hql,
     		new Object[]{unitPath+"/%"});
+    }
+
+    public List<String> getAllParentUnit(){
+        return (List<String>)DatabaseOptUtils.findObjectsBySql(this, "select distinct t.parentunit from f_unitinfo t ");
+    }
+
+    public int countChildrenSum(String unitCode){
+        return (int)DatabaseOptUtils.getSingleObjectBySql(this,
+                "select count(1) as subunits from F_UNITINFO where PARENTUNIT = ?",  unitCode);
     }
 }

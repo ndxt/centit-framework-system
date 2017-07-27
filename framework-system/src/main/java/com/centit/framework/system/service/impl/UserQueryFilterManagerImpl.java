@@ -3,14 +3,11 @@ package com.centit.framework.system.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
-import com.centit.framework.mybatis.dao.SysDaoOptUtils;
 import com.centit.framework.system.dao.UserQueryFilterDao;
 import com.centit.framework.system.po.UserQueryFilter;
 import com.centit.framework.system.service.UserQueryFilterManager;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.StringBaseOpt;
-import com.centit.support.common.KeyValuePair;
-import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -47,18 +44,16 @@ public class UserQueryFilterManagerImpl implements UserQueryFilterManager{
             String[] fields,
             Map<String, Object> filterMap, PageDesc pageDesc){
 		//TODO 获取SQL SESSION	
-		SqlSession sqlSession = null;
-		return SysDaoOptUtils.listObjectsBySqlAsJson(sqlSession,"sql",filterMap, fields,
-    			(Map<String,KeyValuePair<String,String>> )null, pageDesc);
+//		SqlSession sqlSession = null;
+//		return SysDaoOptUtils.listObjectsBySqlAsJson(sqlSession,"sql",filterMap, fields,
+//    			(Map<String,KeyValuePair<String,String>> )null, pageDesc);
+		return new JSONArray();
 	}
 	
 	@Override
     @Transactional(propagation=Propagation.REQUIRED)
 	public List<UserQueryFilter> listUserQueryFilterByModle(String userCode,String modelCode){
-		Map<String,String> map=new HashMap<String,String>();
-		map.put("userCode", userCode);
-		map.put("modelCode", modelCode);
-		return userQueryFilterDao.listUserQueryFilterByModle(map);
+		return userQueryFilterDao.listUserQueryFilterByModle(userCode, modelCode);
 	}
 	
 	@Override
@@ -74,12 +69,8 @@ public class UserQueryFilterManagerImpl implements UserQueryFilterManager{
 				StringBaseOpt.isNvl(userQueryFilter.getModleCode()))
 			return null;
 		
-		
-		Map<String,String> map=new HashMap<String,String>();
-		map.put("userCode", userQueryFilter.getUserCode());
-		map.put("modelCode", userQueryFilter.getModleCode());
-		
-		List<UserQueryFilter> filters = userQueryFilterDao.listUserDefaultFilterByModle(map);
+		List<UserQueryFilter> filters = userQueryFilterDao.listUserDefaultFilterByModle(userQueryFilter.getUserCode(),
+																						userQueryFilter.getModleCode());
 		if(filters==null || filters.size()<1){
 			userQueryFilter.setFilterNo(getNextFilterKey());
 			userQueryFilter.setIsDefault("T");
@@ -113,7 +104,7 @@ public class UserQueryFilterManagerImpl implements UserQueryFilterManager{
 		Map<String,String> map=new HashMap<String,String>();
 		map.put("userCode", userCode);
 		map.put("modelCode", modelCode);
-		List<UserQueryFilter> filters = userQueryFilterDao.listUserDefaultFilterByModle(map);
+		List<UserQueryFilter> filters = userQueryFilterDao.listUserDefaultFilterByModle(userCode, modelCode);
 		if(filters==null || filters.size()<1)
 			return null;
 		return filters.get(0);

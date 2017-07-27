@@ -40,7 +40,7 @@ public class UserSettingDao extends BaseDaoImpl<UserSetting, UserSettingId> {
     }
     
     @Transactional
-    public List<UserSetting> getUserSettings(String userCode) {
+    public List<UserSetting> getUserSettingsByCode(String userCode) {
         return listObjects("From UserSetting where cid.userCode=?",userCode);
     }
     
@@ -51,10 +51,7 @@ public class UserSettingDao extends BaseDaoImpl<UserSetting, UserSettingId> {
     }
     
     @Transactional
-    public void saveUserSetting(String userCode, String paramCode,String paramValue,
-			String paramClass, String paramName){
-    	UserSetting us = new UserSetting(userCode,  paramCode, paramValue,
-			 paramClass,  paramName);
+    public void saveUserSetting(UserSetting us){
     	super.mergeObject(us);
     }
 }

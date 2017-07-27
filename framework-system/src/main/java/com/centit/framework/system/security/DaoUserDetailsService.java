@@ -1,13 +1,9 @@
 package com.centit.framework.system.security;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import com.centit.framework.security.model.CentitUserDetails;
+import com.centit.framework.security.model.CentitUserDetailsService;
+import com.centit.framework.system.dao.*;
+import com.centit.framework.system.po.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.Authentication;
@@ -18,19 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.centit.framework.security.model.CentitUserDetails;
-import com.centit.framework.security.model.CentitUserDetailsService;
-import com.centit.framework.system.dao.UnitInfoDao;
-import com.centit.framework.system.dao.UserInfoDao;
-import com.centit.framework.system.dao.UserRoleDao;
-import com.centit.framework.system.dao.UserSettingDao;
-import com.centit.framework.system.dao.UserUnitDao;
-import com.centit.framework.system.po.FVUserOptList;
-import com.centit.framework.system.po.FVUserRoles;
-import com.centit.framework.system.po.RoleInfo;
-import com.centit.framework.system.po.UserInfo;
-import com.centit.framework.system.po.UserSetting;
-import com.centit.framework.system.po.UserUnit;
+import javax.annotation.Resource;
+import java.util.*;
 
 @Service("centitUserDetailsService")
 public class DaoUserDetailsService 

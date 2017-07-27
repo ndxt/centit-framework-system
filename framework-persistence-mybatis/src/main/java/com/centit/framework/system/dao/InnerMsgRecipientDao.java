@@ -1,11 +1,11 @@
 package com.centit.framework.system.dao;
 
-import java.util.List;
-import java.util.Map;
-
+import com.centit.framework.system.po.InnerMsgRecipient;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.centit.framework.system.po.InnerMsgRecipient;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface InnerMsgRecipientDao {
@@ -38,10 +38,9 @@ public interface InnerMsgRecipientDao {
         		"or (msgCode in(Select msgCode from InnerMsg where sender= ? and (mailType='I' or mailType='O')) and Receive=? )) order by msgCode desc";
         List l = listObjectsAll(queryString, new Object[]{sender,receiver,receiver,sender});
         String sender, String receiver
-     * @param map Map
      * @return List InnerMsgRecipient
      */
-      List<InnerMsgRecipient> getExchangeMsgs(Map<String, String> map);
+      List<InnerMsgRecipient> getExchangeMsgs(@Param("sender") String sender, @Param("receiver") String receiver);
    
     /**
      *  Object obj= DatabaseOptUtils.getSingleObjectByHql(this, "select count(1)"

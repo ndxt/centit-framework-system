@@ -99,7 +99,7 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
         Map<String, String> map = new HashMap<>();
         map.put("sender", sender);
         map.put("receiver", receiver);
-        return innerMsgRecipientDao.getExchangeMsgs(map);
+        return innerMsgRecipientDao.getExchangeMsgs(sender, receiver);
     }
 
     /*

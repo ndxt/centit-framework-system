@@ -1,12 +1,12 @@
 package com.centit.framework.system.dao;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.stereotype.Repository;
-
 import com.centit.framework.system.po.FVUserOptList;
 import com.centit.framework.system.po.UserInfo;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface UserInfoDao{
@@ -35,13 +35,16 @@ public interface UserInfoDao{
      * 			" AND userCode  " + QueryUtils.buildStringForQuery(user.getUserCode());
      * 
      *  放到impl中去了
-     * @param map map
      * @return int
      */
     //boolean checkIfUserExists(UserInfo user);
     
-	 int checkIfUserExists(Map map);
-	
+	 int isLoginNameExist(@Param("userCode") String userCode, @Param("loginName") String loginName);
+	 int isCellPhoneExist(@Param("userCode") String userCode, @Param("regCellPhone") String regCellPhone);
+	 int isEmailExist(@Param("userCode") String userCode, @Param("regEmail") String regEmail);
+	 int isAnyOneExist(@Param("userCode") String userCode, @Param("loginName") String loginName,
+                       @Param("regCellPhone") String regCellPhone, @Param("regEmail") String regEmail);
+
     //"U"+ DatabaseOptUtils.getNextKeyBySequence(this, "S_USERCODE", 7);
     String getNextKey();
 

@@ -1,21 +1,5 @@
 package com.centit.framework.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.centit.framework.system.dao.OptDataScopeDao;
 import com.centit.framework.system.dao.OptInfoDao;
 import com.centit.framework.system.dao.OptMethodDao;
@@ -24,6 +8,14 @@ import com.centit.framework.system.po.OptDataScope;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.service.OptInfoManager;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
+import java.util.*;
 
 @Service("functionManager")
 public class OptInfoManagerImpl implements OptInfoManager {
@@ -228,19 +220,15 @@ public class OptInfoManagerImpl implements OptInfoManager {
     /**
      * 获取用户数据权限过滤器
      * @param sUserCode sUserCode
-     * @param sOptid 业务名称
+     * @param sOptId 业务名称
      * @param sOptMethod 对应的方法名称
      * @return 过滤条件列表，null或者空位不过来
      */
     @Override
     @Transactional
-    public List<String> listUserDataFiltersByOptIDAndMethod(String sUserCode, String sOptid, String sOptMethod){
+    public List<String> listUserDataFiltersByOptIDAndMethod(String sUserCode, String sOptId, String sOptMethod){
     	
-    	Map<String,String> map=new HashMap<String,String>();
-    	map.put("userCode", sUserCode);
-    	map.put("optid", sOptid);
-    	map.put("optMethod", sOptMethod);
-    	List<String> dataScopes = optInfoDao.listUserDataPowerByOptMethod( map);
+    	List<String> dataScopes = optInfoDao.listUserDataPowerByOptMethod(sUserCode, sOptId, sOptMethod);
     	
     	if(dataScopes==null || dataScopes.size()==0)
     		return null;
@@ -258,9 +246,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
     	if(scopeCodes.size()==0)
     		return null;
     	
-    	Map  temp=new HashMap();
-		temp.put("scopes", scopeCodes);
-    	return dataScopeDao.listDataFiltersByIds(temp);
+    	return dataScopeDao.listDataFiltersByIds(scopeCodes);
     }
 
    
@@ -343,7 +329,8 @@ public class OptInfoManagerImpl implements OptInfoManager {
 //					+ "(Select optId From OptMethod where optCode in"
 //					+ 	" (select id.optCode from RolePower  where id.roleCode=?) )) "
 //				+ "and (optType='S' or optType='O')";
-		return optInfoDao.listObjectsByRoleCode(unitRoleCode );
+//		return optInfoDao.listObjectsByRoleCode(unitRoleCode );//zou_wy
+        return new ArrayList<>();
 	}
 
 	@Override

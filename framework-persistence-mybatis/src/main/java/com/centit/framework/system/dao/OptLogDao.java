@@ -1,11 +1,12 @@
 package com.centit.framework.system.dao;
 
-import java.util.List;
-import java.util.Map;
-
+import com.centit.framework.system.po.OptLog;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.centit.framework.system.po.OptLog;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface OptLogDao{
@@ -26,7 +27,7 @@ public interface OptLogDao{
 
     //"delete from OptLog o where 1=1 ";  "and o.optTime > ?" "and o.optTime < ?";
     //参数 String beginDate, String endDate
-    void delete(Map map );
+    void delete(@Param("beginDate") Date begin, @Param("endDate") Date end);
     
     
     //分页  //startRow  startRow

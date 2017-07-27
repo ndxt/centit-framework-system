@@ -319,7 +319,7 @@
 		<include refid="coreSql" />
 		where ISINTOOLBAR = 'T'
 	</select>
-	<select id="getFunctionsByUserID" parameterType="String" resultMap="OptInfo">
+	<select id="getFunctionsByUserID" parameterType="String" resultType="com.centit.framework.system.po.FVUserOptMoudleList">
 		select
 		OPTID,
 		PREOPTID,
@@ -336,7 +336,7 @@
 		PAGETYPE,
 		ORDERIND
 		from F_V_USEROPTMOUDLELIST
-		where USERCODE=#{userID}
+		where USERCODE=#{userCode}
 	</select>
 	<select id="getMenuFuncByOptUrl" resultMap="OptInfo">
 		select

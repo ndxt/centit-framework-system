@@ -1,21 +1,16 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.core.dao.CodeBook;
+import com.centit.framework.hibernate.dao.BaseDaoImpl;
+import com.centit.framework.hibernate.dao.DatabaseOptUtils;
+import com.centit.framework.system.po.*;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.centit.framework.core.dao.CodeBook;
-import com.centit.framework.hibernate.dao.BaseDaoImpl;
-import com.centit.framework.hibernate.dao.DatabaseOptUtils;
-import com.centit.framework.system.po.FVUserOptList;
-import com.centit.framework.system.po.FVUserOptMoudleList;
-import com.centit.framework.system.po.OptInfo;
-import com.centit.framework.system.po.OptMethod;
-import com.centit.framework.system.po.OptMethodUrlMap;
 
 @Repository
 public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
@@ -72,21 +67,22 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
         return opts;
     }
 
- 
+    @Transactional
+    public List<OptInfo> getMenuFuncByOptUrl(){
+        String hql1 = "FROM OptInfo where optUrl='...' order by orderInd ";
+        List<OptInfo> preOpts = listObjects(hql1);
+        return preOpts;
+    }
 
     @SuppressWarnings("unchecked")
     @Transactional
-    public List<OptInfo> getMenuFuncByUserID(String userID, boolean isAdmin) {
-        String hql1 = "FROM OptInfo where optUrl='...' order by orderInd ";
-        List<OptInfo> preOpts = listObjects(hql1);
+    public List<FVUserOptMoudleList> getMenuFuncByUserID(String userCode, String optType) {
 
-        String hql = "FROM FVUserOptMoudleList where isintoolbar='Y' and userCode=? and optType = " +
-                (isAdmin ? "'S'" : "'O'") + " ORDER BY orderind";
+        String hql = "FROM FVUserOptMoudleList where isintoolbar='Y' and userCode=? and optType = ? ORDER BY orderind";
         // + " ORDER BY preoptid, formcode";
         List<FVUserOptMoudleList> ls = (List<FVUserOptMoudleList>) DatabaseOptUtils.findObjectsByHql
-                (this, hql,new Object[]{userID});
-
-        return getMenuFuncs(preOpts, ls);
+                (this, hql,new Object[]{userCode, optType});
+        return ls;
     }
 
     @SuppressWarnings("unchecked")
@@ -108,89 +104,6 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
      	return scopeCodes;
     }
 
-    private static List<OptInfo> getMenuFuncs(List<OptInfo> preOpts, List<FVUserOptMoudleList> ls) {
-        boolean isNeeds[] = new boolean[preOpts.size()];
-        for (int i = 0; i < preOpts.size(); i++) {
-            isNeeds[i] = false;
-        }
-        List<OptInfo> opts = new ArrayList<OptInfo>();
-
-        for (FVUserOptMoudleList opm : ls) {
-            OptInfo opt = new OptInfo();
-            opt.setFormCode(opm.getFormcode());
-            opt.setImgIndex(opm.getImgindex());
-            opt.setIsInToolbar(opm.getIsintoolbar());
-            opt.setMsgNo(opm.getMsgno());
-            opt.setMsgPrm(opm.getMsgprm());
-            opt.setOptId(opm.getOptid());
-            opt.setOptType(opm.getOpttype());
-            opt.setOptName(opm.getOptname());
-            opt.setOptUrl(opm.getOpturl());
-            opt.setPreOptId(opm.getPreoptid());
-            opt.setTopOptId(opm.getTopoptid());
-            opt.setPageType(opm.getPageType());
-            opt.setOptRoute(opm.getOptRoute());
-
-            opts.add(opt);
-            for (int i = 0; i < preOpts.size(); i++) {
-                if (opt.getPreOptId() != null && opt.getPreOptId().equals(preOpts.get(i).getOptId())) {
-                    isNeeds[i] = true;
-                    break;
-                }
-            }
-        }
-
-        List<OptInfo> needAdd = new ArrayList<OptInfo>();
-        for (int i = 0; i < preOpts.size(); i++) {
-            if (isNeeds[i]) {
-                needAdd.add(preOpts.get(i));
-            }
-        }
-
-        boolean isNeeds2[] = new boolean[preOpts.size()];
-        while (true) {
-            int nestedMenu = 0;
-            for (int i = 0; i < preOpts.size(); i++)
-                isNeeds2[i] = false;
-
-            for (int i = 0; i < needAdd.size(); i++) {
-                for (int j = 0; j < preOpts.size(); j++) {
-                    if (!isNeeds[j] && needAdd.get(i).getPreOptId() != null
-                            && needAdd.get(i).getPreOptId().equals(preOpts.get(j).getOptId())) {
-                        isNeeds[j] = true;
-                        isNeeds2[j] = true;
-                        nestedMenu++;
-                        break;
-                    }
-                }
-            }
-            if (nestedMenu == 0)
-                break;
-
-            needAdd.clear();
-            for (int i = 0; i < preOpts.size(); i++) {
-                if (isNeeds2[i]) {
-                    needAdd.add(preOpts.get(i));
-                }
-            }
-
-        }
-
-        for (int i = 0; i < preOpts.size(); i++) {
-            if (isNeeds[i]) {
-                opts.add(preOpts.get(i));
-            }
-        }
-        return opts;
-       /* // end
-        ListOpt.sortAsTree(opts, new ListOpt.ParentChild<OptInfo>() {
-			@Override
-			public boolean parentAndChild(OptInfo p, OptInfo c) {
-				return p.getOptId().equals(c.getPreOptId());
-			}
-        	
-		});*/
-    }
 
     @SuppressWarnings("unchecked")
     @Transactional
@@ -252,5 +165,13 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
         return (List<OptMethodUrlMap>) listObjects;
     }
 
+    public int countChildrenSum(String optId){
+        return (int)DatabaseOptUtils.getSingleIntByHql(this,
+                "select count(1) as hasChildren from OptInfo where preOptId = ?",optId);
+    }
+
+    public List<OptInfo> listObjectsByCon(String condition){
+        return this.listObjects("From OptInfo where "+condition);
+    }
  
 }

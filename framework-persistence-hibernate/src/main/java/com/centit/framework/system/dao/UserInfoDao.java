@@ -1,15 +1,5 @@
 package com.centit.framework.system.dao;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.common.ObjectException;
 import com.centit.framework.core.dao.CodeBook;
@@ -18,31 +8,40 @@ import com.centit.framework.hibernate.dao.BaseDaoImpl;
 import com.centit.framework.hibernate.dao.DatabaseOptUtils;
 import com.centit.framework.system.po.FVUserOptList;
 import com.centit.framework.system.po.UserInfo;
+import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.database.QueryUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     @Transactional
-    public boolean checkIfUserExists(UserInfo user) {
+    public int checkIfUserExists(String userCode, String loginName) {
         long hasExist = 0l;
         String hql;
 
-        if (StringUtils.isNotBlank(user.getUserCode())) {
-            hql = "SELECT COUNT(*) FROM UserInfo WHERE userCode = " + QueryUtils.buildStringForQuery(user.getUserCode());
+        if (StringUtils.isNotBlank(userCode)) {
+            hql = "SELECT COUNT(*) FROM UserInfo WHERE userCode = " + QueryUtils.buildStringForQuery(userCode);
             hasExist = DatabaseOptUtils.getSingleIntByHql(this, hql);
         }
 
-        hql = "SELECT COUNT(*) FROM UserInfo WHERE loginName = " + QueryUtils.buildStringForQuery(user.getLoginName());
+        hql = "SELECT COUNT(*) FROM UserInfo WHERE loginName = " + QueryUtils.buildStringForQuery(loginName);
 
-        if (StringUtils.isNotBlank(user.getUserCode())) {
-            hql += " AND userCode <> " + QueryUtils.buildStringForQuery(user.getUserCode());
+        if (StringUtils.isNotBlank(userCode)) {
+            hql += " AND userCode <> " + QueryUtils.buildStringForQuery(userCode);
         }
         long size = DatabaseOptUtils.getSingleIntByHql(this, hql);
         if (size >= 1) {
-            throw new ObjectException("登录名：" + user.getLoginName() + " 已存在!!!");
+            throw new ObjectException("登录名：" + loginName + " 已存在!!!");
         }
 
-        return hasExist > 0L;
+        return (int)hasExist;
     }
 
     public Map<String, String> getFilterField() {
@@ -209,5 +208,46 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
         }
         
         return listObjects( hql.toString(),params);
+    }
+
+    public void restPwd(UserInfo user){
+        saveObject(user);
+    }
+
+    public int isLoginNameExist(String userCode, String loginName){
+        String sql = "select count(*) as usersCount from F_USERINFO t " +
+                "where t.USERCODE <> ? and t.LOGINNAME = ?";
+        Object obj  = DatabaseOptUtils.getSingleObjectBySql(this, sql,
+                new Object[]{userCode, loginName} );
+        Integer uc = NumberBaseOpt.castObjectToInteger(obj);
+        return uc;
+    }
+    public int isCellPhoneExist(String userCode, String loginName){
+        String sql = "select count(*) as usersCount from F_USERINFO t " +
+                "where t.USERCODE <> ? and t.REGCELLPHONE = ?";
+        Object obj  = DatabaseOptUtils.getSingleObjectBySql(this, sql,
+                new Object[]{userCode, loginName} );
+        Integer uc = NumberBaseOpt.castObjectToInteger(obj);
+        return uc;
+    }
+    public int isEmailExist(String userCode, String loginName){
+        String sql = "select count(*) as usersCount from F_USERINFO t " +
+                "where t.USERCODE <> ? and t.REGEMAIL = ?";
+        Object obj  = DatabaseOptUtils.getSingleObjectBySql(this, sql,
+                new Object[]{userCode, loginName} );
+        Integer uc = NumberBaseOpt.castObjectToInteger(obj);
+        return uc;
+    }
+
+    public int isAnyOneExist(String userCode, String loginName,String regPhone,String regEmail) {
+        String sql = "select count(*) as usersCount from F_USERINFO t " +
+                "where t.USERCODE != ? and " +
+                "(t.LOGINNAME = ? or t.REGCELLPHONE= ? or t.REGEMAIL = ?)";
+        Object obj = DatabaseOptUtils.getSingleObjectBySql(this, sql,
+                new Object[]{StringUtils.isBlank(userCode) ? "null" : userCode,
+                        StringUtils.isBlank(loginName) ? "null" : loginName,
+                        StringUtils.isBlank(regPhone) ? "null" : regPhone,
+                        StringUtils.isBlank(regEmail) ? "null" : regEmail});
+        return NumberBaseOpt.castObjectToInteger(obj);
     }
 }

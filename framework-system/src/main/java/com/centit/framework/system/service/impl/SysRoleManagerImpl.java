@@ -29,8 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service("sysRoleManager")
-public class SysRoleManagerImpl implements SysRoleManager
-   {
+public class SysRoleManagerImpl implements SysRoleManager {
 
 	public static Logger logger = LoggerFactory.getLogger(SysRoleManagerImpl.class);
 	 

@@ -1,13 +1,12 @@
 package com.centit.framework.system.dao;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.stereotype.Repository;
-
 import com.centit.framework.system.po.FVUserRoles;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface UserRoleDao{
@@ -48,12 +47,6 @@ public interface UserRoleDao{
      * @return List FVUserRoles
      */
      List<FVUserRoles> getSysRolesByUserId(String usid);
-    
-    
-    
-    
-    
-    
     
     /**
      *  "FROM UserRole ur where ur.id.userCode = ? and ur.id.roleCode like ?"

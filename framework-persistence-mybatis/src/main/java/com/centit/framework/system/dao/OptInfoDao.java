@@ -1,15 +1,14 @@
 package com.centit.framework.system.dao;
 
-import java.util.List;
-import java.util.Map;
-
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
-
 import com.centit.framework.system.po.FVUserOptMoudleList;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.po.OptMethodUrlMap;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface OptInfoDao{
@@ -50,21 +49,16 @@ public interface OptInfoDao{
     //"FROM FVUserOptMoudleList where isintoolbar='Y' and userCode=? and optType = " +
     //(isAdmin ? "'S'" : "'O'") + " ORDER BY orderind";
     //return getMenuFuncs(preOpts, ls);
-    // List<OptInfo> getMenuFuncByUserID(String userID, boolean isAdmin);
+     List<FVUserOptMoudleList> getMenuFuncByUserID(@Param("userCode") String userCode, @Param("optType") String optType);
     
      List<OptInfo> getMenuFuncByOptUrl();
     
-     List<FVUserOptMoudleList> getMenuFuncByUserID(Map map);
+//     List<FVUserOptMoudleList> getMenuFuncByUserID(Map map);
 
-    /**
-     * "select optScopeCodes " +
-                 "from F_V_UserOptDataScopes " +
-                 "where UserCode = ? and OPTID = ? and OPTMETHOD = ?";
-     * @param map map
-     * 参数 String userCode,String optid,String optMethod
-     * @return     List
-     */
-     List<String> listUserDataPowerByOptMethod(Map map);
+
+     List<String> listUserDataPowerByOptMethod(@Param("userCode") String userCode,
+                                               @Param("optId") String optid,
+                                               @Param("optMethod") String optMethod);//zou_wy
 
     //"FROM FVUserOptMoudleList  where userCode=? and topoptid=?" + " ORDER BY preoptid, orderind";
     //参数  String userID, String superFunctionId

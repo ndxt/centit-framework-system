@@ -39,10 +39,7 @@ public  class GeneralServiceImpl implements GeneralService {
 		if (StringBaseOpt.isNvl(userCode) || StringBaseOpt.isNvl(modelCode))
 			return null;
 		
-		Map<String,String> map=new HashMap<String,String>();
-		map.put("userCode", userCode);
-		map.put("modelCode", modelCode);
-		List<UserQueryFilter> filters = userQueryFilterDao.listUserDefaultFilterByModle(map);
+		List<UserQueryFilter> filters = userQueryFilterDao.listUserDefaultFilterByModle(userCode, modelCode);
 		UserQueryFilter userQueryFilter=null;
 		if(filters!=null&&filters.size()>0)
 		{
@@ -62,21 +59,15 @@ public  class GeneralServiceImpl implements GeneralService {
 	 * 获取用户数据权限过滤器
 	 * 
 	 * @param sUserCode sUserCode
-	 * @param sOptid 业务名称
+	 * @param sOptId 业务名称
 	 * @param sOptMethod 对应的方法名称
 	 * @return 过滤条件列表，null或者空位不过来
 	 */
 	@Override
 	@Transactional
-	public List<String> listUserDataFiltersByOptIDAndMethod(String sUserCode,
-			String sOptid, String sOptMethod) {
+	public List<String> listUserDataFiltersByOptIDAndMethod(String sUserCode, String sOptId, String sOptMethod) {
 
-		Map<String,String> map=new HashMap<String,String>();
-    	map.put("userCode", sUserCode);
-    	map.put("optid", sOptid);
-    	map.put("optMethod", sOptMethod);
-    	
-		List<String> dataScopes = optInfoDao.listUserDataPowerByOptMethod(map);
+		List<String> dataScopes = optInfoDao.listUserDataPowerByOptMethod(sUserCode, sOptId, sOptMethod);
 		if (dataScopes == null || dataScopes.size() == 0)
 			return null;
 
@@ -95,7 +86,7 @@ public  class GeneralServiceImpl implements GeneralService {
 			return null;
 		Map  temp=new HashMap();
 		temp.put("scopes", scopeCodes);
-		return dataScopeDao.listDataFiltersByIds(temp);
+		return dataScopeDao.listDataFiltersByIds(scopeCodes);
 	}
 	/**
 	 * 创建用户数据范围过滤器

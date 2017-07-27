@@ -1,11 +1,11 @@
 package com.centit.framework.system.dao;
 
-import java.util.List;
-import java.util.Map;
-
+import com.centit.framework.system.po.UserQueryFilter;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.centit.framework.system.po.UserQueryFilter;
+import java.util.List;
+import java.util.Map;
 
 
 
@@ -19,26 +19,28 @@ import com.centit.framework.system.po.UserQueryFilter;
 @Repository
 public interface UserQueryFilterDao{
 	
-	public void deleteObject(UserQueryFilter userQueryFilter);
+	void deleteObject(UserQueryFilter userQueryFilter);
 	
-	public void mergeObject(UserQueryFilter userQueryFilter);
+	void mergeObject(UserQueryFilter userQueryFilter);
 	
-	public Long saveNewObject(UserQueryFilter userQueryFilter);
+	Long saveNewObject(UserQueryFilter userQueryFilter);
 	
 	
-    public int  pageCount(Map<String, Object> filterDescMap);
-    public List<UserQueryFilter>  pageQuery(Map<String, Object> pageQureyMap);
+    int  pageCount(Map<String, Object> filterDescMap);
+    List<UserQueryFilter>  pageQuery(Map<String, Object> pageQureyMap);
 	
-	public UserQueryFilter getObjectById(Long filterNo);
+	UserQueryFilter getObjectById(Long filterNo);
 	//"From UserQueryFilter where userCode = ? and modleCode = ? "
 			//+ "order by isDefault desc , createDate desc"
 	// 参数 String userCode,String modelCode
-	public List<UserQueryFilter> listUserQueryFilterByModle(Map map);
+	List<UserQueryFilter> listUserQueryFilterByModle(@Param("userCode") String userCode,
+													 @Param("modelCode") String modelCode);
 	
 	//super.listObjectsAll("From UserQueryFilter where userCode = ? and modleCode = ? "
 		//+ "and isDefault = 'T' order by isDefault desc , createDate desc",
 	//参数 String userCode,String modelCode
-	public List<UserQueryFilter> listUserDefaultFilterByModle(Map map);
+	List<UserQueryFilter> listUserDefaultFilterByModle(@Param("userCode") String userCode,
+															  @Param("modelCode") String modelCode);
 	
 	//= super.listObjectsAll("From UserQueryFilter where userCode = ? and modleCode = ? "
 		//+ "and isDefault = 'T' order by isDefault desc , createDate desc",
@@ -46,5 +48,5 @@ public interface UserQueryFilterDao{
 	//public UserQueryFilter getUserDefaultFilterByModle(String userCode,String modelCode);
 	
 	// DatabaseOptUtils.getNextLongSequence(this, "S_FILTER_NO");
-    public Long getNextKey();
+    Long getNextKey();
 }

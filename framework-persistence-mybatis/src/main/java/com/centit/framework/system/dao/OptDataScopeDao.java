@@ -1,35 +1,34 @@
 package com.centit.framework.system.dao;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
+import com.centit.framework.system.po.OptDataScope;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.centit.framework.system.po.OptDataScope;
+import java.util.Collection;
+import java.util.List;
 
 @Repository
 public interface OptDataScopeDao {
 
-	public void mergeObject(OptDataScope optDataScope);
+	void mergeObject(OptDataScope optDataScope);
 	
-	public void deleteObject(OptDataScope optDataScope);
+	void deleteObject(OptDataScope optDataScope);
 	
     //return listObjectsAll("FROM OptDataScope WHERE optId =?", sOptID);
-    public List<OptDataScope> getDataScopeByOptID(String sOptID) ;
+    List<OptDataScope> getDataScopeByOptID(String sOptID) ;
 
     //"SELECT count(optScopeCode) FROM OptDataScope WHERE optId = ?", sOptID)));
-    public int getOptDataScopeSumByOptID(String sOptID);
+    int getOptDataScopeSumByOptID(String sOptID);
 
 
     //"DELETE FROM OptDataScope WHERE optId = ?", sOptID);
-    public void deleteDataScopeOfOptID(String sOptID) ;
+    void deleteDataScopeOfOptID(String sOptID) ;
 
   
     //return DatabaseOptUtils.getNextValueOfSequence(this, "S_OPTDEFCODE");
-    public String getNextOptCode();
+    String getNextOptCode();
 
     
    	// listObjectsAll("FROM OptDataScope WHERE optId in ?", scopeCodes)
-    public List<String> listDataFiltersByIds(Map  map);
+    List<String> listDataFiltersByIds(@Param("scopeCodes") Collection<String> scopeCodes);//zou_wy
 }

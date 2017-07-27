@@ -45,11 +45,11 @@ public class SysUserUnitManagerImpl
     @Override
     @Transactional(readOnly = true)
     public List<UserUnit> listObjectByUserUnit(String userCode,String unitCode){
-    	Map<String,String>map=new HashMap<String,String>();
+    	Map<String,String>map=new HashMap<>();
     	map.put("userCode", userCode);
     	map.put("unitCode", unitCode);
     	
-    	List<UserUnit> userUnits = userUnitDao.listObjectByUserUnit(map);
+    	List<UserUnit> userUnits = userUnitDao.listObjectByUserUnit(userCode, unitCode);
         if(userUnits!=null){
             for (UserUnit uu : userUnits) {
                 if (null == uu) {

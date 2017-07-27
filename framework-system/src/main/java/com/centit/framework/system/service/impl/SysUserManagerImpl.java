@@ -66,12 +66,9 @@ public class SysUserManagerImpl implements SysUserManager {
         roles.add(new RoleInfo("G-public", "general public","G",
         		"G","T", "general public")); 
         List<FVUserRoles> ls = userRoleDao.getSysRolesByUserId(userCode);
-        if(ls!=null)
-        {
-       	 
-       	 for (FVUserRoles l : ls) {
+        if(ls!=null){
+            for (FVUserRoles l : ls) {
                 RoleInfo roleInfo = new RoleInfo();
-
                 BeanUtils.copyProperties(l, roleInfo);
                 roles.add(roleInfo);
             }
@@ -175,35 +172,20 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @Transactional
     public boolean isLoginNameExist(String userCode, String loginName){
-        Map<String,String> map =new HashMap<String,String>();
-        map.put("userCode", StringUtils.isBlank(userCode)?"null":userCode);
-        map.put("loginName", StringUtils.isBlank(loginName)?"null":loginName);
-        map.put("regCellPhone", "null");
-        map.put("regEmail", "null");
-        return userInfoDao.checkIfUserExists(map) > 0;
+        return userInfoDao.isLoginNameExist(userCode, loginName) > 0;
     }
 
     @Override
     @Transactional
     public boolean isCellPhoneExist(String userCode, String regPhone){
-        Map<String,String> map =new HashMap<String,String>();
-        map.put("userCode", StringUtils.isBlank(userCode)?"null":userCode);
-        map.put("loginName", "null");
-        map.put("regCellPhone", StringUtils.isBlank(regPhone)?"null":regPhone);
-        map.put("regEmail", "null");
 
-        return userInfoDao.checkIfUserExists(map) > 0;
+        return userInfoDao.isCellPhoneExist(userCode, regPhone) > 0;
     }
     @Override
     @Transactional
     public boolean isEmailExist(String userCode, String regEmail){
-        Map<String,String> map =new HashMap<String,String>();
-        map.put("userCode", StringUtils.isBlank(userCode)?"null":userCode);
-        map.put("loginName",  "null");
-        map.put("regCellPhone", "null");
-        map.put("regEmail", StringUtils.isBlank(regEmail)?"null":regEmail);
 
-        return userInfoDao.checkIfUserExists(map) > 0;
+        return userInfoDao.isEmailExist(userCode, regEmail) > 0;
     }
     @Override
     @Transactional
@@ -214,7 +196,7 @@ public class SysUserManagerImpl implements SysUserManager {
         map.put("regCellPhone", StringUtils.isBlank(regPhone)?"null":regPhone);
         map.put("regEmail", StringUtils.isBlank(regEmail)?"null":regEmail);
 
-        return userInfoDao.checkIfUserExists(map) > 0;
+        return userInfoDao.isAnyOneExist(userCode, loginName, regPhone, regEmail) > 0;
     }
 
     @Override

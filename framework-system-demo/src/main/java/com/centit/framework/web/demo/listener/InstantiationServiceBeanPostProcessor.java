@@ -17,10 +17,10 @@ public class InstantiationServiceBeanPostProcessor implements ApplicationListene
     @Autowired
     protected NotificationCenter notificationCenter;
 
-    @Autowired
+    @Autowired(required = false)
     private OperationLogWriter optLogManager;
 
-    @Autowired
+    @Autowired(required = false)
     private MessageSender innerMessageManager;
 
 

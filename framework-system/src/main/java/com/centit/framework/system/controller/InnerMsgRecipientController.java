@@ -1,35 +1,33 @@
 package com.centit.framework.system.controller;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
+import com.centit.framework.common.WebOptUtils;
+import com.centit.framework.components.CodeRepositoryUtil;
+import com.centit.framework.components.OperationLogCenter;
+import com.centit.framework.core.common.JsonResultUtils;
+import com.centit.framework.core.common.ResponseData;
+import com.centit.framework.core.controller.BaseController;
+import com.centit.framework.core.dao.PageDesc;
+import com.centit.framework.hibernate.dao.SysDaoOptUtils;
+import com.centit.framework.model.basedata.OperationLog;
+import com.centit.framework.system.po.InnerMsg;
+import com.centit.framework.system.po.InnerMsgRecipient;
+import com.centit.framework.system.service.InnerMsgManager;
+import com.centit.framework.system.service.InnerMsgRecipientManager;
+import com.centit.support.json.JsonPropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.centit.framework.components.CodeRepositoryUtil;
-import com.centit.framework.components.OperationLogCenter;
-import com.centit.framework.core.common.JsonResultUtils;
-import com.centit.framework.core.common.ResponseData;
-import com.centit.framework.common.WebOptUtils;
-import com.centit.framework.core.controller.BaseController;
-import com.centit.framework.core.dao.PageDesc;
-import com.centit.framework.model.basedata.OperationLog;
-import com.centit.framework.mybatis.dao.SysDaoOptUtils;
-import com.centit.framework.system.po.InnerMsg;
-import com.centit.framework.system.po.InnerMsgRecipient;
-import com.centit.framework.system.service.InnerMsgManager;
-import com.centit.framework.system.service.InnerMsgRecipientManager;
-import com.centit.support.json.JsonPropertyUtils;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/innermsgrecipient")
@@ -71,7 +69,7 @@ public class InnerMsgRecipientController extends BaseController {
         else
             listObjects = innerMsgRecipientManager.listObjects(searchColumn,pageDesc);
         ResponseData resData = new ResponseData();
-        resData.addResponseData(OBJLIST,SysDaoOptUtils.objectsToJSONArray(listObjects));
+        resData.addResponseData(OBJLIST, SysDaoOptUtils.objectsToJSONArray(listObjects));
         resData.addResponseData(PAGE_DESC, pageDesc);
         JsonResultUtils.writeResponseDataAsJson(resData, response, JsonPropertyUtils.getIncludePropPreFilter(InnerMsgRecipient.class, field));
     }

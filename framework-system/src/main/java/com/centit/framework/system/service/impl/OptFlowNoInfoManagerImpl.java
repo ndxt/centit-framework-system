@@ -203,7 +203,7 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
     	map.put("codeCode", codeCode);
     	map.put("codeBaseDate", String.valueOf(codeBaseDate));
     
-         long minPoolNo = optFlowNoPoolDao.fetchFirstLsh(map);
+         long minPoolNo = optFlowNoPoolDao.fetchFirstLsh(ownerCode, codeCode, codeBaseDate);
         if (minPoolNo > 0) {
             OptFlowNoPoolId obj = new OptFlowNoPoolId();
             obj.setOwnerCode(ownerCode);

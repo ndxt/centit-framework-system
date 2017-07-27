@@ -1,21 +1,18 @@
 package com.centit.framework.system.service.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.system.dao.UserSettingDao;
 import com.centit.framework.system.po.UserSetting;
 import com.centit.framework.system.po.UserSettingId;
 import com.centit.framework.system.service.UserSettingManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserSettingManagerImpl implements UserSettingManager {
@@ -32,10 +29,7 @@ public class UserSettingManagerImpl implements UserSettingManager {
     
     @Override
     public List<UserSetting> getUserSettings(String userCode,String optID) {
-    	Map<String,String> map=new HashMap<String,String>();
-		map.put("userCode", userCode);
-		map.put("optID", optID);
-        return userSettingDao.getUserSettings(map);
+        return userSettingDao.getUserSettings(userCode, optID);
     }
  
     @Override

@@ -3,12 +3,9 @@ package com.centit.framework.system.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
-import com.centit.framework.mybatis.dao.SysDaoOptUtils;
 import com.centit.framework.system.dao.QueryFilterConditionDao;
 import com.centit.framework.system.po.QueryFilterCondition;
 import com.centit.framework.system.service.QueryFilterConditionManager;
-import com.centit.support.common.KeyValuePair;
-import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -49,9 +46,10 @@ public class QueryFilterConditionManagerImpl implements QueryFilterConditionMana
             String[] fields,
             Map<String, Object> filterMap, PageDesc pageDesc){
 		//TODO 获取SQL SESSION	
-		SqlSession sqlSession = null;
-		return SysDaoOptUtils.listObjectsBySqlAsJson(sqlSession,"sql",filterMap, fields,
-    			(Map<String,KeyValuePair<String,String>> )null, pageDesc);
+//		SqlSession sqlSession = null;
+//		return SysDaoOptUtils.listObjectsBySqlAsJson(sqlSession,"sql",filterMap, fields,
+//    			(Map<String,KeyValuePair<String,String>> )null, pageDesc);//zou_wy
+		return new JSONArray();
 	}	
 
 	

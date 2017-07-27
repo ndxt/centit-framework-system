@@ -64,7 +64,7 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
     	Map <String,String>map =new HashMap<String,String>();
     	map.put("beginDate", String.valueOf(begin));
     	map.put("endDate", String.valueOf(end));
-    	optLogDao.delete(map);
+    	optLogDao.delete(begin, end);
     }
 
     @Override

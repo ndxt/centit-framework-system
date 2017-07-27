@@ -4,15 +4,16 @@ import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.hibernate.dao.BaseDaoImpl;
 import com.centit.framework.hibernate.dao.DatabaseOptUtils;
 import com.centit.framework.system.po.FVUserRoles;
-import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
@@ -53,24 +54,12 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
 
     @SuppressWarnings("unchecked")
     @Transactional
-    public List<RoleInfo> getSysRolesByUserId(String usid) {
+    public List<FVUserRoles> getSysRolesByUserId(String userCode) {
  
-        List<RoleInfo> roleInfos = new ArrayList<>();
-        //所有的用户 都要添加这个角色
-        roleInfos.add(new RoleInfo("G-public", "general public","G",
-        		"G","T", "general public"));        
         final String sSqlsen = "from FVUserRoles v where userCode = ?";
         List<FVUserRoles> ls = (List<FVUserRoles>) DatabaseOptUtils.findObjectsByHql(
-                this, sSqlsen, new Object[]{usid});
-        if(ls==null)
-        	return roleInfos;        
-        for (FVUserRoles l : ls) {
-            RoleInfo roleInfo = new RoleInfo();
-
-            BeanUtils.copyProperties(l, roleInfo);
-            roleInfos.add(roleInfo);
-        }
-        return roleInfos;
+                this, sSqlsen, new Object[]{userCode});
+        return ls;
     }
     @Transactional
     public List<UserRole> getUserRolesByUserId(String usid, String rolePrefix) {

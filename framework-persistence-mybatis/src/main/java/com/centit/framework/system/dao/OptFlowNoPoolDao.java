@@ -1,12 +1,13 @@
 package com.centit.framework.system.dao;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.stereotype.Repository;
-
 import com.centit.framework.system.po.OptFlowNoPool;
 import com.centit.framework.system.po.OptFlowNoPoolId;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface OptFlowNoPoolDao {
@@ -30,8 +31,9 @@ public interface OptFlowNoPoolDao {
                 " and CodeDate = to_date(" + QueryUtils.buildStringForQuery(
                 DatetimeOpt.convertDatetimeToString(codeBaseDate))
                 + ",'YYYY-MM-DD HH:MI:SS')");
-     * @param map Map
      * @return long
      */
-     long fetchFirstLsh(Map map);
+     long fetchFirstLsh(@Param("ownerCode") String ownerCode,
+                        @Param("codeCode") String codeCode,
+                        @Param("codeBaseDate") Date codeBaseDate);
 }

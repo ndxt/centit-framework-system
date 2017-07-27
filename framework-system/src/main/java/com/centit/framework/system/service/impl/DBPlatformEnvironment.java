@@ -1,19 +1,18 @@
 package com.centit.framework.system.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
-
+import com.centit.framework.common.SysParametersUtils;
+import com.centit.framework.components.CodeRepositoryUtil;
+import com.centit.framework.model.adapter.PlatformEnvironment;
+import com.centit.framework.model.basedata.IDataDictionary;
+import com.centit.framework.model.basedata.IUnitInfo;
+import com.centit.framework.model.basedata.IUserInfo;
 import com.centit.framework.security.model.CentitPasswordEncoder;
 import com.centit.framework.security.model.CentitSecurityMetadata;
 import com.centit.framework.security.model.OptTreeNode;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
+import com.centit.framework.system.security.CentitUserDetailsImpl;
+import com.centit.support.algorithm.StringRegularOpt;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.Cacheable;
@@ -22,14 +21,9 @@ import org.springframework.security.access.SecurityConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.centit.framework.common.SysParametersUtils;
-import com.centit.framework.components.CodeRepositoryUtil;
-import com.centit.framework.model.adapter.PlatformEnvironment;
-import com.centit.framework.model.basedata.IDataDictionary;
-import com.centit.framework.model.basedata.IUnitInfo;
-import com.centit.framework.model.basedata.IUserInfo;
-import com.centit.framework.system.security.CentitUserDetailsImpl;
-import com.centit.support.algorithm.StringRegularOpt;
+import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
+import java.util.*;
 
 @Service("platformEnvironment")
 public class DBPlatformEnvironment implements PlatformEnvironment {
@@ -174,31 +168,22 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 	@Override
 	@Transactional(readOnly = true)
 	public List<OptInfo> listUserMenuOptInfos(String userCode, boolean asAdmin) {
-	   // optInfoDao.getMenuFuncByUserID(userCode, asAdmin);
-	    
-//	    List<OptInfo> preOpts=optInfoDao.getMenuFuncByOptUrl();
-	    List<OptInfo> preOpts=optInfoDao.getMenuFuncByUserID(userCode, asAdmin);
-	    Map map=new HashMap();
-	    map.put("userCode", userCode);
-	    map.put("optType", asAdmin ? "S" : "O");
-	    List<FVUserOptMoudleList> ls=optInfoDao.getMenuFuncByUserID(map);
-	    List<OptInfo> menuFunsByUser = getMenuFuncs( preOpts,  ls);
-	    
+
+	    List<OptInfo> preOpts=optInfoDao.getMenuFuncByOptUrl();
+		String optType = asAdmin ? "S" : "O";
+	    List<FVUserOptMoudleList> ls=optInfoDao.getMenuFuncByUserID(userCode, optType);
+	    List<OptInfo> menuFunsByUser = getMenuFuncs(preOpts,  ls);
 	    return formatMenuTree(menuFunsByUser,null);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<OptInfo> listUserMenuOptInfosUnderSuperOptId(String userCode, String superOptId,
-			boolean asAdmin) {
-		//List<OptInfo> menuFunsByUser = optInfoDao.getMenuFuncByUserID(userCode, asAdmin);   
-		 List<OptInfo> preOpts=optInfoDao.getMenuFuncByOptUrl();
-	    Map map=new HashMap();
-	    map.put("userCode", userCode);
-	    map.put("optType", asAdmin ? "S" : "O");
-	    List<FVUserOptMoudleList> ls=optInfoDao.getMenuFuncByUserID(map);
-	    List<OptInfo> menuFunsByUser = getMenuFuncs( preOpts,  ls);
-        return formatMenuTree(menuFunsByUser,superOptId);
+	public List<OptInfo> listUserMenuOptInfosUnderSuperOptId(String userCode, String superOptId,boolean asAdmin) {
+		List<OptInfo> preOpts=optInfoDao.getMenuFuncByOptUrl();
+		String optType = asAdmin ? "S" : "O";
+		List<FVUserOptMoudleList> ls=optInfoDao.getMenuFuncByUserID(userCode, optType);
+		List<OptInfo> menuFunsByUser = getMenuFuncs(preOpts,  ls);
+		return formatMenuTree(menuFunsByUser,superOptId);
 	}
 
 	@Override
@@ -438,18 +423,17 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     	 CentitUserDetailsImpl sysuser = new CentitUserDetailsImpl();
          sysuser.copy(userinfo);
          //sysuser.setSysusrodao(userRoleDao);
-         
-         
+
+
          //List<RoleInfo> roles = userRoleDao.getSysRolesByUserId(sysuser.getUserCode());
          //edit by zhuxw  代码从原框架迁移过来，可和其它地方合并
          List<RoleInfo> roles = new ArrayList<>();
          //所有的用户 都要添加这个角色
          roles.add(new RoleInfo("G-public", "general public","G",
-         		"G","T", "general public")); 
+         		"G","T", "general public"));
          List<FVUserRoles> ls = userRoleDao.getSysRolesByUserId(sysuser.getUserCode());
-         if(ls!=null)
-         {
-        	 
+         if(ls!=null) {
+
         	 for (FVUserRoles l : ls) {
                  RoleInfo roleInfo = new RoleInfo();
 
@@ -457,12 +441,12 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                  roles.add(roleInfo);
              }
          }
-        //add  end 
-         
-         
-         
-         
-         
+        //add  end
+
+
+
+
+
          List<UserUnit> usun = userUnitDao.listUserUnitsByUserCode(sysuser.getUserCode());
          sysuser.setUserUnits(usun);
 
@@ -471,7 +455,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
              sysuser.setIsValid("F");
              return sysuser;
          }
-         
+
          sysuser.setAuthoritiesByRoles(roles);
 
          List<FVUserOptList> uoptlist = sysuserdao.getAllOptMethodByUser(sysuser.getUserCode());
@@ -485,7 +469,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
          // ServletActionContext.getRequest().getSession().setAttribute("userOptList",
          // userOptList);
          sysuser.setUserOptList(userOptList);
-         
+
          List<UserSetting> uss =userSettingDao.getUserSettingsByCode(sysuser.getUserCode());
          if(uss!=null){
              for(UserSetting us :uss)
