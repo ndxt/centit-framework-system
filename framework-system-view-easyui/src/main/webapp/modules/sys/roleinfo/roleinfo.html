@@ -25,7 +25,7 @@
 					<input type="text" class="easyui-datebox" name="s_createDateEnd" validType="compare['#roleinfoform #s_createDateBeg']"/>
 				</div>
 				<a class="easyui-linkbutton btn-search" iconCls="icon-search"><p  id="d@btn.search">搜索</p></a>
-				<a class="easyui-linkbutton" style="margin-top:8px;" iconcls="icon-reload" onclick="javascript:$('.clearFromValue').form('clear');$('.defaultChecked').prop('checked','true');" group="" id="">
+				<a class="easyui-linkbutton" style="margin-top:8px;" iconcls="icon-reload" onclick="javascript:$('#roleinfoform').form('clear');$('.defaultChecked').prop('checked','true');" group="" id="">
 					<p>重置</p>
 				</a>
 			</form>
@@ -74,7 +74,7 @@
 		<hr>
 	<a iconCls="icon-base icon-base-ban" trigger="single"
 		target="confirm" rel="roleinfo_remove"  title="确定删除 {{roleName}}角色吗？">
-		<p  id="d@link.authorityOpt">删除</p></a>
+		<p>删除</p></a>
 </div>
 
 <script>
