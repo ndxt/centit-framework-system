@@ -39,7 +39,7 @@
 		<if test="NP_userRoleType != null  and NP_userRoleType != '' ">
 			 and u.ROLECODE not in (select ROLECODE from F_ROLEINFO where UNITCODE is not null)
 		</if>
-		<if test="USERCODE_ISVALID != null  and USERCODE_ISVALID != '' ">
+		<if test="userCode_isValid != null  and userCode_isValid != '' ">
 			 and u.USERCODE in (select USERCODE from F_ROLEINFO where ISVALID =#{USERCODE_ISVALID})
 		</if>
 	</sql>

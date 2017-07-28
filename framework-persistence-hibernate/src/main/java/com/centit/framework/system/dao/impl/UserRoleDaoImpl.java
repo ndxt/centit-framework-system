@@ -32,7 +32,7 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
             filterField.put("NP_unitRoleType", "roleCode in (select roleCode from RoleInfo where unitCode is not null)");
             filterField.put("NP_userRoleType", "roleCode not in (select roleCode from RoleInfo where unitCode is not null)");
 
-            filterField.put("USERCODE_ISVALID", "userCode in (select userCode from UserInfo where isValid = :USERCODE_ISVALID)");
+            filterField.put("userCode_isValid", "userCode in (select userCode from UserInfo where isValid = :userCode_isValid)");
             
             filterField.put(CodeBook.ORDER_BY_HQL_ID, " id.userCode ");
 

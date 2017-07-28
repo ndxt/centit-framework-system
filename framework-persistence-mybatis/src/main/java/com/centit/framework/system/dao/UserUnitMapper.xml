@@ -21,7 +21,7 @@
 
 	<!-- 查询条件 -->
 	<sql id="condition">
-		<if test="USERCODE_ISVALID != null  and USERCODE_ISVALID != '' ">
+		<if test="userCode_isValid != null  and userCode_isValid != '' ">
 			  and u.USERCODE in (select USERCODE from F_USERINFO where ISVALID =#{USERCODE_ISVALID})
 		</if>
 		<if test="unitCode != null  and unitCode != '' ">
