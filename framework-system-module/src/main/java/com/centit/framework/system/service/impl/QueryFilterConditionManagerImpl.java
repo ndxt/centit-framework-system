@@ -1,6 +1,7 @@
 package com.centit.framework.system.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
+import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.QueryFilterConditionDao;
@@ -45,11 +46,10 @@ public class QueryFilterConditionManagerImpl implements QueryFilterConditionMana
 	public JSONArray listQueryFilterConditionsAsJson(
             String[] fields,
             Map<String, Object> filterMap, PageDesc pageDesc){
-		//TODO 获取SQL SESSION	
-//		SqlSession sqlSession = null;
-//		return SysDaoOptUtils.listObjectsBySqlAsJson(sqlSession,"sql",filterMap, fields,
-//    			(Map<String,KeyValuePair<String,String>> )null, pageDesc);//zou_wy
-		return new JSONArray();
+
+		return DictionaryMapUtils.objectsToJSONArray(
+				listObjects(filterMap,pageDesc), fields);
+
 	}	
 
 	
@@ -57,7 +57,9 @@ public class QueryFilterConditionManagerImpl implements QueryFilterConditionMana
 	@Override
 	@Transactional
 	public List<QueryFilterCondition> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-		return queryFilterConditionDao.pageQuery(QueryParameterPrepare.prepPageParmers(filterMap,pageDesc,queryFilterConditionDao.pageCount(filterMap)));
+		return queryFilterConditionDao.pageQuery(
+				QueryParameterPrepare.prepPageParmers(filterMap,pageDesc,
+						queryFilterConditionDao.pageCount(filterMap)));
 	}
 	
 	

@@ -31,16 +31,6 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
     protected OptLogDao optLogDao;
 
 
-//    @PostConstruct
-//    public void init() {
-//        OperationLogWriter optLogManager =
-//                ContextLoaderListener.getCurrentWebApplicationContext().
-//                getBean("optLogManager",  OperationLogWriter.class);
-//        // 这个地方不能直接用 this， this不是spring管理的bean，必须从容器中获取托管的 bean
-//        OperationLogCenter.initOperationLogWriter(optLogManager);
-//     }
-
-
     @Override
     @Transactional(propagation=Propagation.REQUIRED) 
     public void saveBatchObjects(List<OptLog> optLogs) {
@@ -105,23 +95,11 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
     public final JSONArray listObjectsAsJson(
             String[] fields,
             Map<String, Object> filterMap, PageDesc pageDesc){
-    	
-    	//TODO 获取SQL SESSION	
-		//SqlSession sqlSession = null;
-		
-       if(optLogDao==null)
- 		{
- 			optLogDao=ContextLoaderListener.getCurrentWebApplicationContext().
- 		              getBean("optLogDao",  OptLogDao.class);
- 			
- 		}	
-    	List<OptLog> rst=optLogDao.pageQuery(QueryParameterPrepare.prepPageParmers(filterMap, pageDesc,optLogDao.pageCount(filterMap)));
-		return  DictionaryMapUtils.objectsToJSONArray(rst);
-		
-//		return SysDaoOptUtils.listObjectsBySqlAsJson(sqlSession,"sql",filterMap, fields,
-//    			(Map<String,KeyValuePair<String,String>> )null, pageDesc);
-	   /*return SysDaoOptUtils.listObjectsAsJson(optLogDao, fields, OptLog.class,
-    			filterMap, pageDesc);*/
+
+        return DictionaryMapUtils.objectsToJSONArray(
+                optLogDao.pageQuery(
+                QueryParameterPrepare.prepPageParmers(filterMap,pageDesc,
+                        optLogDao.pageCount(filterMap))), fields);
     }
 
 
