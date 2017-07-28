@@ -232,7 +232,8 @@ public class SysUnitManagerImpl implements SysUnitManager {
 	@Override
 	@Transactional
 	public UnitInfo getObjectById(String unitCode) {
-		return unitInfoDao.getObjectById(unitCode);
+		UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
+        return unitInfo;
 	}
 
     @Override

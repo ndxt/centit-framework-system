@@ -106,10 +106,7 @@
 <!--查询单条记录ById -->
 	<select id="getObjectById" parameterType="String" resultMap="UnitInfo">
 		<include refid="coreSql" />
-		<where>
-         <![CDATA[ 
-	                u.UNITCODE=#{unitCode} 
-           ]]>
+		<where> u.UNITCODE=#{unitCode}
 		</where>
 	</select>
 	<!--查询单条记录 结束 -->

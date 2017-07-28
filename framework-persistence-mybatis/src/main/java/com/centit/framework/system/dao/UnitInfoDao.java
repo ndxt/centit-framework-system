@@ -1,17 +1,16 @@
 package com.centit.framework.system.dao;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.stereotype.Repository;
-
 import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserInfo;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface UnitInfoDao{
 	
-	 String saveNewObject(UnitInfo unitInfo);
+	 void saveNewObject(UnitInfo unitInfo);
 	
 	 void mergeObject(UnitInfo unitInfo);
 	
@@ -29,7 +28,7 @@ public interface UnitInfoDao{
 	 List<UnitInfo> listObjects();
 	
 	 UnitInfo getObjectById(String unitCode);
-	
+
 	// DatabaseOptUtils.getNextKeyBySequence(this, "S_UNITCODE", 6);
      String getNextKey();
 
