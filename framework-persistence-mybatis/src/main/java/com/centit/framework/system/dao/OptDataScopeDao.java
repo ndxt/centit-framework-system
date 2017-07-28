@@ -1,5 +1,6 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.mybatis.dao.BaseDao;
 import com.centit.framework.system.po.OptDataScope;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -8,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Repository
-public interface OptDataScopeDao {
+public interface OptDataScopeDao extends BaseDao {
 
 	void mergeObject(OptDataScope optDataScope);
 	

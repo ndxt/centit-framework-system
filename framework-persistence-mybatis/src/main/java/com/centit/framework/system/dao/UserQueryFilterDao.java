@@ -1,5 +1,6 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.mybatis.dao.BaseDao;
 import com.centit.framework.system.po.UserQueryFilter;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -17,7 +18,7 @@ import java.util.Map;
 */
 
 @Repository
-public interface UserQueryFilterDao{
+public interface UserQueryFilterDao extends BaseDao {
 	
 	void deleteObject(UserQueryFilter userQueryFilter);
 	

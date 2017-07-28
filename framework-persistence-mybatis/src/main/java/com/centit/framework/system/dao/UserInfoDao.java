@@ -1,5 +1,6 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.mybatis.dao.BaseDao;
 import com.centit.framework.system.po.FVUserOptList;
 import com.centit.framework.system.po.UserInfo;
 import org.apache.ibatis.annotations.Param;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public interface UserInfoDao{
+public interface UserInfoDao extends BaseDao {
 	
 	void mergeObject(UserInfo userInfo);
 	

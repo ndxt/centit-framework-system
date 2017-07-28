@@ -23,7 +23,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
 
     public Map<String, String> getFilterField() {
         if (filterField == null) {
-            filterField = new HashMap<String, String>();
+            filterField = new HashMap<>();
             filterField.put("UNITCODE", CodeBook.EQUAL_HQL_ID);
             filterField.put("UNITNAME", CodeBook.LIKE_HQL_ID);
             filterField.put("ISVALID", CodeBook.EQUAL_HQL_ID);
@@ -60,7 +60,8 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
                 "from F_USERINFO a join F_USERUNIT b on(a.USERCODE=b.USERCODE) " +
                 "where b.UNITCODE =?";
 
-        return (List<UserInfo>) DatabaseOptUtils.findObjectsBySql(this, sSqlsen, new Object[]{unitCode} ,UserInfo.class);
+        return DatabaseOptUtils.findObjectsBySql(
+                this, sSqlsen, new Object[]{unitCode} ,UserInfo.class);
     }
 
     @SuppressWarnings("unchecked")
@@ -70,7 +71,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
                 "(select USERCODE from F_USERUNIT where UNITCODE= ? ) or " +
                 "ui.USERCODE in (select USERCODE from F_USERROLE where ROLECODE like ? ";
 
-        return (List<UserInfo>) DatabaseOptUtils.findObjectsBySql(
+        return DatabaseOptUtils.findObjectsBySql(
                 this, sSqlsen,new Object[]{unitCode,unitCode+ "-%"}, UserInfo.class);
     }
 
@@ -91,6 +92,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
             saveObject(unitinfos.get(i));
         }
     }
+
     @Transactional
     public void batchMerge(List<UnitInfo> unitinfos) {
         for (int i = 0; i < unitinfos.size(); i++) {
@@ -101,6 +103,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
             }
         }
     }
+
     @Transactional
     public UnitInfo getUnitByName(String name) {
         if (StringUtils.isNotBlank(name)) {
@@ -147,7 +150,8 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     }
 
     public List<String> getAllParentUnit(){
-        return (List<String>)DatabaseOptUtils.findObjectsBySql(this, "select distinct t.parentunit from f_unitinfo t ");
+        return (List<String>)DatabaseOptUtils.findObjectsBySql(this,
+                "select distinct t.parentunit from f_unitinfo t ");
     }
 
     public int countChildrenSum(String unitCode){

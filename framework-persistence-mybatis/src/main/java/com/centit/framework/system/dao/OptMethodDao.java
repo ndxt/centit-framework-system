@@ -2,12 +2,13 @@ package com.centit.framework.system.dao;
 
 import java.util.List;
 
+import com.centit.framework.mybatis.dao.BaseDao;
 import org.springframework.stereotype.Repository;
 
 import com.centit.framework.system.po.OptMethod;
 
 @Repository
-public interface OptMethodDao{
+public interface OptMethodDao  extends BaseDao {
 
 	 List<OptMethod> listObjects();
 	

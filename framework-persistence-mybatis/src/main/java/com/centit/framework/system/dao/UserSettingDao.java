@@ -1,5 +1,6 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.mybatis.dao.BaseDao;
 import com.centit.framework.system.po.UserSetting;
 import com.centit.framework.system.po.UserSettingId;
 import org.apache.ibatis.annotations.Param;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserSettingDao{
+public interface UserSettingDao extends BaseDao {
 	
 	 UserSetting getObjectById(UserSettingId userSettingId);
 	

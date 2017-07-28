@@ -3,34 +3,35 @@ package com.centit.framework.system.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.centit.framework.mybatis.dao.BaseDao;
 import org.springframework.stereotype.Repository;
 import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.DataDictionaryId;
 
 @Repository
-public interface DataDictionaryDao {
+public interface DataDictionaryDao extends BaseDao {
 
-	public List<DataDictionary> listObjects(Map<String, Object> filterDescMap);
+	List<DataDictionary> listObjects(Map<String, Object> filterDescMap);
 	
-	public DataDictionary getObjectById(DataDictionaryId dd);
+	DataDictionary getObjectById(DataDictionaryId dd);
 	
-	public void saveNewObject(DataDictionary dataDictionary);	
+	void saveNewObject(DataDictionary dataDictionary);	
 	
-	public void deleteObject(DataDictionary dataDictionary);
+	void deleteObject(DataDictionary dataDictionary);
 	
-	public void deleteObjectById(DataDictionaryId dd);
+	void deleteObjectById(DataDictionaryId dd);
 	
-	public void mergeObject(DataDictionary dataDictionary);
+	void mergeObject(DataDictionary dataDictionary);
 	//listObjectsAll("FROM DataDictionary ORDER BY id.catalogCode, dataOrder");
-    public List<DataDictionary> getWholeDictionary();
+    List<DataDictionary> getWholeDictionary();
     
     //listObjectsAll("FROM DataDictionary WHERE id.catalogCode = ? ORDER BY dataOrder", catalogCode);
-    public List<DataDictionary> listDataDictionary(String catalogCode);
+    List<DataDictionary> listDataDictionary(String catalogCode);
     
     //用序列生成
-    public String getNextPrimarykey();
+    String getNextPrimarykey();
 
     //批量删除 DatabaseOptUtils.doExecuteHql(this, "delete from DataDictionary where id.catalogCode =?", catalog);
-    public void deleteDictionary(String catalog);
+    void deleteDictionary(String catalog);
 
 }

@@ -3,11 +3,12 @@ package com.centit.framework.system.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.centit.framework.mybatis.dao.BaseDao;
 import org.springframework.stereotype.Repository;
 
 import com.centit.framework.system.po.InnerMsg;
 @Repository
-public interface InnerMsgDao{
+public interface InnerMsgDao extends BaseDao {
     
 	 InnerMsg getObjectById(String msgCode);
 	

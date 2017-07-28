@@ -1,5 +1,6 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.mybatis.dao.BaseDao;
 import com.centit.framework.system.po.FVUserOptMoudleList;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public interface OptInfoDao{
+public interface OptInfoDao extends BaseDao {
 	
 	 List<OptInfo> listObjects(Map<String, Object> filterMap);
 	

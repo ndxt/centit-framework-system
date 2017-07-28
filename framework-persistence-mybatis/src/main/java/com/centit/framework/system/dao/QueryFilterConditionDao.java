@@ -3,6 +3,7 @@ package com.centit.framework.system.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.centit.framework.mybatis.dao.BaseDao;
 import org.springframework.stereotype.Repository;
 
 import com.centit.framework.system.po.QueryFilterCondition;
@@ -17,21 +18,21 @@ import com.centit.framework.system.po.QueryFilterCondition;
 */
 
 @Repository
-public interface QueryFilterConditionDao{
+public interface QueryFilterConditionDao extends BaseDao {
 
 	//DatabaseOptUtils.getNextLongSequence(this, "S_FILTER_NO");
-    public Long getNextKey();
+    Long getNextKey();
     
     
-    public int  pageCount(Map<String, Object> filterDescMap);
-    public List<QueryFilterCondition>  pageQuery(Map<String, Object> pageQureyMap);
+    int  pageCount(Map<String, Object> filterDescMap);
+    List<QueryFilterCondition>  pageQuery(Map<String, Object> pageQureyMap);
     
 	
-	public QueryFilterCondition getObjectById(Long filterNo);
+	QueryFilterCondition getObjectById(Long filterNo);
 	
-	public void mergeObject(QueryFilterCondition userQueryFilter);
+	void mergeObject(QueryFilterCondition userQueryFilter);
 	
-	public void deleteObjectById(Long filterNo);
+	void deleteObjectById(Long filterNo);
 			
-	public Long saveNewObject(QueryFilterCondition userQueryFilter);
+	Long saveNewObject(QueryFilterCondition userQueryFilter);
 }

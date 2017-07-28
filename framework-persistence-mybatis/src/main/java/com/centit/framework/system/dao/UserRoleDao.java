@@ -1,5 +1,6 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.mybatis.dao.BaseDao;
 import com.centit.framework.system.po.FVUserRoles;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public interface UserRoleDao{
+public interface UserRoleDao extends BaseDao {
 	
 	 void saveNewObject(UserRole dbUserRole);
 	

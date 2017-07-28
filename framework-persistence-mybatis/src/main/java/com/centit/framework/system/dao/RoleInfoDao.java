@@ -3,13 +3,14 @@ package com.centit.framework.system.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.centit.framework.mybatis.dao.BaseDao;
 import org.springframework.stereotype.Repository;
 
 import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.VOptTree;
 
 @Repository
-public interface RoleInfoDao{
+public interface RoleInfoDao extends BaseDao {
 	
 	 List<RoleInfo> listObjects(Map<String, Object> filterMap);
 	
