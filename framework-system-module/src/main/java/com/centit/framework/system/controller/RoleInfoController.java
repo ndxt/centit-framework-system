@@ -1,27 +1,5 @@
 package com.centit.framework.system.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.common.JsonResultUtils;
@@ -39,6 +17,22 @@ import com.centit.framework.system.service.OptInfoManager;
 import com.centit.framework.system.service.OptMethodManager;
 import com.centit.framework.system.service.SysRoleManager;
 import com.centit.support.json.JsonPropertyUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.io.IOException;
+import java.util.*;
 
 @Controller
 @RequestMapping("/roleinfo")
@@ -513,7 +507,6 @@ public class RoleInfoController extends BaseController {
     		JsonResultUtils.writeOriginalObject(null == sysRoleManager.getObjectById(roleCode), response);
     }
 
-
     /**
      * 从操作定义反向删除角色代码
      * @param roleCode 角色代码
@@ -533,6 +526,11 @@ public class RoleInfoController extends BaseController {
         if(n>0){
             JsonResultUtils.writeErrorMessageJson("有用户引用这个角色，不能删除。", response);
             return ;
+        }
+        RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
+        if(dbRoleInfo!=null) {
+            OperationLogCenter.logDeleteObject(request, optId, roleCode,
+                    OperationLog.P_OPT_LOG_METHOD_D, "删除角色" + dbRoleInfo.getRoleName(), dbRoleInfo);
         }
         sysRoleManager.deleteRoleInfo(roleCode);
         JsonResultUtils.writeSuccessJson(response);
@@ -569,11 +567,31 @@ public class RoleInfoController extends BaseController {
 
         JsonResultUtils.writeSingleDataJson(rolePowers, response);
     }
-    
 
     /**
      * 对角色信息进行模糊搜索，适用于带搜索条件的下拉框。
-     * @param type type
+     *
+     * @param key      搜索条件
+     * @param field    需要搜索的字段，如为空，默认，roleCode,roleName
+     * @param response HttpServletResponse
+     */
+    @RequestMapping(value = "/search/{key}", method = RequestMethod.GET)
+    public void search(@PathVariable String key, String[] field, HttpServletResponse response) {
+//        if (ArrayUtils.isEmpty(field)) {
+//            field = new String[]{"roleCode", "roleName"};
+//        }
+//
+//        List<RoleInfo> listObjects = sysRoleManager.search(key, field);
+//
+//        JsonResultUtils.writeSingleDataJson(listObjects, response,
+//                JsonPropertyUtils.getExcludePropPreFilter(RoleInfo.class, "rolePowers"));
+    }
+
+
+    /**
+     * 对角色信息进行模糊搜索，适用于带搜索条件的下拉框。
+     *
+     * @param type      搜索条件
      * @param field    需要搜索的字段，如为空，默认，roleCode,roleName
      * @param request HttpServletRequest
      * @param response HttpServletResponse

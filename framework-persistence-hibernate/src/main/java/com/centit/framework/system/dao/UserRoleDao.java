@@ -1,15 +1,30 @@
 package com.centit.framework.system.dao;
 
-import com.centit.framework.hibernate.dao.BaseDao;
 import com.centit.framework.system.po.FVUserRoles;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
 
 import java.util.List;
+import java.util.Map;
 
-public interface UserRoleDao extends BaseDao<UserRole, UserRoleId> {
+public interface UserRoleDao {
 
+    UserRoleId saveNewObject(UserRole dbUserRole);
+	
+	 List<UserRole> listObjects();
 
+    UserRole mergeObject(UserRole dbUserRole);
+	
+	 void deleteObject(UserRole dbUserRole);
+	
+	 void deleteObjectById(UserRoleId id);
+	
+	 UserRole getObjectById(UserRoleId id);
+	
+	
+     int  pageCount(Map<String, Object> filterDescMap);
+     List<UserRole>  pageQuery(Map<String, Object> pageQureyMap);
+	
 	//DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.roleCode = ?", roid);
      void deleteByRoleId(String roid);
     

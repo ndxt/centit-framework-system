@@ -45,7 +45,7 @@ public class QueryFilterConditionController  extends BaseController {
      * 查询所有   系统内置查询方式  列表
      *
      * @param field    json中只保存需要的属性名
-     * @param pageDesc    pageDesc
+     * @param pageDesc  分页信息
      * @param request  {@link HttpServletRequest}
      * @param response {@link HttpServletResponse}
      */

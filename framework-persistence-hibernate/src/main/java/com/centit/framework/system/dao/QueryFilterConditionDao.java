@@ -1,7 +1,9 @@
 package com.centit.framework.system.dao;
 
-import com.centit.framework.hibernate.dao.BaseDao;
 import com.centit.framework.system.po.QueryFilterCondition;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -11,9 +13,21 @@ import com.centit.framework.system.po.QueryFilterCondition;
  * 系统内置查询方式null   
 */
 
-public interface QueryFilterConditionDao extends BaseDao<QueryFilterCondition,Long> {
+public interface QueryFilterConditionDao {
 
 	//DatabaseOptUtils.getNextLongSequence(this, "S_FILTER_NO");
     Long getNextKey();
     
+    
+    int  pageCount(Map<String, Object> filterDescMap);
+    List<QueryFilterCondition>  pageQuery(Map<String, Object> pageQureyMap);
+    
+	
+	QueryFilterCondition getObjectById(Long filterNo);
+
+	QueryFilterCondition mergeObject(QueryFilterCondition userQueryFilter);
+	
+	void deleteObjectById(Long filterNo);
+			
+	Long saveNewObject(QueryFilterCondition userQueryFilter);
 }

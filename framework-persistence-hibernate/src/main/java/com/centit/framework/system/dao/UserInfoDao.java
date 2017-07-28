@@ -1,14 +1,30 @@
 package com.centit.framework.system.dao;
 
-import com.centit.framework.hibernate.dao.BaseDao;
 import com.centit.framework.system.po.FVUserOptList;
 import com.centit.framework.system.po.UserInfo;
 
 import java.util.List;
 import java.util.Map;
 
-public interface UserInfoDao extends BaseDao<UserInfo, String> {
+public interface UserInfoDao {
 
+    UserInfo mergeObject(UserInfo userInfo);
+	
+	String saveNewObject(UserInfo userInfo);
+	
+	void deleteObjectById(String userCode);
+	
+	List<UserInfo> listObjects();
+	
+	List<UserInfo> listObjects(Map<String, Object> filterMap);
+	
+	
+    int  pageCount(Map<String, Object> filterDescMap);
+    List<UserInfo>  pageQuery(Map<String, Object> pageQureyMap);
+	
+	
+	UserInfo getObjectById(String userCode);
+	
     /**
      * 这个方法迁移到 ManagerImpl类中
      * hql = "SELECT COUNT(*) FROM UserInfo WHERE userCode = " + QueryUtils.buildStringForQuery(user.getUserCode());
@@ -23,12 +39,15 @@ public interface UserInfoDao extends BaseDao<UserInfo, String> {
 	 int isLoginNameExist(String userCode, String loginName);
 	 int isCellPhoneExist(String userCode, String regCellPhone);
 	 int isEmailExist(String userCode, String regEmail);
-	 int isAnyOneExist(String userCode,  String loginName,
+	 int isAnyOneExist(String userCode, String loginName,
                        String regCellPhone, String regEmail);
 
     //"U"+ DatabaseOptUtils.getNextKeyBySequence(this, "S_USERCODE", 7);
     String getNextKey();
 
+    //设置主键 o.setUserCode(this.getNextKey()); 和初始密码
+    void saveObject(UserInfo o);
+    
     //hql = "FROM FVUserOptList urv where urv.id.userCode=?";
     List<FVUserOptList> getAllOptMethodByUser(String userCode);
 	/*

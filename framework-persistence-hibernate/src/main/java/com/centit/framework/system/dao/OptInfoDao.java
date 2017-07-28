@@ -1,24 +1,40 @@
 package com.centit.framework.system.dao;
 
-import com.centit.framework.hibernate.dao.BaseDao;
 import com.centit.framework.system.po.FVUserOptMoudleList;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethodUrlMap;
 
 import java.util.List;
+import java.util.Map;
 
-public interface OptInfoDao extends BaseDao<OptInfo, String> {
+public interface OptInfoDao {
+	
+	 List<OptInfo> listObjects(Map<String, Object> filterMap);
 	
 //	 List<OptInfo> listObjectsByRoleCode(String roleCode);
 	
 	 List<OptInfo> listObjectsByCon(String condition);
 	
+	 List<OptInfo> listObjectsAll();
+	
+	
+	
+	 void deleteObject(OptInfo optMethod);
+
+    OptInfo mergeObject(OptInfo optMethod);
+	
+	 void deleteObjectById(String optId);
+			
+	 String saveNewObject(OptInfo optMethod);
+	
 	//"select count(1) as hasChildren from OptInfo where preOptId = ?",optId
 	 int countChildrenSum(String optId);
 	
 	
+	 OptInfo getObjectById(String optId);
+	
 	//"from OptInfo opt where opt.isInToolbar = 'T'";
-//     List<OptInfo> listValidObjects();
+     List<OptInfo> listValidObjects();
 
     // String hql = "FROM FVUserOptMoudleList where userCode=?";
 //     List<OptInfo> getFunctionsByUserID(String userID);

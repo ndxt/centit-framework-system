@@ -23,7 +23,10 @@ public interface SysUserUnitManager{
     List<UserUnit> listObjectByUserUnit(String userCode,String unitCode);
     
     UserUnit getPrimaryUnitByUserCode(String userCode);
+
     String saveNewUserUnit(UserUnit userUnit);
+
     void updateUserUnit(UserUnit userunit);
+
     boolean hasUserStation(String stationCode,String userCode);
 }

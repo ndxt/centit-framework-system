@@ -10,7 +10,9 @@ import java.util.Map;
 
 @Repository
 public interface UnitInfoDao extends BaseDao {
-	
+
+    UnitInfo getObjectById(String unitCode);
+
 	 void saveNewObject(UnitInfo unitInfo);
 	
 	 void mergeObject(UnitInfo unitInfo);
@@ -19,8 +21,8 @@ public interface UnitInfoDao extends BaseDao {
 	
 	 List<UnitInfo> listObjects(Map<String, Object> filterMap);
 	
-	
      int  pageCount(Map<String, Object> filterDescMap);
+
      List<UnitInfo>  pageQuery(Map<String, Object> pageQureyMap);
     
     
@@ -28,8 +30,6 @@ public interface UnitInfoDao extends BaseDao {
 	
 	 List<UnitInfo> listObjects();
 	
-	 UnitInfo getObjectById(String unitCode);
-
 	// DatabaseOptUtils.getNextKeyBySequence(this, "S_UNITCODE", 6);
      String getNextKey();
 
@@ -89,26 +89,7 @@ public interface UnitInfoDao extends BaseDao {
      * @return List UnitInfo
      */
      List<UnitInfo> listAllSubUnits(String primaryUnit);
-    /* List<UnitInfo> listAllSubUnits(String unitCode){
-    	
-    	List<UnitInfo> subUnits = listSubUnits(unitCode);
-    	List<UnitInfo> allSubUnits = new ArrayList<UnitInfo>();
-    	UnitInfo currUnit = getObjectById(unitCode);
-    	if(currUnit==null)
-    		return allSubUnits;
-    	allSubUnits.add(currUnit);
-    	//listUnitinfoByUnitcodes
-    	while(subUnits!=null && subUnits.size()>0){
-    		allSubUnits.addAll(subUnits);
-    		List<String> subUnitCodes = new ArrayList<String>();
-    		for(UnitInfo ui:subUnits){
-    			subUnitCodes.add(ui.getUnitCode());
-    		}
-    		subUnits =
-    				listSubUnitinfoByParentUnitcodes(subUnitCodes);
-    	}
-    	return allSubUnits;    	
-    }*/
+
     
     //String hql = "from UnitInfo where unitPath like ?";{unitPath+"/%"});
      List<UnitInfo> listSubUnitsByUnitPaht(String unitPath);

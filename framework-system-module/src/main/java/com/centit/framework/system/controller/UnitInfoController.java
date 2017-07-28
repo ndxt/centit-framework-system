@@ -116,16 +116,15 @@ public class UnitInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/subunits",method = RequestMethod.GET)
-    public void list_sub(String[] field, boolean struct, HttpServletRequest request, HttpServletResponse response) {
+    public void listSub(String[] field, boolean struct, HttpServletRequest request, HttpServletResponse response) {
         UserInfo user=sysUserMag.getObjectById(this.getLoginUser(request).getUserCode());
         List<UnitInfo> listObjects = null;
         listObjects = sysUnitManager.listAllSubObjects(user.getPrimaryUnit());
-        if(listObjects==null){
+        if(listObjects == null){
             JsonResultUtils.writeSuccessJson(response);
-            return ;
+            return;
         }
-        Collections.sort(listObjects, new Comparator<UnitInfo>() {
-            public int compare(UnitInfo o1, UnitInfo o2) {
+        Collections.sort(listObjects, (o1, o2) -> {
                 if (o2.getUnitOrder() == null && o1.getUnitOrder() == null) {
                     return 0;
                 }
@@ -135,30 +134,17 @@ public class UnitInfoController extends BaseController {
                 if (o1.getUnitOrder() == null) {
                     return -1;
                 }
-                if (o1.getUnitOrder() == o2.getUnitOrder()) {
-                    return 0;
-                }
-                if (o1.getUnitOrder() > o2.getUnitOrder()) {
-                    return 1;
-                }
-                return -1;
-            }
-        });
+                return Long.compare(o1.getUnitOrder(), o2.getUnitOrder());
+            });
         JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
         if(struct){
-        	ja = ListOpt.srotAsTreeAndToJSON(ja, 
-    				new ListOpt.ParentChild<Object>(){
-						@Override
-						public boolean parentAndChild(Object p, Object c) {
-							return StringUtils.equals(
+        	ja = ListOpt.srotAsTreeAndToJSON(ja, (p, c) ->
+    				StringUtils.equals(
 									((JSONObject)p).getString("unitCode"),
-									((JSONObject)c).getString("parentUnit"));
-						}
-
-        			}, "children");
+									((JSONObject)c).getString("parentUnit")),
+                    "children");
         }
-        JsonResultUtils.writeSingleDataJson(
-        		ja,
+        JsonResultUtils.writeSingleDataJson(ja,
         		response, JsonPropertyUtils.getIncludePropPreFilter(JSONObject.class, field));
       }
     
@@ -178,9 +164,8 @@ public class UnitInfoController extends BaseController {
     
     /**
      * 删除机构
-     *
-     * @param unitCode unitCode
      * @param request HttpServletRequest
+     * @param unitCode unitCode
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{unitCode}", method = {RequestMethod.DELETE})
@@ -262,7 +247,6 @@ public class UnitInfoController extends BaseController {
      *
      * @param unitCode    机构代码
      * @param statusValue 状态码 T 或 F
-     * @param request HttpServletRequest
      * @param response    HttpServletResponse
      */
     @RequestMapping(value = "/{unitCode}/status/{statusValue}", method = RequestMethod.PUT)
@@ -329,7 +313,7 @@ public class UnitInfoController extends BaseController {
      * @param field    UserInfo需要显示的字段
      * @param unitCode 机构代码
      * @param primary  是否为主机构，可为空
-     * @param pageDesc pageDesc
+     * @param pageDesc 分页信息
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{unitCode}/users", method = RequestMethod.GET)
@@ -355,8 +339,9 @@ public class UnitInfoController extends BaseController {
 
     /**
      * 当前机构下用户
-     * @param userunitid userunitid
-     * @param response HttpServletResponse
+     *
+     * @param userunitid    机构代码
+     * @param response    HttpServletResponse
      */
     @RequestMapping(value = "/unitusers/{userunitid}", method = RequestMethod.GET)
     public void getUnitUser(@PathVariable String userunitid,  HttpServletResponse response) {

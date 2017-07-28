@@ -94,14 +94,19 @@ public class UserUnitController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/unitusers/{unitCode}", method = RequestMethod.GET)
-    public void listUsersByUnit(@PathVariable String unitCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+    public void listUsersByUnit(@PathVariable String unitCode, PageDesc pageDesc,
+                                HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = convertSearchColumn(request);
         filterMap.put("unitCode", unitCode);
 
-        listObject(filterMap, pageDesc, response);
+        List<UserUnit> listObjects = sysUserUnitManager.listObjects(filterMap, pageDesc);
+
+        ResponseData resData = new ResponseData();
+        resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
+        resData.addResponseData(PAGE_DESC, pageDesc);
+
+        JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
-    
-    
 
     /**
      * 通过用户代码获取用户所在机构
@@ -113,7 +118,8 @@ public class UserUnitController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/userunits/{userCode}", method = RequestMethod.GET)
-    public void listUnitsByUser(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+    public void listUnitsByUser(@PathVariable String userCode, PageDesc pageDesc,
+                                HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = convertSearchColumn(request);
         filterMap.put("userCode", userCode);
         listObject(filterMap, pageDesc, response);
@@ -152,9 +158,9 @@ public class UserUnitController extends BaseController {
     /**
      * 返回一组用户机构关联信息
      *
-     * @param unitCode    机构代码
-     * @param userCode    用户代码
-     * @param response    HttpServletResponse
+     * @param unitCode 机构代码
+     * @param userCode 用户代码
+     * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{unitCode}/{userCode}", method = RequestMethod.GET)
     public void getUserUnit(@PathVariable String unitCode, @PathVariable String userCode, HttpServletResponse response) {

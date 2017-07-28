@@ -1,10 +1,9 @@
 package com.centit.framework.system.dao;
 
-import com.centit.framework.hibernate.dao.BaseDao;
 import com.centit.framework.system.po.RolePower;
-import com.centit.framework.system.po.RolePowerId;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,8 +13,16 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 
-public interface RolePowerDao extends BaseDao<RolePower, RolePowerId> {
+public interface RolePowerDao {
 
+	List<RolePower> listObjectsAll();
+
+    RolePower mergeObject(RolePower rolePowers);
+	
+	void deleteObject(RolePower rolePowers);
+	
+	List<RolePower> listObjects(Map<String, Object> filterMap);
+	
 	//"DELETE FROM RolePower rp where rp.id.roleCode=?", rolecode
     void deleteRolePowersByRoleCode(String rolecode);
     

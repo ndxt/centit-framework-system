@@ -1,14 +1,31 @@
 package com.centit.framework.system.dao;
 
-import com.centit.framework.hibernate.dao.BaseDao;
 import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserInfo;
 
 import java.util.List;
+import java.util.Map;
 
-public interface UnitInfoDao extends BaseDao<UnitInfo, String> {
+public interface UnitInfoDao {
 
+    UnitInfo getObjectById(String unitCode);
+
+	 String saveNewObject(UnitInfo unitInfo);
+
+    UnitInfo mergeObject(UnitInfo unitInfo);
+	
+	 void deleteObjectById(String unitCode);
+	
+	 List<UnitInfo> listObjects(Map<String, Object> filterMap);
+	
+     int  pageCount(Map<String, Object> filterDescMap);
+
+     List<UnitInfo>  pageQuery(Map<String, Object> pageQureyMap);
+    
+    
 	 int countChildrenSum(String unitCode);
+	
+	 List<UnitInfo> listObjects();
 	
 	// DatabaseOptUtils.getNextKeyBySequence(this, "S_UNITCODE", 6);
      String getNextKey();
@@ -54,13 +71,15 @@ public interface UnitInfoDao extends BaseDao<UnitInfo, String> {
     //return super.getObjectByProperty("unitWord", unitWord);
      UnitInfo getUnitByWord(String unitWord);
     
-
+    //return super.listObjectByProperty("parentUnit", unitCode);
+//     List<UnitInfo> listSubUnits(String unitCode);
     
     /**
      * @param parentunitcodes List
      * @return List UnitInfo
      */
-
+//     List<UnitInfo> listSubUnitinfoByParentUnitcodes(List<String> parentunitcodes);
+    
     /**
      * 这个方法应该转移到ManagerImpl类中
      * @param primaryUnit primaryUnit

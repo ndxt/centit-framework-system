@@ -1,18 +1,37 @@
 package com.centit.framework.system.dao;
 
-import com.centit.framework.hibernate.dao.BaseDao;
 import com.centit.framework.system.po.UserUnit;
 
 import java.util.List;
+import java.util.Map;
 
-public interface UserUnitDao extends BaseDao<UserUnit, String> {
+public interface UserUnitDao {
  
+	 List<UserUnit> listObjects(Map<String, Object> filterMap);
+	
+	
+     int  pageCount(Map<String, Object> filterDescMap);
+     List<UserUnit>  pageQuery(Map<String, Object> pageQureyMap);
+	
+	
+	 List<UserUnit> listObjectsAll();
+	
+	 UserUnit getObjectById(String userUnitId);
+	
+	 String saveNewObject(UserUnit object);
+	
+	 void updateObject(UserUnit object);
+	
+	 void deleteObjectById(String userUnitId);
+	
+	 void deleteObject(UserUnit object);
+	
 	//"FROM UserUnit where userCode=?", userId
      List<UserUnit> listUserUnitsByUserCode(String userId);
     
     //"FROM UserUnit where userCode=? and unitCode=?",new Object[]{userCode,unitCode});
     //参数 String userCode,String unitCode
-     List<UserUnit> listObjectByUserUnit(String userCode,String unitCode);
+     List<UserUnit> listObjectByUserUnit(String userCode, String unitCode);
     
     // return "s"+ DatabaseOptUtils.getNextKeyBySequence(this, "S_USER_UNIT_ID", 9);
      String getNextKey();
@@ -62,4 +81,12 @@ public interface UserUnitDao extends BaseDao<UserUnit, String> {
 //     List<UserUnit> listUnitUsersByUnitCodeAndFilterPagination(String unitCode, PageDesc pageDesc,
 //            Map<String, Object> filterMap);
 
+
+
+    /**
+     * 批量添加或更新
+     * super.saveObject(userunits.get(i));
+     * @param userunits UserUnit
+     */
+    UserUnit mergeObject(UserUnit userunits);
 }

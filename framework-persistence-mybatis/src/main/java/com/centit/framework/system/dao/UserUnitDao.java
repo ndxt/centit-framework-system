@@ -13,11 +13,10 @@ public interface UserUnitDao extends BaseDao {
  
 	 List<UserUnit> listObjects(Map<String, Object> filterMap);
 	
-	
      int  pageCount(Map<String, Object> filterDescMap);
+
      List<UserUnit>  pageQuery(Map<String, Object> pageQureyMap);
-	
-	
+
 	 List<UserUnit> listObjectsAll();
 	
 	 UserUnit getObjectById(String userUnitId);

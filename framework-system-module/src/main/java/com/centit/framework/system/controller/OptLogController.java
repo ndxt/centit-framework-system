@@ -33,7 +33,7 @@ public class OptLogController extends BaseController {
      * 查询系统日志
      *
      * @param field    需要显示的字段
-     * @param pageDesc    pageDesc
+     * @param pageDesc  分页信息
      * @param request    HttpServletRequest
      * @param response HttpServletResponse
      */

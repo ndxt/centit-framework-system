@@ -1,17 +1,15 @@
 package com.centit.framework.system.service.impl;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
-
+import com.centit.framework.system.dao.OptMethodDao;
+import com.centit.framework.system.po.OptMethod;
+import com.centit.framework.system.service.OptMethodManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.centit.framework.system.dao.OptMethodDao;
-import com.centit.framework.system.po.OptMethod;
-import com.centit.framework.system.service.OptMethodManager;
+import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Service("optMethodManager")
 @Transactional

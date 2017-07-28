@@ -1,15 +1,17 @@
 package com.centit.framework.system.controller;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
+import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
+import com.centit.framework.components.CodeRepositoryUtil;
+import com.centit.framework.core.common.JsonResultUtils;
+import com.centit.framework.core.common.ObjectException;
+import com.centit.framework.core.common.ResponseData;
+import com.centit.framework.core.controller.BaseController;
+import com.centit.framework.core.dao.CodeBook;
+import com.centit.framework.core.dao.PageDesc;
+import com.centit.framework.system.po.DataCatalog;
+import com.centit.framework.system.po.DataDictionary;
+import com.centit.framework.system.po.DataDictionaryId;
+import com.centit.framework.system.service.DataDictionaryManager;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -23,18 +25,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
-import com.centit.framework.components.CodeRepositoryUtil;
-import com.centit.framework.core.common.JsonResultUtils;
-import com.centit.framework.core.common.ObjectException;
-import com.centit.framework.core.common.ResponseData;
-import com.centit.framework.core.controller.BaseController;
-import com.centit.framework.core.dao.CodeBook;
-import com.centit.framework.core.dao.PageDesc;
-import com.centit.framework.system.po.DataCatalog;
-import com.centit.framework.system.po.DataDictionary;
-import com.centit.framework.system.po.DataDictionaryId;
-import com.centit.framework.system.service.DataDictionaryManager;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/dictionary")
@@ -108,8 +106,8 @@ public class DataDictionaryController extends BaseController {
      * catalogCode是否已存在
      *
      * @param catalogCode catalogCode
-     * @param response HttpServletResponse
-     * @throws  IOException IOException
+     * @param response {@link HttpServletResponse}
+     * @throws IOException IOException
      */
     @RequestMapping(value = "/notexists/{catalogCode}", method = {RequestMethod.GET})
     public void isNotExistsCatalogCode(@PathVariable String catalogCode, HttpServletResponse response) throws IOException {
@@ -122,8 +120,8 @@ public class DataDictionaryController extends BaseController {
      *
      * @param catalogCode catalogCode
      * @param dataCode dataCode
-     * @param response HttpServletResponse
-     * @throws  IOException IOException
+     * @param response {@link HttpServletResponse}
+     * @throws IOException IOException
      */
     @RequestMapping(value = "/notexists/dictionary/{catalogCode}/{dataCode}", method = {RequestMethod.GET})
     public void isNotExistsDataCode(@PathVariable String catalogCode, @PathVariable String dataCode, HttpServletResponse response) throws IOException {
@@ -152,8 +150,8 @@ public class DataDictionaryController extends BaseController {
     /**
      * 新增数据目录
      *
-     * @param dataCatalog DataCatalog
-     * @param request  {@link HttpServletRequest}
+     * @param dataCatalog {@link DataCatalog}
+     * @param request {@link HttpServletRequest}
      * @param response {@link HttpServletResponse}
      */
     @RequestMapping(method = {RequestMethod.POST})
@@ -170,8 +168,8 @@ public class DataDictionaryController extends BaseController {
      *
      * @param catalogCode DataCatalog主键
      * @param dataCatalog {@link DataCatalog}
-     * @param request  {@link HttpServletRequest}
-     * @param response {@link HttpServletResponse}
+     * @param request    {@link HttpServletRequest}
+     * @param response    {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{catalogCode}", method = {RequestMethod.PUT})
     public void updateCatalog(@PathVariable String catalogCode,

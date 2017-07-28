@@ -1,9 +1,9 @@
 package com.centit.framework.system.dao;
 
-import com.centit.framework.hibernate.dao.BaseDao;
 import com.centit.framework.system.po.UserQueryFilter;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -13,12 +13,24 @@ import java.util.List;
  * 用户自定义过滤条件表null   
 */
 
-public interface UserQueryFilterDao extends BaseDao<UserQueryFilter,Long> {
+public interface UserQueryFilterDao {
 	
+	void deleteObject(UserQueryFilter userQueryFilter);
+
+	UserQueryFilter mergeObject(UserQueryFilter userQueryFilter);
+	
+	Long saveNewObject(UserQueryFilter userQueryFilter);
+	
+	
+    int  pageCount(Map<String, Object> filterDescMap);
+    List<UserQueryFilter>  pageQuery(Map<String, Object> pageQureyMap);
+	
+	UserQueryFilter getObjectById(Long filterNo);
 	//"From UserQueryFilter where userCode = ? and modleCode = ? "
 			//+ "order by isDefault desc , createDate desc"
 	// 参数 String userCode,String modelCode
-	List<UserQueryFilter> listUserQueryFilterByModle(String userCode, String modelCode);
+	List<UserQueryFilter> listUserQueryFilterByModle(String userCode,
+                                                     String modelCode);
 	
 	//super.listObjectsAll("From UserQueryFilter where userCode = ? and modleCode = ? "
 		//+ "and isDefault = 'T' order by isDefault desc , createDate desc",

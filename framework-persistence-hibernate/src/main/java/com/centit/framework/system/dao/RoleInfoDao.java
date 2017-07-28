@@ -1,12 +1,29 @@
 package com.centit.framework.system.dao;
 
-import com.centit.framework.hibernate.dao.BaseDao;
 import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.VOptTree;
 
 import java.util.List;
+import java.util.Map;
 
-public interface RoleInfoDao extends BaseDao<RoleInfo, String> {
+public interface RoleInfoDao {
+	
+	 List<RoleInfo> listObjects(Map<String, Object> filterMap);
+	
+	
+     int  pageCount(Map<String, Object> filterDescMap);
+     List<RoleInfo>  pageQuery(Map<String, Object> pageQureyMap);
+
+	 List<RoleInfo> listObjectsAll();
+	
+	 String saveNewObject(RoleInfo o);
+
+	 void deleteObjectById(String roleCode);
+
+    RoleInfo mergeObject(RoleInfo o);
+	
+	
+	 RoleInfo getObjectById(String roleCode);
 	
     //DatabaseOptUtils.findObjectsByHql(this,"FROM VOptTree");
      List<VOptTree> getVOptTreeList();

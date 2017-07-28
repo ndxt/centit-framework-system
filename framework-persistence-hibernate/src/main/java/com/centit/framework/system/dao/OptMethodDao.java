@@ -1,12 +1,24 @@
 package com.centit.framework.system.dao;
 
-import com.centit.framework.hibernate.dao.BaseDao;
 import com.centit.framework.system.po.OptMethod;
 
 import java.util.List;
 
-public interface OptMethodDao extends BaseDao<OptMethod, String> {
+public interface OptMethodDao {
 
+	 List<OptMethod> listObjects();
+	
+	 OptMethod getObjectById(String optCode);
+
+    OptMethod mergeObject(OptMethod optMethod);
+	
+	 void deleteObject(OptMethod optMethod);
+	
+	 void deleteObjectById(String optCode);
+			
+	 String saveNewObject(OptMethod optMethod);
+		
+	
     //return listObjectsAll("FROM OptMethod WHERE optId =?", sOptID);
      List<OptMethod> listOptMethodByOptID(String sOptID);
 
