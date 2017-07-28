@@ -146,7 +146,8 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
     }
 
     @Override
-    public synchronized void recordNextLsh(String ownerCode, String codeCode, Date codeBaseDate, long currCode) {
+    public synchronized void recordNextLsh(String ownerCode, String codeCode,
+                                           Date codeBaseDate, long currCode) {
         Date codeDate = codeBaseDate;// DatetimeOpt.convertSqlDate(codeBaseDate);
         // 如果是从池中取出的，在池中删除
         OptFlowNoPoolId poolId = new OptFlowNoPoolId(ownerCode, codeDate, codeCode, currCode);
@@ -277,29 +278,36 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
         releaseLsh(DefaultOwnerCode, codeCode, DefaultCodeDate, currCode);
     }
 
-    public List<OptFlowNoPool> listLshInPool(String ownerCode, String codeCode, Date codeBaseDate, PageDesc pageDesc) {
+    public List<OptFlowNoPool> listLshInPool(String ownerCode, String codeCode,
+                                             Date codeBaseDate, PageDesc pageDesc) {
         Map<String, Object> filterMap = new HashMap<>();
 
         filterMap.put("ownerCode", ownerCode);
         filterMap.put("codeDate", codeBaseDate);
         filterMap.put("codeCode", codeCode);
         
-        return optFlowNoPoolDao.pageQuery(QueryParameterPrepare.prepPageParmers(filterMap,pageDesc,optFlowNoPoolDao.pageCount(filterMap)));
+        return optFlowNoPoolDao.pageQuery(
+                QueryParameterPrepare.prepPageParmers(filterMap,pageDesc,
+                        optFlowNoPoolDao.pageCount(filterMap)));
     }
 
-    public List<OptFlowNoPool> listLshBaseDayInPool(String ownerCode, String codeCode, Date codeBaseDate, PageDesc pageDesc) {
+    public List<OptFlowNoPool> listLshBaseDayInPool(String ownerCode,
+                                                    String codeCode, Date codeBaseDate, PageDesc pageDesc) {
         return listLshInPool(ownerCode, codeCode, DatetimeOpt.truncateToDay(codeBaseDate), pageDesc);
     }
 
-    public List<OptFlowNoPool> listLshBaseMonthInPool(String ownerCode, String codeCode, Date codeBaseDate, PageDesc pageDesc) {
+    public List<OptFlowNoPool> listLshBaseMonthInPool(String ownerCode,
+                                                      String codeCode, Date codeBaseDate, PageDesc pageDesc) {
         return listLshInPool(ownerCode, codeCode, DatetimeOpt.truncateToMonth(codeBaseDate), pageDesc);
     }
 
-    public List<OptFlowNoPool> listLshBaseYearInPool(String ownerCode, String codeCode, Date codeBaseDate, PageDesc pageDesc) {
+    public List<OptFlowNoPool> listLshBaseYearInPool(String ownerCode,
+                                                     String codeCode, Date codeBaseDate, PageDesc pageDesc) {
         return listLshInPool(ownerCode, codeCode, DatetimeOpt.truncateToYear(codeBaseDate), pageDesc);
     }
 
-    public List<OptFlowNoPool> listLshInPool(String ownerCode, String codeCode, PageDesc pageDesc) {
+    public List<OptFlowNoPool> listLshInPool(String ownerCode,
+                                             String codeCode, PageDesc pageDesc) {
         return listLshInPool(ownerCode, codeCode, DefaultCodeDate, pageDesc);
     }
 

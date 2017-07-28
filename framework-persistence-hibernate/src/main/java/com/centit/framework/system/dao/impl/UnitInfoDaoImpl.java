@@ -60,7 +60,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
                 "from F_USERINFO a join F_USERUNIT b on(a.USERCODE=b.USERCODE) " +
                 "where b.UNITCODE =?";
 
-        return (List<UserInfo>) DatabaseOptUtils.findObjectsBySql(
+        return DatabaseOptUtils.findObjectsBySql(
                 this, sSqlsen, new Object[]{unitCode} ,UserInfo.class);
     }
 
@@ -71,7 +71,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
                 "(select USERCODE from F_USERUNIT where UNITCODE= ? ) or " +
                 "ui.USERCODE in (select USERCODE from F_USERROLE where ROLECODE like ? ";
 
-        return (List<UserInfo>) DatabaseOptUtils.findObjectsBySql(
+        return DatabaseOptUtils.findObjectsBySql(
                 this, sSqlsen,new Object[]{unitCode,unitCode+ "-%"}, UserInfo.class);
     }
 
@@ -150,7 +150,8 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     }
 
     public List<String> getAllParentUnit(){
-        return (List<String>)DatabaseOptUtils.findObjectsBySql(this, "select distinct t.parentunit from f_unitinfo t ");
+        return (List<String>)DatabaseOptUtils.findObjectsBySql(this,
+                "select distinct t.parentunit from f_unitinfo t ");
     }
 
     public int countChildrenSum(String unitCode){
