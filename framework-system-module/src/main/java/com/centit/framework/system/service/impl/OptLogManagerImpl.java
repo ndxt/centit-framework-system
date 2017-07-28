@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.context.ContextLoaderListener;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
@@ -26,10 +25,14 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
 
     public static final Logger logger = LoggerFactory.getLogger(OptLogManager.class);
 
-    @Resource
-    @NotNull
-    protected OptLogDao optLogDao;
 
+    private OptLogDao optLogDao;
+
+    @Resource(name = "optLogDao")
+    @NotNull
+    public void setOptLogDao(OptLogDao optLogDao) {
+        this.optLogDao = optLogDao;
+    }
 
     @Override
     @Transactional(propagation=Propagation.REQUIRED) 
@@ -92,14 +95,13 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
     
     @Override
     @Transactional(propagation=Propagation.REQUIRED) 
-    public final JSONArray listObjectsAsJson(
-            String[] fields,
+    public JSONArray listObjectsAsJson( String[] fields,
             Map<String, Object> filterMap, PageDesc pageDesc){
 
         return DictionaryMapUtils.objectsToJSONArray(
-                optLogDao.pageQuery(
-                QueryParameterPrepare.prepPageParmers(filterMap,pageDesc,
-                        optLogDao.pageCount(filterMap))), fields);
+                    optLogDao.pageQuery(
+                        QueryParameterPrepare.prepPageParmers(filterMap,pageDesc,
+                            optLogDao.pageCount(filterMap))), fields);
     }
 
 
