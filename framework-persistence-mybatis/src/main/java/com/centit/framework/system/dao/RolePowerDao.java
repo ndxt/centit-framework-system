@@ -1,5 +1,6 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.mybatis.dao.BaseDao;
 import com.centit.framework.system.po.RolePower;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +16,7 @@ import java.util.Map;
  */
 
 @Repository
-public interface RolePowerDao{
+public interface RolePowerDao extends BaseDao {
 
 	List<RolePower> listObjectsAll();
 	

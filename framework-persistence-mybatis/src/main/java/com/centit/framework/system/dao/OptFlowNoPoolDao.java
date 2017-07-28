@@ -1,5 +1,6 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.mybatis.dao.BaseDao;
 import com.centit.framework.system.po.OptFlowNoPool;
 import com.centit.framework.system.po.OptFlowNoPoolId;
 import org.apache.ibatis.annotations.Param;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public interface OptFlowNoPoolDao {
+public interface OptFlowNoPoolDao extends BaseDao {
 	 OptFlowNoPool getObjectById(OptFlowNoPoolId cid);
 	
 	 void deleteObject(OptFlowNoPool optFlowNoPool);

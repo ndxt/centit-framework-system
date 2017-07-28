@@ -1,5 +1,6 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.mybatis.dao.BaseDao;
 import com.centit.framework.system.po.InnerMsgRecipient;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -8,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public interface InnerMsgRecipientDao {
+public interface InnerMsgRecipientDao extends BaseDao {
 
 	 void mergeObject(InnerMsgRecipient optMethod);
 	

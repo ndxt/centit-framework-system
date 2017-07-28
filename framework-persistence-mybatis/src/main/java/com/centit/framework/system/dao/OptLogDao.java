@@ -1,5 +1,6 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.mybatis.dao.BaseDao;
 import com.centit.framework.system.po.OptLog;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public interface OptLogDao{
+public interface OptLogDao  extends BaseDao {
 	//生成一个新的id序列	 S_SYS_LOG
 	Long createNewLogId();
 	

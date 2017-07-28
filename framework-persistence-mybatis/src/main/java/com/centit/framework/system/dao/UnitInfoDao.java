@@ -3,13 +3,14 @@ package com.centit.framework.system.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.centit.framework.mybatis.dao.BaseDao;
 import org.springframework.stereotype.Repository;
 
 import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserInfo;
 
 @Repository
-public interface UnitInfoDao{
+public interface UnitInfoDao extends BaseDao {
 	
 	 String saveNewObject(UnitInfo unitInfo);
 	
