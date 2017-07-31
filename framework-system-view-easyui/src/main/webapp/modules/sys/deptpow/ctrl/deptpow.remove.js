@@ -16,6 +16,9 @@ define(function(require) {
                 }
 			}).then(function() {
             	table.treegrid('remove', data.unitCode);
+				var layout = $('#deptpow_panel').layout('panel', 'east');
+				layout.panel('setTitle','组织信息');
+				layout.panel('clear');
             });
 		}
 	});
