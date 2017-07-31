@@ -196,8 +196,12 @@ public class UnitInfoController extends BaseController {
     @RequestMapping(method = RequestMethod.POST)
     public void create(@Valid UnitInfo unitInfo, HttpServletRequest request,HttpServletResponse response) {
 
-        unitInfo.setUnitCode(sysUnitManager.getNextKey());
-        
+        if(!sysUnitManager.isUniqueName(unitInfo)){
+            JsonResultUtils.writeErrorMessageJson(
+                    ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                    "机构名"+unitInfo.getUnitName()+"已存在，请更换！", response);
+            return;
+        }
         sysUnitManager.saveNewUnitInfo(unitInfo);
 
         JsonResultUtils.writeSingleDataJson(unitInfo, response);
@@ -224,7 +228,12 @@ public class UnitInfoController extends BaseController {
         UnitInfo dbUnitInfo = sysUnitManager.getObjectById(unitCode);
         if (null == dbUnitInfo) {
             JsonResultUtils.writeErrorMessageJson("机构不存在", response);
-
+            return;
+        }
+        if(!sysUnitManager.isUniqueName(unitInfo)){
+            JsonResultUtils.writeErrorMessageJson(
+                    ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                    "机构名"+unitInfo.getUnitName()+"已存在，请更换！", response);
             return;
         }
         /*********log*********/
@@ -274,18 +283,6 @@ public class UnitInfoController extends BaseController {
                 (statusValue) ? "是" : "否");
         OperationLogCenter.log(request,optId,unitCode, OperationLog.P_OPT_LOG_METHOD_U,  optContent);
         /*********log*********/
-    }
-
-    /**
-     * 保存前获取机构主键，通过序列生成
-     *
-     * @param response HttpServletResponse
-     */
-    @RequestMapping(value = "/nextunitcode", method = RequestMethod.GET)
-    public void getNextUnitCode(HttpServletResponse response) {
-        String nextKey = sysUnitManager.getNextKey();
-
-        JsonResultUtils.writeSingleDataJson(nextKey, response);
     }
 
     /**

@@ -92,4 +92,6 @@ public interface UnitInfoDao {
      List<UnitInfo> listSubUnitsByUnitPaht(String unitPath);
 
      List<String> getAllParentUnit();
+
+    UnitInfo getPeerUnitByName(String unitName, String parentCode, String unitCode);
 }

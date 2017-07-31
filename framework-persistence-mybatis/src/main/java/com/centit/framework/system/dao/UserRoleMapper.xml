@@ -40,7 +40,7 @@
 			 and u.ROLECODE not in (select ROLECODE from F_ROLEINFO where UNITCODE is not null)
 		</if>
 		<if test="userCode_isValid != null  and userCode_isValid != '' ">
-			 and u.USERCODE in (select USERCODE from F_ROLEINFO where ISVALID =#{USERCODE_ISVALID})
+			 and u.USERCODE in (select USERCODE from F_ROLEINFO where ISVALID =#{userCode_isValid})
 		</if>
 	</sql>
 	

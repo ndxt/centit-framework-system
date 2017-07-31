@@ -4,7 +4,6 @@ import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserInfo;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -20,8 +19,6 @@ public interface SysUnitManager{
 
     List<UserInfo> getRelationUsers(String unitCode);
  
-    String getNextKey();
-
     String getUnitCode(String depno);
 
     UnitInfo getUnitByName(String name);
@@ -35,7 +32,10 @@ public interface SysUnitManager{
      */
     void changeStatus(String unitCode, String isValid);
     void deleteUnitInfo(UnitInfo unitinfo);
-    Serializable saveNewUnitInfo(UnitInfo unitinfo);
+    String saveNewUnitInfo(UnitInfo unitinfo);
+
+    boolean isUniqueName(UnitInfo unitInfo);
+
     void updateUnitInfo(UnitInfo unitinfo);
     List<UnitInfo> listAllSubObjects(String primaryUnit);
 	List<UnitInfo> listAllSubObjectsAsSort(String primaryUnit);

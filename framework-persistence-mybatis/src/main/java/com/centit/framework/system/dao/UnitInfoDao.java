@@ -3,6 +3,7 @@ package com.centit.framework.system.dao;
 import com.centit.framework.mybatis.dao.BaseDao;
 import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserInfo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -95,4 +96,8 @@ public interface UnitInfoDao extends BaseDao {
      List<UnitInfo> listSubUnitsByUnitPaht(String unitPath);
 
      List<String> getAllParentUnit();
+
+    UnitInfo getPeerUnitByName(@Param("unitName") String unitName,
+                               @Param("parentUnit") String parentUnit,
+                               @Param("unitCode") String unitCode);
 }

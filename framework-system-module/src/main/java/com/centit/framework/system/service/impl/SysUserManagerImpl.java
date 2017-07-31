@@ -129,9 +129,6 @@ public class SysUserManagerImpl implements SysUserManager {
         userInfoDao.saveObject(user);
     }
 
-
-
-
     @CacheEvict(value = "UserInfo",allEntries = true)
     @Transactional
     public void saveObject(UserInfo sysuser) {
