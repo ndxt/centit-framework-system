@@ -20,7 +20,7 @@ define(function(require) {
 	        new DeptRoleOperate('deptrole_operate'),
 	        DeptRoleUser
 	    ]);
-		var DeptRoleUserPanel = $('#deptroleinfo_sub_layout').layout('panel', 'east');
+
 		var selectedIndex=null;
 		// @override
 		this.load = function(panel) {
@@ -42,7 +42,7 @@ define(function(require) {
 				onClickRow: function(index, row) {
 					if (selectedIndex == index) return;
 					selectedIndex = index;
-					
+					var DeptRoleUserPanel = $('#roleinfo_layout').layout('panel', 'east');
 					DeptRoleUserPanel.data('panel').options.onLoad = function() {
 						DeptRoleUser.init(DeptRoleUserPanel, row);
 					};
