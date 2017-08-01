@@ -1,5 +1,5 @@
 <div class="easyui-layout" id="roleinfo_layout" data-options="fit:true">
-	<div data-options="region:'center'">
+	<div data-options="region:'center'" style="width:50%">
 <div class="easyui-panel search-body" cls="search" style="width: 100%;">
 	<form id="deptroleform">
 		<div class="search-item">
@@ -27,6 +27,9 @@
 		</div>
 		
 		<a class="easyui-linkbutton btn-search" iconCls="icon-search"><p  id="b@btn.search">搜索</p></a>
+		<a class="easyui-linkbutton" style="margin-top:8px;" iconcls="icon-reload" onclick="javascript:$('#deptroleform').form('clear');$('.defaultChecked').prop('checked','true');" group="" id="">
+			<p>重置</p>
+		</a>
 	</form>
 </div>
 
