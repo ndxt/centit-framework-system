@@ -43,11 +43,11 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
      */
     @Override
     @Transactional
-    public String saveNewObject(InnerMsgRecipient recipient){
+    public void saveNewObject(InnerMsgRecipient recipient){
         String id=DatabaseOptUtils.getNextKeyBySequence(this, "S_RECIPIENT",16);
         recipient.setId(id);
         super.saveNewObject(recipient);
-        return id;
+//        return id;
     }
     
     /*

@@ -17,7 +17,7 @@ public interface RolePowerDao {
 
 	List<RolePower> listObjectsAll();
 
-    RolePower mergeObject(RolePower rolePowers);
+    void mergeObject(RolePower rolePowers);
 	
 	void deleteObject(RolePower rolePowers);
 	

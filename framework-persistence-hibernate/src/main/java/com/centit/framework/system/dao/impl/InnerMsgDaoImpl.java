@@ -33,11 +33,11 @@ public class InnerMsgDaoImpl extends BaseDaoImpl<InnerMsg, String> implements In
      */
     @Override
     @Transactional
-    public String saveNewObject(InnerMsg o) {
+    public void saveNewObject(InnerMsg o) {
         String msgCode = DatabaseOptUtils.getNextKeyBySequence(this, "S_MSGCODE",16);
         o.setMsgCode(msgCode);
         super.saveNewObject(o);
-        return msgCode;
+//        return msgCode;
     }
     
 }

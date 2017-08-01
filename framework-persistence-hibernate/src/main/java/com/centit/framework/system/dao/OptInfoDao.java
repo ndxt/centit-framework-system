@@ -21,11 +21,11 @@ public interface OptInfoDao {
 	
 	 void deleteObject(OptInfo optMethod);
 
-    OptInfo mergeObject(OptInfo optMethod);
+	void mergeObject(OptInfo optMethod);
 	
 	 void deleteObjectById(String optId);
-			
-	 String saveNewObject(OptInfo optMethod);
+
+	void saveNewObject(OptInfo optMethod);
 	
 	//"select count(1) as hasChildren from OptInfo where preOptId = ?",optId
 	 int countChildrenSum(String optId);

@@ -9,7 +9,7 @@ public interface InnerMsgDao {
     
 	 InnerMsg getObjectById(String msgCode);
 
-    InnerMsg mergeObject(InnerMsg innerMsg);
+    void mergeObject(InnerMsg innerMsg);
 	
 	 void deleteObject(InnerMsg innerMsg);
 			
@@ -19,7 +19,7 @@ public interface InnerMsgDao {
      * @return String
      */
     // String msgCode = DatabaseOptUtils.getNextKeyBySequence(this, "S_MSGCODE",16);
-     String saveNewObject(InnerMsg o);
+    void saveNewObject(InnerMsg o);
     
 	 List<InnerMsg> listObjects(Map<String, Object> filterMap);
 	

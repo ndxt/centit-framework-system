@@ -90,7 +90,7 @@ public class SysUserUnitManagerImpl
         }
         
         if(StringBaseOpt.isNvl(userunit.getUserUnitId())){
-        	userunit.setUserUnitId(String.valueOf(userUnitDao.getNextKey()));
+        	userunit.setUserUnitId(userUnitDao.getNextKey());
         } 
 
         if ("T".equals(userunit.getIsPrimary())) {

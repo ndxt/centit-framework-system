@@ -1,20 +1,5 @@
 package com.centit.framework.system.controller;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.core.common.JsonResultUtils;
 import com.centit.framework.core.common.ResponseData;
@@ -24,6 +9,19 @@ import com.centit.framework.system.po.UserQueryFilter;
 import com.centit.framework.system.service.UserQueryFilterManager;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.StringBaseOpt;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 /**
  * UserQueryFilter  Controller.
  * create by scaffold 2016-02-29 
@@ -122,8 +120,8 @@ public class UserQueryFilterController  extends BaseController {
     	
     	if(StringBaseOpt.isNvl(userQueryFilter.getUserCode()))
     		userQueryFilter.setUserCode(super.getLoginUserCode(request));
-    	Serializable pk = userQueryFilterMag.saveNewObject(userQueryFilter);
-        JsonResultUtils.writeSingleDataJson(pk,response);
+    	userQueryFilterMag.saveNewObject(userQueryFilter);
+        JsonResultUtils.writeSingleDataJson(userQueryFilter.getFilterNo(),response);
     }
     
     /**

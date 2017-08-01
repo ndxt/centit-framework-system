@@ -66,11 +66,11 @@ public class OptLogDaoImpl extends BaseDaoImpl<OptLog, Long> implements OptLogDa
 
     @Override
     @Transactional
-    public OptLog mergeObject(OptLog o) {
+    public void mergeObject(OptLog o) {
         if (null == o.getLogId()) {
             o.setLogId(DatabaseOptUtils.getNextLongSequence(this, "S_SYS_LOG"));
         }
-        return super.mergeObject(o);
+       /* return */super.mergeObject(o);
     }
 
     @Transactional

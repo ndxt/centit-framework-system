@@ -12,13 +12,13 @@ public interface DataDictionaryDao {
 	
 	DataDictionary getObjectById(DataDictionaryId dd);
 
-    DataDictionaryId saveNewObject(DataDictionary dataDictionary);
+    void saveNewObject(DataDictionary dataDictionary);
 	
 	void deleteObject(DataDictionary dataDictionary);
 	
 	void deleteObjectById(DataDictionaryId dd);
 
-    DataDictionary mergeObject(DataDictionary dataDictionary);
+    void mergeObject(DataDictionary dataDictionary);
 	//listObjectsAll("FROM DataDictionary ORDER BY id.catalogCode, dataOrder");
     List<DataDictionary> getWholeDictionary();
     

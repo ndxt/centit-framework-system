@@ -17,8 +17,8 @@ public interface UserUnitDao {
 	 List<UserUnit> listObjectsAll();
 	
 	 UserUnit getObjectById(String userUnitId);
-	
-	 String saveNewObject(UserUnit object);
+
+    void saveNewObject(UserUnit object);
 	
 	 void updateObject(UserUnit object);
 	
@@ -88,5 +88,5 @@ public interface UserUnitDao {
      * super.saveObject(userunits.get(i));
      * @param userunits UserUnit
      */
-    UserUnit mergeObject(UserUnit userunits);
+    void mergeObject(UserUnit userunits);
 }
