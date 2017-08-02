@@ -48,7 +48,6 @@ public class SpringSecurityDaoConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CentitSessionRegistry centitSessionRegistry;
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()

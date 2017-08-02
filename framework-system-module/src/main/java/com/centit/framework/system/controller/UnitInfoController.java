@@ -314,9 +314,9 @@ public class UnitInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{unitCode}/users", method = RequestMethod.GET)
-    public void listUnitUsers(@PathVariable String unitCode, String[] field, String primary, PageDesc pageDesc, HttpServletResponse response) {
-       
-        
+    public void listUnitUsers(@PathVariable String unitCode, String[] field, String primary,
+                              PageDesc pageDesc, HttpServletResponse response) {
+
         Map<String, Object> filterMap = new HashMap<>();
         filterMap.put("unitCode", unitCode);
         if (StringUtils.isNotBlank(primary)) {
