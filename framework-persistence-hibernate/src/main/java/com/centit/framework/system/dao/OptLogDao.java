@@ -11,8 +11,8 @@ public interface OptLogDao  {
 	Long createNewLogId();
 	
 	OptLog getObjectById(Long logId);
-	
-	Long saveNewObject(OptLog o);
+
+    void saveNewObject(OptLog o);
 	
 	void deleteObjectById(Long logId);
 
@@ -20,7 +20,7 @@ public interface OptLogDao  {
     List<String> listOptIds();
 
     //设置主键 DatabaseOptUtils.getNextLongSequence(this, "S_SYS_LOG"));
-    OptLog mergeObject(OptLog o);
+    void mergeObject(OptLog o);
 
     //"delete from OptLog o where 1=1 ";  "and o.optTime > ?" "and o.optTime < ?";
     //参数 String beginDate, String endDate

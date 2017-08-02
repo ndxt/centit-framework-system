@@ -341,5 +341,10 @@
 	<select id="getAllParentUnit"  resultType="String">
 			select distinct t.parentunit from f_unitinfo t
 	</select>
-	
+
+	<select id="getPeerUnitByName" parameterType="map" resultMap="UnitInfo">
+		<include refid="coreSql" />
+		where u.UNITNAME = #{unitName} and u.PARENTUNIT = #{parentUnit} and u.UNITCODE <![CDATA[ <> ]]> #{unitCode}
+	</select>
+
 </mapper>

@@ -37,7 +37,7 @@ public interface UserUnitDao extends BaseDao {
      List<UserUnit> listObjectByUserUnit(@Param("userCode") String userCode, @Param("unitCode") String unitCode);
     
     // return "s"+ DatabaseOptUtils.getNextKeyBySequence(this, "S_USER_UNIT_ID", 9);
-     Long getNextKey();
+     String getNextKey();
     
     //"update UserUnit set isPrimary='F',lastModifyDate= ?  where userCode = ? and (unitCode <> ? or userStation <> ? or userRank <> ?) and isPrimary='T'",
      void deleteOtherPrimaryUnit(UserUnit object);
@@ -91,5 +91,5 @@ public interface UserUnitDao extends BaseDao {
      * super.saveObject(userunits.get(i));
      * @param userunits UserUnit
      */
-     void mergeObject(UserUnit userunits); 
+    void mergeObject(UserUnit userunits);
 }

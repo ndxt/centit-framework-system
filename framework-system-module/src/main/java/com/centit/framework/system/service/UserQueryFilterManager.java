@@ -1,11 +1,11 @@
 package com.centit.framework.system.service;
 
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.system.po.UserQueryFilter;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * UserQueryFilter  Service.
@@ -17,26 +17,25 @@ import com.centit.framework.system.po.UserQueryFilter;
 public interface UserQueryFilterManager
 {
 	
-	public void mergeObject(UserQueryFilter userQueryFilter);
+	void mergeObject(UserQueryFilter userQueryFilter);
 	
-	public Long saveNewObject(UserQueryFilter userQueryFilter);
+	void saveNewObject(UserQueryFilter userQueryFilter);
 	
-	public List<UserQueryFilter>listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
-	 
-	public JSONArray listUserQueryFiltersAsJson(
-            String[] fields,
-            Map<String, Object> filterMap, PageDesc pageDesc);
+	List<UserQueryFilter>listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
+		JSONArray listUserQueryFiltersAsJson(
+     String[] fields,
+     Map<String, Object> filterMap, PageDesc pageDesc);
 	
-	public List<UserQueryFilter> listUserQueryFilterByModle(String userCode,String modelCode);
+	List<UserQueryFilter> listUserQueryFilterByModle(String userCode,String modelCode);
 	
-	public Long getNextFilterKey();
+	Long getNextFilterKey();
 	
-	public Long saveUserDefaultFilter(UserQueryFilter userQueryFilter);
+	Long saveUserDefaultFilter(UserQueryFilter userQueryFilter);
 	
-	public UserQueryFilter getUserDefaultFilter(String userCode,String modelCode);
+	UserQueryFilter getUserDefaultFilter(String userCode,String modelCode);
 	
-	public UserQueryFilter getUserQueryFilter(Long filterNo);
+	UserQueryFilter getUserQueryFilter(Long filterNo);
 	
-	public boolean deleteUserQueryFilter(Long filterNo);
+	boolean deleteUserQueryFilter(Long filterNo);
 	
 }

@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -98,11 +97,6 @@ public class SysUnitManagerImpl implements SysUnitManager {
     }
 
     @Override
-    public String getNextKey() {
-        return unitInfoDao.getNextKey();
-    }   
-   
-    @Override
     public UnitInfo getUnitByName(String name) {
         return unitInfoDao.getUnitByName(name);
     }
@@ -140,15 +134,26 @@ public class SysUnitManagerImpl implements SysUnitManager {
     @Override
     @CacheEvict(value = "UnitInfo",allEntries = true)
     @Transactional
-    public Serializable saveNewUnitInfo(UnitInfo unitinfo){
-    	UnitInfo parentUnit = unitInfoDao.getObjectById(unitinfo.getParentUnit());
-    	if(parentUnit==null)
-    		unitinfo.setUnitPath("/"+unitinfo.getUnitCode());
-    	else
-    		unitinfo.setUnitPath(parentUnit.getUnitPath()+"/"+unitinfo.getUnitCode());
-    	
-    	 unitInfoDao.saveNewObject(unitinfo);
+    public String saveNewUnitInfo(UnitInfo unitinfo){
+
+        unitinfo.setUnitCode(unitInfoDao.getNextKey());
+        UnitInfo parentUnit = unitInfoDao.getObjectById(unitinfo.getParentUnit());
+
+        if (parentUnit == null)
+            unitinfo.setUnitPath("/" + unitinfo.getUnitCode());
+        else
+            unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitCode());
+
+        unitInfoDao.saveNewObject(unitinfo);
         return unitinfo.getUnitCode();
+    }
+
+    @Override
+    @Transactional
+    public boolean isUniqueName(UnitInfo unitInfo){
+        UnitInfo dbUnitInfo = unitInfoDao.getPeerUnitByName(
+                unitInfo.getUnitName(), unitInfo.getParentUnit(), unitInfo.getUnitCode());
+        return dbUnitInfo == null ? true : false;
     }
     
     @Override

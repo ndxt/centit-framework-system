@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface InnerMsgRecipientDao {
 
-    InnerMsgRecipient mergeObject(InnerMsgRecipient optMethod);
+    void mergeObject(InnerMsgRecipient optMethod);
 	
 	 void deleteObject(InnerMsgRecipient optMethod);
 			
@@ -27,7 +27,7 @@ public interface InnerMsgRecipientDao {
      * @param recipient InnerMsgRecipient
      * @return String
      */
-     String saveNewObject(InnerMsgRecipient recipient);
+    void saveNewObject(InnerMsgRecipient recipient);
     
     /**
      * 两人间来往消息列表

@@ -13,7 +13,7 @@ public interface UserSettingDao {
 	 * update or insert
 	 * @param userSetting userSetting
 	 */
-    UserSetting mergeObject(UserSetting userSetting);
+    void mergeObject(UserSetting userSetting);
 
     // return listObjectsAll("From UserSetting where cid.userCode=?",userCode);
      List<UserSetting> getUserSettingsByCode(String userCode);

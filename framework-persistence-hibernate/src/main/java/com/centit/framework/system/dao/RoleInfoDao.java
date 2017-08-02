@@ -15,13 +15,13 @@ public interface RoleInfoDao {
      List<RoleInfo>  pageQuery(Map<String, Object> pageQureyMap);
 
 	 List<RoleInfo> listObjectsAll();
-	
-	 String saveNewObject(RoleInfo o);
+
+    void saveNewObject(RoleInfo o);
 
 	 void deleteObjectById(String roleCode);
 
-    RoleInfo mergeObject(RoleInfo o);
-	
+    void mergeObject(RoleInfo o);
+
 	
 	 RoleInfo getObjectById(String roleCode);
 	

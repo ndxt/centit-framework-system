@@ -17,9 +17,9 @@ public interface UserQueryFilterDao {
 	
 	void deleteObject(UserQueryFilter userQueryFilter);
 
-	UserQueryFilter mergeObject(UserQueryFilter userQueryFilter);
-	
-	Long saveNewObject(UserQueryFilter userQueryFilter);
+	void mergeObject(UserQueryFilter userQueryFilter);
+
+	void saveNewObject(UserQueryFilter userQueryFilter);
 	
 	
     int  pageCount(Map<String, Object> filterDescMap);

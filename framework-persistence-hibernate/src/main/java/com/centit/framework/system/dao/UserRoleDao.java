@@ -9,11 +9,11 @@ import java.util.Map;
 
 public interface UserRoleDao {
 
-    UserRoleId saveNewObject(UserRole dbUserRole);
+    void saveNewObject(UserRole dbUserRole);
 	
 	 List<UserRole> listObjects();
 
-    UserRole mergeObject(UserRole dbUserRole);
+    void mergeObject(UserRole dbUserRole);
 	
 	 void deleteObject(UserRole dbUserRole);
 	

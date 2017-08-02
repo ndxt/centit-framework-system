@@ -158,4 +158,24 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
         return (int)DatabaseOptUtils.getSingleObjectBySql(this,
                 "select count(1) as subunits from F_UNITINFO where PARENTUNIT = ?",  unitCode);
     }
+
+    /**
+     * 根据名称获取同级机构
+     * @param unitName
+     * @param parentCode
+     * @return
+     */
+    @Override
+    public UnitInfo getPeerUnitByName(String unitName, String parentCode, String unitCode) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("unitName", unitName);
+        map.put("parentUnit", parentCode);
+        map.put("unitCode", unitCode);
+        StringBuilder sql = new StringBuilder();
+        sql.append("from UnitInfo u where u.unitName = :unitName and u.parentUnit = :parentUnit and u.unitCode <> :unitCode");
+        List<UnitInfo> unitInfos = listObjectsByNamedHql(sql.toString(), map, -1, -1);
+        if(unitInfos==null || unitInfos.size()==0)
+            return null;
+        return unitInfos.get(0);
+    }
 }

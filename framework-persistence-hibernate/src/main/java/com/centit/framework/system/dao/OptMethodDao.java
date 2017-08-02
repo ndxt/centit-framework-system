@@ -10,13 +10,13 @@ public interface OptMethodDao {
 	
 	 OptMethod getObjectById(String optCode);
 
-    OptMethod mergeObject(OptMethod optMethod);
+    void mergeObject(OptMethod optMethod);
 	
 	 void deleteObject(OptMethod optMethod);
 	
 	 void deleteObjectById(String optCode);
-			
-	 String saveNewObject(OptMethod optMethod);
+
+    void saveNewObject(OptMethod optMethod);
 		
 	
     //return listObjectsAll("FROM OptMethod WHERE optId =?", sOptID);

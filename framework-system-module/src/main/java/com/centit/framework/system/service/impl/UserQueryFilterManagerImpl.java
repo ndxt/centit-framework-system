@@ -133,8 +133,8 @@ public class UserQueryFilterManagerImpl implements UserQueryFilterManager{
 	}
 
 	@Override
-	public Long saveNewObject(UserQueryFilter userQueryFilter) {
-		return userQueryFilterDao.saveNewObject(userQueryFilter);
+	public void saveNewObject(UserQueryFilter userQueryFilter) {
+		/*return*/ userQueryFilterDao.saveNewObject(userQueryFilter);
 	}
 
 	@Override

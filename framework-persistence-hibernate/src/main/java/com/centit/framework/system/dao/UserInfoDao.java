@@ -8,9 +8,9 @@ import java.util.Map;
 
 public interface UserInfoDao {
 
-    UserInfo mergeObject(UserInfo userInfo);
-	
-	String saveNewObject(UserInfo userInfo);
+    void mergeObject(UserInfo userInfo);
+
+    void saveNewObject(UserInfo userInfo);
 	
 	void deleteObjectById(String userCode);
 	

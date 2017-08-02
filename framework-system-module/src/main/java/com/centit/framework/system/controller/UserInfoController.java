@@ -102,8 +102,7 @@ public class UserInfoController extends BaseController {
     public void create(@Valid UserInfo userInfo,HttpServletRequest request, HttpServletResponse response) {
         
     	UserInfo dbuserinfo=sysUserManager.loadUserByLoginname(userInfo.getLoginName());
-    	if(null!=dbuserinfo)
-    	{
+    	if(null!=dbuserinfo) {
     		 JsonResultUtils.writeErrorMessageJson(
     				 ResponseData.ERROR_FIELD_INPUT_CONFLICT,
     				 "登录名"+userInfo.getLoginName()+"已存在，请更换！", response);

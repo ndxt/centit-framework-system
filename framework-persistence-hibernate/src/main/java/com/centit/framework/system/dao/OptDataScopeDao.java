@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface OptDataScopeDao {
 
-    OptDataScope mergeObject(OptDataScope optDataScope);
-	
+    void mergeObject(OptDataScope optDataScope);
+
 	void deleteObject(OptDataScope optDataScope);
 	
     //return listObjectsAll("FROM OptDataScope WHERE optId =?", sOptID);

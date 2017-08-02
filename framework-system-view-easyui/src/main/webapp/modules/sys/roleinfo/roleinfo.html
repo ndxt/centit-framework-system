@@ -1,6 +1,6 @@
 <div class="easyui-layout" id="roleinfo_layout" data-options="fit:true">
-	<div data-options="region:'center'">
-		<div class="easyui-panel search-body" cls="search" style="width: 100%; border-width: 0 0 1px 0;">
+	<div data-options="region:'center'" style="width:50%;">
+		<div class="easyui-panel search-body" cls="search" style="width: 100%">
 			<form class="clearFromValue" id="roleinfoform">
 				<div class="search-item">
 					<label id="d@encoding">编码</label>
@@ -50,11 +50,8 @@
 		</table>
 	</div>
 	
-	<div data-options="region:'east', split:true" style="width:50%">
-		<div class="easyui-layout" data-options="fit:true" id="roleinfo_sub_layout">
-			<div data-options="region:'east', split:true, collapsible: false, minWidth: 320" title="角色用户">
-			</div>
-		</div>
+	<div data-options="region:'east', split: true, collapsible: false" style="width:50%" title="角色用户">
+
 	</div>
 </div>
 

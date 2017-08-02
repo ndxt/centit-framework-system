@@ -11,9 +11,9 @@ public interface DataCatalogDao{
 	
 	DataCatalog getObjectById(String catalogCode);
 	
-	String saveNewObject(DataCatalog dataCatalog);
+	void saveNewObject(DataCatalog dataCatalog);
 
-    DataCatalog mergeObject(DataCatalog dataCatalog);
+    void mergeObject(DataCatalog dataCatalog);
 	
 	void deleteObjectById(String catalogCode);
 	//listObjectsAll("FROM DataCatalog WHERE catalogStyle='F'");

@@ -10,9 +10,9 @@ public interface UnitInfoDao {
 
     UnitInfo getObjectById(String unitCode);
 
-	 String saveNewObject(UnitInfo unitInfo);
+    void saveNewObject(UnitInfo unitInfo);
 
-    UnitInfo mergeObject(UnitInfo unitInfo);
+    void mergeObject(UnitInfo unitInfo);
 	
 	 void deleteObjectById(String unitCode);
 	
@@ -92,4 +92,6 @@ public interface UnitInfoDao {
      List<UnitInfo> listSubUnitsByUnitPaht(String unitPath);
 
      List<String> getAllParentUnit();
+
+    UnitInfo getPeerUnitByName(String unitName, String parentCode, String unitCode);
 }
