@@ -20,22 +20,22 @@ import org.hibernate.validator.constraints.NotBlank;
 public class OptFlowNoPoolId implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "OWNERCODE")
+    @Column(name = "OWNER_CODE")
     @NotBlank(message = "字段不能为空")
     @Length(max = 8, message = "字段长度不能大于{max}")
     private String ownerCode;
 
-    @Column(name = "CODEDATE")
+    @Column(name = "CODE_DATE")
     @NotNull(message = "字段不能为空")
     @Temporal(TemporalType.DATE)
     private Date codeDate;
 
-    @Column(name = "CODECODE")
+    @Column(name = "CODE_CODE")
     @NotBlank(message = "字段不能为空")
     @Length(max = 16, message = "字段长度不能大于{max}")
     private String codeCode;
 
-    @Column(name = "CURNO")
+    @Column(name = "CUR_NO")
     @NotBlank(message = "字段不能为空")
     @Length(max = 6, message = "字段长度不能大于{max}")
     private Long curNo;

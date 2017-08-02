@@ -15,7 +15,7 @@ define(function(require) {
 	RoleUser = new RoleUser('roleinfo_user');
 	// 角色信息列表
 	var RoleInfo = Page.extend(function() {
-		var RoleUserPanel = $('#roleinfo_sub_layout').layout('panel', 'east');
+		//var RoleUserPanel = $('#roleinfo_sub_layout').layout('panel', 'east');
 		
 		
 		this.injecte([
@@ -48,12 +48,14 @@ define(function(require) {
 				onClickRow: function(index, row) {
 					if (selectedIndex == index) return;
 					selectedIndex = index;
+					var RoleUserPanel = $('#roleinfo_layout').layout('panel', 'east');
 					
 					RoleUserPanel.data('panel').options.onLoad = function() {
 						RoleUser.init(RoleUserPanel, row);
 					};
 					RoleUserPanel.panel('setTitle', row.roleName + ' 角色用户');
 					RoleUserPanel.panel('refresh', Config.ViewContextPath + 'modules/sys/roleinfo/roleinfo-user.html');
+
 				}
 			});
 		};

@@ -19,10 +19,10 @@ public class OptFlowNoInfo implements java.io.Serializable {
     @EmbeddedId
     private OptFlowNoInfoId cid;
 
-    @Column(name = "CURNO")
+    @Column(name = "CUR_NO")
     private Long curNo;
 
-    @Column(name = "LASTCODEDATE")
+    @Column(name = "LAST_CODE_DATE")
     private java.util.Date lastCodeDate;
 
     // Constructors

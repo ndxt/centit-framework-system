@@ -103,7 +103,7 @@ public class QueryFilterCondition implements java.io.Serializable {
 	@Length(max = 2000, message = "字段长度不能大于{max}")
 	private String  selectJson;
 
-	@Column(name = "CREATEDATE", nullable = false)
+	@Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
 	// Constructors

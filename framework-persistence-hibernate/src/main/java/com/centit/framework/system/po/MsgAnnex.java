@@ -24,15 +24,15 @@ public class MsgAnnex implements Serializable{
     
     @ManyToOne
     @JSONField(serialize=false)
-    @JoinColumn(name = "MsgCode", insertable = false, updatable = false)
+    @JoinColumn(name = "Msg_Code", insertable = false, updatable = false)
     private InnerMsg mInnerMsg;//
     
-    @Column(name = "INFOCODE")
+    @Column(name = "INFO_CODE")
     @Length( max=16,message = "字段长度必须小于{max}")
     private String infoCode;//消息代码
     
     @Id
-    @Column(name="MSGANNEXID")
+    @Column(name="MSG_ANNEX_ID")
     @GeneratedValue(generator = "assignedGenerator")
     @GenericGenerator(name = "assignedGenerator", strategy = "assigned")
     private String msgAnnexId;//附件主键

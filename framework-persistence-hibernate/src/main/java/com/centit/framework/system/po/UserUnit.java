@@ -33,43 +33,43 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "USERUNITID")
+    @Column(name = "USER_UNIT_ID")
     @GeneratedValue(generator = "assignedGenerator")
     @GenericGenerator(name = "assignedGenerator", strategy = "assigned")
     @Length(max = 64)
     private String userUnitId;
     
-    @Column(name = "UNITCODE")
+    @Column(name = "UNIT_CODE")
     @DictionaryMap(fieldName="unitName",value="unitCode")
     private String unitCode; // 机构代码
 
-    @Column(name = "USERCODE")
+    @Column(name = "USER_CODE")
     @DictionaryMap(fieldName="userName",value="userCode")
     private String userCode; // 用户代码
 
-    @Column(name = "USERSTATION")
+    @Column(name = "USER_STATION")
     @Length(max = 32, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="userStationText",value="StationType")
     private String userStation; // 岗位
 
-    @Column(name = "USERRANK")
+    @Column(name = "USER_RANK")
     @Length(max = 32, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="userRankText",value="RankType")
     private String userRank; // 职务 
 
-    @Column(name = "RANKMEMO")
+    @Column(name = "RANK_MEMO")
     @Length(max = 256, message = "字段长度不能大于{max}")
     private String rankMemo; // 备注
 
-    @Column(name = "ISPRIMARY")
+    @Column(name = "IS_PRIMARY")
     @NotBlank(message = "字段不能为空")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String isPrimary; // 是否为主
 
-    @Column(name = "USERORDER")
+    @Column(name = "USER_ORDER")
     private Long userOrder;    //用户排序号
     
-    @Column(name = "CREATEDATE", nullable = false)
+    @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
 
@@ -92,7 +92,7 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
 	/**
 	 * UPDATEDATE(更新时间) 更新时间 
 	 */
-	@Column(name = "UPDATEDATE")
+	@Column(name = "UPDATE_DATE")
 	private Date  updateDate;
 	//结束
 	

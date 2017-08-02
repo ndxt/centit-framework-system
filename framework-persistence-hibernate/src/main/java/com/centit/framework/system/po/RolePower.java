@@ -32,11 +32,11 @@ public class RolePower implements IRolePower, EntityWithTimestamp, java.io.Seria
     @EmbeddedId
     private RolePowerId id; // 主键id
    
-    @Column(name = "CREATEDATE", nullable = false)
+    @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
 
-    @Column(name = "OPTSCOPECODES")
+    @Column(name = "OPT_SCOPE_CODES")
     @Length(max = 1000, message = "字段长度必须小于{max}")
     private String optScopeCodes;// 操作代码
     // Constructors
@@ -57,7 +57,7 @@ public class RolePower implements IRolePower, EntityWithTimestamp, java.io.Seria
 	/**
 	 * UPDATEDATE(更新时间) 更新时间 
 	 */
-	@Column(name = "UPDATEDATE")
+	@Column(name = "UPDATE_DATE")
 	private Date  updateDate;
 	//结束
 	

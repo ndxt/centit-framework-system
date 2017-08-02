@@ -21,40 +21,40 @@ public class OptMethod implements IOptMethod,EntityWithTimestamp, java.io.Serial
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "OPTCODE")
+    @Column(name = "OPT_CODE")
     @GeneratedValue(generator = "assignedGenerator")
     @GenericGenerator(name = "assignedGenerator", strategy = "assigned")
     private String optCode;// 操作代码
 
-    @Column(name = "OPTNAME")
+    @Column(name = "OPT_NAME")
     @Length(max = 100, message = "字段长度必须小于{max}")
     private String optName; // 操作名称
 
-    @Column(name = "OPTID")
+    @Column(name = "OPT_ID")
     private String optId; 
     
-    @Column(name = "OPTMETHOD")
+    @Column(name = "OPT_METHOD")
     @Length(max = 50, message = "字段长度必须小于{max}")
     private String optMethod;// 操作方法
 
-    @Column(name = "OPTDESC")
+    @Column(name = "OPT_DESC")
     @Length(max = 256, message = "字段长度必须小于{max}")
     private String optDesc; // 操作说明
 
-    @Column(name = "ISINWORKFLOW")
+    @Column(name = "IS_IN_WORKFLOW")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String isInWorkflow;// 是否是流程操作
 
-    @Column(name = "OPTURL")
+    @Column(name = "OPT_URL")
     @Length(max = 256, message = "字段长度必须小于{max}")
     private String optUrl;
 
-    @Column(name = "OPTREQ")
+    @Column(name = "OPT_REQ")
     @Length(max = 20, message = "字段长度必须小于{max}")
     private String optReq;
 
 
-    @Column(name = "CREATEDATE", nullable = false)
+    @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
 
@@ -74,13 +74,13 @@ public class OptMethod implements IOptMethod,EntityWithTimestamp, java.io.Serial
 	/**
 	 * UPDATEDATE(更新时间) 更新时间 
 	 */
-	@Column(name = "UPDATEDATE")
+	@Column(name = "UPDATE_DATE")
 	private Date  updateDate;
 	
 	/**
 	 * 方法排序号
 	 */
-	@Column(name = "OPTORDER")
+	@Column(name = "OPT_ORDER")
 	private Integer optOrder;// 操作方法排序
 	//结束
 	

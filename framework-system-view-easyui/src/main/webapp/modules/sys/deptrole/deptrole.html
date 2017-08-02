@@ -1,4 +1,4 @@
-<div class="easyui-layout" id="roleinfo_layout" data-options="fit:true">
+<div class="easyui-layout" id="deptrole_layout" data-options="fit:true">
 	<div data-options="region:'center'" style="width:50%">
 <div class="easyui-panel search-body" cls="search" style="width: 100%;">
 	<form id="deptroleform">
@@ -43,7 +43,7 @@
 		<tr>
 			<th id="b1@encoding" data-options="field:'roleCode'" width="100" sortable="true">编码</th>
 			<th id="b1@name" data-options="field:'roleName'" width="125" sortable="true">名称</th>
-			<th id="b1@name" data-options="field:'isValid' ,
+			<th id="b@state" data-options="field:'isValid' ,
 			formatter:function(value, rowData, rowIndex){
 						  	if(value=='T') return '在用';
 						  	else if(value=='F') return '禁用';
@@ -71,12 +71,9 @@
 		<p>删除</p></a>
 </div>
 </div>
-<div data-options="region:'east', split:true" style="width:50%">
-		<div class="easyui-layout" data-options="fit:true" id="deptroleinfo_sub_layout">
-			<div data-options="region:'east', split:true, collapsible: false, minWidth: 320" title="角色用户">
-			</div>
-		</div>
-	</div>
+<div data-options="region:'east', split:true" style="width:50%" title="角色用户">
+
+</div>
 </div>
 <script>
 	$.parser.onComplete = function(panel) {

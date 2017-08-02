@@ -41,18 +41,18 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     private static final long serialVersionUID = -1753127177790732963L;
 
     @Id
-    @Column(name = "USERCODE")
+    @Column(name = "USER_CODE")
     @GeneratedValue(generator = "assignedGenerator")
     @GenericGenerator(name = "assignedGenerator", strategy = "assigned")
     private String userCode; // 用户代码
 
     //密码不参与返回序列化
     @JSONField(serialize = false)
-    @Column(name = "USERPIN")
+    @Column(name = "USER_PIN")
     @Length(max = 100, message = "字段长度不能大于{max}")
     private String userPin; // 用户密码
 
-    @Column(name = "ISVALID")
+    @Column(name = "IS_VALID")
     @NotBlank(message = "字段不能为空")
     @Pattern(regexp = "[TFA]", message = "字段值必须是T或F,A为新建可以删除")
     private String isValid; // 状态
@@ -61,77 +61,77 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     /**
      * 'G发布任务/R接收任务/S系统管理';
      */
-    @Column(name = "USERTYPE")
+    @Column(name = "USER_TYPE")
     @Length(max = 1, message = "字段长度不能大于{max}")
     private String userType; // 用户类别
 
-    @Column(name = "LOGINNAME")
+    @Column(name = "LOGIN_NAME")
     @NotBlank(message = "字段不能为空")
     @Length(max = 100, message = "字段长度不能大于{max}")
     private String loginName; // 用户登录名
 
-    @Column(name = "USERNAME")
+    @Column(name = "USER_NAME")
     @NotBlank(message = "字段不能为空")
     @Length(max = 300, message = "字段长度不能大于{max}")
     private String userName; // 用户姓名
 
-    @Column(name = "ENGLISHNAME")
+    @Column(name = "ENGLISH_NAME")
     @Length(max = 300, message = "字段长度不能大于{max}")
     private String englishName;// 用户英文姓名
     
-    @Column(name = "USERDESC")
+    @Column(name = "USER_DESC")
     @Length(max = 256, message = "字段长度不能大于{max}")
     private String userDesc; // 用户描述
 
-    @Column(name = "LOGINTIMES")
+    @Column(name = "LOGIN_TIMES")
     private Long loginTimes; // 登录次数
 
-    @Column(name = "ACTIVETIME")
+    @Column(name = "ACTIVE_TIME")
     @Temporal(TemporalType.DATE)
     private Date activeTime; // 最后一次登录时间
 
-    @Column(name = "PWDEXPIREDTIME")
+    @Column(name = "PWD_EXPIRED_TIME")
     @Temporal(TemporalType.DATE)
     private Date pwdExpiredTime; // 密码失效时间
     
-    @Column(name = "LOGINIP")
+    @Column(name = "LOGIN_IP")
     @Length(max = 16, message = "字段长度不能大于{max}")
     private String loginIp; // 登录地址
 
-    @Column(name = "ADDRBOOKID")
+    @Column(name = "ADDRBOOK_ID")
     @Range(min = 1, max = 999999999, message = "字段不能小于{min}大于{max}")
     private Long addrbookId; // 通讯id
 
-    @Column(name = "REGEMAIL")
+    @Column(name = "REG_EMAIL")
     @Email(message = "Email格式不正确")
     @Length(max = 60, message = "字段长度不能大于{max}")
     private String regEmail; // 注册email
 
-    @Column(name = "USERPWD")
+    @Column(name = "USER_PWD")
     @Length(max = 20, message = "字段长度不能大于{max}")
     @JSONField(serialize = false)
     private String userPwd;
 
-    @Column(name = "REGCELLPHONE")
+    @Column(name = "REG_CELL_PHONE")
     @Length(max = 15, message = "字段长度不能大于{max}")
     private String regCellPhone;
 
-    @Column(name = "USERWORD")
+    @Column(name = "USER_WORD")
     @Length(max = 100, message = "字段长度不能}大于{max}")
     private String userWord;
     
-    @Column(name = "USERTAG")
+    @Column(name = "USER_TAG")
     @Length(max = 100, message = "字段长度不能}大于{max}")
     private String userTag;
     
-    @Column(name = "USERORDER")
+    @Column(name = "USER_ORDER")
     @Range(max = 99999, message = "字段不能大于{max}")
     private Long userOrder; // 用户排序
     
-    @Column(name = "PRIMARYUNIT")
+    @Column(name = "PRIMARY_UNIT")
     private String primaryUnit;
     
-    @Column(name = "CREATEDATE", nullable = false)
+    @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
 
@@ -150,7 +150,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
 	/**
 	 * UPDATEDATE(更新时间) 更新时间 
 	 */
-	@Column(name = "UPDATEDATE")
+	@Column(name = "UPDATE_DATE")
 	private Date  updateDate;
 
 

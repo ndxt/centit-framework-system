@@ -16,11 +16,11 @@ public class FVUserOptListId implements java.io.Serializable {
 
     // Fields
     private static final long serialVersionUID = 1L;
-    @Column(name = "USERCODE")
+    @Column(name = "USER_CODE")
     @NotBlank(message = "字段不能为空")
     private String userCode;    //用户代码
 
-    @Column(name = "OPTCODE")
+    @Column(name = "OPT_CODE")
     @NotBlank(message = "字段不能为空")
     private String optcode;     //业务代码
 

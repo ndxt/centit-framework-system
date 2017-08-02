@@ -38,7 +38,7 @@ public class InnerMsgRecipient implements Serializable{
      */
     
     @ManyToOne
-    @JoinColumn(name="MSGCODE",updatable=false)
+    @JoinColumn(name="MSG_CODE",updatable=false)
     //@JSONField(serialize=false)
     private InnerMsg mInnerMsg;
     /**
@@ -53,7 +53,7 @@ public class InnerMsgRecipient implements Serializable{
     /**
      * 回复消息
      */
-    @Column(name = "REPLYMSGCODE")
+    @Column(name = "REPLY_MSG_CODE")
     private int replyMsgCode;
     
     /**
@@ -62,7 +62,7 @@ public class InnerMsgRecipient implements Serializable{
         A=机构为公告
         M=消息
      */
-    @Column(name = "RECEIVETYPE")
+    @Column(name = "RECEIVE_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String receiveType;
     
@@ -72,7 +72,7 @@ public class InnerMsgRecipient implements Serializable{
         C=抄送
         B=密送
      */
-    @Column(name = "MAILTYPE")
+    @Column(name = "MAIL_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String mailType;
     
@@ -82,7 +82,7 @@ public class InnerMsgRecipient implements Serializable{
         R=已读
         D=删除
      */
-    @Column(name = "MSGSTATE")
+    @Column(name = "MSG_STATE")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String msgState;
     

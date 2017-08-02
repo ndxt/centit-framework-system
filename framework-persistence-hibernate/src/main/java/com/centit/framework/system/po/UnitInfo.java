@@ -38,68 +38,68 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
     private static final long serialVersionUID = -2538006375160615889L;
 
     @Id
-    @Column(name = "UNITCODE")
+    @Column(name = "UNIT_CODE")
     @GeneratedValue(generator = "assignedGenerator")
     @GenericGenerator(name = "assignedGenerator", strategy = "assigned")
     private String unitCode; // 机构代码
 
-    @Column(name = "PARENTUNIT")
+    @Column(name = "PARENT_UNIT")
     @Length(max = 32, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="parentUnitName",value="unitCode")
     private String parentUnit; // 上级机构代码
 
-    @Column(name = "UNITTYPE")
+    @Column(name = "UNIT_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
     @DictionaryMap(fieldName="unitTypeText",value="UnitType")
     private String unitType; // 机构类别
 
-    @Column(name = "ISVALID")
+    @Column(name = "IS_VALID")
     @NotBlank(message = "字段不能为空")
     @Pattern(regexp = "[TFA]", message = "字段值必须是T或F,A为新建可以删除")
     private String isValid; // 状态
 
-    @Column(name = "UNITNAME")
+    @Column(name = "UNIT_NAME")
     @NotBlank(message = "字段不能为空")
     @Length(max = 300, message = "字段长度不能大于{max}")
     private String unitName;// 机构名称
 
-    @Column(name = "ENGLISHNAME")
+    @Column(name = "ENGLISH_NAME")
     @Length(max = 300, message = "字段长度不能大于{max}")
     private String englishName;// 机构英文名称      
     
-    @Column(name = "UNITSHORTNAME")
+    @Column(name = "UNIT_SHORT_NAME")
     @Length(max = 32, message = "字段长度不能大于{max}")
     private String unitShortName;
 
-    @Column(name = "UNITWORD")
+    @Column(name = "UNIT_WORD")
     @Length(max = 100, message = "字段长度不能大于{max}")
     private String unitWord;//机构自定义编码
 
-    @Column(name = "UNITTAG")
+    @Column(name = "UNIT_TAG")
     @Length(max = 100, message = "字段长度不能大于{max}")
     private String unitTag;//机构标识用于第三方系统关联
     
-    @Column(name = "UNITDESC")
+    @Column(name = "UNIT_DESC")
     @Length(max = 256, message = "字段长度不能大于{max}")
     private String unitDesc; // 机构描述
 
-    @Column(name = "ADDRBOOKID")
+    @Column(name = "ADDRBOOK_ID")
     @Range(max = 999999999, message = "通讯主键不能大于{max}")
     private Long addrbookId; // 通讯主体id
 
-    @Column(name = "UNITORDER")
+    @Column(name = "UNIT_ORDER")
     @Range(max = 9999, message = "排序号不能大于{max}")
     private Long unitOrder; // 机构排序
 
-    @Column(name = "UNITGRADE")
+    @Column(name = "UNIT_GRADE")
     @Range(max = 9999, message = "等级不能大于{max}")
     private Long unitGrade;//机构等级
 
-    @Column(name = "DEPNO")// 机构编码
+    @Column(name = "DEP_NO")// 机构编码
     @Length(max = 100, message = "字段长度不能大于{max}")
     private String depNo;
         
-    @Column(name = "UNITPATH")// 机构编码
+    @Column(name = "UNIT_PATH")// 机构编码
     @Length(max = 1000, message = "字段长度不能大于{max}")
     private String unitPath;
     
@@ -111,7 +111,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
     public void setState(String state) {
         this.state = state;
     }
-	@Column(name = "UNITMANAGER")
+	@Column(name = "UNIT_MANAGER")
     @Length(max = 32, message = "字段长度不能大于{max}")
     private String unitManager; // 部门负责人
 	
@@ -123,7 +123,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
 		this.unitManager = unitManager;
 	}
 
-	@Column(name = "CREATEDATE", nullable = false)
+	@Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
     
@@ -142,7 +142,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
 	/**
 	 * UPDATEDATE(更新时间) 更新时间 
 	 */
-	@Column(name = "UPDATEDATE")
+	@Column(name = "UPDATE_DATE")
 	private Date  updateDate;
 
 

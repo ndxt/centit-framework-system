@@ -22,15 +22,15 @@ public class FVUserOptList implements java.io.Serializable {
     @EmbeddedId
     private FVUserOptListId id; //主键
 
-    @Column(name = "OPTNAME")
+    @Column(name = "OPT_NAME")
     @Length(max = 50, message = "字段长度不能大于{max}")
     private String optName;     //业务名字
 
-    @Column(name = "OPTID")
+    @Column(name = "OPT_ID")
     @Length(max = 8, message = "字段长度不能大于{max}")
     private String optId;       //业务编号
 
-    @Column(name = "OPTMETHOD")
+    @Column(name = "OPT_METHOD")
     @Length(max = 50, message = "字段长度不能大于{max}")
     private String optMethod;   //业务方法？？
 
