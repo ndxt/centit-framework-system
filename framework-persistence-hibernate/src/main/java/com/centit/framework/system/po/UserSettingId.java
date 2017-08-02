@@ -17,13 +17,13 @@ public class UserSettingId implements java.io.Serializable {
     /**
      * 用户代码
      */
-    @Column(name = "USERCODE")
+    @Column(name = "USER_CODE")
     private String userCode;
 
     /**
      * 参数代码
      */
-    @Column(name = "PARAMCODE")
+    @Column(name = "PARAM_CODE")
     @Length(max = 16, message = "字段长度不能大于{max}")
     private String paramCode;
 

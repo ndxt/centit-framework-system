@@ -36,16 +36,16 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "ROLECODE")
+    @Column(name = "ROLE_CODE")
     @GeneratedValue(generator = "assignedGenerator")
     @GenericGenerator(name = "assignedGenerator", strategy = "assigned")
     private String roleCode; // 角色代码
 
-    @Column(name = "ROLENAME")
+    @Column(name = "ROLE_NAME")
     @Length(max = 300, message = "字段长度不能大于{max}")
     private String roleName; // 角色名称
 
-    @Column(name = "ISVALID")
+    @Column(name = "IS_VALID")
     @NotBlank(message = "字段不能为空")
     @Length(max = 1, message = "字段长度必须为{max}")
     @Pattern(regexp = "[TFA]", message = "字段值必须是T或F,A为新建可以删除")
@@ -54,20 +54,20 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
     /**
      * S为系统角色  I为项目角色  W 工作流角色  
      */
-    @Column(name = "ROLETYPE")
+    @Column(name = "ROLE_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String roleType; // 角色类别
 
-    @Column(name = "UNITCODE")
+    @Column(name = "UNIT_CODE")
     @Length(max = 32, message = "字段长度不能大于{max}")
     private String unitCode; // 角色所属机构
 
     
-    @Column(name = "ROLEDESC")
+    @Column(name = "ROLE_DESC")
     @Length(max = 256, message = "字段长度不能大于{max}")
     private String roleDesc; // 角色描述
     
-    @Column(name = "CREATEDATE", nullable = false)
+    @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
 
@@ -86,7 +86,7 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
 	/**
 	 * UPDATEDATE(更新时间) 更新时间 
 	 */
-	@Column(name = "UPDATEDATE")
+	@Column(name = "UPDATE_DATE")
 	private Date  updateDate;
 
     @Transient

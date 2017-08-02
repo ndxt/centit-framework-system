@@ -37,7 +37,7 @@ public class UserQueryFilter implements java.io.Serializable {
 	@GenericGenerator(name = "assignedGenerator", strategy = "assigned")
 	private Long filterNo;
 
-	@Column(name = "USERCODE")
+	@Column(name = "USER_CODE")
     @NotBlank(message = "字段不能为空")
     private String userCode;// 用户代码
 
@@ -68,7 +68,7 @@ public class UserQueryFilter implements java.io.Serializable {
 	@Length(max = 1, message = "字段长度不能大于{max}")
 	private String  isDefault;
 	 
-	@Column(name = "CREATEDATE", nullable = false)
+	@Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
 	

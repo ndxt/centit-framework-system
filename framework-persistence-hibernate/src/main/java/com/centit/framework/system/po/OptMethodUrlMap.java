@@ -16,16 +16,16 @@ public class OptMethodUrlMap implements java.io.Serializable {
     private static final long serialVersionUID = 396021378825483579L;
 
     @Id
-    @Column(name = "OPTCODE")
+    @Column(name = "OPT_CODE")
     @GeneratedValue(generator = "assignedGenerator")
     @GenericGenerator(name = "assignedGenerator", strategy = "assigned")
     private String optCode;// 操作代码
 
-    @Column(name = "OPTDEFURL")
+    @Column(name = "OPT_DEF_URL")
     @Length(max = 50, message = "字段长度不能大于{max}")
     private String optDefUrl; // 操作名称
 
-    @Column(name = "OPTREQ")
+    @Column(name = "OPT_REQ")
     @Length(max = 6, message = "字段长度必须为{max}")
     private String optReq;
     

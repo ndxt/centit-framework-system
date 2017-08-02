@@ -32,7 +32,7 @@ public class InnerMsg implements  Serializable{
      * 消息编号
      */
     @Id
-    @Column(name="MSGCODE")
+    @Column(name="MSG_CODE")
     @GeneratedValue(generator = "assignedGenerator")
     @GenericGenerator(name = "assignedGenerator", strategy = "assigned")
     private String msgCode;
@@ -49,28 +49,28 @@ public class InnerMsg implements  Serializable{
     /**
      * 发送时间
      */
-    @Column(name = "SENDDATE")
+    @Column(name = "SEND_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date sendDate;
     
     /**
      * 标题
      */
-    @Column(name="MSGTITLE")
+    @Column(name="MSG_TITLE")
     @Length(max = 128, message = "字段长度不能大于{max}")
     private String msgTitle;
     
     /**
      * 消息类别：P=个人为消息   A=机构为公告  M=消息
      */
-    @Column(name = "MSGTYPE")
+    @Column(name = "MSG_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String msgType;
     
     /**
      *  消息类别：I=收件箱 O=发件箱 D=草稿箱 T=废件箱
      */
-    @Column(name = "MAILTYPE")
+    @Column(name = "MAIL_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String mailType;
     
@@ -78,14 +78,14 @@ public class InnerMsg implements  Serializable{
     /**
      *  邮箱删除前状：I=收件箱 O=发件箱 D=草稿箱 T=废件箱
      */
-    @Column(name = "MAILUNDELTYPE")
+    @Column(name = "MAIL_UNDEL_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String mailUnDelType;
     
     /**
      * 接收人中文名
      */
-    @Column(name="RECEIVENAME")
+    @Column(name="RECEIVE_NAME")
     @Length(max = 2048, message = "字段长度不能大于{max}")
     private String receiveName;
      
@@ -93,44 +93,44 @@ public class InnerMsg implements  Serializable{
          总数为发送人和接收人数量相加，发送和接收人删除消息时-1，当数量为0时真正删除此条记录
          消息类型为消息时不需要设置
      */
-    @Column(name = "HOLDUSERS")
+    @Column(name = "HOLD_USERS")
     private Long holdUsers;
     
     /**
              消息状态：未读/已读/删除 
     */
-    @Column(name = "MSGSTATE")
+    @Column(name = "MSG_STATE")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String msgState;
     
     /**
      * 消息正文
      */
-    @Column(name="MSGCONTENT")
+    @Column(name="MSG_CONTENT")
     @NotBlank(message = "字段不能为空")
     private String msgContent;
     
     /**
     *用户配置多邮箱时使用*/
-    @Column(name="EMAILID")
+    @Column(name="EMAIL_ID")
     @Length(max = 8, message = "字段长度不能大于{max}")
     private String emailId;
     
     /**
      *功能模块 */
-    @Column(name="OPTID")
+    @Column(name="OPT_ID")
     @Length(max = 64, message = "字段长度不能大于{max}")
     private String optId;
     
     /**
      *操作方法 */
-    @Column(name="OPTMETHOD")
+    @Column(name="OPT_METHOD")
     @Length(max = 64, message = "字段长度不能大于{max}")
     private String optMethod;
     
     /**
      *操作业务标记 */
-    @Column(name="OPTTAG")
+    @Column(name="OPT_TAG")
     @Length(max = 200, message = "字段长度不能大于{max}")
     private String optTag;
     

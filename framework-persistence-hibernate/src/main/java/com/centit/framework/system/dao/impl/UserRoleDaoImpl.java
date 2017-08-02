@@ -57,7 +57,7 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
     @Transactional
     public List<FVUserRoles> getSysRolesByUserId(String userCode) {
  
-        final String sSqlsen = "from FVUserRoles v where userCode = ?";
+        final String sSqlsen = "from FVUserRoles v where id.userCode = ?";
         List<FVUserRoles> ls = (List<FVUserRoles>) DatabaseOptUtils.findObjectsByHql(
                 this, sSqlsen, new Object[]{userCode});
         return ls;

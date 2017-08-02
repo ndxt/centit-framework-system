@@ -27,7 +27,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
             filterField.put("OPTTYPE", CodeBook.EQUAL_HQL_ID);
             filterField.put("TOPOPTID", CodeBook.EQUAL_HQL_ID);
             filterField.put("ISINTOOLBAR", CodeBook.EQUAL_HQL_ID);
-            filterField.put(CodeBook.ORDER_BY_HQL_ID, " preoptid, orderind");
+            filterField.put(CodeBook.ORDER_BY_HQL_ID, " preOptId, orderInd");
         }
         return filterField;
     }
@@ -79,7 +79,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     @Transactional
     public List<FVUserOptMoudleList> getMenuFuncByUserID(String userCode, String optType) {
 
-        String hql = "FROM FVUserOptMoudleList where isintoolbar='Y' and userCode=? and optType = ? ORDER BY orderind";
+        String hql = "FROM FVUserOptMoudleList where isintoolbar='Y' and userCode=? and opttype = ? ORDER BY orderind";
         // + " ORDER BY preoptid, formcode";
         List<FVUserOptMoudleList> ls = (List<FVUserOptMoudleList>) DatabaseOptUtils.findObjectsByHql
                 (this, hql,new Object[]{userCode, optType});
@@ -110,7 +110,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     @Transactional
     public List<OptInfo> getFunctionsByUserAndSuperFunctionId(String userID, String superFunctionId) {
         String[] params = null;
-        String hql = "FROM FVUserOptMoudleList  where userCode=? and topoptid=?" + " ORDER BY preoptid, orderind";
+        String hql = "FROM FVUserOptMoudleList  where userCode=? and topoptid=?" + " ORDER BY preOptId, orderInd";
 
         params = new String[]{userID, superFunctionId};
         List<FVUserOptMoudleList> ls = (List<FVUserOptMoudleList>)DatabaseOptUtils.findObjectsByHql
