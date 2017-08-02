@@ -63,12 +63,13 @@ public class UserInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(method = RequestMethod.GET)
-    public void list(String[] field, PageDesc pageDesc, String _search, HttpServletRequest request, HttpServletResponse response) {
+    public void list(String[] field, PageDesc pageDesc, String _search,
+                     HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = convertSearchColumn(request);
         searchColumn.put("sort", "userOrder");
         searchColumn.put("order", "");
         List<UserInfo> listObjects = null;
-        if (null == _search) {
+        if (Boolean.parseBoolean(_search)) {
             listObjects = sysUserManager.listObjects(searchColumn);
         } else {
             listObjects = sysUserManager.listObjects(searchColumn, pageDesc);

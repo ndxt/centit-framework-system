@@ -6,7 +6,6 @@ import com.centit.framework.listener.InitialWebRuntimeEnvironment;
 import com.centit.framework.security.model.CentitPasswordEncoderImpl;
 import com.centit.framework.security.model.CentitSessionRegistry;
 import com.centit.framework.security.model.MemorySessionRegistryImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.*;
@@ -19,7 +18,6 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 @ComponentScan(basePackages = "com.centit.framework",
                excludeFilters = @ComponentScan.Filter(value = org.springframework.stereotype.Controller.class))
-@PropertySource("classpath:system.properties")
 @Import({RedisConfig.class, H2Config.class,
         SpringSecurityDaoConfig.class,
         SpringSecurityCasConfig.class}
@@ -28,7 +26,6 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 @EnableAsync
 public class SystemBeanConfig implements EnvironmentAware {
 
-    @Autowired
     Environment env;
 
     @Override
@@ -55,8 +52,6 @@ public class SystemBeanConfig implements EnvironmentAware {
     public InitialWebRuntimeEnvironment initialEnvironment() {
         return new InitialWebRuntimeEnvironment();
     }
-
-
 
     @Bean
     public CentitPasswordEncoderImpl passwordEncoder() {
