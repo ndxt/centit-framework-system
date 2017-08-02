@@ -49,7 +49,7 @@ public class VOptTree {
     @Size(max = 32, message = "字段长度不能大于{max}")
     private String menu_name;
 
-    @Column(name = "ORDERIND")
+    @Column(name = "ORDER_IND")
     @Size(max = 4, message = "字段长度不能大于{max}")
     private Long orderInd; // 业务顺序
 

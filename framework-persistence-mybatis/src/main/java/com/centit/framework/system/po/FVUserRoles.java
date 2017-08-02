@@ -21,23 +21,23 @@ public class FVUserRoles implements Serializable {
     private UserRoleId id;
 
     //add by zhuxw
-    @Column(name = "USERCODE")
+    @Column(name = "USER_CODE")
     @NotNull(message = "字段不能为空")
     private String userCode;// 用户代码
 
-    @Column(name = "ROLECODE")
+    @Column(name = "ROLE_CODE")
     @NotNull(message = "字段不能为空")
     private String roleCode; // 角色代码
     
     
     
-    @Column(name = "ROLENAME")
+    @Column(name = "ROLE_NAME")
     private String roleName; // 角色名称
 
-    @Column(name = "ISVALID")
+    @Column(name = "IS_VALID")
     private String isValid; // 是否生效
 
-    @Column(name = "ROLEDESC")
+    @Column(name = "ROLE_DESC")
     private String roleDesc; // 角色描述
 
     public UserRoleId getId() {

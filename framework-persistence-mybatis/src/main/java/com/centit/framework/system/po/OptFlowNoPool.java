@@ -23,11 +23,11 @@ public class OptFlowNoPool implements EntityWithTimestamp, java.io.Serializable 
     @EmbeddedId
     private OptFlowNoPoolId cid;
 
-    @Column(name = "CREATEDATE", nullable = false)
+    @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
 
-    @Column(name = "LASTMODIFYDATE")
+    @Column(name = "LAST_MODIFY_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     protected Date lastModifyDate;
 

@@ -5,12 +5,12 @@
 <mapper namespace="com.centit.framework.system.dao.InnerMsgRecipientDao">
 	<resultMap type="com.centit.framework.system.po.InnerMsgRecipient" id="InnerMsgRecipient">
        <result property="id" column="ID" />
-       <result property="msgCode" column="MSGCODE" />
+       <result property="msgCode" column="MSG_CODE" />
        <result property="receive" column="RECEIVE" />
-		<result property="replyMsgCode" column="REPLYMSGCODE" />
-		<result property="receiveType" column="RECEIVETYPE" />
-		<result property="mailType" column="MAILTYPE" />
-		<result property="msgState" column="MSGSTATE" />
+		<result property="replyMsgCode" column="REPLY_MSG_CODE" />
+		<result property="receiveType" column="RECEIVE_TYPE" />
+		<result property="mailType" column="MAIL_TYPE" />
+		<result property="msgState" column="MSG_STATE" />
 	</resultMap>
 
 	<!-- 查询条件 -->
@@ -19,31 +19,31 @@
 			  and u.RECEIVE = #{RECEIVE}
 		</if>
 		<if test="sender != null  and sender != ''  ">
-			  and u.MSGCODE in ( select  MSGCODE from M_InnerMsg where SENDER =#{sender} )
+			  and u.MSG_CODE in ( select  MSG_CODE from M_InnerMsg where SENDER =#{sender} )
 		</if>
 		 <if test="msgContent != null   and msgContent != ''   ">
-			  and u.MSGCODE in ( select  MSGCODE from M_InnerMsg where MSGCONTENT like '%'|| #{msgContent}||'%'  )
+			  and u.MSG_CODE in ( select  MSG_CODE from M_InnerMsg where MSG_CONTENT like '%'|| #{msgContent}||'%'  )
 	   </if>
 		<if test="msgTitle != null  and msgTitle != ''  ">
-			  and u.MSGCODE in ( select  MSGCODE from M_InnerMsg where MSGTITLE like '%'|| #{msgTitle}||'%' )
+			  and u.MSG_CODE in ( select  MSG_CODE from M_InnerMsg where MSG_TITLE like '%'|| #{msgTitle}||'%' )
 		</if>
 		<if test="mailType != null  and mailType != ''  ">
-			  and u.MSGCODE in ( select  MSGCODE from M_InnerMsg where MAILTYPE = #{mailType} )
+			  and u.MSG_CODE in ( select  MSG_CODE from M_InnerMsg where MAIL_TYPE = #{mailType} )
 		</if>
 		<if test="mailTypeNot != null  and mailTypeNot != ''  ">
-			   and u.MSGCODE in ( select  MSGCODE from M_InnerMsg where MAILTYPE != #{mailType} )
+			   and u.MSG_CODE in ( select  MSG_CODE from M_InnerMsg where MAIL_TYPE != #{mailType} )
 		</if>
 		<if test="msgStateNot != null  and msgStateNot != ''   ">
-			  and u.MSGSTATE != #{msgStateNot}
+			  and u.MSG_STATE != #{msgStateNot}
 		</if>
 		<if test="innerMsgStateNot != null  and innerMsgStateNot != ''  ">
-			   and u.MSGCODE in ( select  MSGCODE from M_InnerMsg where MSGSTATE != #{msgStateNot} )
+			   and u.MSG_CODE in ( select  MSG_CODE from M_InnerMsg where MSG_STATE != #{msgStateNot} )
 		</if>
-		<if test="MSGSTATE != null  and MSGSTATE != ''  ">
-			  and u.MSGSTATE =#{MSGSTATE}
+		<if test="MSG_STATE != null  and MSG_STATE != ''  ">
+			  and u.MSG_STATE =#{MSG_STATE}
 		</if>
 		<if test="msgType != null  and msgType != ''  ">
-			  and u.MSGCODE in ( select  MSGCODE from M_InnerMsg where MAILTYPE = #{mailType} )
+			  and u.MSG_CODE in ( select  MSG_CODE from M_InnerMsg where MAIL_TYPE = #{mailType} )
 		</if>
 	</sql>
 	
@@ -52,12 +52,12 @@
 		<![CDATA[ 
 			select 
 			        u.ID,
-					u.MSGCODE,
+					u.MSG_CODE,
 					u.RECEIVE,
-					u.REPLYMSGCODE,
-					u.RECEIVETYPE,
-					u.MAILTYPE,
-					u.MSGSTATE
+					u.REPLY_MSG_CODE,
+					u.RECEIVE_TYPE,
+					u.MAIL_TYPE,
+					u.MSG_STATE
 		      from M_InnerMsg_Recipient u
 	  ]]>
 	</sql>
@@ -104,12 +104,12 @@
     <sql id="insertSql">
 		   (
 		    ID,
-			MSGCODE,
+			MSG_CODE,
 			RECEIVE,
-			REPLYMSGCODE,
-			RECEIVETYPE,
-			MAILTYPE,
-			MSGSTATE
+			REPLY_MSG_CODE,
+			RECEIVE_TYPE,
+			MAIL_TYPE,
+			MSG_STATE
 			)values(
 			#{id},
 			#{msgCode},
@@ -137,22 +137,22 @@
    <sql id="updSql">
       <set>
 			<if test="msgCode!=null ">
-				MSGCODE = #{msgCode},
+				MSG_CODE = #{msgCode},
 			</if>
 			<if test="receive!=null ">
 				RECEIVE = #{receive},
 			</if>
 			<if test="replyMsgCode!=null ">
-				REPLYMSGCODE = #{replyMsgCode},
+				REPLY_MSG_CODE = #{replyMsgCode},
 			</if>
 			<if test="receiveType!=null ">
-				RECEIVETYPE = #{receiveType},
+				RECEIVE_TYPE = #{receiveType},
 			</if>
 			<if test="mailType!=null ">
-				MAILTYPE = #{mailType},
+				MAIL_TYPE = #{mailType},
 			</if>
 			<if test="msgState!=null ">
-				MSGSTATE = #{msgState},
+				MSG_STATE = #{msgState},
 			</if>
 		</set>
 	</sql>
@@ -203,15 +203,15 @@
 	
 	<select id="getExchangeMsgs"  resultMap="InnerMsgRecipient" parameterType="map" >
 		 <include refid="coreSql" />
-		 where  ( (u.MSGCODE in (Select MSGCODE from M_InnerMsg where SENDER= #{sender} and (MAILTYPE='I' or MAILTYPE='O')) and RECEIVE= #{receiver})
-		 or (u.MSGCODE in(Select MSGCODE from M_InnerMsg where SENDER= #{sender} and (MAILTYPE='I' or MAILTYPE='O')) and RECEIVE= #{receiver} )) order by MSGCODE desc
+		 where  ( (u.MSG_CODE in (Select MSG_CODE from M_InnerMsg where SENDER= #{sender} and (MAIL_TYPE='I' or MAIL_TYPE='O')) and RECEIVE= #{receiver})
+		 or (u.MSG_CODE in(Select MSG_CODE from M_InnerMsg where SENDER= #{sender} and (MAIL_TYPE='I' or MAIL_TYPE='O')) and RECEIVE= #{receiver} )) order by MSG_CODE desc
 	</select>
 	
 	<select id="getUnreadMessageCount"  resultType="int" parameterType="String">
-		 select count(1) from M_InnerMsg_Recipient re Where re.RECEIVE = #{userCode} and re.MSGSTATE ='U'
+		 select count(1) from M_InnerMsg_Recipient re Where re.RECEIVE = #{userCode} and re.MSG_STATE ='U'
 	</select>
 	
 	<select id="listUnreadMessage"  resultType="int" parameterType="String">
-		 select count(1) from M_InnerMsg_Recipient re Where re.RECEIVE = #{userCode} and re.MSGSTATE ='U'  order by re.ID desc
+		 select count(1) from M_InnerMsg_Recipient re Where re.RECEIVE = #{userCode} and re.MSG_STATE ='U'  order by re.ID desc
 	</select>
 </mapper>

@@ -35,15 +35,15 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
     @EmbeddedId
     private UserRoleId id; // 主键
 
-    @Column(name = "OBTAINDATE")
+    @Column(name = "OBTAIN_DATE")
     @Temporal(TemporalType.TIMESTAMP) 
     private Date obtainDate; // 获得角色时间
     
-    @Column(name = "CHANGEDESC")
+    @Column(name = "CHANGE_DESC")
     @Size(max = 256, message = "字段长度不能大于{max}")
     private String changeDesc; // 说明
 
-    @Column(name = "CREATEDATE", nullable = false)
+    @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
     
@@ -63,7 +63,7 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
 	/**
 	 * UPDATEDATE(更新时间) 更新时间 
 	 */
-	@Column(name = "UPDATEDATE")
+	@Column(name = "UPDATE_DATE")
 	private Date  updateDate;
 	//结束
 	

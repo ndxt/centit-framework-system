@@ -19,28 +19,28 @@ public class FVUserOptMoudleList implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     // Fields
     @Id
-    @Column(name = "OPTID")
+    @Column(name = "OPT_ID")
     @GeneratedValue(generator = "assignedGenerator")
     //@GenericGenerator(name = "assignedGenerator", strategy = "assigned")
     private String optid;           //业务模块类
 
-    @Column(name = "USERCODE")
+    @Column(name = "USER_CODE")
     @Size(max = 8, message = "字段长度不能大于{max}")
     private String userCode;        //用户代码
 
-    @Column(name = "OPTNAME")
+    @Column(name = "OPT_NAME")
     @Size(max = 32, message = "字段长度不能大于{max}")
     private String optname;
 
-    @Column(name = "PREOPTID")
+    @Column(name = "PRE_OPT_ID")
     @Size(max = 8, message = "字段长度不能大于{max}")
     private String preoptid;
 
-    @Column(name = "FORMCODE")
+    @Column(name = "FORM_CODE")
     @Size(max = 4, message = "字段长度不能大于{max}")
     private String formcode;
 
-    @Column(name = "OPTURL")
+    @Column(name = "OPT_URL")
     @Size(max = 256, message = "字段长度不能大于{max}")
     private String opturl;
 
@@ -49,39 +49,39 @@ public class FVUserOptMoudleList implements java.io.Serializable {
      *
      * 与angularjs路由匹配
      */
-    @Column(name = "OPTROUTE")
+    @Column(name = "OPT_ROUTE")
     @Size(max = 256, message = "字段长度不能大于{max}")
     private String optRoute;
 
-    @Column(name = "OPTTYPE")
+    @Column(name = "OPT_TYPE")
     @Size(max = 1, message = "字段长度必须为{max}")
     private String opttype;
 
-    @Column(name = "MSGNO")
+    @Column(name = "MSG_NO")
     @Size(max = 10, message = "字段长度不能大于{max}")
     private Long msgno;
 
-    @Column(name = "MSGPRM")
+    @Column(name = "MSG_PRM")
     @Size(max = 256, message = "字段长度不能大于{max}")
     private String msgprm;
 
-    @Column(name = "ISINTOOLBAR")
+    @Column(name = "IS_IN_TOOLBAR")
     @Size(max = 1, message = "字段长度必须为{max}")
     private String isintoolbar;
 
-    @Column(name = "IMGINDEX")
+    @Column(name = "IMG_INDEX")
     @Size(max = 10, message = "字段长度不能大于{max}")
     private Long imgindex;
 
-    @Column(name = "TOPOPTID")
+    @Column(name = "TOP_OPT_ID")
     @Size(max = 8, message = "字段长度不能大于{max}")
     private String topoptid;
 
-    @Column(name = "ORDERIND")
+    @Column(name = "ORDER_IND")
     @Size(max = 4, message = "字段长度不能大于{max}")
     private Long orderind;
 
-    @Column(name = "PAGETYPE")
+    @Column(name = "PAGE_TYPE")
     @Size(max = 1, message = "字段长度必须为{max}")
     private String pageType;  //页面打开方式 D: DIV I： iFrame
 

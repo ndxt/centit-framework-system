@@ -18,17 +18,17 @@ import javax.validation.constraints.Size;
 public class OptFlowNoInfoId implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "OWNERCODE")
+    @Column(name = "OWNER_CODE")
     @NotNull(message = "字段不能为空")
     @Size(max = 8, message = "字段长度不能大于{max}")
     private String ownerCode;
 
-    @Column(name = "CODEDATE")
+    @Column(name = "CODE_DATE")
     @NotNull(message = "字段不能为空")
     @Temporal(TemporalType.DATE)
     private Date codeDate;
 
-    @Column(name = "CODECODE")
+    @Column(name = "CODE_CODE")
     @NotNull(message = "字段不能为空")
     @Size(max = 16, message = "字段长度不能大于{max}")
     private String codeCode;

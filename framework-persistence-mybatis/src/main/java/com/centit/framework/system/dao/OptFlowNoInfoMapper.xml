@@ -4,29 +4,29 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.centit.framework.system.dao.OptFlowNoInfoDao">
 	<resultMap type="com.centit.framework.system.po.OptFlowNoInfo" id="OptFlowNoInfo">
-       <result property="ownerCode" column="OWNERCODE" />
-       <result property="codeDate" column="CODEDATE" />
-       <result property="codeCode" column="CODECODE" />
-		<result property="curNo" column="CURNO" />
-		<result property="lastCodeDate" column="LASTCODEDATE" />
+       <result property="ownerCode" column="OWNER_CODE" />
+       <result property="codeDate" column="CODE_DATE" />
+       <result property="codeCode" column="CODE_CODE" />
+		<result property="curNo" column="CUR_NO" />
+		<result property="lastCodeDate" column="LAST_CODE_DATE" />
 	</resultMap>
 
 	<!-- 查询条件 -->
 	<sql id="condition">
 		<if test="ownerCode != null  and ownerCode != ''   ">
-			  and u.OWNERCODE = #{ownerCode}
+			  and u.OWNER_CODE = #{ownerCode}
 		</if>
 		<if test="codeDate != null  and codeDate != ''   ">
-			  and u.CODEDATE =#{codeDate}
+			  and u.CODE_DATE =#{codeDate}
 		</if>
 		 <if test="codeCode != null  and codeCode != ''   ">
-			  and u.CODECODE=#{codeCode}
+			  and u.CODE_CODE=#{codeCode}
 	   </if>
 		<if test="curNo != null  and curNo != ''  ">
-			  and u.CURNO  like '%'|| #{curNo}||'%' 
+			  and u.CUR_NO  like '%'|| #{curNo}||'%' 
 		</if>
 		<if test="lastCodeDate != null   and lastCodeDate != ''   ">
-			  and u.LASTCODEDATE  like '%'|| #{lastCodeDate}||'%' 
+			  and u.LAST_CODE_DATE  like '%'|| #{lastCodeDate}||'%' 
 		</if>
 	</sql>
 	
@@ -34,11 +34,11 @@
 	<sql id="coreSql">
 		<![CDATA[ 
 			select 
-			        u.OWNERCODE,
-					u.CODEDATE,
-					u.CODECODE,
-					u.CURNO,
-					u.LASTCODEDATE
+			        u.OWNER_CODE,
+					u.CODE_DATE,
+					u.CODE_CODE,
+					u.CUR_NO,
+					u.LAST_CODE_DATE
 		      from F_OPTFLOWNOINFO u
 	  ]]>
 	</sql>
@@ -74,7 +74,7 @@
 		<include refid="coreSql" />
 		<where>
          <![CDATA[ 
-	                u.OWNERCODE=#{ownerCode}  and u.CODEDATE=#{codeDate} and u.CODECODE=#{codeCode}
+	                u.OWNER_CODE=#{ownerCode}  and u.CODE_DATE=#{codeDate} and u.CODE_CODE=#{codeCode}
            ]]>
 		</where>
 	</select>
@@ -84,11 +84,11 @@
     <!--插入新单据 start -->
     <sql id="insertSql">
 		   (
-		    OWNERCODE,
-			CODEDATE,
-			CODECODE,
-			CURNO,
-			LASTCODEDATE
+		    OWNER_CODE,
+			CODE_DATE,
+			CODE_CODE,
+			CUR_NO,
+			LAST_CODE_DATE
 			)values(
 			#{ownerCode},
 			#{codeDate},
@@ -112,7 +112,7 @@
 	<!--删除记录  -->
 	<delete id="deleteObjectById" parameterType="com.centit.framework.system.po.OptFlowNoInfoId" timeout="2000">
     <![CDATA[ 
-       delete from F_OPTFLOWNOINFO u where u.OWNERCODE=#{ownerCode}  and u.CODEDATE=#{codeDate} and u.CODECODE=#{codeCode}
+       delete from F_OPTFLOWNOINFO u where u.OWNER_CODE=#{ownerCode}  and u.CODE_DATE=#{codeDate} and u.CODE_CODE=#{codeCode}
      ]]>
 	</delete>
 	

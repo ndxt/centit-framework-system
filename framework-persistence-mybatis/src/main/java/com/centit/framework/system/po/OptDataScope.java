@@ -25,22 +25,22 @@ public class OptDataScope implements IOptDataScope,Serializable{
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "OPTSCOPECODE")
+    @Column(name = "OPT_SCOPE_CODE")
     @GeneratedValue(generator = "assignedGenerator")
     //@GenericGenerator(name = "assignedGenerator", strategy = "assigned")
     private String optScopeCode;// 操作代码
 
-    @Column(name = "SCOPENAME")
+    @Column(name = "SCOPE_NAME")
     @Size(max = 64, message = "字段长度必须小于{max}")
     private String scopeName; // 操作名称
 
-    @Column(name = "OPTID")
+    @Column(name = "OPT_ID")
     private String optId; 
 
     /**
      * 数据范围条件
      */
-    @Column(name = "FILTERCONDITION")
+    @Column(name = "FILTER_CONDITION")
     @Size(max = 1000, message = "字段长度必须小于{max}")
     private String filterCondition;
 
@@ -51,7 +51,7 @@ public class OptDataScope implements IOptDataScope,Serializable{
     @Size(max = 16, message = "字段长度必须小于{max}")
     private String filterGroup;// 操作方法
    */
-   	@Column(name = "SCOPEMEMO")
+   	@Column(name = "SCOPE_MEMO")
     @Size(max = 1000, message = "字段长度必须小于{max}")
     private String scopeMemo; // 操作说明
 
