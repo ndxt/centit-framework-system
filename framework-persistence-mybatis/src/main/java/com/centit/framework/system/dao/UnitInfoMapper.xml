@@ -4,50 +4,50 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.centit.framework.system.dao.UnitInfoDao">
 	<resultMap type="com.centit.framework.system.po.UnitInfo" id="UnitInfo">
-       <result property="unitCode" column="UNITCODE" />
-       <result property="parentUnit" column="PARENTUNIT" />
-       <result property="unitType" column="UNITTYPE" />
-		<result property="isValid" column="ISVALID" />
-		<result property="unitName" column="UNITNAME" />
-		<result property="englishName" column="ENGLISHNAME" />
-		<result property="unitShortName" column="UNITSHORTNAME" />
-		<result property="unitWord" column="UNITWORD" />
-       <result property="unitTag" column="UNITTAG" />
-       <result property="unitDesc" column="UNITDESC" />
-		<result property="addrbookId" column="ADDRBOOKID" />
-		<result property="unitOrder" column="UNITORDER" />
-		<result property="unitGrade" column="UNITGRADE" />
-		<result property="depNo" column="DEPNO" />
-		<result property="unitPath" column="UNITPATH" />
-       <result property="unitManager" column="UNITMANAGER" />
-       <result property="createDate" column="CREATEDATE" />
+       <result property="unitCode" column="UNIT_CODE" />
+       <result property="parentUnit" column="PARENT_UNIT" />
+       <result property="unitType" column="UNIT_TYPE" />
+		<result property="isValid" column="IS_VALID" />
+		<result property="unitName" column="UNIT_NAME" />
+		<result property="englishName" column="ENGLISH_NAME" />
+		<result property="unitShortName" column="UNIT_SHORT_NAME" />
+		<result property="unitWord" column="UNIT_WORD" />
+       <result property="unitTag" column="UNIT_TAG" />
+       <result property="unitDesc" column="UNIT_DESC" />
+		<result property="addrbookId" column="ADDRBOOK_ID" />
+		<result property="unitOrder" column="UNIT_ORDER" />
+		<result property="unitGrade" column="UNIT_GRADE" />
+		<result property="depNo" column="DEP_NO" />
+		<result property="unitPath" column="UNIT_PATH" />
+       <result property="unitManager" column="UNIT_MANAGER" />
+       <result property="createDate" column="CREATE_DATE" />
 		<result property="creator" column="CREATOR" />
 		<result property="updator" column="UPDATOR" />
-		<result property="updateDate" column="UPDATEDATE" />
+		<result property="updateDate" column="UPDATE_DATE" />
 	</resultMap>
 
 	<!-- 查询条件 -->
 	<sql id="condition">
 		<if test="unitCode != null  and unitCode != '' ">
-			  and u.UNITCODE = #{unitCode}
+			  and u.UNIT_CODE = #{unitCode}
 		</if>
 		<if test="unitName != null  and unitName != ''  ">
-			  and u.UNITNAME like '%'|| #{unitName}||'%'
+			  and u.UNIT_NAME like '%'|| #{unitName}||'%'
 		</if>
 		<if test="isValid != null  and isValid != ''   ">
-			  and u.ISVALID = #{isValid}
+			  and u.IS_VALID = #{isValid}
 		</if>
 		<if test="unitTag != null  and unitTag != ''   ">
-			  and u.UNITTAG = #{unitTag}
+			  and u.UNIT_TAG = #{unitTag}
 		</if>
 		<if test="unitWord != null and unitWord != ''  ">
-			  and u.UNITWORD = #{unitWord}
+			  and u.UNIT_WORD = #{unitWord}
 		</if>
 		<if test="PARENTUNIT != null  and PARENTUNIT != ''  ">
-			  and u.PARENTUNIT = #{PARENTUNIT}
+			  and u.PARENT_UNIT = #{PARENT_UNIT}
 		</if>
-		<if test="NP_TOPUnit != null  and NP_TOPUnit != '' ">
-			  and (u.PARENTUNIT is null or PARENTUNIT='0')
+		<if test="NPTOPUnit != null  and NPTOPUnit != '' ">
+			  and (u.PARENT_UNIT is null or PARENT_UNIT='0')
 		</if>
 	</sql>
 	
@@ -55,26 +55,26 @@
 	<sql id="coreSql">
 		<![CDATA[ 
 			select 
-			        u.UNITCODE,
-					u.PARENTUNIT,
-					u.UNITTYPE,
-					u.ISVALID,
-					u.UNITNAME,
-					u.ENGLISHNAME,
-					u.UNITSHORTNAME,
-					u.UNITWORD,
-					u.UNITTAG,
-					u.UNITDESC,
-					u.ADDRBOOKID,
-					u.UNITORDER,
-					u.UNITGRADE,
-					u.DEPNO,
-					u.UNITPATH,
-					u.UNITMANAGER,
-					u.CREATEDATE,
+			        u.UNIT_CODE,
+					u.PARENT_UNIT,
+					u.UNIT_TYPE,
+					u.IS_VALID,
+					u.UNIT_NAME,
+					u.ENGLISH_NAME,
+					u.UNIT_SHORT_NAME,
+					u.UNIT_WORD,
+					u.UNIT_TAG,
+					u.UNIT_DESC,
+					u.ADDRBOOK_ID,
+					u.UNIT_ORDER,
+					u.UNIT_GRADE,
+					u.DEP_NO,
+					u.UNIT_PATH,
+					u.UNIT_MANAGER,
+					u.CREATE_DATE,
 					u.CREATOR,
 					u.UPDATOR,
-					u.UPDATEDATE
+					u.UPDATE_DATE
 		      from F_UNITINFO u
 	  ]]>
 	</sql>
@@ -106,7 +106,7 @@
 <!--查询单条记录ById -->
 	<select id="getObjectById" parameterType="String" resultMap="UnitInfo">
 		<include refid="coreSql" />
-		<where> u.UNITCODE=#{unitCode}
+		<where> u.UNIT_CODE=#{unitCode}
 		</where>
 	</select>
 	<!--查询单条记录 结束 -->
@@ -114,26 +114,26 @@
     <!--插入新单据 start -->
     <sql id="insertSql">
 		   (
-			UNITCODE,
-			PARENTUNIT,
-			UNITTYPE,
-			ISVALID,
-			UNITNAME,
-			ENGLISHNAME,
-			UNITSHORTNAME,
-			UNITWORD,
-			UNITTAG,
-			UNITDESC,
-			ADDRBOOKID,
-			UNITORDER,
-			UNITGRADE,
-			DEPNO,
-			UNITPATH,
-			UNITMANAGER,
-			CREATEDATE,
+			UNIT_CODE,
+			PARENT_UNIT,
+			UNIT_TYPE,
+			IS_VALID,
+			UNIT_NAME,
+			ENGLISH_NAME,
+			UNIT_SHORT_NAME,
+			UNIT_WORD,
+			UNIT_TAG,
+			UNIT_DESC,
+			ADDRBOOK_ID,
+			UNIT_ORDER,
+			UNIT_GRADE,
+			DEP_NO,
+			UNIT_PATH,
+			UNIT_MANAGER,
+			CREATE_DATE,
 			CREATOR,
 			UPDATOR,
-			UPDATEDATE
+			UPDATE_DATE
 			)values(
 			#{unitCode,jdbcType=VARCHAR},
 			#{parentUnit,jdbcType=VARCHAR},
@@ -165,55 +165,55 @@
    <sql id="updSql">
       <set>
 <!-- 			<if test="unitCode !=null ">  -->
-<!-- 				UNITCODE  =  #{unitCode},  -->
+<!-- 				UNIT_CODE  =  #{unitCode},  -->
 <!-- 			</if>  -->
 			<if test="parentUnit !=null "> 
-				PARENTUNIT  =  #{parentUnit}, 
+				PARENT_UNIT  =  #{parentUnit}, 
 			</if> 
 			<if test="unitType !=null "> 
-				UNITTYPE  =  #{unitType}, 
+				UNIT_TYPE  =  #{unitType}, 
 			</if> 
 			<if test="isValid !=null "> 
-				ISVALID  =  #{isValid}, 
+				IS_VALID  =  #{isValid}, 
 			</if> 
 			<if test="unitName !=null "> 
-				UNITNAME  =  #{unitName}, 
+				UNIT_NAME  =  #{unitName}, 
 			</if> 
 			<if test="englishName !=null "> 
-				ENGLISHNAME  =  #{englishName}, 
+				ENGLISH_NAME  =  #{englishName}, 
 			</if> 
 			<if test="unitShortName !=null "> 
-				UNITSHORTNAME  =  #{unitShortName}, 
+				UNIT_SHORT_NAME  =  #{unitShortName}, 
 			</if> 
 			<if test="unitWord !=null "> 
-				UNITWORD  =  #{unitWord}, 
+				UNIT_WORD  =  #{unitWord}, 
 			</if> 
 			<if test="unitTag !=null "> 
-				UNITTAG  =  #{unitTag}, 
+				UNIT_TAG  =  #{unitTag}, 
 			</if> 
 			<if test="unitDesc !=null "> 
-				UNITDESC  =  #{unitDesc}, 
+				UNIT_DESC  =  #{unitDesc}, 
 			</if> 
 			<if test="addrbookId !=null "> 
-				ADDRBOOKID  =  #{addrbookId}, 
+				ADDRBOOK_ID  =  #{addrbookId}, 
 			</if> 
 			<if test="unitOrder !=null "> 
-				UNITORDER  =  #{unitOrder}, 
+				UNIT_ORDER  =  #{unitOrder}, 
 			</if> 
 			<if test="unitGrade !=null "> 
-				UNITGRADE  =  #{unitGrade}, 
+				UNIT_GRADE  =  #{unitGrade}, 
 			</if> 
 			<if test="depNo !=null "> 
-				DEPNO  =  #{depNo}, 
+				DEP_NO  =  #{depNo}, 
 			</if> 
 			<if test="unitPath !=null "> 
-				UNITPATH  =  #{unitPath}, 
+				UNIT_PATH  =  #{unitPath}, 
 			</if> 
 			<if test="unitManager !=null "> 
-				UNITMANAGER  =  #{unitManager}, 
+				UNIT_MANAGER  =  #{unitManager}, 
 			</if> 
 			<if test="createDate !=null "> 
-				CREATEDATE  =  #{createDate}, 
+				CREATE_DATE  =  #{createDate}, 
 			</if> 
 			<if test="creator !=null "> 
 				CREATOR  =  #{creator}, 
@@ -222,29 +222,29 @@
 				UPDATOR  =  #{updator}, 
 			</if> 
 			<if test="updateDate !=null "> 
-				UPDATEDATE  =  #{updateDate}, 
+				UPDATE_DATE  =  #{updateDate}, 
 			</if> 
 		</set>
 	</sql>
 	<update id="update" parameterType="com.centit.framework.system.po.UnitInfo" timeout="2000">
 	     update F_UNITINFO
 	     <include refid="updSql" />
-	     where UNITCODE=#{unitCode} 
+	     where UNIT_CODE=#{unitCode} 
 	</update>
 	<!--更新单据 end -->
    
    <!--Merge单据 start -->
 	<update id="mergeObject" parameterType="com.centit.framework.system.po.UnitInfo" timeout="2000">
 	      merge into F_UNITINFO t  
-		    using ( select #{unitCode} as UNITCODE  from dual) t1  
-		    on(t.UNITCODE = t1.UNITCODE)  
+		    using ( select #{unitCode} as UNIT_CODE  from dual) t1  
+		    on(t.UNIT_CODE = t1.UNIT_CODE)  
 		 when not matched then
 		   insert
 		   <include refid="insertSql" />
 		 when matched then 
 		 update
 		   <include refid="updSql" />   
-		    where UNITCODE=#{unitCode} 
+		    where UNIT_CODE=#{unitCode} 
 	</update>
 	<!--Merge单据 end -->
    <!--插入新单据 end -->
@@ -252,7 +252,7 @@
 	<!--删除记录  -->
 	<delete id="deleteObjectById" parameterType="String" timeout="2000">
     <![CDATA[ 
-       delete from F_UNITINFO where UNITCODE=#{unitCode} 
+       delete from F_UNITINFO where UNIT_CODE=#{unitCode} 
      ]]>
 	</delete>
 	<!--删除记录 结束 -->
@@ -273,43 +273,43 @@
 	</select>
 	<select id="getUnitCode" resultType="String" parameterType="String">
 		<include refid="coreSql" />
-		 where DEPNO=#{depno}
+		 where DEP_NO=#{depno}
 	</select>
 	<select id="listUnitUsers" resultMap="UnitInfo" parameterType="String">
 		select a.*
-		from f_Userinfo a join f_userunit b on(a.userCode=b.userCode)
-		where b.unitcode =#{unitCode}
+		from f_Userinfo a join f_userunit b on(a.user_Code=b.user_Code)
+		where b.unit_code =#{unitCode}
 	</select>
 	<select id="listRelationUsers" resultMap="UnitInfo" parameterType="String">
-			select * FROM F_Userinfo ui where ui.userCode in
-			(select userCode from f_userunit where unitcode=#{unitCode}) or
-			ui.userCode in (select userCode from f_userrole where rolecode like #{unitCode}||'-%'
+			select * FROM F_Userinfo ui where ui.user_Code in
+			(select user_Code from f_userunit where unit_code=#{unitCode}) or
+			ui.user_Code in (select user_Code from f_userrole where role_code like #{unitCode}||'-%'
 	</select>
 	<select id="getUnitNameOfCode" parameterType="String" resultType="String">
-		select unitname from f_unitinfo where unitcode=#{unitcode}
+		select unitname from f_unitinfo where unit_code=#{unitcode}
 	</select>
 	<select id="getUnitByName" parameterType="String" resultMap="UnitInfo">
 		<include refid="coreSql" />
-		where unitName = #{name} or unitShortName =#{name}
+		where unit_Name = #{name} or unit_Short_Name =#{name}
 		order by unitOrder asc
 	</select>
 	<select id="getUnitByTag" parameterType="String" resultMap="UnitInfo">
 		<include refid="coreSql" />
-		where UNITTAG=#{unitTag}
+		where UNIT_TAG=#{unitTag}
 	</select>
 	<select id="getUnitByWord" parameterType="String" resultMap="UnitInfo">
 		<include refid="coreSql" />
-		where UNITWORD=#{unitWord}
+		where UNIT_WORD=#{unitWord}
 	</select>
 	<select id="listSubUnits"  parameterType="String" resultMap="UnitInfo">
 		<include refid="coreSql" />
-		where PARENTUNIT=#{unitCode}
+		where PARENT_UNIT=#{unitCode}
 	</select>
 	<select id="listSubUnitinfoByParentUnitcodes"  parameterType="String" resultMap="UnitInfo">
 		<include refid="coreSql" />
 		 <if test="parentunitcodes != null ">
 		<foreach item="parentUnit" collection="parentunitcodes" 
-			open="  and   u.PARENTUNIT in (" close=")" index="">
+			open="  and   u.PARENT_UNIT in (" close=")" index="">
 			#{parentUnit, jdbcType=String}
 		</foreach>
 	  </if>
@@ -317,34 +317,34 @@
 	
 	<select id="listAllSubUnits" parameterType="String"   resultMap="UnitInfo">
 	    <include refid="coreSql" />
-	     where   u.PARENTUNIT=#{primaryUnit}
+	     where   u.PARENT_UNIT=#{primaryUnit}
 	</select>
 	
 	<select id="listSubUnitsByUnitPaht" parameterType="String" resultMap="UnitInfo">
 			<include refid="coreSql" />
-			where unitPath like #{unitPath}||'/%'
+			where unit_Path like #{unitPath}||'/%'
 	</select>
 	<select id="listUnitinfoByUnitcodes">
 		<include refid="coreSql" />
 		 <if test="unitcodes != null ">
 		<foreach item="unitCode" collection="unitcodes" 
-			open="  and   u.UNITCODE in (" close=")" index="">
+			open="  and   u.UNIT_CODE in (" close=")" index="">
 			#{unitCode, jdbcType=String}
 		</foreach>
 	  </if>
 	</select>
 	
 	<select id="countChildrenSum" parameterType="String" resultType="int">
-			select count(1) from f_unitinfo where parentunit =#{unitCode}
+			select count(1) from f_unitinfo where parent_unit =#{unitCode}
 	</select>
 
 	<select id="getAllParentUnit"  resultType="String">
-			select distinct t.parentunit from f_unitinfo t
+			select distinct t.parent_unit from f_unitinfo t
 	</select>
 
 	<select id="getPeerUnitByName" parameterType="map" resultMap="UnitInfo">
 		<include refid="coreSql" />
-		where u.UNITNAME = #{unitName} and u.PARENTUNIT = #{parentUnit} and u.UNITCODE <![CDATA[ <> ]]> #{unitCode}
+		where u.UNIT_NAME = #{unitName} and u.PARENT_UNIT = #{parentUnit} and u.UNIT_CODE <![CDATA[ <> ]]> #{unitCode}
 	</select>
 
 </mapper>

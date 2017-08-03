@@ -25,7 +25,7 @@ public class OptLog implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "LOGID")
+    @Column(name = "LOG_ID")
     @GeneratedValue(generator = "assignedGenerator")
     //@GenericGenerator(name = "assignedGenerator", strategy = "assigned")
     private Long logId;
@@ -35,19 +35,19 @@ public class OptLog implements java.io.Serializable {
      * 使用常量LEVEL_INFO和LEVEL_ERROR表示
      * 默认级别为LEVEL_INFO
      */
-    @Column(name = "LOGLEVEL")
+    @Column(name = "LOG_LEVEL")
     @NotNull(message = "字段不能为空")
     @Size(max = 2, message = "字段长度不能大于{max}")
     private String logLevel = OperationLog.LEVEL_INFO;
 
 
-    @Column(name = "USERCODE")
+    @Column(name = "USER_CODE")
     @NotNull(message = "字段不能为空")
     @Size(max = 8, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="userName",value="userCode")
     private String userCode;
 
-    @Column(name = "OPTTIME")
+    @Column(name = "OPT_TIME")
     @NotNull(message = "字段不能为空")
     @Temporal(TemporalType.TIMESTAMP)
     private Date optTime;
@@ -55,7 +55,7 @@ public class OptLog implements java.io.Serializable {
     /**
      * 业务操作ID，如记录的是用户管理模块，optId=F_OPT_INFO表中操作用户管理模块业务的主键
      */
-    @Column(name = "OPTID")
+    @Column(name = "OPT_ID")
     @NotNull(message = "字段不能为空")
     @Size(max = 64, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="optIdText",value="optId")
@@ -65,7 +65,7 @@ public class OptLog implements java.io.Serializable {
      * 操作业务标记
      * 一般用于关联到业务主体
      */
-    @Column(name = "OPTTAG")
+    @Column(name = "OPT_TAG")
     @Size(max = 200, message = "字段长度不能大于{max}")
     private String optTag;
 
@@ -74,26 +74,26 @@ public class OptLog implements java.io.Serializable {
      * 方法，或者字段
      * 方法使用 P_OPT_LOG_METHOD... 常量表示
      */
-    @Column(name = "OPTMETHOD")
+    @Column(name = "OPT_METHOD")
     @Size(max = 64, message = "字段长度不能大于{max}")
     private String optMethod;
 
     /**
      * 操作内容描述
      */
-    @Column(name = "OPTCONTENT")
+    @Column(name = "OPT_CONTENT")
     @NotNull(message = "字段不能为空")
     private String optContent;
 
     /**
      * 新值
      */
-    @Column(name = "NEWVALUE")
+    @Column(name = "NEW_VALUE")
     private String newValue;
     /**
      * 原值
      */
-    @Column(name = "OLDVALUE")
+    @Column(name = "OLD_VALUE")
     private String oldValue;
 
     public String getOptTag() {

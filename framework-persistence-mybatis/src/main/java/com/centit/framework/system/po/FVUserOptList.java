@@ -18,11 +18,11 @@ import javax.validation.constraints.Size;
 public class FVUserOptList implements java.io.Serializable {
 
 	
-	@Column(name = "USERCODE")
+	@Column(name = "USER_CODE")
     @NotNull(message = "字段不能为空")
     private String userCode;    //用户代码
 
-    @Column(name = "OPTCODE")
+    @Column(name = "OPT_CODE")
     @NotNull(message = "字段不能为空")
     private String optcode;     //业务代码
     
@@ -31,15 +31,15 @@ public class FVUserOptList implements java.io.Serializable {
     @EmbeddedId
     private FVUserOptListId id; //主键
 
-    @Column(name = "OPTNAME")
+    @Column(name = "OPT_NAME")
     @Size(max = 50, message = "字段长度不能大于{max}")
     private String optName;     //业务名字
 
-    @Column(name = "OPTID")
+    @Column(name = "OPT_ID")
     @Size(max = 8, message = "字段长度不能大于{max}")
     private String optId;       //业务编号
 
-    @Column(name = "OPTMETHOD")
+    @Column(name = "OPT_METHOD")
     @Size(max = 50, message = "字段长度不能大于{max}")
     private String optMethod;   //业务方法？？
 

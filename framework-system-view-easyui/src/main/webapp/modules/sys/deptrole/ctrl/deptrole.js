@@ -42,7 +42,7 @@ define(function(require) {
 				onClickRow: function(index, row) {
 					if (selectedIndex == index) return;
 					selectedIndex = index;
-					var DeptRoleUserPanel = $('#roleinfo_layout').layout('panel', 'east');
+					var DeptRoleUserPanel = $('#deptrole_layout').layout('panel', 'east');
 					DeptRoleUserPanel.data('panel').options.onLoad = function() {
 						DeptRoleUser.init(DeptRoleUserPanel, row);
 					};

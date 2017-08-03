@@ -27,46 +27,46 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "CATALOGCODE")
+    @Column(name = "CATALOG_CODE")
     @GeneratedValue(generator = "assignedGenerator")
     //@GenericGenerator(name = "assignedGenerator", strategy = "assigned")
     private String catalogCode; // 类别代码
 
-    @Column(name = "CATALOGNAME")
+    @Column(name = "CATALOG_NAME")
     @Size(max = 64, message = "字段长度不能大于{max}")
     private String catalogName;// 类别名称
 
-    @Column(name = "CATALOGSTYLE")
+    @Column(name = "CATALOG_STYLE")
     @NotNull(message = "字段不能为空")
     @Size(max = 1, message = "字段长度必须为{max}")
     @Pattern(regexp = "[SUF]", message = "字段只能填写F,S,U")
     private String catalogStyle;// 类别状态
 
-    @Column(name = "CATALOGTYPE")
+    @Column(name = "CATALOG_TYPE")
     @NotNull(message = "字段不能为空")
     @Size(max = 1, message = "字段长度必须为{max}")
     @Pattern(regexp = "[LT]", message = "字段只能填写L或T")
     private String catalogType;// 类别形式
 
-    @Column(name = "CATALOGDESC")
+    @Column(name = "CATALOG_DESC")
     @Size(max = 256, message = "字段长度不能大于{max}")
     private String catalogDesc;// 类别描述
 
-    @Column(name = "FIELDDESC")
+    @Column(name = "FIELD_DESC")
     @Size(max = 1024, message = "字段长度不能大于{max}")
     private String fieldDesc; // 字典字段描述
 
-    @Column(name = "NEEDCACHE")
+    @Column(name = "NEED_CACHE")
     @NotNull(message = "字段不能为空")
     @Size(max = 1, message = "字段长度必须为{max}")
     // 默认值为1如何设置？
     private String needCache; // 是否需要缓存
 
-    @Column(name = "OPTID")
+    @Column(name = "OPT_ID")
     @Size(max = 16, message = "字段长度不能大于{max}")
     private String optId;
 
-    @Column(name = "CREATEDATE", nullable = false)
+    @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
 
@@ -86,7 +86,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
 	/**
 	 * UPDATEDATE(更新时间) 更新时间 
 	 */
-	@Column(name = "UPDATEDATE")
+	@Column(name = "UPDATE_DATE")
 	private Date  updateDate;
 	//结束
 	

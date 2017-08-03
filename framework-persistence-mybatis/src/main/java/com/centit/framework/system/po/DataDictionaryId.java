@@ -15,11 +15,11 @@ import javax.validation.constraints.NotNull;
 public class DataDictionaryId implements java.io.Serializable {
     private static final long serialVersionUID = -477457533900099603L;
     // Fields
-    @Column(name = "CATALOGCODE")
+    @Column(name = "CATALOG_CODE")
     @NotNull(message = "字段不能为空")
     private String catalogCode; // 类别代码
 
-    @Column(name = "DATACODE")
+    @Column(name = "DATA_CODE")
     @NotNull(message = "字段不能为空")
     private String dataCode; // 数据代码
 

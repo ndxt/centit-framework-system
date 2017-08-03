@@ -15,13 +15,13 @@ public class FVUserRolesId implements Serializable {
     /**
      * 用户代码
      */
-    @Column(name = "USERCODE")
+    @Column(name = "USER_CODE")
     private String userCode;
 
     /**
      * 角色代码
      */
-    @Column(name = "ROLECODE")
+    @Column(name = "ROLE_CODE")
     private String roleCode; //
 
     public String getUserCode() {

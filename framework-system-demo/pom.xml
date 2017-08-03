@@ -52,8 +52,8 @@
 
         <dependency>
             <groupId>com.centit.framework</groupId>
-            <!--<artifactId>framework-persistence-hibernate</artifactId>-->
-            <artifactId>framework-persistence-mybatis</artifactId>
+            <artifactId>framework-persistence-hibernate</artifactId>
+            <!--<artifactId>framework-persistence-mybatis</artifactId>-->
             <version>${centit.framework.version}</version>
         </dependency>
 

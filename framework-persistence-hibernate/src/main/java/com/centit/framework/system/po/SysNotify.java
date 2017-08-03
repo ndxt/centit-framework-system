@@ -83,19 +83,19 @@ public class SysNotify implements Serializable {
 
     /**
      *功能模块 */
-    @Column(name="OPTID")
+    @Column(name="OPT_ID")
     @Length(max = 64, message = "字段长度不能大于{max}")
     private String optId;
     
     /**
      *操作方法 */
-    @Column(name="OPTMETHOD")
+    @Column(name="OPT_METHOD")
     @Length(max = 64, message = "字段长度不能大于{max}")
     private String optMethod;
     
     /**
      *操作业务标记 */
-    @Column(name="OPTTAG")
+    @Column(name="OPT_TAG")
     @Length(max = 200, message = "字段长度不能大于{max}")
     private String optTag;
     

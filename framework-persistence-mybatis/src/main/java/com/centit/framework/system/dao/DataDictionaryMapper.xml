@@ -4,40 +4,40 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.centit.framework.system.dao.DataDictionaryDao">
 	<resultMap type="com.centit.framework.system.po.DataDictionary" id="datadictionary">
-       <result property="catalogCode" column="CATALOGCODE" />
-       <result property="dataCode" column="DATACODE" />
-       <result property="extraCode" column="EXTRACODE" />
-		<result property="extraCode2" column="EXTRACODE2" />
-		<result property="dataTag" column="DATATAG" />
-		<result property="dataValue" column="DATAVALUE" />
-		<result property="dataStyle" column="DATASTYLE" />
-		<result property="dataOrder" column="DATAORDER" />
-		<result property="dataDesc" column="DATADESC" />
-		<result property="createDate" column="CREATEDATE" />
-		<result property="lastModifyDate" column="LASTMODIFYDATE" />
+       <result property="catalogCode" column="CATALOG_CODE" />
+       <result property="dataCode" column="DATA_CODE" />
+       <result property="extraCode" column="EXTRA_CODE" />
+		<result property="extraCode2" column="EXTRA_CODE2" />
+		<result property="dataTag" column="DATA_TAG" />
+		<result property="dataValue" column="DATA_VALUE" />
+		<result property="dataStyle" column="DATA_STYLE" />
+		<result property="dataOrder" column="DATA_ORDER" />
+		<result property="dataDesc" column="DATA_DESC" />
+		<result property="createDate" column="CREATE_DATE" />
+		<result property="lastModifyDate" column="LAST_MODIFY_DATE" />
 	</resultMap>
 
 	<!-- 查询条件 -->
 	<sql id="condition">
 		<if test="datacode != null    and datacode != ''   ">
-			  and u.DATACODE = #{dataCode}
+			  and u.DATA_CODE = #{dataCode}
 		</if>
 		<if test="catalogCode != null  and catalogCode != ''  " >
-			  and u.CATALOGCODE = #{catalogCode}
+			  and u.CATALOG_CODE = #{catalogCode}
 		</if>
 		<if test="dataCode != null  and dataCode != ''   ">
-			  and u.DATACODE like '%'||#{dataCode}||'%'    
+			  and u.DATA_CODE like '%'||#{dataCode}||'%'    
 		</if>
 		<if test="catalogCode != null  and catalogCode != ''   ">
-			  and u.CATALOGCODE like '%'||#{catalogCode}||'%'  
+			  and u.CATALOG_CODE like '%'||#{catalogCode}||'%'  
 		</if>
 		
 		 <if test="NP_system != null   ">
-			  and u.dataStyle='S'
+			  and u.data_Style='S'
 	     </if>
 		
 		<if test="dataValue != null  and dataValue != ''   ">
-			  and u.DATAVALUE like '%'||#{dataValue}||'%' 
+			  and u.DATA_VALUE like '%'||#{dataValue}||'%' 
 		</if>
 	</sql>
 	
@@ -45,17 +45,17 @@
 	<sql id="coreSql">
 		<![CDATA[ 
 			select 
-			         CATALOGCODE,
-					  DATACODE,
-					  EXTRACODE,
-					  EXTRACODE2,
-					  DATATAG,
-					  DATAVALUE,
-					  DATASTYLE,
-					  DATADESC,
-					  LASTMODIFYDATE,
-					  CREATEDATE,
-					  DATAORDER
+			         CATALOG_CODE,
+					  DATA_CODE,
+					  EXTRA_CODE,
+					  EXTRA_CODE2,
+					  DATA_TAG,
+					  DATA_VALUE,
+					  DATA_STYLE,
+					  DATA_DESC,
+					  LAST_MODIFY_DATE,
+					  CREATE_DATE,
+					  DATA_ORDER
 		      from F_DATADICTIONARY u
 	  ]]>
 	</sql>
@@ -91,7 +91,7 @@
 		<include refid="coreSql" />
 		<where>
          <![CDATA[ 
-	                u.CATALOGCODE=#{catalogCode} and u.DATACODE=#{dataCode}
+	                u.CATALOG_CODE=#{catalogCode} and u.DATA_CODE=#{dataCode}
            ]]>
 		</where>
 	</select>
@@ -101,17 +101,17 @@
     <!--插入新单据 start -->
     <sql id="insertSql">
 		   (
-		      CATALOGCODE,
-			  DATACODE,
-			  EXTRACODE,
-			  EXTRACODE2,
-			  DATATAG,
-			  DATAVALUE,
-			  DATASTYLE,
-			  DATADESC,
-			  LASTMODIFYDATE,
-			  CREATEDATE,
-			  DATAORDER
+		      CATALOG_CODE,
+			  DATA_CODE,
+			  EXTRA_CODE,
+			  EXTRA_CODE2,
+			  DATA_TAG,
+			  DATA_VALUE,
+			  DATA_STYLE,
+			  DATA_DESC,
+			  LAST_MODIFY_DATE,
+			  CREATE_DATE,
+			  DATA_ORDER
 			)values(
 			#{catalogCode,jdbcType=VARCHAR},
 			#{dataCode,jdbcType=VARCHAR},
@@ -137,38 +137,38 @@
    <sql id="updSql">
       <set>
 		   <if test="extraCode!=null ">
-				EXTRACODE = #{extraCode},
+				EXTRA_CODE = #{extraCode},
 			</if>
 			<if test="extraCode2!=null ">
-				EXTRACODE2 = #{extraCode2},
+				EXTRA_CODE2 = #{extraCode2},
 			</if>
 			<if test="dataTag!=null ">
-				DATATAG = #{dataTag},
+				DATA_TAG = #{dataTag},
 			</if>
 			<if test="dataValue!=null ">
-				DATAVALUE = #{dataValue},
+				DATA_VALUE = #{dataValue},
 			</if>
 			<if test="dataStyle!=null ">
-				DATASTYLE = #{dataStyle},
+				DATA_STYLE = #{dataStyle},
 			</if>
 			<if test="dataDesc!=null ">
-				DATADESC = #{dataDesc},
+				DATA_DESC = #{dataDesc},
 			</if>
 			<if test="lastModifyDate!=null ">
-				LASTMODIFYDATE = #{lastModifyDate},
+				LAST_MODIFY_DATE = #{lastModifyDate},
 			</if>
 			<if test="createDate!=null ">
-				CREATEDATE = #{createDate},
+				CREATE_DATE = #{createDate},
 			</if>
 			<if test="dataOrder!=null ">
-				DATAORDER = #{dataOrder},
+				DATA_ORDER = #{dataOrder},
 			</if>
 		</set>
 	</sql>
 	<update id="update" parameterType="com.centit.framework.system.po.DataDictionary" >
 	     update F_DATADICTIONARY
 	     <include refid="updSql" />
-	     where  CATALOGCODE=#{catalogCode} and DATACODE=#{dataCode}
+	     where  CATALOG_CODE=#{catalogCode} and DATA_CODE=#{dataCode}
 	</update>
 	<!--更新单据 end -->
 	
@@ -176,15 +176,15 @@
 	<!--Merge单据 start -->
 	<update id="mergeObject" parameterType="com.centit.framework.system.po.DataDictionary" >
 	      merge into F_DATADICTIONARY t  
-		    using ( select #{catalogCode} as CATALOGCODE ,  #{dataCode} as DATACODE     from dual) t1  
-		    on(t.CATALOGCODE = t1.CATALOGCODE and t.DATACODE = t1.DATACODE  )  
+		    using ( select #{catalogCode} as CATALOG_CODE ,  #{dataCode} as DATA_CODE     from dual) t1  
+		    on(t.CATALOG_CODE = t1.CATALOG_CODE and t.DATA_CODE = t1.DATA_CODE  )  
 		 when not matched then
 		   insert
 		   <include refid="insertSql" />
 		 when matched then 
 		 update
 		   <include refid="updSql" />   
-		    where  CATALOGCODE=#{catalogCode} and DATACODE=#{dataCode}
+		    where  CATALOG_CODE=#{catalogCode} and DATA_CODE=#{dataCode}
 	</update>
 	<!--Merge单据 end -->
 	
@@ -193,17 +193,17 @@
 	
 	<delete id="deleteObject" parameterType="com.centit.framework.system.po.DataDictionary" >
     <![CDATA[ 
-       delete from F_DATADICTIONARY where CATALOGCODE=#{catalogCode} and DATACODE=#{dataCode} 
+       delete from F_DATADICTIONARY where CATALOG_CODE=#{catalogCode} and DATA_CODE=#{dataCode} 
      ]]>
 	</delete>
 	<delete id="deleteObjectById" parameterType="com.centit.framework.system.po.DataDictionaryId" >
     <![CDATA[ 
-       delete from F_DATADICTIONARY where CATALOGCODE=#{catalogCode} and DATACODE=#{dataCode} 
+       delete from F_DATADICTIONARY where CATALOG_CODE=#{catalogCode} and DATA_CODE=#{dataCode} 
      ]]>
 	</delete>
 	<delete id="deleteDictionary" parameterType="String">
     <![CDATA[ 
-          delete from F_DATADICTIONARY where CATALOGCODE=#{catalogCode} 
+          delete from F_DATADICTIONARY where CATALOG_CODE=#{catalogCode} 
      ]]>
 	</delete>
 	<!--删除记录 结束 -->
@@ -216,9 +216,9 @@
 	<select id="listDataDictionary"  parameterType="String" resultMap="datadictionary">
 		 <include refid="coreSql" />
 			  WHERE 
-			       catalogCode=#{catalogCode}  
+			       catalog_Code=#{catalogCode}
 			  ORDER BY 
-			      dataOrder	
+			      data_Order
 	</select>
 	
 </mapper>

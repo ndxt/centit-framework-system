@@ -36,29 +36,29 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
     @EmbeddedId
     private DataDictionaryId id; // 主键id
 
-    @Column(name = "CATALOGCODE")
+    @Column(name = "CATALOG_CODE")
     @NotNull(message = "字段不能为空")
     private String catalogCode; // 类别代码
 
-    @Column(name = "DATACODE")
+    @Column(name = "DATA_CODE")
     @NotNull(message = "字段不能为空")
     private String dataCode; // 数据代码
     
     
-    @Column(name = "EXTRACODE")
+    @Column(name = "EXTRA_CODE")
     @Size(max = 16, message = "字段长度不能大于{max}")
     private String extraCode; // 附加代码1
 
-    @Column(name = "EXTRACODE2")
+    @Column(name = "EXTRA_CODE2")
     @Size(max = 16, message = "字段长度不能大于{max}")
     private String extraCode2; // 附加代码2
 
-    @Column(name = "DATATAG")
+    @Column(name = "DATA_TAG")
     @NotNull(message = "字段不能为空")
     @Size(max = 1, message = "字段长度必须为{max}")
     private String dataTag; // 标志符
 
-    @Column(name = "DATAVALUE")
+    @Column(name = "DATA_VALUE")
     @NotNull(message = "字段不能为空")
     @Size(max = 2048, message = "字段长度不能大于{max}")
     private String dataValue; // 数据值
@@ -66,25 +66,25 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
     @Transient
     private JSONObject jsonData;
     
-    @Column(name = "DATASTYLE")
+    @Column(name = "DATA_STYLE")
     @NotNull(message = "字段不能为空")
     @Size(max = 1, message = "字段长度必须为{max}")
     @Pattern(regexp = "[SUF]", message = "字段只能填写F,S,U")
     private String dataStyle; // 属性
 
-    @Column(name = "DATAORDER")
+    @Column(name = "DATA_ORDER")
     //@Pattern(regexp = "\\d{0,6}", message = "字段只能填写数字")
     private Integer dataOrder;
 
-    @Column(name = "DATADESC")
+    @Column(name = "DATA_DESC")
     @Size(max = 256, message = "字段长度不能大于{max}")
     private String dataDesc; // 备注
     
-    @Column(name = "CREATEDATE", nullable = false)
+    @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
 
-    @Column(name = "LASTMODIFYDATE")
+    @Column(name = "LAST_MODIFY_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     protected Date lastModifyDate;
 

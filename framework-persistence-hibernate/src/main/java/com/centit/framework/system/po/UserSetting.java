@@ -30,7 +30,7 @@ public class UserSetting implements IUserSetting,java.io.Serializable {
     /**
      * 参数值
      */
-    @Column(name = "PARAMVALUE")
+    @Column(name = "PARAM_VALUE")
     @NotBlank(message = "不能为空")
     @Length(max = 2000, message = "字段长度不能大于{max}")
     private String paramValue;
@@ -38,19 +38,19 @@ public class UserSetting implements IUserSetting,java.io.Serializable {
     /**
      * 业务ID
      */
-    @Column(name = "OPTID")
+    @Column(name = "OPT_ID")
     @Length(max = 16, message = "字段长度不能大于{max}")
     private String optId;
     /**
      * 参数中文名称
      */
-    @Column(name = "PARAMNAME")
+    @Column(name = "PARAM_NAME")
     @Length(max = 200, message = "字段长度不能大于{max}")
     private String paramName;
     /**
      * 创建时间
      */
-    @Column(name = "CREATEDATE")
+    @Column(name = "CREATE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
 

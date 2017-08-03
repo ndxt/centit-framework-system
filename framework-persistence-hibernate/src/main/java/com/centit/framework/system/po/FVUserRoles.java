@@ -19,13 +19,13 @@ public class FVUserRoles implements Serializable {
     @EmbeddedId
     private UserRoleId id;
 
-    @Column(name = "ROLENAME")
+    @Column(name = "ROLE_NAME")
     private String roleName; // 角色名称
 
-    @Column(name = "ISVALID")
+    @Column(name = "IS_VALID")
     private String isValid; // 是否生效
 
-    @Column(name = "ROLEDESC")
+    @Column(name = "ROLE_DESC")
     private String roleDesc; // 角色描述
 
     public UserRoleId getId() {

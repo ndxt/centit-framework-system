@@ -151,12 +151,12 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
 
     public List<String> getAllParentUnit(){
         return (List<String>)DatabaseOptUtils.findObjectsBySql(this,
-                "select distinct t.parentunit from f_unitinfo t ");
+                "select distinct t.parent_unit from f_unitinfo t ");
     }
 
     public int countChildrenSum(String unitCode){
         return (int)DatabaseOptUtils.getSingleObjectBySql(this,
-                "select count(1) as subunits from F_UNITINFO where PARENTUNIT = ?",  unitCode);
+                "select count(1) as subunits from F_UNITINFO where PARENT_UNIT = ?",  unitCode);
     }
 
     /**

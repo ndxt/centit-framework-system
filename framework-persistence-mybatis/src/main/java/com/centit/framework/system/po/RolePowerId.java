@@ -15,11 +15,11 @@ public class RolePowerId implements java.io.Serializable {
     // Fields
 
     private static final long serialVersionUID = 1L;
-    @Column(name = "ROLECODE")
+    @Column(name = "ROLE_CODE")
     @NotNull(message = "字段不能为空")
     private String roleCode; //角色代码
 
-    @Column(name = "OPTCODE")
+    @Column(name = "OPT_CODE")
     @NotNull(message = "字段不能为空")
     private String optCode; //操作代码
 
