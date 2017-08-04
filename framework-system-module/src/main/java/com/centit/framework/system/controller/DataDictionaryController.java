@@ -4,7 +4,7 @@ import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.common.JsonResultUtils;
 import com.centit.framework.core.common.ObjectException;
-import com.centit.framework.core.common.ResponseData;
+import com.centit.framework.core.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.core.dao.PageDesc;
@@ -80,7 +80,8 @@ public class DataDictionaryController extends BaseController {
 
             return;
         }
-        ResponseData resData = new ResponseData();
+
+        ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, listObjects);
         resData.addResponseData(PAGE_DESC, pageDesc);
         resData.addResponseData(CodeBook.SELF_ORDER_BY, searchColumn.get(CodeBook.SELF_ORDER_BY));
@@ -445,7 +446,7 @@ public class DataDictionaryController extends BaseController {
     @RequestMapping(value = "/editDictionary/{catalogCode}", method = {RequestMethod.GET})
     public void getDataDictionaryDetail(@PathVariable String catalogCode, HttpServletResponse response) {
         List<DataDictionary> datas = dataCatalogManager.getDataDictionary(catalogCode);
-        ResponseData resData = new ResponseData();
+        ResponseMapData resData = new ResponseMapData();
         resData.addResponseData("dataDictionary", datas);
         resData.addResponseData("multiLang", multiLang);
         resData.addResponseData("langs", CodeRepositoryUtil.getLabelValueMap("SUPPORT_LANG"));
@@ -463,7 +464,7 @@ public class DataDictionaryController extends BaseController {
         List<DataCatalog> catalogs = dataCatalogManager.listAllDataCatalog();
         List<DataDictionary> dictionarys = dataCatalogManager.getWholeDictionary();
         
-        ResponseData resData = new ResponseData();        
+        ResponseMapData resData = new ResponseMapData();
         resData.addResponseData("catalog", catalogs);
         resData.addResponseData("dictionary", dictionarys);        
         JsonResultUtils.writeResponseDataAsJson(resData,response);

@@ -2,7 +2,7 @@ package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.core.common.JsonResultUtils;
-import com.centit.framework.core.common.ResponseData;
+import com.centit.framework.core.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.core.dao.PageDesc;
@@ -59,7 +59,7 @@ public class OptLogController extends BaseController {
         
         JSONArray jsonArray = optLogManager.listObjectsAsJson(field, searchColumn, pageDesc);
         
-        ResponseData resData = new ResponseData();
+        ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, jsonArray);
         resData.addResponseData(PAGE_DESC, pageDesc);
         resData.addResponseData(CodeBook.SELF_ORDER_BY, searchColumn.get(CodeBook.SELF_ORDER_BY));

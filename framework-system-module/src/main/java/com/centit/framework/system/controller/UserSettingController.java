@@ -4,7 +4,7 @@ import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.common.JsonResultUtils;
-import com.centit.framework.core.common.ResponseData;
+import com.centit.framework.core.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.model.basedata.OperationLog;
@@ -68,7 +68,7 @@ public class UserSettingController extends BaseController {
             simplePropertyPreFilter = new SimplePropertyPreFilter(UserSetting.class, field);
         }
 
-        ResponseData resData = new ResponseData();
+        ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, listObjects);
         resData.addResponseData(PAGE_DESC, pageDesc);
 
@@ -89,7 +89,7 @@ public class UserSettingController extends BaseController {
             simplePropertyPreFilter = new SimplePropertyPreFilter(UserSetting.class, field);
         }
 
-        ResponseData resData = new ResponseData();
+        ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, listObjects);
         JsonResultUtils.writeResponseDataAsJson(resData, response, simplePropertyPreFilter);
     }

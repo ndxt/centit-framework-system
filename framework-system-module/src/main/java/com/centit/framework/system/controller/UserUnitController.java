@@ -3,7 +3,7 @@ package com.centit.framework.system.controller;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.common.JsonResultUtils;
-import com.centit.framework.core.common.ResponseData;
+import com.centit.framework.core.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.core.dao.PageDesc;
@@ -101,7 +101,7 @@ public class UserUnitController extends BaseController {
 
         List<UserUnit> listObjects = sysUserUnitManager.listObjects(filterMap, pageDesc);
 
-        ResponseData resData = new ResponseData();
+        ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
         resData.addResponseData(PAGE_DESC, pageDesc);
 
@@ -129,7 +129,7 @@ public class UserUnitController extends BaseController {
     protected void listObject(Map<String, Object> filterMap, PageDesc pageDesc, HttpServletResponse response) {
         List<UserUnit> listObjects = sysUserUnitManager.listObjects(filterMap, pageDesc);
 
-        ResponseData resData = new ResponseData();
+        ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
         resData.addResponseData(PAGE_DESC, pageDesc);
 

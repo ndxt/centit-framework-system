@@ -1,25 +1,23 @@
 package com.centit.framework.system.controller;
 
-import java.io.Serializable;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
+import com.alibaba.fastjson.JSONArray;
+import com.centit.framework.core.common.JsonResultUtils;
+import com.centit.framework.core.common.ResponseMapData;
+import com.centit.framework.core.controller.BaseController;
+import com.centit.framework.core.dao.PageDesc;
+import com.centit.framework.system.po.QueryFilterCondition;
+import com.centit.framework.system.service.QueryFilterConditionManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.alibaba.fastjson.JSONArray;
-import com.centit.framework.core.common.JsonResultUtils;
-import com.centit.framework.core.common.ResponseData;
-import com.centit.framework.core.controller.BaseController;
-import com.centit.framework.core.dao.PageDesc;
-import com.centit.framework.system.po.QueryFilterCondition;
-import com.centit.framework.system.service.QueryFilterConditionManager;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.Serializable;
+import java.util.Map;
 /**
  * QueryFilterCondition  Controller.
  * create by scaffold 2016-03-01 
@@ -60,7 +58,7 @@ public class QueryFilterConditionController  extends BaseController {
             return;
         }
         
-        ResponseData resData = new ResponseData();
+        ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, listObjects);
         resData.addResponseData(PAGE_DESC, pageDesc);
 

@@ -3,6 +3,7 @@ package com.centit.framework.system.controller;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.common.JsonResultUtils;
 import com.centit.framework.core.common.ResponseData;
+import com.centit.framework.core.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.system.po.OptInfo;
@@ -291,7 +292,7 @@ public class OptInfoController extends BaseController {
     public void getNextOptCode(HttpServletResponse response) {
         String optCode = optMethodManager.getNextOptCode();
 
-        ResponseData responseData = new ResponseData();
+        ResponseMapData responseData = new ResponseMapData();
         responseData.addResponseData("optCode", optCode);
 
         JsonResultUtils.writeResponseDataAsJson(responseData, response);

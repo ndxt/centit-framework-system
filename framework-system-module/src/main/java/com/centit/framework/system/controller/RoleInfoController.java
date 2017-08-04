@@ -4,6 +4,7 @@ import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.common.JsonResultUtils;
 import com.centit.framework.core.common.ResponseData;
+import com.centit.framework.core.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.model.basedata.IUserUnit;
@@ -66,7 +67,7 @@ public class RoleInfoController extends BaseController {
         filterMap.put("NP_GLOBAL", "true");
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
 
-        ResponseData respData = new ResponseData();
+        ResponseMapData respData = new ResponseMapData();
         respData.addResponseData(OBJLIST, roleInfos);
         respData.addResponseData(PAGE_DESC, pageDesc);
 
@@ -91,7 +92,7 @@ public class RoleInfoController extends BaseController {
         filterMap.put("UNITROLE", unitCode + "-%");
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
 
-        ResponseData respData = new ResponseData();
+        ResponseMapData respData = new ResponseMapData();
         respData.addResponseData(OBJLIST, roleInfos);
         respData.addResponseData(PAGE_DESC, pageDesc);
 
@@ -115,7 +116,7 @@ public class RoleInfoController extends BaseController {
         filterMap.put("ROLECODE",  "I-%");
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
 
-        ResponseData respData = new ResponseData();
+        ResponseMapData respData = new ResponseMapData();
         respData.addResponseData(OBJLIST, roleInfos);
         respData.addResponseData(PAGE_DESC, pageDesc);
 

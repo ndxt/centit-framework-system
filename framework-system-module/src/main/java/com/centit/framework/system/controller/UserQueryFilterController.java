@@ -2,7 +2,7 @@ package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.core.common.JsonResultUtils;
-import com.centit.framework.core.common.ResponseData;
+import com.centit.framework.core.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.system.po.UserQueryFilter;
@@ -65,7 +65,7 @@ public class UserQueryFilterController  extends BaseController {
             JsonResultUtils.writeSingleDataJson(listObjects, response, simplePropertyPreFilter);
             return;
         }
-        ResponseData resData = new ResponseData();
+        ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, listObjects);
         resData.addResponseData(PAGE_DESC, pageDesc);
 

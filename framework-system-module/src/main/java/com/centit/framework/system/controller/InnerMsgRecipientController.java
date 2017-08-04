@@ -5,6 +5,7 @@ import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.common.JsonResultUtils;
 import com.centit.framework.core.common.ResponseData;
+import com.centit.framework.core.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.core.dao.PageDesc;
@@ -68,7 +69,7 @@ public class InnerMsgRecipientController extends BaseController {
             listObjects = innerMsgRecipientManager.listObjects(searchColumn);
         else
             listObjects = innerMsgRecipientManager.listObjects(searchColumn,pageDesc);
-        ResponseData resData = new ResponseData();
+        ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
         resData.addResponseData(PAGE_DESC, pageDesc);
         JsonResultUtils.writeResponseDataAsJson(resData, response, JsonPropertyUtils.getIncludePropPreFilter(InnerMsgRecipient.class, field));
@@ -102,7 +103,7 @@ public class InnerMsgRecipientController extends BaseController {
             listObjects = innerMsgManager.listObjects(searchColumn);
         else
             listObjects = innerMsgManager.listObjects(searchColumn,pageDesc);
-        ResponseData resData = new ResponseData();
+        ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
         resData.addResponseData(PAGE_DESC, pageDesc);
         JsonResultUtils.writeResponseDataAsJson(resData, response, JsonPropertyUtils.getIncludePropPreFilter(InnerMsgRecipient.class, field));
@@ -144,7 +145,7 @@ public class InnerMsgRecipientController extends BaseController {
         Map<String, Object> searchColumn = convertSearchColumn(request);
         searchColumn.put("msgType", "A");
         List<InnerMsg> listObjects = innerMsgManager.listObjects(searchColumn,pageDesc);
-        ResponseData resData = new ResponseData();
+        ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
         resData.addResponseData(PAGE_DESC, pageDesc);
         JsonResultUtils.writeResponseDataAsJson(resData, response, JsonPropertyUtils
@@ -284,7 +285,7 @@ public class InnerMsgRecipientController extends BaseController {
             @PathVariable String receiver, HttpServletResponse response) {
         List<InnerMsgRecipient> recipientlist = innerMsgRecipientManager
                 .getExchangeMsgs(sender, receiver);
-        ResponseData resData = new ResponseData();
+        ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, recipientlist);
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
