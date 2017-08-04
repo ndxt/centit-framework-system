@@ -5,6 +5,7 @@ import com.centit.framework.components.impl.TextOperationLogWriterImpl;
 import com.centit.framework.model.adapter.NotificationCenter;
 import com.centit.framework.model.adapter.OperationLogWriter;
 import com.centit.framework.mybatis.config.DataSourceConfig;
+import com.centit.framework.system.config.SystemBeanConfig;
 import com.centit.framework.web.demo.listener.InstantiationServiceBeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +15,7 @@ import org.springframework.context.annotation.Lazy;
 /**
  * Created by codefan on 17-7-18.
  */
-@Import(DataSourceConfig.class)
+@Import({SystemBeanConfig.class, DataSourceConfig.class})
 @Configuration
 public class ServiceConfig {
 
