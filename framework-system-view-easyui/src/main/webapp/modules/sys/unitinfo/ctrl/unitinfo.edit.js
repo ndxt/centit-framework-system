@@ -45,10 +45,10 @@ define(function(require) {
 		};
 		
 		// @override
-		this.onClose = function(panel, data) {
+		this.onClose = function(table, data) {
 			var newObject =this.newObject;
 			if(!newObject)return ;
-			panel.find("#tg").treegrid('reload');
+			table.treegrid('reload');
 			this.newObject=null;
         };
 	});
