@@ -18,6 +18,9 @@ define(function(require) {
 				return require('loaders/cache/loader.system').loadAll()
 			}).then(function() {
             	table.treegrid('remove', data.unitCode);
+				var layout = $('#unitinfo_panel').layout('panel', 'east');
+				layout.panel('setTitle','用户信息');
+				layout.panel('clear');
             });
 		};
 		this.renderButton=function(target,data){
