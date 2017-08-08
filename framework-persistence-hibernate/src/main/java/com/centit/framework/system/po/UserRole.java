@@ -1,21 +1,14 @@
 package com.centit.framework.system.po;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.hibernate.validator.constraints.Length;
-
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IUserInfo;
 import com.centit.framework.model.basedata.IUserRole;
 import com.centit.framework.model.basedata.IUserUnit;
+import org.hibernate.validator.constraints.Length;
+
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * FUserrole entity.
@@ -37,7 +30,7 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
     private UserRoleId id; // 主键
 
     @Column(name = "OBTAIN_DATE")
-    @Temporal(TemporalType.TIMESTAMP) 
+    @Temporal(TemporalType.DATE)
     private Date obtainDate; // 获得角色时间
     
     @Column(name = "CHANGE_DESC")

@@ -18,7 +18,7 @@ define(function(require) {
 			}
 			
 			Core.ajax(Config.ContextPath+'system/userrole/'+this.parent.data.roleCode+'/'+ids, {
-				method: 'post',
+				method: 'DELETE',
 				data: {
 					_method: 'DELETE',
 						obtainDate:data.obtainDate

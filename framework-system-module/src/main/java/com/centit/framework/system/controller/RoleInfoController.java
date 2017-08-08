@@ -3,7 +3,6 @@ package com.centit.framework.system.controller;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.common.JsonResultUtils;
-import com.centit.framework.core.common.ResponseData;
 import com.centit.framework.core.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.PageDesc;
@@ -610,9 +609,9 @@ public class RoleInfoController extends BaseController {
         }else if("D".equals(type)){
         	CentitUserDetails user = getLoginUser(request);
         	IUserUnit unit = CodeRepositoryUtil.getUserPrimaryUnit(user.getUserCode());
-        	if(unit!=null)
-        		filterMap.put("unitCode",unit.getUnitCode());
-        	else return;
+        	if(unit!=null) {
+                filterMap.put("UNITROLE", unit.getUnitCode()+"-%");
+            }else return;
         }
         List<RoleInfo> listObjects = sysRoleManager.listObjects(filterMap);
 

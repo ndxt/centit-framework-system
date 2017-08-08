@@ -96,7 +96,7 @@ public class UnitInfoController extends BaseController {
         }else{
             Map<String,Object> filterMap = new HashMap<>();
             if (StringUtils.isNotBlank(id)) {
-                filterMap.put("PARENTUNIT", id);
+                filterMap.put("parentUnit", id);
             }else{
                 filterMap.put("NP_TOPUnit", "true");
             }
@@ -319,15 +319,15 @@ public class UnitInfoController extends BaseController {
      */
     @RequestMapping(value = "/{unitCode}/users", method = RequestMethod.GET)
     public void listUnitUsers(@PathVariable String unitCode, String[] field, String primary,
-                              PageDesc pageDesc, HttpServletResponse response) {
+                              PageDesc pageDesc,HttpServletRequest request, HttpServletResponse response) {
 
-        Map<String, Object> filterMap = new HashMap<>();
-        filterMap.put("unitCode", unitCode);
+        Map<String, Object> searchColumn = convertSearchColumn(request);
+        searchColumn.put("unitCode", unitCode);
         if (StringUtils.isNotBlank(primary)) {
-            filterMap.put("isPrimary", primary);
+            searchColumn.put("isPrimary", primary);
         }
 
-        List<UserUnit> listObjects = sysUserUnitManager.listObjects(filterMap, pageDesc);
+        List<UserUnit> listObjects = sysUserUnitManager.listObjects(searchColumn, pageDesc);
 
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, listObjects);

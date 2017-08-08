@@ -196,22 +196,26 @@ public class UserRoleController extends BaseController {
     /**
      * 删除用户角色关联信息
      * @param roleCode 角色代码
-     * @param userCode 用户代码
+     * @param userCodes 用户代码
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
-    @RequestMapping(value = "/{roleCode}/{userCode}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable String roleCode, @PathVariable String userCode,
+    @RequestMapping(value = "/{roleCode}/{userCodes}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable String roleCode, @PathVariable String userCodes,
                        HttpServletRequest request, HttpServletResponse response) {
-        UserRoleId userRoleId=new UserRoleId(userCode,roleCode);
-        sysUserRoleManager.deleteObjectById(userRoleId);
+
+        String[] userCodeArray = userCodes.split(",");
+        for(String userCode : userCodeArray){
+            UserRoleId userRoleId=new UserRoleId(userCode,roleCode);
+            sysUserRoleManager.deleteObjectById(userRoleId);
+            /*********log*********/
+            StringBuilder oldValue = new StringBuilder();
+            oldValue.append("删除前userCode:" +userCode+",roleCode:"+roleCode);
+            OperationLogCenter.logDeleteObject(request,optId,userCode+"-"+roleCode,
+                    OperationLog.P_OPT_LOG_METHOD_D, oldValue.toString(), userRoleId);
+            /*********log*********/
+        }
         JsonResultUtils.writeBlankJson(response);
-        /*********log*********/
-        StringBuilder oldValue = new StringBuilder();
-        oldValue.append("删除前userCode:" +userCode+",roleCode:"+roleCode);
-        OperationLogCenter.logDeleteObject(request,optId,userCode+"-"+roleCode,
-        		OperationLog.P_OPT_LOG_METHOD_D, oldValue.toString(), userRoleId);
-        /*********log*********/
     }
     
     /**
