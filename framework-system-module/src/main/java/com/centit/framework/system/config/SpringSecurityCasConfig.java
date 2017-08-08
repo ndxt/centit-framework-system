@@ -8,7 +8,6 @@ import org.jasig.cas.client.session.SingleSignOutFilter;
 import org.jasig.cas.client.validation.Cas20ServiceTicketValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Conditional;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -35,7 +34,7 @@ import java.util.List;
 /**
  * Created by zou_wy on 2017/3/29.
  */
-@PropertySource("classpath:system.properties")
+//@PropertySource("classpath:system.properties")
 @EnableWebSecurity
 @Conditional(SecurityCasCondition.class)
 public class SpringSecurityCasConfig extends WebSecurityConfigurerAdapter {
@@ -52,7 +51,8 @@ public class SpringSecurityCasConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         // 设置不拦截规则
-        web.ignoring().antMatchers("/service/exception/**");
+//        web.ignoring().antMatchers("/service/exception/**");
+        web.ignoring().antMatchers("/system/login","/service/exception/**","/system/login/**");
     }
 
     @Override
