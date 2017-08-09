@@ -33,7 +33,7 @@ define(function(require) {
 		};
 		
 		this.remove = function(panel, data, closeCallback) {
-			$.messager.confirm('删除', '是否确认删除任务？' function (r) {
+			$.messager.confirm('删除', '是否确认删除任务？',function (r) {
                 if (r) {
                 	Core.ajax(Config.ContextPath + 'system/schedule/' + _self.taskId, {
             	  		method: 'delete' 
