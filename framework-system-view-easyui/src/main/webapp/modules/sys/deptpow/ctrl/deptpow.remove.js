@@ -21,6 +21,16 @@ define(function(require) {
 				layout.panel('clear');
             });
 		}
+		this.renderButton=function(target,data){
+			if(data.state=='closed')
+				return false;
+			else{
+				if(data.children.length==0){
+					return true;
+				}
+				return false;
+			}
+		};
 	});
 	
 	return DeptPowRemove;
