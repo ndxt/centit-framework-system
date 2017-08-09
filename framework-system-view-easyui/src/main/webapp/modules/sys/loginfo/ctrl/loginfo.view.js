@@ -31,8 +31,9 @@ define(function(require) {
 		// 解析日志内容
 		function parseLogContent(after, before) {
 			var items = [];
-			var afterMap = JSON.parse(after||"{}"), beforeMap = JSON.parse(before||"{}");			
+			var afterMapJson = JSON.parse(after||"{}"), beforeMap = JSON.parse(before||"{}");
 			var tempMap = JSON.parse(after||"{}");
+			var afterMap = JSON.stringify(afterMapJson);
 			for(var key in beforeMap){
 				tempMap[key] = beforeMap[key];
 		    }
