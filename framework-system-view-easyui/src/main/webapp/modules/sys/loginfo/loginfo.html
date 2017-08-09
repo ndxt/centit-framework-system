@@ -11,10 +11,20 @@
 		</div>
 
 		<div class="search-item">
-			<label id="c@createTime">创建时间</label>
-			<input type="text" class="easyui-date" name="s_optTimeBegin" /> <span  id="c@to">到</span>
-			<input type="text" class="easyui-date" name="s_optTimeEnd" />
+			<label id="b@createTime">创建时间</label>
+			<input type="text" class="easyui-datebox" name="s_optTimeBegin" id="s_optTimeBegin" validType="nowtime"/>
+			<span id="b@to">到</span>
+			<input type="text" class="easyui-datebox" name="s_optTimeEnd" validType="compare['#s_optTimeBegin']"/>
 		</div>
+
+		<div class="search-item">
+			<label id="b@createTime">创建时间</label>
+			<input type="text" class="easyui-datebox" name="s_optTimeBegin" id="s_optTimeBegin" validType="nowtime"/>
+			<span id="b@to">到</span>
+			<input type="text" class="easyui-datebox" name="s_optTimeEnd" validType="compare['#s_optTimeBegin']"/>
+		</div>
+
+
 		<div class="search-item">
 			<label id="c@optContent">操作内容</label>
 			<input type="text" class="easyui-textbox" name="s_optContent" />
