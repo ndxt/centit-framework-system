@@ -307,7 +307,6 @@ public class UnitInfoController extends BaseController {
         JsonResultUtils.writeSingleDataJson(listObjects, response, JsonPropertyUtils.getIncludePropPreFilter(UnitInfo.class, field));
     }
 
-
     /**
      * 当前机构下所有用户
      *
@@ -333,7 +332,8 @@ public class UnitInfoController extends BaseController {
         resData.addResponseData(OBJLIST, listObjects);
         resData.addResponseData(PAGE_DESC, pageDesc);
         if(null!=field)
-        	JsonResultUtils.writeResponseDataAsJson(resData, response, JsonPropertyUtils.getIncludePropPreFilter(UserUnit.class, field));
+        	JsonResultUtils.writeResponseDataAsJson(
+        	        resData, response, JsonPropertyUtils.getIncludePropPreFilter(UserUnit.class, field));
         else
         	JsonResultUtils.writeResponseDataAsJson(resData, response);
     }

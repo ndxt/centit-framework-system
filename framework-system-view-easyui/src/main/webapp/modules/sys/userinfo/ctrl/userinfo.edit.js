@@ -27,10 +27,12 @@ define(function(require) {
 			var form = panel.find('form');
 			
 			// 开启校验
-			var isValid = form.form('enableValidation').form('validate');
+			form.form('enableValidation');
+			var isValid = form.form('validate');
 			
 			if (isValid) {
 				this.newObject = form.form('value');
+                data._method = 'PUT';
 				form.form('ajax', {
 					url: Config.ContextPath + 'system/userinfo/' + data.userCode,
 					method: 'put',
@@ -41,6 +43,7 @@ define(function(require) {
 			}
 			
 			return false;
+
 		};
 		
 		// @override

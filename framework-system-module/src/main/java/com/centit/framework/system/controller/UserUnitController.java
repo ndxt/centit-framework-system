@@ -189,7 +189,7 @@ public class UserUnitController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
 
         /*********log*********/
-        OperationLogCenter.logNewObject(request,optId, OperationLog.P_OPT_LOG_METHOD_C, null, "新增用户机构关联信息" , userUnit);
+        OperationLogCenter.logNewObject(request,optId, OperationLog.P_OPT_LOG_METHOD_C, OperationLog.P_OPT_LOG_METHOD_C, "新增用户机构关联信息" , userUnit);
         /*********log*********/
     }
 

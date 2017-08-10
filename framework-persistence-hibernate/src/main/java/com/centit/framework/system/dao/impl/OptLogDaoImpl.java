@@ -30,7 +30,7 @@ public class OptLogDaoImpl extends BaseDaoImpl<OptLog, Long> implements OptLogDa
 
             filterField.put("(date)optTimeBegin", "optTime >= :optTimeBegin ");
 
-            filterField.put("(date)optTimeEnd", "optTime <= :optTimeEnd");
+            filterField.put("(date)optTimeEnd", "optTime < :optTimeEnd");
 
             filterField.put("optId", CodeBook.LIKE_HQL_ID);
 
@@ -42,8 +42,6 @@ public class OptLogDaoImpl extends BaseDaoImpl<OptLog, Long> implements OptLogDa
             
             filterField.put("optMethod", CodeBook.EQUAL_HQL_ID);
 
-            filterField.put("optId", CodeBook.EQUAL_HQL_ID);
-            
             filterField.put(CodeBook.ORDER_BY_HQL_ID, " optTime desc");
 
         }

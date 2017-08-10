@@ -9,6 +9,7 @@ import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.system.po.OptLog;
 import com.centit.framework.system.service.OptLogManager;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +18,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
@@ -56,6 +60,21 @@ public class OptLogController extends BaseController {
             JsonResultUtils.writeSingleDataJson(listObjectsAll, response, simplePropertyPreFilter);
             return;
         }*/
+        if(!StringUtils.isEmpty(searchColumn.get("optTimeEnd"))){
+            String endDate = searchColumn.get("optTimeEnd").toString();
+            SimpleDateFormat fmt = new SimpleDateFormat("yy-MM-dd");
+            try {
+                Date date = fmt.parse(endDate);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                calendar.add(Calendar.DAY_OF_MONTH, 1);
+                Date resultDate = calendar.getTime();
+                String resultString = fmt.format(resultDate);
+                searchColumn.put("optTimeEnd", resultString);
+            }catch(ParseException e){
+                logger.error("日期转换出错",e);
+            }
+        }
         
         JSONArray jsonArray = optLogManager.listObjectsAsJson(field, searchColumn, pageDesc);
         

@@ -32,6 +32,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -64,6 +66,21 @@ public class RoleInfoController extends BaseController {
     public void listGlobalAndPublicRole(String[] field,PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = convertSearchColumn(request);
         filterMap.put("NP_GLOBAL", "true");
+        if(!Objects.isNull(filterMap.get("createDateEnd"))){
+            String endDate = filterMap.get("createDateEnd").toString();
+            SimpleDateFormat fmt = new SimpleDateFormat("yy-MM-dd");
+            try {
+                Date date = fmt.parse(endDate);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                calendar.add(Calendar.DAY_OF_MONTH, 1);
+                Date resultDate = calendar.getTime();
+                String resultString = fmt.format(resultDate);
+                filterMap.put("createDateEnd", resultString);
+            }catch(ParseException e){
+                logger.error("日期转换出错",e);
+            }
+        }
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
 
         ResponseMapData respData = new ResponseMapData();

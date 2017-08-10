@@ -1,16 +1,5 @@
 package com.centit.framework.system.po;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.*;
-import javax.validation.constraints.Pattern;
-
 import com.alibaba.fastjson.annotation.JSONField;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IUserInfo;
@@ -18,6 +7,10 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
+
+import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+import java.util.*;
 
 /**
  * FUserinfo entity.
@@ -115,7 +108,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     private String userTag;
 
     @Column(name = "USER_ORDER")
-    @Range(max = 99999, message = "字段不能大于{max}")
+    @Range(max = 99999,min=1, message = "字段不能小于{min}或大于{max}")
     private Long userOrder; // 用户排序
 
     @Column(name = "PRIMARY_UNIT")

@@ -139,7 +139,10 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     @Transactional(propagation=Propagation.MANDATORY)
     public List<UnitInfo> listAllSubUnits(String unitCode){
         UnitInfo unitInfo = this.getObjectById(unitCode);
-        return listSubUnitsByUnitPaht(unitInfo.getUnitPath());
+        if(unitInfo != null) {
+            return listSubUnitsByUnitPaht(unitInfo.getUnitPath());
+        }
+        return null;
     }
     
     @Transactional(propagation=Propagation.MANDATORY) 

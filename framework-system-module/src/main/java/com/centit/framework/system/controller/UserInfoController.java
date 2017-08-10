@@ -9,16 +9,14 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.security.model.CentitUserDetails;
-import com.centit.framework.system.po.RoleInfo;
-import com.centit.framework.system.po.UserInfo;
-import com.centit.framework.system.po.UserRole;
-import com.centit.framework.system.po.UserUnit;
+import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysUserManager;
 import com.centit.framework.system.service.SysUserUnitManager;
 import com.centit.framework.system.service.UserSettingManager;
 import com.centit.support.json.JsonPropertyUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,6 +70,7 @@ public class UserInfoController extends BaseController {
         List<UserInfo> listObjects = null;
         if (Boolean.parseBoolean(_search)) {
             listObjects = sysUserManager.listObjects(searchColumn);
+            pageDesc = null;
         } else {
             listObjects = sysUserManager.listObjects(searchColumn, pageDesc);
         }
@@ -91,7 +90,6 @@ public class UserInfoController extends BaseController {
 
         JsonResultUtils.writeResponseDataAsJson(resData, response, simplePropertyPreFilter);
     }
-            
 
     /**
      * 新增用户
@@ -145,6 +143,8 @@ public class UserInfoController extends BaseController {
     public void changeState(@PathVariable String userCode, UserInfo userInfo, 
             HttpServletRequest request, HttpServletResponse response) {
         UserInfo userDetails = sysUserManager.getObjectById(userCode);
+        UserInfo oldValue= new UserInfo();
+        BeanUtils.copyProperties(userDetails,oldValue);
         if (null == userDetails) {
             JsonResultUtils.writeErrorMessageJson("当前用户不存在", response);
 
@@ -167,7 +167,7 @@ public class UserInfoController extends BaseController {
                 .append("是否启用:" + ("T".equals(userDetails.getIsValid()) ? "是" : "否"));
 
 
-        OperationLogCenter.log(request,optId,userCode,"changeStatus",  optContent.toString());
+        OperationLogCenter.logUpdateObject(request,optId,userCode,"changeStatus",  optContent.toString(),userInfo,oldValue);
     }
     
     /**
@@ -182,6 +182,8 @@ public class UserInfoController extends BaseController {
             HttpServletRequest request, HttpServletResponse response) {
         
         UserInfo userDetails = sysUserManager.getObjectById(userCode);
+        UserInfo oldValue= new UserInfo();
+        BeanUtils.copyProperties(userDetails,oldValue);
         if (null == userDetails) {
             JsonResultUtils.writeErrorMessageJson("当前用户不存在", response);
 
@@ -189,7 +191,7 @@ public class UserInfoController extends BaseController {
         }
        
         //userInfo.setUserCode(userCode);
-        userDetails.copyNotNullProperty(userInfo );
+        BeanUtils.copyProperties(userInfo, userDetails);
         
         sysUserManager.updateUserInfo(userDetails);
         
@@ -201,8 +203,7 @@ public class UserInfoController extends BaseController {
         optContent.append("更新用户状态,用户代码:" + userCode + ",")
                 .append("是否启用:" + ("T".equals(userDetails.getIsValid()) ? "是" : "否"));
 
-       OperationLogCenter.log(request,optId, userCode, "changeStatus",
-        		 optContent.toString());
+       OperationLogCenter.logUpdateObject(request,optId, userCode, "changeStatus",optContent.toString(),userInfo,oldValue);
     }
     
     
