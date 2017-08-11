@@ -99,7 +99,8 @@ public class UserInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(method = RequestMethod.POST)
-    public void create(@Valid UserInfo userInfo,HttpServletRequest request, HttpServletResponse response) {
+    public void create(@Valid UserInfo userInfo, @Valid UserUnit userUnit,
+                       HttpServletRequest request, HttpServletResponse response) {
         
     	UserInfo dbuserinfo=sysUserManager.loadUserByLoginname(userInfo.getLoginName());
     	if(null!=dbuserinfo) {
@@ -120,7 +121,7 @@ public class UserInfoController extends BaseController {
                 ur.setUserCode(userInfo.getUserCode());
             }
         }
-        sysUserManager.saveNewUserInfo(userInfo);
+        sysUserManager.saveNewUserInfo(userInfo,userUnit);
         
         
         JsonResultUtils.writeSingleDataJson(userInfo, response);

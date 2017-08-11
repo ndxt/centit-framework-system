@@ -12,6 +12,12 @@
 					<label id="e@name">名称</label>
 					<input type="text" class="easyui-combobox" name="s_userCode" target="user"/>
 				</div>
+				<div class="search-item">
+					<label id="e@state">状态</label>
+					<input type="radio" name="s_isValid" value=""/> <p id="e@all">全部</p>
+					<input type="radio" name="s_isValid" value="T" checked="checked" class="defaultChecked" /> <p id="e@inUse">在用</p>
+					<input type="radio" name="s_isValid" value="F" /> <p id="e@forbidden">禁用</p>
+				</div>
 				<a class="easyui-linkbutton btn-search" iconCls="icon-search"><p  id="e@btn.search">搜索</p></a>
 			</form>
 		</div>

@@ -20,14 +20,17 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
     public Map<String, String> getFilterField() {
         if (filterField == null) {
             filterField = new HashMap<>();
-            filterField.put("userCode_isValid", "userCode in (select userCode from UserInfo where isValid = :userCode_isValid)");
-            filterField.put("unitCode", "unitCode = :unitCode");
+            filterField.put("userCode_isValid",
+                    "userCode in (select userCode from UserInfo where isValid = :userCode_isValid)");
+            filterField.put("unitCode",
+                    "(unitCode = :unitCode or unitCode in (select unitCode from UnitInfo where parentUnit = :unitCode))");
             filterField.put("userStation", "userStation = :userStation");
             filterField.put("unitRank", "userRank = :unitRank");
             filterField.put("userCode", "userCode = :userCode");
             filterField.put("isPrimary", CodeBook.EQUAL_HQL_ID);
             filterField.put("unitName", CodeBook.LIKE_HQL_ID);
             filterField.put("userName", CodeBook.LIKE_HQL_ID);
+            filterField.put("isValid", "userCode in (select userCode from UserInfo where isValid = :isValid)");
 
             filterField.put(CodeBook.ORDER_BY_HQL_ID, "userOrder asc");
 

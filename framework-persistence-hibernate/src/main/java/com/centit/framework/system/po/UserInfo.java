@@ -550,7 +550,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     @JSONField(serialize=false)
     public List<UserUnit> getUserUnits() {
         if (userUnits == null)
-            userUnits = new ArrayList<UserUnit>();
+            userUnits = new ArrayList<>();
         return userUnits;
     }
 

@@ -463,8 +463,9 @@ public class RoleInfoController extends BaseController {
         		OperationLog.P_OPT_LOG_METHOD_U, "更新系统角色",roleInfo, oldValue);
         /*********log*********/
     }
+
     /**
-     * 更新系统角色
+     * 更新系统角色权限
      *
      * @param roleCode 角色代码
      * @param roleInfo rolePower roleCode dataScopes
@@ -480,10 +481,10 @@ public class RoleInfoController extends BaseController {
             JsonResultUtils.writeErrorMessageJson("角色信息不存在", response);
             return;
         }
-//        String  userCode = super.getLoginUserCode(request);
+        String  userCode = getLoginUserCode(request);
 
 
-        //List<RolePower> oldPowers = dbRoleInfo.getRolePowers();
+//        List<RolePower> oldPowers = dbRoleInfo.getRolePowers();
 
        // List<RolePower> rolePowers = new ArrayList<>();
         /*for( Map.Entry<String, Object> ent : rolePower.entrySet()){
@@ -494,6 +495,7 @@ public class RoleInfoController extends BaseController {
             po.setUpdator(userCode);
             rolePowers.add(po);
         }*/
+        RoleInfo oldValue = dbRoleInfo;
         //为空时更新RoleInfo中字段数据
         dbRoleInfo.setRolePowers(roleInfo.getRolePowers());
         sysRoleManager.updateRoleInfo(dbRoleInfo);
@@ -501,8 +503,8 @@ public class RoleInfoController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
         
         /*********log*********/
-//        OperationLogCenter.logUpdateObject(request,optId, roleCode,
-//        		OperationLog.P_OPT_LOG_METHOD_U, "更新系统角色权限",roleInfo.getRolePowers(),null);
+        OperationLogCenter.logUpdateObject(request,optId, roleCode,
+        		OperationLog.P_OPT_LOG_METHOD_U, "更新系统角色权限",roleInfo.getRolePowers(),oldValue.getRolePowers());
         /*********log*********/
     }
     

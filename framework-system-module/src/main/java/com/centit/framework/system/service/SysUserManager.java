@@ -1,12 +1,13 @@
 package com.centit.framework.system.service;
 
-import java.util.List;
-import java.util.Map;
-
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.system.po.FVUserOptList;
 import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.UserInfo;
+import com.centit.framework.system.po.UserUnit;
+
+import java.util.List;
+import java.util.Map;
 
 public interface SysUserManager{
 
@@ -43,7 +44,7 @@ public interface SysUserManager{
      * 保存用户信息，包括用户机构、用户角色信息
      * @param userinfo userinfo
      */
-     void saveNewUserInfo(UserInfo userinfo);
+     void saveNewUserInfo(UserInfo userinfo, UserUnit userUnit);
     
      void updateUserInfo(UserInfo userinfo);
     
