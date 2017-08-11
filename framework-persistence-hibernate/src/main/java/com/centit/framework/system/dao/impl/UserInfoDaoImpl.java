@@ -67,6 +67,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
                             "userCode in (select r.id.userCode from UserRole r, RoleInfo i where r.id.roleCode = :queryByRole and r.id.roleCode = i.roleCode and i.isValid = 'T')");
 
             filterField.put(CodeBook.ORDER_BY_HQL_ID, "userOrder asc");
+            filterField.put("unitCode", "userCode in (select userCode from UserUnit where unitCode = :unitCode)");
         }
         return filterField;
     }
@@ -164,8 +165,13 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
     }
     
     @Transactional
-    public UserInfo getUserByWord(String userWord) {
+    public UserInfo getUserByUserWord(String userWord) {
     	return super.getObjectByProperty("userWord", userWord);
+    }
+
+    @Transactional
+    public UserInfo getUserByIdCardNo(String idCardNo){
+        return super.getObjectByProperty("idCardNo", idCardNo);
     }
     
     /**

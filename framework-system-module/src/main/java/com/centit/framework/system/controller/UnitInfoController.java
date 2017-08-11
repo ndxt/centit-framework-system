@@ -30,10 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -325,6 +322,9 @@ public class UnitInfoController extends BaseController {
         if (StringUtils.isNotBlank(primary)) {
             searchColumn.put("isPrimary", primary);
         }
+        if(!Objects.isNull(searchColumn.get("userName"))){
+            searchColumn.put("userName", "%"+searchColumn.get("userName")+ "%");
+        }
 
         List<UserUnit> listObjects = sysUserUnitManager.listObjects(searchColumn, pageDesc);
 
@@ -336,6 +336,16 @@ public class UnitInfoController extends BaseController {
         	        resData, response, JsonPropertyUtils.getIncludePropPreFilter(UserUnit.class, field));
         else
         	JsonResultUtils.writeResponseDataAsJson(resData, response);
+    }
+
+    @RequestMapping(value = "/{unitCode}/allusers", method = RequestMethod.GET)
+    public void listUnitAllUsers(@PathVariable String unitCode, HttpServletResponse response) {
+
+        Map<String, Object> filterMap = new HashMap<>();
+        filterMap.put("unitCode", unitCode);
+        List<UserInfo> listObjects = sysUserMag.listObjects(filterMap);
+
+        JsonResultUtils.writeSingleDataJson(listObjects, response);
     }
 
     /**
