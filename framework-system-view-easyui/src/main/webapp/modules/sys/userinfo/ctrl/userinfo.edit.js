@@ -52,7 +52,7 @@ define(function(require) {
 			if (!newObject) return;
 			var layout = $('#userinfo_panel').layout('panel', 'east');
 			layout.panel('refresh', Config.ViewContextPath + 'modules/sys/userinfo/userinfo-all.html');
-			table.datagrid('updateRow',newObject);
+			table.datagrid('reload');
 			this.newObject=null;
 		};
 	});
