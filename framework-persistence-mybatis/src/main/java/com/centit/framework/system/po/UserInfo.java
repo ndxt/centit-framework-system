@@ -90,6 +90,10 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     @Length(max = 60, message = "字段长度不能大于{max}")
     private String regEmail; // 注册email
 
+    @Column(name="ID_CARD_NO")
+    @Length(max=20,message="字段长度不能大于{max}")
+    private String idCardNo;
+
     @Column(name = "USER_PWD")
     @Length(max = 20, message = "字段长度不能大于{max}")
     @JSONField(serialize = false)
@@ -383,6 +387,15 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
 
     public String getRegEmail() {
         return regEmail;
+    }
+
+    public void setIdCardNo(String idCardNo) {
+        this.idCardNo = idCardNo;
+    }
+
+    public String getIdCardNo() {
+
+        return idCardNo;
     }
 
     public String getPrimaryUnit() {

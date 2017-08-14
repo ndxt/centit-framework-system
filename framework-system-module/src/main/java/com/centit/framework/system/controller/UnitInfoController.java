@@ -181,8 +181,8 @@ public class UnitInfoController extends BaseController {
 
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
-        OperationLogCenter.logDeleteObject(request,this.optId,unitInfo.getUnitCode(),
-        		OperationLog.P_OPT_LOG_METHOD_D,  "已删除",unitInfo);
+        OperationLogCenter.logDeleteObject(request,optId,unitInfo.getUnitCode(), OperationLog.P_OPT_LOG_METHOD_D,
+                "删除机构"+unitInfo.getUnitName(), unitInfo);
         /*********log*********/
     }
 

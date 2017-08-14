@@ -221,7 +221,7 @@ public class UserUnitController extends BaseController {
         JsonResultUtils.writeSingleDataJson(userUnit, response);
 
         /*********log*********/
-        OperationLogCenter.logUpdateObject(request,optId,oldValue.getUserUnitId(), OperationLog.P_OPT_LOG_METHOD_C, "更新用户机构关联信息" , userUnit,oldValue);
+        OperationLogCenter.logUpdateObject(request,optId,oldValue.getUserUnitId(), OperationLog.P_OPT_LOG_METHOD_U, "更新用户机构关联信息" , dbUserUnit,oldValue);
         /*********log*********/
     }
 

@@ -32,7 +32,7 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
             filterField.put("NP_GLOBAL", "(roleCode like 'G-%' or roleCode like 'P-%')");
             filterField.put("ROLENAME", CodeBook.LIKE_HQL_ID);
             filterField.put("ROLEDESC", CodeBook.LIKE_HQL_ID);
-            filterField.put("ISVALID", CodeBook.EQUAL_HQL_ID); 
+            filterField.put("isValid", CodeBook.EQUAL_HQL_ID);
             filterField.put("roleType", CodeBook.EQUAL_HQL_ID); 
             filterField.put("unitCode", CodeBook.EQUAL_HQL_ID); 
             filterField.put("NP_unitCode", "unitCode is null"); 

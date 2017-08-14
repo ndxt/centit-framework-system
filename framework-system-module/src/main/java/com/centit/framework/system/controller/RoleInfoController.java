@@ -473,7 +473,7 @@ public class RoleInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/power/{roleCode}", method = RequestMethod.PUT)
-    public void updateRolePower(@PathVariable String roleCode,RoleInfo roleInfo,
+    public void updateRolePower(@PathVariable String roleCode, RoleInfo roleInfo,
                      HttpServletRequest request, HttpServletResponse response) {
 
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
@@ -622,6 +622,7 @@ public class RoleInfoController extends BaseController {
         }
         Map<String,Object> filterMap = convertSearchColumn(request);
         filterMap.put("roleType", "S");
+        filterMap.put("isValid","T");
         if("S".equals(type)){
         	filterMap.put("NP_unitCode", true);
         	
