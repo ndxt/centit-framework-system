@@ -28,7 +28,7 @@ public interface SysRoleManager{
 
     Serializable saveNewRoleInfo(RoleInfo o);
 
-    void updateRoleInfo(RoleInfo o);
+    List<RolePower> updateRoleInfo(RoleInfo o);
     
     void deleteRoleInfo(String roleCode);
     

@@ -14,6 +14,8 @@ define(function(require) {
                 data: {
                     _method: 'delete'
                 }
+			}).then(function(){
+				return require('loaders/cache/loader.system').loadAll()
 			}).then(function() {
             	table.treegrid('remove', data.unitCode);
 				var layout = $('#deptpow_panel').layout('panel', 'east');

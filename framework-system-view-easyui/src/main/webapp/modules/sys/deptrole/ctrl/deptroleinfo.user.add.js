@@ -24,7 +24,7 @@ define(function(require) {
 				roleName: roleinfo.roleName
 			});
 			$('#user').combobox({
-				url:Config.ContextPath+'system/unitinfo/'+roleinfo.unitCode+'/allusers',
+				url:Config.ContextPath+'system/unitinfo/'+roleinfo.unitCode+'/validusers',
 				valueField:'userCode',
 				textField:'userName',
                 multiple: true,

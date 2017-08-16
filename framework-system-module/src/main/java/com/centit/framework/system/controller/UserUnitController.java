@@ -210,10 +210,9 @@ public class UserUnitController extends BaseController {
         }
         UserUnit dbUserUnit = sysUserUnitManager.getObjectById(userunitid);
          
-        /*********log*********/
         UserUnit oldValue = new UserUnit();
         oldValue.copy(dbUserUnit);
-        /*********log*********/
+
         dbUserUnit.copy(userUnit);
         
         sysUserUnitManager.updateUserUnit(dbUserUnit);
@@ -221,7 +220,8 @@ public class UserUnitController extends BaseController {
         JsonResultUtils.writeSingleDataJson(userUnit, response);
 
         /*********log*********/
-        OperationLogCenter.logUpdateObject(request,optId,oldValue.getUserUnitId(), OperationLog.P_OPT_LOG_METHOD_U, "更新用户机构关联信息" , dbUserUnit,oldValue);
+        OperationLogCenter.logUpdateObject(request,optId,oldValue.getUserUnitId(), OperationLog.P_OPT_LOG_METHOD_U,
+                "更新用户机构关联信息", dbUserUnit, oldValue);
         /*********log*********/
     }
 

@@ -103,7 +103,8 @@ public class RoleInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/unit/{unitCode}", method = RequestMethod.GET)
-    public void listUnitAndPublicRole(String[] field,@PathVariable String unitCode,PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+    public void listUnitAndPublicRole(String[] field,@PathVariable String unitCode,PageDesc pageDesc,
+                                      HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = convertSearchColumn(request);
         filterMap.put("UNITROLE", unitCode + "-%");
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
@@ -481,7 +482,7 @@ public class RoleInfoController extends BaseController {
             JsonResultUtils.writeErrorMessageJson("角色信息不存在", response);
             return;
         }
-        String  userCode = getLoginUserCode(request);
+//        String  userCode = getLoginUserCode(request);
 
 
 //        List<RolePower> oldPowers = dbRoleInfo.getRolePowers();
@@ -495,16 +496,15 @@ public class RoleInfoController extends BaseController {
             po.setUpdator(userCode);
             rolePowers.add(po);
         }*/
-        RoleInfo oldValue = dbRoleInfo;
         //为空时更新RoleInfo中字段数据
         dbRoleInfo.setRolePowers(roleInfo.getRolePowers());
-        sysRoleManager.updateRoleInfo(dbRoleInfo);
+        List<RolePower> oldRolePowers = sysRoleManager.updateRoleInfo(dbRoleInfo);
         sysRoleManager.loadRoleSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
         
         /*********log*********/
-        OperationLogCenter.logUpdateObject(request,optId, roleCode,
-        		OperationLog.P_OPT_LOG_METHOD_U, "更新系统角色权限",roleInfo.getRolePowers(),oldValue.getRolePowers());
+        OperationLogCenter.logUpdateObject(request,optId, roleCode, OperationLog.P_OPT_LOG_METHOD_U,
+                "更新系统角色"+dbRoleInfo.getRoleName()+"权限",roleInfo.getRolePowers(),oldRolePowers);
         /*********log*********/
     }
     
@@ -630,7 +630,7 @@ public class RoleInfoController extends BaseController {
         	CentitUserDetails user = getLoginUser(request);
         	IUserUnit unit = CodeRepositoryUtil.getUserPrimaryUnit(user.getUserCode());
         	if(unit!=null) {
-                filterMap.put("UNITROLE", unit.getUnitCode()+"-%");
+                filterMap.put("publicUnitRole", unit.getUnitCode()+"-%");
             }else return;
         }
         List<RoleInfo> listObjects = sysRoleManager.listObjects(filterMap);

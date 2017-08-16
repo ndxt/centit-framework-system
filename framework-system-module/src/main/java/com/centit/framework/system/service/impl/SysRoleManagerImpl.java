@@ -134,14 +134,16 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Override
     @CacheEvict(value="RoleInfo",allEntries = true)
     @Transactional
-    public void updateRoleInfo(RoleInfo o) {
+    public List<RolePower> updateRoleInfo(RoleInfo o) {
     	roleInfoDao.mergeObject(o);
         List<RolePower> newRPs = o.getRolePowers();
-        if(newRPs == null || newRPs.size()<1)
-            return;
-        
+
         List<RolePower> rps = rolePowerDao.listRolePowersByRoleCode(o.getRoleCode());
-    
+
+        if(newRPs == null || newRPs.size()<1) {
+            return rps;
+        }
+
         for(RolePower rp : newRPs){
             rp.setRoleCode(o.getRoleCode());
         }
@@ -155,7 +157,8 @@ public class SysRoleManagerImpl implements SysRoleManager {
         
         for(RolePower rp : newRPs){
             rolePowerDao.mergeObject(rp);            
-        }    
+        }
+        return rps;
     }
 
     @Override

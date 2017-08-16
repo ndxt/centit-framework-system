@@ -65,7 +65,7 @@ public class UnitInfoController extends BaseController {
      *
      * @param field    需要显示的字段
      * @param struct    boolean
-     * @param id    id
+     * @param id        id
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
@@ -85,8 +85,7 @@ public class UnitInfoController extends BaseController {
                 ja = ListOpt.srotAsTreeAndToJSON(ja, (p, c) ->
                                 StringUtils.equals(
                                         ((JSONObject)p).getString("unitCode"),
-                                        ((JSONObject)c).getString("parentUnit")),
-                        "children");
+                                        ((JSONObject)c).getString("parentUnit")), "children");
             }
             JsonResultUtils.writeSingleDataJson(ja,
                     response, JsonPropertyUtils.getIncludePropPreFilter(JSONObject.class, field));
@@ -247,8 +246,8 @@ public class UnitInfoController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
 
         /*********log*********/
-        OperationLogCenter.logUpdateObject(request,optId,dbUnitInfo.getUnitCode(),
-        		OperationLog.P_OPT_LOG_METHOD_U,  "更新机构状态", dbUnitInfo,oldValue);
+        OperationLogCenter.logUpdateObject(request,optId,dbUnitInfo.getUnitCode(), OperationLog.P_OPT_LOG_METHOD_U,
+                "更新机构信息", dbUnitInfo,oldValue);
         /*********log*********/
     }
 
@@ -307,35 +306,24 @@ public class UnitInfoController extends BaseController {
     /**
      * 当前机构下所有用户
      *
-     * @param field    UserInfo需要显示的字段
      * @param unitCode 机构代码
-     * @param primary  是否为主机构，可为空
      * @param pageDesc 分页信息
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{unitCode}/users", method = RequestMethod.GET)
-    public void listUnitUsers(@PathVariable String unitCode, String[] field, String primary,
-                              PageDesc pageDesc,HttpServletRequest request, HttpServletResponse response) {
+    public void listUnitUsers(@PathVariable String unitCode, PageDesc pageDesc,
+                              HttpServletRequest request, HttpServletResponse response) {
 
         Map<String, Object> searchColumn = convertSearchColumn(request);
         searchColumn.put("unitCode", unitCode);
-        if (StringUtils.isNotBlank(primary)) {
-            searchColumn.put("isPrimary", primary);
-        }
-        if(!Objects.isNull(searchColumn.get("userName"))){
-            searchColumn.put("userName", "%"+searchColumn.get("userName")+ "%");
-        }
 
-        List<UserUnit> listObjects = sysUserUnitManager.listObjects(searchColumn, pageDesc);
+        List<UserInfo> listObjects = sysUserMag.listObjects(searchColumn, pageDesc);
 
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, listObjects);
         resData.addResponseData(PAGE_DESC, pageDesc);
-        if(null!=field)
-        	JsonResultUtils.writeResponseDataAsJson(
-        	        resData, response, JsonPropertyUtils.getIncludePropPreFilter(UserUnit.class, field));
-        else
-        	JsonResultUtils.writeResponseDataAsJson(resData, response);
+
+        JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
 
     @RequestMapping(value = "/{unitCode}/allusers", method = RequestMethod.GET)
@@ -343,6 +331,7 @@ public class UnitInfoController extends BaseController {
 
         Map<String, Object> filterMap = new HashMap<>();
         filterMap.put("unitCode", unitCode);
+        filterMap.put("isValid", unitCode);
         List<UserInfo> listObjects = sysUserMag.listObjects(filterMap);
 
         JsonResultUtils.writeSingleDataJson(listObjects, response);

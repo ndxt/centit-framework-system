@@ -65,8 +65,6 @@ public class UserInfoController extends BaseController {
     public void list(String[] field, PageDesc pageDesc, String _search,
                      HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = convertSearchColumn(request);
-        searchColumn.put("sort", "userOrder");
-        searchColumn.put("order", "");
         List<UserInfo> listObjects = null;
         if (Boolean.parseBoolean(_search)) {
             listObjects = sysUserManager.listObjects(searchColumn);
@@ -175,11 +173,11 @@ public class UserInfoController extends BaseController {
      * 更新用户信息
      * @param userCode userCode
      * @param userInfo userInfo
-     * @param request HttpServletRequest
+     * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{userCode}", method = RequestMethod.PUT)
-    public void edit(@PathVariable String userCode, UserInfo userInfo,
+    public void edit(@PathVariable String userCode, @Valid UserInfo userInfo,
             HttpServletRequest request, HttpServletResponse response) {
         
         UserInfo userDetails = sysUserManager.getObjectById(userCode);
@@ -204,7 +202,8 @@ public class UserInfoController extends BaseController {
         optContent.append("更新用户状态,用户代码:" + userCode + ",")
                 .append("是否启用:" + ("T".equals(userDetails.getIsValid()) ? "是" : "否"));
 
-       OperationLogCenter.logUpdateObject(request,optId, userCode, "changeStatus",optContent.toString(),userInfo,oldValue);
+       OperationLogCenter.logUpdateObject(request,optId, userCode, OperationLog.P_OPT_LOG_METHOD_U,
+               "更新用户信息",userInfo,oldValue);
     }
     
     
