@@ -32,18 +32,18 @@
 		</div>
 		
 		<table url="system/userinfo?_search=true&field=userCode&field=loginName&field=userName&field=isValid&field=primaryUnit"
-			idField="userCode"
 			id="userInfoTable"
 			width="96%"
 			bottom="0"
-			singleSelect="false"
+			singleSelect="true"
 			checkOnSelect="true"
 			selectOnCheck="true"
 			sortName="userOrder"
 			sortOrder="asc"
 			search=".search"
 			toolbar=".temp-toolbar"
-			layoutH=".search"	
+			layoutH=".search"
+			method="post"
 			>
 			<thead>
 				<tr>

@@ -37,17 +37,17 @@ define(function(require) {
 					method: 'put'
 				}).then(function(){
 					return require('loaders/cache/loader.system').loadAll()
-				}).then(
-					closeCallback);
+				}).then(closeCallback);
 			}
 			
 			return false;
 		};
 		
 		// @override
-		this.onClose = function(table, data) {
+		this.onClose = function(table) {
 			var newObject =this.newObject;
 			if(!newObject)return ;
+			table.treegrid('clearSelections');
 			table.treegrid('reload');
 			this.newObject=null;
         };
