@@ -246,8 +246,8 @@ public class UnitInfoController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
 
         /*********log*********/
-        OperationLogCenter.logUpdateObject(request,optId,dbUnitInfo.getUnitCode(), OperationLog.P_OPT_LOG_METHOD_U,
-                "更新机构信息", dbUnitInfo,oldValue);
+        OperationLogCenter.logUpdateObject(request, optId, unitCode, OperationLog.P_OPT_LOG_METHOD_U,
+                "更新机构信息", unitInfo, oldValue);
         /*********log*********/
     }
 
@@ -326,12 +326,12 @@ public class UnitInfoController extends BaseController {
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
 
-    @RequestMapping(value = "/{unitCode}/allusers", method = RequestMethod.GET)
+    @RequestMapping(value = "/{unitCode}/validusers", method = RequestMethod.GET)
     public void listUnitAllUsers(@PathVariable String unitCode, HttpServletResponse response) {
 
         Map<String, Object> filterMap = new HashMap<>();
         filterMap.put("unitCode", unitCode);
-        filterMap.put("isValid", unitCode);
+        filterMap.put("isValid", "T");
         List<UserInfo> listObjects = sysUserMag.listObjects(filterMap);
 
         JsonResultUtils.writeSingleDataJson(listObjects, response);

@@ -324,10 +324,13 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
 
 
     public void copy(UnitInfo other) {
+        this.unitCode = other.getUnitCode();
         this.parentUnit = other.getParentUnit();
         this.unitType = other.getUnitType();
         this.isValid = other.getIsValid();
+        this.unitTag = other.getUnitTag();
         this.unitName = other.getUnitName();
+        this.englishName = other.getEnglishName();
         this.unitShortName = other.getUnitShortName();
         this.unitDesc = other.getUnitDesc();
         this.addrbookId = other.getAddrbookId();
@@ -335,10 +338,9 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         this.depNo = other.getDepNo();
         this.unitWord = other.getUnitWord();
         this.unitGrade = other.getUnitGrade();
-        this.unitTag = other.getUnitTag();
-        this.englishName =other.getEnglishName();
         this.creator=other.getCreator();
         this.updator=other.getUpdator();
+        this.createDate = other.getCreateDate();
         this.updateDate=other.getUpdateDate();
         this.unitPath =other.getUnitPath();
         this.unitManager = other.getUnitManager();

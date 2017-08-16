@@ -182,7 +182,7 @@ public class UserInfoController extends BaseController {
         
         UserInfo userDetails = sysUserManager.getObjectById(userCode);
         UserInfo oldValue= new UserInfo();
-        BeanUtils.copyProperties(userDetails,oldValue);
+        oldValue.copy(userDetails);
         if (null == userDetails) {
             JsonResultUtils.writeErrorMessageJson("当前用户不存在", response);
 
@@ -197,18 +197,11 @@ public class UserInfoController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
 
         /*********log*********/
-
-        StringBuilder optContent = new StringBuilder();
-        optContent.append("更新用户状态,用户代码:" + userCode + ",")
-                .append("是否启用:" + ("T".equals(userDetails.getIsValid()) ? "是" : "否"));
-
        OperationLogCenter.logUpdateObject(request,optId, userCode, OperationLog.P_OPT_LOG_METHOD_U,
                "更新用户信息",userInfo,oldValue);
+        /*********log*********/
     }
-    
-    
-    
-    
+
     /**
      * 当前登录用户信息
      *

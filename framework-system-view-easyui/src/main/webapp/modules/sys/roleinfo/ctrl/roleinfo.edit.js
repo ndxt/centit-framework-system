@@ -37,11 +37,9 @@ define(function(require) {
 					url: Config.ContextPath + 'system/roleinfo/' + data.roleCode,
 					method: 'put',
 					data: data
-				})
-				.then(function(){
+				}).then(function(){
 					return require('loaders/cache/loader.system').loadAll()
-				})
-				.then(closeCallback);
+				}).then(closeCallback);
 			}			
 			return false;
 		}

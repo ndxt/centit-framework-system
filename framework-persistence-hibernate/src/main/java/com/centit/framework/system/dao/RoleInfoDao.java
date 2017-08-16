@@ -43,5 +43,6 @@ public interface RoleInfoDao {
      * @return int
      */
      int countRoleUserSum(String roleCode);
-    
+
+    RoleInfo getObjectByProperty(String propertyName, Object propertyValue);
 }

@@ -1,26 +1,17 @@
 package com.centit.framework.system.po;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-import javax.validation.constraints.Pattern;
-
+import com.centit.framework.core.po.EntityWithTimestamp;
+import com.centit.framework.model.basedata.IRoleInfo;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.util.CollectionUtils;
 
-import com.centit.framework.core.po.EntityWithTimestamp;
-import com.centit.framework.model.basedata.IRoleInfo;
+import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * FRoleinfo entity.
@@ -200,7 +191,8 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
     }
 
     public void copyNotNullProperty(RoleInfo other) {
-        // this.rolecode = other.getRolecode();
+        if(other.getRoleCode() != null)
+         this.roleCode = other.getRoleCode();
         if (other.getRoleName() != null)
             this.roleName = other.getRoleName();
         if (other.getIsValid() != null)
@@ -215,6 +207,8 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
         	this.creator =other.getCreator();
         if (other.getUpdator() != null)
         	this.updator =other.getUpdator();
+        if(other.getCreateDate() != null)
+            this.createDate = other.getCreateDate();
         if (other.getUpdateDate() != null)
         	this.updateDate =other.getUpdateDate();
     }
@@ -228,6 +222,7 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
         this.unitCode = other.getUnitCode();
         this.creator=other.creator;
         this.updator=other.updator;
+        this.createDate = other.createDate;
         this.updateDate=other.updateDate;
     }
 

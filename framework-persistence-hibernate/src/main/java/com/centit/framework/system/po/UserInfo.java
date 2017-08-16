@@ -480,6 +480,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         this.replaceUserUnits(other.getUserUnits());
         this.creator=other.creator;
         this.updator=other.updator;
+        this.createDate =other.getCreateDate();
         this.updateDate=other.updateDate;
     }
 

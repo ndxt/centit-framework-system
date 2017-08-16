@@ -3,6 +3,7 @@ package com.centit.framework.system.controller;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.common.JsonResultUtils;
+import com.centit.framework.core.common.ResponseData;
 import com.centit.framework.core.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.PageDesc;
@@ -19,12 +20,10 @@ import com.centit.framework.system.service.SysRoleManager;
 import com.centit.support.json.JsonPropertyUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -210,6 +209,12 @@ public class RoleInfoController extends BaseController {
      */
     @RequestMapping(value = "/global", method = RequestMethod.POST)
     public void createGlobalRole(@Valid RoleInfo roleInfo,HttpServletRequest request, HttpServletResponse response) {
+
+        if(!sysRoleManager.isRoleNameNotExist("create",roleInfo.getRoleName())){
+            JsonResultUtils.writeErrorMessageJson(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                    "角色名"+roleInfo.getRoleName()+"已存在，请更换！", response);
+            return;
+        }
         if(! roleInfo.getRoleCode().startsWith("G-")){
             roleInfo.setRoleCode("G-"+ roleInfo.getRoleCode());
         }
@@ -229,6 +234,13 @@ public class RoleInfoController extends BaseController {
    
     @RequestMapping(value = "/public",method = RequestMethod.POST)
     public void createPublicRole(@Valid RoleInfo roleInfo,HttpServletRequest request, HttpServletResponse response) {
+
+        if(!sysRoleManager.isRoleNameNotExist("create",roleInfo.getRoleName())){
+            JsonResultUtils.writeErrorMessageJson(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                    "角色名"+roleInfo.getRoleName()+"已存在，请更换！", response);
+            return;
+        }
+
         if(! roleInfo.getRoleCode().startsWith("P-")){
             roleInfo.setRoleCode("P-"+ roleInfo.getRoleCode());
         }
@@ -248,6 +260,13 @@ public class RoleInfoController extends BaseController {
     
     @RequestMapping(value = "/item",method = RequestMethod.POST)
     public void createItemRole(@Valid RoleInfo roleInfo,HttpServletRequest request, HttpServletResponse response) {
+
+        if(!sysRoleManager.isRoleNameNotExist("create",roleInfo.getRoleName())){
+            JsonResultUtils.writeErrorMessageJson(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                    "角色名"+roleInfo.getRoleName()+"已存在，请更换！", response);
+            return;
+        }
+
         if(! roleInfo.getRoleCode().startsWith("I-")){
             roleInfo.setRoleCode("I-"+ roleInfo.getRoleCode());
         }
@@ -269,6 +288,13 @@ public class RoleInfoController extends BaseController {
     @RequestMapping(value = "/dept/{unitcode}",method = RequestMethod.POST)
     public void createDeptRole(@PathVariable String unitcode,@Valid RoleInfo roleInfo,
             HttpServletRequest request,HttpServletResponse response) {
+
+        if(!sysRoleManager.isRoleNameNotExist("create",roleInfo.getRoleName())){
+            JsonResultUtils.writeErrorMessageJson(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                            "角色名"+roleInfo.getRoleName()+"已存在，请更换！", response);
+            return;
+        }
+
         if(! roleInfo.getRoleCode().startsWith(unitcode+"-")){
             roleInfo.setRoleCode(unitcode+"-"+ roleInfo.getRoleCode());
         }
@@ -408,13 +434,11 @@ public class RoleInfoController extends BaseController {
      *
      * @param roleCode 角色代码
      * @param roleInfo RoleInfo
-     * @param optCodes 操作定义代码，用逗号连接
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{roleCode}", method = RequestMethod.PUT)
     public void edit(@PathVariable String roleCode, @Valid RoleInfo roleInfo,
-                     @RequestParam(value = "optCodes", required = false) String[] optCodes,
                      HttpServletRequest request, HttpServletResponse response) {
 
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
@@ -422,46 +446,22 @@ public class RoleInfoController extends BaseController {
             JsonResultUtils.writeErrorMessageJson("角色信息不存在", response);
             return;
         }
-        
-        /*********log*********/
-        RoleInfo oldValue= new RoleInfo();
-        oldValue.copy(dbRoleInfo);
-        /*********log*********/       
-        
-        List<RolePower> rolePowers = new ArrayList<>();
-
-        //为空时更新RoleInfo中字段数据
-        if (ArrayUtils.isEmpty(optCodes)) {
-            rolePowers.addAll(dbRoleInfo.getRolePowers());
-        } else {
-            for (String optCode : optCodes) {
-            	if(optCode!=null && optCode.indexOf(',')>=0){
-            		String[] tempcodes = StringUtils.split(optCode, ',');
-            		if (!ArrayUtils.isEmpty(tempcodes)){
-            			for (String tc : tempcodes) {
-            				if(StringUtils.isNotBlank(tc))
-            					rolePowers.add(new RolePower(new RolePowerId(roleInfo.getRoleCode(), tc)));
-            			}
-            		}
-            	}else{
-            		if(StringUtils.isNotBlank(optCode))
-            			rolePowers.add(new RolePower(new RolePowerId(roleInfo.getRoleCode(), optCode)));
-            	}
-            }
+        if(!sysRoleManager.isRoleNameNotExist("update",roleInfo.getRoleName())){
+            JsonResultUtils.writeErrorMessageJson(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                    "角色名"+roleInfo.getRoleName()+"已存在，请更换！", response);
+            return;
         }
-        BeanUtils.copyProperties(roleInfo, dbRoleInfo, new String[]{"roleCode", "rolePowers"});
-
-        dbRoleInfo.addAllRolePowers(rolePowers);
-
-        sysRoleManager.updateRoleInfo(dbRoleInfo);
-
-        sysRoleManager.loadRoleSecurityMetadata();
         
+        RoleInfo oldValue = new RoleInfo();
+        oldValue.copy(dbRoleInfo);
+
+        sysRoleManager.updateRoleInfo(roleInfo);
+
         JsonResultUtils.writeBlankJson(response);
         
         /*********log*********/
-        OperationLogCenter.logUpdateObject(request,optId, roleInfo.getRoleCode(),
-        		OperationLog.P_OPT_LOG_METHOD_U, "更新系统角色",roleInfo, oldValue);
+        OperationLogCenter.logUpdateObject(request,optId, roleCode, OperationLog.P_OPT_LOG_METHOD_U,
+                "更新系统角色",roleInfo, oldValue);
         /*********log*********/
     }
 
@@ -498,7 +498,7 @@ public class RoleInfoController extends BaseController {
         }*/
         //为空时更新RoleInfo中字段数据
         dbRoleInfo.setRolePowers(roleInfo.getRolePowers());
-        List<RolePower> oldRolePowers = sysRoleManager.updateRoleInfo(dbRoleInfo);
+        List<RolePower> oldRolePowers = sysRoleManager.updateRolePower(dbRoleInfo);
         sysRoleManager.loadRoleSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
         
