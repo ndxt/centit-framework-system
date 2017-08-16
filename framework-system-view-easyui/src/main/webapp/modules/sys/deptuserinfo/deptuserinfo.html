@@ -6,7 +6,7 @@
 	<div data-options="region:'center'" style="width:40%">
 	
 		<div class="easyui-panel search-body" cls="search" style="width: 100%">
-			<form>
+			<form class="clearFromValue">
 				
 				<!--<div class="search-item">-->
 					<!--<label id="e@name">名称</label>-->
@@ -23,6 +23,9 @@
 					<input type="radio" name="s_isValid" value="F" /> <p id="e@forbidden">禁用</p>
 				</div>
 				<a class="easyui-linkbutton btn-search" iconCls="icon-search"><p  id="e@btn.search">搜索</p></a>
+				<a class="easyui-linkbutton" style="margin-top:8px;" iconcls="icon-reload" onclick="javascript:$(this).parent('.clearFromValue').form('clear');$('.defaultChecked').prop('checked','true');" group="" id="">
+					<p>重置</p>
+				</a>
 			</form>
 		</div>
 		
