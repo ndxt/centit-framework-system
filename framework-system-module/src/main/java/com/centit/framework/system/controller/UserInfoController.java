@@ -9,14 +9,16 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.security.model.CentitUserDetails;
-import com.centit.framework.system.po.*;
+import com.centit.framework.system.po.RoleInfo;
+import com.centit.framework.system.po.UserInfo;
+import com.centit.framework.system.po.UserRole;
+import com.centit.framework.system.po.UserUnit;
 import com.centit.framework.system.service.SysUserManager;
 import com.centit.framework.system.service.SysUserUnitManager;
 import com.centit.framework.system.service.UserSettingManager;
 import com.centit.support.json.JsonPropertyUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -131,45 +133,6 @@ public class UserInfoController extends BaseController {
     }
 
     /**
-     * 更新用户状态信息
-     *
-     * @param userCode 用户代码
-     * @param userInfo UserInfo
-     * @param request HttpServletRequest
-     * @param response HttpServletResponse
-     */
-    @RequestMapping(value = "/state/{userCode}", method = RequestMethod.PUT)
-    public void changeState(@PathVariable String userCode, UserInfo userInfo, 
-            HttpServletRequest request, HttpServletResponse response) {
-        UserInfo userDetails = sysUserManager.getObjectById(userCode);
-        UserInfo oldValue= new UserInfo();
-        BeanUtils.copyProperties(userDetails,oldValue);
-        if (null == userDetails) {
-            JsonResultUtils.writeErrorMessageJson("当前用户不存在", response);
-
-            return;
-        }
-
-        String isValid = userInfo.getIsValid();
-        // 更新时不更新用户代码，登录名称，用户密码
-        // 更新用户密码有专门的方法操作
-        //BeanUtils.copyProperties(userInfo, userDetails, new String[]{"userCode", "loginName", "userPin"});
-        userDetails.setIsValid(isValid);
-
-        sysUserManager.updateUserProperities(userDetails);
-
-        JsonResultUtils.writeBlankJson(response);
-
-        /*********log*********/
-        StringBuilder optContent = new StringBuilder();
-        optContent.append("更新用户状态,用户代码:" + userCode + ",")
-                .append("是否启用:" + ("T".equals(userDetails.getIsValid()) ? "是" : "否"));
-
-
-        OperationLogCenter.logUpdateObject(request,optId,userCode,"changeStatus",  optContent.toString(),userInfo,oldValue);
-    }
-    
-    /**
      * 更新用户信息
      * @param userCode userCode
      * @param userInfo userInfo
@@ -178,27 +141,23 @@ public class UserInfoController extends BaseController {
      */
     @RequestMapping(value = "/{userCode}", method = RequestMethod.PUT)
     public void edit(@PathVariable String userCode, @Valid UserInfo userInfo,
-            HttpServletRequest request, HttpServletResponse response) {
+                     HttpServletRequest request, HttpServletResponse response) {
         
-        UserInfo userDetails = sysUserManager.getObjectById(userCode);
-        UserInfo oldValue= new UserInfo();
-        oldValue.copy(userDetails);
-        if (null == userDetails) {
+        UserInfo dbUserInfo = sysUserManager.getObjectById(userCode);
+        if (null == dbUserInfo) {
             JsonResultUtils.writeErrorMessageJson("当前用户不存在", response);
-
             return;
         }
-       
-        //userInfo.setUserCode(userCode);
-        BeanUtils.copyProperties(userInfo, userDetails);
-        
-        sysUserManager.updateUserInfo(userDetails);
+        UserInfo oldValue= new UserInfo();
+        oldValue.copy(dbUserInfo);
+
+        sysUserManager.updateUserInfo(userInfo);
         
         JsonResultUtils.writeBlankJson(response);
 
         /*********log*********/
        OperationLogCenter.logUpdateObject(request,optId, userCode, OperationLog.P_OPT_LOG_METHOD_U,
-               "更新用户信息",userInfo,oldValue);
+               "更新用户信息", dbUserInfo, oldValue);
         /*********log*********/
     }
 

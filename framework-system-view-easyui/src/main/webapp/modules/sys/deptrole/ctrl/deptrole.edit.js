@@ -22,6 +22,15 @@ define(function(require) {
 				form.form('disableValidation')
 					.form('load', data)
 					.form('readonly', 'roleCode')
+					.form('addValidation', {
+						roleName: {
+							required:true,
+							validType:{
+								remote:[Config.ContextPath+'system/roleinfo/isNameUnique/{{roleName}}/'+data.roleCode,
+									'roleName']
+							}
+						}
+					})
 					.form('focus');
 			});
 		};

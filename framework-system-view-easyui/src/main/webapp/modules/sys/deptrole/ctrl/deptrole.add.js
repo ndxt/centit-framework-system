@@ -22,8 +22,15 @@ define(function(require) {
 					roleCode: {
 						required: true,
 					    validType: {
-					    	remote: [Config.ContextPath+'system/roleinfo/notexists/'+primaryUnit+'-'+'{{roleCode}}', 'roleCode']
+					    	remote: [Config.ContextPath+'system/roleinfo/notexists/'+primaryUnit+'-'+'{{roleCode}}',
+								'roleCode']
 					    }
+					},
+					roleName: {
+						required:true,
+						validType:{
+							remote:[Config.ContextPath+'system/roleinfo/nameexists/{{roleName}}', 'roleName']
+						}
 					}
 				})
 				.form('focus');

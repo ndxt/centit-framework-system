@@ -195,7 +195,7 @@ public class UserUnitController extends BaseController {
 
 
     /**
-     * 更新用户机构关联信息
+     * 更新机构用户信息
      *
      * @param userunitid     userunitid
      * @param userUnit       UserUnit
@@ -205,16 +205,17 @@ public class UserUnitController extends BaseController {
     @RequestMapping(value = "/{userunitid}", method = RequestMethod.PUT)
     public void edit(@PathVariable String userunitid, @Valid UserUnit userUnit,
                      HttpServletRequest request, HttpServletResponse response) {
-        if (null == userUnit) {
+
+        UserUnit dbUserUnit = sysUserUnitManager.getObjectById(userunitid);
+        if (null == dbUserUnit) {
             JsonResultUtils.writeErrorMessageJson("当前机构中无此用户", response);
         }
-        UserUnit dbUserUnit = sysUserUnitManager.getObjectById(userunitid);
-         
+
         UserUnit oldValue = new UserUnit();
         oldValue.copy(dbUserUnit);
 
         dbUserUnit.copy(userUnit);
-        
+
         sysUserUnitManager.updateUserUnit(dbUserUnit);
         
         JsonResultUtils.writeSingleDataJson(userUnit, response);

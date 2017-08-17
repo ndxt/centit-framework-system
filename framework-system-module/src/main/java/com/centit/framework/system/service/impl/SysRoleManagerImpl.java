@@ -217,8 +217,8 @@ public class SysRoleManagerImpl implements SysRoleManager {
 
     @Override
     @Transactional
-    public boolean isRoleNameNotExist(String methodTag, String roleName){
+    public boolean isRoleNameNotExist(String roleName, String roleCode){
         RoleInfo dbRoleInfo = roleInfoDao.getObjectByProperty("roleName", roleName);
-        return Objects.equals(methodTag,"create") && dbRoleInfo==null ? true : Objects.equals(methodTag,"update");
+        return dbRoleInfo==null ? true : roleCode!=null && Objects.equals(dbRoleInfo.getRoleCode(), roleCode);
     }
 }

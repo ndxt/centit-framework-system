@@ -3,7 +3,6 @@ package com.centit.framework.system.controller;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.common.JsonResultUtils;
-import com.centit.framework.core.common.ResponseData;
 import com.centit.framework.core.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.PageDesc;
@@ -210,11 +209,6 @@ public class RoleInfoController extends BaseController {
     @RequestMapping(value = "/global", method = RequestMethod.POST)
     public void createGlobalRole(@Valid RoleInfo roleInfo,HttpServletRequest request, HttpServletResponse response) {
 
-        if(!sysRoleManager.isRoleNameNotExist("create",roleInfo.getRoleName())){
-            JsonResultUtils.writeErrorMessageJson(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
-                    "角色名"+roleInfo.getRoleName()+"已存在，请更换！", response);
-            return;
-        }
         if(! roleInfo.getRoleCode().startsWith("G-")){
             roleInfo.setRoleCode("G-"+ roleInfo.getRoleCode());
         }
@@ -235,12 +229,6 @@ public class RoleInfoController extends BaseController {
     @RequestMapping(value = "/public",method = RequestMethod.POST)
     public void createPublicRole(@Valid RoleInfo roleInfo,HttpServletRequest request, HttpServletResponse response) {
 
-        if(!sysRoleManager.isRoleNameNotExist("create",roleInfo.getRoleName())){
-            JsonResultUtils.writeErrorMessageJson(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
-                    "角色名"+roleInfo.getRoleName()+"已存在，请更换！", response);
-            return;
-        }
-
         if(! roleInfo.getRoleCode().startsWith("P-")){
             roleInfo.setRoleCode("P-"+ roleInfo.getRoleCode());
         }
@@ -260,12 +248,6 @@ public class RoleInfoController extends BaseController {
     
     @RequestMapping(value = "/item",method = RequestMethod.POST)
     public void createItemRole(@Valid RoleInfo roleInfo,HttpServletRequest request, HttpServletResponse response) {
-
-        if(!sysRoleManager.isRoleNameNotExist("create",roleInfo.getRoleName())){
-            JsonResultUtils.writeErrorMessageJson(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
-                    "角色名"+roleInfo.getRoleName()+"已存在，请更换！", response);
-            return;
-        }
 
         if(! roleInfo.getRoleCode().startsWith("I-")){
             roleInfo.setRoleCode("I-"+ roleInfo.getRoleCode());
@@ -288,12 +270,6 @@ public class RoleInfoController extends BaseController {
     @RequestMapping(value = "/dept/{unitcode}",method = RequestMethod.POST)
     public void createDeptRole(@PathVariable String unitcode,@Valid RoleInfo roleInfo,
             HttpServletRequest request,HttpServletResponse response) {
-
-        if(!sysRoleManager.isRoleNameNotExist("create",roleInfo.getRoleName())){
-            JsonResultUtils.writeErrorMessageJson(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
-                            "角色名"+roleInfo.getRoleName()+"已存在，请更换！", response);
-            return;
-        }
 
         if(! roleInfo.getRoleCode().startsWith(unitcode+"-")){
             roleInfo.setRoleCode(unitcode+"-"+ roleInfo.getRoleCode());
@@ -446,12 +422,7 @@ public class RoleInfoController extends BaseController {
             JsonResultUtils.writeErrorMessageJson("角色信息不存在", response);
             return;
         }
-        if(!sysRoleManager.isRoleNameNotExist("update",roleInfo.getRoleName())){
-            JsonResultUtils.writeErrorMessageJson(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
-                    "角色名"+roleInfo.getRoleName()+"已存在，请更换！", response);
-            return;
-        }
-        
+
         RoleInfo oldValue = new RoleInfo();
         oldValue.copy(dbRoleInfo);
 
@@ -461,7 +432,7 @@ public class RoleInfoController extends BaseController {
         
         /*********log*********/
         OperationLogCenter.logUpdateObject(request,optId, roleCode, OperationLog.P_OPT_LOG_METHOD_U,
-                "更新系统角色",roleInfo, oldValue);
+                "更新系统角色",dbRoleInfo, oldValue);
         /*********log*********/
     }
 
@@ -524,6 +495,29 @@ public class RoleInfoController extends BaseController {
     		JsonResultUtils.writeOriginalObject(notExist, response);	
     	}else
     		JsonResultUtils.writeOriginalObject(null == sysRoleManager.getObjectById(roleCode), response);
+    }
+
+    /**
+     * 角色代码是否存在
+     *
+     * @param roleName 角色代码
+     * @param response HttpServletResponse
+     * @throws IOException IOException
+     */
+    @RequestMapping(value = "/nameexists/{roleName}", method = RequestMethod.GET)
+    public void isNameExists(@PathVariable String roleName, HttpServletResponse response){
+        JsonResultUtils.writeOriginalObject(sysRoleManager.isRoleNameNotExist(roleName,null), response);
+    }
+    /**
+     * 角色代码是否存在
+     *
+     * @param roleName 角色代码
+     * @param response HttpServletResponse
+     * @throws IOException IOException
+     */
+    @RequestMapping(value = "/isNameUnique/{roleName}/{roleCode}", method = RequestMethod.GET)
+    public void isNameUnique(@PathVariable String roleName,@PathVariable String roleCode, HttpServletResponse response){
+        JsonResultUtils.writeOriginalObject(sysRoleManager.isRoleNameNotExist(roleName,roleCode), response);
     }
 
     /**

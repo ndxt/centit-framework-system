@@ -116,34 +116,42 @@ public class UnitInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/subunits",method = RequestMethod.GET)
-    public void listSub(String[] field, boolean struct, HttpServletRequest request, HttpServletResponse response) {
+    public void listSub(String[] field, boolean struct, String id,
+                        HttpServletRequest request, HttpServletResponse response) {
+
         UserInfo user=sysUserMag.getObjectById(this.getLoginUser(request).getUserCode());
-        List<UnitInfo> listObjects = null;
-        listObjects = sysUnitManager.listAllSubObjects(user.getPrimaryUnit());
+        Map<String,Object> filterMap = new HashMap<>();
+        if (StringUtils.isNotBlank(id)) {
+            filterMap.put("parentUnit", id);
+        }else{
+            filterMap.put("parentUnit", user.getPrimaryUnit());
+        }
+        List<UnitInfo> listObjects = sysUnitManager.listObjects(filterMap);
         if(listObjects == null){
             JsonResultUtils.writeSuccessJson(response);
             return;
         }
-        Collections.sort(listObjects, (o1, o2) -> {
-                if (o2.getUnitOrder() == null && o1.getUnitOrder() == null) {
-                    return 0;
-                }
-                if (o2.getUnitOrder() == null) {
-                    return 1;
-                }
-                if (o1.getUnitOrder() == null) {
-                    return -1;
-                }
-                return Long.compare(o1.getUnitOrder(), o2.getUnitOrder());
-            });
+//        Collections.sort(listObjects, (o1, o2) -> {
+//            if (o2.getUnitOrder() == null && o1.getUnitOrder() == null) {
+//                return 0;
+//            }
+//            if (o2.getUnitOrder() == null) {
+//                return 1;
+//            }
+//            if (o1.getUnitOrder() == null) {
+//                return -1;
+//            }
+//            return Long.compare(o1.getUnitOrder(), o2.getUnitOrder());
+//        });
+        sysUnitManager.checkState(listObjects);
         JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
-        if(struct){
-        	ja = ListOpt.srotAsTreeAndToJSON(ja, (p, c) ->
-    				StringUtils.equals(
-									((JSONObject)p).getString("unitCode"),
-									((JSONObject)c).getString("parentUnit")),
-                    "children");
-        }
+//        if(struct){
+//        	ja = ListOpt.srotAsTreeAndToJSON(ja, (p, c) ->
+//    				StringUtils.equals(
+//									((JSONObject)p).getString("unitCode"),
+//									((JSONObject)c).getString("parentUnit")),
+//                    "children");
+//        }
         JsonResultUtils.writeSingleDataJson(ja,
         		response, JsonPropertyUtils.getIncludePropPreFilter(JSONObject.class, field));
       }
@@ -236,18 +244,17 @@ public class UnitInfoController extends BaseController {
                     "机构名"+unitInfo.getUnitName()+"已存在，请更换！", response);
             return;
         }
-        /*********log*********/
+
         UnitInfo oldValue = new UnitInfo();
         oldValue.copy(dbUnitInfo);
-        /*********log*********/
-       
+
         sysUnitManager.updateUnitInfo(unitInfo);
 
         JsonResultUtils.writeBlankJson(response);
 
         /*********log*********/
         OperationLogCenter.logUpdateObject(request, optId, unitCode, OperationLog.P_OPT_LOG_METHOD_U,
-                "更新机构信息", unitInfo, oldValue);
+                "更新机构信息", dbUnitInfo, oldValue);
         /*********log*********/
     }
 

@@ -44,5 +44,5 @@ public interface SysRoleManager{
 
     RoleInfo getRoleByName(String roleName);
 
-    boolean isRoleNameNotExist(String methodTag, String roleName);
+    boolean isRoleNameNotExist(String roleName, String roleCode);
 }
