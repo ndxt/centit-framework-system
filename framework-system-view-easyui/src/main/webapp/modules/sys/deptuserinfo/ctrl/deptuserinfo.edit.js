@@ -48,7 +48,7 @@ define(function(require) {
 			if (!newObject) return;
 			var layout = $('#deptuserinfo_panel').layout('panel', 'east');
 			layout.panel('refresh', Config.ViewContextPath + 'modules/sys/deptuserinfo/deptuserinfo-all.html');
-			table.datagrid('updateRow',newObject);
+			table.datagrid('reload');
 			this.newObject=null;
 		};
 	});
