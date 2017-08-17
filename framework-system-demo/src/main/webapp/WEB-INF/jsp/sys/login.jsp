@@ -25,6 +25,16 @@
 			<div>
 				<i></i>
 				<div>
+					<c:if test="${LOGIN_ERROR_MSG != null && LOGIN_ERROR_MSG != ''}">
+						<c:choose>
+							<c:when test="${LOGIN_ERROR_MSG eq '坏的凭证'}">
+								<span class="red">密码错误!</span>
+							</c:when>
+							<c:otherwise>
+								<span class="red">用户名不存在!</span>
+							</c:otherwise>
+						</c:choose>
+					</c:if>
 					<form action="${pageContext.request.contextPath }/login" method="post">
 						<input name="username" value="${SPRING_SECURITY_LAST_USERNAME}" type="text" autocomplete="on" placeholder="用户名" />
 						<input name="password" id="password" type="password" autocomplete="on" placeholder="密码" />
