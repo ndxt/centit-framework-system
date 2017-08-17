@@ -35,15 +35,13 @@
 			id="userInfoTable"
 			width="96%"
 			bottom="0"
-			singleSelect="true"
-			checkOnSelect="true"
-			selectOnCheck="true"
 			sortName="userOrder"
 			sortOrder="asc"
 			search=".search"
 			toolbar=".temp-toolbar"
 			layoutH=".search"
 			method="post"
+			singleSelect="false" selectOnCheck="true" checkOnSelect="true"
 			>
 			<thead>
 				<tr>
@@ -70,7 +68,7 @@
 				target="dialog" rel="userinfo_all" title="编辑 {{userName}} 机构与权限" width="900" height="600" btnValue="更新"  buttons="false">机构与权限</a>
 			
 			<hr>
-			<a  iconCls="icon-base icon-base-ban"  trigger="single"
+			<a  iconCls="icon-base icon-base-ban"  trigger="multiple"
 				target="confirm" rel="userinfo_delete" title="确定删除 {{userName}}用户" ><p id="e@btn.delete">删除</p></a>
 			
 			<hr>
