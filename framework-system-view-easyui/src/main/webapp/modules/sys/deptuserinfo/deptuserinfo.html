@@ -43,7 +43,7 @@
 				<tr>
 					<th data-options="field:'ck',checkbox:true"></th>
 					<th data-options="field:'userCode'" width="19%" sortable="true">用户编码</th>
-					<th id="e1@name" data-options="field:'userName'" width="19%" sortable="true">用户名</th>
+					<th data-options="field:'userName'" width="19%" sortable="true">用户名</th>
 					<th id="e@loginName" data-options="field:'loginName'" width="19%" sortable="true">登录名</th>
 					<th id="e@primaryOrganization" data-options="field:'primaryUnit'" format="Unit" width="19%">机构名称</th>
 
@@ -60,10 +60,10 @@
 			<a  iconCls="icon-edit" href="modules/sys/deptuserinfo/deptuserinfo-edit.html" trigger="single"
 				target="dialog" rel="deptuserinfo_edit" title="编辑" width="640" height="470" btnValue="更新"><p id="e@link.edit">编辑</p></a>
 			<hr>
-			<a  iconCls="icon-base icon-base-ban"  trigger="single"
+			<a  iconCls="icon-base icon-base-ban"  trigger="multiple"
 				target="confirm" rel="deptuserinfo_delete" title="确定删除该用户？" ><p id="e@btn.delete">删除</p></a>
 			<hr>
-			<a iconCls="icon-base icon-base-lock" trigger="single"
+			<a iconCls="icon-base icon-base-lock" trigger="multiple"
 				target="confirm" rel="deptuserinfo_resetpassword" title="确定重置该用户密码为 000000 吗？"><p  id="e@btn.resetPassword">重置密码</p></a>
 		</div>
 	
