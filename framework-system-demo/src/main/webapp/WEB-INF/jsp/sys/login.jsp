@@ -14,6 +14,9 @@
     	<link rel="stylesheet" href="${cp:SYS_VALUE('app.staticfile.home')}/modules/login/sys/style.css">
     	<script type="text/javascript" src="${cp:SYS_VALUE('app.staticfile.home')}/ui/js/jquery/jquery-1.11.2.min.js"></script>
     	<script type="text/javascript" src="${cp:SYS_VALUE('app.staticfile.home')}/modules/login/sys/style.js"></script>
+		<style type="text/css">
+			.red{position: absolute;top: 317px;right: 200px;color: red;font-size: 15px;}
+		</style>
 	</head>
 	<body>
 		<div class="header">
