@@ -37,7 +37,9 @@ define(function(require) {
 				form.form('ajax', {
 					url: Config.ContextPath + 'system/optinfo/' + data.optId,
 					method: 'put',
-					data: data 
+					data: data
+				}).then(function(){
+					return require('loaders/cache/loader.system').loadAll()
 				}).then(closeCallback);
 			}
 

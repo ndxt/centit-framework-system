@@ -468,14 +468,18 @@ public class RoleInfoController extends BaseController {
             rolePowers.add(po);
         }*/
         //为空时更新RoleInfo中字段数据
+        RoleInfo oldRoleInfo = new RoleInfo();
+        oldRoleInfo.copy(dbRoleInfo);
         dbRoleInfo.setRolePowers(roleInfo.getRolePowers());
         List<RolePower> oldRolePowers = sysRoleManager.updateRolePower(dbRoleInfo);
+        oldRoleInfo.setRolePowers(oldRolePowers);
+
         sysRoleManager.loadRoleSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
         
         /*********log*********/
         OperationLogCenter.logUpdateObject(request,optId, roleCode, OperationLog.P_OPT_LOG_METHOD_U,
-                "更新系统角色"+dbRoleInfo.getRoleName()+"权限",roleInfo.getRolePowers(),oldRolePowers);
+                "更新系统角色"+dbRoleInfo.getRoleName()+"权限",dbRoleInfo,oldRoleInfo);
         /*********log*********/
     }
     

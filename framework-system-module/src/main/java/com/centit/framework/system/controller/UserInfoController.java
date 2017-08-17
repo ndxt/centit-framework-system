@@ -324,23 +324,24 @@ public class UserInfoController extends BaseController {
         OperationLogCenter.log(request,optId,userCode, "resetPassword", "重置用户密码,用户代码:" + userCode);
     }
 
-    @RequestMapping(value="/{userCode}",method=RequestMethod.DELETE)
-    public  void deleteUser(@PathVariable String userCode,HttpServletRequest request,HttpServletResponse response){
-        UserInfo userInfo = sysUserManager.getObjectById(userCode);
-        if(null!=userInfo){
-            
-            sysUserManager.deleteUserInfo(userCode);
-            
-            JsonResultUtils.writeSuccessJson(response);
-        }
-        else{
-            JsonResultUtils.writeErrorMessageJson("该用户不存在", response);
-        }
+    @RequestMapping(value="/{userCodes}",method=RequestMethod.DELETE)
+    public  void deleteUser(@PathVariable String[] userCodes,HttpServletRequest request,HttpServletResponse response){
+        for(String userCode : userCodes) {
+            UserInfo userInfo = sysUserManager.getObjectById(userCode);
+            if (null != userInfo) {
 
-        /*********log*********/
-        OperationLogCenter.logDeleteObject(request, optId, userCode, OperationLog.P_OPT_LOG_METHOD_D,
-                "删除用户"+userInfo.getUserName(), userInfo);
-        /*********log*********/
+                sysUserManager.deleteUserInfo(userCode);
+
+            } else {
+                JsonResultUtils.writeErrorMessageJson("该用户不存在", response);
+            }
+
+            /*********log*********/
+            OperationLogCenter.logDeleteObject(request, optId, userCode, OperationLog.P_OPT_LOG_METHOD_D,
+                    "删除用户"+userInfo.getUserName(), userInfo);
+            /*********log*********/
+        }
+        JsonResultUtils.writeSuccessJson(response);
     }
     
 }
