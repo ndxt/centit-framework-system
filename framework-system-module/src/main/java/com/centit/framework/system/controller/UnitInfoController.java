@@ -1,5 +1,6 @@
 package com.centit.framework.system.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.components.CodeRepositoryUtil;
@@ -30,7 +31,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -121,11 +124,7 @@ public class UnitInfoController extends BaseController {
 
         UserInfo user=sysUserMag.getObjectById(this.getLoginUser(request).getUserCode());
         Map<String,Object> filterMap = new HashMap<>();
-        if (StringUtils.isNotBlank(id)) {
-            filterMap.put("parentUnit", id);
-        }else{
-            filterMap.put("parentUnit", user.getPrimaryUnit());
-        }
+        filterMap.put("parentUnit", StringUtils.isNotBlank(id) ? id : user.getPrimaryUnit());
         List<UnitInfo> listObjects = sysUnitManager.listObjects(filterMap);
         if(listObjects == null){
             JsonResultUtils.writeSuccessJson(response);
@@ -155,6 +154,37 @@ public class UnitInfoController extends BaseController {
         JsonResultUtils.writeSingleDataJson(ja,
         		response, JsonPropertyUtils.getIncludePropPreFilter(JSONObject.class, field));
       }
+
+    /**
+     * 获取当前机构及其下属机构
+     * @param request
+     * @param response
+     */
+    @RequestMapping(value = "/underunits", method = RequestMethod.GET)
+    public void allunits(String id, HttpServletRequest request, HttpServletResponse response) {
+        UserInfo user=sysUserMag.getObjectById(this.getLoginUser(request).getUserCode());
+        Map<String,Object> filterMap = new HashMap<>();
+        if (StringUtils.isNotBlank(id)) {
+            filterMap.put("parentUnit", id);
+        }else{
+            filterMap.put("unitCode", user.getPrimaryUnit());
+        }
+        List<UnitInfo> listObjects = sysUnitManager.listObjects(filterMap);
+        if(listObjects == null){
+            JsonResultUtils.writeSuccessJson(response);
+            return;
+        }
+        sysUnitManager.checkState(listObjects);
+        JSONArray ja = new JSONArray();
+        for(UnitInfo u : listObjects){
+            JSONObject json = (JSONObject)JSON.toJSON(u);
+            json.put("id", u.getUnitCode());
+            json.put("text",u.getUnitName());
+            ja.add(json);
+        }
+//        JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
+        JsonResultUtils.writeSingleDataJson(ja, response);
+    }
     
     
     /**

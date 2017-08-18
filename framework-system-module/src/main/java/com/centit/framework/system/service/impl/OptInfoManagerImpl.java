@@ -68,7 +68,9 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Override
     @CacheEvict(value="OptInfo",allEntries = true)
     @Transactional
-    public void saveNewOptInfo(OptInfo optInfo){        
+    public void saveNewOptInfo(OptInfo optInfo){
+
+        syncState(optInfo);
         // 父级url必须设成...    	
         OptInfo parentOpt = optInfoDao.getObjectById(optInfo.getPreOptId());
         if (null != parentOpt) {
@@ -123,10 +125,12 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Override
     @CacheEvict(value="OptInfo",allEntries = true)
     @Transactional
-    public void updateOptInfo(OptInfo optInfo) {       
-        
+    public void updateOptInfo(OptInfo optInfo) {
+
+        syncState(optInfo);
+
         optInfoDao.mergeObject(optInfo);
-        
+
         List<OptMethod>  newOpts = optInfo.getOptMethods();
         
         if(newOpts.size()>0 ){
@@ -347,7 +351,43 @@ public class OptInfoManagerImpl implements OptInfoManager {
 	public OptInfo getObjectById(String optId) {
 		return optInfoDao.getObjectById(optId);
 	}
+
+	private List<OptInfo> findSubOptInfo(String optId){
+	    List<OptInfo> result = new ArrayList<>();
+        List<OptInfo> optInfos = optInfoDao.listObjectByProperty("preOptId",optId);
+        if(optInfos != null && optInfos.size() > 0){
+            result.addAll(optInfos);
+            for(OptInfo o : optInfos){
+                result.addAll(findSubOptInfo(o.getOptId()));
+            }
+        }
+        return result;
+    }
+
+    private List<OptInfo> findPreOptInfo(String preId){
+        List<OptInfo> result = new ArrayList<>();
+        OptInfo optInfo = optInfoDao.getObjectById(preId);
+        if(optInfo != null){
+            result.add(optInfo);
+            result.addAll(findPreOptInfo(optInfo.getPreOptId()));
+        }
+        return result;
+    }
 	
-	
+	private void syncState(OptInfo optInfo){
+	    if("N".equals(optInfo.getIsInToolbar())){
+            List<OptInfo> optInfos = findSubOptInfo(optInfo.getOptId());
+            for(OptInfo o : optInfos){
+                o.setIsInToolbar("N");
+                optInfoDao.mergeObject(o);
+            }
+        }else{
+            List<OptInfo> optInfos = findPreOptInfo(optInfo.getPreOptId());
+            for(OptInfo o : optInfos){
+                o.setIsInToolbar("Y");
+                optInfoDao.mergeObject(o);
+            }
+        }
+    }
 
 }

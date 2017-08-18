@@ -63,6 +63,8 @@ define(function(require) {
                 id: newObject.id,
                 row: newObject
             });
+
+			table.treegrid("reload");
             
             var panel = table.treegrid('getPanel');
     		btns = panel.find('.easyui-linkbutton').linkbutton();
