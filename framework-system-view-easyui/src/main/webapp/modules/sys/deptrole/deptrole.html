@@ -21,9 +21,9 @@
 		
 		<div class="search-item">
 			<label id="b@createTime">创建时间</label>
-			<input type="text" class="easyui-datebox" name="s_createDateBeg" id="s_createDateBeg" validType="nowtime"/> 
+			<input type="text" class="easyui-datebox" name="s_createDateBeg" id="s_createDateBeg" validType="nowtime['#s_createDateEnd']"/>
 			<span id="b@to">到</span>
-			<input type="text" class="easyui-datebox" name="s_createDateEnd" validType="compare['#deptroleform #s_createDateBeg']"/>
+			<input type="text" class="easyui-datebox" name="s_createDateEnd" id="s_createDateEnd" validType="compare['#deptroleform #s_createDateBeg']"/>
 		</div>
 		
 		<a class="easyui-linkbutton btn-search" iconCls="icon-search"><p  id="b@btn.search">搜索</p></a>

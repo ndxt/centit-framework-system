@@ -45,7 +45,7 @@ define(function(require) {
 						return {'class': 'ban'};
 					}
 				},
-				onClickRow: function(index, row) {
+				onCheck: function(index, row) {
 					if (index == selectIndex) {
 						
 					}else{
@@ -59,6 +59,14 @@ define(function(require) {
 						layout.panel('refresh', Config.ViewContextPath + 'modules/sys/deptuserinfo/deptuserinfo-all.html');
 		            }
 					
+				},
+				onUncheck: function(index, row) {
+					if (index == selectIndex) {
+						var layout = $('#deptuserinfo_panel').layout('panel', 'east');
+						layout.panel('setTitle','机构与权限');
+						layout.panel('clear');
+						selectIndex = -1;
+					}
 				}
 			});
 		};
