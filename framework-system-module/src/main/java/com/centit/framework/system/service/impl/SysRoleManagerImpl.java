@@ -211,14 +211,16 @@ public class SysRoleManagerImpl implements SysRoleManager {
 
     @Override
     @Transactional
-    public RoleInfo getRoleByName(String roleName){
-        return roleInfoDao.getObjectByProperty("roleName", roleName);
-    }
+    public boolean isRoleNameNotExist(String unitCode, String roleName, String roleCode){
 
-    @Override
-    @Transactional
-    public boolean isRoleNameNotExist(String roleName, String roleCode){
-        RoleInfo dbRoleInfo = roleInfoDao.getObjectByProperty("roleName", roleName);
-        return dbRoleInfo==null ? true : roleCode!=null && Objects.equals(dbRoleInfo.getRoleCode(), roleCode);
+        Map<String, Object> filterMap = new HashMap<>();
+        filterMap.put("publicUnitRole",unitCode+"-%");
+        filterMap.put("roleNameEq",roleName);
+
+        List<RoleInfo> roleInfos = roleInfoDao.listObjects(filterMap);
+        boolean isEmpty = roleInfos==null || roleInfos.size() == 0;
+//        RoleInfo dbRoleInfo = roleInfoDao.getObjectByProperty("roleName", roleName);
+//        return dbRoleInfo==null ? true : roleCode!=null && Objects.equals(dbRoleInfo.getRoleCode(), roleCode);
+        return isEmpty ? true : roleCode!=null && roleCode.equals(roleInfos.get(0).getRoleCode());
     }
 }

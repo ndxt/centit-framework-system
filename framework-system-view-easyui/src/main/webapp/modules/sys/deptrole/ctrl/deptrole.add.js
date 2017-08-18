@@ -29,7 +29,7 @@ define(function(require) {
 					roleName: {
 						required:true,
 						validType:{
-							remote:[Config.ContextPath+'system/roleinfo/nameexists/{{roleName}}', 'roleName']
+							remote:[Config.ContextPath+'system/roleinfo/nameexists/{{roleName}}/'+primaryUnit, 'roleName']
 						}
 					}
 				})

@@ -42,7 +42,5 @@ public interface SysRoleManager{
 
     int countRoleUserSum(String roleCode);
 
-    RoleInfo getRoleByName(String roleName);
-
-    boolean isRoleNameNotExist(String roleName, String roleCode);
+    boolean isRoleNameNotExist(String unitCode, String roleName, String roleCode);
 }

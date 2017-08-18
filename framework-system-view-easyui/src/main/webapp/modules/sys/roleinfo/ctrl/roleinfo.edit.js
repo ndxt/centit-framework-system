@@ -26,7 +26,7 @@ define(function(require) {
 						roleName: {
 							required:true,
 							validType:{
-								remote:[Config.ContextPath+'system/roleinfo/isNameUnique/{{roleName}}/'+data.roleCode,
+								remote:[Config.ContextPath+'system/roleinfo/isNameUnique/{{roleName}}/'+data.roleCode+'/G',
                                     'roleName']
 							}
 						}

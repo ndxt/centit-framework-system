@@ -508,9 +508,9 @@ public class RoleInfoController extends BaseController {
      * @param response HttpServletResponse
      * @throws IOException IOException
      */
-    @RequestMapping(value = "/nameexists/{roleName}", method = RequestMethod.GET)
-    public void isNameExists(@PathVariable String roleName, HttpServletResponse response){
-        JsonResultUtils.writeOriginalObject(sysRoleManager.isRoleNameNotExist(roleName,null), response);
+    @RequestMapping(value = "/nameexists/{roleName}/{unitCode}", method = RequestMethod.GET)
+    public void isNameExists(@PathVariable String roleName,@PathVariable String unitCode, HttpServletResponse response){
+        JsonResultUtils.writeOriginalObject(sysRoleManager.isRoleNameNotExist(unitCode,roleName,null), response);
     }
     /**
      * 角色代码是否存在
@@ -519,9 +519,10 @@ public class RoleInfoController extends BaseController {
      * @param response HttpServletResponse
      * @throws IOException IOException
      */
-    @RequestMapping(value = "/isNameUnique/{roleName}/{roleCode}", method = RequestMethod.GET)
-    public void isNameUnique(@PathVariable String roleName,@PathVariable String roleCode, HttpServletResponse response){
-        JsonResultUtils.writeOriginalObject(sysRoleManager.isRoleNameNotExist(roleName,roleCode), response);
+    @RequestMapping(value = "/isNameUnique/{roleName}/{roleCode}/{unitCode}", method = RequestMethod.GET)
+    public void isNameUnique(@PathVariable String roleName,@PathVariable String roleCode,
+                             @PathVariable String unitCode, HttpServletResponse response){
+        JsonResultUtils.writeOriginalObject(sysRoleManager.isRoleNameNotExist(unitCode,roleName,roleCode), response);
     }
 
     /**
