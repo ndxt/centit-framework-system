@@ -12,9 +12,9 @@
 		
 		<div class="search-item">
 			<label id="c@createTime">创建时间</label>
-			<input type="text" class="easyui-datebox" name="s_optTimeBegin" id="loginfoadmin_optTimeBegin" validType="nowtime"/>
+			<input type="text" class="easyui-datebox" name="s_optTimeBegin" id="loginfoadmin_optTimeBegin" validType="nowtime['#loginfoadmin_optTimeEnd']"/>
 			<span id="b@to">到</span>
-			<input type="text" class="easyui-datebox" name="s_optTimeEnd" validType="compare['#loginfoadmin_optTimeBegin']"/>
+			<input type="text" class="easyui-datebox" name="s_optTimeEnd" id="loginfoadmin_optTimeEnd" validType="compare['#loginfoadmin_optTimeBegin']"/>
 		</div>
 		
 		<div class="search-item">
