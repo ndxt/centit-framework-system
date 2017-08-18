@@ -18,7 +18,6 @@ define(function(require) {
 				
 				form.form('disableValidation')
 					.form('load', data)
-					.form('readonly', ['userName', 'loginName'])
 					.form('focus');
 			});
 		};

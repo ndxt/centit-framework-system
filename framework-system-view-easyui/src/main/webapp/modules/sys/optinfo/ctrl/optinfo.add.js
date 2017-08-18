@@ -8,7 +8,7 @@ define(function(require) {
 		this.object = {
 			isInToolbar: 'Y', 	// 显示
 			pageType: 'D',		// DIV方式打开
-			optType: 'N'		// 普通业务             
+			optType: 'O'		// 普通业务
 		};
 		
 		// @override
