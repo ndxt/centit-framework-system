@@ -7,6 +7,7 @@ import com.centit.framework.core.common.ObjectException;
 import com.centit.framework.core.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.CodeBook;
+import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.system.po.DataCatalog;
 import com.centit.framework.system.po.DataDictionary;
@@ -82,7 +83,7 @@ public class DataDictionaryController extends BaseController {
         }
 
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, listObjects);
+        resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
         resData.addResponseData(PAGE_DESC, pageDesc);
         resData.addResponseData(CodeBook.SELF_ORDER_BY, searchColumn.get(CodeBook.SELF_ORDER_BY));
 
@@ -180,7 +181,7 @@ public class DataDictionaryController extends BaseController {
         DataCatalog dbDataCatalog = dataCatalogManager.getObjectById(catalogCode);
 
         if (null != dbDataCatalog) {
-            catalogPrUpdateHander(dataCatalog, dbDataCatalog);
+//            catalogPrUpdateHander(dataCatalog, dbDataCatalog);
             
             BeanUtils.copyProperties(dataCatalog, dbDataCatalog, new String[]{"catalogStyle","catalogCode", "dataDictionaries"});
             boolean isAdmin = isLoginAsAdmin(request);

@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -67,12 +66,8 @@ public class DataDictionaryManagerImpl implements
         List<DataDictionary> oldData = dictionaryDao.listDataDictionary(dataCatalog.getCatalogCode());
         List<DataDictionary> newData = dataCatalog.getDataDictionaries();
         Triple<List<DataDictionary>, List<Pair<DataDictionary,DataDictionary>>, List<DataDictionary>> 
-        	dbOptList= ListOpt.compareTwoList(oldData, newData, new Comparator<DataDictionary>(){
-					@Override
-					public int compare(DataDictionary o1, DataDictionary o2) {
-						return o1.getDataCode().compareTo(o2.getDataCode());
-					}        	  
-		          });
+        	dbOptList= ListOpt.compareTwoList(oldData, newData, (o1,o2) ->
+						 o1.getDataCode().compareTo(o2.getDataCode()));
         
          if(dbOptList.getRight()!=null){
             for(DataDictionary dp: dbOptList.getRight() ){

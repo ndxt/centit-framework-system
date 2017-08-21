@@ -1,19 +1,8 @@
 package com.centit.framework.system.po;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-import javax.validation.constraints.Pattern;
-
+import com.centit.framework.core.dao.DictionaryMap;
+import com.centit.framework.core.po.EntityWithTimestamp;
+import com.centit.framework.model.basedata.IDataCatalog;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
@@ -21,8 +10,11 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.util.HtmlUtils;
 
-import com.centit.framework.core.po.EntityWithTimestamp;
-import com.centit.framework.model.basedata.IDataCatalog;
+import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * FAddressBook entity.
@@ -72,6 +64,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
 
     @Column(name = "OPT_ID")
     @Length(max = 16, message = "字段长度不能大于{max}")
+    @DictionaryMap(fieldName="optName", value="optId")
     private String optId;
 
     @Column(name = "CREATE_DATE", nullable = false)
