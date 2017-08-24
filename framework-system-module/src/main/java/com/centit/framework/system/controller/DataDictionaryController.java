@@ -2,6 +2,7 @@ package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.components.CodeRepositoryUtil;
+import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.common.JsonResultUtils;
 import com.centit.framework.core.common.ObjectException;
 import com.centit.framework.core.common.ResponseMapData;
@@ -9,6 +10,7 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.core.dao.PageDesc;
+import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.system.po.DataCatalog;
 import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.DataDictionaryId;
@@ -52,6 +54,8 @@ public class DataDictionaryController extends BaseController {
 
     @Resource
     private DataDictionaryManager dataDictionaryManager;
+
+    private String optId = "DICTSET";
 
     /**
      * 查询所有数据目录列表
@@ -199,6 +203,11 @@ public class DataDictionaryController extends BaseController {
         }
 
         JsonResultUtils.writeBlankJson(response);
+
+        /***********************log*****************************/
+//        OperationLogCenter.logUpdateObject(request, optId, catalogCode, OperationLog.P_OPT_LOG_METHOD_U,
+//                "更新数据字典", );
+        /***********************log*****************************/
     }
 
     private boolean isLoginAsAdmin(HttpServletRequest request){
@@ -266,6 +275,9 @@ public class DataDictionaryController extends BaseController {
 
         DataDictionary dbDataDictionary = dataDictionaryManager.getDataDictionaryPiece(new DataDictionaryId(catalogCode,
                 dataCode));
+
+        DataDictionary oldValue = new DataDictionary();
+        oldValue.copy(dbDataDictionary);
         
         DataCatalog dbDataCatalog = dataCatalogManager.getObjectById(catalogCode);
         
@@ -276,12 +288,22 @@ public class DataDictionaryController extends BaseController {
             BeanUtils.copyProperties(dataDictionary, dbDataDictionary, new String[]{"id","dataStyle"});
             dictionaryPreUpdateHander(dbDataCatalog, dbDataDictionary,request);
             dataDictionaryManager.saveDataDictionaryPiece(dbDataDictionary);
-        } else { // insert            
+            /**************************log***************************/
+            OperationLogCenter.logUpdateObject(request, optId, catalogCode+"-"+dataCode, OperationLog.P_OPT_LOG_METHOD_U,
+                    "新增数据字典", dbDataDictionary, oldValue);
+            /**************************log***************************/
+        } else { // insert
             dictionaryPreInsertHander(dbDataCatalog, dataDictionary,request);
             dataDictionaryManager.saveDataDictionaryPiece(dataDictionary);
+            /**************************log***************************/
+            OperationLogCenter.logNewObject(request, optId, catalogCode+"-"+dataCode, OperationLog.P_OPT_LOG_METHOD_C,
+                    "新增数据字典", dataDictionary);
+            /**************************log***************************/
         }
 
         JsonResultUtils.writeBlankJson(response);
+
+
     }
 
   /**
@@ -414,6 +436,11 @@ public class DataDictionaryController extends BaseController {
 
         dataCatalogManager.deleteDataDictionary(catalogCode);
         JsonResultUtils.writeBlankJson(response);
+
+        /*****************log************************/
+        OperationLogCenter.logDeleteObject(request, optId, catalogCode, OperationLog.P_OPT_LOG_METHOD_D,
+                "删除数据目录", dataCatalog);
+        /*****************log************************/
     }
 
     /**
@@ -435,6 +462,11 @@ public class DataDictionaryController extends BaseController {
         dataDictionaryManager.deleteDataDictionaryPiece(dataDictionary.getId());
 
         JsonResultUtils.writeBlankJson(response);
+
+        /*****************log************************/
+        OperationLogCenter.logDeleteObject(request, optId, catalogCode+"-"+dataCode, OperationLog.P_OPT_LOG_METHOD_D,
+                "删除数据字典", dataDictionary);
+        /*****************log************************/
     }
 
     

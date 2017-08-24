@@ -324,8 +324,8 @@ public class RoleInfoController extends BaseController {
 	   }
 
 	   roleInfo.addAllRolePowers(rolePowers);
-	   sysRoleManager.updateRoleInfo(roleInfo);
-	   //sysRoleManager.loadRoleSecurityMetadata();   
+	   sysRoleManager.updateRolePower(roleInfo);
+	   sysRoleManager.loadRoleSecurityMetadata();
 	   JsonResultUtils.writeBlankJson(response);	   
 	   /*********log*********/
 	   OperationLogCenter.logNewObject(request,optId, roleInfo.getRoleCode(),
@@ -432,7 +432,7 @@ public class RoleInfoController extends BaseController {
         
         /*********log*********/
         OperationLogCenter.logUpdateObject(request,optId, roleCode, OperationLog.P_OPT_LOG_METHOD_U,
-                "更新系统角色",dbRoleInfo, oldValue);
+                "更新角色",roleInfo, oldValue);
         /*********log*********/
     }
 
@@ -479,7 +479,7 @@ public class RoleInfoController extends BaseController {
         
         /*********log*********/
         OperationLogCenter.logUpdateObject(request,optId, roleCode, OperationLog.P_OPT_LOG_METHOD_U,
-                "更新系统角色"+dbRoleInfo.getRoleName()+"权限",dbRoleInfo,oldRoleInfo);
+                "更新角色"+dbRoleInfo.getRoleName()+"权限",dbRoleInfo,oldRoleInfo);
         /*********log*********/
     }
     

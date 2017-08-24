@@ -284,7 +284,7 @@ public class UnitInfoController extends BaseController {
 
         /*********log*********/
         OperationLogCenter.logUpdateObject(request, optId, unitCode, OperationLog.P_OPT_LOG_METHOD_U,
-                "更新机构信息", dbUnitInfo, oldValue);
+                "更新机构信息", unitInfo, oldValue);
         /*********log*********/
     }
 

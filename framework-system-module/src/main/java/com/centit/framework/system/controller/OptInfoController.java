@@ -182,7 +182,7 @@ public class OptInfoController extends BaseController {
         /*********log*********/
         String optUser = this.getLoginUser(request).getUserCode();
         OperationLogCenter.logNewObject( optUser, optId,optInfo.getId(), OperationLog.P_OPT_LOG_METHOD_C, 
-        		"新增业务:",optInfo);
+        		"新增业务菜单",optInfo);
         /*********log*********/
     }
 
@@ -264,9 +264,8 @@ public class OptInfoController extends BaseController {
         sysRoleManager.loadRoleSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
-        String optUser = this.getLoginUser(request).getUserCode();
-        OperationLogCenter.logDeleteObject(optUser,this.optId,dboptInfo.getId() ,
-        		OperationLog.P_OPT_LOG_METHOD_D,  "已删除",dboptInfo);
+        OperationLogCenter.logDeleteObject(request,this.optId,dboptInfo.getId(), OperationLog.P_OPT_LOG_METHOD_D,
+                "删除业务菜单",dboptInfo);
         /*********log*********/
     }
 

@@ -150,6 +150,12 @@ public class UserInfoController extends BaseController {
         }
         UserInfo oldValue= new UserInfo();
         oldValue.copy(dbUserInfo);
+        if(oldValue.getUserUnits().size() == 0){
+            oldValue.setUserUnits(null);
+        }
+        if(oldValue.listUserRoles().size() == 0){
+            oldValue.setUserRoles(null);
+        }
 
         sysUserManager.updateUserInfo(userInfo);
         
@@ -157,7 +163,7 @@ public class UserInfoController extends BaseController {
 
         /*********log*********/
        OperationLogCenter.logUpdateObject(request,optId, userCode, OperationLog.P_OPT_LOG_METHOD_U,
-               "更新用户信息", dbUserInfo, oldValue);
+               "更新用户信息", userInfo, oldValue);
         /*********log*********/
     }
 

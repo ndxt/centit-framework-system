@@ -226,9 +226,15 @@ public class UserRoleController extends BaseController {
      */
     @RequestMapping(value = "/ban/{roleCode}/{userCode}", method = RequestMethod.PUT)
     public void ban(@PathVariable String roleCode, @PathVariable String userCode,
-                        HttpServletResponse response) {
+                        HttpServletRequest request, HttpServletResponse response) {
         UserRoleId a=new UserRoleId(userCode,roleCode);
+        UserRole userRole = sysUserRoleManager.getObjectById(a);
         sysUserRoleManager.deleteObjectById(a);
         JsonResultUtils.writeSuccessJson(response);
+
+        /*********log*********/
+        OperationLogCenter.logDeleteObject(request, optId, userCode+"-"+roleCode,
+                OperationLog.P_OPT_LOG_METHOD_D, "删除用户角色关联信息", userRole);
+        /*********log*********/
     }
 }

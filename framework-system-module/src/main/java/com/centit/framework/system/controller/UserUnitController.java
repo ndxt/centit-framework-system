@@ -10,7 +10,9 @@ import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.model.basedata.IUnitInfo;
 import com.centit.framework.model.basedata.IUserInfo;
 import com.centit.framework.model.basedata.OperationLog;
+import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserUnit;
+import com.centit.framework.system.service.SysUserManager;
 import com.centit.framework.system.service.SysUserUnitManager;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -42,6 +44,10 @@ public class UserUnitController extends BaseController {
     @Resource
     @NotNull
     private SysUserUnitManager sysUserUnitManager;
+
+    @Resource
+    @NotNull
+    private SysUserManager sysUserManager;
 
     /**
      * 系统日志中记录
@@ -120,9 +126,19 @@ public class UserUnitController extends BaseController {
     @RequestMapping(value = "/userunits/{userCode}", method = RequestMethod.GET)
     public void listUnitsByUser(@PathVariable String userCode, PageDesc pageDesc,
                                 HttpServletRequest request, HttpServletResponse response) {
+
+        UserInfo user = sysUserManager.getObjectById(this.getLoginUser(request).getUserCode());
         Map<String, Object> filterMap = convertSearchColumn(request);
         filterMap.put("userCode", userCode);
-        listObject(filterMap, pageDesc, response);
+        filterMap.put("unitCode", user.getPrimaryUnit());
+
+        List<UserUnit> listObjects = sysUserUnitManager.listObjects(filterMap, pageDesc);
+
+        ResponseMapData resData = new ResponseMapData();
+        resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
+        resData.addResponseData(PAGE_DESC, pageDesc);
+
+        JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
 
 
@@ -245,7 +261,7 @@ public class UserUnitController extends BaseController {
 
         /*********log*********/
         OperationLogCenter.logDeleteObject(request,optId,dbUserUnit.getUserUnitId(),
-        		OperationLog.P_OPT_LOG_METHOD_D,  "已删除",dbUserUnit);
+        		OperationLog.P_OPT_LOG_METHOD_D,  "删除用户机构关联信息",dbUserUnit);
         /*********log*********/
     }
 
