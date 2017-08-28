@@ -1,6 +1,6 @@
 package com.centit.framework.system.service.impl;
 
-import com.centit.framework.core.common.ObjectException;
+import com.centit.framework.common.ObjectException;
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.security.model.CentitPasswordEncoder;

@@ -1,9 +1,10 @@
 package com.centit.sys.common;
 
+import com.centit.framework.hibernate.service.BaseEntityManager;
+
 import java.io.Serializable;
 import java.util.List;
 
-import com.centit.framework.core.service.BaseEntityManager;
 
 /**
  * 数据库的基本操作工具类
@@ -15,7 +16,7 @@ import com.centit.framework.core.service.BaseEntityManager;
  */
 
 public interface EntityManagerWithDataPower<T extends Serializable, PK extends Serializable> 
-		extends	BaseEntityManager<T, PK> {
+		extends BaseEntityManager<T, PK> {
 	
 	public List<T> listObjecesDemo(String method);
 

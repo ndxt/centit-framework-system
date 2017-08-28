@@ -2,8 +2,8 @@ package com.centit.test;
 
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.common.KeyValuePair;
-import com.centit.support.database.QueryAndNamedParams;
-import com.centit.support.database.QueryUtils;
+import com.centit.support.database.utils.QueryAndNamedParams;
+import com.centit.support.database.utils.QueryUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

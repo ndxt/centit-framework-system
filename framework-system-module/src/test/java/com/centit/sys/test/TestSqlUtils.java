@@ -1,6 +1,6 @@
 package com.centit.sys.test;
 
-import com.centit.support.database.QueryUtils;
+import com.centit.support.database.utils.QueryUtils;
 
 public class TestSqlUtils {
 

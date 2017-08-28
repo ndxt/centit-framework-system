@@ -1,7 +1,7 @@
 package com.centit.framework.system.dao.impl;
 
 import com.centit.framework.components.CodeRepositoryUtil;
-import com.centit.framework.core.common.ObjectException;
+import com.centit.framework.common.ObjectException;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.hibernate.dao.BaseDaoImpl;
@@ -10,7 +10,7 @@ import com.centit.framework.system.dao.UserInfoDao;
 import com.centit.framework.system.po.FVUserOptList;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.support.algorithm.NumberBaseOpt;
-import com.centit.support.database.QueryUtils;
+import com.centit.support.database.utils.QueryUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Repository;

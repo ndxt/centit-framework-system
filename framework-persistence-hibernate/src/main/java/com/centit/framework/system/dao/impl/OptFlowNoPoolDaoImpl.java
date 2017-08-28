@@ -6,7 +6,7 @@ import com.centit.framework.system.dao.OptFlowNoPoolDao;
 import com.centit.framework.system.po.OptFlowNoPool;
 import com.centit.framework.system.po.OptFlowNoPoolId;
 import com.centit.support.algorithm.DatetimeOpt;
-import com.centit.support.database.QueryUtils;
+import com.centit.support.database.utils.QueryUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;

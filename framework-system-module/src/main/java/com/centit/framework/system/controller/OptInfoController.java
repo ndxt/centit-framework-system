@@ -1,9 +1,9 @@
 package com.centit.framework.system.controller;
 
 import com.centit.framework.components.OperationLogCenter;
-import com.centit.framework.core.common.JsonResultUtils;
-import com.centit.framework.core.common.ResponseData;
-import com.centit.framework.core.common.ResponseMapData;
+import com.centit.framework.common.JsonResultUtils;
+import com.centit.framework.common.ResponseData;
+import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.system.po.OptInfo;

@@ -5,20 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <centit.framework.version>4.0.0-SNAPSHOT</centit.framework.version>
+        <centit.framework.version>4.0.1-SNAPSHOT</centit.framework.version>
         <jdk.version>1.8</jdk.version>
-        <centit.commons.version>2.2.1</centit.commons.version>
         <centit.ui.version>3.0.1-SNAPSHOT</centit.ui.version>
-        <servlet-api.version>3.1.0</servlet-api.version>
+        <centit.persistence.version>1.0-SNAPSHOT</centit.persistence.version>
 
-        <spring.version>4.3.9.RELEASE</spring.version>
+        <servlet-api.version>3.1.0</servlet-api.version>
         <ehcache.version>2.10.4</ehcache.version>
         <commons-codec.version>1.10</commons-codec.version>
-
         <persistence-api.version>1.0.2</persistence-api.version>
-        <mybatis.version>3.4.4</mybatis.version>
-        <mybatis.spring.version>1.3.1</mybatis.spring.version>
-        <flyway.version>4.2.0</flyway.version>
 
         <ojdbc6.version>11.2.0.4</ojdbc6.version>
         <junit.version>4.12</junit.version>
@@ -28,7 +23,7 @@
     <groupId>com.centit.framework</groupId>
     <artifactId>framework-system-parent</artifactId>
     <packaging>pom</packaging>
-    <version>4.0.0-SNAPSHOT</version>
+    <version>4.0.1-SNAPSHOT</version>
     <name>com.centit.framework:framework-system-parent</name>
     <description>设计了一套兼容基础用户、组织机构和功能权限、数据权限体系的系统维护页面，作为公司内部研发的基础平台。
     </description>
