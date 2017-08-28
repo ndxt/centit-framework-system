@@ -12,14 +12,14 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.model.basedata.OperationLog;
-import com.centit.framework.system.po.UnitInfo;
-import com.centit.framework.system.po.UserInfo;
-import com.centit.framework.system.po.UserUnit;
+import com.centit.framework.system.po.*;
+import com.centit.framework.system.service.SysRoleManager;
 import com.centit.framework.system.service.SysUnitManager;
 import com.centit.framework.system.service.SysUserManager;
 import com.centit.framework.system.service.SysUserUnitManager;
 import com.centit.support.algorithm.ListOpt;
 import com.centit.support.json.JsonPropertyUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,9 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -57,6 +55,10 @@ public class UnitInfoController extends BaseController {
     @Resource
     @NotNull
     private SysUserUnitManager sysUserUnitManager;
+
+    @Resource
+    @NotNull
+    private SysRoleManager sysRoleManager;
     
     /**
      * 系统日志中记录
@@ -391,5 +393,50 @@ public class UnitInfoController extends BaseController {
         }
 
         JsonResultUtils.writeSingleDataJson(userUnit, response);
+    }
+
+    /**
+     * 将权限付给部门
+     * @param unitcode unitcode
+     * @param optCodes optCodes
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     */
+    @RequestMapping(value = "/unit/saveopts/{unitcode}",method = RequestMethod.POST)
+    public void setUnitPowers(@PathVariable String unitcode,
+    		String optCodes,
+            HttpServletRequest request,HttpServletResponse response) {
+    	String optCodesArray[]=optCodes.split(",");
+    	RoleInfo roleInfo = sysRoleManager.getObjectById("G$"+ unitcode);
+    	if(roleInfo==null){
+	    	roleInfo = new RoleInfo();
+	    	roleInfo.setIsValid("T");
+	    	roleInfo.setRoleCode("G$"+ unitcode);
+	    	roleInfo.setRoleName("赋给部门"+unitcode+"的权限");
+	    	roleInfo.setRoleDesc(roleInfo.getRoleName());
+	        roleInfo.setRoleType("D");
+	        roleInfo.setCreateDate(new Date());
+	        sysRoleManager.saveNewRoleInfo(roleInfo);
+	        //刷新缓存
+	        sysRoleManager.loadRoleSecurityMetadata();
+    	}
+
+		List<RolePower> rolePowers = new ArrayList<>();
+		//为空时更新RoleInfo中字段数据
+	   if (ArrayUtils.isNotEmpty(optCodesArray)) {
+	       for (String optCode : optCodesArray) {
+	    	   if(StringUtils.isNotBlank(optCode))
+	    		   rolePowers.add(new RolePower(new RolePowerId(roleInfo.getRoleCode(), optCode)));
+	       }
+	   }
+
+	   roleInfo.addAllRolePowers(rolePowers);
+	   sysRoleManager.updateRolePower(roleInfo);
+	   sysRoleManager.loadRoleSecurityMetadata();
+	   JsonResultUtils.writeBlankJson(response);
+	   /*********log*********/
+	   OperationLogCenter.logNewObject(request,optId, roleInfo.getRoleCode(), OperationLog.P_OPT_LOG_METHOD_U,
+               "更新机构权限",roleInfo);
+	   /*********log*********/
     }
 }

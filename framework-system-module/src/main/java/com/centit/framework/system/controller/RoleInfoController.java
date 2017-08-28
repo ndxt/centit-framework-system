@@ -18,7 +18,6 @@ import com.centit.framework.system.service.OptMethodManager;
 import com.centit.framework.system.service.SysRoleManager;
 import com.centit.support.json.JsonPropertyUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -289,52 +288,6 @@ public class RoleInfoController extends BaseController {
     }
     
     /**
-     * 将权限付给部门
-     * @param unitcode unitcode
-     * @param optCodes optCodes
-     * @param request HttpServletRequest
-     * @param response HttpServletResponse
-     */
-    @RequestMapping(value = "/unit/saveopts/{unitcode}",method = RequestMethod.POST)
-    public void setUnitPowers(@PathVariable String unitcode,
-    		String optCodes,
-            HttpServletRequest request,HttpServletResponse response) {
-    	String optCodesArray[]=optCodes.split(",");
-    	RoleInfo roleInfo = sysRoleManager.getObjectById("G$"+ unitcode);
-    	if(roleInfo==null){
-	    	roleInfo = new RoleInfo();
-	    	roleInfo.setIsValid("T");
-	    	roleInfo.setRoleCode("G$"+ unitcode);
-	    	roleInfo.setRoleName("赋给部门"+unitcode+"的权限");
-	    	roleInfo.setRoleDesc(roleInfo.getRoleName());
-	        roleInfo.setRoleType("D");
-	        roleInfo.setCreateDate(new Date());
-	        sysRoleManager.saveNewRoleInfo(roleInfo);
-	        //刷新缓存
-	        sysRoleManager.loadRoleSecurityMetadata();
-    	}
-
-		List<RolePower> rolePowers = new ArrayList<>();
-		//为空时更新RoleInfo中字段数据
-	   if (ArrayUtils.isNotEmpty(optCodesArray)) {
-	       for (String optCode : optCodesArray) {
-	    	   if(StringUtils.isNotBlank(optCode))
-	    		   rolePowers.add(new RolePower(new RolePowerId(roleInfo.getRoleCode(), optCode)));
-	       }
-	   }
-
-	   roleInfo.addAllRolePowers(rolePowers);
-	   sysRoleManager.updateRolePower(roleInfo);
-	   sysRoleManager.loadRoleSecurityMetadata();
-	   JsonResultUtils.writeBlankJson(response);	   
-	   /*********log*********/
-	   OperationLogCenter.logNewObject(request,optId, roleInfo.getRoleCode(),
-			  "setUnitPowers", "更新机构权限",roleInfo);
-	   /*********log*********/
-    }
-
-
-    /**
      * 从操作定义反向添加角色代码
      * @param roleCode 角色代码
      * @param optCode 操作定义
@@ -432,7 +385,7 @@ public class RoleInfoController extends BaseController {
         
         /*********log*********/
         OperationLogCenter.logUpdateObject(request,optId, roleCode, OperationLog.P_OPT_LOG_METHOD_U,
-                "更新角色",roleInfo, oldValue);
+                "更新角色信息",roleInfo, oldValue);
         /*********log*********/
     }
 

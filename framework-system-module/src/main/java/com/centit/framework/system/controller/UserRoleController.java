@@ -207,12 +207,11 @@ public class UserRoleController extends BaseController {
         String[] userCodeArray = userCodes.split(",");
         for(String userCode : userCodeArray){
             UserRoleId userRoleId=new UserRoleId(userCode,roleCode);
+            UserRole userRole = sysUserRoleManager.getObjectById(userRoleId);
             sysUserRoleManager.deleteObjectById(userRoleId);
             /*********log*********/
-            StringBuilder oldValue = new StringBuilder();
-            oldValue.append("删除前userCode:" +userCode+",roleCode:"+roleCode);
-            OperationLogCenter.logDeleteObject(request,optId,userCode+"-"+roleCode,
-                    OperationLog.P_OPT_LOG_METHOD_D, oldValue.toString(), userRoleId);
+            OperationLogCenter.logDeleteObject(request,optId,userCode+"-"+roleCode, OperationLog.P_OPT_LOG_METHOD_D,
+                    "删除用户角色关联信息", userRole);
             /*********log*********/
         }
         JsonResultUtils.writeBlankJson(response);

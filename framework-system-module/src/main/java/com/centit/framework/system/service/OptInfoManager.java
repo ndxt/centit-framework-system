@@ -1,9 +1,9 @@
 package com.centit.framework.system.service;
 
+import com.centit.framework.system.po.OptInfo;
+
 import java.util.List;
 import java.util.Map;
-
-import com.centit.framework.system.po.OptInfo;
 
 public interface OptInfoManager{
 
@@ -54,6 +54,8 @@ public interface OptInfoManager{
      void updateOptInfoProperties(OptInfo optinfo);
     
      void updateOptInfo(OptInfo optinfo);
+
+    Map<String, List> updateOperationPower(OptInfo optInfo);
     
      void deleteOptInfo(OptInfo optinfo);
     

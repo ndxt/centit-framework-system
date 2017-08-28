@@ -60,7 +60,7 @@ define(function(require) {
 				data.dataScopes=dataScopes;
 				data._method = 'PUT';
 				
-				Core.ajax(Config.ContextPath+'system/optinfo/'+data.optId, {
+				Core.ajax(Config.ContextPath+'system/optinfo/editpower'+data.optId, {
 					data: data,
 					method: 'post'
 				}).then(closeCallback);

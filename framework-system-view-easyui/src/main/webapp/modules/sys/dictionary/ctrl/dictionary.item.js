@@ -101,7 +101,7 @@ define(function (require) {
 
                 data.dataDictionaries = items;
                 data._method = 'PUT';
-                Core.ajax(Config.ContextPath + this.url + data.catalogCode, {
+                Core.ajax(Config.ContextPath + this.url +"/update/" + data.catalogCode, {
                     data: data,
                     method: 'post'
                 }).then(closeCallback);

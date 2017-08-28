@@ -7,7 +7,6 @@ import com.centit.framework.core.common.JsonResultUtils;
 import com.centit.framework.core.common.ObjectException;
 import com.centit.framework.core.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
-import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.model.basedata.OperationLog;
@@ -37,6 +36,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 数据字典
+ */
 @Controller
 @RequestMapping("/dictionary")
 public class DataDictionaryController extends BaseController {
@@ -49,9 +51,6 @@ public class DataDictionaryController extends BaseController {
     @Value("${sys.multi_lang}")
     private boolean multiLang;
     
-    @Resource
-    protected DataDictionaryManager dataCatalogManager;
-
     @Resource
     private DataDictionaryManager dataDictionaryManager;
 
@@ -69,11 +68,7 @@ public class DataDictionaryController extends BaseController {
     public void list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = convertSearchColumn(request);
 
-        if (null == searchColumn.get(CodeBook.SELF_ORDER_BY)) {
-            searchColumn.put(CodeBook.ORDER_BY_HQL_ID, "lastModifyDate DESC");
-        }
-        
-        List<DataCatalog> listObjects = dataCatalogManager.listObjects(searchColumn, pageDesc);
+        List<DataCatalog> listObjects = dataDictionaryManager.listObjects(searchColumn, pageDesc);
 
         SimplePropertyPreFilter simplePropertyPreFilter = null;
         if (ArrayUtils.isNotEmpty(field)) {
@@ -89,7 +84,6 @@ public class DataDictionaryController extends BaseController {
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
         resData.addResponseData(PAGE_DESC, pageDesc);
-        resData.addResponseData(CodeBook.SELF_ORDER_BY, searchColumn.get(CodeBook.SELF_ORDER_BY));
 
         JsonResultUtils.writeResponseDataAsJson(resData, response, simplePropertyPreFilter);
     }
@@ -103,7 +97,7 @@ public class DataDictionaryController extends BaseController {
     @RequestMapping(value = "/{catalogCode}", method = {RequestMethod.GET})
     public void getCatalog(@PathVariable String catalogCode, HttpServletResponse response) {
         
-        DataCatalog dbDataCatalog = dataCatalogManager.getCatalogIncludeDataPiece(catalogCode);
+        DataCatalog dbDataCatalog = dataDictionaryManager.getCatalogIncludeDataPiece(catalogCode);
 
         JsonResultUtils.writeSingleDataJson(dbDataCatalog, response);
     }
@@ -113,11 +107,10 @@ public class DataDictionaryController extends BaseController {
      *
      * @param catalogCode catalogCode
      * @param response {@link HttpServletResponse}
-     * @throws IOException IOException
      */
     @RequestMapping(value = "/notexists/{catalogCode}", method = {RequestMethod.GET})
-    public void isNotExistsCatalogCode(@PathVariable String catalogCode, HttpServletResponse response) throws IOException {
-        DataCatalog dbDataCatalog = dataCatalogManager.getObjectById(catalogCode);
+    public void isNotExistsCatalogCode(@PathVariable String catalogCode, HttpServletResponse response) {
+        DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
         JsonResultUtils.writeOriginalObject(null == dbDataCatalog, response);
     }
 
@@ -130,27 +123,12 @@ public class DataDictionaryController extends BaseController {
      * @throws IOException IOException
      */
     @RequestMapping(value = "/notexists/dictionary/{catalogCode}/{dataCode}", method = {RequestMethod.GET})
-    public void isNotExistsDataCode(@PathVariable String catalogCode, @PathVariable String dataCode, HttpServletResponse response) throws IOException {
-        DataDictionary dbDataDictionary = dataDictionaryManager.getDataDictionaryPiece(new DataDictionaryId(catalogCode,
-                dataCode));
+    public void isNotExistsDataCode(@PathVariable String catalogCode, @PathVariable String dataCode,
+                                    HttpServletResponse response) {
+        DataDictionary dbDataDictionary = dataDictionaryManager.getDataDictionaryPiece(
+                new DataDictionaryId(catalogCode, dataCode));
 
         JsonResultUtils.writeOriginalObject(null == dbDataDictionary, response);
-    }
-
-    /**
-     * 查询单个数据字典
-     *
-     * @param catalogCode DataCatalog主键
-     * @param dataCode    DataDictionary主键
-     * @param response    {@link HttpServletResponse}
-     */
-    @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}", method = {RequestMethod.GET})
-    public void getDictionary(@PathVariable String catalogCode, @PathVariable String dataCode,
-                              HttpServletResponse response) {
-        DataDictionary dbDataDictionary = dataDictionaryManager.getDataDictionaryPiece(new DataDictionaryId(catalogCode,
-                dataCode));
-
-        JsonResultUtils.writeSingleDataJson(dbDataDictionary, response);
     }
 
     /**
@@ -161,16 +139,23 @@ public class DataDictionaryController extends BaseController {
      * @param response {@link HttpServletResponse}
      */
     @RequestMapping(method = {RequestMethod.POST})
-    public void createCatalog(@Valid DataCatalog dataCatalog,
-            HttpServletRequest request,HttpServletResponse response) {
-        catalogPrInsertHander(dataCatalog,request);
-        dataCatalogManager.mergeObject(dataCatalog);
+    public void createCatalog(@Valid DataCatalog dataCatalog, HttpServletRequest request,HttpServletResponse response) {
+        if(isLoginAsAdmin(request)){
+            dataCatalog.setCatalogStyle("S");
+        }else{
+            dataCatalog.setCatalogStyle("U");
+        }
+        dataDictionaryManager.saveNewObject(dataCatalog);
         JsonResultUtils.writeBlankJson(response);
+
+        /*******************log****************************/
+        OperationLogCenter.logNewObject(request, optId, dataCatalog.getCatalogCode(), OperationLog.P_OPT_LOG_METHOD_C,
+                "新增数据字典目录", dataCatalog);
+        /*******************log****************************/
     }
 
-
     /**
-     * 新增或保存数据目录
+     * 更新数据目录
      *
      * @param catalogCode DataCatalog主键
      * @param dataCatalog {@link DataCatalog}
@@ -178,35 +163,35 @@ public class DataDictionaryController extends BaseController {
      * @param response    {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{catalogCode}", method = {RequestMethod.PUT})
-    public void updateCatalog(@PathVariable String catalogCode,
-            @Valid DataCatalog dataCatalog, 
-            HttpServletRequest request,HttpServletResponse response) {
+    public void updateCatalog(@PathVariable String catalogCode, @Valid DataCatalog dataCatalog,
+                              HttpServletRequest request,HttpServletResponse response) {
     	
-        DataCatalog dbDataCatalog = dataCatalogManager.getObjectById(catalogCode);
+        DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
 
-        if (null != dbDataCatalog) {
-//            catalogPrUpdateHander(dataCatalog, dbDataCatalog);
-            
-            BeanUtils.copyProperties(dataCatalog, dbDataCatalog, new String[]{"catalogStyle","catalogCode", "dataDictionaries"});
-            boolean isAdmin = isLoginAsAdmin(request);
-            String datastyle = isAdmin?"S":"U";
-            for(DataDictionary d:dataCatalog.getDataDictionaries()){
-            	d.setDataStyle(datastyle);
-            }
-            dbDataCatalog.addAllDataPiece(dataCatalog.getDataDictionaries());
-            
-            dataCatalogManager.saveCatalogIncludeDataPiece(dbDataCatalog,isAdmin);
-        } else {
-
+        if (null == dbDataCatalog) {
             JsonResultUtils.writeErrorMessageJson("当前对象不存在", response);
             return;
         }
 
+        DataCatalog oldValue = new DataCatalog();
+        BeanUtils.copyProperties(dbDataCatalog, oldValue);
+
+        BeanUtils.copyProperties(dataCatalog, dbDataCatalog, "catalogStyle","catalogCode", "dataDictionaries");
+//        boolean isAdmin = isLoginAsAdmin(request);
+//        String datastyle = isAdmin?"S":"U";
+//        for(DataDictionary d : dataCatalog.getDataDictionaries()){
+//            d.setDataStyle(datastyle);
+//        }
+//        dbDataCatalog.addAllDataPiece(dataCatalog.getDataDictionaries());
+
+//        dataDictionaryManager.saveCatalogIncludeDataPiece(dbDataCatalog,isAdmin);
+        dataDictionaryManager.mergeObject(dbDataCatalog);
+
         JsonResultUtils.writeBlankJson(response);
 
         /***********************log*****************************/
-//        OperationLogCenter.logUpdateObject(request, optId, catalogCode, OperationLog.P_OPT_LOG_METHOD_U,
-//                "更新数据字典", );
+        OperationLogCenter.logUpdateObject(request, optId, catalogCode, OperationLog.P_OPT_LOG_METHOD_U,
+                "更新数据字典目录", dbDataCatalog, oldValue);
         /***********************log*****************************/
     }
 
@@ -214,50 +199,47 @@ public class DataDictionaryController extends BaseController {
     	 Object obj = request.getSession().getAttribute(MainFrameController.ENTRANCE_TYPE);  
          return obj!=null && MainFrameController.DEPLOY_LOGIN.equals(obj.toString());
     }
-    
-    /**
-     * 数据目录的新增权限进行业务数据判断
-     *
-     * @param dataCatalog DataCatalog
-     * @param request  {@link HttpServletRequest}
-     */
-    protected void catalogPrInsertHander(DataCatalog dataCatalog,HttpServletRequest request) {
-    	
-    	if(isLoginAsAdmin(request)){
-    		dataCatalog.setCatalogStyle("S");
-    	}else{
-    		dataCatalog.setCatalogStyle("U");
-    	}
-        // 业务异常规则地址
-        // http://develop.centit.com/wiki/pages/viewpage.action?pageId=65273913
-        /*if (!S.equalsIgnoreCase(dataCatalog.getCatalogStyle()) && !U.equalsIgnoreCase(dataCatalog.getCatalogStyle())) {
-            throw new ObjectException("catalogStyle 字段只可填写 S 或 U");
-        }*/
-    }
 
     /**
-     * 数据目录的编辑权限进行业务数据判断
+     * 更新数据目录明细
      *
-     * @param dataCatalog DataCatalog
-     * @param dbDataCatalog DataCatalog
+     * @param catalogCode DataCatalog主键
+     * @param dataCatalog {@link DataCatalog}
+     * @param request    {@link HttpServletRequest}
+     * @param response    {@link HttpServletResponse}
      */
-    protected void catalogPrUpdateHander(DataCatalog dataCatalog, DataCatalog dbDataCatalog) {
-        //如果业务异常
-        if (null == dataCatalog) {
-            throw new ObjectException("DataCatalog 对象为空");
+    @RequestMapping(value = "update/{catalogCode}", method = {RequestMethod.PUT})
+    public void updateDictionary(@PathVariable String catalogCode, @Valid DataCatalog dataCatalog,
+                              HttpServletRequest request,HttpServletResponse response) {
+
+        DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
+
+        if (null == dbDataCatalog) {
+            JsonResultUtils.writeErrorMessageJson("当前对象不存在", response);
+            return;
         }
 
-        if (!U.equalsIgnoreCase(dataCatalog.getCatalogStyle()) && !S.equalsIgnoreCase(dataCatalog.getCatalogStyle()) && !S.equalsIgnoreCase(dbDataCatalog.getCatalogStyle())) {
-            throw new ObjectException("catalogStyle 字段只可填写 S 或 U");
-        }
+        DataCatalog oldValue = new DataCatalog();
+        BeanUtils.copyProperties(dbDataCatalog, oldValue);
 
-        if (S.equalsIgnoreCase(dbDataCatalog.getCatalogStyle()) && !S.equalsIgnoreCase(dataCatalog.getCatalogStyle())) {
-            throw new ObjectException("管理员不能将 catalogStyle 原值为 S 修改为其它值");
+        boolean isAdmin = isLoginAsAdmin(request);
+        String datastyle = isAdmin?"S":"U";
+        for(DataDictionary d : dataCatalog.getDataDictionaries()){
+            d.setDataStyle(datastyle);
         }
+        dbDataCatalog.addAllDataPiece(dataCatalog.getDataDictionaries());
+
+        List<DataDictionary> oldDictionaries = dataDictionaryManager.saveCatalogIncludeDataPiece(dbDataCatalog,isAdmin);
+        oldValue.setDataDictionaries(oldDictionaries);
+
+        JsonResultUtils.writeBlankJson(response);
+
+        /***********************log*****************************/
+        OperationLogCenter.logUpdateObject(request, optId, catalogCode, OperationLog.P_OPT_LOG_METHOD_U,
+                "更新数据字典明细", dbDataCatalog, oldValue);
+        /***********************log*****************************/
     }
 
- 
-   
     /**
      * 新增或保存数据字典
      *
@@ -279,31 +261,29 @@ public class DataDictionaryController extends BaseController {
         DataDictionary oldValue = new DataDictionary();
         oldValue.copy(dbDataDictionary);
         
-        DataCatalog dbDataCatalog = dataCatalogManager.getObjectById(catalogCode);
+        DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
         
         dictionaryPreHander(dbDataCatalog, dataDictionary);
 
         if (null != dbDataDictionary) { // update
             dictionaryPreUpdateHander(dbDataCatalog, dbDataDictionary,request);
-            BeanUtils.copyProperties(dataDictionary, dbDataDictionary, new String[]{"id","dataStyle"});
+            BeanUtils.copyProperties(dataDictionary, dbDataDictionary, "id","dataStyle");
             dictionaryPreUpdateHander(dbDataCatalog, dbDataDictionary,request);
             dataDictionaryManager.saveDataDictionaryPiece(dbDataDictionary);
             /**************************log***************************/
             OperationLogCenter.logUpdateObject(request, optId, catalogCode+"-"+dataCode, OperationLog.P_OPT_LOG_METHOD_U,
-                    "新增数据字典", dbDataDictionary, oldValue);
+                    "更新数据字典明细", dbDataDictionary, oldValue);
             /**************************log***************************/
         } else { // insert
             dictionaryPreInsertHander(dbDataCatalog, dataDictionary,request);
             dataDictionaryManager.saveDataDictionaryPiece(dataDictionary);
             /**************************log***************************/
             OperationLogCenter.logNewObject(request, optId, catalogCode+"-"+dataCode, OperationLog.P_OPT_LOG_METHOD_C,
-                    "新增数据字典", dataDictionary);
+                    "新增数据字典明细", dataDictionary);
             /**************************log***************************/
         }
 
         JsonResultUtils.writeBlankJson(response);
-
-
     }
 
   /**
@@ -351,11 +331,9 @@ public class DataDictionaryController extends BaseController {
 	        if (!U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
 	            throw new ObjectException("dataStyle 字段只可填写 U");
 	        }
-	
 	    }
     }
 
-   
     /**
      * 数据字典的删除权限进行业务数据判断
      * @param request HttpServletRequest
@@ -375,8 +353,6 @@ public class DataDictionaryController extends BaseController {
 	    }
     }
 
-
-   
     /**
      * 数据字典的编辑权限进行业务数据判断
      *
@@ -408,7 +384,6 @@ public class DataDictionaryController extends BaseController {
 	    }
     }
 
-
     protected void catalogPrDeleteHander(DataCatalog dataCatalog,HttpServletRequest request) {
     	if(isLoginAsAdmin(request)){
 	        if (!S.equalsIgnoreCase(dataCatalog.getCatalogStyle()) && !U.equalsIgnoreCase(dataCatalog.getCatalogStyle())) {
@@ -431,15 +406,15 @@ public class DataDictionaryController extends BaseController {
     @RequestMapping(value = "/{catalogCode}", method = RequestMethod.DELETE)
     public void deleteCatalog(@PathVariable String catalogCode,
     		HttpServletRequest request,HttpServletResponse response) {
-        DataCatalog dataCatalog = dataCatalogManager.getObjectById(catalogCode);
+        DataCatalog dataCatalog = dataDictionaryManager.getObjectById(catalogCode);
         catalogPrDeleteHander(dataCatalog,request);
 
-        dataCatalogManager.deleteDataDictionary(catalogCode);
+        dataDictionaryManager.deleteDataDictionary(catalogCode);
         JsonResultUtils.writeBlankJson(response);
 
         /*****************log************************/
         OperationLogCenter.logDeleteObject(request, optId, catalogCode, OperationLog.P_OPT_LOG_METHOD_D,
-                "删除数据目录", dataCatalog);
+                "删除数据字典目录", dataCatalog);
         /*****************log************************/
     }
 
@@ -454,7 +429,7 @@ public class DataDictionaryController extends BaseController {
     @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}", method = RequestMethod.DELETE)
     public void deleteDictionary(@PathVariable String catalogCode, @PathVariable String dataCode,
     		HttpServletRequest request,HttpServletResponse response) {
-        DataCatalog dataCatalog = dataCatalogManager.getObjectById(catalogCode);
+        DataCatalog dataCatalog = dataDictionaryManager.getObjectById(catalogCode);
         DataDictionary dataDictionary = dataDictionaryManager.getDataDictionaryPiece(new DataDictionaryId(catalogCode, dataCode));
 
         dictionaryPreDeleteHander(dataCatalog, dataDictionary,request);
@@ -465,20 +440,20 @@ public class DataDictionaryController extends BaseController {
 
         /*****************log************************/
         OperationLogCenter.logDeleteObject(request, optId, catalogCode+"-"+dataCode, OperationLog.P_OPT_LOG_METHOD_D,
-                "删除数据字典", dataDictionary);
+                "删除数据字典明细", dataDictionary);
         /*****************log************************/
     }
 
     
     @RequestMapping(value = "/dictionaryPiece/{catalogCode}", method = {RequestMethod.GET})
     public void getDataDictionary(@PathVariable String catalogCode, HttpServletResponse response) {
-        List<DataDictionary> datas = dataCatalogManager.getDataDictionary(catalogCode);
+        List<DataDictionary> datas = dataDictionaryManager.getDataDictionary(catalogCode);
         JsonResultUtils.writeSingleDataJson(datas, response);
     }
    
     @RequestMapping(value = "/editDictionary/{catalogCode}", method = {RequestMethod.GET})
     public void getDataDictionaryDetail(@PathVariable String catalogCode, HttpServletResponse response) {
-        List<DataDictionary> datas = dataCatalogManager.getDataDictionary(catalogCode);
+        List<DataDictionary> datas = dataDictionaryManager.getDataDictionary(catalogCode);
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData("dataDictionary", datas);
         resData.addResponseData("multiLang", multiLang);
@@ -488,14 +463,14 @@ public class DataDictionaryController extends BaseController {
     
     @RequestMapping(value = "/allCatalog", method = {RequestMethod.GET})
     public void getAllCatalog(HttpServletResponse response) {
-        List<DataCatalog> catalogs = dataCatalogManager.listAllDataCatalog();
+        List<DataCatalog> catalogs = dataDictionaryManager.listAllDataCatalog();
         JsonResultUtils.writeSingleDataJson(catalogs, response);
     }
     
     @RequestMapping(value = "/wholeDictionary", method = {RequestMethod.GET})
     public void getWholeDictionary(HttpServletResponse response) {
-        List<DataCatalog> catalogs = dataCatalogManager.listAllDataCatalog();
-        List<DataDictionary> dictionarys = dataCatalogManager.getWholeDictionary();
+        List<DataCatalog> catalogs = dataDictionaryManager.listAllDataCatalog();
+        List<DataDictionary> dictionarys = dataDictionaryManager.getWholeDictionary();
         
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData("catalog", catalogs);
@@ -505,7 +480,7 @@ public class DataDictionaryController extends BaseController {
     
 	@RequestMapping("/dictionaryprop")
 	public ResponseEntity<byte[]> downloadProperties() throws IOException{
-		List<DataDictionary> dictionarys = dataCatalogManager.getWholeDictionary();
+		List<DataDictionary> dictionarys = dataDictionaryManager.getWholeDictionary();
 		ByteArrayOutputStream out = new  ByteArrayOutputStream();
 		out.write("#dictionaryprop_zh_CN.Properties\r\n".getBytes());
 		 

@@ -40,7 +40,7 @@ define(function(require) {
 			data.optCodes = optCodes.join(',');
 			//data._method = 'PUT';
 			
-			Core.ajax(Config.ContextPath + 'system/roleinfo/unit/saveopts/' + _self.data.unitCode, {
+			Core.ajax(Config.ContextPath + 'system/unitinfo/unit/saveopts/' + _self.data.unitCode, {
 				method: 'post',
 				data: data
 			}).then(function(){

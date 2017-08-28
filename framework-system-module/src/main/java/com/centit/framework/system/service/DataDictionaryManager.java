@@ -11,6 +11,8 @@ import java.util.Map;
 public interface DataDictionaryManager {
 	
 	DataCatalog getObjectById(String catalogCode);
+
+    void saveNewObject(DataCatalog dataCatalog);
 	
 	void mergeObject(DataCatalog dataCatalog);
 	
@@ -27,8 +29,8 @@ public interface DataDictionaryManager {
     List<DataCatalog> listObjects(Map<String, Object> filterDescMap,PageDesc pageDesc);
     
     DataCatalog getCatalogIncludeDataPiece(String catalogCode);
-    
-    void saveCatalogIncludeDataPiece(DataCatalog dataCatalog,boolean isAdmin);
+
+    List<DataDictionary> saveCatalogIncludeDataPiece(DataCatalog dataCatalog,boolean isAdmin);
     
     void deleteDataDictionary(String catalogCode);
 
