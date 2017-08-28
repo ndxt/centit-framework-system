@@ -15,12 +15,12 @@
 		</div>
 	</div>
 	<div class="fields two">
-		<div class="field required">
+		<div class="field">
 			<label>电话</label>
 			<input type="text" class="easyui-textbox" name="regCellPhone" style="width:100%;" 
 				 validType="phoneOrMobile" />
 		</div>
-		<div class="field required">
+		<div class="field">
 			<label>邮箱</label>
 			<input type="text" class="easyui-textbox" name="regEmail" style="width:100%;" 
 				 validType="email" />
@@ -44,7 +44,7 @@
 		</div>
 		<div class="field required">
 			<label>排序</label>
-			<input type="text" class="easyui-textbox" name="userOrder" style="width:100%;" 
+			<input type="text" class="easyui-numberbox" name="userOrder" validtype="integerRange[0,9999]" style="width:100%;"
 				required />
 		</div>
 		

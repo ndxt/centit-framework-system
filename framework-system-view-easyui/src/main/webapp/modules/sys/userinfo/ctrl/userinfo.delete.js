@@ -8,7 +8,11 @@ define(function(require) {
 		
 		// @override
 		this.submit = function(table, data) {
-			Core.ajax(Config.ContextPath+'system/userinfo/'+data.userCode, {
+			var userCodes = [];
+			for(var i = 0; i < data.length; i++){
+				userCodes.push(data[i].userCode);
+			}
+			Core.ajax(Config.ContextPath+'system/userinfo/'+userCodes, {
             	type: 'json',
                 method: 'post',
                 data: {

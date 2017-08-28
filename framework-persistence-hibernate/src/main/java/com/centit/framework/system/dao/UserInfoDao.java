@@ -80,8 +80,9 @@ public interface UserInfoDao {
     UserInfo getUserByTag(String userTag);
     
     //return super.getObjectByProperty("userWord", userWord);
-    UserInfo getUserByWord(String userWord);
-    
+    UserInfo getUserByUserWord(String userWord);
+    UserInfo getUserByIdCardNo(String idCardNo);
+
   
 //    List<UserInfo> listUserinfoByUsercodes(List<String> userCodes);
 

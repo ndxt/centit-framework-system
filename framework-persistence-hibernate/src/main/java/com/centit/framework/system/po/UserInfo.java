@@ -1,32 +1,17 @@
 package com.centit.framework.system.po;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-import javax.validation.constraints.Pattern;
-
+import com.alibaba.fastjson.annotation.JSONField;
+import com.centit.framework.core.po.EntityWithTimestamp;
+import com.centit.framework.model.basedata.IUserInfo;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.centit.framework.core.po.EntityWithTimestamp;
-import com.centit.framework.model.basedata.IUserInfo;
+import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+import java.util.*;
 
 /**
  * FUserinfo entity.
@@ -56,8 +41,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     @NotBlank(message = "字段不能为空")
     @Pattern(regexp = "[TFA]", message = "字段值必须是T或F,A为新建可以删除")
     private String isValid; // 状态
-    
-    
+
     /**
      * 'G发布任务/R接收任务/S系统管理';
      */
@@ -116,16 +100,20 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     @Length(max = 15, message = "字段长度不能大于{max}")
     private String regCellPhone;
 
+    @Column(name="ID_CARD_NO")
+    @Length(max=20,message="字段长度不能大于{max}")
+    private String idCardNo;
+
     @Column(name = "USER_WORD")
-    @Length(max = 100, message = "字段长度不能}大于{max}")
+    @Length(max = 100, message = "字段长度不能大于{max}")
     private String userWord;
     
     @Column(name = "USER_TAG")
-    @Length(max = 100, message = "字段长度不能}大于{max}")
+    @Length(max = 100, message = "字段长度不能大于{max}")
     private String userTag;
     
     @Column(name = "USER_ORDER")
-    @Range(max = 99999, message = "字段不能大于{max}")
+    @Range(max = 99999,min=1, message = "字段不能小于{min}或大于{max}")
     private Long userOrder; // 用户排序
     
     @Column(name = "PRIMARY_UNIT")
@@ -308,7 +296,15 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
 		this.userTag = userTag;
 	}
 
-	/**
+    public String getIdCardNo() {
+        return idCardNo;
+    }
+
+    public void setIdCardNo(String idCardNo) {
+        this.idCardNo = idCardNo;
+    }
+
+    /**
      * T:生效 F:无效
      *
      * @return  IsValid
@@ -484,6 +480,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         this.replaceUserUnits(other.getUserUnits());
         this.creator=other.creator;
         this.updator=other.updator;
+        this.createDate =other.getCreateDate();
         this.updateDate=other.updateDate;
     }
 
@@ -565,7 +562,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     @JSONField(serialize=false)
     public List<UserUnit> getUserUnits() {
         if (userUnits == null)
-            userUnits = new ArrayList<UserUnit>();
+            userUnits = new ArrayList<>();
         return userUnits;
     }
 

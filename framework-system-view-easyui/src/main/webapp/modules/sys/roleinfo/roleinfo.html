@@ -20,9 +20,9 @@
 				</div>
 				<div class="search-item">
 					<label id="b@createTime">创建时间</label>
-					<input type="text" class="easyui-datebox" name="s_createDateBeg" id="s_createDateBeg" validType="nowtime"/> 
+					<input type="text" class="easyui-datebox" name="s_createDateBeg" id="s_createDateBegRole" validType="nowtime['#s_createDateEndRole']"/>
 					<span id="b@to">到</span>
-					<input type="text" class="easyui-datebox" name="s_createDateEnd" validType="compare['#roleinfoform #s_createDateBeg']"/>
+					<input type="text" class="easyui-datebox" name="s_createDateEnd" id="s_createDateEndRole" validType="compare['#roleinfoform #s_createDateBeg']"/>
 				</div>
 				<a class="easyui-linkbutton btn-search" iconCls="icon-search"><p  id="d@btn.search">搜索</p></a>
 				<a class="easyui-linkbutton" style="margin-top:8px;" iconcls="icon-reload" onclick="javascript:$('#roleinfoform').form('clear');$('.defaultChecked').prop('checked','true');" group="" id="">
@@ -37,7 +37,8 @@
 			search=".search"
 			toolbar=".temp-toolbar"
 			layoutH="110"
-			border="false"	
+			border="false"
+			method="post"
 			>
 			<thead>
 				<tr>

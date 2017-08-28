@@ -18,6 +18,16 @@ define(function(require) {
             	table.treegrid('remove', data.id);
             });
 		}
+		this.renderButton=function(target,data){
+			if(data.state=='closed')
+				return false;
+			else{
+				if(data.children.length==0){
+					return true;
+				}
+				return false;
+			}
+		};
 	});
 	
 	return OptInfoRemove;

@@ -1,29 +1,20 @@
 package com.centit.framework.system.po;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-import javax.validation.constraints.Pattern;
-
+import com.alibaba.fastjson.annotation.JSONField;
+import com.centit.framework.core.dao.DictionaryMap;
+import com.centit.framework.core.po.EntityWithTimestamp;
+import com.centit.framework.model.basedata.IUnitInfo;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.centit.framework.core.dao.DictionaryMap;
-import com.centit.framework.core.po.EntityWithTimestamp;
-import com.centit.framework.model.basedata.IUnitInfo;
+import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * FUnitinfo entity.
@@ -88,7 +79,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
     private Long addrbookId; // 通讯主体id
 
     @Column(name = "UNIT_ORDER")
-    @Range(max = 9999, message = "排序号不能大于{max}")
+    @Range(max = 9999,min=1, message = "排序号不能大于{max}或小于{min}")
     private Long unitOrder; // 机构排序
 
     @Column(name = "UNIT_GRADE")
@@ -333,10 +324,13 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
 
 
     public void copy(UnitInfo other) {
+        this.unitCode = other.getUnitCode();
         this.parentUnit = other.getParentUnit();
         this.unitType = other.getUnitType();
         this.isValid = other.getIsValid();
+        this.unitTag = other.getUnitTag();
         this.unitName = other.getUnitName();
+        this.englishName = other.getEnglishName();
         this.unitShortName = other.getUnitShortName();
         this.unitDesc = other.getUnitDesc();
         this.addrbookId = other.getAddrbookId();
@@ -344,10 +338,9 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         this.depNo = other.getDepNo();
         this.unitWord = other.getUnitWord();
         this.unitGrade = other.getUnitGrade();
-        this.unitTag = other.getUnitTag();
-        this.englishName =other.getEnglishName();
         this.creator=other.getCreator();
         this.updator=other.getUpdator();
+        this.createDate = other.getCreateDate();
         this.updateDate=other.getUpdateDate();
         this.unitPath =other.getUnitPath();
         this.unitManager = other.getUnitManager();

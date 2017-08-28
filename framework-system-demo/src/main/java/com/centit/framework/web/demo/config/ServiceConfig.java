@@ -2,21 +2,27 @@ package com.centit.framework.web.demo.config;
 
 import com.centit.framework.components.impl.NotificationCenterImpl;
 import com.centit.framework.components.impl.TextOperationLogWriterImpl;
+import com.centit.framework.hibernate.config.DataSourceConfig;
 import com.centit.framework.model.adapter.NotificationCenter;
 import com.centit.framework.model.adapter.OperationLogWriter;
-import com.centit.framework.mybatis.config.DataSourceConfig;
+import com.centit.framework.system.config.SpringSecurityCasConfig;
+import com.centit.framework.system.config.SpringSecurityDaoConfig;
 import com.centit.framework.system.config.SystemBeanConfig;
 import com.centit.framework.web.demo.listener.InstantiationServiceBeanPostProcessor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.*;
 
 /**
  * Created by codefan on 17-7-18.
  */
-@Import({SystemBeanConfig.class, DataSourceConfig.class})
 @Configuration
+@ComponentScan(basePackages = "com.centit.framework",
+        excludeFilters = @ComponentScan.Filter(value = org.springframework.stereotype.Controller.class))
+@Import({
+        DataSourceConfig.class,
+        SystemBeanConfig.class,
+        SpringSecurityDaoConfig.class,
+        SpringSecurityCasConfig.class})
+
 public class ServiceConfig {
 
     @Bean

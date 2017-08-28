@@ -23,6 +23,13 @@ define(function(require) {
 				roleCode: roleinfo.roleCode,
 				roleName: roleinfo.roleName
 			});
+			$('#user').combobox({
+				url:Config.ContextPath+'system/unitinfo/'+roleinfo.unitCode+'/validusers',
+				valueField:'userCode',
+				textField:'userName',
+                multiple: true,
+                multiline: true
+			});
 			
 			panel.find('form').form('disableValidation')
 				.form('load', data)

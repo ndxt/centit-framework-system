@@ -64,5 +64,7 @@ public interface OptInfoDao {
     
     // DatabaseOptUtils.findObjectsByHql(this, "from OptMethodUrlMap");
      List<OptMethodUrlMap> listAllOptMethodUrlMap();
+
+	List<OptInfo> listObjectByProperty(String propertyName, Object propertyValue);
  
 }

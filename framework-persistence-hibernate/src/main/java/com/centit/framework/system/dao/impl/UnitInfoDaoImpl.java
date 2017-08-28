@@ -24,12 +24,12 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     public Map<String, String> getFilterField() {
         if (filterField == null) {
             filterField = new HashMap<>();
-            filterField.put("UNITCODE", CodeBook.EQUAL_HQL_ID);
+            filterField.put("unitCode", CodeBook.EQUAL_HQL_ID);
             filterField.put("UNITNAME", CodeBook.LIKE_HQL_ID);
             filterField.put("ISVALID", CodeBook.EQUAL_HQL_ID);
             filterField.put("UNITTAG", CodeBook.EQUAL_HQL_ID);
             filterField.put("UNITWORD", CodeBook.EQUAL_HQL_ID);
-            filterField.put("PARENTUNIT", CodeBook.EQUAL_HQL_ID);
+            filterField.put("parentUnit", CodeBook.EQUAL_HQL_ID);
             filterField.put("NP_TOPUnit", "(parentUnit is null or parentUnit='0')");
             filterField.put(CodeBook.ORDER_BY_HQL_ID, " unitOrder, unitCode ");
         }
@@ -139,7 +139,10 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     @Transactional(propagation=Propagation.MANDATORY)
     public List<UnitInfo> listAllSubUnits(String unitCode){
         UnitInfo unitInfo = this.getObjectById(unitCode);
-        return listSubUnitsByUnitPaht(unitInfo.getUnitPath());
+        if(unitInfo != null) {
+            return listSubUnitsByUnitPaht(unitInfo.getUnitPath());
+        }
+        return null;
     }
     
     @Transactional(propagation=Propagation.MANDATORY) 

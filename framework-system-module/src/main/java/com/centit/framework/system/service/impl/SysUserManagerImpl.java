@@ -199,13 +199,18 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @CacheEvict(value ={"UserInfo","UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
     @Transactional
-    public void saveNewUserInfo(UserInfo userInfo){
+    public void saveNewUserInfo(UserInfo userInfo, UserUnit userUnit){
         userInfoDao.saveNewObject(userInfo);
-        if(null!=userInfo.getUserUnits()){
-            for(UserUnit uu:userInfo.getUserUnits()){
-                userUnitDao.saveNewObject(uu);
-            }
-        }
+        userUnit.setUserUnitId(userUnitDao.getNextKey());
+        userUnit.setUserCode(userInfo.getUserCode());
+        userUnit.setUnitCode(userInfo.getPrimaryUnit());
+        userUnit.setIsPrimary("T");
+        userUnitDao.saveNewObject(userUnit);
+//        if(null!=userInfo.getUserUnits()){
+//            for(UserUnit uu:userInfo.getUserUnits()){
+//                userUnitDao.saveNewObject(uu);
+//            }
+//        }
         if(null!=userInfo.listUserRoles()){
             for(UserRole ur:userInfo.listUserRoles()){
                 userRoleDao.saveNewObject(ur);

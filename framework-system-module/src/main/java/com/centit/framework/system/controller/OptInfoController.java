@@ -180,9 +180,8 @@ public class OptInfoController extends BaseController {
         
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
-        String optUser = this.getLoginUser(request).getUserCode();
-        OperationLogCenter.logNewObject( optUser, optId,optInfo.getId(), OperationLog.P_OPT_LOG_METHOD_C, 
-        		"新增业务:",optInfo);
+        OperationLogCenter.logNewObject(request, optId,optInfo.getId(), OperationLog.P_OPT_LOG_METHOD_C,
+        		"新增业务菜单",optInfo);
         /*********log*********/
     }
 
@@ -210,44 +209,93 @@ public class OptInfoController extends BaseController {
     @RequestMapping(value = "/{optId}", method = {RequestMethod.PUT})
     public void edit(@PathVariable String optId, @Valid OptInfo optInfo,
             HttpServletRequest request,HttpServletResponse response) {
+
         OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
         if (null == dbOptInfo) {
             JsonResultUtils.writeErrorMessageJson("当前对象不存在", response);
             return;
-        } else {
-        	if(!StringUtils.equals(dbOptInfo.getPreOptId(), optInfo.getPreOptId())){
-        		 OptInfo parentOpt = optInfoManager.getOptInfoById(optInfo.getPreOptId());
-        	     if(parentOpt==null)
-        	        	optInfo.setPreOptId(dbOptInfo.getPreOptId());
-        	}        	
-            /*********log*********/
-        	OptInfo oldValue= new OptInfo();
-        	BeanUtils.copyProperties(dbOptInfo,oldValue);
-            /*********log*********/
-  
-            for (OptMethod optDef : optInfo.getOptMethods()) {
-                if (StringUtils.isBlank(optDef.getOptCode())) {
-                    optDef.setOptCode(optMethodManager.getNextOptCode());
-                }                
-             }
-            BeanUtils.copyProperties(optInfo, dbOptInfo, new String[]{"optMethods","dataScopes"});
-            
-            dbOptInfo.addAllOptMethods(optInfo.getOptMethods());
-            dbOptInfo.addAllDataScopes(optInfo.getDataScopes());
-            optInfoManager.updateOptInfo(dbOptInfo);
-            //刷新缓存
-            sysRoleManager.loadRoleSecurityMetadata();
-            /*********log*********/
-            String optUser = this.getLoginUser(request).getUserCode();
-            //(userCode, optId, optTag, optMethod, optContent, newObject, oldObject);
-            OperationLogCenter.logUpdateObject(optUser,this.optId,dbOptInfo.getOptId(),
-            		OperationLog.P_OPT_LOG_METHOD_U, "更新业务菜单"+ dbOptInfo.getOptId(), oldValue, dbOptInfo);
-            /*********log*********/
         }
-        
+
+        if(!StringUtils.equals(dbOptInfo.getPreOptId(), optInfo.getPreOptId())){
+             OptInfo parentOpt = optInfoManager.getOptInfoById(optInfo.getPreOptId());
+             if(parentOpt==null)
+                    optInfo.setPreOptId(dbOptInfo.getPreOptId());
+        }
+        /*********log*********/
+        OptInfo oldValue= new OptInfo();
+        BeanUtils.copyProperties(dbOptInfo,oldValue);
+        /*********log*********/
+
+//        for (OptMethod optDef : optInfo.getOptMethods()) {
+//            if (StringUtils.isBlank(optDef.getOptCode())) {
+//                optDef.setOptCode(optMethodManager.getNextOptCode());
+//            }
+//         }
+        BeanUtils.copyProperties(optInfo, dbOptInfo, "optMethods","dataScopes");
+
+//        dbOptInfo.addAllOptMethods(optInfo.getOptMethods());
+//        dbOptInfo.addAllDataScopes(optInfo.getDataScopes());
+        optInfoManager.updateOptInfo(dbOptInfo);
+        //刷新缓存
+//        sysRoleManager.loadRoleSecurityMetadata();
+        /*********log*********/
+        OperationLogCenter.logUpdateObject(request, this.optId,dbOptInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_U,
+                "更新业务菜单"+ dbOptInfo.getOptId(), dbOptInfo, oldValue);
+        /*********log*********/
+
         JsonResultUtils.writeSuccessJson(response);
     }
-    
+
+    /**
+     * 更新操作权限
+     *
+     * @param optId    主键
+     * @param optInfo  OptInfo
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     */
+    @RequestMapping(value = "/editpower{optId}", method = {RequestMethod.PUT})
+    public void editPower(@PathVariable String optId, @Valid OptInfo optInfo,
+            HttpServletRequest request,HttpServletResponse response) {
+
+        OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
+        if (null == dbOptInfo) {
+            JsonResultUtils.writeErrorMessageJson("当前对象不存在", response);
+            return;
+        }
+
+        if(!StringUtils.equals(dbOptInfo.getPreOptId(), optInfo.getPreOptId())){
+             OptInfo parentOpt = optInfoManager.getOptInfoById(optInfo.getPreOptId());
+             if(parentOpt==null)
+                    optInfo.setPreOptId(dbOptInfo.getPreOptId());
+        }
+        /*********log*********/
+        OptInfo oldValue= new OptInfo();
+        BeanUtils.copyProperties(dbOptInfo,oldValue);
+        /*********log*********/
+
+        for (OptMethod optDef : optInfo.getOptMethods()) {
+            if (StringUtils.isBlank(optDef.getOptCode())) {
+                optDef.setOptCode(optMethodManager.getNextOptCode());
+            }
+         }
+        BeanUtils.copyProperties(optInfo, dbOptInfo, "optMethods","dataScopes");
+
+        dbOptInfo.addAllOptMethods(optInfo.getOptMethods());
+        dbOptInfo.addAllDataScopes(optInfo.getDataScopes());
+        Map<String, List> old = optInfoManager.updateOperationPower(dbOptInfo);
+        oldValue.setOptMethods(old.get("methods"));
+        oldValue.setDataScopes(old.get("scopes"));
+        //刷新缓存
+        sysRoleManager.loadRoleSecurityMetadata();
+        /*********log*********/
+        OperationLogCenter.logUpdateObject(request, this.optId,dbOptInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_U,
+                "更新操作权限"+ dbOptInfo.getOptId(), dbOptInfo, oldValue);
+        /*********log*********/
+
+        JsonResultUtils.writeSuccessJson(response);
+    }
+
      /**
      * 删除系统业务
      *
@@ -264,9 +312,8 @@ public class OptInfoController extends BaseController {
         sysRoleManager.loadRoleSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
-        String optUser = this.getLoginUser(request).getUserCode();
-        OperationLogCenter.logDeleteObject(optUser,this.optId,dboptInfo.getId() ,
-        		OperationLog.P_OPT_LOG_METHOD_D,  "已删除",dboptInfo);
+        OperationLogCenter.logDeleteObject(request,this.optId,dboptInfo.getId(), OperationLog.P_OPT_LOG_METHOD_D,
+                "删除业务菜单",dboptInfo);
         /*********log*********/
     }
 

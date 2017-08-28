@@ -26,20 +26,22 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
 
     public Map<String, String> getFilterField() {
         if (filterField == null) {
-            filterField = new HashMap<String, String>();
+            filterField = new HashMap<>();
             filterField.put("ROLECODE", CodeBook.LIKE_HQL_ID);
-            filterField.put("UNITROLE", "(roleCode like :UNITROLE or roleCode like 'P-%')");
+            filterField.put("publicUnitRole", "(roleCode like :publicUnitRole or roleCode like 'P-%')");
+            filterField.put("UNITROLE", "(roleCode like :UNITROLE)");
             filterField.put("NP_GLOBAL", "(roleCode like 'G-%' or roleCode like 'P-%')");
             filterField.put("ROLENAME", CodeBook.LIKE_HQL_ID);
             filterField.put("ROLEDESC", CodeBook.LIKE_HQL_ID);
-            filterField.put("ISVALID", CodeBook.EQUAL_HQL_ID); 
+            filterField.put("isValid", CodeBook.EQUAL_HQL_ID);
             filterField.put("roleType", CodeBook.EQUAL_HQL_ID); 
-            filterField.put("unitCode", CodeBook.EQUAL_HQL_ID); 
+            filterField.put("unitCode", CodeBook.EQUAL_HQL_ID);
             filterField.put("NP_unitCode", "unitCode is null"); 
-            
+            filterField.put("roleNameEq", "roleName = :roleNameEq");
+
             filterField.put("(date)createDateBeg", "createDate>= :createDateBeg");
             
-			filterField.put("(date)createDateEnd", "createDate<= :createDateEnd");
+			filterField.put("(date)createDateEnd", "createDate< :createDateEnd");
         }
         return filterField;
     }

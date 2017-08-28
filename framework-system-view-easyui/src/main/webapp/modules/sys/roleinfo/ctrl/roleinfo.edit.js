@@ -19,9 +19,20 @@ define(function(require) {
 				
 				_self.data = $.extend(_self.object, data);
 				
-				form.form('disableValidation').form('load', data)
+				form.form('disableValidation')
+                    .form('load', data)
 					.form('readonly', 'roleCode')
+					.form('addValidation', {
+						roleName: {
+							required:true,
+							validType:{
+								remote:[Config.ContextPath+'system/roleinfo/isNameUnique/{{roleName}}/'+data.roleCode+'/G',
+                                    'roleName']
+							}
+						}
+					})
 					.form('focus');
+
 			});
 		};
 		
@@ -37,11 +48,9 @@ define(function(require) {
 					url: Config.ContextPath + 'system/roleinfo/' + data.roleCode,
 					method: 'put',
 					data: data
-				})
-				.then(function(){
+				}).then(function(){
 					return require('loaders/cache/loader.system').loadAll()
-				})
-				.then(closeCallback);
+				}).then(closeCallback);
 			}			
 			return false;
 		}

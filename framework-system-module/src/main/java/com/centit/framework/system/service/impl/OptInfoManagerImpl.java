@@ -9,6 +9,7 @@ import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.service.OptInfoManager;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,7 +69,9 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Override
     @CacheEvict(value="OptInfo",allEntries = true)
     @Transactional
-    public void saveNewOptInfo(OptInfo optInfo){        
+    public void saveNewOptInfo(OptInfo optInfo){
+
+        syncState(optInfo);
         // 父级url必须设成...    	
         OptInfo parentOpt = optInfoDao.getObjectById(optInfo.getPreOptId());
         if (null != parentOpt) {
@@ -123,12 +126,27 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Override
     @CacheEvict(value="OptInfo",allEntries = true)
     @Transactional
-    public void updateOptInfo(OptInfo optInfo) {       
-        
+    public void updateOptInfo(OptInfo optInfo) {
+
+        syncState(optInfo);
+
         optInfoDao.mergeObject(optInfo);
-        
+
+    }
+
+    @Override
+    @CacheEvict(value="OptInfo",allEntries = true)
+    @Transactional
+    public Map<String, List> updateOperationPower(OptInfo optInfo) {
+
+//        syncState(optInfo);
+//
+//        optInfoDao.mergeObject(optInfo);
+
+        Map<String, List> result = new HashMap<>();
+
         List<OptMethod>  newOpts = optInfo.getOptMethods();
-        
+
         if(newOpts.size()>0 ){
             // 对于显示的菜单添加显示权限
             for(OptMethod o : newOpts){
@@ -136,24 +154,31 @@ public class OptInfoManagerImpl implements OptInfoManager {
                     o.setOptCode(optMethodDao.getNextOptCode());
                 }
                 o.setOptId(optInfo.getOptId());
-            }                
+            }
         }
-        
+
         List<OptMethod> oldOpts = optMethodDao.listOptMethodByOptID(optInfo.getOptId());
-        
-        if( oldOpts != null){           
+        List<OptMethod> optMethods = new ArrayList<>();
+        for(OptMethod o : oldOpts){
+            OptMethod optMethod = new OptMethod();
+            BeanUtils.copyProperties(o, optMethod);
+            optMethods.add(optMethod);
+        }
+        result.put("methods", optMethods);
+
+        if( oldOpts != null){
             for(OptMethod o : oldOpts){
                 if(! newOpts.contains(o)){
                     optMethodDao.deleteObject(o);
                     rolePowerDao.deleteRolePowersByOptCode(o.getOptCode());
                 }
-            }          
+            }
         }
-        
+
         for(OptMethod o : newOpts){
-            optMethodDao.mergeObject(o);            
+            optMethodDao.mergeObject(o);
         }
-        
+
         List<OptDataScope>  newDataScopes = optInfo.getDataScopes();
         if(newDataScopes.size()>0 ){
             // 对于显示的菜单添加显示权限
@@ -162,24 +187,32 @@ public class OptInfoManagerImpl implements OptInfoManager {
                     s.setOptScopeCode(dataScopeDao.getNextOptCode());
                 }
                 s.setOptId(optInfo.getOptId());
-            }                
+            }
         }
-        
+
         List<OptDataScope> oldDataScopes = dataScopeDao.getDataScopeByOptID(optInfo.getOptId());
-        
-        if( oldDataScopes != null){           
+        List<OptDataScope> dataScopes = new ArrayList<>();
+        for(OptDataScope o : oldDataScopes){
+            OptDataScope optDataScope = new OptDataScope();
+            BeanUtils.copyProperties(o, optDataScope);
+            dataScopes.add(optDataScope);
+        }
+        result.put("scopes", dataScopes);
+
+        if( oldDataScopes != null){
             for(OptDataScope s : oldDataScopes){
                 if(! newDataScopes.contains(s)){
-                	dataScopeDao.deleteObject(s);
+                    dataScopeDao.deleteObject(s);
                 }
-            }          
+            }
         }
-        
+
         for(OptDataScope s : newDataScopes){
-        	dataScopeDao.mergeObject(s);            
+            dataScopeDao.mergeObject(s);
         }
+        return result;
     }
-    
+
     @Transactional
     public OptInfo getOptInfoById(String optId){
         OptInfo oinfo = optInfoDao.getObjectById(optId);
@@ -347,7 +380,43 @@ public class OptInfoManagerImpl implements OptInfoManager {
 	public OptInfo getObjectById(String optId) {
 		return optInfoDao.getObjectById(optId);
 	}
+
+	private List<OptInfo> findSubOptInfo(String optId){
+	    List<OptInfo> result = new ArrayList<>();
+        List<OptInfo> optInfos = optInfoDao.listObjectByProperty("preOptId",optId);
+        if(optInfos != null && optInfos.size() > 0){
+            result.addAll(optInfos);
+            for(OptInfo o : optInfos){
+                result.addAll(findSubOptInfo(o.getOptId()));
+            }
+        }
+        return result;
+    }
+
+    private List<OptInfo> findPreOptInfo(String preId){
+        List<OptInfo> result = new ArrayList<>();
+        OptInfo optInfo = optInfoDao.getObjectById(preId);
+        if(optInfo != null){
+            result.add(optInfo);
+            result.addAll(findPreOptInfo(optInfo.getPreOptId()));
+        }
+        return result;
+    }
 	
-	
+	private void syncState(OptInfo optInfo){
+	    if("N".equals(optInfo.getIsInToolbar())){
+            List<OptInfo> optInfos = findSubOptInfo(optInfo.getOptId());
+            for(OptInfo o : optInfos){
+                o.setIsInToolbar("N");
+                optInfoDao.mergeObject(o);
+            }
+        }else{
+            List<OptInfo> optInfos = findPreOptInfo(optInfo.getPreOptId());
+            for(OptInfo o : optInfos){
+                o.setIsInToolbar("Y");
+                optInfoDao.mergeObject(o);
+            }
+        }
+    }
 
 }

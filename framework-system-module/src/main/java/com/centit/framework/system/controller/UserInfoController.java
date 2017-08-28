@@ -67,11 +67,10 @@ public class UserInfoController extends BaseController {
     public void list(String[] field, PageDesc pageDesc, String _search,
                      HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = convertSearchColumn(request);
-        searchColumn.put("sort", "userOrder");
-        searchColumn.put("order", "");
         List<UserInfo> listObjects = null;
         if (Boolean.parseBoolean(_search)) {
             listObjects = sysUserManager.listObjects(searchColumn);
+            pageDesc = null;
         } else {
             listObjects = sysUserManager.listObjects(searchColumn, pageDesc);
         }
@@ -91,7 +90,6 @@ public class UserInfoController extends BaseController {
 
         JsonResultUtils.writeResponseDataAsJson(resData, response, simplePropertyPreFilter);
     }
-            
 
     /**
      * 新增用户
@@ -101,7 +99,8 @@ public class UserInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(method = RequestMethod.POST)
-    public void create(@Valid UserInfo userInfo,HttpServletRequest request, HttpServletResponse response) {
+    public void create(@Valid UserInfo userInfo, @Valid UserUnit userUnit,
+                       HttpServletRequest request, HttpServletResponse response) {
         
     	UserInfo dbuserinfo=sysUserManager.loadUserByLoginname(userInfo.getLoginName());
     	if(null!=dbuserinfo) {
@@ -122,7 +121,7 @@ public class UserInfoController extends BaseController {
                 ur.setUserCode(userInfo.getUserCode());
             }
         }
-        sysUserManager.saveNewUserInfo(userInfo);
+        sysUserManager.saveNewUserInfo(userInfo,userUnit);
         
         
         JsonResultUtils.writeSingleDataJson(userInfo, response);
@@ -134,80 +133,40 @@ public class UserInfoController extends BaseController {
     }
 
     /**
-     * 更新用户状态信息
-     *
-     * @param userCode 用户代码
-     * @param userInfo UserInfo
-     * @param request HttpServletRequest
-     * @param response HttpServletResponse
-     */
-    @RequestMapping(value = "/state/{userCode}", method = RequestMethod.PUT)
-    public void changeState(@PathVariable String userCode, UserInfo userInfo, 
-            HttpServletRequest request, HttpServletResponse response) {
-        UserInfo userDetails = sysUserManager.getObjectById(userCode);
-        if (null == userDetails) {
-            JsonResultUtils.writeErrorMessageJson("当前用户不存在", response);
-
-            return;
-        }
-
-        String isValid = userInfo.getIsValid();
-        // 更新时不更新用户代码，登录名称，用户密码
-        // 更新用户密码有专门的方法操作
-        //BeanUtils.copyProperties(userInfo, userDetails, new String[]{"userCode", "loginName", "userPin"});
-        userDetails.setIsValid(isValid);
-
-        sysUserManager.updateUserProperities(userDetails);
-
-        JsonResultUtils.writeBlankJson(response);
-
-        /*********log*********/
-        StringBuilder optContent = new StringBuilder();
-        optContent.append("更新用户状态,用户代码:" + userCode + ",")
-                .append("是否启用:" + ("T".equals(userDetails.getIsValid()) ? "是" : "否"));
-
-
-        OperationLogCenter.log(request,optId,userCode,"changeStatus",  optContent.toString());
-    }
-    
-    /**
      * 更新用户信息
      * @param userCode userCode
      * @param userInfo userInfo
-     * @param request HttpServletRequest
+     * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{userCode}", method = RequestMethod.PUT)
-    public void edit(@PathVariable String userCode, UserInfo userInfo,
-            HttpServletRequest request, HttpServletResponse response) {
+    public void edit(@PathVariable String userCode, @Valid UserInfo userInfo,
+                     HttpServletRequest request, HttpServletResponse response) {
         
-        UserInfo userDetails = sysUserManager.getObjectById(userCode);
-        if (null == userDetails) {
+        UserInfo dbUserInfo = sysUserManager.getObjectById(userCode);
+        if (null == dbUserInfo) {
             JsonResultUtils.writeErrorMessageJson("当前用户不存在", response);
-
             return;
         }
-       
-        //userInfo.setUserCode(userCode);
-        userDetails.copyNotNullProperty(userInfo );
-        
-        sysUserManager.updateUserInfo(userDetails);
+        UserInfo oldValue= new UserInfo();
+        oldValue.copy(dbUserInfo);
+        if(oldValue.getUserUnits().size() == 0){
+            oldValue.setUserUnits(null);
+        }
+        if(oldValue.listUserRoles().size() == 0){
+            oldValue.setUserRoles(null);
+        }
+
+        sysUserManager.updateUserInfo(userInfo);
         
         JsonResultUtils.writeBlankJson(response);
 
         /*********log*********/
-
-        StringBuilder optContent = new StringBuilder();
-        optContent.append("更新用户状态,用户代码:" + userCode + ",")
-                .append("是否启用:" + ("T".equals(userDetails.getIsValid()) ? "是" : "否"));
-
-       OperationLogCenter.log(request,optId, userCode, "changeStatus",
-        		 optContent.toString());
+       OperationLogCenter.logUpdateObject(request,optId, userCode, OperationLog.P_OPT_LOG_METHOD_U,
+               "更新用户信息", userInfo, oldValue);
+        /*********log*********/
     }
-    
-    
-    
-    
+
     /**
      * 当前登录用户信息
      *
@@ -371,18 +330,24 @@ public class UserInfoController extends BaseController {
         OperationLogCenter.log(request,optId,userCode, "resetPassword", "重置用户密码,用户代码:" + userCode);
     }
 
-    @RequestMapping(value="/{userCode}",method=RequestMethod.DELETE)
-    public  void deleteUser(@PathVariable String userCode,HttpServletResponse response){
-        UserInfo userInfo = sysUserManager.getObjectById(userCode);
-        if(null!=userInfo){
-            
-            sysUserManager.deleteUserInfo(userCode);
-            
-            JsonResultUtils.writeSuccessJson(response);
+    @RequestMapping(value="/{userCodes}",method=RequestMethod.DELETE)
+    public  void deleteUser(@PathVariable String[] userCodes,HttpServletRequest request,HttpServletResponse response){
+        for(String userCode : userCodes) {
+            UserInfo userInfo = sysUserManager.getObjectById(userCode);
+            if (null != userInfo) {
+
+                sysUserManager.deleteUserInfo(userCode);
+
+            } else {
+                JsonResultUtils.writeErrorMessageJson("该用户不存在", response);
+            }
+
+            /*********log*********/
+            OperationLogCenter.logDeleteObject(request, optId, userCode, OperationLog.P_OPT_LOG_METHOD_D,
+                    "删除用户"+userInfo.getUserName(), userInfo);
+            /*********log*********/
         }
-        else{
-            JsonResultUtils.writeErrorMessageJson("该用户不存在", response);
-        }
+        JsonResultUtils.writeSuccessJson(response);
     }
     
 }

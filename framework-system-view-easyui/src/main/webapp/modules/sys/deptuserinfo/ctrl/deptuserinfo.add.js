@@ -2,27 +2,34 @@ define(function(require) {
 	var Config = require('config');
 	var Core = require('core/core');
 	var Page = require('core/page');
+    var Cache = require('core/cache');
 	
 	// 编辑角色信息
 	var DeptUserInfoAdd = Page.extend(function() {
-		
+
 		// @override
 		this.object = {
 			isValid: 'T',
 			isPrimary: 'T'
 		};
-	
-		// @override
+
+        // @override
 		this.load = function(panel) {
 			var form = panel.find('form');
-			var newData={};
-			$.extend(newData, this.object,{primaryUnit:this.parent.object.loginuser.primaryUnit});
-			form.form('disableValidation')
+            var loginuser=Cache.get('loginuser');
+            var primaryUnit=loginuser.primaryUnit;
+            $('#primaryUnit').combotree({
+                url: Config.ContextPath + 'system/unitinfo/underunits/',
+                required: true
+            });
+            var newData={};
+            $.extend(newData, this.object,{primaryUnit:this.parent.object.loginuser.primaryUnit});
+            form.form('disableValidation')
 				.form('load', newData)
 				.form('focus');
-		};
-		
-		// @override
+        };
+
+        // @override
 		this.submit = function(panel, data, closeCallback) {
 			var form = panel.find('form');
 			

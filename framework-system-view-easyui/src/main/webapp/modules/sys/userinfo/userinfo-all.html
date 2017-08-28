@@ -3,7 +3,7 @@
 	
 	<div class="fields two">
 		<div class="field ">
-			<label id="a@name">用户名</label>
+			<label>用户名</label>
 			<input type="text" class="easyui-textbox" name="userName"/>
 		</div>
 		<div class="field ">
@@ -48,7 +48,7 @@
 	<thead frozen="true">
 		<tr>
 			<th id="a@rolename" field="roleCode" format="Role" width="50%">角色名称</th>
-			<th id="a@effectiveDate" field="obtainDate" width="30%" align="center">生效日期</th>
+			<th id="a@effectiveDate" field="obtainDate" width="30%" align="center" format="Date:yyyy-MM-dd">生效日期</th>
 		</tr>
 	</thead>
 	<thead>
@@ -64,7 +64,7 @@
 	<hr>
 	<a iconCls="icon-base icon-base-gear" href="modules/sys/roleinfo/roleinfo-power.html" trigger="single"
 		target="dialog" rel="roleinfo_operate" title="编辑 {{roleName}} 操作权限" width="720" height="600" btnValue="更新"><p  id="d@link.authorityOpt">操作权限</p></a>
-	<hr>	
+	<hr>
 	<a rel="userinfo_role_ban" iconCls="icon-base icon-base-rubbish "
 		target="confirm" trigger="single" title="确定将 {{roleName}} 从用户{{userName}} 的菜单角色中回收吗？"><p  id="userinfo.a@btn.recycle">回收</p></a>
 <!-- 	<hr>
@@ -81,7 +81,7 @@
 	<thead frozen="true">
 		<tr>
 			<th id="a@rolename" field="roleName" width="50%">角色名称</th>
-			<th id="a@effectiveDate" field="obtainDate" width="30%" align="center">生效日期</th>
+			<th id="a@effectiveDate" field="obtainDate" width="30%" format="Date:yyyy-MM-dd" align="center">生效日期</th>
 		</tr>
 	</thead>
 	<thead>
@@ -96,7 +96,7 @@
 		target="dialog" trigger="none" title="添加部门权限菜单角色" btnValue="添加" width="500" height="370"><p  id="userinfo.a@link.add">新增</p></a>
 	<hr>
 	<a iconCls="icon-base icon-base-gear" href="modules/sys/roleinfo/roleinfo-power.html" trigger="single"
-		target="dialog" rel="roleinfo_operate" title="编辑 {{roleName}} 操作权限" width="320" height="600" btnValue="更新"><p  id="d@link.authorityOpt">操作权限</p></a>	
+		target="dialog" rel="roleinfo_operate" title="编辑 {{roleName}} 操作权限" width="720" height="600" btnValue="更新"><p  id="d@link.authorityOpt">操作权限</p></a>
 	<hr>	
 	<a rel="userinfo_role_ban" iconCls="icon-base icon-base-rubbish "
 		target="confirm" trigger="single" title="确定将 {{roleName}} 从用户{{userName}} 的部门权限菜单角色中回收吗？"><p  id="userinfo.a@btn.recycle">回收</p></a>

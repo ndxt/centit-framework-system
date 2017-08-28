@@ -22,10 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -59,6 +56,9 @@ public class UserRoleController extends BaseController {
     public void listUsersByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = convertSearchColumn(request);
         filterMap.put("roleCode", roleCode);
+        if(!Objects.isNull(filterMap.get("userName"))){
+            filterMap.put("userName", "%"+filterMap.get("userName")+"%");
+        }
         listObject(filterMap, pageDesc, response);
     }
     
@@ -196,22 +196,25 @@ public class UserRoleController extends BaseController {
     /**
      * 删除用户角色关联信息
      * @param roleCode 角色代码
-     * @param userCode 用户代码
+     * @param userCodes 用户代码
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
-    @RequestMapping(value = "/{roleCode}/{userCode}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable String roleCode, @PathVariable String userCode,
+    @RequestMapping(value = "/{roleCode}/{userCodes}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable String roleCode, @PathVariable String userCodes,
                        HttpServletRequest request, HttpServletResponse response) {
-        UserRoleId userRoleId=new UserRoleId(userCode,roleCode);
-        sysUserRoleManager.deleteObjectById(userRoleId);
+
+        String[] userCodeArray = userCodes.split(",");
+        for(String userCode : userCodeArray){
+            UserRoleId userRoleId=new UserRoleId(userCode,roleCode);
+            UserRole userRole = sysUserRoleManager.getObjectById(userRoleId);
+            sysUserRoleManager.deleteObjectById(userRoleId);
+            /*********log*********/
+            OperationLogCenter.logDeleteObject(request,optId,userCode+"-"+roleCode, OperationLog.P_OPT_LOG_METHOD_D,
+                    "删除用户角色关联信息", userRole);
+            /*********log*********/
+        }
         JsonResultUtils.writeBlankJson(response);
-        /*********log*********/
-        StringBuilder oldValue = new StringBuilder();
-        oldValue.append("删除前userCode:" +userCode+",roleCode:"+roleCode);
-        OperationLogCenter.logDeleteObject(request,optId,userCode+"-"+roleCode,
-        		OperationLog.P_OPT_LOG_METHOD_D, oldValue.toString(), userRoleId);
-        /*********log*********/
     }
     
     /**
@@ -222,9 +225,15 @@ public class UserRoleController extends BaseController {
      */
     @RequestMapping(value = "/ban/{roleCode}/{userCode}", method = RequestMethod.PUT)
     public void ban(@PathVariable String roleCode, @PathVariable String userCode,
-                        HttpServletResponse response) {
+                        HttpServletRequest request, HttpServletResponse response) {
         UserRoleId a=new UserRoleId(userCode,roleCode);
+        UserRole userRole = sysUserRoleManager.getObjectById(a);
         sysUserRoleManager.deleteObjectById(a);
         JsonResultUtils.writeSuccessJson(response);
+
+        /*********log*********/
+        OperationLogCenter.logDeleteObject(request, optId, userCode+"-"+roleCode,
+                OperationLog.P_OPT_LOG_METHOD_D, "删除用户角色关联信息", userRole);
+        /*********log*********/
     }
 }

@@ -14,6 +14,8 @@ define(function(require) {
                 data: {
                     _method: 'delete'
                 }
+			}).then(function(){
+				return require('loaders/cache/loader.system').loadAll()
 			}).then(function() {
             	table.treegrid('remove', data.unitCode);
 				var layout = $('#deptpow_panel').layout('panel', 'east');
@@ -21,6 +23,16 @@ define(function(require) {
 				layout.panel('clear');
             });
 		}
+		this.renderButton=function(target,data){
+			if(data.state=='closed')
+				return false;
+			else{
+				if(data.children.length==0){
+					return true;
+				}
+				return false;
+			}
+		};
 	});
 	
 	return DeptPowRemove;

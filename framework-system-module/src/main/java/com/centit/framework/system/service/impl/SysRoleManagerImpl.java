@@ -23,10 +23,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service("sysRoleManager")
 public class SysRoleManagerImpl implements SysRoleManager {
@@ -64,7 +61,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
         for(RolePower rp: rplist ){
             List<ConfigAttribute/*roleCode*/> roles = CentitSecurityMetadata.optMethodRoleMap.get(rp.getOptCode());
             if(roles == null){
-                roles = new ArrayList<ConfigAttribute/*roleCode*/>();
+                roles = new ArrayList<>();
             }
             roles.add(new SecurityConfig(CentitSecurityMetadata.ROLE_PREFIX + StringUtils.trim(rp.getRoleCode())));
             CentitSecurityMetadata.optMethodRoleMap.put(rp.getOptCode(), roles);
@@ -136,26 +133,36 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Transactional
     public void updateRoleInfo(RoleInfo o) {
     	roleInfoDao.mergeObject(o);
+    }
+
+    @Override
+    @CacheEvict(value="RoleInfo",allEntries = true)
+    @Transactional
+    public List<RolePower> updateRolePower(RoleInfo o) {
+    	roleInfoDao.mergeObject(o);
         List<RolePower> newRPs = o.getRolePowers();
-        if(newRPs == null || newRPs.size()<1)
-            return;
-        
+
         List<RolePower> rps = rolePowerDao.listRolePowersByRoleCode(o.getRoleCode());
-    
+
+        if(newRPs == null || newRPs.size()<1) {
+            return rps;
+        }
+
         for(RolePower rp : newRPs){
             rp.setRoleCode(o.getRoleCode());
         }
-        if( rps != null){           
+        if( rps != null){
             for(RolePower rp : rps){
                 if(! newRPs.contains(rp)){
                     rolePowerDao.deleteObject(rp);
                 }
-            }          
+            }
         }
-        
+
         for(RolePower rp : newRPs){
-            rolePowerDao.mergeObject(rp);            
-        }    
+            rolePowerDao.mergeObject(rp);
+        }
+        return rps;
     }
 
     @Override
@@ -201,5 +208,19 @@ public class SysRoleManagerImpl implements SysRoleManager {
     public int countRoleUserSum(String roleCode){
         return roleInfoDao.countRoleUserSum(roleCode);
     }
- 
+
+    @Override
+    @Transactional
+    public boolean isRoleNameNotExist(String unitCode, String roleName, String roleCode){
+
+        Map<String, Object> filterMap = new HashMap<>();
+        filterMap.put("publicUnitRole",unitCode+"-%");
+        filterMap.put("roleNameEq",roleName);
+
+        List<RoleInfo> roleInfos = roleInfoDao.listObjects(filterMap);
+        boolean isEmpty = roleInfos==null || roleInfos.size() == 0;
+//        RoleInfo dbRoleInfo = roleInfoDao.getObjectByProperty("roleName", roleName);
+//        return dbRoleInfo==null ? true : roleCode!=null && Objects.equals(dbRoleInfo.getRoleCode(), roleCode);
+        return isEmpty ? true : roleCode!=null && roleCode.equals(roleInfos.get(0).getRoleCode());
+    }
 }

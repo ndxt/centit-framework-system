@@ -37,18 +37,18 @@ define(function(require) {
 					method: 'put'
 				}).then(function(){
 					return require('loaders/cache/loader.system').loadAll()
-				}).then(
-					closeCallback);
+				}).then(closeCallback);
 			}
 			
 			return false;
 		};
 		
 		// @override
-		this.onClose = function(panel, data) {
+		this.onClose = function(table) {
 			var newObject =this.newObject;
 			if(!newObject)return ;
-			panel.find("#tg").treegrid('reload');
+			table.treegrid('clearSelections');
+			table.treegrid('reload');
 			this.newObject=null;
         };
 	});

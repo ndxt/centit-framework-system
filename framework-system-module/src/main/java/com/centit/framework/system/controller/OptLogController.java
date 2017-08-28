@@ -1,14 +1,17 @@
 package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.JSONArray;
-import com.centit.framework.common.JsonResultUtils;
-import com.centit.framework.common.ResponseMapData;
+import com.centit.framework.components.OperationLogCenter;
+import com.centit.framework.core.common.JsonResultUtils;
+import com.centit.framework.core.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.core.dao.PageDesc;
+import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.system.po.OptLog;
 import com.centit.framework.system.service.OptLogManager;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +20,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
@@ -27,6 +33,8 @@ public class OptLogController extends BaseController {
     @Resource
     @NotNull 
     private OptLogManager optLogManager;
+
+    private String optId = "OPTLOG";
 
 
     /**
@@ -56,6 +64,21 @@ public class OptLogController extends BaseController {
             JsonResultUtils.writeSingleDataJson(listObjectsAll, response, simplePropertyPreFilter);
             return;
         }*/
+        if(!StringUtils.isEmpty(searchColumn.get("optTimeEnd"))){
+            String endDate = searchColumn.get("optTimeEnd").toString();
+            SimpleDateFormat fmt = new SimpleDateFormat("yy-MM-dd");
+            try {
+                Date date = fmt.parse(endDate);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                calendar.add(Calendar.DAY_OF_MONTH, 1);
+                Date resultDate = calendar.getTime();
+                String resultString = fmt.format(resultDate);
+                searchColumn.put("optTimeEnd", resultString);
+            }catch(ParseException e){
+                logger.error("日期转换出错",e);
+            }
+        }
         
         JSONArray jsonArray = optLogManager.listObjectsAsJson(field, searchColumn, pageDesc);
         
@@ -88,9 +111,15 @@ public class OptLogController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{logId}", method = {RequestMethod.DELETE})
-    public void deleteOne(@PathVariable Long logId, HttpServletResponse response) {
+    public void deleteOne(@PathVariable Long logId, HttpServletRequest request, HttpServletResponse response) {
+        OptLog optLog = optLogManager.getObjectById(logId);
         optLogManager.deleteObjectById(logId);
         JsonResultUtils.writeBlankJson(response);
+
+        /***************log*******************/
+        OperationLogCenter.logDeleteObject(request, optId, logId.toString(), OperationLog.P_OPT_LOG_METHOD_D,
+                "删除日志", optLog);
+        /***************log*******************/
     }
 
     /**
@@ -99,10 +128,17 @@ public class OptLogController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/deleteMany", method = RequestMethod.DELETE)
-    public void deleteMany(Long[] logIds, HttpServletResponse response) {
+    public void deleteMany(Long[] logIds,HttpServletRequest request, HttpServletResponse response) {
         optLogManager.deleteMany(logIds);
 
         JsonResultUtils.writeBlankJson(response);
+        for(Long logId : logIds) {
+            OptLog optLog = optLogManager.getObjectById(logId);
+            /***************log*******************/
+            OperationLogCenter.logDeleteObject(request, optId, logId.toString(), OperationLog.P_OPT_LOG_METHOD_D,
+                    "删除日志", optLog);
+            /***************log*******************/
+        }
     }
     /**
      * 删除某时段之前的系统日志

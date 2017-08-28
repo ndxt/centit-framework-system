@@ -6,13 +6,26 @@
 	<div data-options="region:'center'" style="width:40%">
 	
 		<div class="easyui-panel search-body" cls="search" style="width: 100%">
-			<form>
+			<form class="clearFromValue">
 				
+				<!--<div class="search-item">-->
+					<!--<label id="e@name">名称</label>-->
+					<!--<input type="text" class="easyui-combobox" name="s_userCode" target="user"/>-->
+				<!--</div>-->
+                <div class="search-item">
+                    <label id="e@name">用户名</label>
+                    <input type="text" class="easyui-textbox" name="s_userName" />
+                </div>
 				<div class="search-item">
-					<label id="e@name">名称</label>
-					<input type="text" class="easyui-combobox" name="s_userCode" target="user"/>
+					<label id="e@state">状态</label>
+					<input type="radio" name="s_isValid" value=""/> <p id="e@all">全部</p>
+					<input type="radio" name="s_isValid" value="T" checked="checked" class="defaultChecked" /> <p id="e@inUse">在用</p>
+					<input type="radio" name="s_isValid" value="F" /> <p id="e@forbidden">禁用</p>
 				</div>
 				<a class="easyui-linkbutton btn-search" iconCls="icon-search"><p  id="e@btn.search">搜索</p></a>
+				<a class="easyui-linkbutton" style="margin-top:8px;" iconcls="icon-reload" onclick="javascript:$(this).parent('.clearFromValue').form('clear');$('.defaultChecked').prop('checked','true');" group="" id="">
+					<p>重置</p>
+				</a>
 			</form>
 		</div>
 		
@@ -24,14 +37,19 @@
 			search=".search"
 			toolbar=".temp-toolbar"
 			layoutH="65"
+			singleSelect="false" selectOnCheck="true" checkOnSelect="true"
 			>
 			<thead>
 				<tr>
-					<th id="e1@name" data-options="field:'userCode'" format="AllUser" width="30%" sortable="true">用户名</th>
-<!-- 					<th id="e@loginName" data-options="field:'loginName'" width="20%" sortable="true">登录名</th> -->
-<!-- 					<th data-options="field:'isPrimary'" format="Dictionary:YesOrNo" width="20%">是否主机构</th> -->
-					<th id="e@post" data-options="field:'userStation'" format="Dictionary:StationType" width="45%">岗位</th>
-					<th id="e@job" data-options="field:'userRank'" format="Dictionary:RankType" width="22%">职务</th>
+					<th data-options="field:'ck',checkbox:true"></th>
+					<th data-options="field:'userCode'" width="19%" sortable="true">用户编码</th>
+					<th data-options="field:'userName'" width="19%" sortable="true">用户名</th>
+					<th id="e@loginName" data-options="field:'loginName'" width="19%" sortable="true">登录名</th>
+					<th id="e@primaryOrganization" data-options="field:'primaryUnit'" format="Unit" width="19%">机构名称</th>
+
+					<!--<th id="e1@name" data-options="field:'userCode'" format="AllUser" width="30%" sortable="true">用户名</th>-->
+					<!--<th id="e@post" data-options="field:'userStation'" format="Dictionary:StationType" width="45%">岗位</th>-->
+					<!--<th id="e@job" data-options="field:'userRank'" format="Dictionary:RankType" width="22%">职务</th>-->
 				</tr>
 			</thead>
 		</table>
@@ -42,10 +60,10 @@
 			<a  iconCls="icon-edit" href="modules/sys/deptuserinfo/deptuserinfo-edit.html" trigger="single"
 				target="dialog" rel="deptuserinfo_edit" title="编辑" width="640" height="470" btnValue="更新"><p id="e@link.edit">编辑</p></a>
 			<hr>
-			<a  iconCls="icon-base icon-base-ban"  trigger="single"
+			<a  iconCls="icon-base icon-base-ban"  trigger="multiple"
 				target="confirm" rel="deptuserinfo_delete" title="确定删除该用户？" ><p id="e@btn.delete">删除</p></a>
 			<hr>
-			<a iconCls="icon-base icon-base-lock" trigger="single"
+			<a iconCls="icon-base icon-base-lock" trigger="multiple"
 				target="confirm" rel="deptuserinfo_resetpassword" title="确定重置该用户密码为 000000 吗？"><p  id="e@btn.resetPassword">重置密码</p></a>
 		</div>
 	

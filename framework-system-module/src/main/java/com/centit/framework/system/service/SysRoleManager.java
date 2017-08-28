@@ -29,6 +29,8 @@ public interface SysRoleManager{
     Serializable saveNewRoleInfo(RoleInfo o);
 
     void updateRoleInfo(RoleInfo o);
+
+    List<RolePower> updateRolePower(RoleInfo o);
     
     void deleteRoleInfo(String roleCode);
     
@@ -40,4 +42,5 @@ public interface SysRoleManager{
 
     int countRoleUserSum(String roleCode);
 
+    boolean isRoleNameNotExist(String unitCode, String roleName, String roleCode);
 }

@@ -8,14 +8,23 @@ define(function(require) {
 		
 		// @override
 		this.submit = function(table, data) {
-			Core.ajax(Config.ContextPath+'system/userinfo/'+data.userCode, {
+            var userCodes = [];
+            for(var i = 0; i < data.length; i++){
+                userCodes.push(data[i].userCode);
+            }
+			Core.ajax(Config.ContextPath+'system/userinfo/'+userCodes, {
             	type: 'json',
                 method: 'post',
                 data: {
                     _method: 'delete'
                 }
+			}).then(function(){
+				return require('loaders/cache/loader.system').loadAll()
 			}).then(function() {
 				table.datagrid('reload');
+				var layout = $('#deptuserinfo_panel').layout('panel', 'east');
+                layout.panel('setTitle','机构与权限');
+				layout.panel('clear');
             });
 		};
 	});

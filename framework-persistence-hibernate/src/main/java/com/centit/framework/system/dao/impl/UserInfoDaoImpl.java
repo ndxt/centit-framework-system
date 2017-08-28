@@ -58,15 +58,23 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
             filterField.put("USERTAG", CodeBook.EQUAL_HQL_ID);
             filterField.put("USERWORD", CodeBook.EQUAL_HQL_ID);
 
-            filterField.put("byUnderUnit", "userCode in ( select  id.userCode from UserUnit where id.unitCode = :byUnderUnit ) ");
+            filterField.put("byUnderUnit", "userCode in " +
+                    "(select  id.userCode from UserUnit where id.unitCode = :byUnderUnit ) ");
 
-            filterField.put("queryByUnit", "userCode in ( select  id.userCode from UserUnit where id.unitCode = :queryByUnit ) ");
-            filterField.put("queryByGW", "userCode in ( select  id.userCode from UserUnit where id.userStation = :queryByGW )");
-            filterField.put("queryByXZ", "userCode in ( select  id.userCode from UserUnit where id.userRank = :queryByXZ )");
-            filterField.put("queryByRole",
-                            "userCode in (select r.id.userCode from UserRole r, RoleInfo i where r.id.roleCode = :queryByRole and r.id.roleCode = i.roleCode and i.isValid = 'T')");
+            filterField.put("queryByUnit", "userCode in " +
+                    "(select  id.userCode from UserUnit where id.unitCode = :queryByUnit ) ");
+            filterField.put("queryByGW", "userCode in " +
+                    "(select  id.userCode from UserUnit where id.userStation = :queryByGW )");
+            filterField.put("queryByXZ", "userCode in " +
+                    "(select  id.userCode from UserUnit where id.userRank = :queryByXZ )");
+            filterField.put("queryByRole", "userCode in " +
+                    "(select r.id.userCode from UserRole r, RoleInfo i " +
+                    "where r.id.roleCode = :queryByRole and r.id.roleCode = i.roleCode and i.isValid = 'T')");
 
             filterField.put(CodeBook.ORDER_BY_HQL_ID, "userOrder asc");
+
+            filterField.put("unitCode", "userCode in (select userCode from UserUnit where unitCode in " +
+                    "(select unitCode from UnitInfo where unitCode = :unitCode or parentUnit = :unitCode))");
         }
         return filterField;
     }
@@ -164,8 +172,13 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
     }
     
     @Transactional
-    public UserInfo getUserByWord(String userWord) {
+    public UserInfo getUserByUserWord(String userWord) {
     	return super.getObjectByProperty("userWord", userWord);
+    }
+
+    @Transactional
+    public UserInfo getUserByIdCardNo(String idCardNo){
+        return super.getObjectByProperty("idCardNo", idCardNo);
     }
     
     /**
