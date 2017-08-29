@@ -1,9 +1,9 @@
 package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.JSONArray;
-import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
+import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.core.dao.PageDesc;
@@ -129,9 +129,6 @@ public class OptLogController extends BaseController {
      */
     @RequestMapping(value = "/deleteMany", method = RequestMethod.DELETE)
     public void deleteMany(Long[] logIds,HttpServletRequest request, HttpServletResponse response) {
-        optLogManager.deleteMany(logIds);
-
-        JsonResultUtils.writeBlankJson(response);
         for(Long logId : logIds) {
             OptLog optLog = optLogManager.getObjectById(logId);
             /***************log*******************/
@@ -139,6 +136,9 @@ public class OptLogController extends BaseController {
                     "删除日志", optLog);
             /***************log*******************/
         }
+        optLogManager.deleteMany(logIds);
+
+        JsonResultUtils.writeBlankJson(response);
     }
     /**
      * 删除某时段之前的系统日志
