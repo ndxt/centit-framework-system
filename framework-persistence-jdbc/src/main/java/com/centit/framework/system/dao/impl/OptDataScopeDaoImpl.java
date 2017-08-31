@@ -5,6 +5,7 @@ import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.hibernate.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.OptDataScopeDao;
 import com.centit.framework.system.po.OptDataScope;
+import com.centit.support.database.utils.QueryUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,41 +16,34 @@ public class OptDataScopeDaoImpl extends BaseDaoImpl<OptDataScope, String> imple
 
     @Transactional
     public List<OptDataScope> getDataScopeByOptID(String sOptID) {
-        return listObjects("FROM OptDataScope WHERE optId =?", sOptID);
+        return listObjects("optId", sOptID);
     }
 
     @Transactional
     public int getOptDataScopeSumByOptID(String sOptID) {
-        return Integer.valueOf(String.valueOf(DatabaseOptUtils.getSingleObjectByHql(this,
-                "SELECT count(optScopeCode) FROM OptDataScope WHERE optId = ?", sOptID)));
+        //return pageCount(QueryUtils.createSqlParamsMap("optId", sOptID));
+        return getOrmDaoSupport().fetchObjectsCount(
+                QueryUtils.createSqlParamsMap("optId", sOptID),getPoClass());
     }
 
 
     @Transactional
     public void deleteDataScopeOfOptID(String sOptID) {
-        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM OptDataScope WHERE optId = ?", sOptID);
+        getOrmDaoSupport().deleteObjectByProperties(
+                QueryUtils.createSqlParamsMap("optId", sOptID),getPoClass());
     }
 
-  
-    public Map<String, String> getFilterField() {
-        if (filterField == null) {
-            filterField = new HashMap<String, String>();
-            filterField.put("OPTID", CodeBook.EQUAL_HQL_ID);
-            filterField.put("OPTSCOPECODE", CodeBook.EQUAL_HQL_ID);
-            filterField.put("SCOPENAME", CodeBook.LIKE_HQL_ID);
-        }
-        return filterField;
-    }
 
     @Transactional
     public String getNextOptCode() {
+
     	return DatabaseOptUtils.getNextValueOfSequence(this, "S_OPTDEFCODE");
     }
 
     
     @Transactional
     public List<String> listDataFiltersByIds(Collection<String> scopeCodes) {
-    	List<OptDataScope> objs	= listObjects("FROM OptDataScope WHERE optId in ?", scopeCodes);
+    	List<OptDataScope> objs	= listObjects("FROM OptDataScope WHERE optId in (?)", scopeCodes);
     	if(objs==null)
     		return null;
     	List<String> filters = new ArrayList<String>();

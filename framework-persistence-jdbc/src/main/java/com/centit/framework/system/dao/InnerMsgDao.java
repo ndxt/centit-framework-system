@@ -9,7 +9,7 @@ public interface InnerMsgDao {
     
 	 InnerMsg getObjectById(String msgCode);
 
-    void mergeObject(InnerMsg innerMsg);
+     void mergeObject(InnerMsg innerMsg);
 	
 	 void deleteObject(InnerMsg innerMsg);
 			

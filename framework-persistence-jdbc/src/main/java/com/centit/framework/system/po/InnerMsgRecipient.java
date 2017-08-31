@@ -1,6 +1,8 @@
 package com.centit.framework.system.po;
 
 import com.centit.framework.core.dao.DictionaryMap;
+import com.centit.support.database.orm.GeneratorType;
+import com.centit.support.database.orm.ValueGenerator;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -20,7 +22,7 @@ public class InnerMsgRecipient implements Serializable{
     
     @Id
     @Column(name="ID")
-    @GeneratedValue(generator = "assignedGenerator")
+    @ValueGenerator(strategy = GeneratorType.SEQUENCE, value = "S_RECIPIENT")
     private String id;//
     
     /**

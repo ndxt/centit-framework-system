@@ -2,6 +2,8 @@ package com.centit.framework.system.po;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.centit.framework.core.dao.DictionaryMap;
+import com.centit.support.database.orm.GeneratorType;
+import com.centit.support.database.orm.ValueGenerator;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -23,7 +25,7 @@ public class InnerMsg implements  Serializable{
      */
     @Id
     @Column(name="MSG_CODE")
-    @GeneratedValue(generator = "assignedGenerator")
+    @ValueGenerator(strategy = GeneratorType.SEQUENCE, value = "S_MSGCODE")
     private String msgCode;
     
     /**

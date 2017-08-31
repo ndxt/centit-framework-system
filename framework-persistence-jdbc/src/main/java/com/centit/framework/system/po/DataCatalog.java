@@ -3,6 +3,10 @@ package com.centit.framework.system.po;
 import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IDataCatalog;
+import com.centit.support.database.orm.GeneratorCondition;
+import com.centit.support.database.orm.GeneratorTime;
+import com.centit.support.database.orm.GeneratorType;
+import com.centit.support.database.orm.ValueGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -84,6 +88,8 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
 	 * UPDATEDATE(更新时间) 更新时间 
 	 */
 	@Column(name = "UPDATE_DATE")
+    @ValueGenerator(strategy = GeneratorType.FUNCTIION, occasion = GeneratorTime.ALWAYS,
+            condition = GeneratorCondition.ALWAYS, value="now" )
 	private Date  updateDate;
 	//结束
 	

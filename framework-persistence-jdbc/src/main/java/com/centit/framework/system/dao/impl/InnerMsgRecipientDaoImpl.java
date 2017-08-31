@@ -14,42 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 @Repository("innerMsgRecipientDao")
-public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, String> implements InnerMsgRecipientDao {
+public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, String>
+        implements InnerMsgRecipientDao {
 
-    @Override
-    public Map<String, String> getFilterField() {
-        if (filterField == null) {
-            filterField = new HashMap<String, String>();
-            filterField.put("RECEIVE", "receive = :RECEIVE");
-            filterField.put("sender", "msgCode in ( select  msgCode from InnerMsg where sender = :sender )");
-            filterField.put("msgContent", "msgCode in ( select  msgCode from InnerMsg where msgContent LIKE :msgContent )");
-            filterField.put("msgTitle", "msgCode in ( select  msgCode from InnerMsg where msgTitle LIKE :msgTitle )");
-            filterField.put("mailType", "msgCode in ( select  msgCode from InnerMsg where mailType = :mailType )");
-            filterField.put("mailTypeNot", "msgCode in ( select  msgCode from InnerMsg where mailType != :mailTypeNot )");
-            filterField.put("msgStateNot", "msgState != :msgStateNot");
-            filterField.put("innerMsgStateNot", "msgCode in ( select  msgCode from InnerMsg where msgState != :innerMsgStateNot )");
-            filterField.put("isRecycled", CodeBook.EQUAL_HQL_ID);
-            filterField.put("MSGSTATE", CodeBook.EQUAL_HQL_ID);
-            filterField.put("msgType", "msgCode in ( select  msgCode from InnerMsg where msgType = :msgType )");
-            filterField.put(CodeBook.ORDER_BY_HQL_ID, "msgCode desc");
-        }
-        return filterField;
-    }
-    
-    
-    /*
-     * 新建
-     * 
-     */
-    @Override
-    @Transactional
-    public void saveNewObject(InnerMsgRecipient recipient){
-        String id=DatabaseOptUtils.getNextKeyBySequence(this, "S_RECIPIENT",16);
-        recipient.setId(id);
-        super.saveNewObject(recipient);
-//        return id;
-    }
-    
+
     /*
      * 两人间来往消息列表
      * 
