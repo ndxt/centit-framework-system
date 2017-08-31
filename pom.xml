@@ -91,6 +91,7 @@
         <module>framework-persistence-hibernate</module>
         <module>framework-system-view-easyui</module>
         <module>framework-system-module</module>
+        <module>framework-persistence-jdbc</module>
     </modules>
 
     <!-- mvn deploy -DpomFile=pom.xml -->
