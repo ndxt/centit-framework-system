@@ -203,7 +203,7 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
 
     @Override
     public List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return innerMsgRecipientDao.pageQuery(QueryParameterPrepare.prepPageParmers(filterMap, pageDesc, innerMsgRecipientDao.pageCount(filterMap)));
+        return innerMsgRecipientDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap, pageDesc, innerMsgRecipientDao.pageCount(filterMap)));
     }
 
     @Override

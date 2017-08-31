@@ -38,7 +38,7 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
 
 	@Override
 	public List<UserRole> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-		return userRoleDao.pageQuery(QueryParameterPrepare.prepPageParmers(filterMap,pageDesc,userRoleDao.pageCount(filterMap)));
+		return userRoleDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap,pageDesc,userRoleDao.pageCount(filterMap)));
 	}
 
 	@Override

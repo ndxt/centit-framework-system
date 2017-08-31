@@ -210,7 +210,7 @@ public class DataDictionaryManagerImpl implements
 	@Transactional
 	public List<DataCatalog> listObjects(Map<String, Object> filterDescMap, PageDesc pageDesc) {
 		  return dataCatalogDao.pageQuery(
-		          QueryParameterPrepare.prepPageParmers(filterDescMap, pageDesc,
+		          QueryParameterPrepare.prepPageParams(filterDescMap, pageDesc,
                           dataCatalogDao.pageCount(filterDescMap) ) );
 	}
 

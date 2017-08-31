@@ -193,7 +193,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
 	@Override
 	@Transactional
 	public List<RoleInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-		return roleInfoDao.pageQuery(QueryParameterPrepare.prepPageParmers(filterMap,pageDesc,roleInfoDao.pageCount(filterMap)));
+		return roleInfoDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap,pageDesc,roleInfoDao.pageCount(filterMap)));
 	}
 
 	@Override

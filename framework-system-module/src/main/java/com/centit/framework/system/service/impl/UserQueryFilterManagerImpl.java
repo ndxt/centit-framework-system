@@ -139,7 +139,7 @@ public class UserQueryFilterManagerImpl implements UserQueryFilterManager{
 
 	@Override
 	public List<UserQueryFilter> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-		return userQueryFilterDao.pageQuery(QueryParameterPrepare.prepPageParmers(filterMap,pageDesc,userQueryFilterDao.pageCount(filterMap)));
+		return userQueryFilterDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap,pageDesc,userQueryFilterDao.pageCount(filterMap)));
 	}
 }
 

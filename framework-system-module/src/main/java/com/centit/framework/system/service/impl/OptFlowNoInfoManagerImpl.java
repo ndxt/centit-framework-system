@@ -287,7 +287,7 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
         filterMap.put("codeCode", codeCode);
         
         return optFlowNoPoolDao.pageQuery(
-                QueryParameterPrepare.prepPageParmers(filterMap,pageDesc,
+                QueryParameterPrepare.prepPageParams(filterMap,pageDesc,
                         optFlowNoPoolDao.pageCount(filterMap)));
     }
 

@@ -231,7 +231,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
 	@Override
 	@Transactional
 	public List<UnitInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-		return unitInfoDao.pageQuery(QueryParameterPrepare.prepPageParmers(filterMap,pageDesc,unitInfoDao.pageCount(filterMap)));
+		return unitInfoDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap,pageDesc,unitInfoDao.pageCount(filterMap)));
 	}
 
 	@Override

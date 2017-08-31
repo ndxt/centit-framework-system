@@ -148,7 +148,7 @@ public class SysUserUnitManagerImpl
 	@Override
 	public List<UserUnit> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
 		return userUnitDao.pageQuery(
-		        QueryParameterPrepare.prepPageParmers(
+		        QueryParameterPrepare.prepPageParams(
 		                filterMap,pageDesc,userUnitDao.pageCount(filterMap)));
 	}
 }

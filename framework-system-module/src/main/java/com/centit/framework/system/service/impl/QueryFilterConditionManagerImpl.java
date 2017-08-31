@@ -58,7 +58,7 @@ public class QueryFilterConditionManagerImpl implements QueryFilterConditionMana
 	@Transactional
 	public List<QueryFilterCondition> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
 		return queryFilterConditionDao.pageQuery(
-				QueryParameterPrepare.prepPageParmers(filterMap,pageDesc,
+				QueryParameterPrepare.prepPageParams(filterMap,pageDesc,
 						queryFilterConditionDao.pageCount(filterMap)));
 	}
 	
