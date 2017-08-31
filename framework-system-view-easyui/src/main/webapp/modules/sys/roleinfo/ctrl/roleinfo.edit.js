@@ -14,10 +14,10 @@ define(function(require) {
 			Core.ajax(Config.ContextPath + 'system/roleinfo/' + data.roleCode, {
 				method: 'get'
 			}).then(function(data) {
-				var optCodes = _self.getOptCodes(data).join(',');
-				data.optCodes = optCodes;
+				// var optCodes = _self.getOptCodes(data).join(',');
+				// data.optCodes = optCodes;
 				
-				_self.data = $.extend(_self.object, data);
+				// _self.data = $.extend(_self.object, data);
 				
 				form.form('disableValidation')
                     .form('load', data)
@@ -54,7 +54,7 @@ define(function(require) {
 			}			
 			return false;
 		}
-		
+
 		// 从角色信息中获取OptCodes集合
 		this.getOptCodes = function(role) {
 			var powers = role.rolePowers;
