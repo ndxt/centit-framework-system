@@ -40,6 +40,7 @@ public class InnerMsg implements  Serializable{
     /**
      * 发送时间
      */
+    @OrderBy("desc")
     @Column(name = "SEND_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date sendDate;
