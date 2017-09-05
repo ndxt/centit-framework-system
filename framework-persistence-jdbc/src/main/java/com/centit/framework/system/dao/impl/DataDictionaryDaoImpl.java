@@ -1,5 +1,6 @@
 package com.centit.framework.system.dao.impl;
 
+import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.system.dao.DataDictionaryDao;
 import com.centit.framework.system.po.DataDictionary;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,14 +22,17 @@ import java.util.Map;
 public class DataDictionaryDaoImpl extends BaseDaoImpl<DataDictionary, DataDictionaryId>
         implements DataDictionaryDao {
 
-    @Override
-    public String getDaoEmbeddedFilter() {
-        return  "[:datacode | and DATA_CODE = :datacode ]" +
-                "[:catalogcode | and CATALOG_CODE = :catalogcode ]" +
-                "[NP_system | and DATA_STYLE = 'S' ]" +
-                "[:(like)dataValue | and DATA_VALUE like :dataValue ]";
+    // 转换主键中的 字段描述 对应关系
+    public Map<String, String> getFilterField() {
+        if (filterField == null) {
+            filterField = new HashMap<>();
+            filterField.put("datacode", CodeBook.EQUAL_HQL_ID);
+            filterField.put("catalogcode", CodeBook.EQUAL_HQL_ID);
+            filterField.put("NP_system", "dataStyle = 'S'");
+            filterField.put("dataValue", CodeBook.LIKE_HQL_ID);
+        }
+        return filterField;
     }
-
 
     @Override
     public List<DataDictionary> listObjects(Map<String, Object> filterDescMap) {
