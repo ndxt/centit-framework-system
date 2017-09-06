@@ -32,6 +32,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
     @Column(name = "UNIT_CODE")
     @GeneratedValue(generator = "assignedGenerator")
     @GenericGenerator(name = "assignedGenerator", strategy = "assigned")
+    @Length(max=32, message = "字段长度不能大于{max}")
     private String unitCode; // 机构代码
 
     @Column(name = "PARENT_UNIT")

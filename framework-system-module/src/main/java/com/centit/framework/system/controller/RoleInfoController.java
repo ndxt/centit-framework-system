@@ -1,9 +1,9 @@
 package com.centit.framework.system.controller;
 
-import com.centit.framework.components.CodeRepositoryUtil;
-import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
+import com.centit.framework.components.CodeRepositoryUtil;
+import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.model.basedata.IUserUnit;
@@ -19,6 +19,7 @@ import com.centit.framework.system.service.SysRoleManager;
 import com.centit.support.json.JsonPropertyUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -63,7 +64,7 @@ public class RoleInfoController extends BaseController {
     public void listGlobalAndPublicRole(String[] field,PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = convertSearchColumn(request);
         filterMap.put("NP_GLOBAL", "true");
-        if(!Objects.isNull(filterMap.get("createDateEnd"))){
+        if(!StringUtils.isEmpty(filterMap.get("createDateEnd"))){
             String endDate = filterMap.get("createDateEnd").toString();
             SimpleDateFormat fmt = new SimpleDateFormat("yy-MM-dd");
             try {
