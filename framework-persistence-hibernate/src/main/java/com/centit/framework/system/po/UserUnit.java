@@ -1,23 +1,14 @@
 package com.centit.framework.system.po;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
+import com.centit.framework.core.dao.DictionaryMap;
+import com.centit.framework.core.po.EntityWithTimestamp;
+import com.centit.framework.model.basedata.IUserUnit;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.centit.framework.core.dao.DictionaryMap;
-import com.centit.framework.core.po.EntityWithTimestamp;
-import com.centit.framework.model.basedata.IUserUnit;
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * FUserunit entity.
@@ -36,24 +27,30 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
     @Column(name = "USER_UNIT_ID")
     @GeneratedValue(generator = "assignedGenerator")
     @GenericGenerator(name = "assignedGenerator", strategy = "assigned")
-    @Length(max = 64)
+    @Length(max = 32)
     private String userUnitId;
     
     @Column(name = "UNIT_CODE")
+    @NotBlank(message = "字段不能为空")
+    @Length(max = 32, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="unitName",value="unitCode")
     private String unitCode; // 机构代码
 
     @Column(name = "USER_CODE")
+    @NotBlank(message = "字段不能为空")
     @DictionaryMap(fieldName="userName",value="userCode")
+    @Length(max = 32, message = "字段长度不能大于{max}")
     private String userCode; // 用户代码
 
     @Column(name = "USER_STATION")
-    @Length(max = 32, message = "字段长度不能大于{max}")
+    @NotBlank(message = "字段不能为空")
+    @Length(max = 16, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="userStationText",value="StationType")
     private String userStation; // 岗位
 
     @Column(name = "USER_RANK")
-    @Length(max = 32, message = "字段长度不能大于{max}")
+    @NotBlank(message = "字段不能为空")
+    @Length(max = 16, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="userRankText",value="RankType")
     private String userRank; // 职务 
 

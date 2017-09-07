@@ -99,7 +99,7 @@ public class UserInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(method = RequestMethod.POST)
-    public void create(@Valid UserInfo userInfo, @Valid UserUnit userUnit,
+    public void create(@Valid UserInfo userInfo, UserUnit userUnit,
                        HttpServletRequest request, HttpServletResponse response) {
         
     	UserInfo dbuserinfo=sysUserManager.loadUserByLoginname(userInfo.getLoginName());
@@ -340,6 +340,7 @@ public class UserInfoController extends BaseController {
 
             } else {
                 JsonResultUtils.writeErrorMessageJson("该用户不存在", response);
+                return;
             }
 
             /*********log*********/
