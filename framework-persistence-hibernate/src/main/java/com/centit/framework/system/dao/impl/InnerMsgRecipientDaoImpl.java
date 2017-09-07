@@ -29,7 +29,7 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
             filterField.put("msgStateNot", "msgState != :msgStateNot");
             filterField.put("innerMsgStateNot", "msgCode in ( select  msgCode from InnerMsg where msgState != :innerMsgStateNot )");
             filterField.put("isRecycled", CodeBook.EQUAL_HQL_ID);
-            filterField.put("MSGSTATE", CodeBook.EQUAL_HQL_ID);
+            filterField.put("msgState", CodeBook.EQUAL_HQL_ID);
             filterField.put("msgType", "msgCode in ( select  msgCode from InnerMsg where msgType = :msgType )");
             filterField.put(CodeBook.ORDER_BY_HQL_ID, "msgCode desc");
         }
