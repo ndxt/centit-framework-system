@@ -14,7 +14,7 @@ public interface OptFlowNoPoolDao {
 	
 	 void deleteObjectById(OptFlowNoPoolId cid);
 	
-	 void saveObject(OptFlowNoPool optMethod);
+	 void saveObject(OptFlowNoPool optFlowNoPool);
 	
 	
      int  pageCount(Map<String, Object> filterDescMap);

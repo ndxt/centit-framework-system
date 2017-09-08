@@ -113,17 +113,6 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     @Length(max = 1, message = "字段长度必须为{max}")
     private String pageType; // 页面打开方式 D: DIV I： iFrame
     
-    public Map<String, Object> getAttributes() {
-        boolean external = true;
-        if (StringUtils.equals("D", this.pageType)) {
-            external = false;
-        };
-        
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("external", external);
-        return map;
-    }
-    
     @Column(name = "ORDER_IND")
     @Range(max = 100000, message = "字段长度不能大于{max}")
     private Long orderInd; // 业务顺序

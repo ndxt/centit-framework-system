@@ -3,14 +3,16 @@ package com.centit.framework.system.dao.impl;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.hibernate.dao.DatabaseOptUtils;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.OptLogDao;
 import com.centit.framework.system.po.OptLog;
+import com.centit.support.database.utils.PersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.*;
 
 @Repository("optLogDao")
@@ -21,28 +23,16 @@ public class OptLogDaoImpl extends BaseDaoImpl<OptLog, Long> implements OptLogDa
     public Map<String, String> getFilterField() {
         if (filterField == null) {
             filterField = new HashMap<>();
-
             filterField.put("logId", CodeBook.EQUAL_HQL_ID);
-
             filterField.put("logLevel", CodeBook.LIKE_HQL_ID);
-
             filterField.put(CodeRepositoryUtil.USER_CODE, CodeBook.EQUAL_HQL_ID);
-
             filterField.put("(date)optTimeBegin", "optTime >= :optTimeBegin ");
-
             filterField.put("(date)optTimeEnd", "optTime < :optTimeEnd");
-
             filterField.put("optId", CodeBook.LIKE_HQL_ID);
-
             filterField.put("optCode", CodeBook.LIKE_HQL_ID);
-
             filterField.put("optContent", CodeBook.LIKE_HQL_ID);
-
             filterField.put("oldValue", CodeBook.LIKE_HQL_ID);
-            
             filterField.put("optMethod", CodeBook.EQUAL_HQL_ID);
-
-            filterField.put(CodeBook.ORDER_BY_HQL_ID, " optTime desc");
 
         }
         return filterField;
@@ -51,29 +41,39 @@ public class OptLogDaoImpl extends BaseDaoImpl<OptLog, Long> implements OptLogDa
     @SuppressWarnings("unchecked")
     @Transactional
     public List<String> listOptIds() {
-        final String hql = "select DISTINCT f.optId from OptLog f";
+        final String hql = "select DISTINCT f.OPT_ID from F_OPT_LOG f";
 
-        return (List<String>) DatabaseOptUtils.findObjectsByHql(this, hql);
+        return this.getJdbcTemplate().queryForList(hql,String.class);
     }
 
 
     @Transactional
     public Long createNewLogId(){
-        return DatabaseOptUtils.getNextLongSequence(this, "S_SYS_LOG");
+        return DatabaseOptUtils.getSequenceNextValue(this, "S_SYS_LOG");
+    }
+
+    @Override
+    public OptLog getObjectById(Long logId) {
+        return super.getObjectById(logId);
+    }
+
+    @Override
+    public void deleteObjectById(Long logId) {
+        super.deleteObjectById(logId);
     }
 
     @Override
     @Transactional
     public void mergeObject(OptLog o) {
         if (null == o.getLogId()) {
-            o.setLogId(DatabaseOptUtils.getNextLongSequence(this, "S_SYS_LOG"));
+            o.setLogId(DatabaseOptUtils.getSequenceNextValue(this, "S_SYS_LOG"));
         }
        /* return */super.mergeObject(o);
     }
 
     @Transactional
     public void delete(Date begin, Date end) {
-        String hql = "delete from OptLog o where 1=1 ";
+        String hql = "delete from F_OPT_LOG o where 1=1 ";
         List<Object> objects = new ArrayList<>();
         if (null != begin) {
             hql += "and o.optTime > ?";
@@ -84,8 +84,12 @@ public class OptLogDaoImpl extends BaseDaoImpl<OptLog, Long> implements OptLogDa
             objects.add(end);
         }
 
-        DatabaseOptUtils.doExecuteHql(this, hql, objects.toArray(new Object[objects.size()]));
-        
+        try {
+            DatabaseOptUtils.doExecuteSql(this, hql, objects.toArray(new Object[objects.size()]));
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        }
+
     }
 
 }

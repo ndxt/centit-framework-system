@@ -9,5 +9,5 @@ public interface OptFlowNoInfoDao {
 	
 	void deleteObjectById(OptFlowNoInfoId cid);
 	
-	void saveObject(OptFlowNoInfo optMethod);
+	void saveObject(OptFlowNoInfo optFlowNoINfo);
 }

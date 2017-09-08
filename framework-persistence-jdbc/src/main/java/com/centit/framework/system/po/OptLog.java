@@ -40,6 +40,7 @@ public class OptLog implements java.io.Serializable {
     @DictionaryMap(fieldName="userName",value="userCode")
     private String userCode;
 
+    @OrderBy("desc")
     @Column(name = "OPT_TIME")
     @NotNull(message = "字段不能为空")
     @Temporal(TemporalType.TIMESTAMP)

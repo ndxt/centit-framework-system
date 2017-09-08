@@ -29,7 +29,8 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     public String getId() {
         return this.optId;
     }
-    
+
+    @OrderBy
     @Column(name = "PRE_OPT_ID")
     @Length(max = 32, message = "字段长度不能大于{max}")
     private String preOptId; // 上级业务模块编号
@@ -97,18 +98,8 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     @Column(name = "PAGE_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String pageType; // 页面打开方式 D: DIV I： iFrame
-    
-    public Map<String, Object> getAttributes() {
-        boolean external = true;
-        if (StringUtils.equals("D", this.pageType)) {
-            external = false;
-        };
-        
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("external", external);
-        return map;
-    }
-    
+
+    @OrderBy
     @Column(name = "ORDER_IND")
     @Range(max = 100000, message = "字段长度不能大于{max}")
     private Long orderInd; // 业务顺序
