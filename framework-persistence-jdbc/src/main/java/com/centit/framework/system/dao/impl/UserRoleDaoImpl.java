@@ -2,11 +2,15 @@ package com.centit.framework.system.dao.impl;
 
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.hibernate.dao.DatabaseOptUtils;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.po.FVUserRoles;
+import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
+import com.centit.support.database.orm.OrmDaoUtils;
+import com.centit.support.database.utils.QueryUtils;
+import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -22,47 +26,39 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
     public Map<String, String> getFilterField() {
         if (filterField == null) {
             filterField = new HashMap<>();
-
-            filterField.put("roleCode", "id.roleCode = :roleCode");
-
-            filterField.put("userCode", "id.userCode = :userCode");
-          
+            filterField.put("roleCode", CodeBook.EQUAL_HQL_ID);
+            filterField.put("userCode", CodeBook.EQUAL_HQL_ID);
             filterField.put("roleName", CodeBook.LIKE_HQL_ID);
-            
             filterField.put("NP_unitRoleType", "id.roleCode in (select roleCode from RoleInfo where unitCode is not null)");
             filterField.put("NP_userRoleType", "id.roleCode not in (select roleCode from RoleInfo where unitCode is not null)");
-
             filterField.put("userCode_isValid", "id.userCode in (select userCode from UserInfo where isValid = :userCode_isValid)");
-            
             filterField.put(CodeBook.ORDER_BY_HQL_ID, " id.userCode ");
-
             filterField.put("userName", "id.userCode in (select userCode from UserInfo where userName like :userName)");
-
         }
         return filterField;
     }
     
     @Transactional
     public void deleteByRoleId(String roid) {
-        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.roleCode = ?", roid);
+        super.deleteObjectsByProperties(QueryUtils.createSqlParamsMap("roleCode",roid));
     }
     @Transactional
     public void deleteByUserId(String usid) {
-        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.userCode = ?", usid);
+        super.deleteObjectsByProperties(QueryUtils.createSqlParamsMap("userCode",usid));
     }
     @Transactional
     public void deleteByRoleCodeAndUserCode(String roleCode,String userCode) {
-        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.userCode = '"+userCode+"' and id.roleCode= '"+roleCode+"'");
-    }
+        super.deleteObjectsByProperties(
+                QueryUtils.createSqlParamsMap("userCode",userCode,"roleCode",roleCode));   }
 
     @SuppressWarnings("unchecked")
     @Transactional
     public List<FVUserRoles> getSysRolesByUserId(String userCode) {
- 
-        final String sSqlsen = "from FVUserRoles v where id.userCode = ?";
-        List<FVUserRoles> ls = (List<FVUserRoles>) DatabaseOptUtils.findObjectsByHql(
-                this, sSqlsen, new Object[]{userCode});
-        return ls;
+        return getJdbcTemplate().execute(
+                (ConnectionCallback<List<FVUserRoles>>) conn ->
+                        OrmDaoUtils.listObjectsByProperties(conn,
+                                QueryUtils.createSqlParamsMap("userCode",userCode) ,
+                                FVUserRoles.class));
     }
     @Transactional
     public List<UserRole> getUserRolesByUserId(String usid, String rolePrefix) {

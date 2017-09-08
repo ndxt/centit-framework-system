@@ -22,32 +22,30 @@ public class UserSettingDaoImpl extends BaseDaoImpl<UserSetting, UserSettingId> 
 
     public Map<String, String> getFilterField() {
         if (filterField == null) {
-            filterField = new HashMap<String, String>();
-
-            filterField.put(CodeRepositoryUtil.USER_CODE, "cid.userCode = :userCode");
-
-            filterField.put("paramCode", "cid.paramCode = :paramCode");
-
+            filterField = new HashMap<>();
+            filterField.put(CodeRepositoryUtil.USER_CODE,  CodeBook.LIKE_HQL_ID);
+            filterField.put("paramCode",  CodeBook.LIKE_HQL_ID);
             filterField.put("paramValue", CodeBook.LIKE_HQL_ID);
-
             filterField.put("paramClass", CodeBook.LIKE_HQL_ID);
-
             filterField.put("paramName", CodeBook.LIKE_HQL_ID);
-
             filterField.put("createDate", CodeBook.LIKE_HQL_ID);
-
         }
         return filterField;
     }
-    
+
+    @Override
+    public UserSetting getObjectById(UserSettingId userSettingId) {
+        return super.getObjectById(userSettingId);
+    }
+
     @Transactional
     public List<UserSetting> getUserSettingsByCode(String userCode) {
-        return listObjects("From UserSetting where cid.userCode=?",userCode);
+        return listObjectsByProperty("userCode",userCode);
     }
     
     @Transactional
     public List<UserSetting> getUserSettings(String userCode,String optID) {
-        return listObjects("From UserSetting where cid.userCode=? and optId= ?",
+        return listObjectsByFilter(" where USER_CODE =? and OPT_ID = ?",
                 new Object[]{userCode,optID});
     }
     

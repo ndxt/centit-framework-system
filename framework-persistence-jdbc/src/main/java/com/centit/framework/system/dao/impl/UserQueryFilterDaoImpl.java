@@ -2,9 +2,10 @@ package com.centit.framework.system.dao.impl;
 
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.hibernate.dao.DatabaseOptUtils;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UserQueryFilterDao;
 import com.centit.framework.system.po.UserQueryFilter;
+import com.centit.support.database.utils.QueryUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -29,47 +30,44 @@ public class UserQueryFilterDaoImpl extends BaseDaoImpl<UserQueryFilter,Long> im
 	@Override
 	public Map<String, String> getFilterField() {
 		if( filterField == null){
-			filterField = new HashMap<String, String>();
-
+			filterField = new HashMap<>();
 			filterField.put("filterNo" , CodeBook.EQUAL_HQL_ID);
-
 			filterField.put("userCode" , CodeBook.EQUAL_HQL_ID);
 			filterField.put("modleCode" , CodeBook.EQUAL_HQL_ID);
-
 			filterField.put("filterName" , CodeBook.EQUAL_HQL_ID);
-
 			filterField.put("filterValue" , CodeBook.EQUAL_HQL_ID);
-			
 		}
 		return filterField;
 	}
-	
+
+	@Override
+	public UserQueryFilter getObjectById(Long filterNo) {
+		return super.getObjectById(filterNo);
+	}
+
 	@Transactional
 	public List<UserQueryFilter> listUserQueryFilterByModle(String userCode,String modelCode){
-		return super.listObjects("From UserQueryFilter where userCode = ? and modleCode = ? "
-				+ "order by isDefault desc , createDate desc",
+		return super.listObjectsByFilter(" where USER_CODE = ? and MODLE_CODE = ? "
+				+ "order by IS_DEFAULT desc , CREATE_DATE desc",
 				new Object[]{userCode,modelCode});
 	}
 	
 	@Transactional
 	public List<UserQueryFilter> listUserDefaultFilterByModle(String userCode,String modelCode){
-		return super.listObjects("From UserQueryFilter where userCode = ? and modleCode = ? "
-				+ "and isDefault = 'T' order by isDefault desc , createDate desc",
+		return super.listObjectsByFilter(" where USER_CODE = ? and MODLE_CODE = ? "
+				+ "and IS_DEFAULT = 'T' order by CREATE_DATE desc",
 				new Object[]{userCode,modelCode});
 	}
 	
 	@Transactional
 	public UserQueryFilter getUserDefaultFilterByModle(String userCode,String modelCode){
-		List<UserQueryFilter> uqfs = super.listObjects("From UserQueryFilter where userCode = ? " +
-						"and modleCode = ? and isDefault = 'T' order by isDefault desc , createDate desc",
-				new Object[]{userCode,modelCode});
-		if(uqfs==null || uqfs.size()==0)
-			return null;
-		return uqfs.get(0);
+		return super.getObjectByProperties(
+				QueryUtils.createSqlParamsMap("userCode",userCode,"modelCode",modelCode ));
+
 	}
 	
 	@Transactional
     public Long getNextKey() {
-        return DatabaseOptUtils.getNextLongSequence(this, "S_FILTER_NO");
+        return DatabaseOptUtils.getSequenceNextValue(this, "S_FILTER_NO");
     }
 }
