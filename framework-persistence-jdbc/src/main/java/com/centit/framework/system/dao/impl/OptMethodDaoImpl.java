@@ -2,9 +2,10 @@ package com.centit.framework.system.dao.impl;
 
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.hibernate.dao.DatabaseOptUtils;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.OptMethodDao;
 import com.centit.framework.system.po.OptMethod;
+import com.centit.support.database.utils.QueryUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,46 +16,55 @@ import java.util.Map;
 @Repository("optMethodDao")
 public class OptMethodDaoImpl extends BaseDaoImpl<OptMethod, String> implements OptMethodDao {
 
+    @Override
+    public OptMethod getObjectById(String optCode) {
+        return super.getObjectById(optCode);
+    }
+
+    @Override
+    public void deleteObjectById(String optCode) {
+        deleteObjectById(optCode);
+    }
+
     @Transactional
     public List<OptMethod> listOptMethodByOptID(String sOptID) {
-        return listObjects("FROM OptMethod WHERE optId =?", sOptID);
+        return listObjectsByProperty("optId", sOptID);
     }
 
     @Transactional
     public List<OptMethod> listOptMethodByRoleCode(String roleCode) {
-        return listObjects("FROM OptMethod WHERE optCode in "
-        		+ "(select id.optCode from RolePower where id.roleCode = ?)"
-        		+ " order by optId", roleCode);
+        return listObjectsByFilter(" WHERE OPT_CODE in "
+        		+ "(select rp.OPT_CODE from F_ROLEPOWER rp where rp.ROLE_CODE = ?)"
+        		+ " order by OPT_ID", new Object[]{roleCode});
     }
     
     @Transactional
     public int getOptMethodSumByOptID(String sOptID) {
-        return Integer.valueOf(String.valueOf(DatabaseOptUtils.getSingleObjectByHql(this,
-                "SELECT count(optcode) FROM OptMethod WHERE optId = ?", sOptID)));
+        return pageCount(QueryUtils.createSqlParamsMap("optId", sOptID));
     }
 
     @Transactional
     public void deleteOptMethodsByOptID(String sOptID) {
-        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM OptMethod WHERE optId = ?", sOptID);
+        deleteObjectsByProperties(QueryUtils.createSqlParamsMap("optId", sOptID));
     }
 
   
     public Map<String, String> getFilterField() {
         if (filterField == null) {
-            filterField = new HashMap<String, String>();
-            filterField.put("OPTID", CodeBook.EQUAL_HQL_ID);
-            filterField.put("PREOPTID", CodeBook.EQUAL_HQL_ID);
-            filterField.put("ISINTOOLBAR", CodeBook.EQUAL_HQL_ID);
-            filterField.put("TOPOPTID", CodeBook.EQUAL_HQL_ID);
-            filterField.put("OPTTYPE", CodeBook.EQUAL_HQL_ID);
-            filterField.put("OPTNAME", CodeBook.LIKE_HQL_ID);
+            filterField = new HashMap<>();
+            filterField.put("optId", CodeBook.EQUAL_HQL_ID);
+            filterField.put("optCode", CodeBook.EQUAL_HQL_ID);
+            filterField.put("isInWorkflow", CodeBook.EQUAL_HQL_ID);
+            filterField.put("optReq", CodeBook.EQUAL_HQL_ID);
+            filterField.put("optMethod", CodeBook.EQUAL_HQL_ID);
+            filterField.put("optName", CodeBook.LIKE_HQL_ID);
         }
         return filterField;
     }
 
     @Transactional
     public String getNextOptCode() {
-    	return DatabaseOptUtils.getNextValueOfSequence(this, "S_OPTDEFCODE");
+    	return String.valueOf(DatabaseOptUtils.getSequenceNextValue(this, "S_OPTDEFCODE"));
     }
 
 }

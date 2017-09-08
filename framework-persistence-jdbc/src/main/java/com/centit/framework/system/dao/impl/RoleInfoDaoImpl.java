@@ -2,11 +2,13 @@ package com.centit.framework.system.dao.impl;
 
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.hibernate.dao.DatabaseOptUtils;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.RoleInfoDao;
 import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.VOptTree;
+import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.QueryUtils;
+import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,42 +19,59 @@ import java.util.Map;
 @Repository("roleInfoDao")
 public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements RoleInfoDao {
 
-    @SuppressWarnings("unchecked")
-    @Transactional
-    public List<VOptTree> getVOptTreeList() {
-        return (List<VOptTree>)DatabaseOptUtils.findObjectsByHql
-                (this,"FROM VOptTree");
-    }
 
     public Map<String, String> getFilterField() {
         if (filterField == null) {
             filterField = new HashMap<>();
-            filterField.put("ROLECODE", CodeBook.LIKE_HQL_ID);
-            filterField.put("publicUnitRole", "(roleCode like :publicUnitRole or roleCode like 'P-%')");
-            filterField.put("UNITROLE", "(roleCode like :UNITROLE)");
-            filterField.put("NP_GLOBAL", "(roleCode like 'G-%' or roleCode like 'P-%')");
+            filterField.put("roleCode", CodeBook.LIKE_HQL_ID);
+            filterField.put("(like)publicUnitRole", "(ROLE_CODE like :publicUnitRole or ROLE_CODE like 'P-%')");
+            filterField.put("(startwith)UNITROLE", "(ROLE_CODE like :UNITROLE)");
+            filterField.put("NP_GLOBAL", "(ROLE_CODE like 'G-%' or roleCode like 'P-%')");
             filterField.put("ROLENAME", CodeBook.LIKE_HQL_ID);
             filterField.put("ROLEDESC", CodeBook.LIKE_HQL_ID);
             filterField.put("isValid", CodeBook.EQUAL_HQL_ID);
             filterField.put("roleType", CodeBook.EQUAL_HQL_ID); 
             filterField.put("unitCode", CodeBook.EQUAL_HQL_ID);
-            filterField.put("NP_unitCode", "unitCode is null"); 
-            filterField.put("roleNameEq", "roleName = :roleNameEq");
-
-            filterField.put("(date)createDateBeg", "createDate>= :createDateBeg");
-            
-			filterField.put("(date)createDateEnd", "createDate< :createDateEnd");
+            filterField.put("NP_unitCode", "UNIT_CODE is null");
+            filterField.put("roleNameEq", "ROLE_NAME = :roleNameEq");
+            filterField.put("(date)createDateBeg", "CREATE_DATE>= :createDateBeg");
+			filterField.put("(date)createDateEnd", "CREATE_DATE< :createDateEnd");
         }
         return filterField;
+    }
+
+    @Override
+    public List<RoleInfo> listObjectsAll() {
+        return super.listObjects();
+    }
+
+    @Override
+    public void deleteObjectById(String roleCode) {
+        super.deleteObjectById(roleCode);
+    }
+
+    @Override
+    public RoleInfo getObjectById(String roleCode) {
+        return super.getObjectById(roleCode);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public List<VOptTree> getVOptTreeList() {
+
+        return getJdbcTemplate().execute(
+                (ConnectionCallback<List<VOptTree>>) conn ->
+                        OrmDaoUtils.listAllObjects(conn,  VOptTree.class));
     }
    
     @SuppressWarnings("unchecked")
     @Transactional
     public List<Object> listRoleOptMethods(String rolecode) {
-        String hql = "select new map(def.optName as def_optname, def.optCode as def_optcode) "
-                + "from OptMethod def, RolePower pow where def.optCode = pow.id.optCode and pow.id.roleCode = ?";
-        return (List<Object>)DatabaseOptUtils.findObjectsByHql
-                (this,hql,  new Object[]{rolecode});
+        String hql = "select def.OPT_NAME as def_optname, def.OPT_CODE as def_optcode " +
+                "from F_OPTDEF def, F_ROLEPOWER pow  " +
+                "where def.OPT_CODE = pow.OPT_CODE and pow.ROLE_CODE = ? ";
+        return DatabaseOptUtils.listObjectsBySqlAsJson(
+                this,hql,  new Object[]{rolecode});
     }
 
     
@@ -65,24 +84,19 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
      */
     @Transactional
     public List<RoleInfo> search(String key, String[] field) {
-        StringBuilder hql = new StringBuilder("from RoleInfo u where ");
-        String params[] = new String[field.length];
-        String sMatch = QueryUtils.getMatchString(key);
-        for (int i = 0; i < field.length; i++) {
-            hql.append("u." + field[i] + " like ? ");//'%" +  key + "%' ");
-            if (i != field.length - 1) {
-                hql.append(" or ");
-            }
-            params[i] = sMatch; 
+        HashMap<String,Object> filter = new HashMap<>(field.length*2);
+        for(String f :field){
+            filter.put(f,key);
         }
-        return listObjects( hql.toString(),params);       
+        return listObjectsByProperties(filter);
     }
 
     public int countRoleUserSum(String roleCode){
-        Long l = DatabaseOptUtils.getSingleIntByHql(this,
-                "select count(1) as roleUserSum from UserRole where id.roleCode=?",
-                roleCode
-        );
-        return l.intValue();
+        return pageCount(QueryUtils.createSqlParamsMap("roleCode",roleCode ));
+    }
+
+    @Override
+    public RoleInfo getObjectByProperty(String propertyName, Object propertyValue) {
+        return super.getObjectByProperties(QueryUtils.createSqlParamsMap(propertyName, propertyValue));
     }
 }

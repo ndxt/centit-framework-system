@@ -1,7 +1,7 @@
 package com.centit.framework.system.dao.impl;
 
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.hibernate.dao.DatabaseOptUtils;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.SysNotifyDao;
 import com.centit.framework.system.po.SysNotify;
 import org.springframework.stereotype.Repository;
@@ -16,7 +16,7 @@ public class SysNotifyDaoImpl extends BaseDaoImpl<SysNotify, Long> implements Sy
     @Override
     public Map<String, String> getFilterField() {
         if (filterField == null) {
-            filterField = new HashMap<String, String>();
+            filterField = new HashMap<>();
 
         }
         return filterField;
@@ -27,7 +27,7 @@ public class SysNotifyDaoImpl extends BaseDaoImpl<SysNotify, Long> implements Sy
     @Transactional
     public void mergeObject(SysNotify o) {
         if (null == o.getNotifyId()) {
-            o.setNotifyId(DatabaseOptUtils.getNextLongSequence(this, "S_MSGCODE"));
+            o.setNotifyId(DatabaseOptUtils.getSequenceNextValue(this, "S_MSGCODE"));
         }
         /*return*/ super.mergeObject(o);
     }

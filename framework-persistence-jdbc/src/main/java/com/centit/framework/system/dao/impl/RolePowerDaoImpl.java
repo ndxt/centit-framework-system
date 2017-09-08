@@ -1,10 +1,11 @@
 package com.centit.framework.system.dao.impl;
 
+import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.hibernate.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.RolePowerDao;
 import com.centit.framework.system.po.RolePower;
 import com.centit.framework.system.po.RolePowerId;
+import com.centit.support.database.utils.QueryUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,37 +28,37 @@ public class RolePowerDaoImpl extends BaseDaoImpl<RolePower, RolePowerId> implem
     public Map<String, String> getFilterField() {
         if (filterField == null) {
             filterField = new HashMap<>();
-            filterField.put("optCode", "id.optCode = :optCode");
-            filterField.put("roleCode", "id.roleCode = :roleCode");
-
+            filterField.put("optCode", CodeBook.EQUAL_HQL_ID);
+            filterField.put("roleCode", CodeBook.EQUAL_HQL_ID);
         }
         return filterField;
     }
-    
+
+    @Override
+    public List<RolePower> listObjectsAll() {
+        return super.listObjects();
+    }
+
     @Transactional
-    public void deleteRolePowersByRoleCode(String rolecode) {
-        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM RolePower rp where rp.id.roleCode=?", rolecode);
+    public void deleteRolePowersByRoleCode(String roleCode) {
+        super.deleteObjectsByProperties(QueryUtils.createSqlParamsMap("roleCode",roleCode));
     }
     
     @Transactional
-    public void deleteRolePowersByOptCode(String optecode) {
-        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM RolePower rp where rp.id.optCode=?", optecode);
+    public void deleteRolePowersByOptCode(String optCode) {
+        super.deleteObjectsByProperties(QueryUtils.createSqlParamsMap("optCode",optCode));
     }
     
     
     @Transactional
     public List<RolePower> listRolePowersByRoleCode(String rolecode) {
-        return listObjects("FROM RolePower rp where rp.id.roleCode=?", rolecode);
+        return listObjectsByProperty("roleCode", rolecode);
     }
     
     @Transactional
     public void mergeBatchObject(List<RolePower> rolePowers) {
         for (int i = 0; i < rolePowers.size(); i++) {
             super.mergeObject(rolePowers.get(i));
-
-            if (0 == i % 20) {
-                DatabaseOptUtils.flush(this.getCurrentSession());
-            }
         }
     }
 }

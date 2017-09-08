@@ -2,7 +2,7 @@ package com.centit.framework.system.dao.impl;
 
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.hibernate.dao.DatabaseOptUtils;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.QueryFilterConditionDao;
 import com.centit.framework.system.po.QueryFilterCondition;
 import org.slf4j.Logger;
@@ -30,37 +30,34 @@ public class QueryFilterConditionDaoImpl extends BaseDaoImpl<QueryFilterConditio
 	@Override
 	public Map<String, String> getFilterField() {
 		if( filterField == null){
-			filterField = new HashMap<String, String>();
-
+			filterField = new HashMap<>();
 			filterField.put("conditionNo" , CodeBook.EQUAL_HQL_ID);
-
-
 			filterField.put("tableClassName" , CodeBook.EQUAL_HQL_ID);
-
 			filterField.put("paramName" , CodeBook.EQUAL_HQL_ID);
-
 			filterField.put("paramLabel" , CodeBook.EQUAL_HQL_ID);
-
 			filterField.put("paramType" , CodeBook.EQUAL_HQL_ID);
-
 			filterField.put("defaultValue" , CodeBook.EQUAL_HQL_ID);
-
 			filterField.put("filterSql" , CodeBook.EQUAL_HQL_ID);
-
 			filterField.put("selectDataType" , CodeBook.EQUAL_HQL_ID);
-
 			filterField.put("selectDataCatalog" , CodeBook.EQUAL_HQL_ID);
-
 			filterField.put("selectSql" , CodeBook.EQUAL_HQL_ID);
-
 			filterField.put("selectJson" , CodeBook.EQUAL_HQL_ID);
-
 		}
 		return filterField;
 	}
 	
 	@Transactional
     public Long getNextKey() {
-        return DatabaseOptUtils.getNextLongSequence(this, "S_FILTER_NO");
+        return DatabaseOptUtils.getSequenceNextValue(this, "S_FILTER_NO");
     }
+
+	@Override
+	public QueryFilterCondition getObjectById(Long filterNo) {
+		return super.getObjectById(filterNo);
+	}
+
+	@Override
+	public void deleteObjectById(Long filterNo) {
+		super.deleteObjectById(filterNo);
+	}
 }
