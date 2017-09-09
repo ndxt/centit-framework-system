@@ -2,10 +2,8 @@ package com.centit.framework.system.dao.impl;
 
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.po.FVUserRoles;
-import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
 import com.centit.support.database.orm.OrmDaoUtils;
@@ -15,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,15 +26,29 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
             filterField.put("roleCode", CodeBook.EQUAL_HQL_ID);
             filterField.put("userCode", CodeBook.EQUAL_HQL_ID);
             filterField.put("roleName", CodeBook.LIKE_HQL_ID);
-            filterField.put("NP_unitRoleType", "id.roleCode in (select roleCode from RoleInfo where unitCode is not null)");
-            filterField.put("NP_userRoleType", "id.roleCode not in (select roleCode from RoleInfo where unitCode is not null)");
-            filterField.put("userCode_isValid", "id.userCode in (select userCode from UserInfo where isValid = :userCode_isValid)");
+            filterField.put("NP_unitRoleType", "id.roleCode in (select ro.ROLE_CODE from f_roleinfo ro" +
+                    " where ro.UNIT_CODE is not null)");
+            filterField.put("NP_userRoleType", "id.roleCode not in (select ro.ROLE_CODE from f_roleinfo where" +
+                    " ro.UNIT_CODE is not null)");
+            filterField.put("userCode_isValid", "id.userCode in (select us.USER_CODE from f_userinfo us where " +
+                    "us.IS_VALID = :userCode_isValid)");
             filterField.put(CodeBook.ORDER_BY_HQL_ID, " id.userCode ");
-            filterField.put("userName", "id.userCode in (select userCode from UserInfo where userName like :userName)");
+            filterField.put("userName", "id.userCode in (select us.USER_CODE from f_userinfo where " +
+                    "us.USER_NAME like :userName)");
         }
         return filterField;
     }
-    
+
+    @Override
+    public void deleteObjectById(UserRoleId id) {
+        deleteObjectById(id);
+    }
+
+    @Override
+    public UserRole getObjectById(UserRoleId id) {
+        return getObjectById(id);
+    }
+
     @Transactional
     public void deleteByRoleId(String roid) {
         super.deleteObjectsByProperties(QueryUtils.createSqlParamsMap("roleCode",roid));
@@ -62,26 +73,37 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
     }
     @Transactional
     public List<UserRole> getUserRolesByUserId(String usid, String rolePrefix) {
-        String hql = "FROM UserRole ur where ur.id.userCode = ? and ur.id.roleCode like ?"
-                + "and ur.id.obtainDate <= ? and (ur.secedeDate is null or ur.secedeDate > ?) "
-                + "ORDER BY obtainDate";
+        String sql = "select u.USER_CODE, u.ROLE_CODE, u.OBTAIN_DATE, u.CHANGE_DESC, u.CREATE_DATE, u.CREATOR, " +
+                "u.UPDATOR, u.UPDATE_DATE from F_USERROLE u " +
+                "where USER_CODE = :userCode and ROLE_CODE like :rolePrefix" +
+                "and OBTAIN_DATE <= sysdate and (SECEDE_DATE is null or SECEDE_DATE >sysdate)" +
+                "ORDER BY OBTAIN_DATE,SECEDEDATE";
 
-        return listObjects(hql, new Object[]{usid, rolePrefix + "%",new Date(),new Date()});
+        return listObjectsBySql(sql, QueryUtils.createSqlParamsMap("userCode", usid, "rolePrefix", rolePrefix + "%"));
     }
 
     @Transactional
     public List<UserRole> getAllUserRolesByUserId(String usid, String rolePrefix) {
-        String hql = "FROM UserRole ur where ur.id.userCode=? and ur.id.roleCode like ? "
+        String sql = "select u.USER_CODE, u.ROLE_CODE, u.OBTAIN_DATE, u.CHANGE_DESC, u.CREATE_DATE, u.CREATOR, " +
+                "u.UPDATOR, u.UPDATE_DATE from F_USERROLE u " +
+                "where u.id.userCode=:userCode and u.id.roleCode like :rolePrefix "
                 + "ORDER BY obtainDate";
 
-        return listObjects(hql, new Object[]{usid, rolePrefix + "%"});
+        return listObjectsBySql(sql, QueryUtils.createSqlParamsMap("userCode", usid, "rolePrefix", rolePrefix + "%"));
     }
+
     @Transactional
     public UserRole getValidUserRole(String userCode, String rolecode) {
+        String sql = "select u.USER_CODE, u.ROLE_CODE, u.OBTAIN_DATE, u.CHANGE_DESC, u.CREATE_DATE, u.CREATOR, " +
+                "u.UPDATOR, u.UPDATE_DATE from F_USERROLE u " +
+                "where u.id.userCode=:userCode and u.id.roleCode = :roleCode " +
+                "ORDER BY obtainDate";
+
         String hql = "FROM UserRole ur where ur.id.userCode=? and ur.id.roleCode = ? " +
              "ORDER BY obtainDate";
 
-        List<UserRole> urlt = listObjects(hql, new Object[]{userCode, rolecode});
+        List<UserRole> urlt = listObjectsBySql(sql, QueryUtils.createSqlParamsMap(
+                "userCode", userCode, "roleCode", rolecode));
         if (CollectionUtils.isEmpty(urlt)) {
             return null;
         }

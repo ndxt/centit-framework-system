@@ -1,15 +1,17 @@
 package com.centit.framework.system.dao.impl;
 
 import com.centit.framework.core.dao.CodeBook;
-import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.hibernate.dao.DatabaseOptUtils;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.po.UserUnit;
 import com.centit.support.algorithm.DatetimeOpt;
+import com.centit.support.algorithm.StringBaseOpt;
+import com.centit.support.database.utils.QueryUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,17 +22,19 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
     public Map<String, String> getFilterField() {
         if (filterField == null) {
             filterField = new HashMap<>();
-            filterField.put("userCode_isValid",
-                    "userCode in (select userCode from UserInfo where isValid = :userCode_isValid)");
-            filterField.put("unitCode",
-                    "(unitCode = :unitCode or unitCode in (select unitCode from UnitInfo where parentUnit = :unitCode))");
-            filterField.put("userStation", "userStation = :userStation");
-            filterField.put("unitRank", "userRank = :unitRank");
-            filterField.put("userCode", "userCode = :userCode");
+            filterField.put("userCode_isValid", "userCode in (select us.USER_CODE" +
+                    " from f_userinfo us where us.IS_VALID = :userCode_isValid)");
+            filterField.put("unitCode","(unitCode = :unitCode or unitCode in " +
+                    "(select un.UNIT_CODE from f_unitinfo un  where un.PARENT_UNIT = :unitCode))");
+            filterField.put("userStation", CodeBook.EQUAL_HQL_ID);
+            filterField.put("unitRank", CodeBook.EQUAL_HQL_ID);
+            filterField.put("userCode", CodeBook.EQUAL_HQL_ID);
             filterField.put("isPrimary", CodeBook.EQUAL_HQL_ID);
             filterField.put("unitName", CodeBook.LIKE_HQL_ID);
-            filterField.put("userName", "userCode in (select userCode from UserInfo where userName like :userName)");
-            filterField.put("isValid", "userCode in (select userCode from UserInfo where isValid = :isValid)");
+            filterField.put("userName", "userCode in (select us.USER_CODE from f_userinfo us where" +
+                    " us.USER_NAME like :userName)");
+            filterField.put("isValid", "userCode in (select us.USER_CODE from f_userinfo us where " +
+                    "us.IS_VALID = :isValid)");
 
             filterField.put(CodeBook.ORDER_BY_HQL_ID, "userOrder asc");
 
@@ -38,11 +42,24 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         return filterField;
     }
 
+    @Override
+    public List<UserUnit> listObjectsAll() {
+        return listObjects();
+    }
+
+    @Override
+    public UserUnit getObjectById(String userUnitId) {
+        return getObjectById(userUnitId);
+    }
+
+    @Override
+    public void deleteObjectById(String userUnitId) {
+        deleteObjectById(userUnitId);
+    }
+
     @Transactional
     public List<UserUnit> listUserUnitsByUserCode(String userId) {
-        List<UserUnit> ls = listObjects(
-                "FROM UserUnit where userCode=?",
-                userId);
+        List<UserUnit> ls = listObjectsByProperty("userCode", userId);
         /*
          * for (FUserunit usun : ls) {
          * usun.setUnitname(CodeRepositoryUtil.getValue
@@ -53,9 +70,8 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
     
     @Transactional
     public List<UserUnit> listObjectByUserUnit(String userCode,String unitCode){
-    	List<UserUnit> ls = listObjects(
-                "FROM UserUnit where userCode=? and unitCode=?",
-                new Object[]{userCode,unitCode});
+    	List<UserUnit> ls = listObjectsByProperties(QueryUtils.createSqlParamsMap(
+                "userCode", userCode,"unitCode",unitCode));
         /*
          * for (FUserunit usun : ls) {
          * usun.setUnitname(CodeRepositoryUtil.getValue
@@ -65,47 +81,43 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
     }
     @Transactional
     public String getNextKey() {
-        return "s"+ DatabaseOptUtils.getNextKeyBySequence(this, "S_USER_UNIT_ID", 9);
-/*        
-        return DatabaseOptUtils.getNextKeyByHqlStrOfMax(this, CodeRepositoryUtil.USERCODE,
-                "UserInfo WHERE userCode !='U0000000'", 7);*/
+        return "s" + StringBaseOpt.fillZeroForString(
+                String.valueOf(DatabaseOptUtils.getSequenceNextValue(this, "S_USER_UNIT_ID")),9);
     }
     
     @Transactional
     public void deleteOtherPrimaryUnit(UserUnit object) {
-        DatabaseOptUtils
-                .doExecuteHql(
-                        this,
-                        "update UserUnit set isPrimary='F',lastModifyDate= ?  where userCode = ? and (unitCode <> ? or userStation <> ? or userRank <> ?) and isPrimary='T'",
-                        new Object[]{ DatetimeOpt.currentUtilDate(),object.getUserCode(), object.getUnitCode(), object.getUserStation(),
-                                object.getUserRank()});
+        try {
+            DatabaseOptUtils.doExecuteSql(this,
+                    "update UserUnit set isPrimary='F',lastModifyDate= ?  " +
+                     "where userCode = ? and (unitCode <> ? or userStation <> ? or userRank <> ?) and isPrimary='T'",
+                    new Object[]{DatetimeOpt.currentUtilDate(), object.getUserCode(),
+                            object.getUnitCode(), object.getUserStation(),
+                            object.getUserRank()});
+        }catch(SQLException e){
+            logger.error(e.getMessage(), e);
+        }
 
     }
     
     @Transactional
     public void deleteUserUnitByUser(String userCode) {
-        DatabaseOptUtils
-                .doExecuteHql(
-                        this,
-                        "delete UserUnit  where userCode = ? ",
-                        userCode);
-
+        Map<String, Object> map = new HashMap<>();
+        map.put("userCode", userCode);
+        super.deleteObjectsByProperties(map);
     }
     
     @Transactional
     public void deleteUserUnitByUnit(String unitCode) {
-        DatabaseOptUtils
-                .doExecuteHql(
-                        this,
-                        "delete UserUnit  where unitCode = ? ",
-                        unitCode);
+        Map<String, Object> map = new HashMap<>();
+        map.put("unitCode", unitCode);
+        super.deleteObjectsByProperties(map);
     }
     
     @Transactional
     public UserUnit getPrimaryUnitByUserId(String userId) {
-        List<UserUnit> list = listObjects(
-                "FROM UserUnit where userCode=? and isPrimary='T'",
-                userId);
+        List<UserUnit> list = super.listObjectsByProperties(QueryUtils.createSqlParamsMap(
+                "userCode", userId,"isPrimary","T"));
         if (list != null && list.size()>0) {
             return list.get(0);
         } else {
@@ -115,10 +127,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
     
     @Transactional
     public List<UserUnit> listUnitUsersByUnitCode(String unitCode) {
-        List<UserUnit> ls =listObjects(
-                "FROM UserUnit where unitCode=?",
-                unitCode);
-        return ls;
+        return listObjectsByProperty("unitCode", unitCode);
     }
 
     /**
@@ -136,64 +145,18 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         List<UserUnit> ls = null;
         if (unitCode != null && !"".equals(unitCode)) {
             if ("gw".equals(roleType))
-                ls =listObjects("FROM UserUnit where unitCode=? and userStation=? ",
-                               new Object[]{ unitCode, roleCode});
+                ls =listObjectsByProperties(QueryUtils.createSqlParamsMap(
+                        "unitCode",unitCode,"userStation",roleCode));
             else if ("xz".equals(roleType))
-                ls = listObjects("FROM UserUnit where unitCode=? and userRank=? ",
-                        new Object[]{ unitCode, roleCode});
+                ls = listObjectsByProperties(QueryUtils.createSqlParamsMap(
+                        "unitCode",unitCode, "userRank", roleCode));
         } else {
             if ("gw".equals(roleType))
-                ls = listObjects("FROM UserUnit where userStation=? ",
-                                roleCode);
+                ls = listObjectsByProperty("userStation", roleCode);
             else if ("xz".equals(roleType))
-                ls = listObjects("FROM UserUnit where userRank=? ",
-                                roleCode);
+                ls = listObjectsByProperty("userRank",roleCode);
         }
         return ls;
     }
 
-
-
-    @Transactional
-    public List<UserUnit> listUnitUsersByUnitCodeAndFilter(String unitCode, PageDesc pageDesc,
-            Map<String, Object> filterMap) {
-
-        StringBuffer hql = new StringBuffer("FROM UserUnit where unitCode=? ");
-
-        if (null != filterMap && null != filterMap.get("ORDER_BY")) {
-            hql.append("order by " + filterMap.get("ORDER_BY"));
-        }
-        return super.listObjects(hql.toString(), unitCode, pageDesc);
-
-    }
-
-
-
-    /**
-     * 批量添加或更新
-     *
-     * @param userunits List
-     */
-    @Transactional
-    public void batchSave(List<UserUnit> userunits) {
-        for (int i = 0; i < userunits.size(); i++) {
-            super.saveObject(userunits.get(i));
-
-            if (0 == i % 20) {
-                DatabaseOptUtils.flush(this.getCurrentSession());
-            }
-        }
-    }
-
-
-    @Transactional
-    public void batchMerge(List<UserUnit> userunits) {
-        for (int i = 0; i < userunits.size(); i++) {
-            mergeObject(userunits.get(i));
-
-            if (19 == i % 20) {
-                DatabaseOptUtils.flush(this.getCurrentSession());
-            }
-        }
-    }
 }

@@ -1,49 +1,29 @@
 package com.centit.framework.system.dao.impl;
 
-import com.centit.framework.common.ObjectException;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.hibernate.dao.DatabaseOptUtils;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UserInfoDao;
 import com.centit.framework.system.po.FVUserOptList;
 import com.centit.framework.system.po.UserInfo;
-import com.centit.support.algorithm.NumberBaseOpt;
+import com.centit.support.algorithm.StringBaseOpt;
+import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.QueryUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Repository("userInfoDao")
 public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements UserInfoDao {
-    @Transactional
-    public int checkIfUserExists(String userCode, String loginName) {
-        long hasExist = 0l;
-        String hql;
-
-        if (StringUtils.isNotBlank(userCode)) {
-            hql = "SELECT COUNT(*) FROM UserInfo WHERE userCode = " + QueryUtils.buildStringForQuery(userCode);
-            hasExist = DatabaseOptUtils.getSingleIntByHql(this, hql);
-        }
-
-        hql = "SELECT COUNT(*) FROM UserInfo WHERE loginName = " + QueryUtils.buildStringForQuery(loginName);
-
-        if (StringUtils.isNotBlank(userCode)) {
-            hql += " AND userCode <> " + QueryUtils.buildStringForQuery(userCode);
-        }
-        long size = DatabaseOptUtils.getSingleIntByHql(this, hql);
-        if (size >= 1) {
-            throw new ObjectException("登录名：" + loginName + " 已存在!!!");
-        }
-
-        return (int)hasExist;
-    }
 
     public Map<String, String> getFilterField() {
         if (filterField == null) {
@@ -59,32 +39,30 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
             filterField.put("USERWORD", CodeBook.EQUAL_HQL_ID);
 
             filterField.put("byUnderUnit", "userCode in " +
-                    "(select  id.userCode from UserUnit where id.unitCode = :byUnderUnit ) ");
+                    "(select  us.USER_CODE from f_userunit us where us.UNIT_CODE = :byUnderUnit ) ");
 
             filterField.put("queryByUnit", "userCode in " +
-                    "(select  id.userCode from UserUnit where id.unitCode = :queryByUnit ) ");
+                    "(select  us.USER_CODE from f_userunit us where us.UNIT_CODE = :queryByUnit ) ");
             filterField.put("queryByGW", "userCode in " +
-                    "(select  id.userCode from UserUnit where id.userStation = :queryByGW )");
+                    "(select  us.USER_CODE from f_userunit us where us.User_Station = :queryByGW )");
             filterField.put("queryByXZ", "userCode in " +
-                    "(select  id.userCode from UserUnit where id.userRank = :queryByXZ )");
+                    "(select  us.USER_CODE from f_userunit us where us.USER_RANK = :queryByXZ )");
             filterField.put("queryByRole", "userCode in " +
-                    "(select r.id.userCode from UserRole r, RoleInfo i " +
-                    "where r.id.roleCode = :queryByRole and r.id.roleCode = i.roleCode and i.isValid = 'T')");
+                    "(select r.USER_CODE from f_userrole r join f_roleinfo i on r.ROLE_CODE = i.ROLE_CODE " +
+                    "where r.ROLE_CODE = :queryByRole and i.IS_VALID = 'T')");
 
             filterField.put(CodeBook.ORDER_BY_HQL_ID, "userOrder asc");
 
-            filterField.put("unitCode", "userCode in (select userCode from UserUnit where unitCode in " +
-                    "(select unitCode from UnitInfo where unitCode = :unitCode or parentUnit = :unitCode))");
+            filterField.put("unitCode", "userCode in (select us.USER_CODE from f_userunit us where us.UNIT_CODE in " +
+                    "(select un.UNIT_CODE from f_unitinfo un where un.UNIT_CODE = :unitCode or un.PARENT_UNIT = :unitCode))");
         }
         return filterField;
     }
 
     @Transactional
     public String getNextKey() {
-        return "U"+ DatabaseOptUtils.getNextKeyBySequence(this, "S_USERCODE", 7);
-/*        
-        return DatabaseOptUtils.getNextKeyByHqlStrOfMax(this, CodeRepositoryUtil.USERCODE,
-                "UserInfo WHERE userCode !='U0000000'", 7);*/
+        return "U"+ StringBaseOpt.fillZeroForString(
+                String.valueOf(DatabaseOptUtils.getSequenceNextValue(this, "S_USERCODE")), 7);
     }
 
     @Override
@@ -100,50 +78,30 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
             o.setUserPin(new Md5PasswordEncoder().encodePassword("000000", o.getUserCode()));
         }
 
-        super.saveObject(o);
+        super.updateObject(o);
     }
     
     @SuppressWarnings("unchecked")
     @Transactional
     public List<FVUserOptList> getAllOptMethodByUser(String userCode) {
-        String[] params = null;
-        String hql = "FROM FVUserOptList urv where urv.id.userCode=?";
+        String sql = "select USER_CODE,OPT_CODE,OPT_NAME,OPT_ID,OPT_METHOD " +
+                "from F_V_USEROPTLIST " +
+                "where USER_CODE=?";
 
-        params = new String[]{userCode};
-        List<FVUserOptList> ls = (List<FVUserOptList>) DatabaseOptUtils.findObjectsByHql
-                (this,hql, (Object[]) params);
-        return ls;
+        return getJdbcTemplate().execute(
+                (ConnectionCallback<List<FVUserOptList>>) conn ->
+                        OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
+                                new Object[]{userCode}, FVUserOptList.class));
     }
-	/*
-     * public FUserinfo loginUser(String userName, String password) { return
-	 * (FUserinfo) getHibernateTemplate().find(
-	 * "FROM FUserinfo WHERE username = ? AND userpin = ? ", new Object[] {
-	 * userName, password }).get(0); }
-	 */
-   
+
     @Transactional
     public List<UserInfo> listUnderUnit(Map<String, Object> filterMap) {
         return this.listObjects(filterMap);
-       /* String shql = "from f_userinfo where 1=1 ";
-
-        HqlAndNamedParams hql = builderHqlAndNamedParams(shql, filterMap);
-        String hql1 = "select *  " + hql.getHql();
-        System.out.println(1);
-        List<UserInfo> l = null;
-        try {
-            l = (List<UserInfo>)getHibernateTemplate().executeFind(
-                    new SQLWithNamedParamsCallBack(hql1, hql.getParams(), UserInfo.class));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            // return null;
-        }
-
-        return l;*/
     }
 
     @Transactional
     public List<UserInfo> listUnderUnit(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return this.listObjects(filterMap, pageDesc);
+        return this.listObjectsByProperties(filterMap, pageDesc);
     }
 
     @Transactional
@@ -153,114 +111,93 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
     
     @Transactional
     public UserInfo getUserByLoginName(String loginName) {
-        return super.getObjectByProperty("loginName",loginName.toLowerCase());
+        return super.getObjectByProperties(QueryUtils.createSqlParamsMap(
+                "loginName",loginName.toLowerCase()));
     }
     
     @Transactional
     public UserInfo getUserByRegEmail(String regEmail) {
-    	return super.getObjectByProperty("regEmail", regEmail);
+    	return super.getObjectByProperties(QueryUtils.createSqlParamsMap("regEmail", regEmail));
     }
     
     @Transactional
     public UserInfo getUserByRegCellPhone(String regCellPhone) {
-    	return super.getObjectByProperty("regCellPhone", regCellPhone);
+    	return super.getObjectByProperties(QueryUtils.createSqlParamsMap("regCellPhone", regCellPhone));
     }
     
     @Transactional
     public UserInfo getUserByTag(String userTag) {
-    	return super.getObjectByProperty("userTag", userTag);
+    	return super.getObjectByProperties(QueryUtils.createSqlParamsMap("userTag", userTag));
     }
     
     @Transactional
     public UserInfo getUserByUserWord(String userWord) {
-    	return super.getObjectByProperty("userWord", userWord);
+    	return super.getObjectByProperties(QueryUtils.createSqlParamsMap("userWord", userWord));
     }
 
     @Transactional
     public UserInfo getUserByIdCardNo(String idCardNo){
-        return super.getObjectByProperty("idCardNo", idCardNo);
+        return super.getObjectByProperties(QueryUtils.createSqlParamsMap("idCardNo", idCardNo));
     }
     
-    /**
-     * 批量添加或更新
-     *
-     * @param userinfos List
-     */
-    @Transactional
-    public void batchSave(List<UserInfo> userinfos) {
-        for (int i = 0; i < userinfos.size(); i++) {
-            this.saveObject(userinfos.get(i));
-
-            if (19 == i % 20) {
-                DatabaseOptUtils.flush(this.getCurrentSession());
-            }
-        }
-    }
-    @Transactional
-    public void batchMerge(List<UserInfo> userinfos) {
-        for (int i = 0; i < userinfos.size(); i++) {
-            mergeObject(userinfos.get(i));
-
-            if (19 == i % 20) {
-                DatabaseOptUtils.flush(this.getCurrentSession());
-            }
-        }
-    }
-
-    @Transactional
-    public List<UserInfo> search(String key, String[] field) {
-        StringBuilder hql = new StringBuilder("from UserInfo u where ");
-        String params[] = new String[field.length];
-        String sMatch = QueryUtils.getMatchString(key);
-        for (int i = 0; i < field.length; i++) {
-            hql.append("u." + field[i] + " like ? ");//'%" +  key + "%' ");
-            if (i != field.length - 1) {
-                hql.append(" or ");
-            }
-            params[i] = sMatch; 
-        }
-        
-        return listObjects( hql.toString(),params);
-    }
-
     public void restPwd(UserInfo user){
         saveObject(user);
+    }
+
+    @Override
+    public void deleteObjectById(String userCode) {
+        super.deleteObjectById(userCode);
+    }
+
+    @Override
+    public UserInfo getObjectById(String userCode) {
+        return super.getObjectById(userCode);
     }
 
     public int isLoginNameExist(String userCode, String loginName){
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.LOGINNAME = ?";
-        Object obj  = DatabaseOptUtils.getSingleObjectBySql(this, sql,
-                new Object[]{userCode, loginName} );
-        Integer uc = NumberBaseOpt.castObjectToInteger(obj);
-        return uc;
+        try {
+            return DatabaseOptUtils.doExecuteSql(this, sql,
+                    new Object[]{userCode, loginName});
+        }catch(SQLException e){
+            logger.error(e.getMessage(), e);
+        }
+        return -1;
     }
     public int isCellPhoneExist(String userCode, String loginName){
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.REGCELLPHONE = ?";
-        Object obj  = DatabaseOptUtils.getSingleObjectBySql(this, sql,
-                new Object[]{userCode, loginName} );
-        Integer uc = NumberBaseOpt.castObjectToInteger(obj);
-        return uc;
+        try {
+            return DatabaseOptUtils.doExecuteSql(this, sql,
+                    new Object[]{userCode, loginName});
+        }catch(SQLException e){
+            logger.error(e.getMessage(), e);
+        }
+        return -1;
     }
     public int isEmailExist(String userCode, String loginName){
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.REGEMAIL = ?";
-        Object obj  = DatabaseOptUtils.getSingleObjectBySql(this, sql,
-                new Object[]{userCode, loginName} );
-        Integer uc = NumberBaseOpt.castObjectToInteger(obj);
-        return uc;
+        try {
+            return DatabaseOptUtils.doExecuteSql(this, sql,
+                    new Object[]{userCode, loginName});
+        }catch(SQLException e){
+            logger.error(e.getMessage(), e);
+        }
+        return -1;
     }
 
     public int isAnyOneExist(String userCode, String loginName,String regPhone,String regEmail) {
         String sql = "select count(*) as usersCount from F_USERINFO t " +
-                "where t.USERCODE != ? and " +
-                "(t.LOGINNAME = ? or t.REGCELLPHONE= ? or t.REGEMAIL = ?)";
-        Object obj = DatabaseOptUtils.getSingleObjectBySql(this, sql,
-                new Object[]{StringUtils.isBlank(userCode) ? "null" : userCode,
-                        StringUtils.isBlank(loginName) ? "null" : loginName,
-                        StringUtils.isBlank(regPhone) ? "null" : regPhone,
-                        StringUtils.isBlank(regEmail) ? "null" : regEmail});
-        return NumberBaseOpt.castObjectToInteger(obj);
+                "where t.USER_CODE != ? and " +
+                "(t.LOGIN_NAME = ? or t.REG_CELL_PHONE= ? or t.Reg_Email = ?)";
+        try {
+            return DatabaseOptUtils.doExecuteSql(this, sql,
+                    new Object[]{userCode, loginName, regPhone, regEmail});
+        }catch(SQLException e){
+            logger.error(e.getMessage(), e);
+        }
+        return -1;
     }
 }
