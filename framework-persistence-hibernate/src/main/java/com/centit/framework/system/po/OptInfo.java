@@ -1,20 +1,7 @@
 package com.centit.framework.system.po;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
+import com.centit.framework.core.po.EntityWithTimestamp;
+import com.centit.framework.model.basedata.IOptInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
@@ -22,8 +9,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.util.CollectionUtils;
 
-import com.centit.framework.core.po.EntityWithTimestamp;
-import com.centit.framework.model.basedata.IOptInfo;
+import javax.persistence.*;
+import java.util.*;
 
 /**
  * FAddressBook entity.
@@ -220,6 +207,17 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
         this.icon = icon;
         this.height = height;
         this.width = width;
+    }
+
+    public Map<String, Object> getAttributes() {
+        boolean external = true;
+        if (StringUtils.equals("D", this.pageType)) {
+            external = false;
+        }
+
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("external", external);
+        return map;
     }
 
     public String getOptId() {

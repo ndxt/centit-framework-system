@@ -209,6 +209,17 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
         this.width = width;
     }
 
+    public Map<String, Object> getAttributes() {
+        boolean external = true;
+        if (StringUtils.equals("D", this.pageType)) {
+            external = false;
+        }
+
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("external", external);
+        return map;
+    }
+
     public String getOptId() {
         return this.optId;
     }

@@ -1,27 +1,14 @@
 package com.centit.framework.system.po;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
+import com.centit.framework.core.po.EntityWithTimestamp;
+import com.centit.framework.model.basedata.IOptInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
-import com.centit.framework.core.po.EntityWithTimestamp;
-import com.centit.framework.model.basedata.IOptInfo;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.*;
 
 /**
  * FAddressBook entity.
@@ -110,17 +97,6 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     @Column(name = "PAGE_TYPE")
     @Size(max = 1, message = "字段长度必须为{max}")
     private String pageType; // 页面打开方式 D: DIV I： iFrame
-    
-    public Map<String, Object> getAttributes() {
-        boolean external = true;
-        if (StringUtils.equals("D", this.pageType)) {
-            external = false;
-        };
-        
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("external", external);
-        return map;
-    }
     
     @Column(name = "ORDERIND")
     //@Range(max = 100000, message = "字段长度不能大于{max}")
@@ -332,6 +308,16 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
         this.topOptId = topoptid;
     }
 
+    public Map<String, Object> getAttributes() {
+        boolean external = true;
+        if (StringUtils.equals("D", this.pageType)) {
+            external = false;
+        }
+
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("external", external);
+        return map;
+    }
     /**
      * S:实施业务, O:普通业务, W:流程业务, I:项目业务
      * @return  S:实施业务, O:普通业务, W:流程业务, I:项目业务
