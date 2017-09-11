@@ -180,7 +180,7 @@ public class OptInfoController extends BaseController {
         
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
-        OperationLogCenter.logNewObject(request, optId,optInfo.getId(), OperationLog.P_OPT_LOG_METHOD_C,
+        OperationLogCenter.logNewObject(request, optId,optInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_C,
         		"新增业务菜单",optInfo);
         /*********log*********/
     }
@@ -312,7 +312,7 @@ public class OptInfoController extends BaseController {
         sysRoleManager.loadRoleSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
-        OperationLogCenter.logDeleteObject(request,this.optId,dboptInfo.getId(), OperationLog.P_OPT_LOG_METHOD_D,
+        OperationLogCenter.logDeleteObject(request,this.optId,dboptInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_D,
                 "删除业务菜单",dboptInfo);
         /*********log*********/
     }

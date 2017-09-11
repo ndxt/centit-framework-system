@@ -26,24 +26,15 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     @GeneratedValue(generator = "assignedGenerator")
     //@GenericGenerator(name = "assignedGenerator", strategy = "assigned")
     private String optId; // 业务编号
-    public String getId() {
-        return this.optId;
-    }
     
     @Column(name = "PRE_OPT_ID")
     @Size(max = 32, message = "字段长度不能大于{max}")
     private String preOptId; // 上级业务模块编号
-    public String getPid() {
-        return this.preOptId;
-    }
     
     @Column(name = "OPT_NAME")
     @NotNull(message = "字段不能为空")
     @Size(max = 100, message = "字段长度不能大于{max}")
     private String optName; // 业务名称
-    public String getText() {
-        return this.optName;
-    }
     /**
      * S:实施业务, O:普通业务, W:流程业务, I:项目业务
      */
@@ -63,9 +54,6 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     @Column(name = "OPT_ROUTE")
     @Size(max = 256, message = "字段长度不能大于{max}")
     private String optRoute;
-    public String getUrl() {
-        return this.optRoute;
-    }
     
     @Column(name = "OPT_URL")
     @Size(max = 256, message = "字段长度不能大于{max}")
@@ -308,16 +296,6 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
         this.topOptId = topoptid;
     }
 
-    public Map<String, Object> getAttributes() {
-        boolean external = true;
-        if (StringUtils.equals("D", this.pageType)) {
-            external = false;
-        }
-
-        Map<String, Object> map = new HashMap<>(2);
-        map.put("external", external);
-        return map;
-    }
     /**
      * S:实施业务, O:普通业务, W:流程业务, I:项目业务
      * @return  S:实施业务, O:普通业务, W:流程业务, I:项目业务
