@@ -10,7 +10,7 @@ CREATE TABLE  f_mysql_sequence (
   currvalue int(11) NOT NULL,  
   increment int(11) NOT NULL DEFAULT '1',  
    primary key (name)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='–Ú¡–±Ì£¨√¸√˚s_[table_name]';  
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 CHECKSUM=1 DELAY_KEY_WRITE=1 ROW_FORMAT=DYNAMIC COMMENT='Â∫èÂàóË°®ÔºåÂëΩÂêçs_[table_name]';  
   
 DROP FUNCTION IF EXISTS sequence_currval;  
 

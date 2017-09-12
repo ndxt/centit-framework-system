@@ -1,6 +1,6 @@
 -- mysql -u tfzc -D tfzcpt -p <D:\Projects\j2eews\tfzcpt\src\sqlScript\sysDataInit.sql
 
---创建用户
+-- 创建用户
 delete from f_userinfo;
 
 insert into f_userinfo (USERCODE, USERPIN, ISVALID, LOGINNAME, USERNAME, USERDESC, LOGINTIMES, ACTIVETIME, LOGINIP, ADDRBOOKID, REGEMAIL, USERORDER, USERPWD, REGCELLPHONE, CREATEDATE,CREATOR,UPDATOR,UPDATEDATE)
@@ -8,8 +8,8 @@ values ('noname', '$2a$11$xLOqxWXU6laDFfbiHP/vmOCEHGXzawFJ5ZSRARTvA1ipUwS5m9lPS'
 insert into f_userinfo (USERCODE, USERPIN, ISVALID, LOGINNAME, USERNAME, USERDESC, LOGINTIMES, ACTIVETIME, LOGINIP, ADDRBOOKID, REGEMAIL, USERORDER, USERPWD, REGCELLPHONE, CREATEDATE ,CREATOR,UPDATOR,UPDATEDATE)
 values ('u0000000', '$2a$11$DbyFNhHeCES5CKoMuM5sXepY7GM35sZkUSqQbjYJnFTzJ2GDIYGLK', 'T', 'admin', '管理员', '', null, null, '', null, 'codefan@centit.com', 1, '', '18017458877', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'),'u0000000','u0000000',now());
 
---初始化数据字典
---str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s')
+-- 初始化数据字典
+-- str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s')
 insert into f_datacatalog (CATALOGCODE, CATALOGNAME, CATALOGSTYLE, CATALOGTYPE, CATALOGDESC, FIELDDESC, UPDATEDATE, CREATEDATE, OPTID, NEEDCACHE,CREATOR,UPDATOR)
 values ('MsgType', '消息类型', 'U', 'L', '测试测试', null, str_to_date('25-02-2016 17:55:21', '%d-%m-%Y %H:%i:%s'), null, 'innermsg', '1','u0000000','u0000000');
 
@@ -219,7 +219,7 @@ insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATA
 values ('LogLevel', '0', null, null, 'T', '操作日志', 'F', null, str_to_date('07-04-2016', '%d-%m-%Y'), str_to_date('07-04-2016', '%d-%m-%Y'), 1);
 
 
---初始化业务菜单
+-- 初始化业务菜单
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
 values ('DEPTMAG', '部门管理', '0', '...', '...', null, 'O', null, null, 'Y', null, null, null, null, 'I', 'icon-base icon-base-computer', null, null, str_to_date('12-01-2016 17:04:01', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
 
@@ -395,8 +395,8 @@ values ('1000080', 'LOGINCAS', 'CAS登录入口', null, null, null, null, null, '/lo
 -- 用户、角色、权限初始化
 
 
---初始化角色信息
---初始化角色信息
+-- 初始化角色信息
+-- 初始化角色信息
 insert into f_roleinfo (ROLECODE, ROLENAME,ROLETYPE, ISVALID, ROLEDESC, CREATEDATE, UPDATEDATE,CREATOR,UPDATOR)
 values ('G-DEPLOY', '实施人员','S','T', '实施人员角色', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
 
@@ -410,7 +410,6 @@ insert into f_roleinfo (ROLECODE, ROLENAME,ROLETYPE,  ISVALID, ROLEDESC, CREATED
 values ('G-public', '公共角色','S', 'F', '公共角色权限会默认给不包括匿名用户的所有人', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
 
 
-------
 insert into f_rolepower (ROLECODE, OPTCODE, UPDATEDATE, CREATEDATE, OPTSCOPECODES,CREATOR,UPDATOR)
 values ('G-public', '1000080', str_to_date('11-04-2016 10:21:17', '%d-%m-%Y %H:%i:%s'), str_to_date('11-04-2016 10:21:17', '%d-%m-%Y %H:%i:%s'), '','u0000000','u0000000');
 
