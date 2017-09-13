@@ -7,6 +7,7 @@ import com.centit.framework.system.po.RolePower;
 import com.centit.framework.system.po.RolePowerId;
 import com.centit.support.database.utils.QueryUtils;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
@@ -35,6 +36,7 @@ public class RolePowerDaoImpl extends BaseDaoImpl<RolePower, RolePowerId> implem
     }
 
     @Override
+    @Transactional(propagation = Propagation.MANDATORY)
     public List<RolePower> listObjectsAll() {
         return super.listObjects();
     }

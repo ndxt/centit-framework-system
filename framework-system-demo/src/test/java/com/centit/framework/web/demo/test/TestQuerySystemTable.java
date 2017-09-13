@@ -1,17 +1,10 @@
 package com.centit.framework.web.demo.test;
 
 import com.centit.framework.common.SysParametersUtils;
-import com.centit.framework.core.dao.PageDesc;
-import com.centit.framework.core.dao.QueryParameterPrepare;
-import com.centit.framework.system.dao.impl.UserInfoDaoImpl;
-import com.centit.framework.system.po.UserInfo;
 import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.algorithm.StringRegularOpt;
-import com.centit.support.database.utils.QueryUtils;
 import org.apache.commons.dbcp2.BasicDataSource;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -36,20 +29,20 @@ public class TestQuerySystemTable {
     }
 
     public static void main(String[] args) {
-        UserInfoDaoImpl userInfoDao = new UserInfoDaoImpl();
-
-        userInfoDao.setDataSource(getDataSource());
-        Map<String,Object> filterMap = QueryUtils.createSqlParamsMap("unitCode","U00001");
-        PageDesc page = new PageDesc();//1,20,userInfoDao.pageCount(filterMap ) );
-
-        Map<String, Object> pageQureyMap =
-                QueryParameterPrepare.prepPageParams(filterMap, page , 1 /* userInfoDao.pageCount(filterMap )*/);
-
-        List<UserInfo> users = userInfoDao.pageQuery(pageQureyMap);
-        System.out.println(page.getTotalRows());
-        System.out.println(users.size());
-        if(users.size()>0) {
-            System.out.println(users.get(0).getUserName());
-        }
+//        UserInfoDaoImpl userInfoDao = new UserInfoDaoImpl();
+//
+//        userInfoDao.setDataSource(getDataSource());
+//        Map<String,Object> filterMap = QueryUtils.createSqlParamsMap("unitCode","U00001");
+//        PageDesc page = new PageDesc();//1,20,userInfoDao.pageCount(filterMap ) );
+//
+//        Map<String, Object> pageQureyMap =
+//                QueryParameterPrepare.prepPageParams(filterMap, page , 1 /* userInfoDao.pageCount(filterMap )*/);
+//
+//        List<UserInfo> users = userInfoDao.pageQuery(pageQureyMap);
+//        System.out.println(page.getTotalRows());
+//        System.out.println(users.size());
+//        if(users.size()>0) {
+//            System.out.println(users.get(0).getUserName());
+//        }
     }
 }

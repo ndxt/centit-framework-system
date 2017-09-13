@@ -19,11 +19,13 @@ import org.springframework.security.access.SecurityConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service("sysRoleManager")
 public class SysRoleManagerImpl implements SysRoleManager {
@@ -45,11 +47,6 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Resource
     @NotNull
     protected RoleInfoDao roleInfoDao;
-
-    @PostConstruct
-    public void init() {
-        loadRoleSecurityMetadata();
-    }
 
     @Override
     @Transactional(readOnly=true)

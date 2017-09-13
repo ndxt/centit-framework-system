@@ -16,17 +16,15 @@ import org.springframework.context.annotation.*;
  * Created by codefan on 17-7-18.
  */
 @Configuration
-@ComponentScan(basePackages = "com.centit.framework",
-        excludeFilters = @ComponentScan.Filter(value = org.springframework.stereotype.Controller.class))
 @Import({
         DataSourceConfig.class,
         JdbcConfig.class,
         SystemBeanConfig.class,
         SpringSecurityDaoConfig.class,
         SpringSecurityCasConfig.class})
-
+@ComponentScan(basePackages = "com.centit.framework",
+        excludeFilters = @ComponentScan.Filter(value = org.springframework.stereotype.Controller.class))
 public class ServiceConfig {
-
     @Bean
     public NotificationCenter notificationCenter() {
         NotificationCenterImpl notificationCenter = new NotificationCenterImpl();

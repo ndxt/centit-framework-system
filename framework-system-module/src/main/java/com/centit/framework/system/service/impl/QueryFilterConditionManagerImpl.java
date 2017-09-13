@@ -32,15 +32,7 @@ public class QueryFilterConditionManagerImpl implements QueryFilterConditionMana
 	@Resource
     @NotNull
 	private QueryFilterConditionDao queryFilterConditionDao ;
-	
-	
-/*
- 	@PostConstruct
-    public void init() {
-        
-    }
- 	
- */
+
 	@Override
     @Transactional(propagation=Propagation.REQUIRED) 
 	public JSONArray listQueryFilterConditionsAsJson(
