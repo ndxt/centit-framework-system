@@ -2,7 +2,8 @@ package com.centit.framework.web.demo.config;
 
 import com.centit.framework.components.impl.NotificationCenterImpl;
 import com.centit.framework.components.impl.TextOperationLogWriterImpl;
-import com.centit.framework.hibernate.config.HibernateConfig;
+import com.centit.framework.core.config.DataSourceConfig;
+import com.centit.framework.jdbc.config.JdbcConfig;
 import com.centit.framework.model.adapter.NotificationCenter;
 import com.centit.framework.model.adapter.OperationLogWriter;
 import com.centit.framework.system.config.SpringSecurityCasConfig;
@@ -18,7 +19,8 @@ import org.springframework.context.annotation.*;
 @ComponentScan(basePackages = "com.centit.framework",
         excludeFilters = @ComponentScan.Filter(value = org.springframework.stereotype.Controller.class))
 @Import({
-        HibernateConfig.class,
+        DataSourceConfig.class,
+        JdbcConfig.class,
         SystemBeanConfig.class,
         SpringSecurityDaoConfig.class,
         SpringSecurityCasConfig.class})
