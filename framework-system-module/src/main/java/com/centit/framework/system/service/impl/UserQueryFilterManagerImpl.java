@@ -30,14 +30,9 @@ public class UserQueryFilterManagerImpl implements UserQueryFilterManager{
 
     public static final Logger logger = LoggerFactory.getLogger(UserQueryFilterManager.class);
 
-
     private UserQueryFilterDao userQueryFilterDao ;
 
     @Override
-
-	private UserQueryFilterDao userQueryFilterDao ;
-
-	@Override
     @Transactional(propagation=Propagation.REQUIRED)
     public JSONArray listUserQueryFiltersAsJson(
             String[] fields,
