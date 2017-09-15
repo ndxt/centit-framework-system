@@ -80,8 +80,8 @@ drop table if exists P_TASK_LIST;
 create table F_ADDRESS_BOOK
 (
    ADDRBOOKID           numeric(10,0) not null,
-   BodyType             varchar(2) not null comment 'ÓÃ»§/¸öÈË/µ¥Î»',
-   BodyCode             varchar(16) not null comment 'ÓÃ»§/¸öÈË/µ¥Î» ±àºÅ',
+   BodyType             varchar(2) not null comment 'ç”¨æˆ·/ä¸ªäºº/å•ä½',
+   BodyCode             varchar(16) not null comment 'ç”¨æˆ·/ä¸ªäºº/å•ä½ ç¼–å·',
    representation       varchar(200),
    UnitName             varchar(200),
    DeptName             varchar(100),
@@ -125,17 +125,17 @@ create table F_ADDRESS_BOOK
    home2District        varchar(20),
    home2Street          varchar(20),
    home2Address         varchar(60),
-   inuseAddress         varchar(1) comment 'µ¥Î»/×¡Õ¬/×¡Õ¬2',
-   SearchString         varchar(1000) comment 'Ç°Ãæ¸÷¸ö×Ö¶ÎµÄÖĞÎÄÊ××ÖÄ¸£¬Êı×Ö Á¬½ÓµÄ´®',
+   inuseAddress         varchar(1) comment 'å•ä½/ä½å®…/ä½å®…2',
+   SearchString         varchar(1000) comment 'å‰é¢å„ä¸ªå­—æ®µçš„ä¸­æ–‡é¦–å­—æ¯ï¼Œæ•°å­— è¿æ¥çš„ä¸²',
    memo                 varchar(500),
    LastModifyDate       date,
    CreateDate           date,
    primary key (ADDRBOOKID)
 );
 
-alter table F_ADDRESS_BOOK comment 'ÏµÍ³ÖĞÎ¬³ÖÒ»¸öÍ³Ò»µÄÍ¨Ñ¶Â¼ Ä£¿é£¬Ö÷ÒªÄ¿µÄÊÇÎªÁËÒÔºó×ö Í³Ò»µÄ½Ó¿Ú£¬
+alter table F_ADDRESS_BOOK comment 'ç³»ç»Ÿä¸­ç»´æŒä¸€ä¸ªç»Ÿä¸€çš„é€šè®¯å½• æ¨¡å—ï¼Œä¸»è¦ç›®çš„æ˜¯ä¸ºäº†ä»¥ååš ç»Ÿä¸€çš„æ¥å£ï¼Œ
 
-±ÈÈç£º
+æ¯”å¦‚ï¼š
   ';
 
 /*==============================================================*/
@@ -145,22 +145,22 @@ create table F_DATACATALOG
 (
    CATALOGCODE          varchar(16) not null,
    CATALOGNAME          varchar(64) not null,
-   CATALOGSTYLE         char(1) not null comment 'F : ¿ò¼Ü¹ÌÓĞµÄ U:ÓÃ»§ S£ºÏµÍ³  G¹ú±ê',
-   CATALOGTYPE          char(1) not null comment 'T£ºÊ÷×´±í¸ñ L:ÁĞ±í
+   CATALOGSTYLE         char(1) not null comment 'F : æ¡†æ¶å›ºæœ‰çš„ U:ç”¨æˆ· Sï¼šç³»ç»Ÿ  Gå›½æ ‡',
+   CATALOGTYPE          char(1) not null comment 'Tï¼šæ ‘çŠ¶è¡¨æ ¼ L:åˆ—è¡¨
             ',
    CATALOGDESC          varchar(256),
-   FieldDesc            varchar(256) comment '×Ö¶ÎÃèÊö£¬²»Í¬×Ö¶ÎÓÃ·ÖºÅ¸ô¿ª',
+   FieldDesc            varchar(256) comment 'å­—æ®µæè¿°ï¼Œä¸åŒå­—æ®µç”¨åˆ†å·éš”å¼€',
    updateDate           date,
    CreateDate           date,
-   optID                varchar(16) comment 'ÒµÎñ·ÖÀà£¬Ê¹ÓÃÊı¾İ×ÖµäDICTIONARYTYPEÖĞÊı¾İ',
+   optID                varchar(16) comment 'ä¸šåŠ¡åˆ†ç±»ï¼Œä½¿ç”¨æ•°æ®å­—å…¸DICTIONARYTYPEä¸­æ•°æ®',
    needCache            char(1) default '1',
    creator              varchar(32),
    updator              varchar(32),
    primary key (CATALOGCODE)
 );
 
-alter table F_DATACATALOG comment 'Àà±ğ×´Ì¬	 U:ÓÃ»§ S£ºÏµÍ³£¬G¹ú±ê
-Àà±ğĞÎÊ½  T£ºÊ÷×´±í¸ñ L:ÁĞ±í
+alter table F_DATACATALOG comment 'ç±»åˆ«çŠ¶æ€	 U:ç”¨æˆ· Sï¼šç³»ç»Ÿï¼ŒGå›½æ ‡
+ç±»åˆ«å½¢å¼  Tï¼šæ ‘çŠ¶è¡¨æ ¼ L:åˆ—è¡¨
 ';
 
 
@@ -171,19 +171,19 @@ create table F_DATADICTIONARY
 (
    CATALOGCODE          varchar(16) not null,
    DATACODE             varchar(16) not null,
-   EXTRACODE            varchar(16) comment 'Ê÷ĞÍ×ÖµäµÄ¸¸Àà´úÂë',
-   EXTRACODE2           varchar(16) comment 'Ä¬ÈÏµÄÅÅĞò×Ö¶Î',
-   DATATAG              char(1) comment 'NÕı³££¬DÒÑÍ£ÓÃ£¬ÓÃ»§¿ÉÒÔ×Ô½âÊÍÕâ¸ö×Ö¶Î',
+   EXTRACODE            varchar(16) comment 'æ ‘å‹å­—å…¸çš„çˆ¶ç±»ä»£ç ',
+   EXTRACODE2           varchar(16) comment 'é»˜è®¤çš„æ’åºå­—æ®µ',
+   DATATAG              char(1) comment 'Næ­£å¸¸ï¼ŒDå·²åœç”¨ï¼Œç”¨æˆ·å¯ä»¥è‡ªè§£é‡Šè¿™ä¸ªå­—æ®µ',
    DATAVALUE            varchar(2048),
-   DATASTYLE            char(1) comment 'F : ¿ò¼Ü¹ÌÓĞµÄ U:ÓÃ»§ S£ºÏµÍ³  G¹ú±ê',
+   DATASTYLE            char(1) comment 'F : æ¡†æ¶å›ºæœ‰çš„ U:ç”¨æˆ· Sï¼šç³»ç»Ÿ  Gå›½æ ‡',
    DATADESC             varchar(256),
    LastModifyDate       date,
    CreateDate           date,
-   DATAORDER            numeric(6,0) comment 'ÅÅĞò×Ö¶Î',
+   DATAORDER            numeric(6,0) comment 'æ’åºå­—æ®µ',
    primary key (CATALOGCODE, DATACODE)
 );
 
-alter table F_DATADICTIONARY comment 'Êı¾İ×Öµä£º´æ·ÅÒ»Ğ©³£Á¿Êı¾İ ±ÈÈç³öÎïÌáÊ¾ĞÅÏ¢£¬»¹ÓĞÒ»Ğ© ´úÂëÓëÃû³ÆµÄ¶ÔÓ¦±í£¬±ÈÈç ×´Ì¬£¬½ÇÉ«Ãû£¬Í·ÏÎ µÈµÈ
+alter table F_DATADICTIONARY comment 'æ•°æ®å­—å…¸ï¼šå­˜æ”¾ä¸€äº›å¸¸é‡æ•°æ® æ¯”å¦‚å‡ºç‰©æç¤ºä¿¡æ¯ï¼Œè¿˜æœ‰ä¸€äº› ä»£ç ä¸åç§°çš„å¯¹åº”è¡¨ï¼Œæ¯”å¦‚ çŠ¶æ€ï¼Œè§’è‰²åï¼Œå¤´è¡” ç­‰ç­‰
 ';
 
 /*==============================================================*/
@@ -194,8 +194,8 @@ create table F_OPTDATASCOPE
    optScopeCode         varchar(16) not null,
    OptID                varchar(16),
    scopeName            varchar(64),
-   FilterCondition      varchar(1024) comment 'Ìõ¼şÓï¾ä£¬¿ÉÒÔÓĞµÄ²ÎÊı [mt] ÒµÎñ±í [uc] ÓÃ»§´úÂë [uu] ÓÃ»§»ú¹¹´úÂë',
-   scopeMemo            varchar(1024) comment 'Êı¾İÈ¨ÏŞËµÃ÷',
+   FilterCondition      varchar(1024) comment 'æ¡ä»¶è¯­å¥ï¼Œå¯ä»¥æœ‰çš„å‚æ•° [mt] ä¸šåŠ¡è¡¨ [uc] ç”¨æˆ·ä»£ç  [uu] ç”¨æˆ·æœºæ„ä»£ç ',
+   scopeMemo            varchar(1024) comment 'æ•°æ®æƒé™è¯´æ˜',
    FilterGroup          varchar(16) default 'G',
    primary key (optScopeCode)
 );
@@ -208,10 +208,10 @@ create table F_OPTDEF
    OPTCODE              varchar(32) not null,
    OptID                varchar(32),
    OPTNAME              varchar(100),
-   OPTMETHOD            varchar(50) comment '²Ù×÷²ÎÊı ·½·¨',
+   OPTMETHOD            varchar(50) comment 'æ“ä½œå‚æ•° æ–¹æ³•',
    OPTURL               varchar(256),
    OPTDESC              varchar(256),
-   IsInWorkflow         char(1) comment 'ÊÇ·ñÎªÁ÷³Ì²Ù×÷·½·¨ F£º²»ÊÇ  T £º ÊÇ',
+   IsInWorkflow         char(1) comment 'æ˜¯å¦ä¸ºæµç¨‹æ“ä½œæ–¹æ³• Fï¼šä¸æ˜¯  T ï¼š æ˜¯',
    updateDate           date,
    CreateDate           date,
    OPTREQ               varchar(8),
@@ -239,12 +239,12 @@ create table F_OPT_LOG
    logLevel             varchar(2) not null,
    usercode             varchar(8) not null,
    opttime              date not null,
-   OptContent           varchar(1000) not null comment '²Ù×÷ÃèÊö',
-   NewValue             text comment 'ĞÂÖµ',
-   OldValue             text comment 'Ô­Öµ',
-   OptID                varchar(64) not null comment 'Ä£¿é£¬»òÕß±í',
-   OPTMethod            varchar(64) comment '·½·¨£¬»òÕß×Ö¶Î',
-   optTag               varchar(200) comment 'Ò»°ãÓÃÓÚ¹ØÁªµ½ÒµÎñÖ÷ÌåµÄ±êÊ¶¡¢±íµÄÖ÷¼üµÈµÈ',
+   OptContent           varchar(1000) not null comment 'æ“ä½œæè¿°',
+   NewValue             text comment 'æ–°å€¼',
+   OldValue             text comment 'åŸå€¼',
+   OptID                varchar(64) not null comment 'æ¨¡å—ï¼Œæˆ–è€…è¡¨',
+   OPTMethod            varchar(64) comment 'æ–¹æ³•ï¼Œæˆ–è€…å­—æ®µ',
+   optTag               varchar(200) comment 'ä¸€èˆ¬ç”¨äºå…³è”åˆ°ä¸šåŠ¡ä¸»ä½“çš„æ ‡è¯†ã€è¡¨çš„ä¸»é”®ç­‰ç­‰',
    primary key (logId)
 );
 
@@ -292,17 +292,17 @@ create table F_OptInfo
    OptID                varchar(32) not null,
    OptName              varchar(100) not null,
    PreOptID             varchar(32) not null,
-   optRoute             varchar(256) comment 'ÓëangularjsÂ·ÓÉÆ¥Åä',
+   optRoute             varchar(256) comment 'ä¸angularjsè·¯ç”±åŒ¹é…',
    opturl               varchar(256),
    FormCode             varchar(4),
-   OptType              char(1) comment ' S:ÊµÊ©ÒµÎñ, O:ÆÕÍ¨ÒµÎñ, W:Á÷³ÌÒµÎñ, I :ÏîÄ¿ÒµÎñ',
+   OptType              char(1) comment ' S:å®æ–½ä¸šåŠ¡, O:æ™®é€šä¸šåŠ¡, W:æµç¨‹ä¸šåŠ¡, I :é¡¹ç›®ä¸šåŠ¡',
    MsgNo                numeric(10,0),
    MsgPrm               varchar(256),
    IsInToolBar          char(1),
    ImgIndex             numeric(10,0),
    TopOptID             varchar(8),
-   OrderInd             numeric(4,0) comment 'Õâ¸öË³ĞòÖ»ĞèÔÚÍ¬Ò»¸ö¸¸ÒµÎñÏÂÅÅĞò',
-   FLOWCODE             varchar(8) comment 'Í¬Ò»¸ö´úÂëµÄÁ÷³ÌÓ¦¸ÃÖ»ÓĞÒ»¸öÓĞĞ§µÄ°æ±¾',
+   OrderInd             numeric(4,0) comment 'è¿™ä¸ªé¡ºåºåªéœ€åœ¨åŒä¸€ä¸ªçˆ¶ä¸šåŠ¡ä¸‹æ’åº',
+   FLOWCODE             varchar(8) comment 'åŒä¸€ä¸ªä»£ç çš„æµç¨‹åº”è¯¥åªæœ‰ä¸€ä¸ªæœ‰æ•ˆçš„ç‰ˆæœ¬',
    PageType             char(1) not null default 'I' comment 'D : DIV I:iFrame',
    Icon                 varchar(512),
    height               numeric(10,0),
@@ -326,7 +326,7 @@ create table F_OptInfoData
    primary key (TBCODE, OptID)
 );
 
-alter table F_OptInfoData comment 'ÒµÎñÄ£¿éºÍ±íÊÇ¶à¶Ô¶àµÄ¹ØÏµ,Õâ¸ö±í½ö½öÊÇ×÷ÎªÊı¾İÈ¨ÏŞÉèÖÃÊ±µÄÒ»¸ö¸¨Öú±íµÄ';
+alter table F_OptInfoData comment 'ä¸šåŠ¡æ¨¡å—å’Œè¡¨æ˜¯å¤šå¯¹å¤šçš„å…³ç³»,è¿™ä¸ªè¡¨ä»…ä»…æ˜¯ä½œä¸ºæ•°æ®æƒé™è®¾ç½®æ—¶çš„ä¸€ä¸ªè¾…åŠ©è¡¨çš„';
 
 /*==============================================================*/
 /* Table: F_QUERY_FILTER_CONDITION                              */
@@ -334,17 +334,17 @@ alter table F_OptInfoData comment 'ÒµÎñÄ£¿éºÍ±íÊÇ¶à¶Ô¶àµÄ¹ØÏµ,Õâ¸ö±í½ö½öÊÇ×÷ÎªÊı
 create table F_QUERY_FILTER_CONDITION
 (
    CONDITION_NO         numeric(12,0) not null,
-   Table_Class_Name     varchar(64) not null comment 'Êı¾İ¿â±í´úÂë»òÕßpoµÄÀàÃû',
-   Param_Name           varchar(64) not null comment '²ÎÊıÃû',
-   Param_Label          varchar(120) not null comment '²ÎÊıÊäÈë¿òÌáÊ¾',
-   Param_Type           varchar(8) comment '²ÎÊıÀàĞÍ£ºS ×Ö·û´®£¬L Êı×Ö£¬ N ÓĞĞ¡ÊıµãÊı¾İ£¬ D ÈÕÆÚ£¬ T Ê±¼ä´Á£¬ Y Äê£¬ M ÔÂ',
+   Table_Class_Name     varchar(64) not null comment 'æ•°æ®åº“è¡¨ä»£ç æˆ–è€…poçš„ç±»å',
+   Param_Name           varchar(64) not null comment 'å‚æ•°å',
+   Param_Label          varchar(120) not null comment 'å‚æ•°è¾“å…¥æ¡†æç¤º',
+   Param_Type           varchar(8) comment 'å‚æ•°ç±»å‹ï¼šS å­—ç¬¦ä¸²ï¼ŒL æ•°å­—ï¼Œ N æœ‰å°æ•°ç‚¹æ•°æ®ï¼Œ D æ—¥æœŸï¼Œ T æ—¶é—´æˆ³ï¼Œ Y å¹´ï¼Œ M æœˆ',
    Default_Value        varchar(100),
-   Filter_Sql           varchar(200) comment '¹ıÂËÓï¾ä£¬½«»áÆ´×°µ½sqlÓï¾äÖĞ',
-   Select_Data_type     char(1) not null default 'N' comment 'Êı¾İÏÂÀ­¿òÄÚÈİ£» N £ºÃ»ÓĞ£¬ D Êı¾İ×Öµä, S Í¨¹ısqlÓï¾ä»ñµÃ£¬ J jsonÊı¾İÖ±½Ó»ñÈ¡
+   Filter_Sql           varchar(200) comment 'è¿‡æ»¤è¯­å¥ï¼Œå°†ä¼šæ‹¼è£…åˆ°sqlè¯­å¥ä¸­',
+   Select_Data_type     char(1) not null default 'N' comment 'æ•°æ®ä¸‹æ‹‰æ¡†å†…å®¹ï¼› N ï¼šæ²¡æœ‰ï¼Œ D æ•°æ®å­—å…¸, S é€šè¿‡sqlè¯­å¥è·å¾—ï¼Œ J jsonæ•°æ®ç›´æ¥è·å–
             ',
-   Select_Data_Catalog  varchar(64) comment 'Êı¾İ×Öµä',
-   Select_SQL           varchar(1000) comment 'ÓĞÁ½¸ö·µ»Ø×Ö¶ÎµÄsqlÓï¾ä',
-   Select_JSON          varchar(2000) comment 'KEY,ValueÊıÖµ¶Ô£¬JSON¸ñÊ½',
+   Select_Data_Catalog  varchar(64) comment 'æ•°æ®å­—å…¸',
+   Select_SQL           varchar(1000) comment 'æœ‰ä¸¤ä¸ªè¿”å›å­—æ®µçš„sqlè¯­å¥',
+   Select_JSON          varchar(2000) comment 'KEY,Valueæ•°å€¼å¯¹ï¼ŒJSONæ ¼å¼',
    primary key (CONDITION_NO)
 );
 
@@ -365,7 +365,7 @@ create table F_RANKGRANT
    granter              varchar(8) not null,
    UNITCODE             varchar(6) not null,
    UserStation          varchar(4) not null,
-   UserRank             varchar(2) not null comment 'RANK ´úÂë²»ÊÇ 0¿ªÍ·µÄ¿ÉÒÔ½øĞĞÊÚÓè',
+   UserRank             varchar(2) not null comment 'RANK ä»£ç ä¸æ˜¯ 0å¼€å¤´çš„å¯ä»¥è¿›è¡Œæˆäºˆ',
    beginDate            date not null,
    grantee              varchar(8) not null,
    endDate              date,
@@ -382,7 +382,7 @@ create table F_ROLEINFO
 (
    ROLECODE             varchar(32) not null,
    ROLENAME             varchar(64),
-   ROLETYPE             char(1) not null comment 'SÎªÏµÍ³¹¦ÄÜ½ÇÉ« I ÎªÏîÄ¿½ÇÉ« W¹¤×÷Á¿½ÇÉ«',
+   ROLETYPE             char(1) not null comment 'Sä¸ºç³»ç»ŸåŠŸèƒ½è§’è‰² I ä¸ºé¡¹ç›®è§’è‰² Wå·¥ä½œé‡è§’è‰²',
    UNITCODE             varchar(32),
    ISVALID              char(1) not null,
    ROLEDESC             varchar(256),
@@ -400,7 +400,7 @@ create table F_ROLEPOWER
 (
    ROLECODE             varchar(32) not null,
    OPTCODE              varchar(32) not null,
-   optScopeCodes        varchar(1000) comment 'ÓÃ¶ººÅ¸ô¿ªµÄÊı¾İ·¶Î§½áºÏ£¨¿Õ\all ±íÊ¾È«²¿£©',
+   optScopeCodes        varchar(1000) comment 'ç”¨é€—å·éš”å¼€çš„æ•°æ®èŒƒå›´ç»“åˆï¼ˆç©º\all è¡¨ç¤ºå…¨éƒ¨ï¼‰',
    updateDate           date,
    CreateDate           date,
    creator              varchar(32),
@@ -416,12 +416,12 @@ create table F_STAT_MONTH
    YEARMONTH            varchar(6) not null comment 'YYYYMM',
    BeginDay             date not null,
    EendDay              date not null,
-   EndSchedule          char(1) comment 'Õâ¸ö×Ö¶ÎºöÂÔ',
-   BeginSchedule        char(1) comment 'Õâ¸ö×Ö¶ÎºöÂÔ',
+   EndSchedule          char(1) comment 'è¿™ä¸ªå­—æ®µå¿½ç•¥',
+   BeginSchedule        char(1) comment 'è¿™ä¸ªå­—æ®µå¿½ç•¥',
    primary key (YEARMONTH)
 );
 
-alter table F_STAT_MONTH comment 'OAÒµÎñÍ³¼ÆÔÂ£¬¿ÉÒÔ×Ô¶¨ÒåÍ³¼ÆÔÂµÄÆğÖ¹ÈÕÆÚ';
+alter table F_STAT_MONTH comment 'OAä¸šåŠ¡ç»Ÿè®¡æœˆï¼Œå¯ä»¥è‡ªå®šä¹‰ç»Ÿè®¡æœˆçš„èµ·æ­¢æ—¥æœŸ';
 
 /*==============================================================*/
 /* Table: F_SYS_NOTIFY                                          */
@@ -434,12 +434,12 @@ create table F_SYS_NOTIFY
    Msg_Subject          varchar(200),
    Msg_Content          varchar(2000) not null,
    notice_Type          varchar(100),
-   Notify_State         char(1) comment '0 ³É¹¦£¬ 1 Ê§°Ü 2 ²¿·Ö³É¹¦',
+   Notify_State         char(1) comment '0 æˆåŠŸï¼Œ 1 å¤±è´¥ 2 éƒ¨åˆ†æˆåŠŸ',
    Error_Msg            varchar(500),
    Notify_Time          date,
-   optTag               varchar(200) comment 'Ò»°ãÓÃÓÚ¹ØÁªµ½ÒµÎñÖ÷Ìå',
-   OPTMethod            varchar(64) comment '·½·¨£¬»òÕß×Ö¶Î',
-   OptID                varchar(64) not null comment 'Ä£¿é£¬»òÕß±í',
+   optTag               varchar(200) comment 'ä¸€èˆ¬ç”¨äºå…³è”åˆ°ä¸šåŠ¡ä¸»ä½“',
+   OPTMethod            varchar(64) comment 'æ–¹æ³•ï¼Œæˆ–è€…å­—æ®µ',
+   OptID                varchar(64) not null comment 'æ¨¡å—ï¼Œæˆ–è€…è¡¨',
    primary key (Notify_ID)
 );
 
@@ -450,12 +450,12 @@ create table F_UNITINFO
 (
    UNITCODE             varchar(32) not null,
    PARENTUNIT           varchar(32),
-   UNITTYPE             char(1) comment '·¢²¼ÈÎÎñ/ ÓÊµç¹æ»®/×é¶Ó/½ÓÊÕÈÎÎñ',
-   ISVALID              char(1) not null comment 'T:ÉúĞ§ F:ÎŞĞ§',
-   UNITTAG              varchar(100) comment 'ÓÃ»§µÚÈı·½ÏµÍ³¹ÜÀí',
+   UNITTYPE             char(1) comment 'å‘å¸ƒä»»åŠ¡/ é‚®ç”µè§„åˆ’/ç»„é˜Ÿ/æ¥æ”¶ä»»åŠ¡',
+   ISVALID              char(1) not null comment 'T:ç”Ÿæ•ˆ F:æ— æ•ˆ',
+   UNITTAG              varchar(100) comment 'ç”¨æˆ·ç¬¬ä¸‰æ–¹ç³»ç»Ÿç®¡ç†',
    UNITNAME             varchar(300) not null,
    englishName          varchar(300),
-   depno                varchar(100) comment '×éÖ¯»ú¹¹´úÂë£º',
+   depno                varchar(100) comment 'ç»„ç»‡æœºæ„ä»£ç ï¼š',
    UNITDESC             varchar(256),
    ADDRBOOKID           numeric(10,0),
    UNITSHORTNAME        varchar(32),
@@ -478,23 +478,23 @@ create table F_USERINFO
 (
    USERCODE             varchar(32) not null,
    USERPIN              varchar(100),
-   USERTYPE             char(1) default 'U' comment '·¢²¼ÈÎÎñ/½ÓÊÕÈÎÎñ/ÏµÍ³¹ÜÀí',
-   ISVALID              char(1) not null comment 'T:ÉúĞ§ F:ÎŞĞ§',
+   USERTYPE             char(1) default 'U' comment 'å‘å¸ƒä»»åŠ¡/æ¥æ”¶ä»»åŠ¡/ç³»ç»Ÿç®¡ç†',
+   ISVALID              char(1) not null comment 'T:ç”Ÿæ•ˆ F:æ— æ•ˆ',
    LOGINNAME            varchar(100) not null,
-   UserName             varchar(300) not null comment 'êÇ³Æ',
-   USERTAG              varchar(100) comment 'ÓÃÓÚµÚÈı·½ÏµÍ³¹ØÁª',
+   UserName             varchar(300) not null comment 'æ˜µç§°',
+   USERTAG              varchar(100) comment 'ç”¨äºç¬¬ä¸‰æ–¹ç³»ç»Ÿå…³è”',
    englishName          varchar(300),
    USERDESC             varchar(256),
    LoginTimes           numeric(6,0),
    ActiveTime           date,
    LoginIP              varchar(16),
    ADDRBOOKID           numeric(10,0),
-   RegEmail             varchar(60) comment '×¢²áÓÃEmail£¬²»ÄÜÖØ¸´',
-   USERPWD              varchar(20) comment 'Èç¹ûĞèÒª¿ÉÒÔÓĞ',
+   RegEmail             varchar(60) comment 'æ³¨å†Œç”¨Emailï¼Œä¸èƒ½é‡å¤',
+   USERPWD              varchar(20) comment 'å¦‚æœéœ€è¦å¯ä»¥æœ‰',
    pwdExpiredTime       date,
    REGCELLPHONE         varchar(15),
    primaryUnit          varchar(32),
-   userWord             varchar(100) comment 'Î¢ĞÅºÅ',
+   userWord             varchar(100) comment 'å¾®ä¿¡å·',
    userOrder            numeric(4,0),
    updateDate           date,
    CreateDate           date,
@@ -542,9 +542,9 @@ create table F_USERROLE
 /*==============================================================*/
 create table F_USERSETTING
 (
-   USERCODE             varchar(8) not null comment 'DEFAULT:ÎªÄ¬ÈÏÉèÖÃ
-            SYS001~SYS999: ÎªÏµÍ³ÉèÖÃ·½°¸
-            ÊÇÒ»¸öÓÃ»§ºÅ,»òÕßÊÇÏµÍ³µÄÒ»¸öÉèÖÃ·½°¸',
+   USERCODE             varchar(8) not null comment 'DEFAULT:ä¸ºé»˜è®¤è®¾ç½®
+            SYS001~SYS999: ä¸ºç³»ç»Ÿè®¾ç½®æ–¹æ¡ˆ
+            æ˜¯ä¸€ä¸ªç”¨æˆ·å·,æˆ–è€…æ˜¯ç³»ç»Ÿçš„ä¸€ä¸ªè®¾ç½®æ–¹æ¡ˆ',
    ParamCode            varchar(16) not null,
    ParamValue           varchar(2048) not null,
    optID                varchar(16) not null,
@@ -561,10 +561,10 @@ create table F_USERUNIT
    USERUNITID           varchar(16) not null,
    UNITCODE             varchar(6) not null,
    USERCODE             varchar(8) not null,
-   IsPrimary            char(1) not null default '1' comment 'T£ºÎªÖ÷£¬ F£º¼æÖ°',
+   IsPrimary            char(1) not null default '1' comment 'Tï¼šä¸ºä¸»ï¼Œ Fï¼šå…¼èŒ',
    UserStation          varchar(16) not null,
-   UserRank             varchar(2) not null comment 'RANK ´úÂë²»ÊÇ 0¿ªÍ·µÄ¿ÉÒÔ½øĞĞÊÚÓè',
-   RankMemo             varchar(256) comment 'ÈÎÖ°±¸×¢',
+   UserRank             varchar(2) not null comment 'RANK ä»£ç ä¸æ˜¯ 0å¼€å¤´çš„å¯ä»¥è¿›è¡Œæˆäºˆ',
+   RankMemo             varchar(256) comment 'ä»»èŒå¤‡æ³¨',
    USERORDER            numeric(8,0) default 0,
    updateDate           date,
    CreateDate           date,
@@ -573,16 +573,16 @@ create table F_USERUNIT
    primary key (USERUNITID)
 );
 
-alter table F_USERUNIT comment 'Í¬Ò»¸öÈË¿ÉÄÜÔÚ¶à¸ö²¿ÃÅµ£ÈÎ²»Í¬µÄÖ°Î»';
+alter table F_USERUNIT comment 'åŒä¸€ä¸ªäººå¯èƒ½åœ¨å¤šä¸ªéƒ¨é—¨æ‹…ä»»ä¸åŒçš„èŒä½';
 
 /*==============================================================*/
 /* Table: F_USER_FAVORITE                                       */
 /*==============================================================*/
 create table F_USER_FAVORITE
 (
-   USERCODE             varchar(8) not null comment 'DEFAULT:ÎªÄ¬ÈÏÉèÖÃ
-            SYS001~SYS999: ÎªÏµÍ³ÉèÖÃ·½°¸
-            ÊÇÒ»¸öÓÃ»§ºÅ,»òÕßÊÇÏµÍ³µÄÒ»¸öÉèÖÃ·½°¸',
+   USERCODE             varchar(8) not null comment 'DEFAULT:ä¸ºé»˜è®¤è®¾ç½®
+            SYS001~SYS999: ä¸ºç³»ç»Ÿè®¾ç½®æ–¹æ¡ˆ
+            æ˜¯ä¸€ä¸ªç”¨æˆ·å·,æˆ–è€…æ˜¯ç³»ç»Ÿçš„ä¸€ä¸ªè®¾ç½®æ–¹æ¡ˆ',
    OptID                varchar(16) not null,
    LastModifyDate       date,
    CreateDate           date,
@@ -596,9 +596,9 @@ create table F_USER_QUERY_FILTER
 (
    FILTER_NO            numeric(12,0) not null,
    userCode             varchar(8) not null,
-   modle_code           varchar(64) not null comment '¿ª·¢ÈËÔ±×ÔĞĞ¶¨Òå£¬µ¥²»ÄÜÖØ¸´£¬½¨ÒéÓÃÏµÍ³µÄÄ£¿éÃû¼ÓÉÏµ±Ç°µÄ²Ù×÷·½·¨',
-   filter_name          varchar(200) not null comment 'ÓÃ»§×ÔĞĞ¶¨ÒåµÄÃû³Æ',
-   filter_value         varchar(3200) not null comment '±äÁ¿Öµ£¬json¸ñÊ½£¬¶ÔÓ¦Ò»¸ömap',
+   modle_code           varchar(64) not null comment 'å¼€å‘äººå‘˜è‡ªè¡Œå®šä¹‰ï¼Œå•ä¸èƒ½é‡å¤ï¼Œå»ºè®®ç”¨ç³»ç»Ÿçš„æ¨¡å—ååŠ ä¸Šå½“å‰çš„æ“ä½œæ–¹æ³•',
+   filter_name          varchar(200) not null comment 'ç”¨æˆ·è‡ªè¡Œå®šä¹‰çš„åç§°',
+   filter_value         varchar(3200) not null comment 'å˜é‡å€¼ï¼Œjsonæ ¼å¼ï¼Œå¯¹åº”ä¸€ä¸ªmap',
    primary key (FILTER_NO)
 );
 
@@ -619,10 +619,10 @@ create table F_WORK_CLASS
    CLASS_NAME           varchar(50) not null,
    SHORT_NAME           varchar(10) not null,
    begin_time           varchar(6) comment '9:00',
-   end_time             varchar(6) comment '+4:00 ''+''±íÊ¾µÚ¶şÌì',
+   end_time             varchar(6) comment '+4:00 ''+''è¡¨ç¤ºç¬¬äºŒå¤©',
    has_break            char(1),
    break_begin_time     varchar(6) comment '9:00',
-   break_end_time       varchar(6) comment '+4:00 ''+''±íÊ¾µÚ¶şÌì',
+   break_end_time       varchar(6) comment '+4:00 ''+''è¡¨ç¤ºç¬¬äºŒå¤©',
    class_desc           varchar(500),
    record_date          date,
    recorder             varchar(8),
@@ -630,8 +630,8 @@ create table F_WORK_CLASS
 );
 
 alter table F_WORK_CLASS comment 'CLASS_ID
- Îª 0 µÄ±íÊ¾ĞİÏ¢£¬¿ÉÒÔ²»ÔÚÕâ¸ö±íÖĞ³öÏÖ
- Îª 1 µÄÎªÄ¬ÈÏ°à´ÎĞÅÏ¢';
+ ä¸º 0 çš„è¡¨ç¤ºä¼‘æ¯ï¼Œå¯ä»¥ä¸åœ¨è¿™ä¸ªè¡¨ä¸­å‡ºç°
+ ä¸º 1 çš„ä¸ºé»˜è®¤ç­æ¬¡ä¿¡æ¯';
 
 /*==============================================================*/
 /* Table: F_WORK_DAY                                            */
@@ -639,14 +639,14 @@ alter table F_WORK_CLASS comment 'CLASS_ID
 create table F_WORK_DAY
 (
    WorkDay              date not null,
-   DayType              char(1) not null comment 'A:¹¤×÷ÈÕ·Å¼Ù£¬B:ÖÜÄ©µ÷Ğİ³É¹¤×÷Ê±¼ä C Õı³£ÉÏ°à DÕı³£Ğİ¼Ù',
+   DayType              char(1) not null comment 'A:å·¥ä½œæ—¥æ”¾å‡ï¼ŒB:å‘¨æœ«è°ƒä¼‘æˆå·¥ä½œæ—¶é—´ C æ­£å¸¸ä¸Šç­ Dæ­£å¸¸ä¼‘å‡',
    WorkTimeType         varchar(20),
    WorkDayDesc          varchar(255),
    primary key (WorkDay)
 );
 
-alter table F_WORK_DAY comment '·ÇÕı³£×÷ÒµÊ±¼äÈÕ
-A:¹¤×÷ÈÕ·Å¼Ù B:ÖÜÄ©µ÷Ğİ³É¹¤×÷Ê±¼ä  C: Õı³£ÉÏ°à  D:Õı³£Ğİ¼Ù  
+alter table F_WORK_DAY comment 'éæ­£å¸¸ä½œä¸šæ—¶é—´æ—¥
+A:å·¥ä½œæ—¥æ”¾å‡ B:å‘¨æœ«è°ƒä¼‘æˆå·¥ä½œæ—¶é—´  C: æ­£å¸¸ä¸Šç­  D:æ­£å¸¸ä¼‘å‡  
 ';
 
 /*==============================================================*/
@@ -654,35 +654,35 @@ A:¹¤×÷ÈÕ·Å¼Ù B:ÖÜÄ©µ÷Ğİ³É¹¤×÷Ê±¼ä  C: Õı³£ÉÏ°à  D:Õı³£Ğİ¼Ù
 /*==============================================================*/
 create table M_InnerMsg
 (
-   MsgCode              varchar(16) not null comment 'ÏûÏ¢Ö÷¼ü×Ô¶¨Òå£¬Í¨¹ıS_M_INNERMSGĞòÁĞÉú³É',
+   MsgCode              varchar(16) not null comment 'æ¶ˆæ¯ä¸»é”®è‡ªå®šä¹‰ï¼Œé€šè¿‡S_M_INNERMSGåºåˆ—ç”Ÿæˆ',
    Sender               varchar(128),
    SendDate             date,
    MsgTitle             varchar(128),
-   MsgType              char(1) comment 'P= ¸öÈËÎªÏûÏ¢  A= »ú¹¹Îª¹«¸æ£¨Í¨Öª£©
-            M=ÓÊ¼ş',
-   MailType             char(1) comment 'I=ÊÕ¼şÏä
-            O=·¢¼şÏä
-            D=²İ¸åÏä
-            T=·Ï¼şÏä
+   MsgType              char(1) comment 'P= ä¸ªäººä¸ºæ¶ˆæ¯  A= æœºæ„ä¸ºå…¬å‘Šï¼ˆé€šçŸ¥ï¼‰
+            M=é‚®ä»¶',
+   MailType             char(1) comment 'I=æ”¶ä»¶ç®±
+            O=å‘ä»¶ç®±
+            D=è‰ç¨¿ç®±
+            T=åºŸä»¶ç®±
             
             
             ',
    MailUnDelType        char(1),
-   ReceiveName          varchar(2048) comment 'Ê¹ÓÃ²¿ÃÅ£¬¸öÈËÖĞÎÄÃû£¬ÖĞ¼äÊ¹ÓÃÓ¢ÎÄ·ÖºÅ·Ö¸î',
-   HoldUsers            numeric(8,0) comment '×ÜÊıÎª·¢ËÍÈËºÍ½ÓÊÕÈËÊıÁ¿Ïà¼Ó£¬·¢ËÍºÍ½ÓÊÕÈËÉ¾³ıÏûÏ¢Ê±-1£¬µ±ÊıÁ¿Îª0Ê±ÕæÕıÉ¾³ı´ËÌõ¼ÇÂ¼
+   ReceiveName          varchar(2048) comment 'ä½¿ç”¨éƒ¨é—¨ï¼Œä¸ªäººä¸­æ–‡åï¼Œä¸­é—´ä½¿ç”¨è‹±æ–‡åˆ†å·åˆ†å‰²',
+   HoldUsers            numeric(8,0) comment 'æ€»æ•°ä¸ºå‘é€äººå’Œæ¥æ”¶äººæ•°é‡ç›¸åŠ ï¼Œå‘é€å’Œæ¥æ”¶äººåˆ é™¤æ¶ˆæ¯æ—¶-1ï¼Œå½“æ•°é‡ä¸º0æ—¶çœŸæ­£åˆ é™¤æ­¤æ¡è®°å½•
             
-            ÏûÏ¢ÀàĞÍÎªÓÊ¼şÊ±²»ĞèÒªÉèÖÃ',
-   msgState             char(1) comment 'Î´¶Á/ÒÑ¶Á/É¾³ı',
+            æ¶ˆæ¯ç±»å‹ä¸ºé‚®ä»¶æ—¶ä¸éœ€è¦è®¾ç½®',
+   msgState             char(1) comment 'æœªè¯»/å·²è¯»/åˆ é™¤',
    msgContent           longblob,
-   EmailId              varchar(8) comment 'ÓÃ»§ÅäÖÃ¶àÓÊÏäÊ±Ê¹ÓÃ',
-   OptID                varchar(64) not null comment 'Ä£¿é£¬»òÕß±í',
-   OPTMethod            varchar(64) comment '·½·¨£¬»òÕß×Ö¶Î',
-   optTag               varchar(200) comment 'Ò»°ãÓÃÓÚ¹ØÁªµ½ÒµÎñÖ÷Ìå',
+   EmailId              varchar(8) comment 'ç”¨æˆ·é…ç½®å¤šé‚®ç®±æ—¶ä½¿ç”¨',
+   OptID                varchar(64) not null comment 'æ¨¡å—ï¼Œæˆ–è€…è¡¨',
+   OPTMethod            varchar(64) comment 'æ–¹æ³•ï¼Œæˆ–è€…å­—æ®µ',
+   optTag               varchar(200) comment 'ä¸€èˆ¬ç”¨äºå…³è”åˆ°ä¸šåŠ¡ä¸»ä½“',
    primary key (MsgCode)
 );
 
-alter table M_InnerMsg comment 'ÄÚ²¿ÏûÏ¢Óë¹«¸æ
-½ÓÊÜ´úÂë,  ÆäÊµ¿ÉÒÔ¶ÀÁ¢³öÀ´, ÒòÎªËû ºÍ·¢ËÍÈË ÊÇ Ò»¶Ô¶àµÄ¹ØÏµ
+alter table M_InnerMsg comment 'å†…éƒ¨æ¶ˆæ¯ä¸å…¬å‘Š
+æ¥å—ä»£ç ,  å…¶å®å¯ä»¥ç‹¬ç«‹å‡ºæ¥, å› ä¸ºä»– å’Œå‘é€äºº æ˜¯ ä¸€å¯¹å¤šçš„å…³ç³»
 
                                -&#';
 
@@ -694,22 +694,22 @@ create table M_InnerMsg_Recipient
    MsgCode              varchar(16) not null,
    Receive              varchar(8) not null,
    ReplyMsgCode         int,
-   ReceiveType          char(1) comment 'P=¸öÈËÎªÏûÏ¢
-            A=»ú¹¹Îª¹«¸æ
-            M=ÓÊ¼ş',
-   MailType             char(1) comment 'T=ÊÕ¼şÈË
-            C=³­ËÍ
-            B=ÃÜËÍ',
-   msgState             char(1) comment 'Î´¶Á/ÒÑ¶Á/É¾³ı£¬ÊÕ¼şÈËÔÚÏßÊ±µ¯³öÌáÊ¾
+   ReceiveType          char(1) comment 'P=ä¸ªäººä¸ºæ¶ˆæ¯
+            A=æœºæ„ä¸ºå…¬å‘Š
+            M=é‚®ä»¶',
+   MailType             char(1) comment 'T=æ”¶ä»¶äºº
+            C=æŠ„é€
+            B=å¯†é€',
+   msgState             char(1) comment 'æœªè¯»/å·²è¯»/åˆ é™¤ï¼Œæ”¶ä»¶äººåœ¨çº¿æ—¶å¼¹å‡ºæç¤º
             
-            U=Î´¶Á
-            R=ÒÑ¶Á
-            D=É¾³ı',
+            U=æœªè¯»
+            R=å·²è¯»
+            D=åˆ é™¤',
    ID                   varchar(16) not null,
    primary key (ID)
 );
 
-alter table M_InnerMsg_Recipient comment 'ÄÚ²¿ÏûÏ¢£¨ÓÊ¼ş£©Óë¹«¸æÊÕ¼şÈË¼°ÏûÏ¢ĞÅÏ¢';
+alter table M_InnerMsg_Recipient comment 'å†…éƒ¨æ¶ˆæ¯ï¼ˆé‚®ä»¶ï¼‰ä¸å…¬å‘Šæ”¶ä»¶äººåŠæ¶ˆæ¯ä¿¡æ¯';
 
 /*==============================================================*/
 /* Table: M_MsgAnnex                                            */
@@ -727,28 +727,28 @@ create table M_MsgAnnex
 /*==============================================================*/
 create table P_TASK_LIST
 (
-   taskid               numeric(12,0) not null comment '×Ô¶¯Éú³ÉµÄÖ÷¼ü£¬ĞèÒªÒ»¸öĞòÁĞÀ´ÅäºÏ',
-   taskowner            varchar(8) not null comment 'Ë­µÄÈÎÎñ',
-   tasktag              varchar(1) not null comment 'ÀàËÆÓëoutlookÖĞµÄÓÊ¼ş±ê¼Ç£¬¿ÉÒÔÓÃ²»Í¬µÄÑÕÉ«µÄÆì×ÓÍ¼±í±êÊ¶',
-   taskrank             varchar(1) not null comment 'ÈÎÎñµÄÓÅÏÈ¼¶',
-   taskstatus           varchar(2) not null comment '´¦ÀíÖĞ¡¢Íê³É¡¢È¡Ïû¡¢ÖÕÖ¹',
+   taskid               numeric(12,0) not null comment 'è‡ªåŠ¨ç”Ÿæˆçš„ä¸»é”®ï¼Œéœ€è¦ä¸€ä¸ªåºåˆ—æ¥é…åˆ',
+   taskowner            varchar(8) not null comment 'è°çš„ä»»åŠ¡',
+   tasktag              varchar(1) not null comment 'ç±»ä¼¼ä¸outlookä¸­çš„é‚®ä»¶æ ‡è®°ï¼Œå¯ä»¥ç”¨ä¸åŒçš„é¢œè‰²çš„æ——å­å›¾è¡¨æ ‡è¯†',
+   taskrank             varchar(1) not null comment 'ä»»åŠ¡çš„ä¼˜å…ˆçº§',
+   taskstatus           varchar(2) not null comment 'å¤„ç†ä¸­ã€å®Œæˆã€å–æ¶ˆã€ç»ˆæ­¢',
    tasktitle            varchar(256) not null,
-   taskmemo             varchar(1000) comment '¼òÒªÃèÊöÈÎÎñµÄ¾ßÌåÄÚÈİ',
-   tasktype             varchar(8) not null comment '¸öÈË¡¢×éÖ¯»î¶¯¡¢Áìµ¼Î¯ÅÉ µÈµÈ',
-   OptID                varchar(64) not null comment 'Ä£¿é£¬»òÕß±í',
-   OPTMethod            varchar(64) comment '·½·¨£¬»òÕß×Ö¶Î',
-   optTag               varchar(200) comment 'Ò»°ãÓÃÓÚ¹ØÁªµ½ÒµÎñÖ÷Ìå',
+   taskmemo             varchar(1000) comment 'ç®€è¦æè¿°ä»»åŠ¡çš„å…·ä½“å†…å®¹',
+   tasktype             varchar(8) not null comment 'ä¸ªäººã€ç»„ç»‡æ´»åŠ¨ã€é¢†å¯¼å§”æ´¾ ç­‰ç­‰',
+   OptID                varchar(64) not null comment 'æ¨¡å—ï¼Œæˆ–è€…è¡¨',
+   OPTMethod            varchar(64) comment 'æ–¹æ³•ï¼Œæˆ–è€…å­—æ®µ',
+   optTag               varchar(200) comment 'ä¸€èˆ¬ç”¨äºå…³è”åˆ°ä¸šåŠ¡ä¸»ä½“',
    creator              varchar(8) not null,
    created              date not null,
    planbegintime        date not null,
    planendtime          date,
    begintime            date,
    endtime              date,
-   finishmemo           varchar(1000) comment '¼òÒª¼ÇÂ¼ÈÎÎñµÄÖ´ĞĞ¹ı³ÌºÍ½á¹û',
-   noticeSign           varchar(1) comment 'ÌáĞÑ±êÖ¾Îª£º½ûÖ¹ÌáĞÑ¡¢Î´ÌáĞÑ¡¢ÒÑÌáĞÑ',
-   lastNoticeTime       date comment '×îºóÒ»´ÎÌáĞÑÊ±¼ä£¬¸ù¾İÌáĞÑ²ßÂÔ¿ÉÒÔÌáĞÑ¶à´Î',
+   finishmemo           varchar(1000) comment 'ç®€è¦è®°å½•ä»»åŠ¡çš„æ‰§è¡Œè¿‡ç¨‹å’Œç»“æœ',
+   noticeSign           varchar(1) comment 'æé†’æ ‡å¿—ä¸ºï¼šç¦æ­¢æé†’ã€æœªæé†’ã€å·²æé†’',
+   lastNoticeTime       date comment 'æœ€åä¸€æ¬¡æé†’æ—¶é—´ï¼Œæ ¹æ®æé†’ç­–ç•¥å¯ä»¥æé†’å¤šæ¬¡',
    taskdeadline         date,
-   taskvalue            varchar(2048) comment '±¸ÓÃ£¬×Ö¶Î²»¹»Ê±Ê¹ÓÃ',
+   taskvalue            varchar(2048) comment 'å¤‡ç”¨ï¼Œå­—æ®µä¸å¤Ÿæ—¶ä½¿ç”¨',
    primary key (taskid)
 );
 

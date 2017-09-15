@@ -11,16 +11,12 @@ import org.hibernate.internal.SessionFactoryImpl;
  * @author codefan@sina.com
  * 2015年2月4日
  */
-//@Component
 public class HibernateEventWiring {
 
-    //@Autowired
     private SessionFactory sessionFactory;
 
-    //@Autowired
     private PoDataChangesListener logListener;
 
-    //@PostConstruct
     public void registerListeners() {
         EventListenerRegistry registry = ((SessionFactoryImpl) sessionFactory)
                 .getServiceRegistry().getService(EventListenerRegistry.class);

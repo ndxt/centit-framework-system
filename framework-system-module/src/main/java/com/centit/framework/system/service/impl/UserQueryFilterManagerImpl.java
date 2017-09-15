@@ -32,15 +32,13 @@ public class UserQueryFilterManagerImpl implements UserQueryFilterManager{
 
 
     private UserQueryFilterDao userQueryFilterDao ;
-/*
-     @PostConstruct
-    public void init() {
-        
-    }
 
- */
     @Override
-    @Transactional(propagation=Propagation.REQUIRED) 
+
+	private UserQueryFilterDao userQueryFilterDao ;
+
+	@Override
+    @Transactional(propagation=Propagation.REQUIRED)
     public JSONArray listUserQueryFiltersAsJson(
             String[] fields,
             Map<String, Object> filterMap, PageDesc pageDesc){

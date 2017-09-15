@@ -1,7 +1,5 @@
--- mysql -u tfzc -D tfzcpt -p <D:\Projects\j2eews\tfzcpt\src\sqlScript\sysDataInit.sql
-
 -- 创建用户
--- delete from F_UNITINFO;
+
 insert into F_UNITINFO
 (UNIT_CODE, PARENT_UNIT, UNIT_TYPE, IS_VALID, UNIT_TAG,
 UNIT_NAME, ENGLISH_NAME, DEP_NO, UNIT_DESC, ADDRBOOK_ID,
@@ -15,11 +13,14 @@ NOW(), null, 'u0000000', 'u0000000', '/U00001');
 
 insert into F_USERINFO (USER_CODE, USER_PIN, IS_VALID, LOGIN_NAME, USER_NAME, USER_DESC, LOGIN_TIMES, ACTIVE_TIME, LOGIN_IP, ADDRBOOK_ID, REG_EMAIL, USER_ORDER, USER_PWD, REG_CELL_PHONE, CREATE_DATE,CREATOR,UPDATOR,UPDATE_DATE)
 values ('noname', '67b74fe1423796dfe8db34b959b81fbd', 'F', 'noname', '匿名用户', '匿名用户', null, null, '', null, 'noname@centit.com', 1, '', '', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'),'u0000000','u0000000',now());
-insert into F_USERINFO (USER_CODE, USER_PIN, IS_VALID, LOGIN_NAME, USER_NAME, USER_DESC, LOGIN_TIMES, ACTIVE_TIME, LOGIN_IP, ADDRBOOK_ID, REG_EMAIL, USER_ORDER, USER_PWD, REG_CELL_PHONE, CREATE_DATE ,CREATOR,UPDATOR,UPDATE_DATE)
-values ('u0000000', 'd92ec26dec6234c5c79dfae76d375736', 'T', 'admin', '管理员', '', null, null, '', null, 'codefan@centit.com', 1, '', '18017458877', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'),'u0000000','u0000000',now());
+insert into F_USERINFO (USER_CODE, USER_PIN, IS_VALID, LOGIN_NAME, USER_NAME, USER_DESC, LOGIN_TIMES, ACTIVE_TIME, LOGIN_IP, ADDRBOOK_ID, REG_EMAIL, USER_ORDER, USER_PWD, REG_CELL_PHONE, CREATE_DATE ,CREATOR,UPDATOR,UPDATE_DATE,primary_Unit)
+values ('u0000000', '$2a$11$DbyFNhHeCES5CKoMuM5sXepY7GM35sZkUSqQbjYJnFTzJ2GDIYGLK', 'T', 'admin', '管理员', '', null, null, '', null, 'codefan@centit.com', 1, '', '18017458877', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'),'u0000000','u0000000',now(),'U00001');
+
+INSERT INTO F_USERUNIT(USER_UNIT_ID, UNIT_CODE, USER_CODE, Is_Primary, User_Station, User_Rank, Rank_Memo, User_Order,
+update_Date, Create_Date) VALUES ('s000000000','U00001','u0000000','T','pf','CZ',null,'1','2014-12-12','2014-12-12');
 
 -- 初始化数据字典
--- str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s')
+
 insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
 values ('MsgType', '消息类型', 'U', 'L', '测试测试', null, str_to_date('25-02-2016 17:55:21', '%d-%m-%Y %H:%i:%s'), null, 'innermsg', '1','u0000000','u0000000');
 
