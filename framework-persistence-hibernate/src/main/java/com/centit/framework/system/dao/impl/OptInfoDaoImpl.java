@@ -90,19 +90,19 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     @Transactional
     public List<String> listUserDataPowerByOptMethod(String userCode,String optid,String optMethod) {
        
-    	String sSqlsen = "select OPTSCOPECODES " +
+        String sSqlsen = "select OPTSCOPECODES " +
                  "from F_V_USEROPTDATASCOPES " +
                  "where USERCODE = ? and OPTID = ? and OPTMETHOD = ?";
-    	 
-    	List<Object[]> l = (List<Object[]>) DatabaseOptUtils.findObjectsBySql
-    			 (this, sSqlsen,new Object[]{userCode, optid, optMethod});
-    	 
-    	if(l==null)
-    		 return null;
-    	List<String> scopeCodes = new ArrayList<String>();
-     	for(Object[] obj : l)
-     		scopeCodes.add(String.valueOf(obj[0]));
-     	return scopeCodes;
+
+        List<Object[]> l = (List<Object[]>) DatabaseOptUtils.findObjectsBySql
+                 (this, sSqlsen,new Object[]{userCode, optid, optMethod});
+
+        if(l==null)
+             return null;
+        List<String> scopeCodes = new ArrayList<String>();
+         for(Object[] obj : l)
+             scopeCodes.add(String.valueOf(obj[0]));
+         return scopeCodes;
     }
 
 

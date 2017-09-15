@@ -13,21 +13,21 @@ public interface UnitInfoDao {
     void saveNewObject(UnitInfo unitInfo);
 
     void mergeObject(UnitInfo unitInfo);
-	
-	 void deleteObjectById(String unitCode);
-	
-	 List<UnitInfo> listObjects(Map<String, Object> filterMap);
-	
+
+     void deleteObjectById(String unitCode);
+
+     List<UnitInfo> listObjects(Map<String, Object> filterMap);
+
      int  pageCount(Map<String, Object> filterDescMap);
 
      List<UnitInfo>  pageQuery(Map<String, Object> pageQureyMap);
     
     
-	 int countChildrenSum(String unitCode);
-	
-	 List<UnitInfo> listObjects();
-	
-	// DatabaseOptUtils.getNextKeyBySequence(this, "S_UNITCODE", 6);
+     int countChildrenSum(String unitCode);
+
+     List<UnitInfo> listObjects();
+
+    // DatabaseOptUtils.getNextKeyBySequence(this, "S_UNITCODE", 6);
      String getNextKey();
 
     //listObjectsAll("FROM UnitInfo where depNo=?", depno);
@@ -59,7 +59,7 @@ public interface UnitInfoDao {
 
     /**
      * "from UnitInfo where unitName = ? or unitShortName = ?"
-            			+ " order by unitOrder asc";
+                        + " order by unitOrder asc";
      * @param name name
      * @return UnitInfo
      */

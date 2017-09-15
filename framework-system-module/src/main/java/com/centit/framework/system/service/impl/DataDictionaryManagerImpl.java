@@ -28,8 +28,8 @@ import java.util.Map;
 public class DataDictionaryManagerImpl implements
         DataDictionaryManager {
  
-	protected Logger logger = LoggerFactory.getLogger(DataDictionaryManagerImpl.class);
-	 
+    protected Logger logger = LoggerFactory.getLogger(DataDictionaryManagerImpl.class);
+
     @Resource
     @NotNull
     private DataDictionaryDao dictionaryDao;
@@ -66,34 +66,34 @@ public class DataDictionaryManagerImpl implements
         List<DataDictionary> oldData = dictionaryDao.listDataDictionary(dataCatalog.getCatalogCode());
         List<DataDictionary> newData = dataCatalog.getDataDictionaries();
         Triple<List<DataDictionary>, List<Pair<DataDictionary,DataDictionary>>, List<DataDictionary>> 
-        	dbOptList = ListOpt.compareTwoList(oldData, newData, (o1,o2) ->
-						 o1.getDataCode().compareTo(o2.getDataCode()));
+            dbOptList = ListOpt.compareTwoList(oldData, newData, (o1,o2) ->
+                         o1.getDataCode().compareTo(o2.getDataCode()));
         
          if(dbOptList.getRight()!=null){
             for(DataDictionary dp: dbOptList.getRight() ){
-	    		if("U".equals(dp.getDataStyle()) || (isAdmin && "S".equals(dp.getDataStyle()) ) ){
-	    			dictionaryDao.deleteObject(dp);
+                if("U".equals(dp.getDataStyle()) || (isAdmin && "S".equals(dp.getDataStyle()) ) ){
+                    dictionaryDao.deleteObject(dp);
                 }
             }
         }
         if( (isAdmin || !"F".equals(dataCatalog.getCatalogStyle()))
-        		&& dbOptList.getLeft()!=null ){
-        	 for(DataDictionary dp: dbOptList.getLeft() ){
- 	    		dictionaryDao.saveNewObject(dp);
+                && dbOptList.getLeft()!=null ){
+             for(DataDictionary dp: dbOptList.getLeft() ){
+                 dictionaryDao.saveNewObject(dp);
              }
         }
         
         if(null != dbOptList.getMiddle()){
             for(Pair<DataDictionary,DataDictionary> updateDp: dbOptList.getMiddle()){
-            	DataDictionary oldD = updateDp.getLeft();
-            	DataDictionary newD = updateDp.getRight();
-            	if("F".equals(oldD.getDataStyle())) 
-            		continue;
-            	if(isAdmin || "U".equals(oldD.getDataStyle())){
-            		/*BeanUtils.copyProperties(newD, oldD, new String[]{"id","dataStyle"});
-            		dictionaryDao.updateObject(oldD);*/
-            		dictionaryDao.mergeObject(newD);
-            	}
+                DataDictionary oldD = updateDp.getLeft();
+                DataDictionary newD = updateDp.getRight();
+                if("F".equals(oldD.getDataStyle()))
+                    continue;
+                if(isAdmin || "U".equals(oldD.getDataStyle())){
+                    /*BeanUtils.copyProperties(newD, oldD, new String[]{"id","dataStyle"});
+                    dictionaryDao.updateObject(oldD);*/
+                    dictionaryDao.mergeObject(newD);
+                }
             }
         }       
         return oldData;
@@ -186,32 +186,32 @@ public class DataDictionaryManagerImpl implements
     }
 
 
-	@Override
-	@Transactional
-	public DataCatalog getObjectById(String catalogCode) {
-		return dataCatalogDao.getObjectById(catalogCode);
-	}
-
-
-	@Override
-	@Transactional
-	public void mergeObject(DataCatalog dataCatalog) {
-		dataCatalogDao.mergeObject(dataCatalog);
-	}
-
-	@Override
+    @Override
     @Transactional
-    public void saveNewObject(DataCatalog dataCatalog){
-	    dataCatalogDao.saveNewObject(dataCatalog);
+    public DataCatalog getObjectById(String catalogCode) {
+        return dataCatalogDao.getObjectById(catalogCode);
     }
 
 
-	@Override
-	@Transactional
-	public List<DataCatalog> listObjects(Map<String, Object> filterDescMap, PageDesc pageDesc) {
-		  return dataCatalogDao.pageQuery(
-		          QueryParameterPrepare.prepPageParams(filterDescMap, pageDesc,
+    @Override
+    @Transactional
+    public void mergeObject(DataCatalog dataCatalog) {
+        dataCatalogDao.mergeObject(dataCatalog);
+    }
+
+    @Override
+    @Transactional
+    public void saveNewObject(DataCatalog dataCatalog){
+        dataCatalogDao.saveNewObject(dataCatalog);
+    }
+
+
+    @Override
+    @Transactional
+    public List<DataCatalog> listObjects(Map<String, Object> filterDescMap, PageDesc pageDesc) {
+          return dataCatalogDao.pageQuery(
+                  QueryParameterPrepare.prepPageParams(filterDescMap, pageDesc,
                           dataCatalogDao.pageCount(filterDescMap) ) );
-	}
+    }
 
 }

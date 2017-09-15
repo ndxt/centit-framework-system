@@ -23,8 +23,8 @@ public class OptMethodDaoImpl extends BaseDaoImpl<OptMethod, String> implements 
     @Transactional
     public List<OptMethod> listOptMethodByRoleCode(String roleCode) {
         return listObjects("FROM OptMethod WHERE optCode in "
-        		+ "(select id.optCode from RolePower where id.roleCode = ?)"
-        		+ " order by optId", roleCode);
+                + "(select id.optCode from RolePower where id.roleCode = ?)"
+                + " order by optId", roleCode);
     }
     
     @Transactional
@@ -54,7 +54,7 @@ public class OptMethodDaoImpl extends BaseDaoImpl<OptMethod, String> implements 
 
     @Transactional
     public String getNextOptCode() {
-    	return DatabaseOptUtils.getNextValueOfSequence(this, "S_OPTDEFCODE");
+        return DatabaseOptUtils.getNextValueOfSequence(this, "S_OPTDEFCODE");
     }
 
 }

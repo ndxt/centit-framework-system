@@ -16,26 +16,26 @@ import java.util.Map;
 
 public interface UserQueryFilterManager
 {
-	
-	void mergeObject(UserQueryFilter userQueryFilter);
-	
-	void saveNewObject(UserQueryFilter userQueryFilter);
-	
-	List<UserQueryFilter>listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
-		JSONArray listUserQueryFiltersAsJson(
+
+    void mergeObject(UserQueryFilter userQueryFilter);
+
+    void saveNewObject(UserQueryFilter userQueryFilter);
+
+    List<UserQueryFilter>listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
+        JSONArray listUserQueryFiltersAsJson(
      String[] fields,
      Map<String, Object> filterMap, PageDesc pageDesc);
-	
-	List<UserQueryFilter> listUserQueryFilterByModle(String userCode,String modelCode);
-	
-	Long getNextFilterKey();
-	
-	Long saveUserDefaultFilter(UserQueryFilter userQueryFilter);
-	
-	UserQueryFilter getUserDefaultFilter(String userCode,String modelCode);
-	
-	UserQueryFilter getUserQueryFilter(Long filterNo);
-	
-	boolean deleteUserQueryFilter(Long filterNo);
-	
+
+    List<UserQueryFilter> listUserQueryFilterByModle(String userCode,String modelCode);
+
+    Long getNextFilterKey();
+
+    Long saveUserDefaultFilter(UserQueryFilter userQueryFilter);
+
+    UserQueryFilter getUserDefaultFilter(String userCode,String modelCode);
+
+    UserQueryFilter getUserQueryFilter(Long filterNo);
+
+    boolean deleteUserQueryFilter(Long filterNo);
+
 }

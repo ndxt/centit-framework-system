@@ -77,9 +77,9 @@ public class UserRoleController extends BaseController {
         
         String type = request.getParameter("type");
         if("S".equals(type)){
-        	filterMap.put("NP_userRoleType", true);
+            filterMap.put("NP_userRoleType", true);
         }else if("D".equals(type)){
-        	filterMap.put("NP_unitRoleType", true);
+            filterMap.put("NP_unitRoleType", true);
 
         }
 
@@ -144,20 +144,20 @@ public class UserRoleController extends BaseController {
     public void create(@Valid UserRole userRole,@Valid String[] userCode, HttpServletRequest request, HttpServletResponse response) {
         userRole.setCreateDate(new Date());
         if(userCode!=null && userCode.length>0){
-        	UserRole ur=null;
-        	for(String u: userCode){
-        		ur = new UserRole();
-        		ur.copy(userRole);
-        		ur.setUserCode(u);
-        		sysUserRoleManager.mergeObject(ur);
-        	}
+            UserRole ur=null;
+            for(String u: userCode){
+                ur = new UserRole();
+                ur.copy(userRole);
+                ur.setUserCode(u);
+                sysUserRoleManager.mergeObject(ur);
+            }
         }
 
         JsonResultUtils.writeBlankJson(response);
         
         /*********log*********/
         OperationLogCenter.logNewObject(request,optId, userRole.getUserCode()+"-"+ userRole.getRoleCode(),
-        		OperationLog.P_OPT_LOG_METHOD_C, "新增用户角色关联" , userRole);
+                OperationLog.P_OPT_LOG_METHOD_C, "新增用户角色关联" , userRole);
         /*********log*********/
     }
 
@@ -189,7 +189,7 @@ public class UserRoleController extends BaseController {
         StringBuilder optContent = new StringBuilder();
         optContent.append("更改用户角色信息:" + JSON.toJSONString(userRole.getId()));
         OperationLogCenter.logUpdateObject(request,optId,dbUserRole.getUserCode(),
-        		OperationLog.P_OPT_LOG_METHOD_U,  optContent.toString(),userRole,dbUserRole);
+                OperationLog.P_OPT_LOG_METHOD_U,  optContent.toString(),userRole,dbUserRole);
         /*********log*********/
     }
 

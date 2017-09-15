@@ -186,25 +186,25 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
     }
 
      public String getLocalDataValue(String lang) {
-    	if(dataValue==null)
-    		return null;
-    	if(jsonData==null){
-    		if(this.dataValue.startsWith("{") && this.dataValue.endsWith("}"))
-    			jsonData=JSON.parseObject(dataValue);
-    		else
-    			return dataValue;
-    	}
-    	String sRet=null;
-    	if(jsonData!=null){
-    		if(lang==null)
-    			sRet =jsonData.getString("zh_CN");
-    		else{
-	    		sRet =jsonData.getString(lang);
-		    	if(sRet==null)
-		    		sRet =jsonData.getString("zh_CN");
-    		}
-    	}
-    	return sRet;
+        if(dataValue==null)
+            return null;
+        if(jsonData==null){
+            if(this.dataValue.startsWith("{") && this.dataValue.endsWith("}"))
+                jsonData=JSON.parseObject(dataValue);
+            else
+                return dataValue;
+        }
+        String sRet=null;
+        if(jsonData!=null){
+            if(lang==null)
+                sRet =jsonData.getString("zh_CN");
+            else{
+                sRet =jsonData.getString(lang);
+                if(sRet==null)
+                    sRet =jsonData.getString("zh_CN");
+            }
+        }
+        return sRet;
     }
       
     public String getFullKey() {
@@ -243,16 +243,16 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
         this.createDate = createDate;
     }
 
-	@Override
+    @Override
     public Date getLastModifyDate() {
         return lastModifyDate;
     }
 
-	@Override
+    @Override
     public void setLastModifyDate(Date lastModifyDate) {
         this.lastModifyDate = lastModifyDate;
     }
-	
+
 
     public void copy(DataDictionary other) {
 

@@ -16,8 +16,8 @@ import java.util.List;
  */
 
 public interface EntityManagerWithDataPower<T extends Serializable, PK extends Serializable> 
-		extends BaseEntityManager<T, PK> {
-	
-	public List<T> listObjecesDemo(String method);
+        extends BaseEntityManager<T, PK> {
+
+    public List<T> listObjecesDemo(String method);
 
 }

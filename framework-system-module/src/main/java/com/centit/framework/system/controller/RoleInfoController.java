@@ -222,7 +222,7 @@ public class RoleInfoController extends BaseController {
         
         /*********log*********/
         OperationLogCenter.logNewObject(request,optId,roleInfo.getRoleCode(),
-        		OperationLog.P_OPT_LOG_METHOD_C, "新增角色" ,roleInfo);
+                OperationLog.P_OPT_LOG_METHOD_C, "新增角色" ,roleInfo);
         /*********log*********/
     }
    
@@ -242,7 +242,7 @@ public class RoleInfoController extends BaseController {
         
         /*********log*********/
         OperationLogCenter.logNewObject(request, optId,roleInfo.getRoleCode(),
-        		OperationLog.P_OPT_LOG_METHOD_C, "新增角色" , roleInfo);
+                OperationLog.P_OPT_LOG_METHOD_C, "新增角色" , roleInfo);
         /*********log*********/
     }
     
@@ -263,7 +263,7 @@ public class RoleInfoController extends BaseController {
         
         /*********log*********/
         OperationLogCenter.logNewObject(request, optId,roleInfo.getRoleCode(),
-        		OperationLog.P_OPT_LOG_METHOD_C, "新增角色" , roleInfo);
+                OperationLog.P_OPT_LOG_METHOD_C, "新增角色" , roleInfo);
         /*********log*********/
     }
     
@@ -284,7 +284,7 @@ public class RoleInfoController extends BaseController {
         
         //*********log*********//*
         OperationLogCenter.logNewObject(request,optId,roleInfo.getRoleCode(), 
-        		OperationLog.P_OPT_LOG_METHOD_C,  "新增角色" , roleInfo);
+                OperationLog.P_OPT_LOG_METHOD_C,  "新增角色" , roleInfo);
         //*********log*********//*
     }
     
@@ -321,7 +321,7 @@ public class RoleInfoController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
         OperationLogCenter.logNewObject(request,optId, rolePower.getOptCode(),
-        		OperationLog.P_OPT_LOG_METHOD_C,  "角色"+dbRoleInfo.getRoleName()+"添加权限:" , rolePower);
+                OperationLog.P_OPT_LOG_METHOD_C,  "角色"+dbRoleInfo.getRoleName()+"添加权限:" , rolePower);
         /*********log*********/
     }
 
@@ -355,7 +355,7 @@ public class RoleInfoController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
         OperationLogCenter.logDeleteObject(request,optId,rolePower.getOptCode(),
-        		OperationLog.P_OPT_LOG_METHOD_D, "删除角色"+dbRoleInfo.getRoleName()+"的权限" , rolePower);
+                OperationLog.P_OPT_LOG_METHOD_D, "删除角色"+dbRoleInfo.getRoleName()+"的权限" , rolePower);
         /*********log*********/
     }
 
@@ -446,13 +446,13 @@ public class RoleInfoController extends BaseController {
      */
     @RequestMapping(value = "/notexists/{roleCode}", method = RequestMethod.GET)
     public void isNotExists(@PathVariable String roleCode, HttpServletResponse response) throws IOException {
-    	if(roleCode.indexOf('-')<1){
-    		boolean notExist = sysRoleManager.getObjectById("G-"+roleCode)==null;
-    		if(notExist)
-    			notExist = sysRoleManager.getObjectById("P-"+roleCode)==null;
-    		JsonResultUtils.writeOriginalObject(notExist, response);	
-    	}else
-    		JsonResultUtils.writeOriginalObject(null == sysRoleManager.getObjectById(roleCode), response);
+        if(roleCode.indexOf('-')<1){
+            boolean notExist = sysRoleManager.getObjectById("G-"+roleCode)==null;
+            if(notExist)
+                notExist = sysRoleManager.getObjectById("P-"+roleCode)==null;
+            JsonResultUtils.writeOriginalObject(notExist, response);
+        }else
+            JsonResultUtils.writeOriginalObject(null == sysRoleManager.getObjectById(roleCode), response);
     }
 
     /**
@@ -535,7 +535,7 @@ public class RoleInfoController extends BaseController {
     @RequestMapping(value = "/power/unit/{unitCode}", method = RequestMethod.GET)
     public void getUnitInfoPower(@PathVariable String unitCode, HttpServletResponse response) {
         
-    	List<RolePower> rolePowers = sysRoleManager.getRolePowers("G$" + unitCode);
+        List<RolePower> rolePowers = sysRoleManager.getRolePowers("G$" + unitCode);
 
         JsonResultUtils.writeSingleDataJson(rolePowers, response);
     }
@@ -577,12 +577,12 @@ public class RoleInfoController extends BaseController {
         filterMap.put("roleType", "S");
         filterMap.put("isValid","T");
         if("S".equals(type)){
-        	filterMap.put("NP_unitCode", true);
-        	
+            filterMap.put("NP_unitCode", true);
+
         }else if("D".equals(type)){
-        	CentitUserDetails user = getLoginUser(request);
-        	IUserUnit unit = CodeRepositoryUtil.getUserPrimaryUnit(user.getUserCode());
-        	if(unit!=null) {
+            CentitUserDetails user = getLoginUser(request);
+            IUserUnit unit = CodeRepositoryUtil.getUserPrimaryUnit(user.getUserCode());
+            if(unit!=null) {
                 filterMap.put("publicUnitRole", unit.getUnitCode()+"-%");
             }else return;
         }

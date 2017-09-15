@@ -36,23 +36,23 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
         userRoleDao.mergeObject(userRole);
     }
 
-	@Override
-	public List<UserRole> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-		return userRoleDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap,pageDesc,userRoleDao.pageCount(filterMap)));
-	}
+    @Override
+    public List<UserRole> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
+        return userRoleDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap,pageDesc,userRoleDao.pageCount(filterMap)));
+    }
 
-	@Override
-	public UserRole getObjectById(UserRoleId id) {
-		return userRoleDao.getObjectById(id);
-	}
+    @Override
+    public UserRole getObjectById(UserRoleId id) {
+        return userRoleDao.getObjectById(id);
+    }
 
-	@Override
-	public void mergeObject(UserRole dbUserRole) {
-		userRoleDao.mergeObject(dbUserRole);
-	}
+    @Override
+    public void mergeObject(UserRole dbUserRole) {
+        userRoleDao.mergeObject(dbUserRole);
+    }
 
-	@Override
-	public void deleteObjectById(UserRoleId id) {
-		userRoleDao.deleteObjectById(id);
-	}
+    @Override
+    public void deleteObjectById(UserRoleId id) {
+        userRoleDao.deleteObjectById(id);
+    }
 }

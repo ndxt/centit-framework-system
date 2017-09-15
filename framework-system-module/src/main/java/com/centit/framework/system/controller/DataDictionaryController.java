@@ -165,7 +165,7 @@ public class DataDictionaryController extends BaseController {
     @RequestMapping(value = "/{catalogCode}", method = {RequestMethod.PUT})
     public void updateCatalog(@PathVariable String catalogCode, @Valid DataCatalog dataCatalog,
                               HttpServletRequest request,HttpServletResponse response) {
-    	
+
         DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
 
         if (null == dbDataCatalog) {
@@ -196,7 +196,7 @@ public class DataDictionaryController extends BaseController {
     }
 
     private boolean isLoginAsAdmin(HttpServletRequest request){
-    	 Object obj = request.getSession().getAttribute(MainFrameController.ENTRANCE_TYPE);  
+         Object obj = request.getSession().getAttribute(MainFrameController.ENTRANCE_TYPE);
          return obj!=null && MainFrameController.DEPLOY_LOGIN.equals(obj.toString());
     }
 
@@ -250,7 +250,7 @@ public class DataDictionaryController extends BaseController {
      * @param response       {@link HttpServletResponse}
      */
     @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}", 
-    		method = {RequestMethod.POST, RequestMethod.PUT})
+            method = {RequestMethod.POST, RequestMethod.PUT})
     public void editDictionary(@PathVariable String catalogCode, @PathVariable String dataCode,
                                @Valid DataDictionary dataDictionary,
                                HttpServletRequest request,HttpServletResponse response) {
@@ -320,18 +320,18 @@ public class DataDictionaryController extends BaseController {
      * @param request HttpServletRequest
      */
     protected void dictionaryPreInsertHander(DataCatalog dataCatalog, DataDictionary dataDictionary,
-    		HttpServletRequest request) {
-    	if(isLoginAsAdmin(request)){ 
-    		dataDictionary.setDataStyle(S);
-    	}else{    		
-	        if (!S.equalsIgnoreCase(dataCatalog.getCatalogStyle()) && !U.equalsIgnoreCase(dataCatalog.getCatalogStyle())) {
-	            throw new ObjectException("catalogStyle 字段只可填写 S 或 U");
-	        }
-	        dataDictionary.setDataStyle(U);
-	        if (!U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
-	            throw new ObjectException("dataStyle 字段只可填写 U");
-	        }
-	    }
+            HttpServletRequest request) {
+        if(isLoginAsAdmin(request)){
+            dataDictionary.setDataStyle(S);
+        }else{
+            if (!S.equalsIgnoreCase(dataCatalog.getCatalogStyle()) && !U.equalsIgnoreCase(dataCatalog.getCatalogStyle())) {
+                throw new ObjectException("catalogStyle 字段只可填写 S 或 U");
+            }
+            dataDictionary.setDataStyle(U);
+            if (!U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
+                throw new ObjectException("dataStyle 字段只可填写 U");
+            }
+        }
     }
 
     /**
@@ -341,16 +341,16 @@ public class DataDictionaryController extends BaseController {
      * @param dataDictionary DataDictionary
      */
     protected void dictionaryPreDeleteHander(DataCatalog dataCatalog, DataDictionary dataDictionary,
-    		HttpServletRequest request) {    	
-    	if(isLoginAsAdmin(request)){
-    	  if (!S.equalsIgnoreCase(dataDictionary.getDataStyle()) && !U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
-	            throw new ObjectException("只能删除 catalogStyle为 S 或 U 的数据目录");
-	        }
-	    }else{
-	        if (!U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
-	            throw new ObjectException("dataStyle 字段只可填写 U");
-	        }
-	    }
+            HttpServletRequest request) {
+        if(isLoginAsAdmin(request)){
+          if (!S.equalsIgnoreCase(dataDictionary.getDataStyle()) && !U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
+                throw new ObjectException("只能删除 catalogStyle为 S 或 U 的数据目录");
+            }
+        }else{
+            if (!U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
+                throw new ObjectException("dataStyle 字段只可填写 U");
+            }
+        }
     }
 
     /**
@@ -361,38 +361,38 @@ public class DataDictionaryController extends BaseController {
      * @param request HttpServletRequest
      */
     protected void dictionaryPreUpdateHander(DataCatalog dataCatalog, DataDictionary dataDictionary,
-    		HttpServletRequest request) {
-    	if(isLoginAsAdmin(request)){
-	   
-	        if (F.equalsIgnoreCase(dataDictionary.getDataStyle())) {
-	            throw new ObjectException("dataStyle 为 F 类型的数据字典，任何地方都不允许编辑，只能有开发人员给出更新脚本添加、更改和删除");
-	        }
-	
-	        if (F.equalsIgnoreCase(dataCatalog.getCatalogStyle()) && !S.equalsIgnoreCase(dataDictionary.getDataStyle())) {
-	            throw new ObjectException("只能修改 dataStyle 为 S 的数据字典");
-	        }
-	        if (!S.equalsIgnoreCase(dataCatalog.getCatalogStyle()) && !U.equalsIgnoreCase(dataCatalog.getCatalogStyle())) {
-	            throw new ObjectException("catalogStyle 字段只可填写 S 或 U");
-	        }
-	        if (!S.equalsIgnoreCase(dataDictionary.getDataStyle()) && !U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
-	            throw new ObjectException("dataStyle 字段只可填写 S 或 U");
-	        }
-	    }else {
-	        if (!U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
-	            throw new ObjectException("dataStyle 字段只可填写 U");
-	        }
-	    }
+            HttpServletRequest request) {
+        if(isLoginAsAdmin(request)){
+
+            if (F.equalsIgnoreCase(dataDictionary.getDataStyle())) {
+                throw new ObjectException("dataStyle 为 F 类型的数据字典，任何地方都不允许编辑，只能有开发人员给出更新脚本添加、更改和删除");
+            }
+
+            if (F.equalsIgnoreCase(dataCatalog.getCatalogStyle()) && !S.equalsIgnoreCase(dataDictionary.getDataStyle())) {
+                throw new ObjectException("只能修改 dataStyle 为 S 的数据字典");
+            }
+            if (!S.equalsIgnoreCase(dataCatalog.getCatalogStyle()) && !U.equalsIgnoreCase(dataCatalog.getCatalogStyle())) {
+                throw new ObjectException("catalogStyle 字段只可填写 S 或 U");
+            }
+            if (!S.equalsIgnoreCase(dataDictionary.getDataStyle()) && !U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
+                throw new ObjectException("dataStyle 字段只可填写 S 或 U");
+            }
+        }else {
+            if (!U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
+                throw new ObjectException("dataStyle 字段只可填写 U");
+            }
+        }
     }
 
     protected void catalogPrDeleteHander(DataCatalog dataCatalog,HttpServletRequest request) {
-    	if(isLoginAsAdmin(request)){
-	        if (!S.equalsIgnoreCase(dataCatalog.getCatalogStyle()) && !U.equalsIgnoreCase(dataCatalog.getCatalogStyle())) {
-	            throw new ObjectException("只能删除 catalogStyle为 S 或 U 的数据目录");
-	        }
-    	}else{
-	          if (!U.equalsIgnoreCase(dataCatalog.getCatalogStyle())) {
-	            throw new ObjectException("只可删除 catalogStyle 为 U 的数据目录");
-	          }
+        if(isLoginAsAdmin(request)){
+            if (!S.equalsIgnoreCase(dataCatalog.getCatalogStyle()) && !U.equalsIgnoreCase(dataCatalog.getCatalogStyle())) {
+                throw new ObjectException("只能删除 catalogStyle为 S 或 U 的数据目录");
+            }
+        }else{
+              if (!U.equalsIgnoreCase(dataCatalog.getCatalogStyle())) {
+                throw new ObjectException("只可删除 catalogStyle 为 U 的数据目录");
+              }
         }
     }
 
@@ -405,7 +405,7 @@ public class DataDictionaryController extends BaseController {
      */
     @RequestMapping(value = "/{catalogCode}", method = RequestMethod.DELETE)
     public void deleteCatalog(@PathVariable String catalogCode,
-    		HttpServletRequest request,HttpServletResponse response) {
+            HttpServletRequest request,HttpServletResponse response) {
         DataCatalog dataCatalog = dataDictionaryManager.getObjectById(catalogCode);
         catalogPrDeleteHander(dataCatalog,request);
 
@@ -428,7 +428,7 @@ public class DataDictionaryController extends BaseController {
      */
     @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}", method = RequestMethod.DELETE)
     public void deleteDictionary(@PathVariable String catalogCode, @PathVariable String dataCode,
-    		HttpServletRequest request,HttpServletResponse response) {
+            HttpServletRequest request,HttpServletResponse response) {
         DataCatalog dataCatalog = dataDictionaryManager.getObjectById(catalogCode);
         DataDictionary dataDictionary = dataDictionaryManager.getDataDictionaryPiece(new DataDictionaryId(catalogCode, dataCode));
 
@@ -478,22 +478,22 @@ public class DataDictionaryController extends BaseController {
         JsonResultUtils.writeResponseDataAsJson(resData,response);
     }
     
-	@RequestMapping("/dictionaryprop")
-	public ResponseEntity<byte[]> downloadProperties() throws IOException{
-		List<DataDictionary> dictionarys = dataDictionaryManager.getWholeDictionary();
-		ByteArrayOutputStream out = new  ByteArrayOutputStream();
-		out.write("#dictionaryprop_zh_CN.Properties\r\n".getBytes());
-		 
-		for(DataDictionary dict : dictionarys){
-			out.write((dict.getCatalogCode()+"."+dict.getDataCode()+
-					 "=" +dict.getDataValue() +"\r\n") .getBytes());
-		}
-		
-		HttpHeaders headers = new HttpHeaders();  
-		headers.setContentDispositionFormData("attachment", "dictionaryprop_zh_CN.Properties");   
-		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);   
+    @RequestMapping("/dictionaryprop")
+    public ResponseEntity<byte[]> downloadProperties() throws IOException{
+        List<DataDictionary> dictionarys = dataDictionaryManager.getWholeDictionary();
+        ByteArrayOutputStream out = new  ByteArrayOutputStream();
+        out.write("#dictionaryprop_zh_CN.Properties\r\n".getBytes());
+
+        for(DataDictionary dict : dictionarys){
+            out.write((dict.getCatalogCode()+"."+dict.getDataCode()+
+                     "=" +dict.getDataValue() +"\r\n") .getBytes());
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDispositionFormData("attachment", "dictionaryprop_zh_CN.Properties");
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
  
         return new ResponseEntity<byte[]>(out.toByteArray(),    
                                           headers, HttpStatus.CREATED);
-	}
+    }
 }

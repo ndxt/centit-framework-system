@@ -11,16 +11,16 @@ import java.util.Map;
 
 @Repository
 public interface OptLogDao  extends BaseDao {
-	//生成一个新的id序列	 S_SYS_LOG
-	Long createNewLogId();
-	
-	OptLog getObjectById(Long logId);
-	
-	Long saveNewObject(OptLog o);
-	
-	void deleteObjectById(Long logId);
+    //生成一个新的id序列     S_SYS_LOG
+    Long createNewLogId();
 
-	//final String hql = "select DISTINCT f.optId from OptLog f";
+    OptLog getObjectById(Long logId);
+
+    Long saveNewObject(OptLog o);
+
+    void deleteObjectById(Long logId);
+
+    //final String hql = "select DISTINCT f.optId from OptLog f";
     List<String> listOptIds();
 
     //设置主键 DatabaseOptUtils.getNextLongSequence(this, "S_SYS_LOG"));

@@ -16,18 +16,18 @@ import com.centit.framework.system.po.QueryFilterCondition;
 
 public interface QueryFilterConditionManager 
 {
-	
-	public List<QueryFilterCondition> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
-	
-	public QueryFilterCondition getObjectById(Long filterNo);
-	
-	public void mergeObject(QueryFilterCondition userQueryFilter);
-	
-	public void deleteObjectById(Long filterNo);
-			
-	public Long saveNewObject(QueryFilterCondition userQueryFilter);
-	
-	public JSONArray listQueryFilterConditionsAsJson(
+
+    public List<QueryFilterCondition> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
+
+    public QueryFilterCondition getObjectById(Long filterNo);
+
+    public void mergeObject(QueryFilterCondition userQueryFilter);
+
+    public void deleteObjectById(Long filterNo);
+
+    public Long saveNewObject(QueryFilterCondition userQueryFilter);
+
+    public JSONArray listQueryFilterConditionsAsJson(
             String[] fields,
             Map<String, Object> filterMap, PageDesc pageDesc);
 }

@@ -199,8 +199,8 @@ public class InnerMsgRecipient implements Serializable{
             }
         }
     }
-	public void setMsgCode(String msgCode) {
-		this.msgCode = msgCode;
-	}
+    public void setMsgCode(String msgCode) {
+        this.msgCode = msgCode;
+    }
     
 }

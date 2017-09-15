@@ -52,7 +52,7 @@ public class OptDataScope implements IOptDataScope,Serializable{
     @Length(max = 16, message = "字段长度必须小于{max}")
     private String filterGroup;// 操作方法
    */
-   	@Column(name = "SCOPE_MEMO")
+       @Column(name = "SCOPE_MEMO")
     @Length(max = 1000, message = "字段长度必须小于{max}")
     private String scopeMemo; // 操作说明
 
@@ -90,38 +90,38 @@ public class OptDataScope implements IOptDataScope,Serializable{
         this.optId = optId;
     }
 
-	public String getOptScopeCode() {
-		return optScopeCode;
-	}
+    public String getOptScopeCode() {
+        return optScopeCode;
+    }
 
-	public void setOptScopeCode(String optScopeCode) {
-		this.optScopeCode = optScopeCode;
-	}
+    public void setOptScopeCode(String optScopeCode) {
+        this.optScopeCode = optScopeCode;
+    }
 
-	public String getScopeName() {
-		return scopeName;
-	}
+    public String getScopeName() {
+        return scopeName;
+    }
 
-	public void setScopeName(String scopeName) {
-		this.scopeName = scopeName;
-	}
+    public void setScopeName(String scopeName) {
+        this.scopeName = scopeName;
+    }
 
-	
-	public String getFilterCondition() {
-		return filterCondition;
-	}
 
-	public void setFilterCondition(String filterCondition) {
-		this.filterCondition = filterCondition;
-	}
+    public String getFilterCondition() {
+        return filterCondition;
+    }
 
-	public String getScopeMemo() {
-		return scopeMemo;
-	}
+    public void setFilterCondition(String filterCondition) {
+        this.filterCondition = filterCondition;
+    }
 
-	public void setScopeMemo(String scopeMemo) {
-		this.scopeMemo = scopeMemo;
-	}
+    public String getScopeMemo() {
+        return scopeMemo;
+    }
+
+    public void setScopeMemo(String scopeMemo) {
+        this.scopeMemo = scopeMemo;
+    }
 
     public void copy(OptDataScope other) {
 
@@ -147,27 +147,27 @@ public class OptDataScope implements IOptDataScope,Serializable{
     }
 
     @Override
-  	public boolean equals(Object obj){
-  		if(obj==null)
-  			return false;
-  		if(this==obj)
-  			return true;
-  		
-  		if(obj instanceof IOptDataScope){
-  			return StringUtils.equals(optScopeCode , ((IOptDataScope)obj).getOptScopeCode());
-  		}
-  		
-  		if(obj instanceof IOptMethod){
-  			return StringUtils.equals(optScopeCode , ((IOptMethod)obj).getOptCode());
-  		}
-  		if(obj instanceof String){
-  			return StringUtils.equals(optScopeCode , (String)obj);
-  		}  		
-  		return false;
-  	}
+      public boolean equals(Object obj){
+          if(obj==null)
+              return false;
+          if(this==obj)
+              return true;
+
+          if(obj instanceof IOptDataScope){
+              return StringUtils.equals(optScopeCode , ((IOptDataScope)obj).getOptScopeCode());
+          }
+
+          if(obj instanceof IOptMethod){
+              return StringUtils.equals(optScopeCode , ((IOptMethod)obj).getOptCode());
+          }
+          if(obj instanceof String){
+              return StringUtils.equals(optScopeCode , (String)obj);
+          }
+          return false;
+      }
     
     @Override
-  	public int hashCode(){
-		return optScopeCode==null?0:optScopeCode.hashCode();
+      public int hashCode(){
+        return optScopeCode==null?0:optScopeCode.hashCode();
     }
 }

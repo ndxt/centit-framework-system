@@ -7,24 +7,24 @@ import java.util.List;
 import java.util.Map;
 
 public interface RoleInfoDao {
-	
-	 List<RoleInfo> listObjects(Map<String, Object> filterMap);
-	
-	
+
+     List<RoleInfo> listObjects(Map<String, Object> filterMap);
+
+
      int  pageCount(Map<String, Object> filterDescMap);
      List<RoleInfo>  pageQuery(Map<String, Object> pageQureyMap);
 
-	 List<RoleInfo> listObjectsAll();
+     List<RoleInfo> listObjectsAll();
 
     void saveNewObject(RoleInfo o);
 
-	 void deleteObjectById(String roleCode);
+     void deleteObjectById(String roleCode);
 
     void mergeObject(RoleInfo o);
 
-	
-	 RoleInfo getObjectById(String roleCode);
-	
+
+     RoleInfo getObjectById(String roleCode);
+
     //DatabaseOptUtils.findObjectsByHql(this,"FROM VOptTree");
      List<VOptTree> getVOptTreeList();
     

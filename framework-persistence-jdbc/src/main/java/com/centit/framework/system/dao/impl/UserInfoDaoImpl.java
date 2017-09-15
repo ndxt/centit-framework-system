@@ -117,22 +117,22 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
     
     @Transactional
     public UserInfo getUserByRegEmail(String regEmail) {
-    	return super.getObjectByProperties(QueryUtils.createSqlParamsMap("regEmail", regEmail));
+        return super.getObjectByProperties(QueryUtils.createSqlParamsMap("regEmail", regEmail));
     }
     
     @Transactional
     public UserInfo getUserByRegCellPhone(String regCellPhone) {
-    	return super.getObjectByProperties(QueryUtils.createSqlParamsMap("regCellPhone", regCellPhone));
+        return super.getObjectByProperties(QueryUtils.createSqlParamsMap("regCellPhone", regCellPhone));
     }
     
     @Transactional
     public UserInfo getUserByTag(String userTag) {
-    	return super.getObjectByProperties(QueryUtils.createSqlParamsMap("userTag", userTag));
+        return super.getObjectByProperties(QueryUtils.createSqlParamsMap("userTag", userTag));
     }
     
     @Transactional
     public UserInfo getUserByUserWord(String userWord) {
-    	return super.getObjectByProperties(QueryUtils.createSqlParamsMap("userWord", userWord));
+        return super.getObjectByProperties(QueryUtils.createSqlParamsMap("userWord", userWord));
     }
 
     @Transactional

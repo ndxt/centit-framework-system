@@ -7,12 +7,12 @@ import java.util.Map;
 
 public interface OptInfoManager{
 
-	 List<OptInfo> listObjects();
-	
-	 List<OptInfo> listObjects(Map<String, Object> filterMap);
-	
-	 OptInfo getObjectById(String optId);
-	
+     List<OptInfo> listObjects();
+
+     List<OptInfo> listObjects(Map<String, Object> filterMap);
+
+     OptInfo getObjectById(String optId);
+
      boolean hasChildren(String optId);
     /**
      * 获取角色菜单中需要权限控制的业务菜单
@@ -65,6 +65,6 @@ public interface OptInfoManager{
     
      OptInfo getOptInfoById(String optId);
 
-	 List<OptInfo> getFunctionsByRoleCode(String roleCode);
+     List<OptInfo> getFunctionsByRoleCode(String roleCode);
     
 }

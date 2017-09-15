@@ -19,8 +19,8 @@ import java.util.*;
 
 @Service("centitUserDetailsService")
 public class DaoUserDetailsService 
-	implements CentitUserDetailsService,UserDetailsService,
-		AuthenticationUserDetailsService<Authentication> {
+    implements CentitUserDetailsService,UserDetailsService,
+        AuthenticationUserDetailsService<Authentication> {
 
     @Resource
     private UserInfoDao sysuserdao;
@@ -41,7 +41,7 @@ public class DaoUserDetailsService
     public Collection<GrantedAuthority> loadUserAuthorities(String loginname) throws UsernameNotFoundException {
         UserInfo userinfo = sysuserdao.getUserByLoginName(loginname);
         if(userinfo==null)
-        	throw new UsernameNotFoundException("user '" + loginname + "' not found...");
+            throw new UsernameNotFoundException("user '" + loginname + "' not found...");
         CentitUserDetailsImpl sysuser = new CentitUserDetailsImpl();
         sysuser.copy(userinfo);
         //sysuser.setSysusrodao(userRoleDao);
@@ -52,12 +52,12 @@ public class DaoUserDetailsService
         List<RoleInfo> roles = new ArrayList<>();
         //所有的用户 都要添加这个角色
         roles.add(new RoleInfo("G-public", "general public","G",
-        		"G","T", "general public")); 
+                "G","T", "general public"));
         List<FVUserRoles> ls = userRoleDao.getSysRolesByUserId(sysuser.getUserCode());
         if(ls!=null)
         {
-       	 
-       	 for (FVUserRoles l : ls) {
+
+            for (FVUserRoles l : ls) {
                 RoleInfo roleInfo = new RoleInfo();
 
                 BeanUtils.copyProperties(l, roleInfo);
@@ -73,7 +73,7 @@ public class DaoUserDetailsService
 
     @Transactional
     private CentitUserDetails fillUserDetailsField(UserInfo userinfo ){
-    	 CentitUserDetailsImpl sysuser = new CentitUserDetailsImpl();
+         CentitUserDetailsImpl sysuser = new CentitUserDetailsImpl();
          sysuser.copy(userinfo);
          //sysuser.setSysusrodao(userRoleDao);
         // List<RoleInfo> roles = userRoleDao.getSysRolesByUserId(sysuser.getUserCode());
@@ -83,12 +83,12 @@ public class DaoUserDetailsService
          List<RoleInfo> roles = new ArrayList<>();
          //所有的用户 都要添加这个角色
          roles.add(new RoleInfo("G-public", "general public","G",
-         		"G","T", "general public")); 
+                 "G","T", "general public"));
          List<FVUserRoles> ls = userRoleDao.getSysRolesByUserId(sysuser.getUserCode());
          if(ls!=null)
          {
-        	 
-        	 for (FVUserRoles l : ls) {
+
+             for (FVUserRoles l : ls) {
                  RoleInfo roleInfo = new RoleInfo();
 
                  BeanUtils.copyProperties(l, roleInfo);
@@ -132,18 +132,18 @@ public class DaoUserDetailsService
     @Override
     @Transactional
     public CentitUserDetails loadUserByUsername(String loginname) throws UsernameNotFoundException {
-    	CentitUserDetails ud = loadDetailsByLoginName(loginname);
-	    if(ud==null)
-			throw new UsernameNotFoundException("user: "+ loginname + " not found!");
-	    return ud;
+        CentitUserDetails ud = loadDetailsByLoginName(loginname);
+        if(ud==null)
+            throw new UsernameNotFoundException("user: "+ loginname + " not found!");
+        return ud;
     }
 
     @Override
     @Transactional
     public CentitUserDetails loadDetailsByLoginName(String loginname) {
-    	 UserInfo userinfo = sysuserdao.getUserByLoginName(loginname);
-    	 if(userinfo==null)
-    		 return null;
+         UserInfo userinfo = sysuserdao.getUserByLoginName(loginname);
+         if(userinfo==null)
+             return null;
          return fillUserDetailsField(userinfo); 
     }
 
@@ -155,40 +155,40 @@ public class DaoUserDetailsService
 
     
     
-	@Override
-	@Transactional
-	public void saveUserSetting(String userCode, String paramCode,String paramValue,
-			String paramClass, String paramName) {
-		
-		userSettingDao.saveUserSetting(new UserSetting(userCode, paramCode, paramValue,
-				 paramClass,  paramName));
-	}
+    @Override
+    @Transactional
+    public void saveUserSetting(String userCode, String paramCode,String paramValue,
+            String paramClass, String paramName) {
 
-	@Override
-	@Transactional
-	public CentitUserDetails loadDetailsByUserCode(String userCode) {
-		UserInfo userinfo = sysuserdao.getUserByCode(userCode);
-		if(userinfo==null)
-   			return null;
-        return fillUserDetailsField(userinfo);
-	}
+        userSettingDao.saveUserSetting(new UserSetting(userCode, paramCode, paramValue,
+                 paramClass,  paramName));
+    }
 
-	@Override
-	@Transactional
-	public CentitUserDetails loadDetailsByRegEmail(String regEmail) {
-		UserInfo userinfo = sysuserdao.getUserByRegEmail(regEmail);
-		if(userinfo==null)
-   			return null;
+    @Override
+    @Transactional
+    public CentitUserDetails loadDetailsByUserCode(String userCode) {
+        UserInfo userinfo = sysuserdao.getUserByCode(userCode);
+        if(userinfo==null)
+               return null;
         return fillUserDetailsField(userinfo);
-	}
+    }
 
-	@Override
-	@Transactional
-	public CentitUserDetails loadDetailsByRegCellPhone(String regCellPhone) {
-		UserInfo userinfo = sysuserdao.getUserByRegCellPhone(regCellPhone);
-		if(userinfo==null)
-   			return null;
+    @Override
+    @Transactional
+    public CentitUserDetails loadDetailsByRegEmail(String regEmail) {
+        UserInfo userinfo = sysuserdao.getUserByRegEmail(regEmail);
+        if(userinfo==null)
+               return null;
         return fillUserDetailsField(userinfo);
-	}
+    }
+
+    @Override
+    @Transactional
+    public CentitUserDetails loadDetailsByRegCellPhone(String regCellPhone) {
+        UserInfo userinfo = sysuserdao.getUserByRegCellPhone(regCellPhone);
+        if(userinfo==null)
+               return null;
+        return fillUserDetailsField(userinfo);
+    }
 
 }

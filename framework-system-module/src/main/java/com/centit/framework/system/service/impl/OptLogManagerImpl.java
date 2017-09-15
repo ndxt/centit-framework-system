@@ -52,10 +52,10 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
     @Override
     @Transactional(propagation=Propagation.REQUIRED) 
     public void delete(Date begin, Date end) {
-    	Map <String,String>map =new HashMap<String,String>();
-    	map.put("beginDate", String.valueOf(begin));
-    	map.put("endDate", String.valueOf(end));
-    	optLogDao.delete(begin, end);
+        Map <String,String>map =new HashMap<String,String>();
+        map.put("beginDate", String.valueOf(begin));
+        map.put("endDate", String.valueOf(end));
+        optLogDao.delete(begin, end);
     }
 
     @Override
@@ -105,17 +105,17 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
     }
 
 
-	@Override
-	@Transactional
-	public OptLog getObjectById(Long logId) {
-		return optLogDao.getObjectById(logId);
-	}
+    @Override
+    @Transactional
+    public OptLog getObjectById(Long logId) {
+        return optLogDao.getObjectById(logId);
+    }
 
 
-	@Override
-	@Transactional
-	public void deleteObjectById(Long logId) {
-		optLogDao.deleteObjectById(logId);
-	}
+    @Override
+    @Transactional
+    public void deleteObjectById(Long logId) {
+        optLogDao.deleteObjectById(logId);
+    }
 
 }

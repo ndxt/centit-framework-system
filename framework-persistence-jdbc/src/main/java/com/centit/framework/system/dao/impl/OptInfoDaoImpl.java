@@ -82,7 +82,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     @Transactional
     public List<String> listUserDataPowerByOptMethod(String userCode,String optid,String optMethod) {
        
-    	String sSqlsen = "select OPTSCOPECODES " +
+        String sSqlsen = "select OPTSCOPECODES " +
                  "from F_V_USEROPTDATASCOPES " +
                  "where USERCODE = ? and OPTID = ? and OPTMETHOD = ?";
         return this.getJdbcTemplate().queryForList(sSqlsen,

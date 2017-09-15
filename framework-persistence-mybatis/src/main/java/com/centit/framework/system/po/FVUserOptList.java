@@ -17,8 +17,8 @@ import javax.validation.constraints.Size;
 @Table(name = "F_V_USEROPTLIST")
 public class FVUserOptList implements java.io.Serializable {
 
-	
-	@Column(name = "USER_CODE")
+
+    @Column(name = "USER_CODE")
     @NotNull(message = "字段不能为空")
     private String userCode;    //用户代码
 
@@ -78,23 +78,23 @@ public class FVUserOptList implements java.io.Serializable {
   
 
     public String getUserCode() {
-		return userCode;
-	}
+        return userCode;
+    }
 
-	
+
     public String getOptcode() {
-		return optcode;
-	}
+        return optcode;
+    }
 
-	public void setOptcode(String optcode) {
-		this.optcode = optcode;
-	}
+    public void setOptcode(String optcode) {
+        this.optcode = optcode;
+    }
 
-	public void setUserCode(String userCode) {
-		this.userCode = userCode;
-	}
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
 
-	public String getOptName() {
+    public String getOptName() {
         return this.optName;
     }
 

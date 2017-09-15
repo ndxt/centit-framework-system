@@ -6,17 +6,17 @@ import java.util.List;
 import java.util.Map;
 
 public interface DataCatalogDao{
-	
-	List<DataCatalog> listObjects();
-	
-	DataCatalog getObjectById(String catalogCode);
-	
-	void saveNewObject(DataCatalog dataCatalog);
+
+    List<DataCatalog> listObjects();
+
+    DataCatalog getObjectById(String catalogCode);
+
+    void saveNewObject(DataCatalog dataCatalog);
 
     void mergeObject(DataCatalog dataCatalog);
-	
-	void deleteObjectById(String catalogCode);
-	//listObjectsAll("FROM DataCatalog WHERE catalogStyle='F'");
+
+    void deleteObjectById(String catalogCode);
+    //listObjectsAll("FROM DataCatalog WHERE catalogStyle='F'");
     List<DataCatalog> listFixCatalog();
 
     //listObjectsAll("FROM DataCatalog WHERE catalogStyle='U'");

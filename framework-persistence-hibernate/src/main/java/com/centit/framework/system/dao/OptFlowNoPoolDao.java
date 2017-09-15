@@ -8,19 +8,19 @@ import java.util.List;
 import java.util.Map;
 
 public interface OptFlowNoPoolDao {
-	 OptFlowNoPool getObjectById(OptFlowNoPoolId cid);
-	
-	 void deleteObject(OptFlowNoPool optFlowNoPool);
-	
-	 void deleteObjectById(OptFlowNoPoolId cid);
-	
-	 void saveObject(OptFlowNoPool optMethod);
-	
-	
+     OptFlowNoPool getObjectById(OptFlowNoPoolId cid);
+
+     void deleteObject(OptFlowNoPool optFlowNoPool);
+
+     void deleteObjectById(OptFlowNoPoolId cid);
+
+     void saveObject(OptFlowNoPool optMethod);
+
+
      int  pageCount(Map<String, Object> filterDescMap);
      List<OptFlowNoPool>  pageQuery(Map<String, Object> pageQureyMap);
-	
-	
+
+
     /**
      *  "select min(CurNo) as MinNo from F_OptFlowNoPool" +
                 " where OwnerCode = " + QueryUtils.buildStringForQuery(ownerCode) +

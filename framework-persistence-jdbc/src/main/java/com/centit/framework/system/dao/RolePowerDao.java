@@ -15,15 +15,15 @@ import java.util.Map;
 
 public interface RolePowerDao {
 
-	List<RolePower> listObjectsAll();
+    List<RolePower> listObjectsAll();
 
     void mergeObject(RolePower rolePowers);
-	
-	void deleteObject(RolePower rolePowers);
-	
-	List<RolePower> listObjects(Map<String, Object> filterMap);
-	
-	//"DELETE FROM RolePower rp where rp.id.roleCode=?", rolecode
+
+    void deleteObject(RolePower rolePowers);
+
+    List<RolePower> listObjects(Map<String, Object> filterMap);
+
+    //"DELETE FROM RolePower rp where rp.id.roleCode=?", rolecode
     void deleteRolePowersByRoleCode(String rolecode);
     
     //"DELETE FROM RolePower rp where rp.id.optCode=?", optecode

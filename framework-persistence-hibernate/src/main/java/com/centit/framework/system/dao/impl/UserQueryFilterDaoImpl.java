@@ -25,51 +25,51 @@ import java.util.Map;
 
 @Repository("userQueryFilterDao")
 public class UserQueryFilterDaoImpl extends BaseDaoImpl<UserQueryFilter,java.lang.Long> implements UserQueryFilterDao {
-	public static final Logger logger = LoggerFactory.getLogger(UserQueryFilterDaoImpl.class);
-	
-	@Override
-	public Map<String, String> getFilterField() {
-		if( filterField == null){
-			filterField = new HashMap<String, String>();
+    public static final Logger logger = LoggerFactory.getLogger(UserQueryFilterDaoImpl.class);
 
-			filterField.put("filterNo" , CodeBook.EQUAL_HQL_ID);
+    @Override
+    public Map<String, String> getFilterField() {
+        if( filterField == null){
+            filterField = new HashMap<String, String>();
 
-			filterField.put("userCode" , CodeBook.EQUAL_HQL_ID);
-			filterField.put("modleCode" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("filterNo" , CodeBook.EQUAL_HQL_ID);
 
-			filterField.put("filterName" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("userCode" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("modleCode" , CodeBook.EQUAL_HQL_ID);
 
-			filterField.put("filterValue" , CodeBook.EQUAL_HQL_ID);
-			
-		}
-		return filterField;
-	}
-	
-	@Transactional
-	public List<UserQueryFilter> listUserQueryFilterByModle(String userCode,String modelCode){
-		return super.listObjects("From UserQueryFilter where userCode = ? and modleCode = ? "
-				+ "order by isDefault desc , createDate desc",
-				new Object[]{userCode,modelCode});
-	}
-	
-	@Transactional
-	public List<UserQueryFilter> listUserDefaultFilterByModle(String userCode,String modelCode){
-		return super.listObjects("From UserQueryFilter where userCode = ? and modleCode = ? "
-				+ "and isDefault = 'T' order by isDefault desc , createDate desc",
-				new Object[]{userCode,modelCode});
-	}
-	
-	@Transactional
-	public UserQueryFilter getUserDefaultFilterByModle(String userCode,String modelCode){
-		List<UserQueryFilter> uqfs = super.listObjects("From UserQueryFilter where userCode = ? " +
-						"and modleCode = ? and isDefault = 'T' order by isDefault desc , createDate desc",
-				new Object[]{userCode,modelCode});
-		if(uqfs==null || uqfs.size()==0)
-			return null;
-		return uqfs.get(0);
-	}
-	
-	@Transactional
+            filterField.put("filterName" , CodeBook.EQUAL_HQL_ID);
+
+            filterField.put("filterValue" , CodeBook.EQUAL_HQL_ID);
+
+        }
+        return filterField;
+    }
+
+    @Transactional
+    public List<UserQueryFilter> listUserQueryFilterByModle(String userCode,String modelCode){
+        return super.listObjects("From UserQueryFilter where userCode = ? and modleCode = ? "
+                + "order by isDefault desc , createDate desc",
+                new Object[]{userCode,modelCode});
+    }
+
+    @Transactional
+    public List<UserQueryFilter> listUserDefaultFilterByModle(String userCode,String modelCode){
+        return super.listObjects("From UserQueryFilter where userCode = ? and modleCode = ? "
+                + "and isDefault = 'T' order by isDefault desc , createDate desc",
+                new Object[]{userCode,modelCode});
+    }
+
+    @Transactional
+    public UserQueryFilter getUserDefaultFilterByModle(String userCode,String modelCode){
+        List<UserQueryFilter> uqfs = super.listObjects("From UserQueryFilter where userCode = ? " +
+                        "and modleCode = ? and isDefault = 'T' order by isDefault desc , createDate desc",
+                new Object[]{userCode,modelCode});
+        if(uqfs==null || uqfs.size()==0)
+            return null;
+        return uqfs.get(0);
+    }
+
+    @Transactional
     public Long getNextKey() {
         return DatabaseOptUtils.getNextLongSequence(this, "S_FILTER_NO");
     }

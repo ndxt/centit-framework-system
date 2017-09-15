@@ -11,20 +11,20 @@ import java.util.Map;
 
 public interface SysUserManager{
 
-	 List<UserInfo> listObjects(Map<String, Object> filterMap);
-	
-	 List<UserInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
-	
-	 UserInfo getObjectById(String userCode);
-	
-	/**
+     List<UserInfo> listObjects(Map<String, Object> filterMap);
+
+     List<UserInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
+
+     UserInfo getObjectById(String userCode);
+
+    /**
      * getObjectByLoginName
      * @param userCode userCode
      * @return UserInfo
      */
      UserInfo loadUserByLoginname(String userCode);
     
-	// return super.getObjectByProperty("regEmail", regEmail);
+    // return super.getObjectByProperty("regEmail", regEmail);
      UserInfo getUserByRegEmail(String regEmail);
     
     //return super.getObjectByProperty("regCellPhone", regCellPhone);

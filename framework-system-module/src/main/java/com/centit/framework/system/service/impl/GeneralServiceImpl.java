@@ -20,94 +20,94 @@ import java.util.*;
 @Service("generalService")
 public  class GeneralServiceImpl implements GeneralService {
 
-	@Resource(name = "optInfoDao")
-	@NotNull
-	protected OptInfoDao optInfoDao;
+    @Resource(name = "optInfoDao")
+    @NotNull
+    protected OptInfoDao optInfoDao;
 
-	@Resource(name = "optDataScopeDao")
-	@NotNull
-	protected OptDataScopeDao dataScopeDao;
+    @Resource(name = "optDataScopeDao")
+    @NotNull
+    protected OptDataScopeDao dataScopeDao;
 
-	@Resource(name = "userQueryFilterDao")
-	@NotNull
-	protected UserQueryFilterDao userQueryFilterDao;
+    @Resource(name = "userQueryFilterDao")
+    @NotNull
+    protected UserQueryFilterDao userQueryFilterDao;
 
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
-	public UserQueryFilter getUserDefaultFilter(String userCode,
-			String modelCode) {
-		if (StringBaseOpt.isNvl(userCode) || StringBaseOpt.isNvl(modelCode))
-			return null;
-		
-		List<UserQueryFilter> filters = userQueryFilterDao.listUserDefaultFilterByModle(userCode, modelCode);
-		UserQueryFilter userQueryFilter=null;
-		if(filters!=null&&filters.size()>0)
-		{
-			userQueryFilter=filters.get(0);
-		}
-			
-		return userQueryFilter;
-	}
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public UserQueryFilter getUserDefaultFilter(String userCode,
+            String modelCode) {
+        if (StringBaseOpt.isNvl(userCode) || StringBaseOpt.isNvl(modelCode))
+            return null;
 
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
-	public UserQueryFilter getUserQueryFilter(Long filterNo) {
-		return userQueryFilterDao.getObjectById(filterNo);
-	}
+        List<UserQueryFilter> filters = userQueryFilterDao.listUserDefaultFilterByModle(userCode, modelCode);
+        UserQueryFilter userQueryFilter=null;
+        if(filters!=null&&filters.size()>0)
+        {
+            userQueryFilter=filters.get(0);
+        }
 
-	/**
-	 * 获取用户数据权限过滤器
-	 * 
-	 * @param sUserCode sUserCode
-	 * @param sOptId 业务名称
-	 * @param sOptMethod 对应的方法名称
-	 * @return 过滤条件列表，null或者空位不过来
-	 */
-	@Override
-	@Transactional
-	public List<String> listUserDataFiltersByOptIDAndMethod(String sUserCode, String sOptId, String sOptMethod) {
+        return userQueryFilter;
+    }
 
-		List<String> dataScopes = optInfoDao.listUserDataPowerByOptMethod(sUserCode, sOptId, sOptMethod);
-		if (dataScopes == null || dataScopes.size() == 0)
-			return null;
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public UserQueryFilter getUserQueryFilter(Long filterNo) {
+        return userQueryFilterDao.getObjectById(filterNo);
+    }
 
-		Set<String> scopeCodes = new HashSet<String>();
-		for (String scopes : dataScopes) {
-			if (scopes == null || "null".equalsIgnoreCase(scopes)
-					|| "all".equalsIgnoreCase(scopes))
-				return null;
-			String[] codes = scopes.split(",");
-			for (String code : codes) {
-				if (code != null && !"".equals(code.trim()))
-					scopeCodes.add(code.trim());
-			}
-		}
-		if (scopeCodes.size() == 0)
-			return null;
-		Map  temp=new HashMap();
-		temp.put("scopes", scopeCodes);
-		return dataScopeDao.listDataFiltersByIds(scopeCodes);
-	}
-	/**
-	 * 创建用户数据范围过滤器
-	 * @return  DataPowerFilter
-	 */
-	@Override
-	@Transactional
-	public DataPowerFilter createUserDataPowerFilter(
-			CentitUserDetails userDetails) {
-		DataPowerFilter dpf = new DataPowerFilter();
-		//当前用户信息
-		dpf.addSourceData("currentUser", userDetails);
-		//当前用户主机构信息
-		dpf.addSourceData("primaryUnit", CodeRepositoryUtil
-				.getUnitInfoByCode(userDetails.getPrimaryUnit()));
-		//当前用户所有机构关联关系信息
-		dpf.addSourceData("userUnits",
-				CodeRepositoryUtil.getUserUnits(userDetails.getUserCode()));
-		//当前用户的角色信息
-		dpf.addSourceData("userRoles", userDetails.getUserRoleCodes());
+    /**
+     * 获取用户数据权限过滤器
+     *
+     * @param sUserCode sUserCode
+     * @param sOptId 业务名称
+     * @param sOptMethod 对应的方法名称
+     * @return 过滤条件列表，null或者空位不过来
+     */
+    @Override
+    @Transactional
+    public List<String> listUserDataFiltersByOptIDAndMethod(String sUserCode, String sOptId, String sOptMethod) {
 
-		return dpf;
-	}
+        List<String> dataScopes = optInfoDao.listUserDataPowerByOptMethod(sUserCode, sOptId, sOptMethod);
+        if (dataScopes == null || dataScopes.size() == 0)
+            return null;
+
+        Set<String> scopeCodes = new HashSet<String>();
+        for (String scopes : dataScopes) {
+            if (scopes == null || "null".equalsIgnoreCase(scopes)
+                    || "all".equalsIgnoreCase(scopes))
+                return null;
+            String[] codes = scopes.split(",");
+            for (String code : codes) {
+                if (code != null && !"".equals(code.trim()))
+                    scopeCodes.add(code.trim());
+            }
+        }
+        if (scopeCodes.size() == 0)
+            return null;
+        Map  temp=new HashMap();
+        temp.put("scopes", scopeCodes);
+        return dataScopeDao.listDataFiltersByIds(scopeCodes);
+    }
+    /**
+     * 创建用户数据范围过滤器
+     * @return  DataPowerFilter
+     */
+    @Override
+    @Transactional
+    public DataPowerFilter createUserDataPowerFilter(
+            CentitUserDetails userDetails) {
+        DataPowerFilter dpf = new DataPowerFilter();
+        //当前用户信息
+        dpf.addSourceData("currentUser", userDetails);
+        //当前用户主机构信息
+        dpf.addSourceData("primaryUnit", CodeRepositoryUtil
+                .getUnitInfoByCode(userDetails.getPrimaryUnit()));
+        //当前用户所有机构关联关系信息
+        dpf.addSourceData("userUnits",
+                CodeRepositoryUtil.getUserUnits(userDetails.getUserCode()));
+        //当前用户的角色信息
+        dpf.addSourceData("userRoles", userDetails.getUserRoleCodes());
+
+        return dpf;
+    }
 }

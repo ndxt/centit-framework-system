@@ -71,22 +71,22 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
     protected Date createDate;
 
     /**
-	 * CREATOR(创建人) 创建人 
-	 */
-	@Column(name = "CREATOR")
-	@Size(max = 32, message = "字段长度不能大于{max}")
-	private String  creator;
-	   /**
-	 * UPDATOR(更新人) 更新人 
-	 */
-	@Column(name = "UPDATOR")
-	@Size(max = 32, message = "字段长度不能大于{max}")
-	private String  updator;
-	/**
-	 * UPDATEDATE(更新时间) 更新时间 
-	 */
-	@Column(name = "UPDATE_DATE")
-	private Date  updateDate;
+     * CREATOR(创建人) 创建人
+     */
+    @Column(name = "CREATOR")
+    @Size(max = 32, message = "字段长度不能大于{max}")
+    private String  creator;
+       /**
+     * UPDATOR(更新人) 更新人
+     */
+    @Column(name = "UPDATOR")
+    @Size(max = 32, message = "字段长度不能大于{max}")
+    private String  updator;
+    /**
+     * UPDATEDATE(更新时间) 更新时间
+     */
+    @Column(name = "UPDATE_DATE")
+    private Date  updateDate;
 
     @Transient
     private List<RolePower> rolePowers;
@@ -95,7 +95,7 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
      * default constructor
      */
     public RoleInfo() {
-    	roleType = "S";
+        roleType = "S";
     }
 
     /**
@@ -110,7 +110,7 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
     }
 
     public RoleInfo(String rolecode, String rolename,String roleType,
-    		String unitCode,String isvalid, String roledesc) {
+            String unitCode,String isvalid, String roledesc) {
         this.roleCode = rolecode;
         this.roleName = rolename;
         this.roleType = roleType;
@@ -168,32 +168,32 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
      * S为系统角色 I为项目角色 W工作量角色
      * @return  S为系统角色 I为项目角色 W工作量角色
      */
-	public String getRoleType() {
-		return roleType;
-	}
+    public String getRoleType() {
+        return roleType;
+    }
 
-	/**
+    /**
      * S为系统角色 I为项目角色  D 部门权限  W工作量角色
      * @param  roleType roleType
      */
-	public void setRoleType(String roleType) {
-		this.roleType = roleType;
-	}
+    public void setRoleType(String roleType) {
+        this.roleType = roleType;
+    }
 
-	public String getUnitCode() {
-		return unitCode;
-	}
+    public String getUnitCode() {
+        return unitCode;
+    }
 
-	public void setUnitCode(String unitCode) {
-		this.unitCode = unitCode;
-	}
+    public void setUnitCode(String unitCode) {
+        this.unitCode = unitCode;
+    }
 
-	@Override
+    @Override
     public Date getLastModifyDate() {
         return updateDate;
     }
 
-	@Override
+    @Override
     public void setLastModifyDate(Date lastModifyDate) {
         this.updateDate = lastModifyDate;
     }
@@ -207,15 +207,15 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
         if (other.getRoleDesc() != null)
             this.roleDesc = other.getRoleDesc();
         if (other.getRoleType() != null)
-        	this.roleType = other.getRoleType();
+            this.roleType = other.getRoleType();
         if (other.getUnitCode() != null)
-        	this.unitCode = other.getUnitCode();
+            this.unitCode = other.getUnitCode();
         if (other.getCreator() != null)
-        	this.creator =other.getCreator();
+            this.creator =other.getCreator();
         if (other.getUpdator() != null)
-        	this.updator =other.getUpdator();
+            this.updator =other.getUpdator();
         if (other.getUpdateDate() != null)
-        	this.updateDate =other.getUpdateDate();
+            this.updateDate =other.getUpdateDate();
     }
 
     public void copy(RoleInfo other) {
@@ -232,32 +232,32 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
 
    
     public String getCreator() {
-		return this.creator;
-	}
-	
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
+        return this.creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
 
         public String getUpdator() {
-		return this.updator;
-	}
-	
-	public void setUpdator(String updator) {
-		this.updator = updator;
-	}
+        return this.updator;
+    }
 
-	public Date getUpdateDate() {
-		return updateDate;
-	}
+    public void setUpdator(String updator) {
+        this.updator = updator;
+    }
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
+    public Date getUpdateDate() {
+        return updateDate;
+    }
 
-	@Override
-	//@JSONField(serialize=true,deserialize=false,label="rolePowers")
-	public List<RolePower> getRolePowers() {
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    @Override
+    //@JSONField(serialize=true,deserialize=false,label="rolePowers")
+    public List<RolePower> getRolePowers() {
         if (null == rolePowers) {
             rolePowers = new ArrayList<>();
         }
@@ -270,7 +270,7 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
 
 
     public void addAllRolePowers(List<RolePower> rolePowers) {
-    	getRolePowers().clear();
+        getRolePowers().clear();
         if(CollectionUtils.isEmpty(rolePowers)) {
             return;
         }

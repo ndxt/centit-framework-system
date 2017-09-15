@@ -36,24 +36,24 @@ public class RolePower implements IRolePower, EntityWithTimestamp, java.io.Seria
 
     //创建人、更新人、更新时间
     /**
-	 * CREATOR(创建人) 创建人 
-	 */
-	@Column(name = "CREATOR")
-	@Length(max = 32, message = "字段长度不能大于{max}")
-	private String  creator;
-	   /**
-	 * UPDATOR(更新人) 更新人 
-	 */
-	@Column(name = "UPDATOR")
-	@Length(max = 32, message = "字段长度不能大于{max}")
-	private String  updator;
-	/**
-	 * UPDATEDATE(更新时间) 更新时间 
-	 */
-	@Column(name = "UPDATE_DATE")
-	private Date  updateDate;
-	//结束
-	
+     * CREATOR(创建人) 创建人
+     */
+    @Column(name = "CREATOR")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    private String  creator;
+       /**
+     * UPDATOR(更新人) 更新人
+     */
+    @Column(name = "UPDATOR")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    private String  updator;
+    /**
+     * UPDATEDATE(更新时间) 更新时间
+     */
+    @Column(name = "UPDATE_DATE")
+    private Date  updateDate;
+    //结束
+
     /**
      * default constructor
      */
@@ -109,33 +109,33 @@ public class RolePower implements IRolePower, EntityWithTimestamp, java.io.Seria
     }
 
     public String getOptScopeCodes() {
-		return optScopeCodes;
-	}
+        return optScopeCodes;
+    }
 
     public String[] getOptScopeCodeSet() {
-    	if(optScopeCodes==null)
-    		return null;
-		return optScopeCodes.split(",");
-	}
+        if(optScopeCodes==null)
+            return null;
+        return optScopeCodes.split(",");
+    }
     
-	public void setOptScopeCodes(String optScopeCodes) {
-		this.optScopeCodes = optScopeCodes;
-	}
+    public void setOptScopeCodes(String optScopeCodes) {
+        this.optScopeCodes = optScopeCodes;
+    }
 
-	public void copyNotNullProperty(RolePower other) {
-		if (other.getOptScopeCodes() != null)
-			this.optScopeCodes = other.getOptScopeCodes();
-		if (other.getCreator() != null)
-			this.creator = other.getCreator();
-		if (other.getUpdator() != null)
-			this.updator = other.getUpdator();
-		if (other.getUpdateDate() != null)
-			this.updateDate = other.getUpdateDate();
-	}
-	
-	public void copy(RolePower other) {
-		this.optScopeCodes = other.getOptScopeCodes(); 
-		this.creator=other.creator;
+    public void copyNotNullProperty(RolePower other) {
+        if (other.getOptScopeCodes() != null)
+            this.optScopeCodes = other.getOptScopeCodes();
+        if (other.getCreator() != null)
+            this.creator = other.getCreator();
+        if (other.getUpdator() != null)
+            this.updator = other.getUpdator();
+        if (other.getUpdateDate() != null)
+            this.updateDate = other.getUpdateDate();
+    }
+
+    public void copy(RolePower other) {
+        this.optScopeCodes = other.getOptScopeCodes();
+        this.creator=other.creator;
         this.updator=other.updator;
         this.updateDate=other.updateDate;
     }
@@ -164,35 +164,35 @@ public class RolePower implements IRolePower, EntityWithTimestamp, java.io.Seria
     
    //创建人、更新人、更新时间
     public String getCreator() {
-  		return this.creator;
-  	}
-  	
-  	public void setCreator(String creator) {
-  		this.creator = creator;
-  	}
-  	
-  	public String getUpdator() {
-  		return this.updator;
-  	}
-  	
-  	public void setUpdator(String updator) {
-  		this.updator = updator;
-  	}
-  	
-  	public Date getUpdateDate() {
-  		return updateDate;
-  	}
-  	
-  	public void setUpdateDate(Date updateDate) {
-  		this.updateDate = updateDate;
-  	}
+          return this.creator;
+      }
 
-  	@Override
+      public void setCreator(String creator) {
+          this.creator = creator;
+      }
+
+      public String getUpdator() {
+          return this.updator;
+      }
+
+      public void setUpdator(String updator) {
+          this.updator = updator;
+      }
+
+      public Date getUpdateDate() {
+          return updateDate;
+      }
+
+      public void setUpdateDate(Date updateDate) {
+          this.updateDate = updateDate;
+      }
+
+      @Override
       public Date getLastModifyDate() {
           return updateDate;
     }
 
-  	@Override
+      @Override
       public void setLastModifyDate(Date lastModifyDate) {
           this.updateDate = lastModifyDate;
     }

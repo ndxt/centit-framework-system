@@ -8,18 +8,18 @@ import java.util.Map;
 
 public interface DataDictionaryDao {
 
-	List<DataDictionary> listObjects(Map<String, Object> filterDescMap);
-	
-	DataDictionary getObjectById(DataDictionaryId dd);
+    List<DataDictionary> listObjects(Map<String, Object> filterDescMap);
+
+    DataDictionary getObjectById(DataDictionaryId dd);
 
     void saveNewObject(DataDictionary dataDictionary);
-	
-	void deleteObject(DataDictionary dataDictionary);
-	
-	void deleteObjectById(DataDictionaryId dd);
+
+    void deleteObject(DataDictionary dataDictionary);
+
+    void deleteObjectById(DataDictionaryId dd);
 
     void mergeObject(DataDictionary dataDictionary);
-	//listObjectsAll("FROM DataDictionary ORDER BY id.catalogCode, dataOrder");
+    //listObjectsAll("FROM DataDictionary ORDER BY id.catalogCode, dataOrder");
     List<DataDictionary> getWholeDictionary();
     
     //listObjectsAll("FROM DataDictionary WHERE id.catalogCode = ? ORDER BY dataOrder", catalogCode);

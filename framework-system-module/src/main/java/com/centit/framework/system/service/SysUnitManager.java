@@ -9,12 +9,12 @@ import java.util.Map;
 
 public interface SysUnitManager{
 
-	List<UnitInfo> listObjects(Map<String, Object> filterMap);
-	
-	List<UnitInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
-	
-	UnitInfo getObjectById(String unitCode);
-	
+    List<UnitInfo> listObjects(Map<String, Object> filterMap);
+
+    List<UnitInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
+
+    UnitInfo getObjectById(String unitCode);
+
     List<UserInfo> getUnitUsers(String unitCode);
 
     List<UserInfo> getRelationUsers(String unitCode);
@@ -38,8 +38,8 @@ public interface SysUnitManager{
 
     void updateUnitInfo(UnitInfo unitinfo);
     List<UnitInfo> listAllSubObjects(String primaryUnit);
-	List<UnitInfo> listAllSubObjectsAsSort(String primaryUnit);
+    List<UnitInfo> listAllSubObjectsAsSort(String primaryUnit);
 
-	boolean hasChildren(String unitCode);
-	void checkState(List<UnitInfo> objs);
+    boolean hasChildren(String unitCode);
+    void checkState(List<UnitInfo> objs);
 }

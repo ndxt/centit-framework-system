@@ -11,25 +11,25 @@ import java.util.Map;
 @Repository
 public interface UserUnitDao extends BaseDao {
  
-	 List<UserUnit> listObjects(Map<String, Object> filterMap);
-	
+     List<UserUnit> listObjects(Map<String, Object> filterMap);
+
      int  pageCount(Map<String, Object> filterDescMap);
 
      List<UserUnit>  pageQuery(Map<String, Object> pageQureyMap);
 
-	 List<UserUnit> listObjectsAll();
-	
-	 UserUnit getObjectById(String userUnitId);
-	
-	 void saveNewObject(UserUnit object);
-	
-	 void updateObject(UserUnit object);
-	
-	 void deleteObjectById(String userUnitId);
-	
-	 void deleteObject(UserUnit object);
-	
-	//"FROM UserUnit where userCode=?", userId
+     List<UserUnit> listObjectsAll();
+
+     UserUnit getObjectById(String userUnitId);
+
+     void saveNewObject(UserUnit object);
+
+     void updateObject(UserUnit object);
+
+     void deleteObjectById(String userUnitId);
+
+     void deleteObject(UserUnit object);
+
+    //"FROM UserUnit where userCode=?", userId
      List<UserUnit> listUserUnitsByUserCode(String userId);
     
     //"FROM UserUnit where userCode=? and unitCode=?",new Object[]{userCode,unitCode});

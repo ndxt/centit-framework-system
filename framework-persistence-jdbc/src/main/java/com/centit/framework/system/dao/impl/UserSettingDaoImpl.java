@@ -51,6 +51,6 @@ public class UserSettingDaoImpl extends BaseDaoImpl<UserSetting, UserSettingId> 
     
     @Transactional
     public void saveUserSetting(UserSetting us){
-    	super.mergeObject(us);
+        super.mergeObject(us);
     }
 }

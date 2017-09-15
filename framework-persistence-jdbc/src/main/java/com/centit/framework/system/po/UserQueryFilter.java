@@ -16,122 +16,122 @@ import java.util.Date;
 @Entity
 @Table(name = "F_USER_QUERY_FILTER")
 public class UserQueryFilter implements java.io.Serializable {
-	private static final long serialVersionUID =  1L;
+    private static final long serialVersionUID =  1L;
 
 
 
-	/**
-	 * 过滤条件序号 null 
-	 */
-	@Id
-	@Column(name = "FILTER_NO")
-	private Long filterNo;
+    /**
+     * 过滤条件序号 null
+     */
+    @Id
+    @Column(name = "FILTER_NO")
+    private Long filterNo;
 
-	@Column(name = "USER_CODE")
+    @Column(name = "USER_CODE")
     @NotBlank(message = "字段不能为空")
     private String userCode;// 用户代码
 
-	/**
-	 * 所属模块编码 开发人员自行定义，单不能重复，建议用系统的模块名加上当前的操作方法 
-	 */
-	@Column(name = "MODLE_CODE")
-	@NotBlank(message = "字段不能为空")
-	@Length(max = 64, message = "字段长度不能大于{max}")
-	private String  modleCode;
-	/**
-	 * 筛选器名称 用户自行定义的名称 
-	 */
-	@Column(name = "FILTER_NAME")
-	@NotBlank(message = "字段不能为空")
-	@Length(max = 64, message = "字段长度不能大于{max}")
-	private String  filterName;
-	/**
-	 * 条件变量名 变量值，json格式，对应一个map 
-	 */
-	@Column(name = "FILTER_VALUE")
-	@NotBlank(message = "字段不能为空")
-	@Length(max = 3200, message = "字段长度不能大于{max}")
-	private String  filterValue;
-	
-	@Column(name = "IS_DEFAULT")
-	@NotBlank(message = "字段不能为空")
-	@Length(max = 1, message = "字段长度不能大于{max}")
-	private String  isDefault;
-	 
-	@Column(name = "CREATE_DATE", nullable = false)
+    /**
+     * 所属模块编码 开发人员自行定义，单不能重复，建议用系统的模块名加上当前的操作方法
+     */
+    @Column(name = "MODLE_CODE")
+    @NotBlank(message = "字段不能为空")
+    @Length(max = 64, message = "字段长度不能大于{max}")
+    private String  modleCode;
+    /**
+     * 筛选器名称 用户自行定义的名称
+     */
+    @Column(name = "FILTER_NAME")
+    @NotBlank(message = "字段不能为空")
+    @Length(max = 64, message = "字段长度不能大于{max}")
+    private String  filterName;
+    /**
+     * 条件变量名 变量值，json格式，对应一个map
+     */
+    @Column(name = "FILTER_VALUE")
+    @NotBlank(message = "字段不能为空")
+    @Length(max = 3200, message = "字段长度不能大于{max}")
+    private String  filterValue;
+
+    @Column(name = "IS_DEFAULT")
+    @NotBlank(message = "字段不能为空")
+    @Length(max = 1, message = "字段长度不能大于{max}")
+    private String  isDefault;
+
+    @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
-	
-	// Constructors
-	/** default constructor */
-	public UserQueryFilter() {
-	}
-	public UserQueryFilter(
-		Long filterNo	,String  userCode	
-		,String  modleCode,String  filterName,String  filterValue) {
-	
-	
-		this.filterNo = filterNo;		
-		this.userCode= userCode; 
-		this.modleCode= modleCode; 
-		this.filterName= filterName; 
-		this.filterValue= filterValue; 		
-	}
-  
-	public Long getFilterNo() {
-		return this.filterNo;
-	}
 
-	public void setFilterNo(Long filterNo) {
-		this.filterNo = filterNo;
-	}
-	// Property accessors
+    // Constructors
+    /** default constructor */
+    public UserQueryFilter() {
+    }
+    public UserQueryFilter(
+        Long filterNo    ,String  userCode
+        ,String  modleCode,String  filterName,String  filterValue) {
+
+
+        this.filterNo = filterNo;
+        this.userCode= userCode;
+        this.modleCode= modleCode;
+        this.filterName= filterName;
+        this.filterValue= filterValue;
+    }
   
-	public String getModleCode() {
-		return this.modleCode;
-	}
-	
-	public String getUserCode() {
-		return userCode;
-	}
-	public void setUserCode(String userCode) {
-		this.userCode = userCode;
-	}
-	public void setModleCode(String modleCode) {
-		this.modleCode = modleCode;
-	}
+    public Long getFilterNo() {
+        return this.filterNo;
+    }
+
+    public void setFilterNo(Long filterNo) {
+        this.filterNo = filterNo;
+    }
+    // Property accessors
   
-	public String getFilterName() {
-		return this.filterName;
-	}
-	
-	public void setFilterName(String filterName) {
-		this.filterName = filterName;
-	}
+    public String getModleCode() {
+        return this.modleCode;
+    }
+
+    public String getUserCode() {
+        return userCode;
+    }
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
+    public void setModleCode(String modleCode) {
+        this.modleCode = modleCode;
+    }
   
-	public String getFilterValue() {
-		return this.filterValue;
-	}
-	
-	public void setFilterValue(String filterValue) {
-		this.filterValue = filterValue;
-	}
-	/**
-	 * T : 最新查看， F： 其他
-	 * @return  IsDefault
-	 */
-	public String getIsDefault() {
-		return this.isDefault;
-	}
-	/**
-	 * T : 最新查看， F： 其他
-	 * @param isDefault isDefaults
-	 */
-	public void setIsDefault(String isDefault) {
-		this.isDefault = isDefault;
-	}
-	
-	public Date getCreateDate() {
+    public String getFilterName() {
+        return this.filterName;
+    }
+
+    public void setFilterName(String filterName) {
+        this.filterName = filterName;
+    }
+  
+    public String getFilterValue() {
+        return this.filterValue;
+    }
+
+    public void setFilterValue(String filterValue) {
+        this.filterValue = filterValue;
+    }
+    /**
+     * T : 最新查看， F： 其他
+     * @return  IsDefault
+     */
+    public String getIsDefault() {
+        return this.isDefault;
+    }
+    /**
+     * T : 最新查看， F： 其他
+     * @param isDefault isDefaults
+     */
+    public void setIsDefault(String isDefault) {
+        this.isDefault = isDefault;
+    }
+
+    public Date getCreateDate() {
         return createDate;
     }
 
@@ -140,45 +140,45 @@ public class UserQueryFilter implements java.io.Serializable {
     }
 
 
-	public UserQueryFilter copy(UserQueryFilter other){
+    public UserQueryFilter copy(UserQueryFilter other){
   
-		this.setFilterNo(other.getFilterNo());
-		this.userCode= other.getUserCode();  
-		this.modleCode= other.getModleCode();  
-		this.filterName= other.getFilterName();  
-		this.filterValue= other.getFilterValue();
-		this.isDefault= other.getIsDefault();
-		this.createDate= other.getCreateDate();
+        this.setFilterNo(other.getFilterNo());
+        this.userCode= other.getUserCode();
+        this.modleCode= other.getModleCode();
+        this.filterName= other.getFilterName();
+        this.filterValue= other.getFilterValue();
+        this.isDefault= other.getIsDefault();
+        this.createDate= other.getCreateDate();
 
-		return this;
-	}
-	
-	public UserQueryFilter copyNotNullProperty(UserQueryFilter other){
+        return this;
+    }
+
+    public UserQueryFilter copyNotNullProperty(UserQueryFilter other){
   
-	if( other.getFilterNo() != null)
-		this.setFilterNo(other.getFilterNo());
-		if( other.getUserCode() != null)
-			this.userCode= other.getUserCode();  
-		if( other.getModleCode() != null)
-			this.modleCode= other.getModleCode();  
-		if( other.getFilterName() != null)
-			this.filterName= other.getFilterName();  
-		if( other.getFilterValue() != null)
-			this.filterValue= other.getFilterValue();		
-		if( other.getIsDefault() != null)
-			this.isDefault= other.getIsDefault();
-		if( other.getCreateDate() != null)
-			this.createDate= other.getCreateDate();
-		return this;
-	}
+    if( other.getFilterNo() != null)
+        this.setFilterNo(other.getFilterNo());
+        if( other.getUserCode() != null)
+            this.userCode= other.getUserCode();
+        if( other.getModleCode() != null)
+            this.modleCode= other.getModleCode();
+        if( other.getFilterName() != null)
+            this.filterName= other.getFilterName();
+        if( other.getFilterValue() != null)
+            this.filterValue= other.getFilterValue();
+        if( other.getIsDefault() != null)
+            this.isDefault= other.getIsDefault();
+        if( other.getCreateDate() != null)
+            this.createDate= other.getCreateDate();
+        return this;
+    }
 
-	public UserQueryFilter clearProperties(){
-		this.userCode= null;
-		this.modleCode= null;  
-		this.filterName= null;  
-		this.filterValue= null;
-		this.isDefault=null;
-		this.createDate=null;
-		return this;
-	}
+    public UserQueryFilter clearProperties(){
+        this.userCode= null;
+        this.modleCode= null;
+        this.filterName= null;
+        this.filterValue= null;
+        this.isDefault=null;
+        this.createDate=null;
+        return this;
+    }
 }

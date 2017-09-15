@@ -11,10 +11,10 @@ import java.util.List;
 @Repository
 public interface OptDataScopeDao extends BaseDao {
 
-	void mergeObject(OptDataScope optDataScope);
-	
-	void deleteObject(OptDataScope optDataScope);
-	
+    void mergeObject(OptDataScope optDataScope);
+
+    void deleteObject(OptDataScope optDataScope);
+
     //return listObjectsAll("FROM OptDataScope WHERE optId =?", sOptID);
     List<OptDataScope> getDataScopeByOptID(String sOptID) ;
 
@@ -30,6 +30,6 @@ public interface OptDataScopeDao extends BaseDao {
     String getNextOptCode();
 
     
-   	// listObjectsAll("FROM OptDataScope WHERE optId in ?", scopeCodes)
+       // listObjectsAll("FROM OptDataScope WHERE optId in ?", scopeCodes)
     List<String> listDataFiltersByIds(@Param("scopeCodes") Collection<String> scopeCodes);//zou_wy
 }

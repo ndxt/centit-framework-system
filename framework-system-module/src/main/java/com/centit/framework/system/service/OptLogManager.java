@@ -11,11 +11,11 @@ import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.system.po.OptLog;
 
 public interface OptLogManager {
-	
-	 OptLog getObjectById(Long logId);
-	
-	
-	 void deleteObjectById(Long logId);
+
+     OptLog getObjectById(Long logId);
+
+
+     void deleteObjectById(Long logId);
     /**
      * 批量保存
      *

@@ -25,7 +25,7 @@ import com.centit.framework.system.po.UserInfo;
  */
 
 public class CentitUserDetailsImpl
-		extends UserInfo implements CentitUserDetails
+        extends UserInfo implements CentitUserDetails
 {
 
     private static final long serialVersionUID = 1L;
@@ -39,8 +39,8 @@ public class CentitUserDetailsImpl
     private Map<String, String> userOptList;
     
     public Map<String, String> getUserSettings() {
-    	if(userSettings==null)
-    		userSettings = new HashMap<String, String>();
+        if(userSettings==null)
+            userSettings = new HashMap<String, String>();
         return userSettings;
     }
 
@@ -54,8 +54,8 @@ public class CentitUserDetailsImpl
     }
 
     public Map<String, String> getUserOptList() {
-    	if(userOptList==null)
-    		userOptList = new HashMap<String, String>();
+        if(userOptList==null)
+            userOptList = new HashMap<String, String>();
         return userOptList;
     }
 
@@ -137,12 +137,12 @@ public class CentitUserDetailsImpl
      */
     @Override
     public List<String> getUserRoleCodes(){
-    	List<String> userRoles = new ArrayList<String>();
-    	if(arrayAuths==null)
-    		return userRoles;
-    	for(GrantedAuthority auth:arrayAuths)
-    		userRoles.add(auth.getAuthority().substring(2));
-    	return userRoles;
+        List<String> userRoles = new ArrayList<String>();
+        if(arrayAuths==null)
+            return userRoles;
+        for(GrantedAuthority auth:arrayAuths)
+            userRoles.add(auth.getAuthority().substring(2));
+        return userRoles;
     }
     
     @Override
@@ -178,11 +178,11 @@ public class CentitUserDetailsImpl
         return userSettings.get(paramCode);
     }
     
-	public void setUserSettingValue(String paramCode, String paramValue) {
-		if(userSettings==null)
-			userSettings=new HashMap<>();
-		userSettings.put(paramCode, paramValue);
-	}
+    public void setUserSettingValue(String paramCode, String paramValue) {
+        if(userSettings==null)
+            userSettings=new HashMap<>();
+        userSettings.put(paramCode, paramValue);
+    }
     
     @Override
     public String toString() {
@@ -208,34 +208,34 @@ public class CentitUserDetailsImpl
 
     @Override
     @JSONField(serialize = false)
-	public Object getCredentials() {
-		return this.getUserPin();
-	}
+    public Object getCredentials() {
+        return this.getUserPin();
+    }
 
-	@Override
-	@JSONField(serialize = false)
-	public Object getDetails() {
-		return this;
-	}
+    @Override
+    @JSONField(serialize = false)
+    public Object getDetails() {
+        return this;
+    }
 
-	@Override
-	@JSONField(serialize = false)
-	public Object getPrincipal() {
-		return this;
-	}
-	
-	@Override
-	public boolean isAuthenticated() {
-		return true;
-	}
+    @Override
+    @JSONField(serialize = false)
+    public Object getPrincipal() {
+        return this;
+    }
 
-	@Override
-	public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-		
-	}
+    @Override
+    public boolean isAuthenticated() {
+        return true;
+    }
 
-	@Override
-	public String getName() {
-		return this.getLoginName();
-	}
+    @Override
+    public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+
+    }
+
+    @Override
+    public String getName() {
+        return this.getLoginName();
+    }
 }

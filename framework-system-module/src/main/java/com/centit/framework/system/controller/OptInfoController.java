@@ -61,18 +61,18 @@ public class OptInfoController extends BaseController {
         if (StringUtils.isNotBlank(id)) {        
             searchColumn.put("preOptId", id);
         }else{
-        	searchColumn.put("NP_TOPOPT", "true");
+            searchColumn.put("NP_TOPOPT", "true");
         }
         
         List<OptInfo> listObjects = optInfoManager.listObjects(searchColumn);
         
         for (OptInfo opt : listObjects) {
-        	//if("...".equals(opt.getOptRoute()))
-        	 opt.setState(optInfoManager.hasChildren(opt.getOptId())?
+            //if("...".equals(opt.getOptRoute()))
+             opt.setState(optInfoManager.hasChildren(opt.getOptId())?
                "closed":"open");
         }
         JsonResultUtils.writeSingleDataJson(listObjects, 
-        		response, JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
+                response, JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
     }
 
     /**
@@ -88,14 +88,14 @@ public class OptInfoController extends BaseController {
         Map<String, Object> searchColumn = convertSearchColumn(request); 
         List<OptInfo> listObjects = optInfoManager.listObjects(searchColumn);
 
-        if (struct) {        	
+        if (struct) {
             listObjects = optInfoManager.listObjectFormatTree(listObjects,false);
         }
         if(ArrayUtils.isNotEmpty(field))
-        	JsonResultUtils.writeSingleDataJson(listObjects, response,
-        		JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
+            JsonResultUtils.writeSingleDataJson(listObjects, response,
+                JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
         else
-        	JsonResultUtils.writeSingleDataJson(listObjects, response);
+            JsonResultUtils.writeSingleDataJson(listObjects, response);
     }
 
 
@@ -110,10 +110,10 @@ public class OptInfoController extends BaseController {
         List<OptInfo> listObjects = optInfoManager.listSysAndOptPowerOpts();
         listObjects = optInfoManager.listObjectFormatTree(listObjects,true);
         if(ArrayUtils.isNotEmpty(field))
-        	JsonResultUtils.writeSingleDataJson(listObjects, response,
-        		JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
+            JsonResultUtils.writeSingleDataJson(listObjects, response,
+                JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
         else
-        	JsonResultUtils.writeSingleDataJson(listObjects, response);
+            JsonResultUtils.writeSingleDataJson(listObjects, response);
     }
     
        
@@ -128,10 +128,10 @@ public class OptInfoController extends BaseController {
         listObjects = optInfoManager.listObjectFormatTree(listObjects,true);
         
         if(ArrayUtils.isNotEmpty(field))
-        	JsonResultUtils.writeSingleDataJson(listObjects, response,
-        		JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
+            JsonResultUtils.writeSingleDataJson(listObjects, response,
+                JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
         else
-        	JsonResultUtils.writeSingleDataJson(listObjects, response);        
+            JsonResultUtils.writeSingleDataJson(listObjects, response);
     }
     
     
@@ -143,15 +143,15 @@ public class OptInfoController extends BaseController {
      */
     @RequestMapping(value = "/unitpoweropts/{unitCode}",method = RequestMethod.GET)
     public void listUnitPowerOpts(@PathVariable String unitCode, String[] field,
-    		HttpServletResponse response) {         
+            HttpServletResponse response) {
         List<OptInfo> listObjects = optInfoManager.listOptWithPowerUnderUnit(unitCode);
         listObjects = optInfoManager.listObjectFormatTree(listObjects,false);
         
         if(ArrayUtils.isNotEmpty(field))
-        	JsonResultUtils.writeSingleDataJson(listObjects, response,
-        		JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
+            JsonResultUtils.writeSingleDataJson(listObjects, response,
+                JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
         else
-        	JsonResultUtils.writeSingleDataJson(listObjects, response);  
+            JsonResultUtils.writeSingleDataJson(listObjects, response);
     }
     /**
      * 新增业务
@@ -163,16 +163,16 @@ public class OptInfoController extends BaseController {
     @RequestMapping(method = {RequestMethod.POST})
     public void createOptInfo(@Valid OptInfo optInfo, HttpServletRequest request, HttpServletResponse response) {
         
-    	if (StringUtils.isBlank(optInfo.getOptRoute()) ) {
+        if (StringUtils.isBlank(optInfo.getOptRoute()) ) {
             optInfo.setOptRoute("...");
-        }    	
+        }
         // 解决问题新增菜单没有url
         if (StringUtils.isBlank(optInfo.getOptUrl()) || "...".equals(optInfo.getOptUrl())) {
             optInfo.setOptUrl(optInfo.getOptRoute());
         }
         OptInfo parentOpt = optInfoManager.getOptInfoById(optInfo.getPreOptId());
         if(parentOpt==null)
-        	optInfo.setPreOptId("0");
+            optInfo.setPreOptId("0");
         optInfoManager.saveNewOptInfo(optInfo);      
        
         //刷新缓存
@@ -181,7 +181,7 @@ public class OptInfoController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
         OperationLogCenter.logNewObject(request, optId,optInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_C,
-        		"新增业务菜单",optInfo);
+                "新增业务菜单",optInfo);
         /*********log*********/
     }
 
@@ -358,8 +358,8 @@ public class OptInfoController extends BaseController {
         OptInfo optInfo = optInfoManager.getObjectById(optId);
         if (null == optInfo) {
             JsonResultUtils.writeSingleErrorDataJson(
-            		ResponseData.ERROR_INTERNAL_SERVER_ERROR,
-            		"数据库不匹配", "数据库中不存在optId为"+optId+"的业务信息。", response);
+                    ResponseData.ERROR_INTERNAL_SERVER_ERROR,
+                    "数据库不匹配", "数据库中不存在optId为"+optId+"的业务信息。", response);
             return;
         }
 

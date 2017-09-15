@@ -8,11 +8,11 @@ import com.centit.framework.system.po.InnerMsg;
 import com.centit.framework.system.po.InnerMsgRecipient;
 
 public interface InnerMsgRecipientManager{
-	public List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap);
+    public List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap);
 
-	public List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
-	
-	public InnerMsgRecipient getObjectById(String id);
+    public List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
+
+    public InnerMsgRecipient getObjectById(String id);
 
     List<InnerMsgRecipient> getExchangeMsgs(String sender, String receiver);
 

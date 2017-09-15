@@ -21,10 +21,10 @@ import com.centit.framework.hibernate.common.RichText;
 @Controller
 public class RichTextBaseController extends BaseController {
     
-	@Override
-	@InitBinder
+    @Override
+    @InitBinder
     protected void initBinder(WebDataBinder binder) {
-    	binder.registerCustomEditor(RichText.class, new RichTextPropertiesEditor());
+        binder.registerCustomEditor(RichText.class, new RichTextPropertiesEditor());
         binder.registerCustomEditor(String.class, new StringPropertiesEditor(true));
         binder.registerCustomEditor(Date.class, new DatePropertiesEditor());
         binder.registerCustomEditor(java.sql.Date.class, new SqlDatePropertiesEditor());

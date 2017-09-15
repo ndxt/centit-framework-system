@@ -27,40 +27,40 @@ import java.util.List;
 import java.util.Map;
 
 public class TestFromPost {
-	protected static Logger logger = LoggerFactory.getLogger(TestFromPost.class);
+    protected static Logger logger = LoggerFactory.getLogger(TestFromPost.class);
     public static void main(String[] args) {
-    	testValidator();
+        testValidator();
     }
 
     public static void testValidator(){
-    	DataCatalog catalog = new DataCatalog();
-    	catalog.setCatalogName("hello");
-    	 Map<String,String> errMsg =
-    			ValidatorUtils.validatorEntityPo(catalog);
-    	System.out.println(JSON.toJSONString(errMsg));
+        DataCatalog catalog = new DataCatalog();
+        catalog.setCatalogName("hello");
+         Map<String,String> errMsg =
+                ValidatorUtils.validatorEntityPo(catalog);
+        System.out.println(JSON.toJSONString(errMsg));
     }
     public static void testJson(){
 
-		try {
-			UserInfo ui= new UserInfo();
-			ui.setUserCode("test");
-			ui.setUserName("hello");
-			ui.setLoginName("guest");
-			CloseableHttpClient httpClient = HttpClients.createDefault();
-	    	 String s = HttpExecutor.jsonPost(httpClient,
-			         "http://codefanbook:8180/framework-sys-module/service/testJson",JSON.parseObject(
-			        		 JSON.toJSONString(ui)) );
-			 System.out.println(s);
-		}  catch (IOException e) {
-			e.printStackTrace();
-		}
+        try {
+            UserInfo ui= new UserInfo();
+            ui.setUserCode("test");
+            ui.setUserName("hello");
+            ui.setLoginName("guest");
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+             String s = HttpExecutor.jsonPost(httpClient,
+                     "http://codefanbook:8180/framework-sys-module/service/testJson",JSON.parseObject(
+                             JSON.toJSONString(ui)) );
+             System.out.println(s);
+        }  catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
-	public static void testSession(){
+    public static void testSession(){
         try {
 
-        	Lookup<CookieSpecProvider> cookieSpecRegistry  = RegistryBuilder.<CookieSpecProvider>create()
+            Lookup<CookieSpecProvider> cookieSpecRegistry  = RegistryBuilder.<CookieSpecProvider>create()
                     //.register(CookieSpecs.BEST_MATCH, new BestMatchSpecFactory())
                    // .register(CookieSpecs.STANDARD, new RFC2965SpecFactory())
                     //.register(CookieSpecs.BROWSER_COMPATIBILITY, new BrowserCompatSpecFactory())
@@ -71,8 +71,8 @@ public class TestFromPost {
                     .build();
 
 
-        	CloseableHttpClient httpClient = HttpClients.custom().
-        			setDefaultCookieSpecRegistry(cookieSpecRegistry).build(); //createDefault();
+            CloseableHttpClient httpClient = HttpClients.custom().
+                    setDefaultCookieSpecRegistry(cookieSpecRegistry).build(); //createDefault();
 
 
            String s = HttpExecutor.simpleGet(httpClient, null,
@@ -91,16 +91,16 @@ public class TestFromPost {
             System.out.println(s);
 
         } catch (Exception e) {
-        	logger.error(e.getMessage(),e);//e.printStackTrace();
+            logger.error(e.getMessage(),e);//e.printStackTrace();
         }
 
-	}
+    }
 
     public static void testLogin(){
 
 
         //CloseableHttpClient client2 = HttpClients.createDefault();
-    	HttpClientContext context = HttpClientContext.create();
+        HttpClientContext context = HttpClientContext.create();
         BasicCookieStore cookieStore = new BasicCookieStore();
         CloseableHttpClient httpClient = HttpClients.custom().setDefaultCookieStore(cookieStore).build();
 
@@ -153,7 +153,7 @@ public class TestFromPost {
                     "http://codefanbook:8180/framework-sys-module/system/currentuser",null);
             System.out.println(s);*/
         } catch (Exception e) {
-        	logger.error(e.getMessage(),e);//e.printStackTrace();
+            logger.error(e.getMessage(),e);//e.printStackTrace();
         }
 
     }
@@ -176,7 +176,7 @@ public class TestFromPost {
 
             System.out.println(s);
         } catch (Exception e) {
-        	logger.error(e.getMessage(),e);//e.printStackTrace();
+            logger.error(e.getMessage(),e);//e.printStackTrace();
         }
 
     }
@@ -201,7 +201,7 @@ public class TestFromPost {
             HttpExecutor.multiFormPost(HttpClients.createDefault(), null, 
                     "http://codefanbook:8180/centit/system/roleinfo/testRole", roleinfo,extDatas,true);
         } catch (Exception e) {
-        	logger.error(e.getMessage(),e);// e.printStackTrace();
+            logger.error(e.getMessage(),e);// e.printStackTrace();
         }
 
     }

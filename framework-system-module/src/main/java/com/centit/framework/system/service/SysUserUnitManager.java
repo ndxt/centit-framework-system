@@ -14,11 +14,11 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public interface SysUserUnitManager{
-	UserUnit getObjectById(String userUnitId);
-	
-	void deleteObject(UserUnit userUnit);
-	
-	List<UserUnit> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
+    UserUnit getObjectById(String userUnitId);
+
+    void deleteObject(UserUnit userUnit);
+
+    List<UserUnit> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
 
     List<UserUnit> listObjectByUserUnit(String userCode,String unitCode);
     

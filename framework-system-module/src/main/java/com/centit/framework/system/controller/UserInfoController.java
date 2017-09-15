@@ -102,13 +102,13 @@ public class UserInfoController extends BaseController {
     public void create(@Valid UserInfo userInfo, UserUnit userUnit,
                        HttpServletRequest request, HttpServletResponse response) {
         
-    	UserInfo dbuserinfo=sysUserManager.loadUserByLoginname(userInfo.getLoginName());
-    	if(null!=dbuserinfo) {
-    		 JsonResultUtils.writeErrorMessageJson(
-    				 ResponseData.ERROR_FIELD_INPUT_CONFLICT,
-    				 "登录名"+userInfo.getLoginName()+"已存在，请更换！", response);
-    		 return;
-    	}
+        UserInfo dbuserinfo=sysUserManager.loadUserByLoginname(userInfo.getLoginName());
+        if(null!=dbuserinfo) {
+             JsonResultUtils.writeErrorMessageJson(
+                     ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                     "登录名"+userInfo.getLoginName()+"已存在，请更换！", response);
+             return;
+        }
         userInfo.setUserCode(sysUserManager.getNextUserCode());
         
         if(null!=userInfo.getUserUnits()){
@@ -129,7 +129,7 @@ public class UserInfoController extends BaseController {
 
         /*********log*********/
         OperationLogCenter.logNewObject(request,optId,userInfo.getUserCode(),
-        		OperationLog.P_OPT_LOG_METHOD_C,  "新增用户", userInfo);
+                OperationLog.P_OPT_LOG_METHOD_C,  "新增用户", userInfo);
     }
 
     /**
