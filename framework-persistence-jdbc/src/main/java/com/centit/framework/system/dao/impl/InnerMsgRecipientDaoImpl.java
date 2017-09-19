@@ -72,17 +72,12 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
     }
    
     public long getUnreadMessageCount(String userCode){
-        try {
-            Object obj = DatabaseOptUtils.getScalarObjectQuery(this, "select count(1)"
-                    + " Where receive = ? and msgState ='U'",
-                    new Object[]{userCode});
-            Long l = NumberBaseOpt.castObjectToLong(obj);
-            return l==null?0l:l;
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
-        } catch (IOException e) {
-            throw new PersistenceException(e);
-        }
+
+        Object obj = DatabaseOptUtils.getScalarObjectQuery(this, "select count(1)"
+                + " Where receive = ? and msgState ='U'",
+                new Object[]{userCode});
+        Long l = NumberBaseOpt.castObjectToLong(obj);
+        return l==null?0l:l;
     }
     
     public List<InnerMsgRecipient> listUnreadMessage(String userCode){

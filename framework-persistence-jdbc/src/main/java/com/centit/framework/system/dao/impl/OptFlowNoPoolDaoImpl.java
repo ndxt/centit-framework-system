@@ -55,16 +55,11 @@ public class OptFlowNoPoolDaoImpl extends BaseDaoImpl<OptFlowNoPool, OptFlowNoPo
     @Transactional
     public long fetchFirstLsh(String ownerCode, String codeCode,
                               Date codeBaseDate) {
-        try {
-            Long lsh = NumberBaseOpt.castObjectToLong(DatabaseOptUtils.getScalarObjectQuery(this,
-                    "select min(CURNO) as MinNo from F_OPTFLOWNOPOOL" +
-                    " where OWNERCODE = ? and CODECODE = ? and CODEDATE = ?",
-                    new Object[]{ownerCode,ownerCode,codeBaseDate }));
-            return lsh == null ? 0l: lsh;
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
-        } catch (IOException e) {
-            throw new PersistenceException(e);
-        }
+
+        Long lsh = NumberBaseOpt.castObjectToLong(DatabaseOptUtils.getScalarObjectQuery(this,
+                "select min(CURNO) as MinNo from F_OPTFLOWNOPOOL" +
+                " where OWNERCODE = ? and CODECODE = ? and CODEDATE = ?",
+                new Object[]{ownerCode,ownerCode,codeBaseDate }));
+        return lsh == null ? 0l: lsh;
     }
 }
