@@ -4,7 +4,7 @@ import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.components.OperationLogCenter;
-import com.centit.framework.core.controller.BaseController;
+import com.centit.framework.core.controller.*;
 import com.centit.framework.core.dao.PageDesc;
 import com.centit.framework.model.basedata.IUserUnit;
 import com.centit.framework.model.basedata.OperationLog;
@@ -20,6 +20,8 @@ import com.centit.support.json.JsonPropertyUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,11 +49,21 @@ public class RoleInfoController extends BaseController {
     
     @Resource
     @NotNull
-    private OptMethodManager optDefManager;    
+    private OptMethodManager optDefManager;
     /**
      * 系统日志中记录
      */
     private String optId = "ROLEMAG";//CodeRepositoryUtil.getCode("OPTID", "roleInfo");
+
+    @Override
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.setAutoGrowCollectionLimit(1024);
+        binder.registerCustomEditor(String.class, new StringPropertiesEditor(true));
+        binder.registerCustomEditor(Date.class, new DatePropertiesEditor());
+        binder.registerCustomEditor(java.sql.Date.class, new SqlDatePropertiesEditor());
+        binder.registerCustomEditor(java.sql.Timestamp.class, new SqlTimestampPropertiesEditor());
+    }
 
     /**
      * 查询所有系统角色
