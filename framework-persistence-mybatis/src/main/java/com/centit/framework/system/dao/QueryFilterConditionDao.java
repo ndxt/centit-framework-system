@@ -20,19 +20,19 @@ import com.centit.framework.system.po.QueryFilterCondition;
 @Repository
 public interface QueryFilterConditionDao extends BaseDao {
 
-	//DatabaseOptUtils.getNextLongSequence(this, "S_FILTER_NO");
+    //DatabaseOptUtils.getNextLongSequence(this, "S_FILTER_NO");
     Long getNextKey();
     
     
     int  pageCount(Map<String, Object> filterDescMap);
     List<QueryFilterCondition>  pageQuery(Map<String, Object> pageQureyMap);
     
-	
-	QueryFilterCondition getObjectById(Long filterNo);
-	
-	void mergeObject(QueryFilterCondition userQueryFilter);
-	
-	void deleteObjectById(Long filterNo);
-			
-	Long saveNewObject(QueryFilterCondition userQueryFilter);
+
+    QueryFilterCondition getObjectById(Long filterNo);
+
+    void mergeObject(QueryFilterCondition userQueryFilter);
+
+    void deleteObjectById(Long filterNo);
+
+    Long saveNewObject(QueryFilterCondition userQueryFilter);
 }

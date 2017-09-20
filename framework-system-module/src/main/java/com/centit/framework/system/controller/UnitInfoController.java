@@ -103,8 +103,8 @@ public class UnitInfoController extends BaseController {
             }
             List<UnitInfo>  listObjects= sysUnitManager.listObjects(filterMap);
             sysUnitManager.checkState(listObjects);
-     		/*for (UnitInfo unit : listObjects) {
-            	 unit.setState(sysUnitManager.hasChildren(unit.getUnitCode())?
+             /*for (UnitInfo unit : listObjects) {
+                 unit.setState(sysUnitManager.hasChildren(unit.getUnitCode())?
                    "closed":"open");
             }*/
             JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
@@ -147,14 +147,14 @@ public class UnitInfoController extends BaseController {
         sysUnitManager.checkState(listObjects);
         JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
 //        if(struct){
-//        	ja = ListOpt.srotAsTreeAndToJSON(ja, (p, c) ->
-//    				StringUtils.equals(
-//									((JSONObject)p).getString("unitCode"),
-//									((JSONObject)c).getString("parentUnit")),
+//            ja = ListOpt.srotAsTreeAndToJSON(ja, (p, c) ->
+//                    StringUtils.equals(
+//                                    ((JSONObject)p).getString("unitCode"),
+//                                    ((JSONObject)c).getString("parentUnit")),
 //                    "children");
 //        }
         JsonResultUtils.writeSingleDataJson(ja,
-        		response, JsonPropertyUtils.getIncludePropPreFilter(JSONObject.class, field));
+                response, JsonPropertyUtils.getIncludePropPreFilter(JSONObject.class, field));
       }
 
     /**
@@ -212,8 +212,8 @@ public class UnitInfoController extends BaseController {
     public void delete(@PathVariable String unitCode,HttpServletRequest request, HttpServletResponse response) {
         UnitInfo unitInfo = sysUnitManager.getObjectById(unitCode);
         if(unitInfo==null){
-        	JsonResultUtils.writeErrorMessageJson("The object not found!", response);
-        	return;
+            JsonResultUtils.writeErrorMessageJson("The object not found!", response);
+            return;
         }
 
         sysUnitManager.deleteUnitInfo(unitInfo);
@@ -249,7 +249,7 @@ public class UnitInfoController extends BaseController {
 
         /*********log*********/
         OperationLogCenter.logNewObject(request,optId,unitInfo.getUnitCode(),
-        		OperationLog.P_OPT_LOG_METHOD_C,  "新增机构" , unitInfo);
+                OperationLog.P_OPT_LOG_METHOD_C,  "新增机构" , unitInfo);
         /*********log*********/
     }
 
@@ -264,7 +264,7 @@ public class UnitInfoController extends BaseController {
     @RequestMapping(value = "/{unitCode}", method = RequestMethod.PUT)
     public void edit(@PathVariable String unitCode, @Valid UnitInfo unitInfo,
             HttpServletRequest request,HttpServletResponse response) {
-    	
+
         UnitInfo dbUnitInfo = sysUnitManager.getObjectById(unitCode);
         if (null == dbUnitInfo) {
             JsonResultUtils.writeErrorMessageJson("机构不存在", response);
@@ -404,39 +404,39 @@ public class UnitInfoController extends BaseController {
      */
     @RequestMapping(value = "/unit/saveopts/{unitcode}",method = RequestMethod.POST)
     public void setUnitPowers(@PathVariable String unitcode,
-    		String optCodes,
+            String optCodes,
             HttpServletRequest request,HttpServletResponse response) {
-    	String optCodesArray[]=optCodes.split(",");
-    	RoleInfo roleInfo = sysRoleManager.getObjectById("G$"+ unitcode);
-    	if(roleInfo==null){
-	    	roleInfo = new RoleInfo();
-	    	roleInfo.setIsValid("T");
-	    	roleInfo.setRoleCode("G$"+ unitcode);
-	    	roleInfo.setRoleName("赋给部门"+unitcode+"的权限");
-	    	roleInfo.setRoleDesc(roleInfo.getRoleName());
-	        roleInfo.setRoleType("D");
-	        roleInfo.setCreateDate(new Date());
-	        sysRoleManager.saveNewRoleInfo(roleInfo);
-	        //刷新缓存
-	        sysRoleManager.loadRoleSecurityMetadata();
-    	}
+        String optCodesArray[]=optCodes.split(",");
+        RoleInfo roleInfo = sysRoleManager.getObjectById("G$"+ unitcode);
+        if(roleInfo==null){
+            roleInfo = new RoleInfo();
+            roleInfo.setIsValid("T");
+            roleInfo.setRoleCode("G$"+ unitcode);
+            roleInfo.setRoleName("赋给部门"+unitcode+"的权限");
+            roleInfo.setRoleDesc(roleInfo.getRoleName());
+            roleInfo.setRoleType("D");
+            roleInfo.setCreateDate(new Date());
+            sysRoleManager.saveNewRoleInfo(roleInfo);
+            //刷新缓存
+            sysRoleManager.loadRoleSecurityMetadata();
+        }
 
-		List<RolePower> rolePowers = new ArrayList<>();
-		//为空时更新RoleInfo中字段数据
-	   if (ArrayUtils.isNotEmpty(optCodesArray)) {
-	       for (String optCode : optCodesArray) {
-	    	   if(StringUtils.isNotBlank(optCode))
-	    		   rolePowers.add(new RolePower(new RolePowerId(roleInfo.getRoleCode(), optCode)));
-	       }
-	   }
+        List<RolePower> rolePowers = new ArrayList<>();
+        //为空时更新RoleInfo中字段数据
+       if (ArrayUtils.isNotEmpty(optCodesArray)) {
+           for (String optCode : optCodesArray) {
+               if(StringUtils.isNotBlank(optCode))
+                   rolePowers.add(new RolePower(new RolePowerId(roleInfo.getRoleCode(), optCode)));
+           }
+       }
 
-	   roleInfo.addAllRolePowers(rolePowers);
-	   sysRoleManager.updateRolePower(roleInfo);
-	   sysRoleManager.loadRoleSecurityMetadata();
-	   JsonResultUtils.writeBlankJson(response);
-	   /*********log*********/
-	   OperationLogCenter.logNewObject(request,optId, roleInfo.getRoleCode(), OperationLog.P_OPT_LOG_METHOD_U,
+       roleInfo.addAllRolePowers(rolePowers);
+       sysRoleManager.updateRolePower(roleInfo);
+       sysRoleManager.loadRoleSecurityMetadata();
+       JsonResultUtils.writeBlankJson(response);
+       /*********log*********/
+       OperationLogCenter.logNewObject(request,optId, roleInfo.getRoleCode(), OperationLog.P_OPT_LOG_METHOD_U,
                "更新机构权限",roleInfo);
-	   /*********log*********/
+       /*********log*********/
     }
 }

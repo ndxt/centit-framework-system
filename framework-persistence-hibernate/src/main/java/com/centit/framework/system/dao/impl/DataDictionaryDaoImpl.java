@@ -54,7 +54,7 @@ public class DataDictionaryDaoImpl extends BaseDaoImpl<DataDictionary, DataDicti
             DatabaseOptUtils.doExecuteHql(this, "delete from DataDictionary where id.catalogCode =?", catalog);
             logger.debug("delete DataDictionary successful");
         } catch (RuntimeException re) {
-        	logger.error("delete DataDictionary failed", re);
+            logger.error("delete DataDictionary failed", re);
             throw re;
         }
     }

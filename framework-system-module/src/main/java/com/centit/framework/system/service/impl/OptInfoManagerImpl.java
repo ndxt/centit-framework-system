@@ -63,7 +63,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Override
     @Transactional
     public boolean hasChildren(String optId){
-    	return optInfoDao.countChildrenSum(optId) > 0;
+        return optInfoDao.countChildrenSum(optId) > 0;
     }
 
     @Override
@@ -72,15 +72,15 @@ public class OptInfoManagerImpl implements OptInfoManager {
     public void saveNewOptInfo(OptInfo optInfo){
 
         syncState(optInfo);
-        // 父级url必须设成...    	
+        // 父级url必须设成...
         OptInfo parentOpt = optInfoDao.getObjectById(optInfo.getPreOptId());
         if (null != parentOpt) {
-        	if(!"...".equals(parentOpt.getOptRoute())){
-	            parentOpt.setOptRoute("...");
-	            optInfoDao.mergeObject(parentOpt);
-        	}
+            if(!"...".equals(parentOpt.getOptRoute())){
+                parentOpt.setOptRoute("...");
+                optInfoDao.mergeObject(parentOpt);
+            }
         }else{
-        	optInfo.setPreOptId("0");
+            optInfo.setPreOptId("0");
         }
         
         optInfoDao.saveNewObject( optInfo );
@@ -217,8 +217,8 @@ public class OptInfoManagerImpl implements OptInfoManager {
     public OptInfo getOptInfoById(String optId){
         OptInfo oinfo = optInfoDao.getObjectById(optId);
         if(oinfo!=null){
-	        oinfo.addAllOptMethods(optMethodDao.listOptMethodByOptID(optId) );
-	        oinfo.addAllDataScopes(dataScopeDao.getDataScopeByOptID(optId));
+            oinfo.addAllOptMethods(optMethodDao.listOptMethodByOptID(optId) );
+            oinfo.addAllDataScopes(dataScopeDao.getDataScopeByOptID(optId));
         }
         return oinfo;
     }
@@ -227,7 +227,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @CacheEvict(value="OptInfo",allEntries = true)
     @Transactional
     public void deleteOptInfoById(String optId) {
-    	dataScopeDao.deleteDataScopeOfOptID(optId);
+        dataScopeDao.deleteDataScopeOfOptID(optId);
         optMethodDao.deleteOptMethodsByOptID(optId);
         optInfoDao.deleteObjectById(optId);
     }
@@ -260,26 +260,26 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Override
     @Transactional
     public List<String> listUserDataFiltersByOptIDAndMethod(String sUserCode, String sOptId, String sOptMethod){
-    	
-    	List<String> dataScopes = optInfoDao.listUserDataPowerByOptMethod(sUserCode, sOptId, sOptMethod);
-    	
-    	if(dataScopes==null || dataScopes.size()==0)
-    		return null;
-    	
-    	Set<String> scopeCodes = new HashSet<String>();
-    	for(String scopes : dataScopes){
-    		if(scopes==null || "null".equalsIgnoreCase(scopes) || "all".equalsIgnoreCase(scopes))
-    			return null;
-    		String [] codes = scopes.split(",");
-    		for (String code : codes) {
-    			if(code!=null && !"".equals(code.trim()))
-    				scopeCodes.add(code.trim());
-			}
-    	}
-    	if(scopeCodes.size()==0)
-    		return null;
-    	
-    	return dataScopeDao.listDataFiltersByIds(scopeCodes);
+
+        List<String> dataScopes = optInfoDao.listUserDataPowerByOptMethod(sUserCode, sOptId, sOptMethod);
+
+        if(dataScopes==null || dataScopes.size()==0)
+            return null;
+
+        Set<String> scopeCodes = new HashSet<String>();
+        for(String scopes : dataScopes){
+            if(scopes==null || "null".equalsIgnoreCase(scopes) || "all".equalsIgnoreCase(scopes))
+                return null;
+            String [] codes = scopes.split(",");
+            for (String code : codes) {
+                if(code!=null && !"".equals(code.trim()))
+                    scopeCodes.add(code.trim());
+            }
+        }
+        if(scopeCodes.size()==0)
+            return null;
+
+        return dataScopeDao.listDataFiltersByIds(scopeCodes);
     }
 
    
@@ -294,9 +294,9 @@ public class OptInfoManagerImpl implements OptInfoManager {
             OptInfo optInfo = menus.next();
             //去掉级联关系后需要手动维护这个属性
             if(fillDefAndScope){
-	            optInfo.addAllOptMethods( optMethodDao.listOptMethodByOptID(optInfo.getOptId()));
-	            optInfo.addAllDataScopes( dataScopeDao.getDataScopeByOptID(optInfo.getOptId()));
-	        }
+                optInfo.addAllOptMethods( optMethodDao.listOptMethodByOptID(optInfo.getOptId()));
+                optInfo.addAllDataScopes( dataScopeDao.getDataScopeByOptID(optInfo.getOptId()));
+            }
 
             boolean getParent = false;
             for (OptInfo opt : optInfos) {
@@ -307,7 +307,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
                 }
             }
             if(!getParent)
-            	parentMenu.add(optInfo);
+                parentMenu.add(optInfo);
         }        
         return parentMenu;
     }
@@ -315,27 +315,27 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Override
     @Transactional
     public List<OptInfo> listOptWithPowerUnderUnit(String sUnitCode) {
-    	List<OptInfo>  allOpts = optInfoDao.listObjectsByCon(" (optType='S' or optType='O')");
-    	List<OptMethod> optDefs = optMethodDao.listOptMethodByRoleCode("G$"+sUnitCode);
-    	Set<OptInfo> roleOpts = new HashSet<OptInfo>();    	
-    	
-    	for(OptInfo optInfo : allOpts) {
+        List<OptInfo>  allOpts = optInfoDao.listObjectsByCon(" (optType='S' or optType='O')");
+        List<OptMethod> optDefs = optMethodDao.listOptMethodByRoleCode("G$"+sUnitCode);
+        Set<OptInfo> roleOpts = new HashSet<OptInfo>();
+
+        for(OptInfo optInfo : allOpts) {
             //去掉级联关系后需要手动维护这个属性
-    		for(OptMethod def: optDefs){
-    			if(optInfo.getOptId().equals(def.getOptId()))
-    				optInfo.addOptMethod(def);
-    		}
-    		if(optInfo.getOptMethods().size()>0){
-    			optInfo.addAllDataScopes( dataScopeDao.getDataScopeByOptID(optInfo.getOptId()));
-    			roleOpts.add(optInfo);
-    		}
-    	}
-    	Set<OptInfo> preParents  = new HashSet<OptInfo>();
-    	preParents.addAll(roleOpts);
-    	while(true){
-    		int parents= 0;    		
-    		Set<OptInfo> parentMenu = new HashSet<OptInfo>();
-    		for(OptInfo optInfo :preParents){
+            for(OptMethod def: optDefs){
+                if(optInfo.getOptId().equals(def.getOptId()))
+                    optInfo.addOptMethod(def);
+            }
+            if(optInfo.getOptMethods().size()>0){
+                optInfo.addAllDataScopes( dataScopeDao.getDataScopeByOptID(optInfo.getOptId()));
+                roleOpts.add(optInfo);
+            }
+        }
+        Set<OptInfo> preParents  = new HashSet<OptInfo>();
+        preParents.addAll(roleOpts);
+        while(true){
+            int parents= 0;
+            Set<OptInfo> parentMenu = new HashSet<OptInfo>();
+            for(OptInfo optInfo :preParents){
                 for (OptInfo opt : allOpts) {
                     if (opt.getOptId().equals(optInfo.getPreOptId())) {
                         //opt.getChildren().add(optInfo);
@@ -344,45 +344,45 @@ public class OptInfoManagerImpl implements OptInfoManager {
                         parents ++;
                         break;
                     }
-                }    			
-    		}    		
-    		if(parents==0)
-    			break;
-    		preParents = parentMenu;
-    	}
-    	List<OptInfo> roleOptInfos = new ArrayList<OptInfo>();   
-    	roleOptInfos.addAll(roleOpts);
-    	return roleOptInfos;
+                }
+            }
+            if(parents==0)
+                break;
+            preParents = parentMenu;
+        }
+        List<OptInfo> roleOptInfos = new ArrayList<OptInfo>();
+        roleOptInfos.addAll(roleOpts);
+        return roleOptInfos;
     }
 
-	@Override
-	@Transactional
-	public List<OptInfo> getFunctionsByRoleCode(String unitRoleCode) {
-//		String hql="From OptInfo where (optId in "				
-//					+ "(Select optId From OptMethod where optCode in"
-//					+ 	" (select id.optCode from RolePower  where id.roleCode=?) )) "
-//				+ "and (optType='S' or optType='O')";
-//		return optInfoDao.listObjectsByRoleCode(unitRoleCode );//zou_wy
+    @Override
+    @Transactional
+    public List<OptInfo> getFunctionsByRoleCode(String unitRoleCode) {
+//        String hql="From OptInfo where (optId in "
+//                    + "(Select optId From OptMethod where optCode in"
+//                    +     " (select id.optCode from RolePower  where id.roleCode=?) )) "
+//                + "and (optType='S' or optType='O')";
+//        return optInfoDao.listObjectsByRoleCode(unitRoleCode );//zou_wy
         return new ArrayList<>();
-	}
+    }
 
-	@Override
-	public List<OptInfo> listObjects() {
-		return optInfoDao.listObjectsAll();
-	}
+    @Override
+    public List<OptInfo> listObjects() {
+        return optInfoDao.listObjectsAll();
+    }
 
-	@Override
-	public List<OptInfo> listObjects(Map<String, Object> filterMap) {
-		return optInfoDao.listObjects(filterMap);
-	}
+    @Override
+    public List<OptInfo> listObjects(Map<String, Object> filterMap) {
+        return optInfoDao.listObjects(filterMap);
+    }
 
-	@Override
-	public OptInfo getObjectById(String optId) {
-		return optInfoDao.getObjectById(optId);
-	}
+    @Override
+    public OptInfo getObjectById(String optId) {
+        return optInfoDao.getObjectById(optId);
+    }
 
-	private List<OptInfo> findSubOptInfo(String optId){
-	    List<OptInfo> result = new ArrayList<>();
+    private List<OptInfo> findSubOptInfo(String optId){
+        List<OptInfo> result = new ArrayList<>();
         List<OptInfo> optInfos = optInfoDao.listObjectByProperty("preOptId",optId);
         if(optInfos != null && optInfos.size() > 0){
             result.addAll(optInfos);
@@ -402,9 +402,9 @@ public class OptInfoManagerImpl implements OptInfoManager {
         }
         return result;
     }
-	
-	private void syncState(OptInfo optInfo){
-	    if("N".equals(optInfo.getIsInToolbar())){
+
+    private void syncState(OptInfo optInfo){
+        if("N".equals(optInfo.getIsInToolbar())){
             List<OptInfo> optInfos = findSubOptInfo(optInfo.getOptId());
             for(OptInfo o : optInfos){
                 o.setIsInToolbar("N");

@@ -112,16 +112,16 @@ public class OptFlowNoPool implements EntityWithTimestamp, java.io.Serializable 
         this.createDate = createDate;
     }
 
-	@Override
+    @Override
     public Date getLastModifyDate() {
         return lastModifyDate;
     }
 
-	@Override
+    @Override
     public void setLastModifyDate(Date lastModifyDate) {
         this.lastModifyDate = lastModifyDate;
     }
-	
+
 
     public void copy(OptFlowNoPool other) {
 

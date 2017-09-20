@@ -262,7 +262,7 @@ public class InnerMsgRecipientController extends BaseController {
      */
     @RequestMapping(value = "/recipient/{id}", method = { RequestMethod.DELETE })
     public void deleteRecipient(@PathVariable String id,
-    		 HttpServletRequest request,HttpServletResponse response) {
+             HttpServletRequest request,HttpServletResponse response) {
         /*InnerMsgRecipient recipient = innerMsgRecipientManager
                 .getObjectById(id);*/
         innerMsgRecipientManager.deleteOneRecipientById(id);;

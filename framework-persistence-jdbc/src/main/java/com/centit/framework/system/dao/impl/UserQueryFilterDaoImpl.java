@@ -25,48 +25,48 @@ import java.util.Map;
 
 @Repository("userQueryFilterDao")
 public class UserQueryFilterDaoImpl extends BaseDaoImpl<UserQueryFilter,Long> implements UserQueryFilterDao {
-	public static final Logger logger = LoggerFactory.getLogger(UserQueryFilterDaoImpl.class);
-	
-	@Override
-	public Map<String, String> getFilterField() {
-		if( filterField == null){
-			filterField = new HashMap<>();
-			filterField.put("filterNo" , CodeBook.EQUAL_HQL_ID);
-			filterField.put("userCode" , CodeBook.EQUAL_HQL_ID);
-			filterField.put("modleCode" , CodeBook.EQUAL_HQL_ID);
-			filterField.put("filterName" , CodeBook.EQUAL_HQL_ID);
-			filterField.put("filterValue" , CodeBook.EQUAL_HQL_ID);
-		}
-		return filterField;
-	}
+    public static final Logger logger = LoggerFactory.getLogger(UserQueryFilterDaoImpl.class);
 
-	@Override
-	public UserQueryFilter getObjectById(Long filterNo) {
-		return super.getObjectById(filterNo);
-	}
+    @Override
+    public Map<String, String> getFilterField() {
+        if( filterField == null){
+            filterField = new HashMap<>();
+            filterField.put("filterNo" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("userCode" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("modleCode" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("filterName" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("filterValue" , CodeBook.EQUAL_HQL_ID);
+        }
+        return filterField;
+    }
 
-	@Transactional
-	public List<UserQueryFilter> listUserQueryFilterByModle(String userCode,String modelCode){
-		return super.listObjectsByFilter(" where USER_CODE = ? and MODLE_CODE = ? "
-				+ "order by IS_DEFAULT desc , CREATE_DATE desc",
-				new Object[]{userCode,modelCode});
-	}
-	
-	@Transactional
-	public List<UserQueryFilter> listUserDefaultFilterByModle(String userCode,String modelCode){
-		return super.listObjectsByFilter(" where USER_CODE = ? and MODLE_CODE = ? "
-				+ "and IS_DEFAULT = 'T' order by CREATE_DATE desc",
-				new Object[]{userCode,modelCode});
-	}
-	
-	@Transactional
-	public UserQueryFilter getUserDefaultFilterByModle(String userCode,String modelCode){
-		return super.getObjectByProperties(
-				QueryUtils.createSqlParamsMap("userCode",userCode,"modelCode",modelCode ));
+    @Override
+    public UserQueryFilter getObjectById(Long filterNo) {
+        return super.getObjectById(filterNo);
+    }
 
-	}
-	
-	@Transactional
+    @Transactional
+    public List<UserQueryFilter> listUserQueryFilterByModle(String userCode,String modelCode){
+        return super.listObjectsByFilter(" where USER_CODE = ? and MODLE_CODE = ? "
+                + "order by IS_DEFAULT desc , CREATE_DATE desc",
+                new Object[]{userCode,modelCode});
+    }
+
+    @Transactional
+    public List<UserQueryFilter> listUserDefaultFilterByModle(String userCode,String modelCode){
+        return super.listObjectsByFilter(" where USER_CODE = ? and MODLE_CODE = ? "
+                + "and IS_DEFAULT = 'T' order by CREATE_DATE desc",
+                new Object[]{userCode,modelCode});
+    }
+
+    @Transactional
+    public UserQueryFilter getUserDefaultFilterByModle(String userCode,String modelCode){
+        return super.getObjectByProperties(
+                QueryUtils.createSqlParamsMap("userCode",userCode,"modelCode",modelCode ));
+
+    }
+
+    @Transactional
     public Long getNextKey() {
         return DatabaseOptUtils.getSequenceNextValue(this, "S_FILTER_NO");
     }

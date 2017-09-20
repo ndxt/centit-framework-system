@@ -41,40 +41,40 @@ public class UserSettingManagerImpl implements UserSettingManager {
     @Override
     @Transactional
     public void saveUserSetting(UserSetting userSetting){
-    	userSettingDao.mergeObject(userSetting);
+        userSettingDao.mergeObject(userSetting);
     }
     @Override
     @Transactional
     public void saveUserSetting(String userCode,String paramCode,String paramName,String paramValue,String optId){
-    	UserSetting userSetting = new UserSetting( userCode,  paramCode, paramValue,
-    									optId,  paramName);
-    	userSettingDao.mergeObject(userSetting);
+        UserSetting userSetting = new UserSetting( userCode,  paramCode, paramValue,
+                                        optId,  paramName);
+        userSettingDao.mergeObject(userSetting);
     }
 
-	@Override
-	public List<UserSetting> listObjects(Map<String, Object> searchColumn, PageDesc pageDesc) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public List<UserSetting> listObjects(Map<String, Object> searchColumn, PageDesc pageDesc) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public List<UserSetting> listObjects(Map<String, Object> searchColumn) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public List<UserSetting> listObjects(Map<String, Object> searchColumn) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public UserSetting getObjectById(UserSettingId userSettingid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public UserSetting getObjectById(UserSettingId userSettingid) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public void deleteObject(UserSetting userSetting) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void deleteObject(UserSetting userSetting) {
+        // TODO Auto-generated method stub
 
-	
+    }
+
+
 
 }

@@ -72,21 +72,21 @@ public class FVUserRoles implements Serializable {
         this.roleDesc = roleDesc;
     }
 
-	public String getUserCode() {
-		return userCode;
-	}
+    public String getUserCode() {
+        return userCode;
+    }
 
-	public void setUserCode(String userCode) {
-		this.userCode = userCode;
-	}
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
 
-	public String getRoleCode() {
-		return roleCode;
-	}
+    public String getRoleCode() {
+        return roleCode;
+    }
 
-	public void setRoleCode(String roleCode) {
-		this.roleCode = roleCode;
-	}
+    public void setRoleCode(String roleCode) {
+        this.roleCode = roleCode;
+    }
 
   
 }

@@ -261,7 +261,7 @@ public class UserUnitController extends BaseController {
 
         /*********log*********/
         OperationLogCenter.logDeleteObject(request,optId,dbUserUnit.getUserUnitId(),
-        		OperationLog.P_OPT_LOG_METHOD_D,  "删除用户机构关联信息",dbUserUnit);
+                OperationLog.P_OPT_LOG_METHOD_D,  "删除用户机构关联信息",dbUserUnit);
         /*********log*********/
     }
 

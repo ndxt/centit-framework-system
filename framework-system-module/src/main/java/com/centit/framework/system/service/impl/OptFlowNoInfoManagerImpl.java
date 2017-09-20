@@ -199,10 +199,10 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
 
     @Override
     public synchronized long assignNextLsh(String ownerCode, String codeCode, Date codeBaseDate) {
-    	Map map=new HashMap();
-    	map.put("ownerCode", ownerCode);
-    	map.put("codeCode", codeCode);
-    	map.put("codeBaseDate", String.valueOf(codeBaseDate));
+        Map map=new HashMap();
+        map.put("ownerCode", ownerCode);
+        map.put("codeCode", codeCode);
+        map.put("codeBaseDate", String.valueOf(codeBaseDate));
     
          long minPoolNo = optFlowNoPoolDao.fetchFirstLsh(ownerCode, codeCode, codeBaseDate);
         if (minPoolNo > 0) {

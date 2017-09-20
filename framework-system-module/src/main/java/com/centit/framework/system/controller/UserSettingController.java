@@ -144,7 +144,7 @@ public class UserSettingController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
         
         OperationLogCenter.logNewObject(request,optId,userSetting.getUserCode(),
-        		OperationLog.P_OPT_LOG_METHOD_U,
+                OperationLog.P_OPT_LOG_METHOD_U,
                 "更新当前用户设置参数",userSetting);
 
     }
@@ -164,7 +164,7 @@ public class UserSettingController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
         OperationLogCenter.logDeleteObject(request,optId,dbUserSetting.getUserCode(),
-        		OperationLog.P_OPT_LOG_METHOD_D,  "已删除",dbUserSetting);
+                OperationLog.P_OPT_LOG_METHOD_D,  "已删除",dbUserSetting);
         /*********log*********/
     }
 

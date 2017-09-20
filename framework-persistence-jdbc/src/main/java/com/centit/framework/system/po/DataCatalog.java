@@ -73,26 +73,26 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
 
     //创建人、更新人、更新时间
     /**
-	 * CREATOR(创建人) 创建人 
-	 */
-	@Column(name = "CREATOR")
-	@Length(max = 32, message = "字段长度不能大于{max}")
-	private String  creator;
-	   /**
-	 * UPDATOR(更新人) 更新人 
-	 */
-	@Column(name = "UPDATOR")
-	@Length(max = 32, message = "字段长度不能大于{max}")
-	private String  updator;
-	/**
-	 * UPDATEDATE(更新时间) 更新时间 
-	 */
-	@Column(name = "UPDATE_DATE")
+     * CREATOR(创建人) 创建人
+     */
+    @Column(name = "CREATOR")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    private String  creator;
+       /**
+     * UPDATOR(更新人) 更新人
+     */
+    @Column(name = "UPDATOR")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    private String  updator;
+    /**
+     * UPDATEDATE(更新时间) 更新时间
+     */
+    @Column(name = "UPDATE_DATE")
     @ValueGenerator(strategy = GeneratorType.FUNCTIION, occasion = GeneratorTime.ALWAYS,
             condition = GeneratorCondition.ALWAYS, value="now" )
-	private Date  updateDate;
-	//结束
-	
+    private Date  updateDate;
+    //结束
+
     @Transient
     private List<DataDictionary> dataDictionaries;
 
@@ -197,11 +197,11 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
     }
 
     public void setFieldDesc(String fielddesc) {
-    	
-    	if (StringUtils.isNotBlank(fielddesc)) {
-    		fielddesc = HtmlUtils.htmlUnescape(fielddesc);
-    	}
-    	
+
+        if (StringUtils.isNotBlank(fielddesc)) {
+            fielddesc = HtmlUtils.htmlUnescape(fielddesc);
+        }
+
         this.fieldDesc = fielddesc;
     }
 
@@ -232,40 +232,40 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
     
     //创建人、更新人、更新时间
     public String getCreator() {
-		return this.creator;
-	}
-	
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
-	
-	public String getUpdator() {
-		return this.updator;
-	}
-	
-	public void setUpdator(String updator) {
-		this.updator = updator;
-	}
-	
-	public Date getUpdateDate() {
-		return updateDate;
-	}
-	
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
+        return this.creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public String getUpdator() {
+        return this.updator;
+    }
+
+    public void setUpdator(String updator) {
+        this.updator = updator;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
 
 
-	@Override
+    @Override
     public Date getLastModifyDate() {
         return updateDate;
     }
 
-	@Override
+    @Override
     public void setLastModifyDate(Date lastModifyDate) {
         this.updateDate = lastModifyDate;
     }
-	//结束
+    //结束
     public void copy(DataCatalog other) {
 
         this.catalogName = other.getCatalogName();
@@ -297,11 +297,11 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
             this.needCache = other.getOptId() == null ? "1" : other.getNeedCache();
         }
         if (other.getCreator() != null)
-        	this.creator =other.getCreator();
+            this.creator =other.getCreator();
         if (other.getUpdator() != null)
-        	this.updator =other.getUpdator();
+            this.updator =other.getUpdator();
         if (other.getUpdateDate() != null)
-        	this.updateDate =other.getUpdateDate();
+            this.updateDate =other.getUpdateDate();
     }
 
 

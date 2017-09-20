@@ -32,7 +32,7 @@ import java.util.Map;
 @Transactional
 public class SysUserUnitManagerImpl 
     implements SysUserUnitManager {
-	
+
     @Resource
     @NotNull
     protected UserUnitDao userUnitDao;
@@ -45,11 +45,11 @@ public class SysUserUnitManagerImpl
     @Override
     @Transactional(readOnly = true)
     public List<UserUnit> listObjectByUserUnit(String userCode,String unitCode){
-    	Map<String,String>map=new HashMap<>();
-    	map.put("userCode", userCode);
-    	map.put("unitCode", unitCode);
-    	
-    	List<UserUnit> userUnits = userUnitDao.listObjectByUserUnit(userCode, unitCode);
+        Map<String,String>map=new HashMap<>();
+        map.put("userCode", userCode);
+        map.put("unitCode", unitCode);
+
+        List<UserUnit> userUnits = userUnitDao.listObjectByUserUnit(userCode, unitCode);
         if(userUnits!=null){
             for (UserUnit uu : userUnits) {
                 if (null == uu) {
@@ -70,7 +70,7 @@ public class SysUserUnitManagerImpl
     }
 
     private static boolean isMultiToMulti() {
-    	IDataDictionary agencyMode = CodeRepositoryUtil.getDataPiece("SYSPARAM","userUnitMode");
+        IDataDictionary agencyMode = CodeRepositoryUtil.getDataPiece("SYSPARAM","userUnitMode");
 
         if (agencyMode!=null) {
             return ("M".equalsIgnoreCase(agencyMode.getDataValue()));
@@ -90,16 +90,16 @@ public class SysUserUnitManagerImpl
         }
         
         if(StringBaseOpt.isNvl(userunit.getUserUnitId())){
-        	userunit.setUserUnitId(userUnitDao.getNextKey());
+            userunit.setUserUnitId(userUnitDao.getNextKey());
         } 
 
         if ("T".equals(userunit.getIsPrimary())) {
-        	UserUnit origPrimUnit=userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode());
-        	if(origPrimUnit!=null){
-        		origPrimUnit.setIsPrimary("F");
-        		userunit.setIsPrimary("T");
-        		userUnitDao.mergeObject(origPrimUnit);
-        	}
+            UserUnit origPrimUnit=userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode());
+            if(origPrimUnit!=null){
+                origPrimUnit.setIsPrimary("F");
+                userunit.setIsPrimary("T");
+                userUnitDao.mergeObject(origPrimUnit);
+            }
             UserInfo user=userInfoDao.getObjectById(userunit.getUserCode());
             if(user != null) {
                 user.setPrimaryUnit(userunit.getUnitCode());
@@ -131,26 +131,26 @@ public class SysUserUnitManagerImpl
             return false;
     }
 
-	@Override
-	@CacheEvict(value ={"UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
-	public void updateUserUnit(UserUnit userunit) {
-		userUnitDao.updateObject(userunit);
-	}
+    @Override
+    @CacheEvict(value ={"UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
+    public void updateUserUnit(UserUnit userunit) {
+        userUnitDao.updateObject(userunit);
+    }
 
-	@Override
-	public UserUnit getObjectById(String userUnitId) {
-		return userUnitDao.getObjectById(userUnitId);
-	}
+    @Override
+    public UserUnit getObjectById(String userUnitId) {
+        return userUnitDao.getObjectById(userUnitId);
+    }
 
-	@Override
-	public void deleteObject(UserUnit userUnit) {
-		userUnitDao.deleteObject(userUnit);
-	}
+    @Override
+    public void deleteObject(UserUnit userUnit) {
+        userUnitDao.deleteObject(userUnit);
+    }
 
-	@Override
-	public List<UserUnit> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-		return userUnitDao.pageQuery(
-		        QueryParameterPrepare.prepPageParams(
-		                filterMap,pageDesc,userUnitDao.pageCount(filterMap)));
-	}
+    @Override
+    public List<UserUnit> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
+        return userUnitDao.pageQuery(
+                QueryParameterPrepare.prepPageParams(
+                        filterMap,pageDesc,userUnitDao.pageCount(filterMap)));
+    }
 }

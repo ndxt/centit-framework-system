@@ -32,13 +32,13 @@ public class InnerMsgManagerImpl implements InnerMsgManager, MessageSender{
 //    @Resource
 //    //@NotNull
 //    public void setNotificationCenter(NotificationCenter notificationCenter){
-//    	if(notificationCenter!=null){
-//	    	MessageSender sender =
-//	                ContextLoaderListener.getCurrentWebApplicationContext().
-//	                getBean("innerMessageManager",  MessageSender.class);
-//	        // 这个地方不能直接用 this， this不是spring管理的bean，必须从容器中获取托管的 bean
-//	    	notificationCenter.registerMessageSender("innerMsg", sender);
-//    	}
+//        if(notificationCenter!=null){
+//            MessageSender sender =
+//                    ContextLoaderListener.getCurrentWebApplicationContext().
+//                    getBean("innerMessageManager",  MessageSender.class);
+//            // 这个地方不能直接用 this， this不是spring管理的bean，必须从容器中获取托管的 bean
+//            notificationCenter.registerMessageSender("innerMsg", sender);
+//        }
 //    }
     
     /*
@@ -92,18 +92,18 @@ public class InnerMsgManagerImpl implements InnerMsgManager, MessageSender{
        innerMsgDao.saveObject(msg);
     }
 
-	@Override
-	public List<InnerMsg> listObjects(Map<String, Object> filterMap) {
-		return innerMsgDao.listObjects(filterMap);
-	}
+    @Override
+    public List<InnerMsg> listObjects(Map<String, Object> filterMap) {
+        return innerMsgDao.listObjects(filterMap);
+    }
 
-	@Override
-	public List<InnerMsg> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-		return innerMsgDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap,pageDesc,innerMsgDao.pageCount(filterMap)));
-	}
+    @Override
+    public List<InnerMsg> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
+        return innerMsgDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap,pageDesc,innerMsgDao.pageCount(filterMap)));
+    }
 
-	@Override
-	public InnerMsg getObjectById(String msgCode) {
-		return innerMsgDao.getObjectById(msgCode);
-	} 
+    @Override
+    public InnerMsg getObjectById(String msgCode) {
+        return innerMsgDao.getObjectById(msgCode);
+    }
 }

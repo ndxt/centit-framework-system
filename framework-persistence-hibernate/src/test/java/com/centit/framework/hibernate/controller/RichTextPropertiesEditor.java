@@ -8,19 +8,19 @@ import com.centit.framework.hibernate.common.RichText;
 
 public class RichTextPropertiesEditor extends PropertiesEditor {
     
-	@Override
+    @Override
     public void setAsText(String text) throws IllegalArgumentException {
         if(trimWhile) {
-      		setValue(new RichText(StringUtils.trimWhitespace(text)));
+              setValue(new RichText(StringUtils.trimWhitespace(text)));
         }else
-        	setValue(new RichText(text));
+            setValue(new RichText(text));
     }
 
     @Override
     public String getAsText() {
        Object obj = getValue();
        if(obj==null)
-    	   return null;
+           return null;
        return obj.toString();
     }
 
@@ -35,6 +35,6 @@ public class RichTextPropertiesEditor extends PropertiesEditor {
     }
 
     public RichTextPropertiesEditor() {
-    	 this.trimWhile = false;
+         this.trimWhile = false;
     }
 }

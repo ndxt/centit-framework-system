@@ -11,21 +11,21 @@ import java.util.Map;
 @Repository
 public interface InnerMsgRecipientDao extends BaseDao {
 
-	 void mergeObject(InnerMsgRecipient optMethod);
-	
-	 void deleteObject(InnerMsgRecipient optMethod);
-			
-	 void saveObject(InnerMsgRecipient optMethod);
-	
-	 List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap);
+     void mergeObject(InnerMsgRecipient optMethod);
 
-	
+     void deleteObject(InnerMsgRecipient optMethod);
+
+     void saveObject(InnerMsgRecipient optMethod);
+
+     List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap);
+
+
      int  pageCount(Map<String, Object> filterDescMap);
      List<InnerMsgRecipient>  pageQuery(Map<String, Object> pageQureyMap);
     
     
 
-	 InnerMsgRecipient getObjectById(String id);
+     InnerMsgRecipient getObjectById(String id);
     /**
      * 新建
      * @param recipient InnerMsgRecipient
@@ -36,7 +36,7 @@ public interface InnerMsgRecipientDao extends BaseDao {
     /**
      * 两人间来往消息列表
      *         String queryString ="From InnerMsgRecipient where( (msgCode in (Select msgCode from InnerMsg where sender= ? and (mailType='I' or mailType='O')) and Receive= ?) " +
-        		"or (msgCode in(Select msgCode from InnerMsg where sender= ? and (mailType='I' or mailType='O')) and Receive=? )) order by msgCode desc";
+                "or (msgCode in(Select msgCode from InnerMsg where sender= ? and (mailType='I' or mailType='O')) and Receive=? )) order by msgCode desc";
         List l = listObjectsAll(queryString, new Object[]{sender,receiver,receiver,sender});
         String sender, String receiver
      * @return List InnerMsgRecipient

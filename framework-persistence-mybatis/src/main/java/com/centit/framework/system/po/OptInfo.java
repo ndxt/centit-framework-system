@@ -109,24 +109,24 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
 
     //创建人、更新人、更新时间
     /**
-	 * CREATOR(创建人) 创建人 
-	 */
-	@Column(name = "CREATOR")
-	@Size(max = 32, message = "字段长度不能大于{max}")
-	private String  creator;
-	   /**
-	 * UPDATOR(更新人) 更新人 
-	 */
-	@Column(name = "UPDATOR")
-	@Size(max = 32, message = "字段长度不能大于{max}")
-	private String  updator;
-	/**
-	 * UPDATEDATE(更新时间) 更新时间 
-	 */
-	@Column(name = "UPDATEDATE")
-	private Date  updateDate;
-	//结束
-	
+     * CREATOR(创建人) 创建人
+     */
+    @Column(name = "CREATOR")
+    @Size(max = 32, message = "字段长度不能大于{max}")
+    private String  creator;
+       /**
+     * UPDATOR(更新人) 更新人
+     */
+    @Column(name = "UPDATOR")
+    @Size(max = 32, message = "字段长度不能大于{max}")
+    private String  updator;
+    /**
+     * UPDATEDATE(更新时间) 更新时间
+     */
+    @Column(name = "UPDATEDATE")
+    private Date  updateDate;
+    //结束
+
     @Transient
     private List<OptInfo> children;
 
@@ -148,15 +148,15 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     // Constructors
 
     public List<OptDataScope> getDataScopes() {
-    	 if (null == dataScopes) {
-    		 dataScopes = new ArrayList<>();
+         if (null == dataScopes) {
+             dataScopes = new ArrayList<>();
          }
-		return dataScopes;
-	}
-	public void setDataScopes(List<OptDataScope> dataScopes) {
-		this.dataScopes = dataScopes;
-	}
-	/**
+        return dataScopes;
+    }
+    public void setDataScopes(List<OptDataScope> dataScopes) {
+        this.dataScopes = dataScopes;
+    }
+    /**
      * default constructor
      */
     public OptInfo() {
@@ -416,11 +416,11 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
             this.optRoute = other.getOptRoute();
         }
         if (other.getCreator() != null)
-        	this.creator =other.getCreator();
+            this.creator =other.getCreator();
         if (other.getUpdator() != null)
-        	this.updator =other.getUpdator();
+            this.updator =other.getUpdator();
         if (other.getUpdateDate() != null)
-        	this.updateDate =other.getUpdateDate();
+            this.updateDate =other.getUpdateDate();
     }
 
     public void clearProperties() {
@@ -448,9 +448,9 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     }
     
     public void  addChild(OptInfo child) {
-    	if(children==null)
-    		children = new ArrayList<>();
-    	children.add(child);
+        if(children==null)
+            children = new ArrayList<>();
+        children.add(child);
     }
 
     public void setChildren(List<OptInfo> children) {
@@ -498,11 +498,11 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     }
 
     public void addOptMethod(OptMethod optDef) {
-    	getOptMethods().add(optDef);
+        getOptMethods().add(optDef);
     }
     
     public void addAllOptMethods(List<OptMethod> optDefs) {
-    	getOptMethods().clear();
+        getOptMethods().clear();
         if (CollectionUtils.isEmpty(optDefs)) {
             return;
         }
@@ -515,50 +515,50 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     }
 
     
-	public void addAllDataScopes(List<OptDataScope> dataScopeByOptID) {
-		getDataScopes().clear();
+    public void addAllDataScopes(List<OptDataScope> dataScopeByOptID) {
+        getDataScopes().clear();
         if (CollectionUtils.isEmpty(dataScopeByOptID)) {
             return;
         }
 
         for (OptDataScope dataScope : dataScopeByOptID) {
-        	dataScope.setOptId(this.optId);
+            dataScope.setOptId(this.optId);
         }
 
         getDataScopes().addAll(dataScopeByOptID);
-	}
-	
-	//创建人、更新人、更新时间
-    public String getCreator() {
-  		return this.creator;
-  	}
-  	
-  	public void setCreator(String creator) {
-  		this.creator = creator;
-  	}
-  	
-  	public String getUpdator() {
-  		return this.updator;
-  	}
-  	
-  	public void setUpdator(String updator) {
-  		this.updator = updator;
-  	}
-  	
-  	public Date getUpdateDate() {
-  		return updateDate;
-  	}
-  	
-  	public void setUpdateDate(Date updateDate) {
-  		this.updateDate = updateDate;
-  	}
+    }
 
-  	@Override
+    //创建人、更新人、更新时间
+    public String getCreator() {
+          return this.creator;
+      }
+
+      public void setCreator(String creator) {
+          this.creator = creator;
+      }
+
+      public String getUpdator() {
+          return this.updator;
+      }
+
+      public void setUpdator(String updator) {
+          this.updator = updator;
+      }
+
+      public Date getUpdateDate() {
+          return updateDate;
+      }
+
+      public void setUpdateDate(Date updateDate) {
+          this.updateDate = updateDate;
+      }
+
+      @Override
       public Date getLastModifyDate() {
           return updateDate;
     }
 
-  	@Override
+      @Override
       public void setLastModifyDate(Date lastModifyDate) {
           this.updateDate = lastModifyDate;
     }

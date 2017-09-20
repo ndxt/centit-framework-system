@@ -127,9 +127,9 @@ public class PoDataChangesListener implements PreInsertEventListener,
                 StringBuilder oldvalues = new StringBuilder("{");
 
                 if (OperationLog.P_OPT_LOG_METHOD_D.equals(type)) {
-                	optContent = "删除 " + ClassUtils.getShortName(clazz);
+                    optContent = "删除 " + ClassUtils.getShortName(clazz);
                 } else {
-                	optContent = "修改 " + ClassUtils.getShortName(clazz);
+                    optContent = "修改 " + ClassUtils.getShortName(clazz);
                     for (int i = 0; i < states.length; i++) {
                         String propertyName = propertyNames[i];
                         String newvalue = String.valueOf(states[i]);
@@ -145,7 +145,7 @@ public class PoDataChangesListener implements PreInsertEventListener,
                 oldvalues.append("}");
 
                 OperationLogCenter.logUpdateObject(
-                		getUserCode(), ClassUtils.getShortName(clazz), String.valueOf(id), type,optContent,
+                        getUserCode(), ClassUtils.getShortName(clazz), String.valueOf(id), type,optContent,
                         values.toString(), oldvalues.toString());
             }
         }

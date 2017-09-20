@@ -8,10 +8,10 @@ import com.centit.framework.system.po.OptFlowNoInfoId;
 
 @Repository
 public interface OptFlowNoInfoDao extends BaseDao {
-	
-	OptFlowNoInfo getObjectById(OptFlowNoInfoId cid);
-	
-	void deleteObjectById(OptFlowNoInfoId cid);
-	
-	void saveObject(OptFlowNoInfo optMethod);
+
+    OptFlowNoInfo getObjectById(OptFlowNoInfoId cid);
+
+    void deleteObjectById(OptFlowNoInfoId cid);
+
+    void saveObject(OptFlowNoInfo optMethod);
 }

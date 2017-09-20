@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.Map;
 
 public interface SysRoleManager{
-	
-	List<RoleInfo> listObjects(Map<String, Object> filterMap);
 
-	List<RoleInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
-	
-	RoleInfo getObjectById(String roleCode);
-	
+    List<RoleInfo> listObjects(Map<String, Object> filterMap);
+
+    List<RoleInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
+
+    RoleInfo getObjectById(String roleCode);
+
     List<RolePower> getRolePowers(String rolecode); // 角色操作权限
 
     List<RolePower> getRolePowersByDefCode(String optCode);

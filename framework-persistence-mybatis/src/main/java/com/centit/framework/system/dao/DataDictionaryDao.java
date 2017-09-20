@@ -11,18 +11,18 @@ import com.centit.framework.system.po.DataDictionaryId;
 @Repository
 public interface DataDictionaryDao extends BaseDao {
 
-	List<DataDictionary> listObjects(Map<String, Object> filterDescMap);
-	
-	DataDictionary getObjectById(DataDictionaryId dd);
-	
-	void saveNewObject(DataDictionary dataDictionary);	
-	
-	void deleteObject(DataDictionary dataDictionary);
-	
-	void deleteObjectById(DataDictionaryId dd);
-	
-	void mergeObject(DataDictionary dataDictionary);
-	//listObjectsAll("FROM DataDictionary ORDER BY id.catalogCode, dataOrder");
+    List<DataDictionary> listObjects(Map<String, Object> filterDescMap);
+
+    DataDictionary getObjectById(DataDictionaryId dd);
+
+    void saveNewObject(DataDictionary dataDictionary);
+
+    void deleteObject(DataDictionary dataDictionary);
+
+    void deleteObjectById(DataDictionaryId dd);
+
+    void mergeObject(DataDictionary dataDictionary);
+    //listObjectsAll("FROM DataDictionary ORDER BY id.catalogCode, dataOrder");
     List<DataDictionary> getWholeDictionary();
     
     //listObjectsAll("FROM DataDictionary WHERE id.catalogCode = ? ORDER BY dataOrder", catalogCode);

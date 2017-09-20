@@ -60,30 +60,30 @@ public class OptMethod implements IOptMethod,EntityWithTimestamp, java.io.Serial
 
     //创建人、更新人、更新时间
     /**
-	 * CREATOR(创建人) 创建人 
-	 */
-	@Column(name = "CREATOR")
-	@Length(max = 32, message = "字段长度不能大于{max}")
-	private String  creator;
-	   /**
-	 * UPDATOR(更新人) 更新人 
-	 */
-	@Column(name = "UPDATOR")
-	@Length(max = 32, message = "字段长度不能大于{max}")
-	private String  updator;
-	/**
-	 * UPDATEDATE(更新时间) 更新时间 
-	 */
-	@Column(name = "UPDATE_DATE")
-	private Date  updateDate;
-	
-	/**
-	 * 方法排序号
-	 */
-	@Column(name = "OPT_ORDER")
-	private Integer optOrder;// 操作方法排序
-	//结束
-	
+     * CREATOR(创建人) 创建人
+     */
+    @Column(name = "CREATOR")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    private String  creator;
+       /**
+     * UPDATOR(更新人) 更新人
+     */
+    @Column(name = "UPDATOR")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    private String  updator;
+    /**
+     * UPDATEDATE(更新时间) 更新时间
+     */
+    @Column(name = "UPDATE_DATE")
+    private Date  updateDate;
+
+    /**
+     * 方法排序号
+     */
+    @Column(name = "OPT_ORDER")
+    private Integer optOrder;// 操作方法排序
+    //结束
+
     // Constructors
 
     /**
@@ -202,16 +202,16 @@ public class OptMethod implements IOptMethod,EntityWithTimestamp, java.io.Serial
     }
 
     public void setOptOrder(Integer optOrder) {
-		this.optOrder = optOrder;
-	}
-	@Override
-	public Integer getOptOrder() {
-		return optOrder;
-	}
-	
-	
+        this.optOrder = optOrder;
+    }
+    @Override
+    public Integer getOptOrder() {
+        return optOrder;
+    }
+
+
     public void copy(OptMethod other) {
-    	this.optCode = other.getOptCode();
+        this.optCode = other.getOptCode();
         this.optName = other.getOptName();
         this.optMethod = other.getOptMethod();
         this.optDesc = other.getOptDesc();
@@ -237,79 +237,79 @@ public class OptMethod implements IOptMethod,EntityWithTimestamp, java.io.Serial
             this.optDesc = other.getOptDesc();
         if (other.getIsInWorkflow() != null)
             this.isInWorkflow = other.getIsInWorkflow();
-        if (other.getCreator() != null)        	
-        	this.creator =other.getCreator();
+        if (other.getCreator() != null)
+            this.creator =other.getCreator();
         
         if (other.getOptOrder() != null)
-        	this.optOrder = other.getOptOrder();
+            this.optOrder = other.getOptOrder();
         if (other.getOptReq() != null)
-        	this.optReq = other.getOptReq();
+            this.optReq = other.getOptReq();
         if (other.getOptUrl() != null)
-        	this.optUrl = other.getOptUrl();
+            this.optUrl = other.getOptUrl();
         
         if (other.getUpdator() != null)
-        	this.updator =other.getUpdator();
+            this.updator =other.getUpdator();
         if (other.getUpdateDate() != null)
-        	this.updateDate =other.getUpdateDate();
+            this.updateDate =other.getUpdateDate();
     }
     
     //创建人、更新人、更新时间
     public String getCreator() {
-  		return this.creator;
-  	}
-  	
-  	public void setCreator(String creator) {
-  		this.creator = creator;
-  	}
-  	
-  	public String getUpdator() {
-  		return this.updator;
-  	}
-  	
-  	public void setUpdator(String updator) {
-  		this.updator = updator;
-  	}
-  	
-  	public Date getUpdateDate() {
-  		return updateDate;
-  	}
-  	
-  	public void setUpdateDate(Date updateDate) {
-  		this.updateDate = updateDate;
-  	}
+          return this.creator;
+      }
 
-  	@Override
+      public void setCreator(String creator) {
+          this.creator = creator;
+      }
+
+      public String getUpdator() {
+          return this.updator;
+      }
+
+      public void setUpdator(String updator) {
+          this.updator = updator;
+      }
+
+      public Date getUpdateDate() {
+          return updateDate;
+      }
+
+      public void setUpdateDate(Date updateDate) {
+          this.updateDate = updateDate;
+      }
+
+      @Override
       public Date getLastModifyDate() {
           return updateDate;
     }
 
-  	@Override
+      @Override
       public void setLastModifyDate(Date lastModifyDate) {
           this.updateDate = lastModifyDate;
     }
     //结束
-  	@Override
-  	public boolean equals(Object obj){
-  		if(obj==null)
-  			return false;
-  		if(this==obj)
-  			return true;
-  		
-  		if(obj instanceof IOptMethod){
-  			return StringUtils.equals(optCode , ((IOptMethod)obj).getOptCode());
-  		}
-  		
-  		if(obj instanceof IOptDataScope){
-  			return StringUtils.equals(optCode , ((IOptDataScope)obj).getOptScopeCode());
-  		}
-  		if(obj instanceof String){
-  			return StringUtils.equals(optCode , (String)obj);
-  		}  		
-  		return false;
-  	}
-  	
-  	@Override
-  	public int hashCode(){
-		return optCode==null?0:optCode.hashCode();
+      @Override
+      public boolean equals(Object obj){
+          if(obj==null)
+              return false;
+          if(this==obj)
+              return true;
+
+          if(obj instanceof IOptMethod){
+              return StringUtils.equals(optCode , ((IOptMethod)obj).getOptCode());
+          }
+
+          if(obj instanceof IOptDataScope){
+              return StringUtils.equals(optCode , ((IOptDataScope)obj).getOptScopeCode());
+          }
+          if(obj instanceof String){
+              return StringUtils.equals(optCode , (String)obj);
+          }
+          return false;
+      }
+
+      @Override
+      public int hashCode(){
+        return optCode==null?0:optCode.hashCode();
     }
 }

@@ -28,7 +28,7 @@ import java.util.Map;
 
 @Service("sysUserManager")
 public class SysUserManagerImpl implements SysUserManager {
-	public static Logger logger = LoggerFactory.getLogger(SysUserManagerImpl.class);
+    public static Logger logger = LoggerFactory.getLogger(SysUserManagerImpl.class);
     // 加密
     @Resource
     @NotNull
@@ -64,7 +64,7 @@ public class SysUserManagerImpl implements SysUserManager {
         List<RoleInfo> roles = new ArrayList<>();
         //所有的用户 都要添加这个角色
         roles.add(new RoleInfo("G-public", "general public","G",
-        		"G","T", "general public")); 
+                "G","T", "general public"));
         List<FVUserRoles> ls = userRoleDao.getSysRolesByUserId(userCode);
         if(ls!=null){
             for (FVUserRoles l : ls) {
@@ -133,7 +133,7 @@ public class SysUserManagerImpl implements SysUserManager {
     @Transactional
     public void saveObject(UserInfo sysuser) {
         
-    	boolean hasExist = checkIfUserExists(sysuser);// 查该登录名是不是已经被其他用户使
+        boolean hasExist = checkIfUserExists(sysuser);// 查该登录名是不是已经被其他用户使
 
         if (StringUtils.isBlank(sysuser.getUserCode())) {// 新添
             // sysuser.setUsercode( getNextUserCode('u'));
@@ -287,33 +287,33 @@ public class SysUserManagerImpl implements SysUserManager {
                 user.getUserPin(),oldPassword, user.getUserCode());
     }
 
- 	@Override
-	@Transactional
-	public List<UserInfo> listObjects(Map<String, Object> filterMap) {
-		return userInfoDao.listObjects(filterMap);
-	}
+     @Override
+    @Transactional
+    public List<UserInfo> listObjects(Map<String, Object> filterMap) {
+        return userInfoDao.listObjects(filterMap);
+    }
 
-	@Override
-	@Transactional
-	public List<UserInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-		return userInfoDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap,pageDesc,userInfoDao.pageCount(filterMap)));
-	}
+    @Override
+    @Transactional
+    public List<UserInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
+        return userInfoDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap,pageDesc,userInfoDao.pageCount(filterMap)));
+    }
 
-	@Override
-	@Transactional
-	public UserInfo getObjectById(String userCode) {
-		return userInfoDao.getObjectById(userCode);
-	}
+    @Override
+    @Transactional
+    public UserInfo getObjectById(String userCode) {
+        return userInfoDao.getObjectById(userCode);
+    }
 
-	@Override
-	@Transactional
-	public UserInfo getUserByRegEmail(String regEmail) {
-		return userInfoDao.getUserByRegEmail(regEmail);
-	}
+    @Override
+    @Transactional
+    public UserInfo getUserByRegEmail(String regEmail) {
+        return userInfoDao.getUserByRegEmail(regEmail);
+    }
 
-	@Override
-	@Transactional
-	public UserInfo getUserByRegCellPhone(String regCellPhone) {
-		return userInfoDao.getUserByRegCellPhone(regCellPhone);
-	}
+    @Override
+    @Transactional
+    public UserInfo getUserByRegCellPhone(String regCellPhone) {
+        return userInfoDao.getUserByRegCellPhone(regCellPhone);
+    }
 }

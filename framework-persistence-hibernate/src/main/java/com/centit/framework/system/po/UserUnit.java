@@ -75,25 +75,25 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
     
     //创建人、更新人、更新时间
     /**
-	 * CREATOR(创建人) 创建人 
-	 */
-	@Column(name = "CREATOR")
-	@Length(max = 32, message = "字段长度不能大于{max}")
-	private String  creator;
-	   /**
-	 * UPDATOR(更新人) 更新人 
-	 */
-	@Column(name = "UPDATOR")
-	@Length(max = 32, message = "字段长度不能大于{max}")
-	private String  updator;
-	/**
-	 * UPDATEDATE(更新时间) 更新时间 
-	 */
-	@Column(name = "UPDATE_DATE")
-	private Date  updateDate;
-	//结束
-	
-	
+     * CREATOR(创建人) 创建人
+     */
+    @Column(name = "CREATOR")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    private String  creator;
+       /**
+     * UPDATOR(更新人) 更新人
+     */
+    @Column(name = "UPDATOR")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    private String  updator;
+    /**
+     * UPDATEDATE(更新时间) 更新时间
+     */
+    @Column(name = "UPDATE_DATE")
+    private Date  updateDate;
+    //结束
+
+
     /**
      * 仅在系统缓存中使用
      */
@@ -230,8 +230,8 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
     }
 
     public void copy(UserUnit other) {
-    	this.userUnitId  = other.getUserUnitId();
-    	this.xzRank = other.getXzRank();
+        this.userUnitId  = other.getUserUnitId();
+        this.xzRank = other.getXzRank();
         this.isPrimary = other.getIsPrimary();
         this.createDate = other.getCreateDate();
         this.rankMemo = other.getRankMemo();
@@ -247,8 +247,8 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
 
     public void copyNotNullProperty(UserUnit other) {
 
-    	this.xzRank = other.getXzRank();
-    	
+        this.xzRank = other.getXzRank();
+
         if (null != other.getIsPrimary()) {
             this.isPrimary = other.getIsPrimary();
         }
@@ -274,44 +274,44 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
             this.userOrder = other.getUserOrder();
         }
         if (other.getCreator() != null)
-        	this.creator =other.getCreator();
+            this.creator =other.getCreator();
         if (other.getUpdator() != null)
-        	this.updator =other.getUpdator();
+            this.updator =other.getUpdator();
         if (other.getUpdateDate() != null)
-        	this.updateDate =other.getUpdateDate();
+            this.updateDate =other.getUpdateDate();
     }
     
     //创建人、更新人、更新时间
     public String getCreator() {
-  		return this.creator;
-  	}
-  	
-  	public void setCreator(String creator) {
-  		this.creator = creator;
-  	}
-  	
-  	public String getUpdator() {
-  		return this.updator;
-  	}
-  	
-  	public void setUpdator(String updator) {
-  		this.updator = updator;
-  	}
-  	
-  	public Date getUpdateDate() {
-  		return updateDate;
-  	}
-  	
-  	public void setUpdateDate(Date updateDate) {
-  		this.updateDate = updateDate;
-  	}
+          return this.creator;
+      }
 
-  	@Override
+      public void setCreator(String creator) {
+          this.creator = creator;
+      }
+
+      public String getUpdator() {
+          return this.updator;
+      }
+
+      public void setUpdator(String updator) {
+          this.updator = updator;
+      }
+
+      public Date getUpdateDate() {
+          return updateDate;
+      }
+
+      public void setUpdateDate(Date updateDate) {
+          this.updateDate = updateDate;
+      }
+
+      @Override
       public Date getLastModifyDate() {
           return updateDate;
     }
 
-  	@Override
+      @Override
       public void setLastModifyDate(Date lastModifyDate) {
           this.updateDate = lastModifyDate;
     }

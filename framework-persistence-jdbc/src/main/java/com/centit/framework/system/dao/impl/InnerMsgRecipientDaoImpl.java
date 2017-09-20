@@ -64,7 +64,7 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
         
         String queryString ="where( (MSG_CODE in (Select im.MSG_CODE from M_INNERMSG im where im.SENDER= ? " +
                 " and (im.MAIL_TYPE='I' or im.MAIL_TYPE='O')) and RECEIVE= ?) " +
-        		"or (MSG_CODE in(Select  im.MSG_CODE from M_INNERMSG im where im.sender= ? " +
+                "or (MSG_CODE in(Select  im.MSG_CODE from M_INNERMSG im where im.sender= ? " +
                 " and (im.MAIL_TYPE='I' or im.MAIL_TYPE='O')) and RECEIVE= ? )) order by msgCode desc";
         List<InnerMsgRecipient> l = listObjectsByFilter(queryString,
                 new Object[]{sender,receiver,receiver,sender});

@@ -28,112 +28,111 @@ import java.util.Map;
 @Service
 public class UserQueryFilterManagerImpl implements UserQueryFilterManager{
 
-	public static final Logger logger = LoggerFactory.getLogger(UserQueryFilterManager.class);
+    public static final Logger logger = LoggerFactory.getLogger(UserQueryFilterManager.class);
 
-	
-	private UserQueryFilterDao userQueryFilterDao ;
+    private UserQueryFilterDao userQueryFilterDao ;
 
-	@Override
-    @Transactional(propagation=Propagation.REQUIRED) 
-	public JSONArray listUserQueryFiltersAsJson(
+    @Override
+    @Transactional(propagation=Propagation.REQUIRED)
+    public JSONArray listUserQueryFiltersAsJson(
             String[] fields,
             Map<String, Object> filterMap, PageDesc pageDesc){
 
-		return DictionaryMapUtils.objectsToJSONArray(
-				listObjects(filterMap,pageDesc), fields);
+        return DictionaryMapUtils.objectsToJSONArray(
+                listObjects(filterMap,pageDesc), fields);
     }
-	
-	@Override
-    @Transactional(propagation=Propagation.REQUIRED)
-	public List<UserQueryFilter> listUserQueryFilterByModle(String userCode,String modelCode){
-		return userQueryFilterDao.listUserQueryFilterByModle(userCode, modelCode);
-	}
-	
-	@Override
-    @Transactional(propagation=Propagation.REQUIRED)
-	public Long getNextFilterKey(){
-		return userQueryFilterDao.getNextKey();
-	}
-	
-	@Override
-    @Transactional(propagation=Propagation.REQUIRED)
-	public Long saveUserDefaultFilter(UserQueryFilter userQueryFilter){
-		if(StringBaseOpt.isNvl(userQueryFilter.getUserCode())||
-				StringBaseOpt.isNvl(userQueryFilter.getModleCode()))
-			return null;
-		
-		List<UserQueryFilter> filters = userQueryFilterDao.listUserDefaultFilterByModle(userQueryFilter.getUserCode(),
-																						userQueryFilter.getModleCode());
-		if(filters==null || filters.size()<1){
-			userQueryFilter.setFilterNo(getNextFilterKey());
-			userQueryFilter.setIsDefault("T");
-			userQueryFilter.setCreateDate(DatetimeOpt.currentUtilDate());
-			userQueryFilterDao.saveNewObject(userQueryFilter);
-			return userQueryFilter.getFilterNo();
-		}else{
-			UserQueryFilter dbFilter;
-			for(int i=1;i<filters.size();i++){
-				 dbFilter = filters.get(i);
-				 dbFilter.setIsDefault("F");
-				 userQueryFilterDao.mergeObject(dbFilter);
-			}
-			dbFilter = filters.get(0);
-			dbFilter.setFilterName( userQueryFilter.getFilterName());
-			dbFilter.setFilterValue(userQueryFilter.getFilterValue());
-			userQueryFilter.setCreateDate(DatetimeOpt.currentUtilDate());
-			userQueryFilterDao.mergeObject(dbFilter);
-			return dbFilter.getFilterNo();
-		}
-		
-	}
-	
-	@Override
-    @Transactional(propagation=Propagation.REQUIRED)
-	public UserQueryFilter getUserDefaultFilter(String userCode,String modelCode){
-		if(StringBaseOpt.isNvl(userCode)||
-				StringBaseOpt.isNvl(modelCode))
-			return null;
-		
-		Map<String,String> map=new HashMap<String,String>();
-		map.put("userCode", userCode);
-		map.put("modelCode", modelCode);
-		List<UserQueryFilter> filters = userQueryFilterDao.listUserDefaultFilterByModle(userCode, modelCode);
-		if(filters==null || filters.size()<1)
-			return null;
-		return filters.get(0);
-	}
-	
-	@Override
-    @Transactional(propagation=Propagation.REQUIRED)
-	public UserQueryFilter getUserQueryFilter(Long filterNo){
-		return userQueryFilterDao.getObjectById(filterNo);
-	}
-	
-	@Override
-    @Transactional(propagation=Propagation.REQUIRED)
-	public boolean deleteUserQueryFilter(Long filterNo){
-		UserQueryFilter uqf = userQueryFilterDao.getObjectById(filterNo);
-		if(uqf==null)
-			return false;
-		if("T".equals(uqf.getIsDefault()))
-			return false;
-		userQueryFilterDao.deleteObject(uqf);
-		return true;
-	}
 
-	@Override
-	public void mergeObject(UserQueryFilter userQueryFilter) {
-		userQueryFilterDao.mergeObject(userQueryFilter);
-	}
+    @Override
+    @Transactional(propagation=Propagation.REQUIRED)
+    public List<UserQueryFilter> listUserQueryFilterByModle(String userCode,String modelCode){
+        return userQueryFilterDao.listUserQueryFilterByModle(userCode, modelCode);
+    }
 
-	@Override
-	public void saveNewObject(UserQueryFilter userQueryFilter) {
-		/*return*/ userQueryFilterDao.saveNewObject(userQueryFilter);
-	}
+    @Override
+    @Transactional(propagation=Propagation.REQUIRED)
+    public Long getNextFilterKey(){
+        return userQueryFilterDao.getNextKey();
+    }
 
-	@Override
-	public List<UserQueryFilter> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-		return userQueryFilterDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap,pageDesc,userQueryFilterDao.pageCount(filterMap)));
-	}
+    @Override
+    @Transactional(propagation=Propagation.REQUIRED)
+    public Long saveUserDefaultFilter(UserQueryFilter userQueryFilter){
+        if(StringBaseOpt.isNvl(userQueryFilter.getUserCode())||
+                StringBaseOpt.isNvl(userQueryFilter.getModleCode()))
+            return null;
+
+        List<UserQueryFilter> filters = userQueryFilterDao.listUserDefaultFilterByModle(userQueryFilter.getUserCode(),
+                                                                                        userQueryFilter.getModleCode());
+        if(filters==null || filters.size()<1){
+            userQueryFilter.setFilterNo(getNextFilterKey());
+            userQueryFilter.setIsDefault("T");
+            userQueryFilter.setCreateDate(DatetimeOpt.currentUtilDate());
+            userQueryFilterDao.saveNewObject(userQueryFilter);
+            return userQueryFilter.getFilterNo();
+        }else{
+            UserQueryFilter dbFilter;
+            for(int i=1;i<filters.size();i++){
+                 dbFilter = filters.get(i);
+                 dbFilter.setIsDefault("F");
+                 userQueryFilterDao.mergeObject(dbFilter);
+            }
+            dbFilter = filters.get(0);
+            dbFilter.setFilterName( userQueryFilter.getFilterName());
+            dbFilter.setFilterValue(userQueryFilter.getFilterValue());
+            userQueryFilter.setCreateDate(DatetimeOpt.currentUtilDate());
+            userQueryFilterDao.mergeObject(dbFilter);
+            return dbFilter.getFilterNo();
+        }
+
+    }
+
+    @Override
+    @Transactional(propagation=Propagation.REQUIRED)
+    public UserQueryFilter getUserDefaultFilter(String userCode,String modelCode){
+        if(StringBaseOpt.isNvl(userCode)||
+                StringBaseOpt.isNvl(modelCode))
+            return null;
+
+        Map<String,String> map=new HashMap<String,String>();
+        map.put("userCode", userCode);
+        map.put("modelCode", modelCode);
+        List<UserQueryFilter> filters = userQueryFilterDao.listUserDefaultFilterByModle(userCode, modelCode);
+        if(filters==null || filters.size()<1)
+            return null;
+        return filters.get(0);
+    }
+
+    @Override
+    @Transactional(propagation=Propagation.REQUIRED)
+    public UserQueryFilter getUserQueryFilter(Long filterNo){
+        return userQueryFilterDao.getObjectById(filterNo);
+    }
+
+    @Override
+    @Transactional(propagation=Propagation.REQUIRED)
+    public boolean deleteUserQueryFilter(Long filterNo){
+        UserQueryFilter uqf = userQueryFilterDao.getObjectById(filterNo);
+        if(uqf==null)
+            return false;
+        if("T".equals(uqf.getIsDefault()))
+            return false;
+        userQueryFilterDao.deleteObject(uqf);
+        return true;
+    }
+
+    @Override
+    public void mergeObject(UserQueryFilter userQueryFilter) {
+        userQueryFilterDao.mergeObject(userQueryFilter);
+    }
+
+    @Override
+    public void saveNewObject(UserQueryFilter userQueryFilter) {
+        /*return*/ userQueryFilterDao.saveNewObject(userQueryFilter);
+    }
+
+    @Override
+    public List<UserQueryFilter> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
+        return userQueryFilterDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap,pageDesc,userQueryFilterDao.pageCount(filterMap)));
+    }
 }
 

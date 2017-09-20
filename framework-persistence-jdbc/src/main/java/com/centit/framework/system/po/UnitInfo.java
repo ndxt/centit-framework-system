@@ -99,39 +99,39 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
     public void setState(String state) {
         this.state = state;
     }
-	@Column(name = "UNIT_MANAGER")
+    @Column(name = "UNIT_MANAGER")
     @Length(max = 32, message = "字段长度不能大于{max}")
     private String unitManager; // 部门负责人
-	
-	public String getUnitManager() {
-		return unitManager;
-	}
 
-	public void setUnitManager(String unitManager) {
-		this.unitManager = unitManager;
-	}
+    public String getUnitManager() {
+        return unitManager;
+    }
 
-	@Column(name = "CREATE_DATE", nullable = false)
+    public void setUnitManager(String unitManager) {
+        this.unitManager = unitManager;
+    }
+
+    @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
     
     /**
-	 * CREATOR(创建人) 创建人 
-	 */
-	@Column(name = "CREATOR")
-	@Length(max = 32, message = "字段长度不能大于{max}")
-	private String  creator;
-	   /**
-	 * UPDATOR(更新人) 更新人 
-	 */
-	@Column(name = "UPDATOR")
-	@Length(max = 32, message = "字段长度不能大于{max}")
-	private String  updator;
-	/**
-	 * UPDATEDATE(更新时间) 更新时间 
-	 */
-	@Column(name = "UPDATE_DATE")
-	private Date  updateDate;
+     * CREATOR(创建人) 创建人
+     */
+    @Column(name = "CREATOR")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    private String  creator;
+       /**
+     * UPDATOR(更新人) 更新人
+     */
+    @Column(name = "UPDATOR")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    private String  updator;
+    /**
+     * UPDATEDATE(更新时间) 更新时间
+     */
+    @Column(name = "UPDATE_DATE")
+    private Date  updateDate;
 
 
     // private Set<String> subUsers; //所有下属用户代码集合
@@ -204,22 +204,22 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
 
     
     public String getEnglishName() {
-		return englishName;
-	}
+        return englishName;
+    }
 
-	public void setEnglishName(String englishName) {
-		this.englishName = englishName;
-	}
+    public void setEnglishName(String englishName) {
+        this.englishName = englishName;
+    }
 
-	public String getUnitTag() {
-		return unitTag;
-	}
+    public String getUnitTag() {
+        return unitTag;
+    }
 
-	public void setUnitTag(String unitTag) {
-		this.unitTag = unitTag;
-	}
+    public void setUnitTag(String unitTag) {
+        this.unitTag = unitTag;
+    }
 
-	// Property accessors
+    // Property accessors
     public String getUnitCode() {
         return this.unitCode;
     }
@@ -296,17 +296,17 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         this.createDate = createDate;
     }
 
-	@Override
+    @Override
     public Date getLastModifyDate() {
         return updateDate;
     }
 
-	@Override
+    @Override
     public void setLastModifyDate(Date lastModifyDate) {
         this.updateDate = lastModifyDate;
     }
-	
-	
+
+
     //Json格式化时循环引用，此方法返回值，不序列化
     @JSONField(serialize = false)
     public List<UserUnit> getUnitUsers() {
@@ -370,19 +370,19 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         if (other.getDepNo() != null)
             this.depNo = other.getDepNo();
         if (other.getUnitTag() != null)
-        	this.unitTag = other.getUnitTag();
+            this.unitTag = other.getUnitTag();
         if (other.getEnglishName() != null)
-        	this.englishName =other.getEnglishName();
+            this.englishName =other.getEnglishName();
         if (other.getCreator() != null)
-        	this.creator =other.getCreator();
+            this.creator =other.getCreator();
         if (other.getUpdator() != null)
-        	this.updator =other.getUpdator();
+            this.updator =other.getUpdator();
         if (other.getUpdateDate() != null)
-        	this.updateDate =other.getUpdateDate();
+            this.updateDate =other.getUpdateDate();
         if (other.getUnitPath() != null)
-        	this.unitPath =other.getUnitPath();
+            this.unitPath =other.getUnitPath();
         if (other.getUnitManager() != null)
-        	this.unitManager = other.getUnitManager();
+            this.unitManager = other.getUnitManager();
     }
 
     public static String[] field2Name(Field[] f) {
@@ -436,48 +436,48 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
 
     @JSONField(name="children")
     public List<UnitInfo> getSubUnits() {
-    	if(subUnits==null)
-    		subUnits = new ArrayList<>();
+        if(subUnits==null)
+            subUnits = new ArrayList<>();
         return subUnits;
     }
     
     /*public List<UnitInfo> getChildren() {
-    	if(subUnits==null)
-    		subUnits = new ArrayList<>();
+        if(subUnits==null)
+            subUnits = new ArrayList<>();
         return subUnits;
     }*/
 
     public String getCreator() {
-		return this.creator;
-	}
-	
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
+        return this.creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
 
     public String getUpdator() {
-		return this.updator;
-	}
-	
-	public void setUpdator(String updator) {
-		this.updator = updator;
-	}
+        return this.updator;
+    }
 
-	public Date getUpdateDate() {
-		return updateDate;
-	}
+    public void setUpdator(String updator) {
+        this.updator = updator;
+    }
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
   
-	public String getUnitPath() {
-		return unitPath;
-	}
+    public String getUnitPath() {
+        return unitPath;
+    }
 
-	public void setUnitPath(String unitPath) {
-		this.unitPath = unitPath;
-	}
+    public void setUnitPath(String unitPath) {
+        this.unitPath = unitPath;
+    }
 
 
 }

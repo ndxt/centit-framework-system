@@ -10,26 +10,26 @@ import com.centit.framework.system.po.OptMethod;
 @Repository
 public interface OptMethodDao  extends BaseDao {
 
-	 List<OptMethod> listObjects();
-	
-	 OptMethod getObjectById(String optCode);	
-	
-	 void mergeObject(OptMethod optMethod);
-	
-	 void deleteObject(OptMethod optMethod);
-	
-	 void deleteObjectById(String optCode);
-			
-	 void saveNewObject(OptMethod optMethod);
-		
-	
+     List<OptMethod> listObjects();
+
+     OptMethod getObjectById(String optCode);
+
+     void mergeObject(OptMethod optMethod);
+
+     void deleteObject(OptMethod optMethod);
+
+     void deleteObjectById(String optCode);
+
+     void saveNewObject(OptMethod optMethod);
+
+
     //return listObjectsAll("FROM OptMethod WHERE optId =?", sOptID);
      List<OptMethod> listOptMethodByOptID(String sOptID);
 
     /**
      *  listObjectsAll("FROM OptMethod WHERE optCode in "
-        		+ "(select id.optCode from RolePower where id.roleCode = ?)"
-        		+ " order by optId", roleCode);
+                + "(select id.optCode from RolePower where id.roleCode = ?)"
+                + " order by optId", roleCode);
      * @param roleCode roleCode
      * @return List OptMethod
      */

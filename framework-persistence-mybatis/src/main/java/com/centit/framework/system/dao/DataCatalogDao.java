@@ -10,17 +10,17 @@ import com.centit.framework.system.po.DataCatalog;
 
 @Repository
 public interface DataCatalogDao extends BaseDao{
-	
-	List<DataCatalog> listObjects();
-	
-	DataCatalog getObjectById(String catalogCode);
-	
-	String saveNewObject(DataCatalog dataCatalog);
-	
-	void mergeObject(DataCatalog dataCatalog);
-	
-	void deleteObjectById(String catalogCode);
-	//listObjectsAll("FROM DataCatalog WHERE catalogStyle='F'");
+
+    List<DataCatalog> listObjects();
+
+    DataCatalog getObjectById(String catalogCode);
+
+    String saveNewObject(DataCatalog dataCatalog);
+
+    void mergeObject(DataCatalog dataCatalog);
+
+    void deleteObjectById(String catalogCode);
+    //listObjectsAll("FROM DataCatalog WHERE catalogStyle='F'");
     List<DataCatalog> listFixCatalog();
 
     //listObjectsAll("FROM DataCatalog WHERE catalogStyle='U'");

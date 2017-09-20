@@ -30,8 +30,8 @@ import java.util.Map;
 @Service("sysRoleManager")
 public class SysRoleManagerImpl implements SysRoleManager {
 
-	public static Logger logger = LoggerFactory.getLogger(SysRoleManagerImpl.class);
-	 
+    public static Logger logger = LoggerFactory.getLogger(SysRoleManagerImpl.class);
+
     @Resource
     @NotNull
     private OptInfoDao optInfoDao;
@@ -54,7 +54,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
         CentitSecurityMetadata.optMethodRoleMap.clear();
         List<RolePower> rplist = listAllRolePowers();
         if(rplist==null || rplist.size()==0)
-        	return;
+            return;
         for(RolePower rp: rplist ){
             List<ConfigAttribute/*roleCode*/> roles = CentitSecurityMetadata.optMethodRoleMap.get(rp.getOptCode());
             if(roles == null){
@@ -129,14 +129,14 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @CacheEvict(value="RoleInfo",allEntries = true)
     @Transactional
     public void updateRoleInfo(RoleInfo o) {
-    	roleInfoDao.mergeObject(o);
+        roleInfoDao.mergeObject(o);
     }
 
     @Override
     @CacheEvict(value="RoleInfo",allEntries = true)
     @Transactional
     public List<RolePower> updateRolePower(RoleInfo o) {
-    	roleInfoDao.mergeObject(o);
+        roleInfoDao.mergeObject(o);
         List<RolePower> newRPs = o.getRolePowers();
 
         List<RolePower> rps = rolePowerDao.listRolePowersByRoleCode(o.getRoleCode());
@@ -180,25 +180,25 @@ public class SysRoleManagerImpl implements SysRoleManager {
         
     }
 
-	@Override
-	@Transactional
-	public List<RoleInfo> listObjects(Map<String, Object> filterMap) {
-		
-		return roleInfoDao.listObjects(filterMap);
-	}
+    @Override
+    @Transactional
+    public List<RoleInfo> listObjects(Map<String, Object> filterMap) {
 
-	@Override
-	@Transactional
-	public List<RoleInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-		return roleInfoDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap,pageDesc,roleInfoDao.pageCount(filterMap)));
-	}
+        return roleInfoDao.listObjects(filterMap);
+    }
 
-	@Override
-	@Transactional
-	public RoleInfo getObjectById(String roleCode) {
+    @Override
+    @Transactional
+    public List<RoleInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
+        return roleInfoDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap,pageDesc,roleInfoDao.pageCount(filterMap)));
+    }
+
+    @Override
+    @Transactional
+    public RoleInfo getObjectById(String roleCode) {
 
         return roleInfoDao.getObjectById(roleCode);
-	}
+    }
 
     @Override
     @Transactional

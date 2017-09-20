@@ -43,19 +43,19 @@ public class OptDataScopeDaoImpl extends BaseDaoImpl<OptDataScope, String> imple
 
     @Transactional
     public String getNextOptCode() {
-    	return DatabaseOptUtils.getNextValueOfSequence(this, "S_OPTDEFCODE");
+        return DatabaseOptUtils.getNextValueOfSequence(this, "S_OPTDEFCODE");
     }
 
     
     @Transactional
     public List<String> listDataFiltersByIds(Collection<String> scopeCodes) {
-    	List<OptDataScope> objs	= listObjects("FROM OptDataScope WHERE optId in ?", scopeCodes);
-    	if(objs==null)
-    		return null;
-    	List<String> filters = new ArrayList<String>();
-    	for(OptDataScope scope:objs)
-    		filters.add(scope.getFilterCondition());
-    	return filters;
+        List<OptDataScope> objs    = listObjects("FROM OptDataScope WHERE optId in ?", scopeCodes);
+        if(objs==null)
+            return null;
+        List<String> filters = new ArrayList<String>();
+        for(OptDataScope scope:objs)
+            filters.add(scope.getFilterCondition());
+        return filters;
     }
 
 }

@@ -70,7 +70,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
     
     @Transactional
     public List<UserUnit> listObjectByUserUnit(String userCode,String unitCode){
-    	List<UserUnit> ls = listObjectsByProperties(QueryUtils.createSqlParamsMap(
+        List<UserUnit> ls = listObjectsByProperties(QueryUtils.createSqlParamsMap(
                 "userCode", userCode,"unitCode",unitCode));
         /*
          * for (FUserunit usun : ls) {

@@ -18,15 +18,15 @@ import java.util.Map;
 @Repository
 public interface RolePowerDao extends BaseDao {
 
-	List<RolePower> listObjectsAll();
-	
-	void mergeObject(RolePower rolePowers);
-	
-	void deleteObject(RolePower rolePowers);
-	
-	List<RolePower> listObjects(Map<String, Object> filterMap);
-	
-	//"DELETE FROM RolePower rp where rp.id.roleCode=?", rolecode
+    List<RolePower> listObjectsAll();
+
+    void mergeObject(RolePower rolePowers);
+
+    void deleteObject(RolePower rolePowers);
+
+    List<RolePower> listObjects(Map<String, Object> filterMap);
+
+    //"DELETE FROM RolePower rp where rp.id.roleCode=?", rolecode
     void deleteRolePowersByRoleCode(String rolecode);
     
     //"DELETE FROM RolePower rp where rp.id.optCode=?", optecode

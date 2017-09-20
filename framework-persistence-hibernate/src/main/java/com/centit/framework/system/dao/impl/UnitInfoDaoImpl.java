@@ -38,8 +38,8 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
 
     @Transactional
     public String getNextKey() {
-	/*	return getNextKeyByHqlStrOfMax("unitCode",
-						"FUnitinfo WHERE unitCode !='99999999'",6);*/
+    /*    return getNextKeyByHqlStrOfMax("unitCode",
+                        "FUnitinfo WHERE unitCode !='99999999'",6);*/
         return DatabaseOptUtils.getNextKeyBySequence(this, "S_UNITCODE", 6);
     }
 
@@ -108,9 +108,9 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     public UnitInfo getUnitByName(String name) {
         if (StringUtils.isNotBlank(name)) {
             String hql = "from UnitInfo where unitName = ? or unitShortName = ?"
-            			+ " order by unitOrder asc";
+                        + " order by unitOrder asc";
             List<UnitInfo> list = listObjects(hql,
-            		new Object[]{name,name});
+                    new Object[]{name,name});
             if (list !=null && !list.isEmpty()) {
                 return list.get(0);
             }
@@ -120,20 +120,20 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     
     @Transactional
     public UnitInfo getUnitByTag(String unitTag) {
-    	return super.getObjectByProperty("unitTag", unitTag);
+        return super.getObjectByProperty("unitTag", unitTag);
     }
     
     @Transactional
     public UnitInfo getUnitByWord(String unitWord) {
-    	return super.getObjectByProperty("unitWord", unitWord);
+        return super.getObjectByProperty("unitWord", unitWord);
     }
     
     @Transactional
     public List<UnitInfo> listSubUnits(String unitCode){
-    	return super.listObjectByProperty("parentUnit", unitCode);
-    	/*String hql = "from UnitInfo where parentUnit = ?";
-    	return listObjects(hql,
-    		new Object[]{unitCode,unitCode});*/
+        return super.listObjectByProperty("parentUnit", unitCode);
+        /*String hql = "from UnitInfo where parentUnit = ?";
+        return listObjects(hql,
+            new Object[]{unitCode,unitCode});*/
     }
 
     @Transactional(propagation=Propagation.MANDATORY)
@@ -147,9 +147,9 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     
     @Transactional(propagation=Propagation.MANDATORY) 
     public List<UnitInfo> listSubUnitsByUnitPaht(String unitPath){
-    	String hql = "from UnitInfo where unitPath like ?";
-    	return listObjects(hql,
-    		new Object[]{unitPath+"/%"});
+        String hql = "from UnitInfo where unitPath like ?";
+        return listObjects(hql,
+            new Object[]{unitPath+"/%"});
     }
 
     public List<String> getAllParentUnit(){

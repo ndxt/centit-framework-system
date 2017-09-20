@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Map;
 
 public interface DataDictionaryManager {
-	
-	DataCatalog getObjectById(String catalogCode);
+
+    DataCatalog getObjectById(String catalogCode);
 
     void saveNewObject(DataCatalog dataCatalog);
-	
-	void mergeObject(DataCatalog dataCatalog);
-	
+
+    void mergeObject(DataCatalog dataCatalog);
+
     List<DataCatalog> listSysDataCatalog();
 
     List<DataCatalog> listUserDataCatalog();

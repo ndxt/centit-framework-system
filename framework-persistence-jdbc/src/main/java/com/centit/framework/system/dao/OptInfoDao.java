@@ -8,32 +8,32 @@ import java.util.List;
 import java.util.Map;
 
 public interface OptInfoDao {
-	
-	 List<OptInfo> listObjects(Map<String, Object> filterMap);
-	
-//	 List<OptInfo> listObjectsByRoleCode(String roleCode);
-	
-	 List<OptInfo> listObjectsByCon(String condition);
-	
-	 List<OptInfo> listObjectsAll();
-	
-	
-	
-	 void deleteObject(OptInfo optMethod);
 
-	void mergeObject(OptInfo optMethod);
-	
-	 void deleteObjectById(String optId);
+     List<OptInfo> listObjects(Map<String, Object> filterMap);
 
-	void saveNewObject(OptInfo optMethod);
-	
-	//"select count(1) as hasChildren from OptInfo where preOptId = ?",optId
-	 int countChildrenSum(String optId);
-	
-	
-	 OptInfo getObjectById(String optId);
-	
-	//"from OptInfo opt where opt.isInToolbar = 'T'";
+//     List<OptInfo> listObjectsByRoleCode(String roleCode);
+
+     List<OptInfo> listObjectsByCon(String condition);
+
+     List<OptInfo> listObjectsAll();
+
+
+
+     void deleteObject(OptInfo optMethod);
+
+    void mergeObject(OptInfo optMethod);
+
+     void deleteObjectById(String optId);
+
+    void saveNewObject(OptInfo optMethod);
+
+    //"select count(1) as hasChildren from OptInfo where preOptId = ?",optId
+     int countChildrenSum(String optId);
+
+
+     OptInfo getObjectById(String optId);
+
+    //"from OptInfo opt where opt.isInToolbar = 'T'";
      List<OptInfo> listValidObjects();
 
     // String hql = "FROM FVUserOptMoudleList where userCode=?";
@@ -65,6 +65,6 @@ public interface OptInfoDao {
     // DatabaseOptUtils.findObjectsByHql(this, "from OptMethodUrlMap");
      List<OptMethodUrlMap> listAllOptMethodUrlMap();
 
-	List<OptInfo> listObjectByProperty(String propertyName, Object propertyValue);
+    List<OptInfo> listObjectByProperty(String propertyName, Object propertyValue);
  
 }

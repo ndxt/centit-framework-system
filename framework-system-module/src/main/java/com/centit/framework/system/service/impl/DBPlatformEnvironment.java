@@ -28,21 +28,21 @@ import java.util.*;
 @Service("platformEnvironment")
 public class DBPlatformEnvironment implements PlatformEnvironment {
 
-	@Resource
-	private CentitPasswordEncoder passwordEncoder;
+    @Resource
+    private CentitPasswordEncoder passwordEncoder;
 
-	@Resource
+    @Resource
     @NotNull
     private UserSettingDao userSettingDao;
-	
-	@Resource
+
+    @Resource
     @NotNull
-	private OptInfoDao optInfoDao;
-	
-	@Resource
-	private UserInfoDao sysuserdao;
-	
-	@Resource
+    private OptInfoDao optInfoDao;
+
+    @Resource
+    private UserInfoDao sysuserdao;
+
+    @Resource
     @NotNull
     private DataDictionaryDao dictionaryDao;
 
@@ -70,74 +70,74 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @NotNull
     protected OptMethodDao optMethodDao;
 
-	@Resource
-	@NotNull
-	private RolePowerDao rolePowerDao;
-	/**
-	 * 刷新数据字典
-	 *
-	 * @return  boolean 刷新数据字典
-	 */
-	@Override
-	public boolean reloadDictionary() {
-		return false;
-	}
+    @Resource
+    @NotNull
+    private RolePowerDao rolePowerDao;
+    /**
+     * 刷新数据字典
+     *
+     * @return  boolean 刷新数据字典
+     */
+    @Override
+    public boolean reloadDictionary() {
+        return false;
+    }
 
-	/**
-	 * 刷新权限相关的元数据
-	 *
-	 * @return boolean 刷新权限相关的元数据
-	 */
-	@Override
-	@Transactional(readOnly=true)
-	public boolean reloadSecurityMetadata() {
-		CentitSecurityMetadata.optMethodRoleMap.clear();
-		List<RolePower> rplist = rolePowerDao.listObjectsAll();
-		if(rplist==null || rplist.size()==0)
-			return false;
-		for(RolePower rp: rplist ){
-			List<ConfigAttribute/*roleCode*/> roles = CentitSecurityMetadata.optMethodRoleMap.get(rp.getOptCode());
-			if(roles == null){
-				roles = new ArrayList<ConfigAttribute/*roleCode*/>();
-			}
-			roles.add(new SecurityConfig(CentitSecurityMetadata.ROLE_PREFIX + StringUtils.trim(rp.getRoleCode())));
-			CentitSecurityMetadata.optMethodRoleMap.put(rp.getOptCode(), roles);
-		}
-		//将操作和角色对应关系中的角色排序，便于权限判断中的比较
-		CentitSecurityMetadata.sortOptMethodRoleMap();
+    /**
+     * 刷新权限相关的元数据
+     *
+     * @return boolean 刷新权限相关的元数据
+     */
+    @Override
+    @Transactional(readOnly=true)
+    public boolean reloadSecurityMetadata() {
+        CentitSecurityMetadata.optMethodRoleMap.clear();
+        List<RolePower> rplist = rolePowerDao.listObjectsAll();
+        if(rplist==null || rplist.size()==0)
+            return false;
+        for(RolePower rp: rplist ){
+            List<ConfigAttribute/*roleCode*/> roles = CentitSecurityMetadata.optMethodRoleMap.get(rp.getOptCode());
+            if(roles == null){
+                roles = new ArrayList<ConfigAttribute/*roleCode*/>();
+            }
+            roles.add(new SecurityConfig(CentitSecurityMetadata.ROLE_PREFIX + StringUtils.trim(rp.getRoleCode())));
+            CentitSecurityMetadata.optMethodRoleMap.put(rp.getOptCode(), roles);
+        }
+        //将操作和角色对应关系中的角色排序，便于权限判断中的比较
+        CentitSecurityMetadata.sortOptMethodRoleMap();
 
-		List<OptMethodUrlMap> oulist = optInfoDao.listAllOptMethodUrlMap();
-		CentitSecurityMetadata.optTreeNode.setChildList(null);
-		CentitSecurityMetadata.optTreeNode.setOptCode(null);
-		for(OptMethodUrlMap ou:oulist){
-			List<List<String>> sOpt = CentitSecurityMetadata.parseUrl(ou.getOptDefUrl() ,ou.getOptReq());
+        List<OptMethodUrlMap> oulist = optInfoDao.listAllOptMethodUrlMap();
+        CentitSecurityMetadata.optTreeNode.setChildList(null);
+        CentitSecurityMetadata.optTreeNode.setOptCode(null);
+        for(OptMethodUrlMap ou:oulist){
+            List<List<String>> sOpt = CentitSecurityMetadata.parseUrl(ou.getOptDefUrl() ,ou.getOptReq());
 
-			for(List<String> surls : sOpt){
-				OptTreeNode opt = CentitSecurityMetadata.optTreeNode;
-				for(String surl : surls)
-					opt = opt.setChildPath(surl);
-				opt.setOptCode(ou.getOptCode());
-			}
-		}
-		return true;
-	}
+            for(List<String> surls : sOpt){
+                OptTreeNode opt = CentitSecurityMetadata.optTreeNode;
+                for(String surl : surls)
+                    opt = opt.setChildPath(surl);
+                opt.setOptCode(ou.getOptCode());
+            }
+        }
+        return true;
+    }
 
-	@Override
-	public String getSystemParameter(String paramCode) {
-		return SysParametersUtils.getStringValue(paramCode);
-	}
+    @Override
+    public String getSystemParameter(String paramCode) {
+        return SysParametersUtils.getStringValue(paramCode);
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public String getUserSetting(String userCode, String paramCode) {
-		UserSetting us = userSettingDao.getObjectById(new UserSettingId(userCode,paramCode));
-		if(us==null)
-			return null;
-		else 
-			return us.getParamValue();
-	}
-	
-	private List<OptInfo> formatMenuTree(List<OptInfo> optInfos,String superOptId) {
+    @Override
+    @Transactional(readOnly = true)
+    public String getUserSetting(String userCode, String paramCode) {
+        UserSetting us = userSettingDao.getObjectById(new UserSettingId(userCode,paramCode));
+        if(us==null)
+            return null;
+        else
+            return us.getParamValue();
+    }
+
+    private List<OptInfo> formatMenuTree(List<OptInfo> optInfos,String superOptId) {
         // 获取当前菜单的子菜单
         Iterator<OptInfo> menus = optInfos.iterator();
         OptInfo parentOpt = null;
@@ -146,7 +146,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         while (menus.hasNext()) {            
             OptInfo optInfo = menus.next();
             if (superOptId!=null && superOptId.equals(optInfo.getOptId())) {
-            	parentOpt=optInfo;
+                parentOpt=optInfo;
             }
             boolean getParent = false;
             for (OptInfo opt : optInfos) {
@@ -157,95 +157,95 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                 }
             }
             if(!getParent)
-            	parentMenu.add(optInfo);
+                parentMenu.add(optInfo);
         }
         if (superOptId!=null && parentOpt!=null){
-    		return parentOpt.getChildren();
-	    }else
-	    	return parentMenu;
+            return parentOpt.getChildren();
+        }else
+            return parentMenu;
     }
 
-	@Override
-	@Transactional(readOnly = true)
-	public List<OptInfo> listUserMenuOptInfos(String userCode, boolean asAdmin) {
+    @Override
+    @Transactional(readOnly = true)
+    public List<OptInfo> listUserMenuOptInfos(String userCode, boolean asAdmin) {
 
-	    List<OptInfo> preOpts=optInfoDao.getMenuFuncByOptUrl();
-		String optType = asAdmin ? "S" : "O";
-	    List<FVUserOptMoudleList> ls=optInfoDao.getMenuFuncByUserID(userCode, optType);
-	    List<OptInfo> menuFunsByUser = getMenuFuncs(preOpts,  ls);
-	    return formatMenuTree(menuFunsByUser,null);
-	}
+        List<OptInfo> preOpts=optInfoDao.getMenuFuncByOptUrl();
+        String optType = asAdmin ? "S" : "O";
+        List<FVUserOptMoudleList> ls=optInfoDao.getMenuFuncByUserID(userCode, optType);
+        List<OptInfo> menuFunsByUser = getMenuFuncs(preOpts,  ls);
+        return formatMenuTree(menuFunsByUser,null);
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public List<OptInfo> listUserMenuOptInfosUnderSuperOptId(String userCode, String superOptId,boolean asAdmin) {
-		List<OptInfo> preOpts=optInfoDao.getMenuFuncByOptUrl();
-		String optType = asAdmin ? "S" : "O";
-		List<FVUserOptMoudleList> ls=optInfoDao.getMenuFuncByUserID(userCode, optType);
-		List<OptInfo> menuFunsByUser = getMenuFuncs(preOpts,  ls);
-		return formatMenuTree(menuFunsByUser,superOptId);
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public List<OptInfo> listUserMenuOptInfosUnderSuperOptId(String userCode, String superOptId,boolean asAdmin) {
+        List<OptInfo> preOpts=optInfoDao.getMenuFuncByOptUrl();
+        String optType = asAdmin ? "S" : "O";
+        List<FVUserOptMoudleList> ls=optInfoDao.getMenuFuncByUserID(userCode, optType);
+        List<OptInfo> menuFunsByUser = getMenuFuncs(preOpts,  ls);
+        return formatMenuTree(menuFunsByUser,superOptId);
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public UserInfo getUserInfoByUserCode(String userCode) {
-		return sysuserdao.getObjectById(userCode);
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public UserInfo getUserInfoByUserCode(String userCode) {
+        return sysuserdao.getObjectById(userCode);
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public UserInfo getUserInfoByLoginName(String loginName) {
-		return sysuserdao.getUserByLoginName(loginName);
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public UserInfo getUserInfoByLoginName(String loginName) {
+        return sysuserdao.getUserByLoginName(loginName);
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public IUnitInfo getUnitInfoByUnitCode(String unitCode) {
-		return unitInfoDao.getObjectById(unitCode);
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public IUnitInfo getUnitInfoByUnitCode(String unitCode) {
+        return unitInfoDao.getObjectById(unitCode);
+    }
 
-	@Override
-	@Transactional
-	public void changeUserPassword(String userCode, String userPassword) {
-		UserInfo user = sysuserdao.getObjectById(userCode);
+    @Override
+    @Transactional
+    public void changeUserPassword(String userCode, String userPassword) {
+        UserInfo user = sysuserdao.getObjectById(userCode);
         user.setUserPin(passwordEncoder.encodePassword(userPassword, user.getUserCode()));
         sysuserdao.saveObject(user);
-	}
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public boolean checkUserPassword(String userCode, String userPassword) {
-		UserInfo user = sysuserdao.getObjectById(userCode);
-	    return passwordEncoder.isPasswordValid(user.getUserPin(),
-	    			userPassword, user.getUserCode());
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public boolean checkUserPassword(String userCode, String userPassword) {
+        UserInfo user = sysuserdao.getObjectById(userCode);
+        return passwordEncoder.isPasswordValid(user.getUserPin(),
+                    userPassword, user.getUserCode());
+    }
 
-	@Override
-	@Cacheable(value = "UserInfo",key = "'userList'" )
-	@Transactional(readOnly = true)
-	public List<UserInfo> listAllUsers() {
-		return sysuserdao.listObjects();
-	}
+    @Override
+    @Cacheable(value = "UserInfo",key = "'userList'" )
+    @Transactional(readOnly = true)
+    public List<UserInfo> listAllUsers() {
+        return sysuserdao.listObjects();
+    }
 
-	@Override
-	@Cacheable(value="UnitInfo",key="'unitList'")
-	@Transactional(readOnly = true)
-	public List<UnitInfo> listAllUnits() {
-		return unitInfoDao.listObjects();
-	}
+    @Override
+    @Cacheable(value="UnitInfo",key="'unitList'")
+    @Transactional(readOnly = true)
+    public List<UnitInfo> listAllUnits() {
+        return unitInfoDao.listObjects();
+    }
 
-	@Override
-	@Cacheable(value="AllUserUnits",key="'allUserUnits'")
-	@Transactional(readOnly = true)
-	public List<UserUnit> listAllUserUnits() {
-		return userUnitDao.listObjectsAll();
-	}
+    @Override
+    @Cacheable(value="AllUserUnits",key="'allUserUnits'")
+    @Transactional(readOnly = true)
+    public List<UserUnit> listAllUserUnits() {
+        return userUnitDao.listObjectsAll();
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	@Cacheable(value="UserUnits",key="#userCode")
-	public List<UserUnit> listUserUnits(String userCode) {
-		List<UserUnit> userUnits = userUnitDao.listUserUnitsByUserCode(userCode);
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable(value="UserUnits",key="#userCode")
+    public List<UserUnit> listUserUnits(String userCode) {
+        List<UserUnit> userUnits = userUnitDao.listUserUnitsByUserCode(userCode);
         if(userUnits!=null){
             for (UserUnit uu : userUnits) {
                 if (null == uu) {
@@ -263,13 +263,13 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             }
         }
         return userUnits;
-	}
+    }
 
-	@Override
-	@Cacheable(value="UnitUsers",key="#unitCode")
-	@Transactional(readOnly = true)
-	public List<UserUnit> listUnitUsers(String unitCode) {
-		List<UserUnit> unitUsers = userUnitDao.listUnitUsersByUnitCode(unitCode);
+    @Override
+    @Cacheable(value="UnitUsers",key="#unitCode")
+    @Transactional(readOnly = true)
+    public List<UserUnit> listUnitUsers(String unitCode) {
+        List<UserUnit> unitUsers = userUnitDao.listUnitUsersByUnitCode(unitCode);
         if(unitUsers!=null){
             for (UserUnit uu : unitUsers) {
                 if (null == uu) {
@@ -287,12 +287,12 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             }
         }
         return unitUsers;
-	}
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	@Cacheable(value="RoleInfo",key="'roleCodeMap'")
-	public Map<String, RoleInfo> getRoleRepo() {
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable(value="RoleInfo",key="'roleCodeMap'")
+    public Map<String, RoleInfo> getRoleRepo() {
         Map<String, RoleInfo> roleReop = new HashMap<>();
         List<RoleInfo> roleList = roleInfoDao.listObjectsAll();
         if(roleList!=null)
@@ -302,11 +302,11 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             }
         return roleReop;
     }
-	
-	@Override
-	@Cacheable(value="OptInfo",key="'optIdMap'")
+
+    @Override
+    @Cacheable(value="OptInfo",key="'optIdMap'")
     @Transactional(readOnly = true)
-	public Map<String, OptInfo> getOptInfoRepo() {
+    public Map<String, OptInfo> getOptInfoRepo() {
         Map<String, OptInfo> optRepo = new HashMap<>();
         List<OptInfo> optList = optInfoDao.listObjectsAll();
         if (optList != null) {
@@ -318,10 +318,10 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         return optRepo;
     }
 
-	@Override
-	@Transactional(readOnly = true)
-	@Cacheable(value="OptInfo",key="'optCodeMap'")
-	public Map<String, OptMethod> getOptMethodRepo() {
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable(value="OptInfo",key="'optCodeMap'")
+    public Map<String, OptMethod> getOptMethodRepo() {
         Map<String, OptMethod> powerRepo = new HashMap<>();
 
         List<OptMethod> optdefList = optMethodDao.listObjects();
@@ -333,26 +333,26 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         }
         return powerRepo;
     }
-	
-	@Override
-	@Cacheable(value = "DataDictionary",key="'CatalogCode'")
-    @Transactional(readOnly = true)
-	public List<DataCatalog> listAllDataCatalogs() {
-		return dataCatalogDao.listObjects();
-	}
 
-	@Override
-	@Cacheable(value = "DataDictionary",key="#catalogCode")
-	@Transactional(readOnly = true)
-	public List<DataDictionary> listDataDictionaries(String catalogCode) {
-		return dictionaryDao.listDataDictionary(catalogCode);
-	}
-
-	@Override
-	@Cacheable(value="UnitInfo",key="'unitCodeMap'")
+    @Override
+    @Cacheable(value = "DataDictionary",key="'CatalogCode'")
     @Transactional(readOnly = true)
-	public Map<String,UnitInfo> getUnitRepo() {
-		Map<String, UnitInfo> unitRepo = new HashMap<>();
+    public List<DataCatalog> listAllDataCatalogs() {
+        return dataCatalogDao.listObjects();
+    }
+
+    @Override
+    @Cacheable(value = "DataDictionary",key="#catalogCode")
+    @Transactional(readOnly = true)
+    public List<DataDictionary> listDataDictionaries(String catalogCode) {
+        return dictionaryDao.listDataDictionary(catalogCode);
+    }
+
+    @Override
+    @Cacheable(value="UnitInfo",key="'unitCodeMap'")
+    @Transactional(readOnly = true)
+    public Map<String,UnitInfo> getUnitRepo() {
+        Map<String, UnitInfo> unitRepo = new HashMap<>();
         List<UnitInfo> unitList = unitInfoDao.listObjects();
         if (unitList != null){
             for (UnitInfo unitinfo : unitList) {
@@ -374,13 +374,13 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         }
 
         return unitRepo;
-	}
+    }
 
-	@Override
-	@Cacheable(value = "UserInfo",key = "'userCodeMap'" )
+    @Override
+    @Cacheable(value = "UserInfo",key = "'userCodeMap'" )
     @Transactional(readOnly = true)
-	public Map<String,UserInfo> getUserRepo() {
-		Map<String, UserInfo> userInfoMap = new HashMap<>();
+    public Map<String,UserInfo> getUserRepo() {
+        Map<String, UserInfo> userInfoMap = new HashMap<>();
         List<UserInfo> users = sysuserdao.listObjects();
         if(users!=null){
             for (UserInfo userInfo : users) {
@@ -388,13 +388,13 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             }
         }
         return userInfoMap;
-	}
+    }
 
-	@Override
-	@Cacheable(value = "UserInfo",key = "'loginNameMap'")
+    @Override
+    @Cacheable(value = "UserInfo",key = "'loginNameMap'")
     @Transactional(readOnly = true)
-	public Map<String, ? extends IUserInfo> getLoginNameRepo() {
-		Map<String, UserInfo> userInfoMap = new HashMap<>();
+    public Map<String, ? extends IUserInfo> getLoginNameRepo() {
+        Map<String, UserInfo> userInfoMap = new HashMap<>();
         List<UserInfo> users = sysuserdao.listObjects();
         if(users!=null){
             for (UserInfo userInfo : users) {
@@ -402,25 +402,25 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             }
         }
         return userInfoMap;
-	}
+    }
 
-	@Override
-	@Cacheable(value="UnitInfo",key="'depNoMap'")
+    @Override
+    @Cacheable(value="UnitInfo",key="'depNoMap'")
     @Transactional(readOnly = true)
-	public Map<String, ? extends IUnitInfo> getDepNoRepo() {
-		Map<String, UnitInfo> depNo = new HashMap<>();
+    public Map<String, ? extends IUnitInfo> getDepNoRepo() {
+        Map<String, UnitInfo> depNo = new HashMap<>();
         List<UnitInfo> unitList = unitInfoDao.listObjects();
         if (unitList != null)
             for (UnitInfo unitinfo : unitList) {
                 depNo.put(unitinfo.getDepNo(), unitinfo);
             }
         return depNo;
-	}
+    }
 
-	
-	@Transactional
+
+    @Transactional
     private CentitUserDetailsImpl fillUserDetailsField(UserInfo userinfo ){
-    	 CentitUserDetailsImpl sysuser = new CentitUserDetailsImpl();
+         CentitUserDetailsImpl sysuser = new CentitUserDetailsImpl();
          sysuser.copy(userinfo);
          //sysuser.setSysusrodao(userRoleDao);
 
@@ -430,11 +430,11 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
          List<RoleInfo> roles = new ArrayList<>();
          //所有的用户 都要添加这个角色
          roles.add(new RoleInfo("G-public", "general public","G",
-         		"G","T", "general public"));
+                 "G","T", "general public"));
          List<FVUserRoles> ls = userRoleDao.getSysRolesByUserId(sysuser.getUserCode());
          if(ls!=null) {
 
-        	 for (FVUserRoles l : ls) {
+             for (FVUserRoles l : ls) {
                  RoleInfo roleInfo = new RoleInfo();
 
                  BeanUtils.copyProperties(l, roleInfo);
@@ -478,123 +478,123 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
          return sysuser;
     }
    
-	@Override
-	@Transactional
-	public CentitUserDetailsImpl loadUserDetailsByLoginName(String loginName) {
-		 UserInfo userinfo = sysuserdao.getUserByLoginName(loginName);
-    	 if(userinfo==null)
-    		 return null;
+    @Override
+    @Transactional
+    public CentitUserDetailsImpl loadUserDetailsByLoginName(String loginName) {
+         UserInfo userinfo = sysuserdao.getUserByLoginName(loginName);
+         if(userinfo==null)
+             return null;
          return fillUserDetailsField(userinfo); 
-	}
+    }
 
-	@Override
-	@Transactional
-	public CentitUserDetailsImpl loadUserDetailsByUserCode(String userCode) {
-		 UserInfo userinfo = sysuserdao.getUserByCode(userCode);
-    	 if(userinfo==null)
-    		 return null;
+    @Override
+    @Transactional
+    public CentitUserDetailsImpl loadUserDetailsByUserCode(String userCode) {
+         UserInfo userinfo = sysuserdao.getUserByCode(userCode);
+         if(userinfo==null)
+             return null;
          return fillUserDetailsField(userinfo); 
-	}
+    }
 
-	@Override
-	@Transactional
-	public CentitUserDetailsImpl loadUserDetailsByRegEmail(String regEmail) {
-		UserInfo userinfo = sysuserdao.getUserByRegEmail(regEmail);
-	   	if(userinfo==null)
-	   		 return null;
+    @Override
+    @Transactional
+    public CentitUserDetailsImpl loadUserDetailsByRegEmail(String regEmail) {
+        UserInfo userinfo = sysuserdao.getUserByRegEmail(regEmail);
+           if(userinfo==null)
+                return null;
         return fillUserDetailsField(userinfo);
-	}
+    }
 
-	@Override
-	@Transactional
-	public CentitUserDetailsImpl loadUserDetailsByRegCellPhone(String regCellPhone) {
-		UserInfo userinfo = sysuserdao.getUserByRegCellPhone(regCellPhone);
-	   	if(userinfo==null)
-	   		 return null;
+    @Override
+    @Transactional
+    public CentitUserDetailsImpl loadUserDetailsByRegCellPhone(String regCellPhone) {
+        UserInfo userinfo = sysuserdao.getUserByRegCellPhone(regCellPhone);
+           if(userinfo==null)
+                return null;
         return fillUserDetailsField(userinfo);
-	}
+    }
 
-	   private static List<OptInfo> getMenuFuncs(List<OptInfo> preOpts, List<FVUserOptMoudleList> ls) {
-	        boolean isNeeds[] = new boolean[preOpts.size()];
-	        for (int i = 0; i < preOpts.size(); i++) {
-	            isNeeds[i] = false;
-	        }
-	        List<OptInfo> opts = new ArrayList<OptInfo>();
+       private static List<OptInfo> getMenuFuncs(List<OptInfo> preOpts, List<FVUserOptMoudleList> ls) {
+            boolean isNeeds[] = new boolean[preOpts.size()];
+            for (int i = 0; i < preOpts.size(); i++) {
+                isNeeds[i] = false;
+            }
+            List<OptInfo> opts = new ArrayList<OptInfo>();
 
-	        for (FVUserOptMoudleList opm : ls) {
-	            OptInfo opt = new OptInfo();
-	            opt.setFormCode(opm.getFormcode());
-	            opt.setImgIndex(opm.getImgindex());
-	            opt.setIsInToolbar(opm.getIsintoolbar());
-	            opt.setMsgNo(opm.getMsgno());
-	            opt.setMsgPrm(opm.getMsgprm());
-	            opt.setOptId(opm.getOptid());
-	            opt.setOptType(opm.getOpttype());
-	            opt.setOptName(opm.getOptname());
-	            opt.setOptUrl(opm.getOpturl());
-	            opt.setPreOptId(opm.getPreoptid());
-	            opt.setTopOptId(opm.getTopoptid());
-	            opt.setPageType(opm.getPageType());
-	            opt.setOptRoute(opm.getOptRoute());
+            for (FVUserOptMoudleList opm : ls) {
+                OptInfo opt = new OptInfo();
+                opt.setFormCode(opm.getFormcode());
+                opt.setImgIndex(opm.getImgindex());
+                opt.setIsInToolbar(opm.getIsintoolbar());
+                opt.setMsgNo(opm.getMsgno());
+                opt.setMsgPrm(opm.getMsgprm());
+                opt.setOptId(opm.getOptid());
+                opt.setOptType(opm.getOpttype());
+                opt.setOptName(opm.getOptname());
+                opt.setOptUrl(opm.getOpturl());
+                opt.setPreOptId(opm.getPreoptid());
+                opt.setTopOptId(opm.getTopoptid());
+                opt.setPageType(opm.getPageType());
+                opt.setOptRoute(opm.getOptRoute());
 
-	            opts.add(opt);
-	            for (int i = 0; i < preOpts.size(); i++) {
-	                if (opt.getPreOptId() != null && opt.getPreOptId().equals(preOpts.get(i).getOptId())) {
-	                    isNeeds[i] = true;
-	                    break;
-	                }
-	            }
-	        }
+                opts.add(opt);
+                for (int i = 0; i < preOpts.size(); i++) {
+                    if (opt.getPreOptId() != null && opt.getPreOptId().equals(preOpts.get(i).getOptId())) {
+                        isNeeds[i] = true;
+                        break;
+                    }
+                }
+            }
 
-	        List<OptInfo> needAdd = new ArrayList<OptInfo>();
-	        for (int i = 0; i < preOpts.size(); i++) {
-	            if (isNeeds[i]) {
-	                needAdd.add(preOpts.get(i));
-	            }
-	        }
+            List<OptInfo> needAdd = new ArrayList<OptInfo>();
+            for (int i = 0; i < preOpts.size(); i++) {
+                if (isNeeds[i]) {
+                    needAdd.add(preOpts.get(i));
+                }
+            }
 
-	        boolean isNeeds2[] = new boolean[preOpts.size()];
-	        while (true) {
-	            int nestedMenu = 0;
-	            for (int i = 0; i < preOpts.size(); i++)
-	                isNeeds2[i] = false;
+            boolean isNeeds2[] = new boolean[preOpts.size()];
+            while (true) {
+                int nestedMenu = 0;
+                for (int i = 0; i < preOpts.size(); i++)
+                    isNeeds2[i] = false;
 
-	            for (int i = 0; i < needAdd.size(); i++) {
-	                for (int j = 0; j < preOpts.size(); j++) {
-	                    if (!isNeeds[j] && needAdd.get(i).getPreOptId() != null
-	                            && needAdd.get(i).getPreOptId().equals(preOpts.get(j).getOptId())) {
-	                        isNeeds[j] = true;
-	                        isNeeds2[j] = true;
-	                        nestedMenu++;
-	                        break;
-	                    }
-	                }
-	            }
-	            if (nestedMenu == 0)
-	                break;
+                for (int i = 0; i < needAdd.size(); i++) {
+                    for (int j = 0; j < preOpts.size(); j++) {
+                        if (!isNeeds[j] && needAdd.get(i).getPreOptId() != null
+                                && needAdd.get(i).getPreOptId().equals(preOpts.get(j).getOptId())) {
+                            isNeeds[j] = true;
+                            isNeeds2[j] = true;
+                            nestedMenu++;
+                            break;
+                        }
+                    }
+                }
+                if (nestedMenu == 0)
+                    break;
 
-	            needAdd.clear();
-	            for (int i = 0; i < preOpts.size(); i++) {
-	                if (isNeeds2[i]) {
-	                    needAdd.add(preOpts.get(i));
-	                }
-	            }
+                needAdd.clear();
+                for (int i = 0; i < preOpts.size(); i++) {
+                    if (isNeeds2[i]) {
+                        needAdd.add(preOpts.get(i));
+                    }
+                }
 
-	        }
+            }
 
-	        for (int i = 0; i < preOpts.size(); i++) {
-	            if (isNeeds[i]) {
-	                opts.add(preOpts.get(i));
-	            }
-	        }
-	        return opts;
-	        // end
-//	        ListOpt.sortAsTree(opts, new ListOpt.ParentChild<OptInfo>() {
-//				@Override
-//				public boolean parentAndChild(OptInfo p, OptInfo c) {
-//					return p.getOptId().equals(c.getPreOptId());
-//				}
-//	        	
-//			});
-	    }
+            for (int i = 0; i < preOpts.size(); i++) {
+                if (isNeeds[i]) {
+                    opts.add(preOpts.get(i));
+                }
+            }
+            return opts;
+            // end
+//            ListOpt.sortAsTree(opts, new ListOpt.ParentChild<OptInfo>() {
+//                @Override
+//                public boolean parentAndChild(OptInfo p, OptInfo c) {
+//                    return p.getOptId().equals(c.getPreOptId());
+//                }
+//
+//            });
+        }
 }

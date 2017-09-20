@@ -184,12 +184,12 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
      * @return 密码失效时间
      */
     public Date getPwdExpiredTime() {
-		return pwdExpiredTime;
-	}
+        return pwdExpiredTime;
+    }
 
-	public void setPwdExpiredTime(Date pwdExpiredTime) {
-		this.pwdExpiredTime = pwdExpiredTime;
-	}
+    public void setPwdExpiredTime(Date pwdExpiredTime) {
+        this.pwdExpiredTime = pwdExpiredTime;
+    }
 
     public UserInfo() {
         userUnits = null;
@@ -214,20 +214,20 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     public UserInfo(String userCode, String userpin,String usertype, String userstate,
             String loginname, String username, String userdesc,
             Long logintimes, Date activeime, String loginip, Long addrbookid) {
-			this.userCode = userCode;
-			this.userPin = userpin;
-			this.isValid = userstate;
-			this.userName = username;
-			this.userType = usertype;
-			this.userDesc = userdesc;
-			this.loginTimes = logintimes;
-			this.activeTime = activeime;
-			this.loginIp = loginip;
-			this.loginName = loginname;
-			this.addrbookId = addrbookid;
-			// userUnits=null;
-			primaryUnit = null;
-			}
+            this.userCode = userCode;
+            this.userPin = userpin;
+            this.isValid = userstate;
+            this.userName = username;
+            this.userType = usertype;
+            this.userDesc = userdesc;
+            this.loginTimes = logintimes;
+            this.activeTime = activeime;
+            this.loginIp = loginip;
+            this.loginName = loginname;
+            this.addrbookId = addrbookid;
+            // userUnits=null;
+            primaryUnit = null;
+            }
 
     
     public UserInfo(String userCode, String userpin,String usertype, String userstate,
@@ -270,22 +270,22 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     }
 
     public String getEnglishName() {
-		return englishName;
-	}
+        return englishName;
+    }
 
-	public void setEnglishName(String englishName) {
-		this.englishName = englishName;
-	}
+    public void setEnglishName(String englishName) {
+        this.englishName = englishName;
+    }
 
-	public String getUserTag() {
-		return userTag;
-	}
+    public String getUserTag() {
+        return userTag;
+    }
 
-	public void setUserTag(String userTag) {
-		this.userTag = userTag;
-	}
+    public void setUserTag(String userTag) {
+        this.userTag = userTag;
+    }
 
-	/**
+    /**
      * T:生效 F:无效
      *
      * @return T:生效 F:无效
@@ -414,41 +414,41 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         this.createDate = createDate;
     }
 
-	@Override
+    @Override
     public Date getLastModifyDate() {
         return updateDate;
     }
 
-	@Override
+    @Override
     public void setLastModifyDate(Date lastModifyDate) {
         this.updateDate = lastModifyDate;
     }
-	
-	 public String getCreator() {
-			return this.creator;
-	}
-	
-	public void setCreator(String creator) {
-		this.creator = creator;
-	}
+
+     public String getCreator() {
+            return this.creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
 
         public String getUpdator() {
-		return this.updator;
-	}
-	
-	public void setUpdator(String updator) {
-		this.updator = updator;
-	}
+        return this.updator;
+    }
+
+    public void setUpdator(String updator) {
+        this.updator = updator;
+    }
   
     public Date getUpdateDate() {
-		return updateDate;
-	}
+        return updateDate;
+    }
 
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
 
-	public void copy(UserInfo other) {
+    public void copy(UserInfo other) {
         this.userCode = other.getUserCode();
         this.userPin = other.getUserPin();
         this.isValid = other.getIsValid();
@@ -501,9 +501,9 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         if (other.getRegEmail() != null)
             this.regEmail = other.getRegEmail();
         if (other.getUserTag() != null)
-        	this.userTag = other.getUserTag();
+            this.userTag = other.getUserTag();
         if (other.getEnglishName() != null)
-        	this.englishName =other.getEnglishName();
+            this.englishName =other.getEnglishName();
         if (other.getUserOrder() != null)
             this.userOrder = other.getUserOrder();
         if (other.regCellPhone != null)
@@ -513,11 +513,11 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         if(other.getUserUnits()!=null)
             this.replaceUserUnits(other.getUserUnits());
         if (other.getCreator() != null)
-        	this.creator =other.getCreator();
+            this.creator =other.getCreator();
         if (other.getUpdator() != null)
-        	this.updator =other.getUpdator();
+            this.updator =other.getUpdator();
         if (other.getUpdateDate() != null)
-        	this.updateDate =other.getUpdateDate();
+            this.updateDate =other.getUpdateDate();
     }
 
     public void clearProperties() {
@@ -594,7 +594,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
      */
     public void replaceUserRoles(Collection<UserRole> userRoles) {
         //必须不稳null，如果为null 请直接调用删除
-    	if(userRoles==null)
+        if(userRoles==null)
             return;
         List<UserRole> newObjs = new ArrayList<UserRole>();
         for(UserRole p :userRoles){

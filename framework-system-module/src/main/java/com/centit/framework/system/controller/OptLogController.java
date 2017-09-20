@@ -50,7 +50,7 @@ public class OptLogController extends BaseController {
         Map<String, Object> searchColumn = convertSearchColumn(request);
         /*List<OptLog> listObjectsAll = null;
         if (null == pageDesc) {
-        	
+
             listObjectsAll = optLogManager.listObjectsAll(searchColumn);
         } else
             listObjectsAll = optLogManager.listObjectsAll(searchColumn, pageDesc);

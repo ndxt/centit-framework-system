@@ -11,24 +11,24 @@ import java.util.Map;
 
 @Repository
 public interface UserRoleDao extends BaseDao {
-	
-	 void saveNewObject(UserRole dbUserRole);
-	
-	 List<UserRole> listObjects();
-	
-	 void mergeObject(UserRole dbUserRole);
-	
-	 void deleteObject(UserRole dbUserRole);
-	
-	 void deleteObjectById(UserRoleId id);
-	
-	 UserRole getObjectById(UserRoleId id);
-	
-	
+
+     void saveNewObject(UserRole dbUserRole);
+
+     List<UserRole> listObjects();
+
+     void mergeObject(UserRole dbUserRole);
+
+     void deleteObject(UserRole dbUserRole);
+
+     void deleteObjectById(UserRoleId id);
+
+     UserRole getObjectById(UserRoleId id);
+
+
      int  pageCount(Map<String, Object> filterDescMap);
      List<UserRole>  pageQuery(Map<String, Object> pageQureyMap);
-	
-	//DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.roleCode = ?", roid);
+
+    //DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.roleCode = ?", roid);
      void deleteByRoleId(String roid);
     
     //DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.userCode = ?", usid);
@@ -42,7 +42,7 @@ public interface UserRoleDao extends BaseDao {
      * List roleInfos = new ArrayList();
         //所有的用户 都要添加这个角色
         roleInfos.add(new RoleInfo("G-", "general ","G",
-        		"G","T", "general "));        
+                "G","T", "general "));
         final String sSqlsen = "from FVUserRoles v where userCode = ?";
      * @param usid usid
      * @return List FVUserRoles

@@ -53,7 +53,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
     
     @Transactional
     public List<UserUnit> listObjectByUserUnit(String userCode,String unitCode){
-    	List<UserUnit> ls = listObjects(
+        List<UserUnit> ls = listObjects(
                 "FROM UserUnit where userCode=? and unitCode=?",
                 new Object[]{userCode,unitCode});
         /*

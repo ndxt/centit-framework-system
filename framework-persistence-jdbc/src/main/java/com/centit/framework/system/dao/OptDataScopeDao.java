@@ -9,8 +9,8 @@ public interface OptDataScopeDao {
 
     void mergeObject(OptDataScope optDataScope);
 
-	void deleteObject(OptDataScope optDataScope);
-	
+    void deleteObject(OptDataScope optDataScope);
+
     //return listObjectsAll("FROM OptDataScope WHERE optId =?", sOptID);
     List<OptDataScope> getDataScopeByOptID(String sOptID) ;
 
@@ -26,6 +26,6 @@ public interface OptDataScopeDao {
     String getNextOptCode();
 
     
-   	// listObjectsAll("FROM OptDataScope WHERE optId in ?", scopeCodes)
+       // listObjectsAll("FROM OptDataScope WHERE optId in ?", scopeCodes)
     List<String> listDataFiltersByIds(Collection<String> scopeCodes);//zou_wy
 }

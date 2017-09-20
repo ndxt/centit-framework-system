@@ -41,7 +41,7 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
 
             filterField.put("(date)createDateBeg", "createDate>= :createDateBeg");
             
-			filterField.put("(date)createDateEnd", "createDate< :createDateEnd");
+            filterField.put("(date)createDateEnd", "createDate< :createDateEnd");
         }
         return filterField;
     }

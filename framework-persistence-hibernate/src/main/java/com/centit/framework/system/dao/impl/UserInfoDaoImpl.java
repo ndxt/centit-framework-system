@@ -114,12 +114,12 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
                 (this,hql, (Object[]) params);
         return ls;
     }
-	/*
+    /*
      * public FUserinfo loginUser(String userName, String password) { return
-	 * (FUserinfo) getHibernateTemplate().find(
-	 * "FROM FUserinfo WHERE username = ? AND userpin = ? ", new Object[] {
-	 * userName, password }).get(0); }
-	 */
+     * (FUserinfo) getHibernateTemplate().find(
+     * "FROM FUserinfo WHERE username = ? AND userpin = ? ", new Object[] {
+     * userName, password }).get(0); }
+     */
    
     @Transactional
     public List<UserInfo> listUnderUnit(Map<String, Object> filterMap) {
@@ -158,22 +158,22 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
     
     @Transactional
     public UserInfo getUserByRegEmail(String regEmail) {
-    	return super.getObjectByProperty("regEmail", regEmail);
+        return super.getObjectByProperty("regEmail", regEmail);
     }
     
     @Transactional
     public UserInfo getUserByRegCellPhone(String regCellPhone) {
-    	return super.getObjectByProperty("regCellPhone", regCellPhone);
+        return super.getObjectByProperty("regCellPhone", regCellPhone);
     }
     
     @Transactional
     public UserInfo getUserByTag(String userTag) {
-    	return super.getObjectByProperty("userTag", userTag);
+        return super.getObjectByProperty("userTag", userTag);
     }
     
     @Transactional
     public UserInfo getUserByUserWord(String userWord) {
-    	return super.getObjectByProperty("userWord", userWord);
+        return super.getObjectByProperty("userWord", userWord);
     }
 
     @Transactional

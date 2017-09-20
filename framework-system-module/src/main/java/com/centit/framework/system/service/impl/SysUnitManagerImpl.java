@@ -27,7 +27,7 @@ import java.util.Map;
 @Transactional
 public class SysUnitManagerImpl implements SysUnitManager {
 
-	public static Logger logger = LoggerFactory.getLogger(SysUnitManagerImpl.class);
+    public static Logger logger = LoggerFactory.getLogger(SysUnitManagerImpl.class);
     @Resource
     @NotNull
     private UserUnitDao userUnitDao;
@@ -117,15 +117,15 @@ public class SysUnitManagerImpl implements SysUnitManager {
     @CacheEvict(value = {"UnitInfo","UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
     @Transactional
     public void deleteUnitInfo(UnitInfo unitinfo){
-    	String oldUnitPath = unitinfo.getUnitPath();
- 		List<UnitInfo> subUnits = unitInfoDao.listSubUnitsByUnitPaht(oldUnitPath);
-		int noupl = oldUnitPath.length();
-		for(UnitInfo ui : subUnits){
-			if(unitinfo.getUnitCode().equals(ui.getParentUnit()))
-				ui.setParentUnit("0");
-			ui.setParentUnit(ui.getUnitPath().substring(noupl));
-			unitInfoDao.mergeObject(ui);
-		}
+        String oldUnitPath = unitinfo.getUnitPath();
+         List<UnitInfo> subUnits = unitInfoDao.listSubUnitsByUnitPaht(oldUnitPath);
+        int noupl = oldUnitPath.length();
+        for(UnitInfo ui : subUnits){
+            if(unitinfo.getUnitCode().equals(ui.getParentUnit()))
+                ui.setParentUnit("0");
+            ui.setParentUnit(ui.getUnitPath().substring(noupl));
+            unitInfoDao.mergeObject(ui);
+        }
     
         userUnitDao.deleteUserUnitByUnit(unitinfo.getUnitCode());        
         unitInfoDao.deleteObjectById(unitinfo.getUnitCode());
@@ -160,38 +160,38 @@ public class SysUnitManagerImpl implements SysUnitManager {
     @CacheEvict(value = "UnitInfo",allEntries = true)
     @Transactional
     public void updateUnitInfo(UnitInfo unitinfo){
-    	UnitInfo dbUnitInfo = unitInfoDao.getObjectById(unitinfo.getUnitCode());
-    	String oldParentUnit = dbUnitInfo.getParentUnit();
-    	String oldUnitPath = dbUnitInfo.getUnitPath();
-    	BeanUtils.copyProperties(unitinfo, dbUnitInfo, new String[]{"unitCode"});
-    	if(!StringUtils.equals(oldParentUnit, unitinfo.getParentUnit())){
-    		UnitInfo parentUnit = unitInfoDao.getObjectById(unitinfo.getParentUnit());
-    		if(parentUnit==null)
-        		unitinfo.setUnitPath("/"+unitinfo.getUnitCode());
-        	else
-        		unitinfo.setUnitPath(parentUnit.getUnitPath()+"/"+unitinfo.getUnitCode());
-    		List<UnitInfo> subUnits = unitInfoDao.listSubUnitsByUnitPaht(oldUnitPath);
-    		int noupl = oldUnitPath.length();
-    		for(UnitInfo ui : subUnits){
-    			ui.setParentUnit(unitinfo.getUnitPath()+ ui.getUnitPath().substring(noupl));
-    			unitInfoDao.mergeObject(ui);
-    		}
-    	}    	
+        UnitInfo dbUnitInfo = unitInfoDao.getObjectById(unitinfo.getUnitCode());
+        String oldParentUnit = dbUnitInfo.getParentUnit();
+        String oldUnitPath = dbUnitInfo.getUnitPath();
+        BeanUtils.copyProperties(unitinfo, dbUnitInfo, new String[]{"unitCode"});
+        if(!StringUtils.equals(oldParentUnit, unitinfo.getParentUnit())){
+            UnitInfo parentUnit = unitInfoDao.getObjectById(unitinfo.getParentUnit());
+            if(parentUnit==null)
+                unitinfo.setUnitPath("/"+unitinfo.getUnitCode());
+            else
+                unitinfo.setUnitPath(parentUnit.getUnitPath()+"/"+unitinfo.getUnitCode());
+            List<UnitInfo> subUnits = unitInfoDao.listSubUnitsByUnitPaht(oldUnitPath);
+            int noupl = oldUnitPath.length();
+            for(UnitInfo ui : subUnits){
+                ui.setParentUnit(unitinfo.getUnitPath()+ ui.getUnitPath().substring(noupl));
+                unitInfoDao.mergeObject(ui);
+            }
+        }
         unitInfoDao.mergeObject(dbUnitInfo);
     }
 
     @Override
     @Transactional
-	public List<UnitInfo> listAllSubObjects(String primaryUnit) {
+    public List<UnitInfo> listAllSubObjects(String primaryUnit) {
         if(StringUtils.isBlank(primaryUnit))
             return null;
-		return unitInfoDao.listAllSubUnits(primaryUnit);
+        return unitInfoDao.listAllSubUnits(primaryUnit);
     }
     
-	@Override
-	@Transactional
-	public List<UnitInfo> listAllSubObjectsAsSort(String primaryUnit) {
-		List<UnitInfo> listObjects = unitInfoDao.listAllSubUnits(primaryUnit);
+    @Override
+    @Transactional
+    public List<UnitInfo> listAllSubObjectsAsSort(String primaryUnit) {
+        List<UnitInfo> listObjects = unitInfoDao.listAllSubUnits(primaryUnit);
         Iterator<UnitInfo> unitInfos = listObjects.iterator();        
         while (unitInfos.hasNext()) {
             UnitInfo unitInfo = unitInfos.next();
@@ -214,32 +214,32 @@ public class SysUnitManagerImpl implements SysUnitManager {
             }
         }
         return parentUnit;
-	}
+    }
 
-	@Override
-	@Transactional
-	public boolean hasChildren(String unitCode) {
-		return unitInfoDao.countChildrenSum(unitCode)>0;
-	}
+    @Override
+    @Transactional
+    public boolean hasChildren(String unitCode) {
+        return unitInfoDao.countChildrenSum(unitCode)>0;
+    }
 
-	@Override
-	@Transactional
-	public List<UnitInfo> listObjects(Map<String, Object> filterMap) {
-		return unitInfoDao.listObjects(filterMap);
-	}
+    @Override
+    @Transactional
+    public List<UnitInfo> listObjects(Map<String, Object> filterMap) {
+        return unitInfoDao.listObjects(filterMap);
+    }
 
-	@Override
-	@Transactional
-	public List<UnitInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-		return unitInfoDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap,pageDesc,unitInfoDao.pageCount(filterMap)));
-	}
+    @Override
+    @Transactional
+    public List<UnitInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
+        return unitInfoDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap,pageDesc,unitInfoDao.pageCount(filterMap)));
+    }
 
-	@Override
-	@Transactional
-	public UnitInfo getObjectById(String unitCode) {
-		UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
+    @Override
+    @Transactional
+    public UnitInfo getObjectById(String unitCode) {
+        UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
         return unitInfo;
-	}
+    }
 
     @Override
     @Transactional

@@ -7,16 +7,16 @@ import java.util.List;
 import java.util.Map;
 
 public interface OptLogDao  {
-	//生成一个新的id序列	 S_SYS_LOG
-	Long createNewLogId();
-	
-	OptLog getObjectById(Long logId);
+    //生成一个新的id序列     S_SYS_LOG
+    Long createNewLogId();
+
+    OptLog getObjectById(Long logId);
 
     void saveNewObject(OptLog o);
-	
-	void deleteObjectById(Long logId);
 
-	//final String hql = "select DISTINCT f.optId from OptLog f";
+    void deleteObjectById(Long logId);
+
+    //final String hql = "select DISTINCT f.optId from OptLog f";
     List<String> listOptIds();
 
     //设置主键 DatabaseOptUtils.getNextLongSequence(this, "S_SYS_LOG"));

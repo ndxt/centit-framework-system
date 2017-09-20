@@ -13,32 +13,32 @@ import java.util.Map;
 
 @Repository
 public interface OptInfoDao extends BaseDao {
-	
-	 List<OptInfo> listObjects(Map<String, Object> filterMap);
-	
-	 List<OptInfo> listObjectsByRoleCode(String roleCode);
-	
-	 List<OptInfo> listObjectsByCon(@Param(value="condition")String condition);
-	
-	 List<OptInfo> listObjectsAll();
-	
-	
-	
-	 void deleteObject(OptInfo optMethod);
-	
-	 void mergeObject(OptInfo optMethod);
-	
-	 void deleteObjectById(String optId);
-			
-	 void saveNewObject(OptInfo optMethod);
-	
-	//"select count(1) as hasChildren from OptInfo where preOptId = ?",optId
-	 int countChildrenSum(String optId);
-	
-	
-	 OptInfo getObjectById(String optId);
-	
-	//"from OptInfo opt where opt.isInToolbar = 'T'";
+
+     List<OptInfo> listObjects(Map<String, Object> filterMap);
+
+     List<OptInfo> listObjectsByRoleCode(String roleCode);
+
+     List<OptInfo> listObjectsByCon(@Param(value="condition")String condition);
+
+     List<OptInfo> listObjectsAll();
+
+
+
+     void deleteObject(OptInfo optMethod);
+
+     void mergeObject(OptInfo optMethod);
+
+     void deleteObjectById(String optId);
+
+     void saveNewObject(OptInfo optMethod);
+
+    //"select count(1) as hasChildren from OptInfo where preOptId = ?",optId
+     int countChildrenSum(String optId);
+
+
+     OptInfo getObjectById(String optId);
+
+    //"from OptInfo opt where opt.isInToolbar = 'T'";
      List<OptInfo> listValidObjects();
 
     // String hql = "FROM FVUserOptMoudleList where userCode=?";

@@ -33,15 +33,15 @@ import java.util.Map;
 @Controller
 @RequestMapping("/userqueryfilter")
 public class UserQueryFilterController  extends BaseController {
-	//private static final Logger logger = LoggerFactory.getLogger(UserQueryFilterController.class);
-	
-	@Resource
-	private UserQueryFilterManager userQueryFilterMag;	
-	/*public void setUserQueryFilterMag(UserQueryFilterManager basemgr)
-	{
-		userQueryFilterMag = basemgr;
-		//this.setBaseEntityManager(userQueryFilterMag);
-	}*/
+    //private static final Logger logger = LoggerFactory.getLogger(UserQueryFilterController.class);
+
+    @Resource
+    private UserQueryFilterManager userQueryFilterMag;
+    /*public void setUserQueryFilterMag(UserQueryFilterManager basemgr)
+    {
+        userQueryFilterMag = basemgr;
+        //this.setBaseEntityManager(userQueryFilterMag);
+    }*/
 
     /**
      * 查询所有   用户自定义过滤条件表  列表
@@ -81,23 +81,23 @@ public class UserQueryFilterController  extends BaseController {
     @RequestMapping(value = "/list/{modelCode}", method = {RequestMethod.GET})
     public void listUserQueryFilter(@PathVariable String modelCode, HttpServletRequest request, HttpServletResponse response) {
         
-    	List<UserQueryFilter> userFilters = 
-    			userQueryFilterMag.listUserQueryFilterByModle(
-    					super.getLoginUserCode(request), modelCode);
+        List<UserQueryFilter> userFilters =
+                userQueryFilterMag.listUserQueryFilterByModle(
+                        super.getLoginUserCode(request), modelCode);
 
         JsonResultUtils.writeSingleDataJson(userFilters, response);
     }
     /**
      * 查询单个  用户自定义过滤条件表 
-	
-	 * @param filterNo  FILTER_NO
+
+     * @param filterNo  FILTER_NO
      * @param response    {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{filterNo}", method = {RequestMethod.GET})
     public void getUserQueryFilter(@PathVariable Long filterNo, HttpServletResponse response) {
-    	
-    	UserQueryFilter userQueryFilter =     			
-    			userQueryFilterMag.getUserQueryFilter( filterNo);
+
+        UserQueryFilter userQueryFilter =
+                userQueryFilterMag.getUserQueryFilter( filterNo);
         
         JsonResultUtils.writeSingleDataJson(userQueryFilter, response);
     }
@@ -111,16 +111,16 @@ public class UserQueryFilterController  extends BaseController {
      */
     @RequestMapping(method = {RequestMethod.POST})
     public void createUserQueryFilter(
-    		@Valid UserQueryFilter userQueryFilter, 
-    		HttpServletRequest request,HttpServletResponse response) {
-    	
-    	userQueryFilter.setFilterNo(userQueryFilterMag.getNextFilterKey());
-    	userQueryFilter.setCreateDate(DatetimeOpt.currentUtilDate());
-    	userQueryFilter.setIsDefault("F");    	
-    	
-    	if(StringBaseOpt.isNvl(userQueryFilter.getUserCode()))
-    		userQueryFilter.setUserCode(super.getLoginUserCode(request));
-    	userQueryFilterMag.saveNewObject(userQueryFilter);
+            @Valid UserQueryFilter userQueryFilter,
+            HttpServletRequest request,HttpServletResponse response) {
+
+        userQueryFilter.setFilterNo(userQueryFilterMag.getNextFilterKey());
+        userQueryFilter.setCreateDate(DatetimeOpt.currentUtilDate());
+        userQueryFilter.setIsDefault("F");
+
+        if(StringBaseOpt.isNvl(userQueryFilter.getUserCode()))
+            userQueryFilter.setUserCode(super.getLoginUserCode(request));
+        userQueryFilterMag.saveNewObject(userQueryFilter);
         JsonResultUtils.writeSingleDataJson(userQueryFilter.getFilterNo(),response);
     }
     
@@ -134,16 +134,16 @@ public class UserQueryFilterController  extends BaseController {
     */
    @RequestMapping(value = "/default/{modelCode}", method = {RequestMethod.POST,RequestMethod.PUT})
    public void createUserDefaultFilter(@PathVariable String modelCode,
-		   @Valid UserQueryFilter userQueryFilter, 
-   		HttpServletRequest request,HttpServletResponse response) {
-   	
-   	userQueryFilter.setCreateDate(DatetimeOpt.currentUtilDate());
-   	userQueryFilter.setIsDefault("T");
-   	userQueryFilter.setModleCode(modelCode);   	
-   	if(StringBaseOpt.isNvl(userQueryFilter.getUserCode()))
-   		userQueryFilter.setUserCode(super.getLoginUserCode(request));
-   	
-   	Serializable pk = userQueryFilterMag.saveUserDefaultFilter(userQueryFilter);
+           @Valid UserQueryFilter userQueryFilter,
+           HttpServletRequest request,HttpServletResponse response) {
+
+       userQueryFilter.setCreateDate(DatetimeOpt.currentUtilDate());
+       userQueryFilter.setIsDefault("T");
+       userQueryFilter.setModleCode(modelCode);
+       if(StringBaseOpt.isNvl(userQueryFilter.getUserCode()))
+           userQueryFilter.setUserCode(super.getLoginUserCode(request));
+
+       Serializable pk = userQueryFilterMag.saveUserDefaultFilter(userQueryFilter);
        JsonResultUtils.writeSingleDataJson(pk,response);
    }
    
@@ -156,49 +156,49 @@ public class UserQueryFilterController  extends BaseController {
     */
    @RequestMapping(value = "/default/{modelCode}", method = {RequestMethod.GET})
    public void getUserDefaultFilter(@PathVariable String modelCode,
-   		HttpServletRequest request,HttpServletResponse response) {
-   	
-	   UserQueryFilter userQueryFilter = 
-			   userQueryFilterMag.getUserDefaultFilter(super.getLoginUserCode(request), modelCode);
+           HttpServletRequest request,HttpServletResponse response) {
+
+       UserQueryFilter userQueryFilter =
+               userQueryFilterMag.getUserDefaultFilter(super.getLoginUserCode(request), modelCode);
        JsonResultUtils.writeSingleDataJson(userQueryFilter,response);
    }
 
 
     /**
      * 删除单个  用户自定义过滤条件表 
-	
-	 * @param filterNo  FILTER_NO
+
+     * @param filterNo  FILTER_NO
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{filterNo}", method = {RequestMethod.DELETE})
     public void deleteUserQueryFilter(@PathVariable Long filterNo, HttpServletResponse response) {
-    	
-    	boolean b = userQueryFilterMag.deleteUserQueryFilter(filterNo);
+
+        boolean b = userQueryFilterMag.deleteUserQueryFilter(filterNo);
         if(b)
-        	JsonResultUtils.writeBlankJson(response);
+            JsonResultUtils.writeBlankJson(response);
         else
-        	JsonResultUtils.writeErrorMessageJson("不能删除默认过滤条件！", response);
+            JsonResultUtils.writeErrorMessageJson("不能删除默认过滤条件！", response);
     } 
     
     /**
      * 新增或保存 用户自定义过滤条件表 
     
-	 * @param filterNo  FILTER_NO
-	 * @param userQueryFilter  {@link UserQueryFilter}
+     * @param filterNo  FILTER_NO
+     * @param userQueryFilter  {@link UserQueryFilter}
      * @param response    {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{filterNo}", method = {RequestMethod.PUT})
     public void updateUserQueryFilter(@PathVariable Long filterNo, 
-    	@Valid UserQueryFilter userQueryFilter, HttpServletResponse response) {
-    	
-    	
-    	UserQueryFilter dbUserQueryFilter  =     			
-    			userQueryFilterMag.getUserQueryFilter( filterNo);
+        @Valid UserQueryFilter userQueryFilter, HttpServletResponse response) {
+
+
+        UserQueryFilter dbUserQueryFilter  =
+                userQueryFilterMag.getUserQueryFilter( filterNo);
         
         if (null != userQueryFilter) {
-        	dbUserQueryFilter .copy(userQueryFilter);
-        	dbUserQueryFilter.setCreateDate(DatetimeOpt.currentUtilDate());
-        	userQueryFilterMag.mergeObject(dbUserQueryFilter);
+            dbUserQueryFilter .copy(userQueryFilter);
+            dbUserQueryFilter.setCreateDate(DatetimeOpt.currentUtilDate());
+            userQueryFilterMag.mergeObject(dbUserQueryFilter);
         } else {
             JsonResultUtils.writeErrorMessageJson("当前对象不存在", response);
             return;

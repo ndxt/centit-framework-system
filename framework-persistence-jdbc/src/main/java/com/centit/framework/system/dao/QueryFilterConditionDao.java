@@ -15,19 +15,19 @@ import java.util.Map;
 
 public interface QueryFilterConditionDao {
 
-	//DatabaseOptUtils.getNextLongSequence(this, "S_FILTER_NO");
+    //DatabaseOptUtils.getNextLongSequence(this, "S_FILTER_NO");
     Long getNextKey();
     
     
     int  pageCount(Map<String, Object> filterDescMap);
     List<QueryFilterCondition>  pageQuery(Map<String, Object> pageQureyMap);
     
-	
-	QueryFilterCondition getObjectById(Long filterNo);
 
-	void mergeObject(QueryFilterCondition userQueryFilter);
-	
-	void deleteObjectById(Long filterNo);
+    QueryFilterCondition getObjectById(Long filterNo);
 
-	void saveNewObject(QueryFilterCondition userQueryFilter);
+    void mergeObject(QueryFilterCondition userQueryFilter);
+
+    void deleteObjectById(Long filterNo);
+
+    void saveNewObject(QueryFilterCondition userQueryFilter);
 }

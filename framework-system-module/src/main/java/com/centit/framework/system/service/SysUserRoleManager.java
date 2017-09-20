@@ -16,14 +16,14 @@ import com.centit.framework.system.po.UserRoleId;
  * To change this template use File | Settings | File Templates.
  */
 public interface SysUserRoleManager{
-	
-	public List<UserRole> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
-	
-	public UserRole getObjectById(UserRoleId id);
-	
-	public void mergeObject(UserRole dbUserRole);
-	
-	public void deleteObjectById(UserRoleId id);
-			
+
+    public List<UserRole> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
+
+    public UserRole getObjectById(UserRoleId id);
+
+    public void mergeObject(UserRole dbUserRole);
+
+    public void deleteObjectById(UserRoleId id);
+
     public void mergeObject(UserRole dbUserRole, UserRole userRole);
 }

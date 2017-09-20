@@ -22,7 +22,7 @@ public class OptMethodManagerImpl implements OptMethodManager {
     @Override
     @CacheEvict(value="OptInfo",allEntries = true)
     public void mergeObject(OptMethod o) {
-    	optMethodDao.mergeObject(o);
+        optMethodDao.mergeObject(o);
     }
 
     /*private OptMethod getObject(OptMethod object) {
@@ -47,25 +47,25 @@ public class OptMethodManagerImpl implements OptMethodManager {
         return optMethodDao.getNextOptCode();
     }
 
-	@Override
-	public List<OptMethod> listObjects() {
-		return optMethodDao.listObjects();
-	}
+    @Override
+    public List<OptMethod> listObjects() {
+        return optMethodDao.listObjects();
+    }
 
-	@Override
-	public OptMethod getObjectById(String optCode) {
-		return optMethodDao.getObjectById(optCode);
-	}
+    @Override
+    public OptMethod getObjectById(String optCode) {
+        return optMethodDao.getObjectById(optCode);
+    }
 
-	@Override
-	public void deleteObjectById(String optCode) {
-		optMethodDao.deleteObjectById(optCode);		
-	}
+    @Override
+    public void deleteObjectById(String optCode) {
+        optMethodDao.deleteObjectById(optCode);
+    }
 
-	@Override
-	public String saveNewObject(OptMethod optMethod) {
-		 optMethodDao.saveNewObject(optMethod);
-		 return optMethod.getOptCode();
-	}
+    @Override
+    public String saveNewObject(OptMethod optMethod) {
+         optMethodDao.saveNewObject(optMethod);
+         return optMethod.getOptCode();
+    }
 
 }

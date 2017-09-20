@@ -95,14 +95,14 @@ public class OptLog implements java.io.Serializable {
     }
 
     public String getNewValue() {
-		return newValue;
-	}
+        return newValue;
+    }
 
-	public void setNewValue(String newValue) {
-		this.newValue = newValue;
-	}
+    public void setNewValue(String newValue) {
+        this.newValue = newValue;
+    }
 
-	public void setOptTag(String optTag) {
+    public void setOptTag(String optTag) {
         this.optTag = optTag;
     }
 
@@ -251,7 +251,7 @@ public class OptLog implements java.io.Serializable {
         if (other.getOptId() != null)
             this.optId = other.getOptId();
         if (other.getOptTag() != null)
-        	this.optTag = other.getOptTag();
+            this.optTag = other.getOptTag();
         if (other.getOptMethod() != null)
             this.optMethod = other.getOptMethod();
         if (other.getOptContent() != null)

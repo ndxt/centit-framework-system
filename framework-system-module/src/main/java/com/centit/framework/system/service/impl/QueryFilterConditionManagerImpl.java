@@ -27,60 +27,60 @@ import java.util.Map;
 @Service
 public class QueryFilterConditionManagerImpl implements QueryFilterConditionManager{
 
-	public static final Logger logger = LoggerFactory.getLogger(QueryFilterConditionManager.class);
+    public static final Logger logger = LoggerFactory.getLogger(QueryFilterConditionManager.class);
 
-	@Resource
+    @Resource
     @NotNull
-	private QueryFilterConditionDao queryFilterConditionDao ;
+    private QueryFilterConditionDao queryFilterConditionDao ;
 
-	@Override
+    @Override
     @Transactional(propagation=Propagation.REQUIRED) 
-	public JSONArray listQueryFilterConditionsAsJson(
+    public JSONArray listQueryFilterConditionsAsJson(
             String[] fields,
             Map<String, Object> filterMap, PageDesc pageDesc){
 
-		return DictionaryMapUtils.objectsToJSONArray(
-				listObjects(filterMap,pageDesc), fields);
+        return DictionaryMapUtils.objectsToJSONArray(
+                listObjects(filterMap,pageDesc), fields);
 
-	}	
+    }
 
-	
-	
-	@Override
-	@Transactional
-	public List<QueryFilterCondition> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-		return queryFilterConditionDao.pageQuery(
-				QueryParameterPrepare.prepPageParams(filterMap,pageDesc,
-						queryFilterConditionDao.pageCount(filterMap)));
-	}
-	
-	
-	@Override
-	@Transactional
-	public QueryFilterCondition getObjectById(Long filterNo) {
-		return queryFilterConditionDao.getObjectById(filterNo);
-	}
-	
-	
-	@Override
-	@Transactional
-	public void mergeObject(QueryFilterCondition userQueryFilter) {
-		queryFilterConditionDao.mergeObject(userQueryFilter);
-	}
-	
-	
-	@Override
-	@Transactional
-	public void deleteObjectById(Long filterNo) {
-		queryFilterConditionDao.deleteObjectById(filterNo);
-	}
-	
-	
-	@Override
-	public Long saveNewObject(QueryFilterCondition userQueryFilter) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+
+
+    @Override
+    @Transactional
+    public List<QueryFilterCondition> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
+        return queryFilterConditionDao.pageQuery(
+                QueryParameterPrepare.prepPageParams(filterMap,pageDesc,
+                        queryFilterConditionDao.pageCount(filterMap)));
+    }
+
+
+    @Override
+    @Transactional
+    public QueryFilterCondition getObjectById(Long filterNo) {
+        return queryFilterConditionDao.getObjectById(filterNo);
+    }
+
+
+    @Override
+    @Transactional
+    public void mergeObject(QueryFilterCondition userQueryFilter) {
+        queryFilterConditionDao.mergeObject(userQueryFilter);
+    }
+
+
+    @Override
+    @Transactional
+    public void deleteObjectById(Long filterNo) {
+        queryFilterConditionDao.deleteObjectById(filterNo);
+    }
+
+
+    @Override
+    public Long saveNewObject(QueryFilterCondition userQueryFilter) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
 
