@@ -1,6 +1,6 @@
 package com.centit.framework.system.service.impl;
 
-import com.centit.framework.core.dao.PageDesc;
+import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.system.dao.UserSettingDao;
 import com.centit.framework.system.po.UserSetting;
 import com.centit.framework.system.po.UserSettingId;

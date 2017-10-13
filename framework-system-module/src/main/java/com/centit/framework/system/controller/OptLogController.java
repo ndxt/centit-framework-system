@@ -6,7 +6,7 @@ import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.CodeBook;
-import com.centit.framework.core.dao.PageDesc;
+import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.system.po.OptLog;
 import com.centit.framework.system.service.OptLogManager;

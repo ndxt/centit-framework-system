@@ -2,7 +2,7 @@ package com.centit.framework.system.service.impl;
 
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.common.ObjectException;
-import com.centit.framework.core.dao.PageDesc;
+import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.model.adapter.MessageSender;
 import com.centit.framework.model.basedata.IUnitInfo;

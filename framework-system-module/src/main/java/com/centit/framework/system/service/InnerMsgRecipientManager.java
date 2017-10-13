@@ -3,7 +3,7 @@ package com.centit.framework.system.service;
 import java.util.List;
 import java.util.Map;
 
-import com.centit.framework.core.dao.PageDesc;
+import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.system.po.InnerMsg;
 import com.centit.framework.system.po.InnerMsgRecipient;
 

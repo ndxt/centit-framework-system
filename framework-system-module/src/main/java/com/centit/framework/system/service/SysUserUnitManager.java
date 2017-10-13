@@ -1,6 +1,6 @@
 package com.centit.framework.system.service;
 
-import com.centit.framework.core.dao.PageDesc;
+import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.system.po.UserUnit;
 
 import java.util.List;

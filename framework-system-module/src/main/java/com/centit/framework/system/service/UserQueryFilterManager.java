@@ -1,7 +1,7 @@
 package com.centit.framework.system.service;
 
 import com.alibaba.fastjson.JSONArray;
-import com.centit.framework.core.dao.PageDesc;
+import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.system.po.UserQueryFilter;
 
 import java.util.List;

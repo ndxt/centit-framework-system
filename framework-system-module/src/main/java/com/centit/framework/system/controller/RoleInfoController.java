@@ -5,7 +5,7 @@ import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.*;
-import com.centit.framework.core.dao.PageDesc;
+import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.model.basedata.IUserUnit;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.security.model.CentitUserDetails;

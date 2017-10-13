@@ -1,7 +1,7 @@
 package com.centit.framework.system.dao.impl;
 
 import com.centit.framework.core.dao.CodeBook;
-import com.centit.framework.core.dao.PageDesc;
+import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.hibernate.dao.BaseDaoImpl;
 import com.centit.framework.hibernate.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UserUnitDao;

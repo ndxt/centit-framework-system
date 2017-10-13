@@ -1,6 +1,6 @@
 package com.centit.framework.system.service.impl;
 
-import com.centit.framework.core.dao.PageDesc;
+import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.po.UserRole;

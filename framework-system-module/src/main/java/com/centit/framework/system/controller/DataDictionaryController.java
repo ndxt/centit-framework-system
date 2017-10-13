@@ -8,7 +8,7 @@ import com.centit.framework.common.ObjectException;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.DictionaryMapUtils;
-import com.centit.framework.core.dao.PageDesc;
+import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.system.po.DataCatalog;
 import com.centit.framework.system.po.DataDictionary;

@@ -3,7 +3,7 @@ package com.centit.framework.system.service;
 import java.util.Date;
 import java.util.List;
 
-import com.centit.framework.core.dao.PageDesc;
+import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.system.po.OptFlowNoPool;
 import com.centit.support.algorithm.DatetimeOpt;
 

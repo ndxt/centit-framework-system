@@ -1,6 +1,6 @@
 package com.centit.framework.system.service.impl;
 
-import com.centit.framework.core.dao.PageDesc;
+import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.security.model.CentitSecurityMetadata;
 import com.centit.framework.security.model.OptTreeNode;

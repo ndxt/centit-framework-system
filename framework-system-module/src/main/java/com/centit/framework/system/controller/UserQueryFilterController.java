@@ -4,7 +4,7 @@ import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
-import com.centit.framework.core.dao.PageDesc;
+import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.system.po.UserQueryFilter;
 import com.centit.framework.system.service.UserQueryFilterManager;
 import com.centit.support.algorithm.DatetimeOpt;
