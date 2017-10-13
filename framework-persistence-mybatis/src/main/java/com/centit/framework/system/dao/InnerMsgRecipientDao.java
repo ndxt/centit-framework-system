@@ -40,6 +40,8 @@ public interface InnerMsgRecipientDao extends BaseDao {
         List l = listObjectsAll(queryString, new Object[]{sender,receiver,receiver,sender});
         String sender, String receiver
      * @return List InnerMsgRecipient
+     * @param receiver 接收方
+     * @param sender 发送方
      */
       List<InnerMsgRecipient> getExchangeMsgs(@Param("sender") String sender, @Param("receiver") String receiver);
    

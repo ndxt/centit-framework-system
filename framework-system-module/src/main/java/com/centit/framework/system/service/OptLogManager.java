@@ -20,6 +20,8 @@ public interface OptLogManager {
      * 批量保存
      *
      * @param optLogs List OptLog
+     * @throws IOException IOException
+     * @throws SQLException SQLException
      */
     void saveBatchObjects(List<OptLog> optLogs) throws IOException, SQLException;
     /**

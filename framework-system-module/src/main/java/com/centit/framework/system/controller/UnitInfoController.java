@@ -116,12 +116,12 @@ public class UnitInfoController extends BaseController {
      * 查询所有子机构信息
      *
      * @param field    需要显示的字段
-     * @param struct    boolean
+     * @param id    String parentUnit 父类机构
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/subunits",method = RequestMethod.GET)
-    public void listSub(String[] field, boolean struct, String id,
+    public void listSub(String[] field, String id,
                         HttpServletRequest request, HttpServletResponse response) {
 
         UserInfo user=sysUserMag.getObjectById(this.getLoginUser(request).getUserCode());
@@ -159,8 +159,9 @@ public class UnitInfoController extends BaseController {
 
     /**
      * 获取当前机构及其下属机构
-     * @param request
-     * @param response
+     * @param id    String parentUnit 父类机构
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
      */
     @RequestMapping(value = "/underunits", method = RequestMethod.GET)
     public void allunits(String id, HttpServletRequest request, HttpServletResponse response) {
@@ -295,7 +296,8 @@ public class UnitInfoController extends BaseController {
      *
      * @param unitCode    机构代码
      * @param statusValue 状态码 T 或 F
-     * @param response    HttpServletResponse
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{unitCode}/status/{statusValue}", method = RequestMethod.PUT)
     public void changeStatus(@PathVariable String unitCode, @PathVariable String statusValue,
@@ -347,6 +349,7 @@ public class UnitInfoController extends BaseController {
      *
      * @param unitCode 机构代码
      * @param pageDesc 分页信息
+     * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{unitCode}/users", method = RequestMethod.GET)
@@ -380,7 +383,7 @@ public class UnitInfoController extends BaseController {
      * 当前机构下用户
      *
      * @param userunitid    机构代码
-     * @param response    HttpServletResponse
+     * @param response HttpServletResponse
      */
     @RequestMapping(value = "/unitusers/{userunitid}", method = RequestMethod.GET)
     public void getUnitUser(@PathVariable String userunitid,  HttpServletResponse response) {

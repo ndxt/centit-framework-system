@@ -30,12 +30,13 @@ public interface UserInfoDao {
      * hql = "SELECT COUNT(*) FROM UserInfo WHERE userCode = " + QueryUtils.buildStringForQuery(user.getUserCode());
      * hql = "SELECT COUNT(*) FROM UserInfo WHERE loginName = " + QueryUtils.buildStringForQuery(user.getLoginName());
      *             " AND userCode  " + QueryUtils.buildStringForQuery(user.getUserCode());
-     * 
+     *
      *  放到impl中去了
-     * @return int
+     * @param loginName 登录名
+     * @param userCode 用户编码
+     * @return int 是否存在
      */
-    //boolean checkIfUserExists(UserInfo user);
-    
+
      int isLoginNameExist(String userCode, String loginName);
      int isCellPhoneExist(String userCode, String regCellPhone);
      int isEmailExist(String userCode, String regEmail);

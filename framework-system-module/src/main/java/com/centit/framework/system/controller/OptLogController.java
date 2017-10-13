@@ -108,6 +108,7 @@ public class OptLogController extends BaseController {
      * 删除单条系统日志
      *
      * @param logId logId
+     * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{logId}", method = {RequestMethod.DELETE})
@@ -126,6 +127,7 @@ public class OptLogController extends BaseController {
      * 删除多条系统日志
      * @param logIds logIds[]
      * @param response HttpServletResponse
+     * @param request HttpServletRequest
      */
     @RequestMapping(value = "/deleteMany", method = RequestMethod.DELETE)
     public void deleteMany(Long[] logIds,HttpServletRequest request, HttpServletResponse response) {

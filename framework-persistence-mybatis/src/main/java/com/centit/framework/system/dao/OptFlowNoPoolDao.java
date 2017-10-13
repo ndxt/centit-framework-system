@@ -32,6 +32,9 @@ public interface OptFlowNoPoolDao extends BaseDao {
                 " and CodeDate = to_date(" + QueryUtils.buildStringForQuery(
                 DatetimeOpt.convertDatetimeToString(codeBaseDate))
                 + ",'YYYY-MM-DD HH:MI:SS')");
+     * @param codeBaseDate 编码基准日期
+     * @param codeCode 编码类别
+     * @param ownerCode 归属人员
      * @return long
      */
      long fetchFirstLsh(@Param("ownerCode") String ownerCode,

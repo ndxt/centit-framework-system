@@ -120,7 +120,6 @@ public class DataDictionaryController extends BaseController {
      * @param catalogCode catalogCode
      * @param dataCode dataCode
      * @param response {@link HttpServletResponse}
-     * @throws IOException IOException
      */
     @RequestMapping(value = "/notexists/dictionary/{catalogCode}/{dataCode}", method = {RequestMethod.GET})
     public void isNotExistsDataCode(@PathVariable String catalogCode, @PathVariable String dataCode,

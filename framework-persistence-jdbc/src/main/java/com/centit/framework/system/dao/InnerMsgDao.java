@@ -16,7 +16,6 @@ public interface InnerMsgDao {
      void saveObject(InnerMsg innerMsg);
     /** 新建
      * @param o InnerMsg
-     * @return String
      */
     // String msgCode = DatabaseOptUtils.getNextKeyBySequence(this, "S_MSGCODE",16);
     void saveNewObject(InnerMsg o);

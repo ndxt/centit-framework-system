@@ -25,7 +25,6 @@ public interface InnerMsgRecipientDao {
     /**
      * 新建
      * @param recipient InnerMsgRecipient
-     * @return String
      */
     void saveNewObject(InnerMsgRecipient recipient);
     
@@ -35,6 +34,9 @@ public interface InnerMsgRecipientDao {
                 "or (msgCode in(Select msgCode from InnerMsg where sender= ? and (mailType='I' or mailType='O')) and Receive=? )) order by msgCode desc";
         List l = listObjectsAll(queryString, new Object[]{sender,receiver,receiver,sender});
         String sender, String receiver
+
+     * @param sender 发送方
+     * @param receiver 接收方
      * @return List InnerMsgRecipient
      */
       List<InnerMsgRecipient> getExchangeMsgs(String sender, String receiver);

@@ -95,6 +95,7 @@ public class UserInfoController extends BaseController {
      * 新增用户
      *
      * @param userInfo UserInfo
+     * @param userUnit  用户机构
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
@@ -214,11 +215,11 @@ public class UserInfoController extends BaseController {
     /**
      * 当前登录名是否已存在
      * @param request  HttpServletRequest
+     * @param request  HttpServletRequest
      * @param response HttpServletResponse
-     * @throws IOException IOException
      */
     @RequestMapping(value = "/exists", method = RequestMethod.GET)
-    public void isAnyExist(HttpServletRequest request,HttpServletResponse response) throws IOException {
+    public void isAnyExist(HttpServletRequest request,HttpServletResponse response){
         String userCode = request.getParameter("userCode");
         String loginName = request.getParameter("loginName");
         String regPhone = request.getParameter("regPhone");

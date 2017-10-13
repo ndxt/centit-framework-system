@@ -222,6 +222,7 @@ public class UserRoleController extends BaseController {
      * @param roleCode 角色代码
      * @param userCode 用户代码
      * @param response  {@link HttpServletResponse}
+     * @param request  HttpServletRequest
      */
     @RequestMapping(value = "/ban/{roleCode}/{userCode}", method = RequestMethod.PUT)
     public void ban(@PathVariable String roleCode, @PathVariable String userCode,

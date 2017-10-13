@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <centit.framework.version>4.0.1-SNAPSHOT</centit.framework.version>
+        <centit.framework.version>4.0.1</centit.framework.version>
         <jdk.version>1.8</jdk.version>
-        <centit.ui.version>3.0.1-SNAPSHOT</centit.ui.version>
-        <centit.persistence.version>1.0-SNAPSHOT</centit.persistence.version>
+        <centit.ui.version>3.0.1</centit.ui.version>
+        <centit.persistence.version>1.0</centit.persistence.version>
 
         <servlet-api.version>3.1.0</servlet-api.version>
         <ehcache.version>2.10.4</ehcache.version>
@@ -23,7 +23,7 @@
     <groupId>com.centit.framework</groupId>
     <artifactId>framework-system-parent</artifactId>
     <packaging>pom</packaging>
-    <version>4.0.1-SNAPSHOT</version>
+    <version>4.0.1</version>
     <name>com.centit.framework:framework-system-parent</name>
     <description>设计了一套兼容基础用户、组织机构和功能权限、数据权限体系的系统维护页面，作为公司内部研发的基础平台。
     </description>
@@ -95,7 +95,7 @@
     </modules>
 
     <!-- mvn deploy -DpomFile=pom.xml -->
-<!--    <distributionManagement>
+    <distributionManagement>
         <repository>
             <id>ossrh</id>
             <name>sonatype-releases</name>
@@ -106,9 +106,9 @@
             <name>sonatype-snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
-    </distributionManagement>-->
+    </distributionManagement>
 
-    <distributionManagement>
+    <!--<distributionManagement>
         <repository>
             <id>centit-releases</id>
             <name>centit-release</name>
@@ -119,7 +119,7 @@
             <name>centit-snapshots</name>
             <url>http://develop.centit.com:8080/nexus/content/repositories/centit-snapshots/</url>
         </snapshotRepository>
-    </distributionManagement>
+    </distributionManagement>-->
 
     <build>
         <plugins>
@@ -138,6 +138,14 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.20.1</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
             <!-- 打包时添加源码 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -153,7 +161,7 @@
                 </executions>
             </plugin>
 
-         <!--   <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.10.4</version>
@@ -166,10 +174,9 @@
                     </execution>
                 </executions>
             </plugin>
--->
             <!-- GPG自动签名的插件-->
 
-    <!--        <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
@@ -182,7 +189,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>-->
+            </plugin>
 
              <!--sonatype release :
                 mvn nexus-staging:release-->

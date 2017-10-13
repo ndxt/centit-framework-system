@@ -471,8 +471,8 @@ public class RoleInfoController extends BaseController {
      * 角色代码是否存在
      *
      * @param roleName 角色代码
+     * @param unitCode 机构代码
      * @param response HttpServletResponse
-     * @throws IOException IOException
      */
     @RequestMapping(value = "/nameexists/{roleName}/{unitCode}", method = RequestMethod.GET)
     public void isNameExists(@PathVariable String roleName,@PathVariable String unitCode, HttpServletResponse response){
@@ -481,9 +481,10 @@ public class RoleInfoController extends BaseController {
     /**
      * 角色代码是否存在
      *
-     * @param roleName 角色代码
+     * @param roleName 角色名称
+     * @param roleCode 角色代码
+     * @param unitCode 机构代码
      * @param response HttpServletResponse
-     * @throws IOException IOException
      */
     @RequestMapping(value = "/isNameUnique/{roleName}/{roleCode}/{unitCode}", method = RequestMethod.GET)
     public void isNameUnique(@PathVariable String roleName,@PathVariable String roleCode,

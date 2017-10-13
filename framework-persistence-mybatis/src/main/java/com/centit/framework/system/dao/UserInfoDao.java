@@ -29,7 +29,7 @@ public interface UserInfoDao extends BaseDao {
 
     UserInfo getObjectById(String userCode);
 
-    /**
+    /*
      * 这个方法迁移到 ManagerImpl类中
      * hql = "SELECT COUNT(*) FROM UserInfo WHERE userCode = " + QueryUtils.buildStringForQuery(user.getUserCode());
      * hql = "SELECT COUNT(*) FROM UserInfo WHERE loginName = " + QueryUtils.buildStringForQuery(user.getLoginName());

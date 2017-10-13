@@ -157,9 +157,9 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
 
     /**
      * 根据名称获取同级机构
-     * @param unitName
-     * @param parentCode
-     * @return
+     * @param unitName 机构名称
+     * @param parentCode 父类代码
+     * @return UnitInfo 机构信息
      */
     @Override
     public UnitInfo getPeerUnitByName(String unitName, String parentCode, String unitCode) {

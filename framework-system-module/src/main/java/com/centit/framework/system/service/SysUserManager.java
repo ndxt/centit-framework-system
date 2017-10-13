@@ -43,6 +43,7 @@ public interface SysUserManager{
      /**
      * 保存用户信息，包括用户机构、用户角色信息
      * @param userinfo userinfo
+      * @param userUnit 用户机构
      */
      void saveNewUserInfo(UserInfo userinfo, UserUnit userUnit);
     
