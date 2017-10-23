@@ -1,4 +1,3 @@
-setI18NText("");
 define(function(require) {
 	var Config = require('config');
 	var Core = require('core/core');
