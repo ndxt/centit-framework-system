@@ -39,14 +39,14 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
             filterField.put("USERWORD", CodeBook.EQUAL_HQL_ID);
 
             filterField.put("byUnderUnit", "userCode in " +
-                    "(select  us.USER_CODE from f_userunit us where us.UNIT_CODE = :byUnderUnit ) ");
+                    "(select us.USER_CODE from f_userunit us where us.UNIT_CODE = :byUnderUnit ) ");
 
             filterField.put("queryByUnit", "userCode in " +
-                    "(select  us.USER_CODE from f_userunit us where us.UNIT_CODE = :queryByUnit ) ");
+                    "(select us.USER_CODE from f_userunit us where us.UNIT_CODE = :queryByUnit ) ");
             filterField.put("queryByGW", "userCode in " +
-                    "(select  us.USER_CODE from f_userunit us where us.User_Station = :queryByGW )");
+                    "(select us.USER_CODE from f_userunit us where us.User_Station = :queryByGW )");
             filterField.put("queryByXZ", "userCode in " +
-                    "(select  us.USER_CODE from f_userunit us where us.USER_RANK = :queryByXZ )");
+                    "(select us.USER_CODE from f_userunit us where us.USER_RANK = :queryByXZ )");
             filterField.put("queryByRole", "userCode in " +
                     "(select r.USER_CODE from f_userrole r join f_roleinfo i on r.ROLE_CODE = i.ROLE_CODE " +
                     "where r.ROLE_CODE = :queryByRole and i.IS_VALID = 'T')");

@@ -26,13 +26,13 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
         if (filterField == null) {
             filterField = new HashMap<String, String>();
             filterField.put("receive", "receive = :receive");
-            filterField.put("sender", "msgCode in ( select  im.MSG_CODE from M_INNERMSG im where im.SENDER = :sender )");
-            filterField.put("msgContent", "msgCode in ( select  im.MSG_CODE from M_INNERMSG im where im.MSG_CONTENT LIKE :msgContent )");
-            filterField.put("msgTitle", "msgCode in ( select im.MSG_CODE from M_INNERMSG im where im.MSG_TITLE LIKE :msgTitle )");
-            filterField.put("mailType", "msgCode in ( select im.MSG_CODE from M_INNERMSG im where im.MAIL_TYPE = :mailType )");
-            filterField.put("mailTypeNot", "msgCode in ( select im.MSG_CODE from M_INNERMSG im where im.MAIL_TYPE != :mailTypeNot )");
+            filterField.put("sender", "msgCode in (select im.MSG_CODE from M_INNERMSG im where im.SENDER = :sender )");
+            filterField.put("msgContent", "msgCode in (select im.MSG_CODE from M_INNERMSG im where im.MSG_CONTENT LIKE :msgContent )");
+            filterField.put("msgTitle", "msgCode in (select im.MSG_CODE from M_INNERMSG im where im.MSG_TITLE LIKE :msgTitle )");
+            filterField.put("mailType", "msgCode in (select im.MSG_CODE from M_INNERMSG im where im.MAIL_TYPE = :mailType )");
+            filterField.put("mailTypeNot", "msgCode in (select im.MSG_CODE from M_INNERMSG im where im.MAIL_TYPE != :mailTypeNot )");
             filterField.put("msgStateNot", "msgState != :msgStateNot");
-            filterField.put("innerMsgStateNot", "msgCode in ( select im.MSG_CODE from M_INNERMSG im where im.MSG_STATE != :innerMsgStateNot )");
+            filterField.put("innerMsgStateNot", "msgCode in (select im.MSG_CODE from M_INNERMSG im where im.MSG_STATE != :innerMsgStateNot )");
             filterField.put("isRecycled", CodeBook.EQUAL_HQL_ID);
             filterField.put("MSGSTATE", CodeBook.EQUAL_HQL_ID);
             filterField.put("msgType", "msgCode in ( select im.MSG_CODE from M_INNERMSG im where im.MSG_TYPE = :msgType )");
