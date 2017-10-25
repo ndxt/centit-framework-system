@@ -148,9 +148,7 @@ create table F_ADDRESS_BOOK
    CreateDate           datetime
 );
 
-alter table F_ADDRESS_BOOK comment '系统中维持一个统一的通讯录 模块，主要目的是为了以后做 统一的接口，
-比如：
-  ';
+alter table F_ADDRESS_BOOK comment '系统中维持一个统一的通讯录 模块，主要目的是为了以后做 统一的接口，比如：';
 
 alter table F_ADDRESS_BOOK
    add primary key (ADDRBOOKID);

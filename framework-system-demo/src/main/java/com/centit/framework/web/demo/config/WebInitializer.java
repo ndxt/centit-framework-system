@@ -32,6 +32,8 @@ public class WebInitializer implements WebApplicationInitializer {
         WebConfig.registerHiddenHttpMethodFilter(servletContext);
         WebConfig.registerRequestThreadLocalFilter(servletContext);
         WebConfig.registerSpringSecurityFilter(servletContext);
+
+        WebConfig.initializeH2Console(servletContext);
     }
 
     /**

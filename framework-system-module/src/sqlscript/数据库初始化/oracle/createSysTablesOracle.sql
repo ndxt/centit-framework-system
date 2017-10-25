@@ -83,7 +83,7 @@ create sequence S_Filter_No;
 create sequence s_notify_id;
 
 create sequence s_optdefcode
-start with 1100000;
+start with 1100000 INCREMENT BY 1;
 
 create sequence s_sys_log;
 
