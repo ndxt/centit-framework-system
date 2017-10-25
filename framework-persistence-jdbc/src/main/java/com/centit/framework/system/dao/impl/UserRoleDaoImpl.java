@@ -41,12 +41,12 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
 
     @Override
     public void deleteObjectById(UserRoleId id) {
-        deleteObjectById(id);
+        super.deleteObjectById(id);
     }
 
     @Override
     public UserRole getObjectById(UserRoleId id) {
-        return getObjectById(id);
+        return super.getObjectById(id);
     }
 
     @Transactional

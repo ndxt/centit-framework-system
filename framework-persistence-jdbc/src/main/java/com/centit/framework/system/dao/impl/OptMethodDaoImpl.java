@@ -23,7 +23,7 @@ public class OptMethodDaoImpl extends BaseDaoImpl<OptMethod, String> implements 
 
     @Override
     public void deleteObjectById(String optCode) {
-        deleteObjectById(optCode);
+        super.deleteObjectById(optCode);
     }
 
     @Transactional
@@ -37,7 +37,7 @@ public class OptMethodDaoImpl extends BaseDaoImpl<OptMethod, String> implements 
                 + "(select rp.OPT_CODE from F_ROLEPOWER rp where rp.ROLE_CODE = ?)"
                 + " order by OPT_ID", new Object[]{roleCode});
     }
-    
+
     @Transactional
     public int getOptMethodSumByOptID(String sOptID) {
         return pageCount(QueryUtils.createSqlParamsMap("optId", sOptID));
@@ -48,7 +48,7 @@ public class OptMethodDaoImpl extends BaseDaoImpl<OptMethod, String> implements 
         deleteObjectsByProperties(QueryUtils.createSqlParamsMap("optId", sOptID));
     }
 
-  
+
     public Map<String, String> getFilterField() {
         if (filterField == null) {
             filterField = new HashMap<>();

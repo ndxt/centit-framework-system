@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Repository("userUnitDao")
 public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements UserUnitDao {
- 
+
     public Map<String, String> getFilterField() {
         if (filterField == null) {
             filterField = new HashMap<>();
@@ -49,12 +49,12 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
 
     @Override
     public UserUnit getObjectById(String userUnitId) {
-        return getObjectById(userUnitId);
+        return super.getObjectById(userUnitId);
     }
 
     @Override
     public void deleteObjectById(String userUnitId) {
-        deleteObjectById(userUnitId);
+        super.deleteObjectById(userUnitId);
     }
 
     @Transactional
@@ -67,7 +67,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
          */
         return ls;
     }
-    
+
     @Transactional
     public List<UserUnit> listObjectByUserUnit(String userCode,String unitCode){
         List<UserUnit> ls = listObjectsByProperties(QueryUtils.createSqlParamsMap(
@@ -84,7 +84,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         return "s" + StringBaseOpt.fillZeroForString(
                 String.valueOf(DatabaseOptUtils.getSequenceNextValue(this, "S_USER_UNIT_ID")),9);
     }
-    
+
     @Transactional
     public void deleteOtherPrimaryUnit(UserUnit object) {
         try {
@@ -99,21 +99,21 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         }
 
     }
-    
+
     @Transactional
     public void deleteUserUnitByUser(String userCode) {
         Map<String, Object> map = new HashMap<>();
         map.put("userCode", userCode);
         super.deleteObjectsByProperties(map);
     }
-    
+
     @Transactional
     public void deleteUserUnitByUnit(String unitCode) {
         Map<String, Object> map = new HashMap<>();
         map.put("unitCode", unitCode);
         super.deleteObjectsByProperties(map);
     }
-    
+
     @Transactional
     public UserUnit getPrimaryUnitByUserId(String userId) {
         List<UserUnit> list = super.listObjectsByProperties(QueryUtils.createSqlParamsMap(
@@ -124,7 +124,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
             return null;
         }
     }
-    
+
     @Transactional
     public List<UserUnit> listUnitUsersByUnitCode(String unitCode) {
         return listObjectsByProperty("unitCode", unitCode);

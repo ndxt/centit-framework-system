@@ -57,7 +57,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     }
 
     @SuppressWarnings("unchecked")
-    @Transactional(propagation=Propagation.MANDATORY) 
+    @Transactional(propagation=Propagation.MANDATORY)
     public List<UserInfo> listUnitUsers(String unitCode) {
         String sql = "select a.* " +
                 "from F_USERINFO a join F_USERUNIT b on(a.USERCODE=b.USERCODE) " +
@@ -70,7 +70,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     }
 
     @SuppressWarnings("unchecked")
-    @Transactional(propagation=Propagation.MANDATORY) 
+    @Transactional(propagation=Propagation.MANDATORY)
     public List<UserInfo> listRelationUsers(String unitCode) {
         String sql = "select * FROM F_USERINFO ui where ui.USERCODE in " +
                 "(select USERCODE from F_USERUNIT where UNITCODE= ? ) or " +
@@ -103,17 +103,17 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
                         OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
                                 new Object[]{name, name}, UnitInfo.class)).get(0);
     }
-    
+
     @Transactional
     public UnitInfo getUnitByTag(String unitTag) {
         return super.getObjectByProperties(QueryUtils.createSqlParamsMap("unitTag", unitTag));
     }
-    
+
     @Transactional
     public UnitInfo getUnitByWord(String unitWord) {
         return super.getObjectByProperties(QueryUtils.createSqlParamsMap("unitWord", unitWord));
     }
-    
+
     @Transactional
     public List<UnitInfo> listSubUnits(String unitCode){
         return super.listObjectsByProperty("parentUnit", unitCode);
@@ -121,14 +121,14 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
 
     @Transactional(propagation=Propagation.MANDATORY)
     public List<UnitInfo> listAllSubUnits(String unitCode){
-        UnitInfo unitInfo = this.getObjectById(unitCode);
+        UnitInfo unitInfo = super.getObjectById(unitCode);
         if(unitInfo != null) {
             return listSubUnitsByUnitPaht(unitInfo.getUnitPath());
         }
         return null;
     }
-    
-    @Transactional(propagation=Propagation.MANDATORY) 
+
+    @Transactional(propagation=Propagation.MANDATORY)
     public List<UnitInfo> listSubUnitsByUnitPaht(String unitPath){
         return listObjectsByProperty("unitPath", unitPath+"%");
     }

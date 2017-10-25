@@ -52,7 +52,7 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
 
     @Override
     public InnerMsgRecipient getObjectById(String id) {
-        return null;
+        return super.getObjectById(id);
     }
 
     /*
@@ -61,7 +61,7 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
          */
     @Transactional
     public  List<InnerMsgRecipient> getExchangeMsgs(String sender, String receiver) {
-        
+
         String queryString ="where( (MSG_CODE in (Select im.MSG_CODE from M_INNERMSG im where im.SENDER= ? " +
                 " and (im.MAIL_TYPE='I' or im.MAIL_TYPE='O')) and RECEIVE= ?) " +
                 "or (MSG_CODE in(Select  im.MSG_CODE from M_INNERMSG im where im.sender= ? " +
@@ -70,7 +70,7 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
                 new Object[]{sender,receiver,receiver,sender});
         return l;
     }
-   
+
     public long getUnreadMessageCount(String userCode){
 
         Object obj = DatabaseOptUtils.getScalarObjectQuery(this, "select count(1)"
@@ -79,10 +79,9 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
         Long l = NumberBaseOpt.castObjectToLong(obj);
         return l==null?0l:l;
     }
-    
+
     public List<InnerMsgRecipient> listUnreadMessage(String userCode){
         return listObjectsByProperties(QueryUtils.createSqlParamsMap(
                 "receive", userCode,"msgState","U"));
     }
 }
- 

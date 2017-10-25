@@ -80,7 +80,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
 
         super.updateObject(o);
     }
-    
+
     @SuppressWarnings("unchecked")
     @Transactional
     public List<FVUserOptList> getAllOptMethodByUser(String userCode) {
@@ -106,30 +106,30 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
 
     @Transactional
     public UserInfo getUserByCode(String userCode) {
-        return getObjectById(userCode);
+        return super.getObjectById(userCode);
     }
-    
+
     @Transactional
     public UserInfo getUserByLoginName(String loginName) {
         return super.getObjectByProperties(QueryUtils.createSqlParamsMap(
                 "loginName",loginName.toLowerCase()));
     }
-    
+
     @Transactional
     public UserInfo getUserByRegEmail(String regEmail) {
         return super.getObjectByProperties(QueryUtils.createSqlParamsMap("regEmail", regEmail));
     }
-    
+
     @Transactional
     public UserInfo getUserByRegCellPhone(String regCellPhone) {
         return super.getObjectByProperties(QueryUtils.createSqlParamsMap("regCellPhone", regCellPhone));
     }
-    
+
     @Transactional
     public UserInfo getUserByTag(String userTag) {
         return super.getObjectByProperties(QueryUtils.createSqlParamsMap("userTag", userTag));
     }
-    
+
     @Transactional
     public UserInfo getUserByUserWord(String userWord) {
         return super.getObjectByProperties(QueryUtils.createSqlParamsMap("userWord", userWord));
@@ -139,7 +139,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
     public UserInfo getUserByIdCardNo(String idCardNo){
         return super.getObjectByProperties(QueryUtils.createSqlParamsMap("idCardNo", idCardNo));
     }
-    
+
     public void restPwd(UserInfo user){
         saveObject(user);
     }
