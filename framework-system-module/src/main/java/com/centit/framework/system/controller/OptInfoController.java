@@ -1,10 +1,13 @@
 package com.centit.framework.system.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
+import com.centit.framework.model.basedata.IOptInfo;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
@@ -26,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,8 +73,30 @@ public class OptInfoController extends BaseController {
              opt.setState(optInfoManager.hasChildren(opt.getOptId())?
                "closed":"open");
         }
-        JsonResultUtils.writeSingleDataJson(listObjects, response);
+        JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(listObjects), response);
     }
+
+  private JSONArray makeMenuFuncsJson(List<OptInfo> menuFunsByUser){
+    if(menuFunsByUser == null)
+      return null;
+    JSONArray jsonArray = new JSONArray(menuFunsByUser.size());
+    for(OptInfo optInfo :  menuFunsByUser){
+      JSONObject jsonObject = new JSONObject();
+      jsonObject.put("id",optInfo.getOptId());
+      jsonObject.put("pid",optInfo.getPreOptId());
+      jsonObject.put("text",optInfo.getOptName());
+      jsonObject.put("url",optInfo.getOptRoute());
+      jsonObject.put("icon",optInfo.getIcon());
+      Map<String, Object> map = new HashMap<>(2);
+      map.put("external", !("D".equals(optInfo.getPageType())));
+      jsonObject.put("attributes", map);
+      jsonObject.put("isInToolbar",optInfo.getIsInToolbar());
+      jsonObject.put("state",optInfo.getState());
+
+      jsonArray.add(jsonObject);
+    }
+    return jsonArray;
+  }
 
     /**
      * 查询所有系统业务
