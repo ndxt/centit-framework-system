@@ -167,9 +167,14 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
                 " u.UNIT_SHORT_NAME, u.UNIT_WORD, u.UNIT_TAG, u.UNIT_DESC, u.ADDRBOOK_ID, u.UNIT_ORDER, u.UNIT_GRADE," +
                 " u.DEP_NO, u.UNIT_PATH, u.UNIT_MANAGER, u.CREATE_DATE, u.CREATOR, u.UPDATOR, u.UPDATE_DATE " +
                 "from F_UNITINFO u " +
-                "where u.unitName = :unitName and u.parentUnit = :parentUnit and u.unitCode <> :unitCode";
+                "where u.UNIT_NAME = :unitName and u.PARENT_UNIT = :parentUnit and u.UNIT_CODE <> :unitCode";
 
-        return listObjectsBySql(sql, QueryUtils.createSqlParamsMap(
-                "unitName", unitName, "parentUnit", parentCode, "unitCode", unitCode)).get(0);
+        List<UnitInfo> list = listObjectsBySql(sql, QueryUtils.createSqlParamsMap(
+                "unitName", unitName, "parentUnit", parentCode, "unitCode", unitCode));
+
+        if(list == null || list.size() == 0){
+          return null;
+        }
+        return list.get(0);
     }
 }

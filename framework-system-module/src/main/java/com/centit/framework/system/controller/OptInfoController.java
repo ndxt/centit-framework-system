@@ -1,10 +1,13 @@
 package com.centit.framework.system.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
+import com.centit.framework.model.basedata.IOptInfo;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
@@ -26,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,35 +49,54 @@ public class OptInfoController extends BaseController {
      * 系统日志中记录
      */
     private String optId = "OPTINFO";//CodeRepositoryUtil.getCode("OPTID", "optInfo");
-    
+
     /**
      * 查询所有系统业务
-     *
-     * @param field    需要显示的字段
-     * @param id       父id 
+     * @param id       父id
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/sub", method = RequestMethod.GET)
-    public void listFromParent(String[] field, String id, HttpServletRequest request, HttpServletResponse response) {
+    public void listFromParent(String id, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = convertSearchColumn(request);
-        
-        if (StringUtils.isNotBlank(id)) {        
+
+        if (StringUtils.isNotBlank(id)) {
             searchColumn.put("preOptId", id);
         }else{
             searchColumn.put("NP_TOPOPT", "true");
         }
-        
+
         List<OptInfo> listObjects = optInfoManager.listObjects(searchColumn);
-        
+
         for (OptInfo opt : listObjects) {
             //if("...".equals(opt.getOptRoute()))
              opt.setState(optInfoManager.hasChildren(opt.getOptId())?
                "closed":"open");
         }
-        JsonResultUtils.writeSingleDataJson(listObjects, 
-                response, JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
+        JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(listObjects), response);
     }
+
+  private JSONArray makeMenuFuncsJson(List<OptInfo> menuFunsByUser){
+    if(menuFunsByUser == null)
+      return null;
+    JSONArray jsonArray = new JSONArray(menuFunsByUser.size());
+    for(OptInfo optInfo :  menuFunsByUser){
+      JSONObject jsonObject = new JSONObject();
+      jsonObject.put("id",optInfo.getOptId());
+      jsonObject.put("pid",optInfo.getPreOptId());
+      jsonObject.put("text",optInfo.getOptName());
+      jsonObject.put("url",optInfo.getOptRoute());
+      jsonObject.put("icon",optInfo.getIcon());
+      Map<String, Object> map = new HashMap<>(2);
+      map.put("external", !("D".equals(optInfo.getPageType())));
+      jsonObject.put("attributes", map);
+      jsonObject.put("isInToolbar",optInfo.getIsInToolbar());
+      jsonObject.put("state",optInfo.getState());
+
+      jsonArray.add(jsonObject);
+    }
+    return jsonArray;
+  }
 
     /**
      * 查询所有系统业务
@@ -85,7 +108,7 @@ public class OptInfoController extends BaseController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public void listAll(String[] field, boolean struct, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> searchColumn = convertSearchColumn(request); 
+        Map<String, Object> searchColumn = convertSearchColumn(request);
         List<OptInfo> listObjects = optInfoManager.listObjects(searchColumn);
 
         if (struct) {
@@ -106,7 +129,7 @@ public class OptInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/poweropts",method = RequestMethod.GET)
-    public void listPowerOpts( String[] field,  HttpServletResponse response) {         
+    public void listPowerOpts( String[] field,  HttpServletResponse response) {
         List<OptInfo> listObjects = optInfoManager.listSysAndOptPowerOpts();
         listObjects = optInfoManager.listObjectFormatTree(listObjects,true);
         if(ArrayUtils.isNotEmpty(field))
@@ -115,26 +138,26 @@ public class OptInfoController extends BaseController {
         else
             JsonResultUtils.writeSingleDataJson(listObjects, response);
     }
-    
-       
+
+
     /**
      * 查询所有项目权限管理的业务
      * @param field    需要显示的字段
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/itempoweropts",method = RequestMethod.GET)
-    public void listItemPowerOpts( String[] field, HttpServletResponse response) {         
+    public void listItemPowerOpts( String[] field, HttpServletResponse response) {
         List<OptInfo> listObjects = optInfoManager.listItemPowerOpts();
         listObjects = optInfoManager.listObjectFormatTree(listObjects,true);
-        
+
         if(ArrayUtils.isNotEmpty(field))
             JsonResultUtils.writeSingleDataJson(listObjects, response,
                 JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
         else
             JsonResultUtils.writeSingleDataJson(listObjects, response);
     }
-    
-    
+
+
     /**
      * 查询某个部门权限的业务
      * @param field    需要显示的字段
@@ -146,7 +169,7 @@ public class OptInfoController extends BaseController {
             HttpServletResponse response) {
         List<OptInfo> listObjects = optInfoManager.listOptWithPowerUnderUnit(unitCode);
         listObjects = optInfoManager.listObjectFormatTree(listObjects,false);
-        
+
         if(ArrayUtils.isNotEmpty(field))
             JsonResultUtils.writeSingleDataJson(listObjects, response,
                 JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
@@ -162,7 +185,7 @@ public class OptInfoController extends BaseController {
      */
     @RequestMapping(method = {RequestMethod.POST})
     public void createOptInfo(@Valid OptInfo optInfo, HttpServletRequest request, HttpServletResponse response) {
-        
+
         if (StringUtils.isBlank(optInfo.getOptRoute()) ) {
             optInfo.setOptRoute("...");
         }
@@ -173,11 +196,11 @@ public class OptInfoController extends BaseController {
         OptInfo parentOpt = optInfoManager.getOptInfoById(optInfo.getPreOptId());
         if(parentOpt==null)
             optInfo.setPreOptId("0");
-        optInfoManager.saveNewOptInfo(optInfo);      
-       
+        optInfoManager.saveNewOptInfo(optInfo);
+
         //刷新缓存
         sysRoleManager.loadRoleSecurityMetadata();
-        
+
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
         OperationLogCenter.logNewObject(request, optId,optInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_C,
@@ -374,15 +397,15 @@ public class OptInfoController extends BaseController {
 
         JsonResultUtils.writeSuccessJson(response);
     }
-    
+
     @RequestMapping(value = "/allOptInfo", method = RequestMethod.GET)
-    public void loadAllOptInfo(HttpServletResponse response) { 
+    public void loadAllOptInfo(HttpServletResponse response) {
         List<OptInfo> optInfos = optInfoManager.listObjects();
         JsonResultUtils.writeSingleDataJson(optInfos,response);
     }
-    
+
     @RequestMapping(value = "/allOptMethod", method = RequestMethod.GET)
-    public void loadAllOptMethod(HttpServletResponse response) { 
+    public void loadAllOptMethod(HttpServletResponse response) {
         List<OptMethod> optDefs = optMethodManager.listObjects();
         JsonResultUtils.writeSingleDataJson(optDefs,response);
     }
