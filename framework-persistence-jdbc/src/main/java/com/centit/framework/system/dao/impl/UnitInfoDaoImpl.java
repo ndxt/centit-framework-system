@@ -28,7 +28,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
         if (filterField == null) {
             filterField = new HashMap<>();
             filterField.put("unitCode", CodeBook.EQUAL_HQL_ID);
-            filterField.put("UNITNAME", CodeBook.LIKE_HQL_ID);
+            filterField.put("unitName", CodeBook.LIKE_HQL_ID);
             filterField.put("ISVALID", CodeBook.EQUAL_HQL_ID);
             filterField.put("UNITTAG", CodeBook.EQUAL_HQL_ID);
             filterField.put("UNITWORD", CodeBook.EQUAL_HQL_ID);
