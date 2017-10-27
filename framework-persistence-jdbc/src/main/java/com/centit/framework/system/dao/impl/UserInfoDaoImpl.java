@@ -27,7 +27,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
 
     public Map<String, String> getFilterField() {
         if (filterField == null) {
-            filterField = new HashMap<String, String>();
+            filterField = new HashMap<>();
             filterField.put(CodeRepositoryUtil.USER_CODE, CodeBook.LIKE_HQL_ID);
             filterField.put("USERCODE_EQ", CodeBook.EQUAL_HQL_ID);
             filterField.put("USERNAME", CodeBook.LIKE_HQL_ID);
@@ -51,7 +51,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
                     "(select r.USER_CODE from f_userrole r join f_roleinfo i on r.ROLE_CODE = i.ROLE_CODE " +
                     "where r.ROLE_CODE = :queryByRole and i.IS_VALID = 'T')");
 
-            filterField.put(CodeBook.ORDER_BY_HQL_ID, "userOrder asc");
+//            filterField.put(CodeBook.ORDER_BY_HQL_ID, "userOrder asc");
 
             filterField.put("unitCode", "userCode in (select us.USER_CODE from f_userunit us where us.UNIT_CODE in " +
                     "(select un.UNIT_CODE from f_unitinfo un where un.UNIT_CODE = :unitCode or un.PARENT_UNIT = :unitCode))");
