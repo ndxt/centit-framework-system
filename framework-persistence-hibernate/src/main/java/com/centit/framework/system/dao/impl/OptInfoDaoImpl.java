@@ -21,10 +21,11 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
             filterField = new HashMap<String, String>();
             filterField.put("OPTID", CodeBook.EQUAL_HQL_ID);
             filterField.put("OPTURL", CodeBook.EQUAL_HQL_ID);
-            filterField.put("OPTNAME", CodeBook.LIKE_HQL_ID);            
-            filterField.put("preOptId", CodeBook.EQUAL_HQL_ID);            
+            filterField.put("OPTNAME", CodeBook.LIKE_HQL_ID);
+            filterField.put("preOptId", CodeBook.EQUAL_HQL_ID);
             filterField.put("NP_TOPOPT", "(preOptId is null or preOptId='0')");
-            filterField.put("OPTTYPE", CodeBook.EQUAL_HQL_ID);
+            filterField.put("optType", CodeBook.EQUAL_HQL_ID);
+            filterField.put("optTypes", "optType in :optTypes");
             filterField.put("TOPOPTID", CodeBook.EQUAL_HQL_ID);
             filterField.put("ISINTOOLBAR", CodeBook.EQUAL_HQL_ID);
             filterField.put(CodeBook.ORDER_BY_HQL_ID, " preOptId, orderInd");
@@ -47,7 +48,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
         // + " ORDER BY preoptid, formcode";
 
         params = new String[]{userID};
-        
+
         List<FVUserOptMoudleList> ls = (List<FVUserOptMoudleList>)
                 DatabaseOptUtils.findObjectsByHql(this,hql, (Object[]) params);
         List<OptInfo> opts = new ArrayList<OptInfo>();
@@ -89,7 +90,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     @SuppressWarnings("unchecked")
     @Transactional
     public List<String> listUserDataPowerByOptMethod(String userCode,String optid,String optMethod) {
-       
+
         String sSqlsen = "select OPTSCOPECODES " +
                  "from F_V_USEROPTDATASCOPES " +
                  "where USERCODE = ? and OPTID = ? and OPTMETHOD = ?";
@@ -174,5 +175,16 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     public List<OptInfo> listObjectsByCon(String condition){
         return this.listObjects("From OptInfo where "+condition);
     }
- 
+
+    @Override
+    public List<OptInfo> listMenuByTypes(String... types){
+      Map<String, Object> map = new HashMap<>(2);
+      if(types.length == 1){
+        map.put("optType", types);
+      }else {
+        map.put("optTypes", types);
+      }
+      return listObjects(map);
+    }
+
 }
