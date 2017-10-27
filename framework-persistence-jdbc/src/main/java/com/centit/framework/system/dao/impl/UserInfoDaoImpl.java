@@ -30,7 +30,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
             filterField = new HashMap<>();
             filterField.put(CodeRepositoryUtil.USER_CODE, CodeBook.LIKE_HQL_ID);
             filterField.put("USERCODE_EQ", CodeBook.EQUAL_HQL_ID);
-            filterField.put("USERNAME", CodeBook.LIKE_HQL_ID);
+            filterField.put("userName", CodeBook.LIKE_HQL_ID);
             filterField.put("ISVALID", CodeBook.EQUAL_HQL_ID);
             filterField.put("LOGINNAME", CodeBook.LIKE_HQL_ID);
             filterField.put("USERSTATE", CodeBook.EQUAL_HQL_ID);
