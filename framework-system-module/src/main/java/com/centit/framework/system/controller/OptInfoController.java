@@ -125,18 +125,13 @@ public class OptInfoController extends BaseController {
     /**
      * 查询所有需要通过权限管理的业务
      *
-     * @param field    需要显示的字段
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/poweropts",method = RequestMethod.GET)
-    public void listPowerOpts( String[] field,  HttpServletResponse response) {
+    public void listPowerOpts(HttpServletResponse response) {
         List<OptInfo> listObjects = optInfoManager.listSysAndOptPowerOpts();
         listObjects = optInfoManager.listObjectFormatTree(listObjects,true);
-        if(ArrayUtils.isNotEmpty(field))
-            JsonResultUtils.writeSingleDataJson(listObjects, response,
-                JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
-        else
-            JsonResultUtils.writeSingleDataJson(listObjects, response);
+        JsonResultUtils.writeSingleDataJson(listObjects, response);
     }
 
 

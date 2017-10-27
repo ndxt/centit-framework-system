@@ -2,6 +2,7 @@ package com.centit.framework.system.dao.impl;
 
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.OptInfoDao;
 import com.centit.framework.system.po.FVUserOptMoudleList;
 import com.centit.framework.system.po.OptInfo;
@@ -9,6 +10,7 @@ import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.po.OptMethodUrlMap;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.QueryUtils;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
             filterField.put("preOptId", CodeBook.EQUAL_HQL_ID);
             filterField.put("NP_TOPOPT", "(preOptId is null or preOptId='0')");
             filterField.put("optType", CodeBook.EQUAL_HQL_ID);
+            filterField.put("optTypes", "optType in (:optTypes)");
             filterField.put("topOptId", CodeBook.EQUAL_HQL_ID);
             filterField.put("isInToolbar", CodeBook.EQUAL_HQL_ID);
         }
@@ -81,7 +84,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     @SuppressWarnings("unchecked")
     @Transactional
     public List<String> listUserDataPowerByOptMethod(String userCode,String optid,String optMethod) {
-       
+
         String sSqlsen = "select OPTSCOPECODES " +
                  "from F_V_USEROPTDATASCOPES " +
                  "where USERCODE = ? and OPTID = ? and OPTMETHOD = ?";
@@ -140,9 +143,9 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
         return super.getObjectById(optId);
     }
 
-    public List<OptInfo> listObjectsByCon(String condition){
+   /* public List<OptInfo> listObjectsByCon(String condition){
         return this.listObjectsByFilter(" where "+condition, (Object[]) null);
-    }
+    }*/
 
     @Override
     public List<OptInfo> listObjectsAll() {
@@ -152,6 +155,17 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     @Override
     public void deleteObjectById(String optId) {
         super.deleteObjectById(optId);
+    }
+
+    @Override
+    public List<OptInfo> listMenuByTypes(String... types){
+        Map<String, Object> map = new HashMap<>(2);
+        if(types.length == 1){
+            map.put("optType", types);
+        }else {
+            map.put("optTypes", types);
+        }
+        return listObjects(map);
     }
 
 }

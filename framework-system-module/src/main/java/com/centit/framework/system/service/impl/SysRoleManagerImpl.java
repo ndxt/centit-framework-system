@@ -1,15 +1,13 @@
 package com.centit.framework.system.service.impl;
 
+import com.centit.framework.system.dao.*;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.security.model.CentitSecurityMetadata;
 import com.centit.framework.security.model.OptTreeNode;
-import com.centit.framework.system.dao.OptInfoDao;
-import com.centit.framework.system.dao.OptMethodDao;
-import com.centit.framework.system.dao.RoleInfoDao;
-import com.centit.framework.system.dao.RolePowerDao;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysRoleManager;
+import com.centit.support.database.utils.QueryUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +37,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Resource
     @NotNull
     private OptMethodDao optMethodDao;
-    
+
     @Resource
     @NotNull
     private RolePowerDao rolePowerDao;
@@ -47,6 +45,10 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Resource
     @NotNull
     protected RoleInfoDao roleInfoDao;
+
+    @Resource
+    @NotNull
+    private UserRoleDao userRoleDao;
 
     @Override
     @Transactional(readOnly=true)
@@ -65,20 +67,20 @@ public class SysRoleManagerImpl implements SysRoleManager {
         }
         //将操作和角色对应关系中的角色排序，便于权限判断中的比较
         CentitSecurityMetadata.sortOptMethodRoleMap();
-        
+
         List<OptMethodUrlMap> oulist = listAllOptMethodUrlMap();
         CentitSecurityMetadata.optTreeNode.setChildList(null);
         CentitSecurityMetadata.optTreeNode.setOptCode(null);
         for(OptMethodUrlMap ou:oulist){
             List<List<String>> sOpt = CentitSecurityMetadata.parseUrl(ou.getOptDefUrl() ,ou.getOptReq());
-            
+
             for(List<String> surls : sOpt){
                 OptTreeNode opt = CentitSecurityMetadata.optTreeNode;
                 for(String surl : surls)
-                    opt = opt.setChildPath(surl); 
+                    opt = opt.setChildPath(surl);
                 opt.setOptCode(ou.getOptCode());
             }
-        }        
+        }
         //CentitSecurityMetadata.optTreeNode.printTreeNode();
     }
     // 各种角色代码获得该角色的操作权限 1对多
@@ -102,8 +104,8 @@ public class SysRoleManagerImpl implements SysRoleManager {
     public Serializable saveNewRoleInfo(RoleInfo o){
         roleInfoDao.saveNewObject(o);
         return o.getRoleCode();
-    }    
- 
+    }
+
     // 获取菜单TREE
     @Transactional
     public List<VOptTree> getVOptTreeList() {
@@ -111,17 +113,16 @@ public class SysRoleManagerImpl implements SysRoleManager {
     }
 
     @Transactional
-    public List<RolePower> listAllRolePowers() { 
+    public List<RolePower> listAllRolePowers() {
         return rolePowerDao.listObjectsAll();
     }
 
     @Transactional
-    public List<OptMethod> listAllOptMethods() { 
+    public List<OptMethod> listAllOptMethods() {
          return optMethodDao.listObjects();
     }
 
-    @Transactional
-    private List<OptMethodUrlMap> listAllOptMethodUrlMap() { 
+    private List<OptMethodUrlMap> listAllOptMethodUrlMap() {
          return optInfoDao.listAllOptMethodUrlMap();
     }
 
@@ -168,16 +169,16 @@ public class SysRoleManagerImpl implements SysRoleManager {
     public void deleteRoleInfo(String roleCode){
         rolePowerDao.deleteRolePowersByRoleCode(roleCode);
         roleInfoDao.deleteObjectById(roleCode);
-        
+
     }
-    
+
     @Override
     @Transactional
     public RoleInfo getRoleInfo(String roleCode){
         RoleInfo rf = roleInfoDao.getObjectById(roleCode);
         rf.addAllRolePowers( rolePowerDao.listRolePowersByRoleCode(roleCode) );
         return rf;
-        
+
     }
 
     @Override
@@ -203,7 +204,8 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Override
     @Transactional
     public int countRoleUserSum(String roleCode){
-        return roleInfoDao.countRoleUserSum(roleCode);
+//        return roleInfoDao.countRoleUserSum(roleCode);
+        return userRoleDao.pageCount(QueryUtils.createSqlParamsMap("roleCode",roleCode ));
     }
 
     @Override
