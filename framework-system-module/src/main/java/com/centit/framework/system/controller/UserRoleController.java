@@ -185,11 +185,8 @@ public class UserRoleController extends BaseController {
         JsonResultUtils.writeSingleDataJson(userRole, response);
 
         /*********log*********/
-
-        StringBuilder optContent = new StringBuilder();
-        optContent.append("更改用户角色信息:" + JSON.toJSONString(userRole.getId()));
         OperationLogCenter.logUpdateObject(request,optId,dbUserRole.getUserCode(),
-                OperationLog.P_OPT_LOG_METHOD_U,  optContent.toString(),userRole,dbUserRole);
+                OperationLog.P_OPT_LOG_METHOD_U,"更改用户角色信息:" + JSON.toJSONString(userRole.getId()) ,userRole,dbUserRole);
         /*********log*********/
     }
 

@@ -225,6 +225,7 @@ public class UserUnitController extends BaseController {
         UserUnit dbUserUnit = sysUserUnitManager.getObjectById(userunitid);
         if (null == dbUserUnit) {
             JsonResultUtils.writeErrorMessageJson("当前机构中无此用户", response);
+            return;
         }
 
         UserUnit oldValue = new UserUnit();
@@ -233,7 +234,7 @@ public class UserUnitController extends BaseController {
         dbUserUnit.copy(userUnit);
 
         sysUserUnitManager.updateUserUnit(dbUserUnit);
-        
+
         JsonResultUtils.writeSingleDataJson(userUnit, response);
 
         /*********log*********/
