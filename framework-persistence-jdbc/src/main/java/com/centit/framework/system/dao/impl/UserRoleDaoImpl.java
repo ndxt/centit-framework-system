@@ -33,7 +33,7 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
             filterField.put("userCode_isValid", "userCode in (select us.USER_CODE from f_userinfo us " +
                     "where us.IS_VALID = :userCode_isValid)");
             //filterField.put(CodeBook.ORDER_BY_HQL_ID, " userCode ");
-            filterField.put("userName", "userCode in (select us.USER_CODE from f_userinfo us " +
+            filterField.put("(like)userName", "userCode in (select us.USER_CODE from f_userinfo us " +
                     "where us.USER_NAME like :userName)");
         }
         return filterField;

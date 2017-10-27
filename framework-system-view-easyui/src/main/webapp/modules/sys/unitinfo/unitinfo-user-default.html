@@ -1,9 +1,23 @@
+<div class="easyui-panel search-body" cls="search " style="height:92px">
+  <form class="clearFromValue">
+
+    <div class="search-item">
+      <label id="e@name">用户名</label>
+      <input type="text" class="easyui-textbox" name="s_userName" />
+    </div>
+    <a class="easyui-linkbutton btn-search" iconCls="icon-search"><p  id="e@btn.search">搜索</p></a>
+    <a class="easyui-linkbutton" style="margin-top:8px;" iconcls="icon-reload" onclick="javascript:$(this).parent('.clearFromValue').form('clear');$('.defaultChecked').prop('checked','true');" group="" id="">
+      <p>重置</p>
+    </a>
+  </form>
+</div>
 <table style="margin: 2px auto;"
 	layoutH="38"
 	idField="userCode"
+  search=".search"
 	pagination="true"
 	toolbar=".temp-toolbar-user"
-	remoteSort="false" 
+	remoteSort="false"
 	sortName="userOrder"
 	sortOrder="desc"
 	editable="true"
@@ -26,11 +40,11 @@
 <div class="temp-toolbar-user">
 	<a rel="unitinfo_user_add" iconCls="icon-add" href="modules/sys/unitinfo/unitinfo-user-info.html"
 		target="dialog" trigger="none" title="添加人员" btnValue="添加" width="500" height="360"><p  id="c@link.add">新增</p></a>
-	
+
 	<a rel="unitinfo_user_edit" iconCls="icon-edit" href="modules/sys/unitinfo/unitinfo-user-info.html"
 		target="dialog" trigger="single" title="编辑  {{userName}} 机构信息" btnValue="更新" width="500" height="360"><p  id="c@link.edit">编辑</p></a>
-	<hr>	
-		
+	<hr>
+
 	<a rel="unitinfo_user_remove" iconCls="icon-base icon-base-ban"
 		target="confirm" trigger="single" title="确定将 {{userName}} 从机构中移出吗？"><p  id="c@btn.delete">删除</p></a>
 </div>
