@@ -8,19 +8,19 @@ define(function(require) {
 	var DictionaryAdd = Page.extend(function() {
 
 		var vm = this;
-		
+
 		this.url = 'system/dictionary/';
-		
+
 		// @override
 		this.object = {
 		    // 用户类型
 			catalogStyle: 'U',
-			
+
 		    // 需要缓存
 			needCache: '1',
-			
+
 		    // 列表结构
-			catalogType: 'L'           
+			catalogType: 'L'
 		};
 
 
@@ -30,7 +30,7 @@ define(function(require) {
 			var fieldMap = {};
 			try {
 				fieldMap = JSON.parse(value);
-			} catch(e) {} 
+			} catch(e) {}
 			finally {
 				// 字段默认值
 				fieldMap = $.extend(true, {
@@ -45,7 +45,7 @@ define(function(require) {
 
 			return fieldMap;
 		};
-		
+
 		// 添加字段命名列表，顺序分别是：编码、扩展编码、扩展编码2、数据标记、数值、数据描述 ，共6个字段。在明细中按照这个顺序显示。
 		this.initPropertyFields = function(panel, value) {
 			// 列描述
@@ -59,9 +59,9 @@ define(function(require) {
 				            	  formatter: function(value) { return value == 'T' ? '是':'否'}
 				              },
 				          ]];
-			
+
 			var fieldMap = vm.parseFieldDesc(value);
-			
+
 			// 字段描述表格展示数据
 			var data = {"total":6,"rows":[
               {field: 'dataCode', 	"name":"编码",	  "value":fieldMap.dataCode.value,       "isUse": fieldMap.dataCode.isUse},
@@ -71,36 +71,36 @@ define(function(require) {
               {field: 'dataTag', 	"name":"数据标记",	"value":fieldMap.dataTag.value,	"editor":"text",	"isUse": fieldMap.dataTag.isUse},
               {field: 'dataDesc', 	"name":"数据描述",	"value":fieldMap.dataDesc.value,		"isUse": fieldMap.dataDesc.isUse}
             ]};
-			
+
 			panel.find('table#property_desc')
 			.propertygrid({
 			    columns:columns
 			})
 			.propertygrid('loadData', data);
 		}
-		
+
 		// 获取字段描述值
 		this.stringifyFieldDesc = function(panel) {
 			var table = panel.find('table#property_desc');
-			
+
 			var rows = table.datagrid('getData').rows;
-			
+
 			// 数组转换成json对象
 			var json = {}
 			rows.forEach(function(obj) {
 				json[obj.field] = {
 					value: obj.value,
-					isUse: obj.isUse	
+					isUse: obj.isUse
 				};
 			});
 
 			return JSON.stringify(json);
 		};
-		
+
 		// @override
 		this.load = function(panel) {
 			var form = panel.find('form');
-			
+
 			form.form('disableValidation')
 				.form('load', this.object)
 				.form('addValidation', {
@@ -112,18 +112,18 @@ define(function(require) {
 					}
 				})
 				.form('focus');
-			
+
 			this.initPropertyFields(panel);
 		};
-		
+
 		// @override
 		this.submit = function(panel, data, closeCallback) {
 			var form = panel.find('form');
-			
+
 			// 开启校验
 			form.form('enableValidation');
 			var isValid = form.form('validate');
-			
+
 			if (isValid) {
 				form.form('ajax', {
 					url: Config.ContextPath + this.url,
@@ -133,16 +133,16 @@ define(function(require) {
 					})
 				}).then(closeCallback);
 			}
-			
+
 			return false;
 		};
-		
+
 		// @override
 		this.onClose = function(table) {
 			table.datagrid('reload');
 
 		};
-	});	
-	
+	});
+
 	return DictionaryAdd;
 });
