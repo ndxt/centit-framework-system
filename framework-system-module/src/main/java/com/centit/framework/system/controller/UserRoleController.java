@@ -56,9 +56,9 @@ public class UserRoleController extends BaseController {
     public void listUsersByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = convertSearchColumn(request);
         filterMap.put("roleCode", roleCode);
-        if(!Objects.isNull(filterMap.get("userName"))){
+        /*if(!Objects.isNull(filterMap.get("userName"))){
             filterMap.put("userName", "%"+filterMap.get("userName")+"%");
-        }
+        }*/
         listObject(filterMap, pageDesc, response);
     }
 
