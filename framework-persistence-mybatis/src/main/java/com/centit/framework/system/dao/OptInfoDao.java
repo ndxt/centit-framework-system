@@ -44,16 +44,16 @@ public interface OptInfoDao extends BaseDao {
     // String hql = "FROM FVUserOptMoudleList where userCode=?";
      List<OptInfo> getFunctionsByUserID(String userID);
 
- 
+
 
     //"FROM OptInfo where optUrl='...' order by orderInd ";
     //"FROM FVUserOptMoudleList where isintoolbar='Y' and userCode=? and optType = " +
     //(isAdmin ? "'S'" : "'O'") + " ORDER BY orderind";
     //return getMenuFuncs(preOpts, ls);
      List<FVUserOptMoudleList> getMenuFuncByUserID(@Param("userCode") String userCode, @Param("optType") String optType);
-    
+
      List<OptInfo> getMenuFuncByOptUrl();
-    
+
 //     List<FVUserOptMoudleList> getMenuFuncByUserID(Map map);
 
 
@@ -64,14 +64,21 @@ public interface OptInfoDao extends BaseDao {
     //"FROM FVUserOptMoudleList  where userCode=? and topoptid=?" + " ORDER BY preoptid, orderind";
     //参数  String userID, String superFunctionId
      List<OptInfo> getFunctionsByUserAndSuperFunctionId(Map map);
-    
+
     // String hql = "FROM FVUserOptList urv where urv.id.userCode=? and optid= ?";
     //参数String userCode, String optid
      List<OptMethod> getMethodByUserAndOptid(Map map);
-    
+
     // DatabaseOptUtils.findObjectsByHql(this, "from OptMethodUrlMap");
      List<OptMethodUrlMap> listAllOptMethodUrlMap();
 
     List<OptInfo> listObjectByProperty(String propertyName, Object propertyValue);
- 
+
+  /**
+   * 根据菜单类型获取菜单
+   * @param types 类型数组
+   * @return 菜单列表
+   */
+//  List<OptInfo> listMenuByTypes(String... types); todo
+
 }
