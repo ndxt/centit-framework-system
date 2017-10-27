@@ -59,7 +59,7 @@ public class SysUserManagerImpl implements SysUserManager {
     @Transactional
     public List<RoleInfo> listUserValidRoles(String userCode) {
        // List<RoleInfo> roles = userRoleDao.getSysRolesByUserId(userCode);
-        
+
         //edit by zhuxw  代码从原框架迁移过来，可和其它地方合并
         List<RoleInfo> roles = new ArrayList<>();
         //所有的用户 都要添加这个角色
@@ -73,12 +73,12 @@ public class SysUserManagerImpl implements SysUserManager {
                 roles.add(roleInfo);
             }
         }
-       //add  end 
-        
+       //add  end
+
         return roles;
     }
-    
-   
+
+
 
     @Override
     @Transactional
@@ -132,7 +132,7 @@ public class SysUserManagerImpl implements SysUserManager {
     @CacheEvict(value = "UserInfo",allEntries = true)
     @Transactional
     public void saveObject(UserInfo sysuser) {
-        
+
         boolean hasExist = checkIfUserExists(sysuser);// 查该登录名是不是已经被其他用户使
 
         if (StringUtils.isBlank(sysuser.getUserCode())) {// 新添
@@ -201,6 +201,7 @@ public class SysUserManagerImpl implements SysUserManager {
     @Transactional
     public void saveNewUserInfo(UserInfo userInfo, UserUnit userUnit){
         userInfoDao.saveNewObject(userInfo);
+        resetPwd(userInfo.getUserCode());
         userUnit.setUserUnitId(userUnitDao.getNextKey());
         userUnit.setUserCode(userInfo.getUserCode());
         userUnit.setUnitCode(userInfo.getPrimaryUnit());
@@ -218,14 +219,14 @@ public class SysUserManagerImpl implements SysUserManager {
         }
     }
 
-    
+
     @Override
     @CacheEvict(value ={"UserInfo","UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
     @Transactional
     public void updateUserInfo(UserInfo userinfo){
-        
+
         userInfoDao.mergeObject(userinfo);
-        
+
         /*List<UserUnit> oldUserUnits = userUnitDao.listUserUnitsByUserCode(userinfo.getUserCode());
          if(oldUserUnits!=null){
             for(UserUnit uu: oldUserUnits ){
@@ -235,44 +236,44 @@ public class SysUserManagerImpl implements SysUserManager {
                 }
             }
         }
-        
+
         if(userinfo.getUserUnits() !=null){
             for(UserUnit uu: userinfo.getUserUnits() ){
                  userUnitDao.mergeObject(uu);
             }
         }
-        
+
         */
     }
-    
+
     @Override
     @CacheEvict(value ="UserInfo",allEntries = true)
     @Transactional
     public void updateUserProperities(UserInfo userinfo){
         userInfoDao.mergeObject(userinfo);
     }
-    
+
     @Override
     @CacheEvict(value ={"UserInfo","UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
     @Transactional
-    public void deleteUserInfo(String userCode){       
+    public void deleteUserInfo(String userCode){
         userUnitDao.deleteUserUnitByUser(userCode);
-        userRoleDao.deleteByUserId(userCode);        
-        userInfoDao.deleteObjectById(userCode);        
+        userRoleDao.deleteByUserId(userCode);
+        userInfoDao.deleteObjectById(userCode);
     }
-    
+
     @Override
     @Transactional
     public String getNextUserCode() {
         return userInfoDao.getNextKey();
     }
-   
+
     @Override
     @Transactional
     public UserInfo loadUserByLoginname(String userCode){
         return userInfoDao.getUserByLoginName(userCode);
     }
-    
+
     @Override
     @Transactional
     public List<FVUserOptList> getAllOptMethodByUser(String userCode){
