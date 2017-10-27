@@ -1,12 +1,12 @@
-<div class="easyui-layout" style="width: 100%; height: 100%;"	id="unitinfo_panel">
+<div class="easyui-layout" style="width: 100%; height: 100%;"	id="unitinfo_panel" data-options="fit:true">
 	<div data-options="region:'center'" style="width: 50%">
-		<div class="easyui-panel search-body" cls="search">
+		<div class="easyui-panel search-body" cls="search" style="width: 100%">
 			<form class="clearFromValue">
 				<div class="search-item">
 					<label id="d@organizationName">机构名称</label> <input
 						class="easyui-textbox" name="s_unitName" id="s_unitName" />
 				</div>
-				<a class="easyui-linkbutton btn-search" iconCls="icon-search"><p id="e@btn.search">搜索</p></a> 
+				<a class="easyui-linkbutton btn-search" iconCls="icon-search"><p id="e@btn.search">搜索</p></a>
 				<a class="easyui-linkbutton" style="margin-top: 8px;" iconcls="icon-reload" group="" id=""
 					onclick="javascript:$('.clearFromValue').form('clear');$('.defaultChecked').prop('checked','true');">
 					<p>重置</p>
@@ -35,7 +35,7 @@
 				rel="unitinfo_add_top" title="新增顶级机构" width="640" height="500" btnValue="添加"><p id="f@link.topOrganization">顶级机构</p></a>
 			<hr>
 			<a iconCls="icon-add" href="modules/sys/unitinfo/unitinfo-info.html" trigger="single" target="dialog" rel="unitinfo_add"
-				title="新增 {{unitName}} 下级机构" width="640" height="500" btnValue="添加"><p id="f@link.subOrganization">下级机构</p></a> 
+				title="新增 {{unitName}} 下级机构" width="640" height="500" btnValue="添加"><p id="f@link.subOrganization">下级机构</p></a>
 			<hr>
 			<a iconCls="icon-edit"	href="modules/sys/unitinfo/unitinfo-edit.html" trigger="single"
 				target="dialog" rel="unitinfo_edit" title="编辑 {{unitName}}"	width="640" height="500" btnValue="更新"><p id="f@link.edit">编辑</p></a>
@@ -51,7 +51,7 @@
 				<p id="f@btn.delete">删除</p></a>
 		</div>
 	</div>
-	<div data-options="region:'east',split:true,collapsible:false" title="用户信息" style="width: 50%; height: 100%"></div>
+	<div data-options="region:'east',split:true,collapsible:false" title="机构用户" style="width: 50%; height: 100%"></div>
 </div>
 
 <script type="text/javascript">

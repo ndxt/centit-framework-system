@@ -1,6 +1,6 @@
 <form class="form centit">
 	<input type="hidden" name="userCode"/>
-	
+
 	<div class="fields two">
 		<div class="field ">
 			<label>用户名</label>
@@ -30,7 +30,7 @@
 				<div class="centit radio">
 					<input type="radio" name="isValid" value="T" disabled/>
 					<label id="a@inUse">在用</label>
-					
+
 					<input type="radio" name="isValid" value="F" disabled/>
 					<label id="a@forbidden">禁用</label>
 				</div>
@@ -43,7 +43,7 @@
 <table class="role"  style="width:95%;" data-options="cls: 'role'"
 	pagination="false"
 	border="true"
-	toolbar=".role-toolbar" 
+	toolbar=".role-toolbar"
 	min-height="234">
 	<thead frozen="true">
 		<tr>
@@ -97,7 +97,7 @@
 	<hr>
 	<a iconCls="icon-base icon-base-gear" href="modules/sys/roleinfo/roleinfo-power.html" trigger="single"
 		target="dialog" rel="roleinfo_operate" title="编辑 {{roleName}} 操作权限" width="720" height="600" btnValue="更新"><p  id="d@link.authorityOpt">操作权限</p></a>
-	<hr>	
+	<hr>
 	<a rel="userinfo_role_ban" iconCls="icon-base icon-base-rubbish "
 		target="confirm" trigger="single" title="确定将 {{roleName}} 从用户{{userName}} 的部门权限菜单角色中回收吗？"><p  id="userinfo.a@btn.recycle">回收</p></a>
 </div>
@@ -106,7 +106,8 @@
 <table class="unit" style="width:96%" data-options="cls: 'unit'"
 	pagination="false"
 	min-height="234"
-	toolbar=".unit-toolbar">
+	toolbar=".unit-toolbar"
+>
 	<thead>
 		<tr>
 			<th id="a@organizationName" field="unitCode" width="25%" format="Unit">机构名称</th>
@@ -123,7 +124,7 @@
 	<hr>
 	<a  rel="userinfo_unit_edit" iconCls="icon-edit" href="modules/sys/userinfo/userinfo-unit-info.html"
 		target="dialog" trigger="single" title="编辑  {{unitName}} 人员机构" btnValue="更新" width="500" height="360"><p id="userinfo.a1@btn.edit">编辑</p></a>
-	<hr>	
+	<hr>
 	<a  rel="userinfo_unit_remove" iconCls="icon-base icon-base-ban"
 		target="confirm" trigger="single" title="确定将 {{unitName}} 从用户{{uniName}}的岗位信息中移出吗？"><p id="userinfo.a1@btn.delete">删除</p></a>
 </div>
