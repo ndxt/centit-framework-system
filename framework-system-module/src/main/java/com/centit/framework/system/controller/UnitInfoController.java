@@ -47,11 +47,11 @@ public class UnitInfoController extends BaseController {
     @Resource
     @NotNull
     private SysUnitManager sysUnitManager;
-    
+
     @Resource
     @NotNull
     private SysUserManager sysUserMag;
-    
+
     @Resource
     @NotNull
     private SysUserUnitManager sysUserUnitManager;
@@ -59,7 +59,7 @@ public class UnitInfoController extends BaseController {
     @Resource
     @NotNull
     private SysRoleManager sysRoleManager;
-    
+
     /**
      * 系统日志中记录
      */
@@ -188,8 +188,8 @@ public class UnitInfoController extends BaseController {
 //        JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
         JsonResultUtils.writeSingleDataJson(ja, response);
     }
-    
-    
+
+
     /**
      * 查询单个机构信息
      *
@@ -202,7 +202,7 @@ public class UnitInfoController extends BaseController {
 
         JsonResultUtils.writeSingleDataJson(unitInfo, response);
     }
-    
+
     /**
      * 删除机构
      * @param request HttpServletRequest
