@@ -42,6 +42,8 @@ public interface SysUnitManager{
 
     boolean isUniqueName(UnitInfo unitInfo);
 
+    boolean isUniqueOrder(UnitInfo unitInfo);
+
     void updateUnitInfo(UnitInfo unitinfo);
     List<UnitInfo> listAllSubObjects(String primaryUnit);
     List<UnitInfo> listAllSubObjectsAsSort(String primaryUnit);
