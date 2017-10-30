@@ -87,7 +87,7 @@
 					'core/filter/filter.dictionary',
 		           'modules/sys/userinfo/ctrl/userinfo'
 		          ], function(FilterDictionary, UserInfo) {
-			FilterDictionary.add(['YesOrNo']).then(function() {
+			FilterDictionary.add(['YesOrNo','StationType','RankType']).then(function() {
 				new UserInfo('userinfo', panel).load(panel);
 			});
 		});
