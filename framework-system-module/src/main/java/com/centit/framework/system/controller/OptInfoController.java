@@ -161,14 +161,10 @@ public class OptInfoController extends BaseController {
   @RequestMapping(value = "/unitpoweropts/{unitCode}", method = RequestMethod.GET)
   public void listUnitPowerOpts(@PathVariable String unitCode, String[] field,
                                 HttpServletResponse response) {
-    List<OptInfo> listObjects = optInfoManager.listOptWithPowerUnderUnit(unitCode);
-    listObjects = optInfoManager.listObjectFormatTree(listObjects, false);
+      List<OptInfo> listObjects = optInfoManager.listOptWithPowerUnderUnit(unitCode);
+      listObjects = optInfoManager.listObjectFormatTree(listObjects, false);
 
-    if (ArrayUtils.isNotEmpty(field))
-      JsonResultUtils.writeSingleDataJson(listObjects, response,
-        JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
-    else
-      JsonResultUtils.writeSingleDataJson(listObjects, response);
+      JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(listObjects), response);
   }
 
   /**
