@@ -4,10 +4,10 @@
 	</div>
 
 	<div data-options="region:'center'" style="width:40%">
-	
+
 		<div class="easyui-panel search-body" cls="search" style="width: 100%">
 			<form class="clearFromValue">
-				
+
 				<!--<div class="search-item">-->
 					<!--<label id="e@name">名称</label>-->
 					<!--<input type="text" class="easyui-combobox" name="s_userCode" target="user"/>-->
@@ -28,7 +28,7 @@
 				</a>
 			</form>
 		</div>
-		
+
 		<table
 			id="deptUserInfoTable"
 			width="98%"
@@ -36,6 +36,8 @@
 			search=".search"
 			toolbar=".temp-toolbar"
 			layoutH="65"
+      sortName="userOrder"
+      sortOrder="asc"
 			singleSelect="false" selectOnCheck="true" checkOnSelect="true"
 			>
 			<thead>
@@ -65,8 +67,8 @@
 			<a iconCls="icon-base icon-base-lock" trigger="multiple"
 				target="confirm" rel="deptuserinfo_resetpassword" title="确定重置该用户密码为 000000 吗？"><p  id="e@btn.resetPassword">重置密码</p></a>
 		</div>
-	
-	
+
+
 	</div>
 
 
@@ -76,10 +78,10 @@
 
 
 <script>
-	
+
 	$.parser.onComplete = function(panel) {
 		$.parser.onComplete = $.noop;
-		
+
 		requirejs([
 					'core/filter/filter.dictionary',
 		           'modules/sys/deptuserinfo/ctrl/deptuserinfo'
