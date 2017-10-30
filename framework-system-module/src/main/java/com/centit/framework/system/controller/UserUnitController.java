@@ -254,6 +254,10 @@ public class UserUnitController extends BaseController {
     public void delete(@PathVariable String userunitid,
                        HttpServletRequest request, HttpServletResponse response) {
         UserUnit dbUserUnit = sysUserUnitManager.getObjectById(userunitid);
+        if("T".equals(dbUserUnit.getIsPrimary())){
+            JsonResultUtils.writeErrorMessageJson("主机构组织信息不能删除！", response);
+            return;
+        }
 
         sysUserUnitManager.deleteObject(dbUserUnit);
 
