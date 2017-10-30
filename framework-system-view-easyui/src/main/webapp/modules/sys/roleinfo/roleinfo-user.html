@@ -1,4 +1,4 @@
-<div class="easyui-panel search-body" cls="search " style="height:92px">
+<div class="easyui-panel search-body" cls="search " style="height:65px">
 	<form class="clearFromValue">
 
 		<div class="search-item">
@@ -11,19 +11,19 @@
 		</a>
 	</form>
 </div>
-		
+
 <table class="user"  data-options="cls: 'role'"
-    layoutH="110"
+    layoutH="83"
 	pagination="true"
     border="false"
-	toolbar=".role-toolbar" 
+	toolbar=".role-toolbar"
 	style="width: 100%; margin: 0 auto;"
 	search=".search"
 	singleSelect="false" selectOnCheck="true" checkOnSelect="true" method="post"
 	>
 	<thead frozen="true">
 		<tr>
-			<th data-options="field:'ck',checkbox:true"></th>     	
+			<th data-options="field:'ck',checkbox:true"></th>
 			<th id="c@username" field="userCode" format="AllUser" width="80">用户名</th>
 			<th field="loginName" width="80">登陆名</th>
 			<th field="userPrimaryUnit" format="Unit" width="100">主机构</th>
@@ -43,7 +43,7 @@
 	<hr>
 <!-- 	<a rel="roleinfo_user_edit" iconCls="icon-edit" href="modules/sys/roleinfo/roleinfo-user-info.html" -->
 <!-- 		target="dialog" trigger="single" title="编辑 角色人员" btnValue="更新" width="500" height="370"><p  id="c@link.edit">编辑</p></a> -->
-		
+
 <!-- 	<hr> -->
 	<a rel="roleinfo_user_remove" iconCls="icon-base icon-base-ban"
 		target="confirm" trigger="multiple" title="确定将该人员从角色中移出吗？"><p  id="c@btn.delete">删除</p></a>
