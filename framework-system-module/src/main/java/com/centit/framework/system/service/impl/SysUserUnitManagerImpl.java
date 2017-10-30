@@ -30,18 +30,18 @@ import java.util.Map;
  */
 @Service("sysUserUnitManager")
 @Transactional
-public class SysUserUnitManagerImpl 
+public class SysUserUnitManagerImpl
     implements SysUserUnitManager {
 
     @Resource
     @NotNull
     protected UserUnitDao userUnitDao;
 
- 
+
     @Resource(name = "userInfoDao")
     @NotNull
     private UserInfoDao userInfoDao;
-     
+
     @Override
     @Transactional(readOnly = true)
     public List<UserUnit> listObjectByUserUnit(String userCode,String unitCode){
@@ -77,21 +77,21 @@ public class SysUserUnitManagerImpl
         }
         return true;
     }
-    
+
     @Override
     @CacheEvict(value ={"UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
     public String saveNewUserUnit(UserUnit userunit) {
         // 一对多模式, 删除主机构    多对多，将当前主机构设置为非主机构
-        if (! isMultiToMulti()) {
-            UserUnit pUserUnit = userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode());
-            if (null != pUserUnit) {
-                userUnitDao.deleteObjectById(pUserUnit.getUserUnitId());
-            }
+      if (! isMultiToMulti()) {
+        UserUnit pUserUnit = userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode());
+        if (null != pUserUnit) {
+          userUnitDao.deleteObjectById(pUserUnit.getUserUnitId());
         }
-        
+      }
+
         if(StringBaseOpt.isNvl(userunit.getUserUnitId())){
             userunit.setUserUnitId(userUnitDao.getNextKey());
-        } 
+        }
 
         if ("T".equals(userunit.getIsPrimary())) {
             UserUnit origPrimUnit=userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode());
@@ -106,13 +106,13 @@ public class SysUserUnitManagerImpl
                 userInfoDao.mergeObject(user);
             }
         }
-        // userunit.setIsprimary("T");//modify by hx bug：会默认都是主机构        
+        // userunit.setIsprimary("T");//modify by hx bug：会默认都是主机构
          userUnitDao.saveNewObject(userunit);
          return userunit.getUserUnitId();
-    }    
-  
+    }
 
-    
+
+
     @Override
     public UserUnit getPrimaryUnitByUserCode(String userCode) {
         UserUnit uu=userUnitDao.getPrimaryUnitByUserId(userCode);
@@ -134,6 +134,19 @@ public class SysUserUnitManagerImpl
     @Override
     @CacheEvict(value ={"UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
     public void updateUserUnit(UserUnit userunit) {
+        if ("T".equals(userunit.getIsPrimary())) {
+          UserUnit origPrimUnit=userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode());
+          if(origPrimUnit!=null){
+            origPrimUnit.setIsPrimary("F");
+            userunit.setIsPrimary("T");
+            userUnitDao.mergeObject(origPrimUnit);
+          }
+          UserInfo user=userInfoDao.getObjectById(userunit.getUserCode());
+          if(user != null) {
+            user.setPrimaryUnit(userunit.getUnitCode());
+            userInfoDao.mergeObject(user);
+          }
+        }
         userUnitDao.updateObject(userunit);
     }
 
@@ -152,5 +165,11 @@ public class SysUserUnitManagerImpl
         return userUnitDao.pageQuery(
                 QueryParameterPrepare.prepPageParams(
                         filterMap,pageDesc,userUnitDao.pageCount(filterMap)));
+    }
+
+    @Override
+    @Transactional
+    public List<UserUnit> listUnitUsersByUnitCode(String unitCode){
+        return userUnitDao.listUnitUsersByUnitCode(unitCode);
     }
 }

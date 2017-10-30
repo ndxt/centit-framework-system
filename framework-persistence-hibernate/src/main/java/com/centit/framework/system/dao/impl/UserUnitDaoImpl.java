@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Repository("userUnitDao")
 public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements UserUnitDao {
- 
+
     public Map<String, String> getFilterField() {
         if (filterField == null) {
             filterField = new HashMap<>();
@@ -50,7 +50,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
          */
         return ls;
     }
-    
+
     @Transactional
     public List<UserUnit> listObjectByUserUnit(String userCode,String unitCode){
         List<UserUnit> ls = listObjects(
@@ -66,11 +66,11 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
     @Transactional
     public String getNextKey() {
         return "s"+ DatabaseOptUtils.getNextKeyBySequence(this, "S_USER_UNIT_ID", 9);
-/*        
+/*
         return DatabaseOptUtils.getNextKeyByHqlStrOfMax(this, CodeRepositoryUtil.USERCODE,
                 "UserInfo WHERE userCode !='U0000000'", 7);*/
     }
-    
+
     @Transactional
     public void deleteOtherPrimaryUnit(UserUnit object) {
         DatabaseOptUtils
@@ -81,7 +81,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
                                 object.getUserRank()});
 
     }
-    
+
     @Transactional
     public void deleteUserUnitByUser(String userCode) {
         DatabaseOptUtils
@@ -91,7 +91,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
                         userCode);
 
     }
-    
+
     @Transactional
     public void deleteUserUnitByUnit(String unitCode) {
         DatabaseOptUtils
@@ -100,7 +100,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
                         "delete UserUnit  where unitCode = ? ",
                         unitCode);
     }
-    
+
     @Transactional
     public UserUnit getPrimaryUnitByUserId(String userId) {
         List<UserUnit> list = listObjects(
@@ -112,7 +112,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
             return null;
         }
     }
-    
+
     @Transactional
     public List<UserUnit> listUnitUsersByUnitCode(String unitCode) {
         List<UserUnit> ls =listObjects(
@@ -157,13 +157,12 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
     @Transactional
     public List<UserUnit> listUnitUsersByUnitCodeAndFilter(String unitCode, PageDesc pageDesc,
             Map<String, Object> filterMap) {
-
-        StringBuffer hql = new StringBuffer("FROM UserUnit where unitCode=? ");
+        String hql = "FROM UserUnit where unitCode=? ";
 
         if (null != filterMap && null != filterMap.get("ORDER_BY")) {
-            hql.append("order by " + filterMap.get("ORDER_BY"));
+          hql += "order by " + filterMap.get("ORDER_BY");
         }
-        return super.listObjects(hql.toString(), unitCode, pageDesc);
+        return super.listObjects(hql, unitCode, pageDesc);
 
     }
 

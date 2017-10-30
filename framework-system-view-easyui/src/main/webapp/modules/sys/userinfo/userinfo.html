@@ -13,7 +13,7 @@
 					<input type="text" class="easyui-textbox" name="s_userName" />
 				</div>
 				<div class="search-item">
-					<label>机构名称</label>
+					<label>主机构名称</label>
 					<input class="easyui-combotree" name="s_byUnderUnit" editable="false" target="unit"/>
 				</div>
 				<a></a>
@@ -87,7 +87,7 @@
 					'core/filter/filter.dictionary',
 		           'modules/sys/userinfo/ctrl/userinfo'
 		          ], function(FilterDictionary, UserInfo) {
-			FilterDictionary.add(['YesOrNo']).then(function() {
+			FilterDictionary.add(['YesOrNo','StationType','RankType']).then(function() {
 				new UserInfo('userinfo', panel).load(panel);
 			});
 		});
