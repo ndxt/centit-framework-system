@@ -5,14 +5,12 @@ import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.*;
+import com.centit.framework.system.po.*;
+import com.centit.framework.system.service.SysUserRoleManager;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.model.basedata.IUserUnit;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.security.model.CentitUserDetails;
-import com.centit.framework.system.po.OptMethod;
-import com.centit.framework.system.po.RoleInfo;
-import com.centit.framework.system.po.RolePower;
-import com.centit.framework.system.po.RolePowerId;
 import com.centit.framework.system.service.OptInfoManager;
 import com.centit.framework.system.service.OptMethodManager;
 import com.centit.framework.system.service.SysRoleManager;
@@ -50,6 +48,9 @@ public class RoleInfoController extends BaseController {
     @Resource
     @NotNull
     private OptMethodManager optDefManager;
+
+    @Resource
+    private SysUserRoleManager sysUserRoleManager;
     /**
      * 系统日志中记录
      */
@@ -506,12 +507,26 @@ public class RoleInfoController extends BaseController {
             JsonResultUtils.writeErrorMessageJson("系统内置角色不能删除。", response);
             return;
         }
-        int n = sysRoleManager.countRoleUserSum(roleCode);
+//        int n = sysRoleManager.countRoleUserSum(roleCode);
+        List<UserInfo> users = sysUserRoleManager.listUsersByRole(roleCode);
+        boolean isValid = true;
+        for(UserInfo u : users){
+            if("T".equals(u.getIsValid())){
+              JsonResultUtils.writeErrorMessageJson("有用户引用这个角色，不能删除。", response);
+              return ;
+            }
+            isValid = false;
+        }
+        if(!isValid){
+          JsonResultUtils.writeErrorMessageJson("有禁用用户引用这个角色，不能删除。", response);
+          return ;
+        }
+
         //RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
-        if(n>0){
+       /* if(n>0){
             JsonResultUtils.writeErrorMessageJson("有用户引用这个角色，不能删除。", response);
             return ;
-        }
+        }*/
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         if(dbRoleInfo!=null) {
             OperationLogCenter.logDeleteObject(request, optId, roleCode,
