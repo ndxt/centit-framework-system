@@ -30,18 +30,18 @@ import java.util.Map;
  */
 @Service("sysUserUnitManager")
 @Transactional
-public class SysUserUnitManagerImpl 
+public class SysUserUnitManagerImpl
     implements SysUserUnitManager {
 
     @Resource
     @NotNull
     protected UserUnitDao userUnitDao;
 
- 
+
     @Resource(name = "userInfoDao")
     @NotNull
     private UserInfoDao userInfoDao;
-     
+
     @Override
     @Transactional(readOnly = true)
     public List<UserUnit> listObjectByUserUnit(String userCode,String unitCode){
@@ -77,7 +77,7 @@ public class SysUserUnitManagerImpl
         }
         return true;
     }
-    
+
     @Override
     @CacheEvict(value ={"UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
     public String saveNewUserUnit(UserUnit userunit) {
@@ -88,10 +88,10 @@ public class SysUserUnitManagerImpl
                 userUnitDao.deleteObjectById(pUserUnit.getUserUnitId());
             }
         }
-        
+
         if(StringBaseOpt.isNvl(userunit.getUserUnitId())){
             userunit.setUserUnitId(userUnitDao.getNextKey());
-        } 
+        }
 
         if ("T".equals(userunit.getIsPrimary())) {
             UserUnit origPrimUnit=userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode());
@@ -106,13 +106,13 @@ public class SysUserUnitManagerImpl
                 userInfoDao.mergeObject(user);
             }
         }
-        // userunit.setIsprimary("T");//modify by hx bug：会默认都是主机构        
+        // userunit.setIsprimary("T");//modify by hx bug：会默认都是主机构
          userUnitDao.saveNewObject(userunit);
          return userunit.getUserUnitId();
-    }    
-  
+    }
 
-    
+
+
     @Override
     public UserUnit getPrimaryUnitByUserCode(String userCode) {
         UserUnit uu=userUnitDao.getPrimaryUnitByUserId(userCode);
@@ -152,5 +152,11 @@ public class SysUserUnitManagerImpl
         return userUnitDao.pageQuery(
                 QueryParameterPrepare.prepPageParams(
                         filterMap,pageDesc,userUnitDao.pageCount(filterMap)));
+    }
+
+    @Override
+    @Transactional
+    public List<UserUnit> listUnitUsersByUnitCode(String unitCode){
+        return userUnitDao.listUnitUsersByUnitCode(unitCode);
     }
 }

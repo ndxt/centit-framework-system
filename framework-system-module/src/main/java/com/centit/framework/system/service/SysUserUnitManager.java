@@ -21,7 +21,7 @@ public interface SysUserUnitManager{
     List<UserUnit> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
 
     List<UserUnit> listObjectByUserUnit(String userCode,String unitCode);
-    
+
     UserUnit getPrimaryUnitByUserCode(String userCode);
 
     String saveNewUserUnit(UserUnit userUnit);
@@ -29,4 +29,6 @@ public interface SysUserUnitManager{
     void updateUserUnit(UserUnit userunit);
 
     boolean hasUserStation(String stationCode,String userCode);
+
+    List<UserUnit> listUnitUsersByUnitCode(String unitCode);
 }

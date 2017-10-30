@@ -216,7 +216,11 @@ public class UnitInfoController extends BaseController {
             JsonResultUtils.writeErrorMessageJson("The object not found!", response);
             return;
         }
-
+        List<UserUnit> userUnits = sysUserUnitManager.listUnitUsersByUnitCode(unitCode);
+        if(userUnits != null && userUnits.size() != 0){
+          JsonResultUtils.writeErrorMessageJson("该机构包含组织信息，不能删除！", response);
+          return;
+        }
         sysUnitManager.deleteUnitInfo(unitInfo);
 
         JsonResultUtils.writeBlankJson(response);
