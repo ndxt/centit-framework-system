@@ -63,13 +63,13 @@ public interface UnitInfoDao {
      * @param name name
      * @return UnitInfo
      */
-     UnitInfo getUnitByName(String name);
+    UnitInfo getUnitByName(String name);
 
     //return super.getObjectByProperty("unitTag", unitTag);
-     UnitInfo getUnitByTag(String unitTag);
+    UnitInfo getUnitByTag(String unitTag);
 
     //return super.getObjectByProperty("unitWord", unitWord);
-     UnitInfo getUnitByWord(String unitWord);
+    UnitInfo getUnitByWord(String unitWord);
 
     //return super.listObjectByProperty("parentUnit", unitCode);
 //     List<UnitInfo> listSubUnits(String unitCode);
@@ -85,13 +85,13 @@ public interface UnitInfoDao {
      * @param primaryUnit primaryUnit
      * @return List UnitInfo
      */
-     List<UnitInfo> listAllSubUnits(String primaryUnit);
+    List<UnitInfo> listAllSubUnits(String primaryUnit);
 
 
     //String hql = "from UnitInfo where unitPath like ?";{unitPath+"/%"});
-     List<UnitInfo> listSubUnitsByUnitPaht(String unitPath);
+    List<UnitInfo> listSubUnitsByUnitPaht(String unitPath);
 
-     List<String> getAllParentUnit();
+    List<String> getAllParentUnit();
 
     UnitInfo getPeerUnitByName(String unitName, String parentCode, String unitCode);
 
