@@ -48,7 +48,7 @@ define(function(require) {
 			var tableRole = panel.find('table.role');
 			tableRole.cdatagrid({
 				controller: _self,
-				url: Config.ContextPath+'system/userrole/userroles/'+data.userCode+'?type=S'
+				url: Config.ContextPath+'system/userrole/userroles/'+data.userCode/*+'?type=S'*/
 			});
 			//获取角色信息table中所需要的数据
 /*			var tableRole = panel.find('table.unitRole');
