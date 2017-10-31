@@ -83,13 +83,15 @@ public class OptInfoController extends BaseController {
     return ViewDataTransform.makeTreeViewJson(menuFunsByUser,
       ViewDataTransform.createStringHashMap("id", "optId",
         "optId", "optId",
+        "optCode", "optId",
         "pid", "preOptId",
         "text", "optName",
         "url", "optRoute",
         "icon", "icon",
         "children", "children",
         "isInToolbar", "isInToolbar",
-        "state", "state"
+        "state", "state",
+        "optMethods", "optMethods"
       ), (jsonObject, obj) -> {
         jsonObject.put("external", !("D".equals(obj.getPageType())));
       });
