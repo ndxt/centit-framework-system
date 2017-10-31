@@ -411,17 +411,21 @@ public class OptInfoManagerImpl implements OptInfoManager {
             List<OptInfo> optInfos = findSubOptInfo(optInfo.getOptId());
             for(OptInfo o : optInfos){
                 o.setIsInToolbar("N");
-                o.setOptType(optInfo.getOptType());
                 optInfoDao.mergeObject(o);
             }
         }else{
             List<OptInfo> optInfos = findPreOptInfo(optInfo.getPreOptId());
             for(OptInfo o : optInfos){
                 o.setIsInToolbar("Y");
-                o.setOptType(optInfo.getOptType());
                 optInfoDao.mergeObject(o);
             }
         }
-    }
+        List<OptInfo> optInfos = findSubOptInfo(optInfo.getOptId());
+        optInfos.addAll(findPreOptInfo(optInfo.getPreOptId()));
+        for(OptInfo o : optInfos) {
+          o.setOptType(optInfo.getOptType());
+          optInfoDao.mergeObject(o);
+        }
+      }
 
 }
