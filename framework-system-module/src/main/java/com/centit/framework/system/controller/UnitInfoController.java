@@ -389,6 +389,24 @@ public class UnitInfoController extends BaseController {
         JsonResultUtils.writeSingleDataJson(listObjects, response);
     }
 
+  /**
+   * 获取当前用户所在机构下所有用户
+   * @param state 是否启用 T|F
+   * @param response {@link HttpServletResponse}
+   */
+    @RequestMapping(value = "/currentusers/{state}", method = RequestMethod.GET)
+    public void listAllUsersByCurrentUser(@PathVariable String state, HttpServletRequest request, HttpServletResponse response) {
+        UserInfo userInfo = (UserInfo) getLoginUser(request);
+        String unitCode = userInfo.getPrimaryUnit();
+
+        Map<String, Object> filterMap = new HashMap<>();
+        filterMap.put("unitCode", unitCode);
+        filterMap.put("isValid", state);
+        List<UserInfo> listObjects = sysUserMag.listObjects(filterMap);
+
+        JsonResultUtils.writeSingleDataJson(listObjects, response);
+    }
+
     /**
      * 当前机构下用户
      *

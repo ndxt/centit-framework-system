@@ -106,7 +106,7 @@ public class RoleInfoController extends BaseController {
     }
 
     /**
-     * 查询所有某部门部门角色
+     * 查询所有 某部门部门角色
      * @param field field[]
      * @param unitCode unitCode
      * @param pageDesc PageDesc
@@ -117,7 +117,7 @@ public class RoleInfoController extends BaseController {
     public void listUnitAndPublicRole(String[] field,@PathVariable String unitCode,PageDesc pageDesc,
                                       HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = convertSearchColumn(request);
-        filterMap.put("UNITROLE", unitCode + "-%");
+        filterMap.put("publicUnitRole", unitCode + "-%");
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
 
         ResponseMapData respData = new ResponseMapData();
