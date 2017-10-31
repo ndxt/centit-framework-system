@@ -18,10 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service("sysUnitManager")
 @Transactional
@@ -266,5 +263,14 @@ public class SysUnitManagerImpl implements SysUnitManager {
                 u.setState("opend");
             }
         }
+    }
+
+    @Override
+    @Transactional
+    public List<UnitInfo> listValidSubUnit(String unitCode){
+        Map<String, Object> map = new HashMap<>();
+        map.put("parentUnit", unitCode);
+        map.put("isvalid", "T");
+        return unitInfoDao.listObjects(map);
     }
 }

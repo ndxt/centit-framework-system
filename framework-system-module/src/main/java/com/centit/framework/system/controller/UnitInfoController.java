@@ -215,6 +215,7 @@ public class UnitInfoController extends BaseController {
             JsonResultUtils.writeErrorMessageJson("The object not found!", response);
             return;
         }
+
         List<UserUnit> userUnits = sysUserUnitManager.listUnitUsersByUnitCode(unitCode);
         if(userUnits != null && userUnits.size() != 0){
           JsonResultUtils.writeErrorMessageJson("该机构包含组织信息，不能删除！", response);
@@ -287,6 +288,11 @@ public class UnitInfoController extends BaseController {
             return;
         }
         if("F".equals(unitInfo.getIsValid())){
+            List<UnitInfo> units = sysUnitManager.listValidSubUnit(unitCode);
+            if(units != null && units.size() != 0){
+              JsonResultUtils.writeErrorMessageJson("该机构包含下级机构，不能设为禁用！", response);
+              return;
+            }
             List<UserUnit> userUnits = sysUserUnitManager.listUnitUsersByUnitCode(unitCode);
             if(userUnits != null && userUnits.size() != 0){
               JsonResultUtils.writeErrorMessageJson("该机构包含组织信息，不能设为禁用！", response);
