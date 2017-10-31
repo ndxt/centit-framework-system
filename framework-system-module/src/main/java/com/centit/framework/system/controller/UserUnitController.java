@@ -200,6 +200,7 @@ public class UserUnitController extends BaseController {
     @RequestMapping(method = RequestMethod.POST)
     public void create(@Valid UserUnit userUnit,HttpServletRequest request, HttpServletResponse response) {
 
+        userUnit.setCreator(getLoginUserCode(request));
         sysUserUnitManager.saveNewUserUnit(userUnit);
 
         JsonResultUtils.writeBlankJson(response);
@@ -222,6 +223,7 @@ public class UserUnitController extends BaseController {
     public void edit(@PathVariable String userunitid, @Valid UserUnit userUnit,
                      HttpServletRequest request, HttpServletResponse response) {
 
+        userUnit.setUpdator(getLoginUserCode(request));
         UserUnit dbUserUnit = sysUserUnitManager.getObjectById(userunitid);
         if (null == dbUserUnit) {
             JsonResultUtils.writeErrorMessageJson("当前机构中无此用户", response);

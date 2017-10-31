@@ -122,6 +122,7 @@ public class UserInfoController extends BaseController {
                 ur.setUserCode(userInfo.getUserCode());
             }
         }
+        userUnit.setCreator(getLoginUserCode(request));
         sysUserManager.saveNewUserInfo(userInfo,userUnit);
         JsonResultUtils.writeSingleDataJson(userInfo, response);
 
@@ -150,9 +151,10 @@ public class UserInfoController extends BaseController {
         //删除旧主机构
         if(!dbUserInfo.getPrimaryUnit().equals(userInfo.getPrimaryUnit())){
             sysUserUnitManager.deletePrimaryUnitByUserCode(userCode);
-          userUnit.setUserCode(userInfo.getUserCode());
-          userUnit.setUnitCode(userInfo.getPrimaryUnit());
-          userUnit.setIsPrimary("T");
+            userUnit.setUserCode(userInfo.getUserCode());
+            userUnit.setUnitCode(userInfo.getPrimaryUnit());
+            userUnit.setIsPrimary("T");
+            userUnit.setCreator(getLoginUserCode(request));
             sysUserUnitManager.saveNewUserUnit(userUnit);
 
         }
