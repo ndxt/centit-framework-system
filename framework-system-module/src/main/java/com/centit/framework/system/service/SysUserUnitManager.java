@@ -31,4 +31,6 @@ public interface SysUserUnitManager{
     boolean hasUserStation(String stationCode,String userCode);
 
     List<UserUnit> listUnitUsersByUnitCode(String unitCode);
+
+    void deletePrimaryUnitByUserCode(String userCode);
 }

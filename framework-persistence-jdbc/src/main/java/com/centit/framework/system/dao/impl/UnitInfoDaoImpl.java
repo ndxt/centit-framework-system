@@ -130,7 +130,9 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
 
     @Transactional(propagation=Propagation.MANDATORY)
     public List<UnitInfo> listSubUnitsByUnitPaht(String unitPath){
-        return listObjectsByProperty("unitPath", unitPath+"%");
+      Map<String, Object> map = new HashMap<>(2);
+      map.put("unitPath", unitPath+"%");
+        return listObjects(map);
     }
 
     public List<String> getAllParentUnit(){

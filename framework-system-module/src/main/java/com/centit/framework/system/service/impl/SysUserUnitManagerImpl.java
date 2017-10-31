@@ -172,4 +172,10 @@ public class SysUserUnitManagerImpl
     public List<UserUnit> listUnitUsersByUnitCode(String unitCode){
         return userUnitDao.listUnitUsersByUnitCode(unitCode);
     }
+
+    @Override
+    @Transactional
+    public void deletePrimaryUnitByUserCode(String userCode){
+        userUnitDao.deleteObjectForceById(userUnitDao.getPrimaryUnitByUserId(userCode).getUserUnitId());
+    }
 }

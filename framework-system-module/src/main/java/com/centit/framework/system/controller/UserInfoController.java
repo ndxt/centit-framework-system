@@ -139,13 +139,22 @@ public class UserInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{userCode}", method = RequestMethod.PUT)
-    public void edit(@PathVariable String userCode, @Valid UserInfo userInfo,
+    public void edit(@PathVariable String userCode, @Valid UserInfo userInfo, UserUnit userUnit,
                      HttpServletRequest request, HttpServletResponse response) {
 
         UserInfo dbUserInfo = sysUserManager.getObjectById(userCode);
         if (null == dbUserInfo) {
             JsonResultUtils.writeErrorMessageJson("当前用户不存在", response);
             return;
+        }
+        //删除旧主机构
+        if(!dbUserInfo.getPrimaryUnit().equals(userInfo.getPrimaryUnit())){
+            sysUserUnitManager.deletePrimaryUnitByUserCode(userCode);
+          userUnit.setUserCode(userInfo.getUserCode());
+          userUnit.setUnitCode(userInfo.getPrimaryUnit());
+          userUnit.setIsPrimary("T");
+            sysUserUnitManager.saveNewUserUnit(userUnit);
+
         }
         UserInfo oldValue= new UserInfo();
         oldValue.copy(dbUserInfo);
@@ -187,12 +196,16 @@ public class UserInfoController extends BaseController {
      */
     @RequestMapping(value = "/{userCode}", method = RequestMethod.GET)
     public void getUserInfo(@PathVariable String userCode, HttpServletResponse response) {
-        UserInfo userDetails = sysUserManager.getObjectById(userCode);
+        UserInfo userInfo = sysUserManager.getObjectById(userCode);
+        UserUnit userUnit = sysUserUnitManager.getPrimaryUnitByUserCode(userCode);
+        ResponseMapData responseData = new ResponseMapData();
+        responseData.addResponseData("userInfo", userInfo);
+        responseData.addResponseData("userUnit", userUnit);
 
-        Map<Class<?>, String[]> excludes  =new HashMap<Class<?>, String[]>();
+        Map<Class<?>, String[]> excludes  =new HashMap<>();
         excludes.put(UserUnit.class,new String[]{"userInfo"});
         excludes.put(UserRole.class,new String[]{"userInfo"});
-        JsonResultUtils.writeSingleDataJson(userDetails,response, JsonPropertyUtils.getExcludePropPreFilter(excludes));
+        JsonResultUtils.writeResponseDataAsJson(responseData,response, JsonPropertyUtils.getExcludePropPreFilter(excludes));
     }
 
     /**
