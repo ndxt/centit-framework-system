@@ -123,11 +123,10 @@ public class UnitInfoController extends BaseController {
     @RequestMapping(value = "/subunits",method = RequestMethod.GET)
     public void listSub(String[] field, String id,
                         HttpServletRequest request, HttpServletResponse response) {
-
+        Map<String, Object> searchColumn = convertSearchColumn(request);
         UserInfo user=sysUserMag.getObjectById(this.getLoginUser(request).getUserCode());
-        Map<String,Object> filterMap = new HashMap<>();
-        filterMap.put("parentUnit", StringUtils.isNotBlank(id) ? id : user.getPrimaryUnit());
-        List<UnitInfo> listObjects = sysUnitManager.listObjects(filterMap);
+        searchColumn.put("parentUnit", StringUtils.isNotBlank(id) ? id : user.getPrimaryUnit());
+        List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn);
         if(listObjects == null){
             JsonResultUtils.writeSuccessJson(response);
             return;
