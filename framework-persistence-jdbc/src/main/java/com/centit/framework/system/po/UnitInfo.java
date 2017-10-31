@@ -4,6 +4,10 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IUnitInfo;
+import com.centit.support.database.orm.GeneratorCondition;
+import com.centit.support.database.orm.GeneratorTime;
+import com.centit.support.database.orm.GeneratorType;
+import com.centit.support.database.orm.ValueGenerator;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
@@ -53,8 +57,8 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
 
     @Column(name = "ENGLISH_NAME")
     @Length(max = 300, message = "字段长度不能大于{max}")
-    private String englishName;// 机构英文名称      
-    
+    private String englishName;// 机构英文名称
+
     @Column(name = "UNIT_SHORT_NAME")
     @Length(max = 32, message = "字段长度不能大于{max}")
     private String unitShortName;
@@ -66,7 +70,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
     @Column(name = "UNIT_TAG")
     @Length(max = 100, message = "字段长度不能大于{max}")
     private String unitTag;//机构标识用于第三方系统关联
-    
+
     @Column(name = "UNIT_DESC")
     @Length(max = 256, message = "字段长度不能大于{max}")
     private String unitDesc; // 机构描述
@@ -86,11 +90,11 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
     @Column(name = "DEP_NO")// 机构编码
     @Length(max = 100, message = "字段长度不能大于{max}")
     private String depNo;
-        
+
     @Column(name = "UNIT_PATH")// 机构编码
     @Length(max = 1000, message = "字段长度不能大于{max}")
     private String unitPath;
-    
+
     @Transient
     private String state;
     public String getState() {
@@ -113,8 +117,9 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
 
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
+    @ValueGenerator(strategy= GeneratorType.FUNCTIION, value = "now")
     protected Date createDate;
-    
+
     /**
      * CREATOR(创建人) 创建人
      */
@@ -131,13 +136,14 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
      * UPDATEDATE(更新时间) 更新时间
      */
     @Column(name = "UPDATE_DATE")
+    @ValueGenerator( strategy= GeneratorType.FUNCTIION, value = "now", condition = GeneratorCondition.ALWAYS, occasion = GeneratorTime.ALWAYS )
     private Date  updateDate;
 
 
     // private Set<String> subUsers; //所有下属用户代码集合
     @Transient
     private List<UserUnit> unitUsers;
-    
+
     @Transient
     private List<UnitInfo> subUnits;
 
@@ -184,7 +190,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
 
     public UnitInfo(String unitcode, String parentunit, String unittype,
                     String unitstate, String unitname, String unitdesc,
-                    Long addrbookid, String unitshortname, String depno, 
+                    Long addrbookid, String unitshortname, String depno,
                     String unittag, String englishname,String unitword, Long unitgrade) {
         this.unitCode = unitcode;
         this.parentUnit = parentunit;
@@ -198,11 +204,11 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         this.unitWord = unitword;
         this.unitGrade = unitgrade;
         this.unitTag = unittag;
-        this.englishName = englishname; 
+        this.englishName = englishname;
         unitUsers = null;
     }
 
-    
+
     public String getEnglishName() {
         return englishName;
     }
@@ -440,7 +446,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
             subUnits = new ArrayList<>();
         return subUnits;
     }
-    
+
     /*public List<UnitInfo> getChildren() {
         if(subUnits==null)
             subUnits = new ArrayList<>();
@@ -470,7 +476,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
-  
+
     public String getUnitPath() {
         return unitPath;
     }

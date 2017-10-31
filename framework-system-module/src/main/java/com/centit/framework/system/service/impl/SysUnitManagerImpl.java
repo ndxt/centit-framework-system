@@ -156,6 +156,14 @@ public class SysUnitManagerImpl implements SysUnitManager {
         return dbUnitInfo == null ? true : false;
     }
 
+  @Override
+  @Transactional
+  public boolean isUniqueOrder(UnitInfo unitInfo){
+    UnitInfo dbUnitInfo = unitInfoDao.getPeerUnitByParentUnit(
+      unitInfo.getParentUnit(), unitInfo.getUnitOrder());
+    return dbUnitInfo == null ? true : false;
+  }
+
     @Override
     @CacheEvict(value = "UnitInfo",allEntries = true)
     @Transactional
@@ -259,7 +267,4 @@ public class SysUnitManagerImpl implements SysUnitManager {
             }
         }
     }
-
-
-
 }

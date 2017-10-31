@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface UserUnitDao {
- 
+
      List<UserUnit> listObjects(Map<String, Object> filterMap);
 
 
@@ -24,30 +24,32 @@ public interface UserUnitDao {
 
      void deleteObjectById(String userUnitId);
 
+     void deleteObjectForceById(Object id);
+
      void deleteObject(UserUnit object);
 
     //"FROM UserUnit where userCode=?", userId
      List<UserUnit> listUserUnitsByUserCode(String userId);
-    
+
     //"FROM UserUnit where userCode=? and unitCode=?",new Object[]{userCode,unitCode});
     //参数 String userCode,String unitCode
      List<UserUnit> listObjectByUserUnit(String userCode, String unitCode);
-    
+
     // return "s"+ DatabaseOptUtils.getNextKeyBySequence(this, "S_USER_UNIT_ID", 9);
      String getNextKey();
-    
+
     //"update UserUnit set isPrimary='F',lastModifyDate= ?  where userCode = ? and (unitCode <> ? or userStation <> ? or userRank <> ?) and isPrimary='T'",
      void deleteOtherPrimaryUnit(UserUnit object);
-    
+
     // "delete UserUnit  where userCode = ? ",userCode
      void deleteUserUnitByUser(String userCode);
 
     // "delete UserUnit  where unitCode = ? ",unitCode
      void deleteUserUnitByUnit(String unitCode);
-    
+
     //"FROM UserUnit where userCode=? and isPrimary='T'", userId
      UserUnit getPrimaryUnitByUserId(String userId);
-    
+
     //"FROM UserUnit where unitCode=?", unitCode
      List<UserUnit> listUnitUsersByUnitCode(String unitCode);
 

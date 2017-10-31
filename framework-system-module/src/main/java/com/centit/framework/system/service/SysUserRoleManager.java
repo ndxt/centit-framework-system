@@ -3,6 +3,7 @@ package com.centit.framework.system.service;
 import java.util.List;
 import java.util.Map;
 
+import com.centit.framework.system.po.UserInfo;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
@@ -26,4 +27,6 @@ public interface SysUserRoleManager{
     void deleteObjectById(UserRoleId id);
 
     void mergeObject(UserRole dbUserRole, UserRole userRole);
+
+    List<UserInfo> listUsersByRole(String roleCode);
 }

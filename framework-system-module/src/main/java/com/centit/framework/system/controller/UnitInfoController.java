@@ -247,6 +247,12 @@ public class UnitInfoController extends BaseController {
                     "机构名"+unitInfo.getUnitName()+"已存在，请更换！", response);
             return;
         }
+      if(!sysUnitManager.isUniqueOrder(unitInfo)){
+        JsonResultUtils.writeErrorMessageJson(
+          ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+          "同级机构排序号"+unitInfo.getUnitOrder()+"已存在，请更换！", response);
+        return;
+      }
         sysUnitManager.saveNewUnitInfo(unitInfo);
 
         JsonResultUtils.writeSingleDataJson(unitInfo, response);
@@ -280,6 +286,13 @@ public class UnitInfoController extends BaseController {
                     ResponseData.ERROR_FIELD_INPUT_CONFLICT,
                     "机构名"+unitInfo.getUnitName()+"已存在，请更换！", response);
             return;
+        }
+        if("F".equals(unitInfo.getIsValid())){
+            List<UserUnit> userUnits = sysUserUnitManager.listUnitUsersByUnitCode(unitCode);
+            if(userUnits != null && userUnits.size() != 0){
+              JsonResultUtils.writeErrorMessageJson("该机构包含组织信息，不能设为禁用！", response);
+              return;
+            }
         }
 
         UnitInfo oldValue = new UnitInfo();
@@ -378,6 +391,24 @@ public class UnitInfoController extends BaseController {
         Map<String, Object> filterMap = new HashMap<>();
         filterMap.put("unitCode", unitCode);
         filterMap.put("isValid", "T");
+        List<UserInfo> listObjects = sysUserMag.listObjects(filterMap);
+
+        JsonResultUtils.writeSingleDataJson(listObjects, response);
+    }
+
+  /**
+   * 获取当前用户所在机构下所有用户
+   * @param state 是否启用 T|F
+   * @param response {@link HttpServletResponse}
+   */
+    @RequestMapping(value = "/currentusers/{state}", method = RequestMethod.GET)
+    public void listAllUsersByCurrentUser(@PathVariable String state, HttpServletRequest request, HttpServletResponse response) {
+        UserInfo userInfo = (UserInfo) getLoginUser(request);
+        String unitCode = userInfo.getPrimaryUnit();
+
+        Map<String, Object> filterMap = new HashMap<>();
+        filterMap.put("unitCode", unitCode);
+        filterMap.put("isValid", state);
         List<UserInfo> listObjects = sysUserMag.listObjects(filterMap);
 
         JsonResultUtils.writeSingleDataJson(listObjects, response);

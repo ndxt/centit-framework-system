@@ -130,7 +130,9 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
 
     @Transactional(propagation=Propagation.MANDATORY)
     public List<UnitInfo> listSubUnitsByUnitPaht(String unitPath){
-        return listObjectsByProperty("unitPath", unitPath+"%");
+      Map<String, Object> map = new HashMap<>(2);
+      map.put("unitPath", unitPath+"%");
+        return listObjects(map);
     }
 
     public List<String> getAllParentUnit(){
@@ -177,4 +179,27 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
         }
         return list.get(0);
     }
+
+  /**
+   * 根据PARENT_UNIT和UNIT_ORDER获取同级机构
+   * @param parentUnit 机构名称
+   * @param unitOrder 父类代码
+   * @return UnitInfo 机构信息
+   */
+  @Override
+  public UnitInfo getPeerUnitByParentUnit(String parentUnit, long unitOrder) {
+    String sql = "select u.UNIT_CODE, u.PARENT_UNIT, u.UNIT_TYPE, u.IS_VALID, u.UNIT_NAME, u.ENGLISH_NAME," +
+      " u.UNIT_SHORT_NAME, u.UNIT_WORD, u.UNIT_TAG, u.UNIT_DESC, u.ADDRBOOK_ID, u.UNIT_ORDER, u.UNIT_GRADE," +
+      " u.DEP_NO, u.UNIT_PATH, u.UNIT_MANAGER, u.CREATE_DATE, u.CREATOR, u.UPDATOR, u.UPDATE_DATE " +
+      "from F_UNITINFO u " +
+      "where u.UNIT_ORDER = :unitOrder and u.PARENT_UNIT = :parentUnit ";
+
+    List<UnitInfo> list = listObjectsBySql(sql, QueryUtils.createSqlParamsMap(
+      "unitOrder", unitOrder, "parentUnit", parentUnit));
+
+    if(list == null || list.size() == 0){
+      return null;
+    }
+    return list.get(0);
+  }
 }

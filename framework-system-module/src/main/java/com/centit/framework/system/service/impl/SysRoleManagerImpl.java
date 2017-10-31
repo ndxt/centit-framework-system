@@ -205,7 +205,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Transactional
     public int countRoleUserSum(String roleCode){
 //        return roleInfoDao.countRoleUserSum(roleCode);
-        return userRoleDao.pageCount(QueryUtils.createSqlParamsMap("roleCode",roleCode ));
+        return userRoleDao.pageCount(QueryUtils.createSqlParamsMap("roleCode",roleCode));
     }
 
     @Override

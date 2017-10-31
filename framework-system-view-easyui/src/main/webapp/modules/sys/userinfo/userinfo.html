@@ -5,7 +5,7 @@
 
 	<div data-options="region:'center'" style="width:50%">
 
-		<div class="easyui-panel search-body" cls="search">
+		<div class="easyui-panel search-body" cls="search" style="width: 100%">
 			<form class="clearFromValue">
 
 				<div class="search-item">
@@ -33,7 +33,7 @@
 
 		<table url="system/userinfo?_search=false&field=userCode&field=loginName&field=userName&field=isValid&field=primaryUnit"
 			id="userInfoTable"
-			width="96%"
+			width="100%"
 			bottom="0"
 			sortName="userOrder"
 			sortOrder="asc"
@@ -59,13 +59,13 @@
 				target="dialog" rel="userinfo_add" title="新增用户" maximizable="true"
 					width="640" height="470" btnValue="添加"><p id="e@link.add">新增</p></a>
 
-			<a  iconCls="icon-edit" href="modules/sys/userinfo/userinfo-edit.html" trigger="single"
+			<a  iconCls="icon-edit" href="modules/sys/userinfo/userinfo-info.html" trigger="single"
 				target="dialog" rel="userinfo_edit" title="编辑 {{userName}} 用户" width="640" height="470" btnValue="更新"><p id="e@link.edit">编辑</p></a>
 
-			<hr>
+			<!--<hr>
 
 			<a iconCls="icon-base icon-base-computer" href="modules/sys/userinfo/userinfo-all.html" trigger="single"
-				target="dialog" rel="userinfo_all" title="编辑 {{userName}} 机构与权限" width="900" height="600" btnValue="更新"  buttons="false">机构与权限</a>
+				target="dialog" rel="userinfo_all" title="编辑 {{userName}} 机构与权限" width="900" height="600" btnValue="更新"  buttons="false">机构与权限</a>-->
 
 			<hr>
 			<a  iconCls="icon-base icon-base-ban"  trigger="multiple"

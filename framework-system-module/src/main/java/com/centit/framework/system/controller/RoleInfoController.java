@@ -5,14 +5,12 @@ import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.*;
+import com.centit.framework.system.po.*;
+import com.centit.framework.system.service.SysUserRoleManager;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.model.basedata.IUserUnit;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.security.model.CentitUserDetails;
-import com.centit.framework.system.po.OptMethod;
-import com.centit.framework.system.po.RoleInfo;
-import com.centit.framework.system.po.RolePower;
-import com.centit.framework.system.po.RolePowerId;
 import com.centit.framework.system.service.OptInfoManager;
 import com.centit.framework.system.service.OptMethodManager;
 import com.centit.framework.system.service.SysRoleManager;
@@ -45,11 +43,14 @@ public class RoleInfoController extends BaseController {
 
     @Resource
     @NotNull
-    private OptInfoManager functionManager;    
-    
+    private OptInfoManager functionManager;
+
     @Resource
     @NotNull
     private OptMethodManager optDefManager;
+
+    @Resource
+    private SysUserRoleManager sysUserRoleManager;
     /**
      * 系统日志中记录
      */
@@ -105,7 +106,7 @@ public class RoleInfoController extends BaseController {
     }
 
     /**
-     * 查询所有某部门部门角色
+     * 查询所有 某部门部门角色
      * @param field field[]
      * @param unitCode unitCode
      * @param pageDesc PageDesc
@@ -116,7 +117,7 @@ public class RoleInfoController extends BaseController {
     public void listUnitAndPublicRole(String[] field,@PathVariable String unitCode,PageDesc pageDesc,
                                       HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = convertSearchColumn(request);
-        filterMap.put("UNITROLE", unitCode + "-%");
+        filterMap.put("publicUnitRole", unitCode + "-%");
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
 
         ResponseMapData respData = new ResponseMapData();
@@ -129,7 +130,7 @@ public class RoleInfoController extends BaseController {
         else{
         JsonResultUtils.writeResponseDataAsJson(respData, response, JsonPropertyUtils.getExcludePropPreFilter(RoleInfo.class, "rolePowers","userRoles"));}
     }
-    
+
     /**
      * 查询所有某部门部门角色
      * @param field field[]
@@ -153,7 +154,7 @@ public class RoleInfoController extends BaseController {
         else{
         JsonResultUtils.writeResponseDataAsJson(respData, response, JsonPropertyUtils.getExcludePropPreFilter(RoleInfo.class, "rolePowers","userRoles"));}
     }
-    
+
     /**
      * 根据角色代码获取角色操作定义信息
      *
@@ -193,7 +194,7 @@ public class RoleInfoController extends BaseController {
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 
         List<OptMethod> optDefs = optDefManager.listOptMethodByOptID(optId);
-        
+
 
         for (OptMethod def : optDefs) {
             Map<String, Object> temp = new HashMap<>();
@@ -231,13 +232,13 @@ public class RoleInfoController extends BaseController {
       //刷新缓存
         sysRoleManager.loadRoleSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
-        
+
         /*********log*********/
         OperationLogCenter.logNewObject(request,optId,roleInfo.getRoleCode(),
                 OperationLog.P_OPT_LOG_METHOD_C, "新增角色" ,roleInfo);
         /*********log*********/
     }
-   
+
     @RequestMapping(value = "/public",method = RequestMethod.POST)
     public void createPublicRole(@Valid RoleInfo roleInfo,HttpServletRequest request, HttpServletResponse response) {
 
@@ -251,13 +252,13 @@ public class RoleInfoController extends BaseController {
       //刷新缓存
         sysRoleManager.loadRoleSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
-        
+
         /*********log*********/
         OperationLogCenter.logNewObject(request, optId,roleInfo.getRoleCode(),
                 OperationLog.P_OPT_LOG_METHOD_C, "新增角色" , roleInfo);
         /*********log*********/
     }
-    
+
     @RequestMapping(value = "/item",method = RequestMethod.POST)
     public void createItemRole(@Valid RoleInfo roleInfo,HttpServletRequest request, HttpServletResponse response) {
 
@@ -266,19 +267,19 @@ public class RoleInfoController extends BaseController {
         }
         roleInfo.setRoleType("I");
         //roleInfo.setUnitCode("I");
-        
+
         roleInfo.setCreateDate(new Date());
         sysRoleManager.saveNewRoleInfo(roleInfo);
       //刷新缓存
         sysRoleManager.loadRoleSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
-        
+
         /*********log*********/
         OperationLogCenter.logNewObject(request, optId,roleInfo.getRoleCode(),
                 OperationLog.P_OPT_LOG_METHOD_C, "新增角色" , roleInfo);
         /*********log*********/
     }
-    
+
     @RequestMapping(value = "/dept/{unitcode}",method = RequestMethod.POST)
     public void createDeptRole(@PathVariable String unitcode,@Valid RoleInfo roleInfo,
             HttpServletRequest request,HttpServletResponse response) {
@@ -293,13 +294,13 @@ public class RoleInfoController extends BaseController {
         //刷新缓存
         sysRoleManager.loadRoleSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
-        
+
         //*********log*********//*
-        OperationLogCenter.logNewObject(request,optId,roleInfo.getRoleCode(), 
+        OperationLogCenter.logNewObject(request,optId,roleInfo.getRoleCode(),
                 OperationLog.P_OPT_LOG_METHOD_C,  "新增角色" , roleInfo);
         //*********log*********//*
     }
-    
+
     /**
      * 从操作定义反向添加角色代码
      * @param roleCode 角色代码
@@ -308,9 +309,9 @@ public class RoleInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/addopt/{roleCode}/{optCode}", method = RequestMethod.PUT)
-    public void addOptToRole(@PathVariable String roleCode, @PathVariable String optCode, 
+    public void addOptToRole(@PathVariable String roleCode, @PathVariable String optCode,
             HttpServletRequest request,HttpServletResponse response) {
-        
+
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
 
         if (null == dbRoleInfo) {
@@ -326,7 +327,7 @@ public class RoleInfoController extends BaseController {
         }
 
         dbRoleInfo.getRolePowers().add(rolePower);
-        
+
         sysRoleManager.updateRoleInfo(dbRoleInfo);
       //刷新缓存
         sysRoleManager.loadRoleSecurityMetadata();
@@ -353,7 +354,7 @@ public class RoleInfoController extends BaseController {
             JsonResultUtils.writeErrorMessageJson("角色信息不存在", response);
             return;
         }
-        
+
         RolePower rolePower = new RolePower(new RolePowerId(roleCode, optCode));
         if (!dbRoleInfo.getRolePowers().contains(rolePower)) {
             JsonResultUtils.writeBlankJson(response);
@@ -395,7 +396,7 @@ public class RoleInfoController extends BaseController {
         sysRoleManager.updateRoleInfo(roleInfo);
 
         JsonResultUtils.writeBlankJson(response);
-        
+
         /*********log*********/
         OperationLogCenter.logUpdateObject(request,optId, roleCode, OperationLog.P_OPT_LOG_METHOD_U,
                 "更新角色信息",roleInfo, oldValue);
@@ -442,13 +443,13 @@ public class RoleInfoController extends BaseController {
 
         sysRoleManager.loadRoleSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
-        
+
         /*********log*********/
         OperationLogCenter.logUpdateObject(request,optId, roleCode, OperationLog.P_OPT_LOG_METHOD_U,
                 "更新角色"+dbRoleInfo.getRoleName()+"权限",dbRoleInfo,oldRoleInfo);
         /*********log*********/
     }
-    
+
     /**
      * 角色代码是否存在
      *
@@ -506,12 +507,26 @@ public class RoleInfoController extends BaseController {
             JsonResultUtils.writeErrorMessageJson("系统内置角色不能删除。", response);
             return;
         }
-        int n = sysRoleManager.countRoleUserSum(roleCode);
+//        int n = sysRoleManager.countRoleUserSum(roleCode);
+        List<UserInfo> users = sysUserRoleManager.listUsersByRole(roleCode);
+        boolean isValid = true;
+        for(UserInfo u : users){
+            if("T".equals(u.getIsValid())){
+              JsonResultUtils.writeErrorMessageJson("有用户引用这个角色，不能删除。", response);
+              return ;
+            }
+            isValid = false;
+        }
+        if(!isValid){
+          JsonResultUtils.writeErrorMessageJson("有禁用用户引用这个角色，不能删除。", response);
+          return ;
+        }
+
         //RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
-        if(n>0){
+       /* if(n>0){
             JsonResultUtils.writeErrorMessageJson("有用户引用这个角色，不能删除。", response);
             return ;
-        }
+        }*/
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         if(dbRoleInfo!=null) {
             OperationLogCenter.logDeleteObject(request, optId, roleCode,
@@ -547,7 +562,7 @@ public class RoleInfoController extends BaseController {
      */
     @RequestMapping(value = "/power/unit/{unitCode}", method = RequestMethod.GET)
     public void getUnitInfoPower(@PathVariable String unitCode, HttpServletResponse response) {
-        
+
         List<RolePower> rolePowers = sysRoleManager.getRolePowers("G$" + unitCode);
 
         JsonResultUtils.writeSingleDataJson(rolePowers, response);
@@ -601,8 +616,8 @@ public class RoleInfoController extends BaseController {
         }
         List<RoleInfo> listObjects = sysRoleManager.listObjects(filterMap);
 
-        JsonResultUtils.writeSingleDataJson(listObjects, response, 
+        JsonResultUtils.writeSingleDataJson(listObjects, response,
                 JsonPropertyUtils.getIncludePropPreFilter(RoleInfo.class, field));
     }
-  
+
 }

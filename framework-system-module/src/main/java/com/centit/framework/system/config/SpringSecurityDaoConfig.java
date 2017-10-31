@@ -52,7 +52,7 @@ public class SpringSecurityDaoConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests()
-                .antMatchers("/system/mainframe/login","/system/mainframe/csrf","/system/exception").anonymous()
+                .antMatchers("/system/mainframe/login","/system/mainframe/csrf","/system/exception").permitAll()
                 .and()
                     .exceptionHandling().accessDeniedPage("/system/exception/accessDenied")
                 .and()

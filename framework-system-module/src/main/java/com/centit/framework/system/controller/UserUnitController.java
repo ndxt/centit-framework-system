@@ -130,7 +130,7 @@ public class UserUnitController extends BaseController {
         UserInfo user = sysUserManager.getObjectById(this.getLoginUser(request).getUserCode());
         Map<String, Object> filterMap = convertSearchColumn(request);
         filterMap.put("userCode", userCode);
-        filterMap.put("unitCode", user.getPrimaryUnit());
+//        filterMap.put("unitCode", user.getPrimaryUnit());
 
         List<UserUnit> listObjects = sysUserUnitManager.listObjects(filterMap, pageDesc);
 

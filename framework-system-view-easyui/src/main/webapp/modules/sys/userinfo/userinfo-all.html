@@ -38,8 +38,8 @@
 	</div>
 </form>
 
-<div class="easyui-accordion" style="width:96%;margin-left:10px;height:318px;">
-<div title="菜单角色信息">
+<div class="easyui-accordion" style="width:96%;margin-left:10px" data-options="multiple:true">
+<div title="菜单角色信息" data-options="collapsed:false">
 <table class="role"  style="width:95%;" data-options="cls: 'role'"
 	pagination="false"
 	border="true"
@@ -47,6 +47,7 @@
 	min-height="234">
 	<thead frozen="true">
 		<tr>
+			<th id="a@roleCode" field="roleCode" width="30%">角色编码</th>
 			<th id="a@rolename" field="roleCode" format="Role" width="30%">角色名称</th>
 			<th id="a@effectiveDate" field="obtainDate" width="30%" align="center" format="Date:yyyy-MM-dd">生效日期</th>
 		</tr>
@@ -62,9 +63,9 @@
 	<a rel="userinfo_role_add" iconCls="icon-add" href="modules/sys/userinfo/userinfo-role-info.html"
 		target="dialog" trigger="none" title="添加菜单角色" btnValue="添加" width="500" height="370"><p  id="userinfo.a@link.add">新增</p></a>
 	<hr>
-	<a iconCls="icon-base icon-base-gear" href="modules/sys/roleinfo/roleinfo-power.html" trigger="single"
+<!--	<a iconCls="icon-base icon-base-gear" href="modules/sys/roleinfo/roleinfo-power.html" trigger="single"
 		target="dialog" rel="roleinfo_operate" title="编辑 {{roleName}} 操作权限" width="720" height="600" btnValue="更新"><p  id="d@link.authorityOpt">操作权限</p></a>
-	<hr>
+	<hr>-->
 	<a rel="userinfo_role_ban" iconCls="icon-base icon-base-rubbish "
 		target="confirm" trigger="single" title="确定将 {{roleName}} 从用户{{userName}} 的菜单角色中回收吗？"><p  id="userinfo.a@btn.recycle">回收</p></a>
 <!-- 	<hr>
@@ -72,7 +73,7 @@
 		target="confirm" trigger="single" title="确定将 {{roleName}} 从用户中移出吗？"><p id="userinfo.a@btn.delete">删除</p></a> -->
 </div>
 </div>
-<div title="部门菜单角色">
+<!--<div title="部门菜单角色">
 <table class="unitRole"  style="width:96%" data-options="cls: 'unitRole'"
 	pagination="false"
 	border="true"
@@ -80,8 +81,8 @@
 	toolbar=".unitRole-toolbar" >
 	<thead frozen="true">
 		<tr>
-			<th id="a@depname" field="depName" width="50%">部门名称</th>
-			<th id="a@rolename" field="roleName" width="50%">角色名称</th>
+			&lt;!&ndash;<th id="a@depname" field="depName" width="30%">部门名称</th>&ndash;&gt;
+			<th id="a@rolename" field="roleName" width="30%">角色名称</th>
 			<th id="a@effectiveDate" field="obtainDate" width="30%" format="Date:yyyy-MM-dd" align="center">生效日期</th>
 		</tr>
 	</thead>
@@ -102,8 +103,8 @@
 	<a rel="userinfo_role_ban" iconCls="icon-base icon-base-rubbish "
 		target="confirm" trigger="single" title="确定将 {{roleName}} 从用户{{userName}} 的部门权限菜单角色中回收吗？"><p  id="userinfo.a@btn.recycle">回收</p></a>
 </div>
-</div>
-<div title="岗位信息">
+</div>-->
+<div title="岗位信息" data-options="collapsed:false">
 <table class="unit" style="width:96%" data-options="cls: 'unit'"
 	pagination="false"
 	min-height="234"
