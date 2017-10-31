@@ -25,8 +25,8 @@ define(function(require) {
             var newData={};
             $.extend(newData, this.object,{primaryUnit:this.parent.object.loginuser.primaryUnit});
             form.form('disableValidation')
-				.form('load', newData)
-				.form('focus');
+            .form('load', newData)
+            .form('focus');
         };
 
         // @override
