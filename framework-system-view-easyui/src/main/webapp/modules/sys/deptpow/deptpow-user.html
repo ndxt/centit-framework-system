@@ -5,22 +5,23 @@
 			<input type="text" class="easyui-textbox" name="unitName"
 				readonly="true" />
 		</div>
-		
+
 		<div class="field">
 			<label id="d@organizationCode">机构编码</label>
-			<input type="text" class="easyui-textbox" name="unitWord" 
+			<input type="text" class="easyui-textbox" name="unitWord"
 				readonly="true" />
 		</div>
 	</div>
 </form>
 
-<table style="width: 95%; margin: 0 auto;"
+<table style="width: 100%; margin: 0 auto;"
 	pagination="true"
 	toolbar=".temp-toolbar"
-	remoteSort="false" 
+	remoteSort="false"
 	sortName="isPrimary"
 	sortOrder="desc"
 	layoutH="120"
+ data-options="fit:true"
 	>
 	<thead>
 		<tr>
@@ -38,11 +39,11 @@
 <div class="temp-toolbar">
 	<a rel="unitinfo_user_add" iconCls="icon-add" href="modules/sys/unitinfo/unitinfo-user-info.html"
 		target="dialog" trigger="none" title="添加人员" btnValue="添加" width="500" height="360"><p  id="d@link.add">新增</p></a>
-	
+
 	<a  rel="unitinfo_user_edit" iconCls="icon-edit" href="modules/sys/unitinfo/unitinfo-user-info.html"
 		target="dialog" trigger="single" title="编辑  {{userName}} 机构信息" btnValue="更新" width="500" height="360"><p id="d@link.edit">编辑</p></a>
-	<hr>	
-		
+	<hr>
+
 	<a  rel="unitinfo_user_remove" iconCls="icon-base icon-base-ban"
 		target="confirm" trigger="single" title="确定将 {{userName}} 从机构中移出吗？"><p id="d@btn.delete">删除</p></a>
 </div>
