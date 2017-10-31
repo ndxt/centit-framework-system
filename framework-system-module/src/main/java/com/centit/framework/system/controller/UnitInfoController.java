@@ -287,6 +287,13 @@ public class UnitInfoController extends BaseController {
                     "机构名"+unitInfo.getUnitName()+"已存在，请更换！", response);
             return;
         }
+        if("F".equals(unitInfo.getIsValid())){
+            List<UserUnit> userUnits = sysUserUnitManager.listUnitUsersByUnitCode(unitCode);
+            if(userUnits != null && userUnits.size() != 0){
+              JsonResultUtils.writeErrorMessageJson("该机构包含组织信息，不能设为禁用！", response);
+              return;
+            }
+        }
 
         UnitInfo oldValue = new UnitInfo();
         oldValue.copy(dbUnitInfo);
