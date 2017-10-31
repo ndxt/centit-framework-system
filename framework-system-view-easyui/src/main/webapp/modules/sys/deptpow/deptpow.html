@@ -16,15 +16,15 @@
 <table class="easyui-treegrid"
 		url="/system/unitinfo/subunits?struct=true"
 	    layoutH="68"
-       data-options="fitColumns: true,	method: 'get',idField: 'unitCode',treeField: 'unitName',
+       data-options="	method: 'get',idField: 'unitCode',treeField: 'unitName',
 							showFooter: true,toolbar:'.temp-toolbar'" method="post" search=".search">
     <thead>
         <tr>
         	<th id="e@serialNumber" data-options="field:'unitCode'" hidden="true">编号</th>
-            <th id="e@name" data-options="field:'unitName'" width="30%">名称</th>
-            <th id="e@encoding" data-options="field:'unitWord'" width="12%" align="center">编码</th>
-            <th id="e@classes" data-options="field:'unitTypeText'" width="15%" align="center">类别</th>
-            <th id="e@describe" data-options="field:'unitDesc'" width="40%">描述</th>
+            <th id="e@name" data-options="field:'unitName'" width="100">名称</th>
+            <th id="e@encoding" data-options="field:'unitWord'" width="100" align="center">编码</th>
+            <th id="e@classes" data-options="field:'unitTypeText'" width="130" align="center">类别</th>
+            <th id="e@describe" data-options="field:'unitDesc'" width="200">描述</th>
         </tr>
     </thead>
 </table>

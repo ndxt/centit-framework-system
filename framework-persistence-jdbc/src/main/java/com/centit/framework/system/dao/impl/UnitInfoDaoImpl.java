@@ -130,15 +130,12 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
 
     @Transactional(propagation=Propagation.MANDATORY)
     public List<UnitInfo> listSubUnitsByUnitPaht(String unitPath){
-      Map<String, Object> map = new HashMap<>(2);
-      map.put("unitPath", unitPath+"%");
-        return listObjects(map);
+        return listObjects(QueryUtils.createSqlParamsMap("unitPath", unitPath+"%" ));
     }
 
     public List<String> getAllParentUnit(){
-       String sql = "select distinct t.parent_unit from f_unitinfo t ";
-
-        return this.getJdbcTemplate().queryForList(sql, String.class);
+        return this.getJdbcTemplate().queryForList(
+          "select distinct t.parent_unit from f_unitinfo t ", String.class);
     }
 
     @Override
@@ -152,9 +149,9 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     }
 
     public int countChildrenSum(String unitCode){
-        String sql = "select count(1) as subunits from F_UNITINFO where PARENT_UNIT = ?";
-
-        return this.getJdbcTemplate().queryForObject(sql, Integer.class, unitCode);
+        return this.getJdbcTemplate().queryForObject(
+          "select count(*) as subunits from F_UNITINFO where PARENT_UNIT = ?",
+          Integer.class, unitCode);
     }
 
     /**
