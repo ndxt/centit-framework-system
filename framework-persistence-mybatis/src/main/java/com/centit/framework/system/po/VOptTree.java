@@ -42,15 +42,15 @@ public class VOptTree {
     }
 
     @Column(name = "PARENT_ID")
-    @Size(max = 8, message = "字段长度不能大于{max}")
+    @Size(max = 8, message = "大于{max}")
     private String parent_id;
 
     @Column(name = "MENU_NAME")
-    @Size(max = 32, message = "字段长度不能大于{max}")
+    @Size(max = 32, message = "大于{max}")
     private String menu_name;
 
     @Column(name = "ORDER_IND")
-    @Size(max = 4, message = "字段长度不能大于{max}")
+    @Size(max = 4, message = "大于{max}")
     private Long orderInd; // 业务顺序
 
     public VOptTree() {

@@ -2,28 +2,28 @@
 	<div class="two fields">
 		<div class="field ">
 			<label id="b@username">用户名</label>
-			<input type="text" class="easyui-textbox" name="userCode" 
+			<input type="text" class="easyui-textbox" name="userCode"
 				 readonly="readonly" target='user'/>
-			
+
 		</div>
-		
+
 		<div class="field required">
 			<label id="b@rolename">角色名</label>
-			<input type="text" class="easyui-combobox" name="roleCode" required 
+			<input type="text" class="easyui-combobox" name="roleCode" required
 			url="system/roleinfo/listRoles/D" valueField="roleCode" textField="roleName" panelHeight="auto"/>
 		</div>
 	</div>
-	
-	
+
+
 	<div class="two fields">
 		<div class="field required">
 			<label id="b@effectiveDate">生效日期</label>
 			<input type="text" class="easyui-datebox" name="obtainDate" id="obtainDate" required/>
 		</div>
 	</div>
-	
+
 	<div class="field">
 		<label id="b@remarks">备注</label>
-		<input type="text" class="easyui-textbox" name="changeDesc" height="100" multiline="true" style="height: 100px; width: 99%"/>
+		<input validType="maxLength[255]" type="text" class="easyui-textbox" name="changeDesc" height="100" multiline="true" style="height: 100px; width: 99%"/>
 	</div>
 </form>

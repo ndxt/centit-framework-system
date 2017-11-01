@@ -25,22 +25,22 @@ public class FVUserOptList implements java.io.Serializable {
     @Column(name = "OPT_CODE")
     @NotNull(message = "字段不能为空")
     private String optcode;     //业务代码
-    
+
     // Fields
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     private FVUserOptListId id; //主键
 
     @Column(name = "OPT_NAME")
-    @Size(max = 50, message = "字段长度不能大于{max}")
+    @Size(max = 50, message = "大于{max}")
     private String optName;     //业务名字
 
     @Column(name = "OPT_ID")
-    @Size(max = 8, message = "字段长度不能大于{max}")
+    @Size(max = 8, message = "大于{max}")
     private String optId;       //业务编号
 
     @Column(name = "OPT_METHOD")
-    @Size(max = 50, message = "字段长度不能大于{max}")
+    @Size(max = 50, message = "大于{max}")
     private String optMethod;   //业务方法？？
 
     // Constructors
@@ -75,7 +75,7 @@ public class FVUserOptList implements java.io.Serializable {
         this.id = id;
     }
 
-  
+
 
     public String getUserCode() {
         return userCode;

@@ -39,11 +39,11 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
     private DataDictionaryId id; // 主键id
 
     @Column(name = "EXTRA_CODE")
-    @Length(max = 16, message = "字段长度不能大于{max}")
+    @Length(max = 16, message = "大于{max}")
     private String extraCode; // 附加代码1
 
     @Column(name = "EXTRA_CODE2")
-    @Length(max = 16, message = "字段长度不能大于{max}")
+    @Length(max = 16, message = "大于{max}")
     private String extraCode2; // 附加代码2
 
     @Column(name = "DATA_TAG")
@@ -53,12 +53,12 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
 
     @Column(name = "DATA_VALUE")
     @NotBlank(message = "字段不能为空")
-    @Length(max = 2048, message = "字段长度不能大于{max}")
+    @Length(max = 2048, message = "大于{max}")
     private String dataValue; // 数据值
 
     @Transient
     private JSONObject jsonData;
-    
+
     @Column(name = "DATA_STYLE")
     @NotNull(message = "字段不能为空")
     @Length(max = 1, message = "字段长度必须为{max}")
@@ -70,9 +70,9 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
     private Integer dataOrder;
 
     @Column(name = "DATA_DESC")
-    @Length(max = 256, message = "字段长度不能大于{max}")
+    @Length(max = 256, message = "大于{max}")
     private String dataDesc; // 备注
-    
+
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
@@ -210,7 +210,7 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
         }
         return sRet;
     }
-      
+
     public String getFullKey() {
         return this.id.getCatalogCode() + "." + this.id.getDataCode();
     }
@@ -238,7 +238,7 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
     public void setDataDesc(String datadesc) {
         this.dataDesc = datadesc;
     }
-    
+
     public Date getCreateDate() {
         return createDate;
     }
