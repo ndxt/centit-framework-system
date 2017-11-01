@@ -1,4 +1,4 @@
-<div class="easyui-layout" style="width: 100%; height: 100%;"	id="unitinfo_panel" data-options="fit:true">
+<div class="easyui-layout" style="width: 100%;"	id="unitinfo_panel" data-options="fit:true">
 	<div data-options="region:'center'" style="width: 50%">
 		<div class="easyui-panel search-body" cls="search" style="width: 100%">
 			<form class="clearFromValue">
@@ -14,7 +14,7 @@
 			</form>
 		</div>
 		<table id="tg" class="easyui-treegrid" width="100%"
-			url="system/unitinfo?struct=true" layoutH="68" search=".search"
+			url="system/unitinfo?struct=true" layoutH="90" search=".search"
 			data-options="method: 'get',idField: 'unitCode',treeField: 'unitName',
 							showFooter: true,toolbar:'.temp-toolbar'" method="post">
 			<thead>

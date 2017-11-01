@@ -1,13 +1,13 @@
-<style>
-	.deptunit-toolbar,
-	.deptrole-toolbar {
-		width:100%;
-		margin: 20px 0;
-		height: 40%;
-	}
-	.role{float:left;margin-left:10px;}
-	.unit{float:right;margin-right:10px;}
-</style>
+<!--<style>-->
+	<!--.deptunit-toolbar,-->
+	<!--.deptrole-toolbar {-->
+		<!--width:100%;-->
+		<!--margin: 20px 0;-->
+		<!--height: 40%;-->
+	<!--}-->
+	<!--.role{float:left;margin-left:10px;}-->
+	<!--.unit{float:right;margin-right:10px;}-->
+<!--</style>-->
 <form class="form centit">
 	<input type="hidden" name="userCode"/>
 
@@ -48,60 +48,123 @@
 	</div>
 </form>
 
-<table class="deptrole" title="部门菜单角色" style="width:98%;height: 35%; margin: 20px 0;" data-options="cls: 'role'"
-	pagination="false"  rownumbers="false"
-	border="true"
-	toolbar=".deptrole-toolbar"
-	>
-	<thead frozen="true">
-		<tr>
-			<th id="a@rolename" field="roleName"  width="30%">角色名称</th>
-			<th id="a@effectiveDate" field="obtainDate" width="33%" align="center" format="Date:yyyy-MM-dd">生效日期</th>
-		</tr>
-	</thead>
-	<thead>
-		<tr>
-			<th id="a@remarks" field="changeDesc" width="90">备注</th>
-		</tr>
-	</thead>
-</table>
+<!--<table class="deptrole" title="部门菜单角色" style="width:98%;height: 35%; margin: 20px 0;" data-options="cls: 'role'"-->
+	<!--pagination="false"  rownumbers="false"-->
+	<!--border="true"-->
+	<!--toolbar=".deptrole-toolbar"-->
+	<!--&gt;-->
+	<!--<thead frozen="true">-->
+		<!--<tr>-->
+			<!--<th id="a@rolename" field="roleName"  width="30%">角色名称</th>-->
+			<!--<th id="a@effectiveDate" field="obtainDate" width="33%" align="center" format="Date:yyyy-MM-dd">生效日期</th>-->
+		<!--</tr>-->
+	<!--</thead>-->
+	<!--<thead>-->
+		<!--<tr>-->
+			<!--<th id="a@remarks" field="changeDesc" width="90">备注</th>-->
+		<!--</tr>-->
+	<!--</thead>-->
+<!--</table>-->
 
-<div class="deptrole-toolbar">
-	<a rel="deptuserinfo_role_add" iconCls="icon-add" href="modules/sys/deptuserinfo/deptuserinfo-role-info.html"
-		target="dialog" trigger="none" title="添加人员" btnValue="添加" width="500" height="370"><p  id="deptuserinfo.a@link.add">新增</p></a>
-	<hr>
-	<a rel="deptuserinfo_role_ban" iconCls="icon-base icon-base-rubbish "
-		target="confirm" trigger="single" title="确定将 {{roleName}} 从用户中回收吗？"><p  id="deptuserinfo.a@btn.recycle">回收</p></a>
+<!--<div class="deptrole-toolbar">-->
+	<!--<a rel="deptuserinfo_role_add" iconCls="icon-add" href="modules/sys/deptuserinfo/deptuserinfo-role-info.html"-->
+		<!--target="dialog" trigger="none" title="添加人员" btnValue="添加" width="500" height="370"><p  id="deptuserinfo.a@link.add">新增</p></a>-->
+	<!--<hr>-->
+	<!--<a rel="deptuserinfo_role_ban" iconCls="icon-base icon-base-rubbish "-->
+		<!--target="confirm" trigger="single" title="确定将 {{roleName}} 从用户中回收吗？"><p  id="deptuserinfo.a@btn.recycle">回收</p></a>-->
 
+<!--</div>-->
+
+<!--<table class="deptunit" style="width:98%;height: 33%; margin: 20px 0;" title="岗位信息" data-options="cls: 'unit'"-->
+	<!--pagination="false" rownumbers="false"-->
+	<!--toolbar=".deptunit-toolbar"-->
+	<!--&gt;-->
+	<!--<thead>-->
+		<!--<tr>-->
+			<!--<th id="a@organizationCode" field="unitCode" hidden="true">机构编码</th>-->
+			<!--<th id="a@postCode" field="userStation" hidden="true">岗位代码</th>-->
+			<!--<th id="a@jobCode" field="userRank" hidden="true">职务代码</th>-->
+
+
+			<!--<th id="a@organizationName" field="unitName" width="30%">机构名称</th>-->
+			<!--<th id="a@post" field="userStationText" width="40%">岗位</th>-->
+			<!--<th id="a@job" field="userRankText" width="18%">职务</th>-->
+			<!--<th field="isPrimary" width="14%" format="Dictionary:YesOrNo">是否主机构</th>-->
+		<!--</tr>-->
+	<!--</thead>-->
+<!--</table>-->
+
+<!--<div class="deptunit-toolbar">-->
+	<!--<a  rel="deptuserinfo_unit_add" iconCls="icon-add" href="modules/sys/deptuserinfo/deptuserinfo-unit-info.html"-->
+		<!--target="dialog" trigger="none" title="添加人员岗位" btnValue="添加" width="500" height="360"><p id="deptuserinfo.a1@link.add">新增</p></a>-->
+	<!--<hr>-->
+	<!--<a  rel="deptuserinfo_unit_edit" iconCls="icon-edit" href="modules/sys/deptuserinfo/deptuserinfo-unit-edit.html"-->
+		<!--target="dialog" trigger="single" title="编辑  {{unitName}} 人员岗位" btnValue="更新" width="500" height="360"><p id="deptuserinfo.a1@btn.edit">编辑</p></a>-->
+	<!--<hr>-->
+	<!--<a  rel="deptuserinfo_unit_remove" iconCls="icon-base icon-base-ban"-->
+		<!--target="confirm" trigger="single" title="确定将 {{unitName}} 从用户中移出吗？"><p id="deptuserinfo.a1@btn.delete">删除</p></a>-->
+<!--</div>-->
+
+
+<div class="easyui-accordion" style="width:100%; data-options="multiple:true">
+<div title="部门菜单角色" data-options="collapsed:false">
+  <table class="role deptrole"  style="width:100%;" data-options="cls: 'role'"
+         pagination="false"
+         border="true"
+         toolbar=".deptrole-toolbar"
+         min-height="234">
+    <thead frozen="true">
+    <tr>
+      <th id="a@rolename" field="roleName"  width="30%">角色名称</th>
+      <th id="a@effectiveDate" field="obtainDate" width="33%" align="center" format="Date:yyyy-MM-dd">生效日期</th>
+    </tr>
+    </thead>
+    <thead>
+    <tr>
+      <th id="a@remarks" field="changeDesc" width="90">备注</th>
+    </tr>
+    </thead>
+  </table>
+
+  <div class="deptrole-toolbar">
+    <a rel="deptuserinfo_role_add" iconCls="icon-add" href="modules/sys/deptuserinfo/deptuserinfo-role-info.html"
+    target="dialog" trigger="none" title="添加人员" btnValue="添加" width="500" height="370"><p  id="deptuserinfo.a@link.add">新增</p></a>
+    <hr>
+    <a rel="deptuserinfo_role_ban" iconCls="icon-base icon-base-rubbish "
+    target="confirm" trigger="single" title="确定将 {{roleName}} 从用户中回收吗？"><p  id="deptuserinfo.a@btn.recycle">回收</p></a>
+  </div>
 </div>
 
-<table class="deptunit" style="width:98%;height: 33%; margin: 20px 0;" title="岗位信息" data-options="cls: 'unit'"
-	pagination="false" rownumbers="false"
-	toolbar=".deptunit-toolbar"
-	>
-	<thead>
-		<tr>
-			<th id="a@organizationCode" field="unitCode" hidden="true">机构编码</th>
-			<th id="a@postCode" field="userStation" hidden="true">岗位代码</th>
-			<th id="a@jobCode" field="userRank" hidden="true">职务代码</th>
+<div title="岗位信息" data-options="collapsed:false">
+  <table class="unit deptunit" style="width:100%" data-options="cls: 'unit'"
+         pagination="false"
+         min-height="234"
+         toolbar=".deptunit-toolbar"
+  >
+    <thead>
+    <tr>
+      <th id="a@organizationCode" field="unitCode" hidden="true">机构编码</th>
+      <th id="a@postCode" field="userStation" hidden="true">岗位代码</th>
+      <th id="a@jobCode" field="userRank" hidden="true">职务代码</th>
 
 
-			<th id="a@organizationName" field="unitName" width="30%">机构名称</th>
-			<th id="a@post" field="userStationText" width="40%">岗位</th>
-			<th id="a@job" field="userRankText" width="18%">职务</th>
-			<th field="isPrimary" width="14%" format="Dictionary:YesOrNo">是否主机构</th>
-		</tr>
-	</thead>
-</table>
+      <th id="a@organizationName" field="unitName" width="30%">机构名称</th>
+      <th id="a@post" field="userStationText" width="40%">岗位</th>
+      <th id="a@job" field="userRankText" width="18%">职务</th>
+      <th field="isPrimary" width="14%" format="Dictionary:YesOrNo">是否主机构</th>
+    </tr>
+    </thead>
+  </table>
 
-<div class="deptunit-toolbar">
-	<a  rel="deptuserinfo_unit_add" iconCls="icon-add" href="modules/sys/deptuserinfo/deptuserinfo-unit-info.html"
-		target="dialog" trigger="none" title="添加人员岗位" btnValue="添加" width="500" height="360"><p id="deptuserinfo.a1@link.add">新增</p></a>
-	<hr>
-	<a  rel="deptuserinfo_unit_edit" iconCls="icon-edit" href="modules/sys/deptuserinfo/deptuserinfo-unit-edit.html"
-		target="dialog" trigger="single" title="编辑  {{unitName}} 人员岗位" btnValue="更新" width="500" height="360"><p id="deptuserinfo.a1@btn.edit">编辑</p></a>
-	<hr>
-	<a  rel="deptuserinfo_unit_remove" iconCls="icon-base icon-base-ban"
-		target="confirm" trigger="single" title="确定将 {{unitName}} 从用户中移出吗？"><p id="deptuserinfo.a1@btn.delete">删除</p></a>
+  <div class="deptunit-toolbar">
+    <a  rel="deptuserinfo_unit_add" iconCls="icon-add" href="modules/sys/deptuserinfo/deptuserinfo-unit-info.html"
+    target="dialog" trigger="none" title="添加人员岗位" btnValue="添加" width="500" height="360"><p id="deptuserinfo.a1@link.add">新增</p></a>
+    <hr>
+    <a  rel="deptuserinfo_unit_edit" iconCls="icon-edit" href="modules/sys/deptuserinfo/deptuserinfo-unit-edit.html"
+    target="dialog" trigger="single" title="编辑  {{unitName}} 人员岗位" btnValue="更新" width="500" height="360"><p id="deptuserinfo.a1@btn.edit">编辑</p></a>
+    <hr>
+    <a  rel="deptuserinfo_unit_remove" iconCls="icon-base icon-base-ban"
+    target="confirm" trigger="single" title="确定将 {{unitName}} 从用户中移出吗？"><p id="deptuserinfo.a1@btn.delete">删除</p></a>
+  </div>
 </div>
-
+</div>
