@@ -1,4 +1,4 @@
-<div class="easyui-layout" style="width: 100%;"	id="unitinfo_panel" data-options="fit:true">
+<div class="easyui-layout" style="width: 100%;"	id="unitinfo_panel" data-options="fit:true" >
 	<div data-options="region:'center'" style="width: 50%">
 		<div class="easyui-panel search-body" cls="search" style="width: 100%">
 			<form class="clearFromValue">
@@ -14,19 +14,19 @@
 			</form>
 		</div>
 		<table id="tg" class="easyui-treegrid" width="100%"
-			url="system/unitinfo?struct=true" layoutH="90" search=".search"
-			data-options="method: 'get',idField: 'unitCode',treeField: 'unitName',
+			url="system/unitinfo?struct=true" layoutH="65" search=".search"
+			data-options="pagination:true,method: 'get',idField: 'unitCode',treeField: 'unitName',
 							showFooter: true,toolbar:'.temp-toolbar'" method="post">
 			<thead>
 				<tr>
 					<th id="f@number" data-options="field:'unitCode',editor:'text'"	hidden="true">编号</th>
-					<th id="f@name" data-options="field:'unitName',editor:'text'" width="250">名称</th>
+					<th id="f@name" data-options="field:'unitName',editor:'text'" width="150">名称</th>
 					<th id="f@encoding" data-options="field:'unitWord',editor:'text'" width="80" align="center">编码</th>
 					<th id="f@classes"	data-options="field:'unitTypeText',editor:{type:'combobox',
 						options:{method:'get',url:'system/cp/dictionary/UnitType?',textField:'dataValue'}}"
 						width="150" align="center">类别</th>
 					<th id="" data-options="field:'unitOrder',editor:'text'" width="50"	align="center">排序</th>
-					<th id="f@describe" data-options="field:'unitDesc',editor:'text'"	width="320">描述</th>
+					<th id="f@describe" data-options="field:'unitDesc',editor:'text'"	width="330"  >描述</th>
 				</tr>
 			</thead>
 		</table>
