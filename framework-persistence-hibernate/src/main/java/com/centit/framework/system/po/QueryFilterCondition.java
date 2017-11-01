@@ -16,10 +16,10 @@ import org.hibernate.validator.constraints.NotBlank;
 
 
 /**
- * create by scaffold 2016-03-01 
+ * create by scaffold 2016-03-01
  * @author codefan@sina.com
- 
-  系统内置查询方式null   
+
+  系统内置查询方式null
 */
 @Entity
 @Table(name = "F_QUERY_FILTER_CONDITION")
@@ -42,65 +42,65 @@ public class QueryFilterCondition implements java.io.Serializable {
      */
     @Column(name = "TABLE_CLASS_NAME")
     @NotBlank(message = "字段不能为空")
-    @Length(max = 64, message = "字段长度不能大于{max}")
+    @Length(max = 64, message = "大于{max}")
     private String  tableClassName;
     /**
      * 参数名 参数名
      */
     @Column(name = "PARAM_NAME")
     @NotBlank(message = "字段不能为空")
-    @Length(max = 64, message = "字段长度不能大于{max}")
+    @Length(max = 64, message = "大于{max}")
     private String  paramName;
     /**
      * 参数提示 参数输入框提示
      */
     @Column(name = "PARAM_LABEL")
     @NotBlank(message = "字段不能为空")
-    @Length(max = 120, message = "字段长度不能大于{max}")
+    @Length(max = 120, message = "大于{max}")
     private String  paramLabel;
     /**
      * 参数类型 参数类型：S 字符串，L 数字， N 有小数点数据， D 日期， T 时间戳， Y 年， M 月
      */
     @Column(name = "PARAM_TYPE")
-    @Length(max = 8, message = "字段长度不能大于{max}")
+    @Length(max = 8, message = "大于{max}")
     private String  paramType;
     /**
      * 参数默认值值 null
      */
     @Column(name = "DEFAULT_VALUE")
-    @Length(max = 100, message = "字段长度不能大于{max}")
+    @Length(max = 100, message = "大于{max}")
     private String  defaultValue;
     /**
      * 添加语句 过滤语句，将会拼装到sql语句中
      */
     @Column(name = "FILTER_SQL")
-    @Length(max = 200, message = "字段长度不能大于{max}")
+    @Length(max = 200, message = "大于{max}")
     private String  filterSql;
     /**
      * 参考类型 数据下拉框内容； N ：没有， D 数据字典, S 通过sql语句获得， J json数据直接获取
- 
+
      */
     @Column(name = "SELECT_DATA_TYPE")
     @NotBlank(message = "字段不能为空")
-    @Length(max = 0, message = "字段长度不能大于{max}")
+    @Length(max = 0, message = "大于{max}")
     private String  selectDataType;
     /**
      * 数据字典类别 数据字典
      */
     @Column(name = "SELECT_DATA_CATALOG")
-    @Length(max = 64, message = "字段长度不能大于{max}")
+    @Length(max = 64, message = "大于{max}")
     private String  selectDataCatalog;
     /**
      * SQL语句 有两个返回字段的sql语句
      */
     @Column(name = "SELECT_SQL")
-    @Length(max = 1000, message = "字段长度不能大于{max}")
+    @Length(max = 1000, message = "大于{max}")
     private String  selectSql;
     /**
      * 枚举类型 KEY,Value数值对，JSON格式
      */
     @Column(name = "SELECT_JSON")
-    @Length(max = 2000, message = "字段长度不能大于{max}")
+    @Length(max = 2000, message = "大于{max}")
     private String  selectJson;
 
     @Column(name = "CREATE_DATE", nullable = false)
@@ -143,7 +143,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     }
 
 
-  
+
     public Long getConditionNo() {
         return this.conditionNo;
     }
@@ -152,7 +152,7 @@ public class QueryFilterCondition implements java.io.Serializable {
         this.conditionNo = conditionNo;
     }
     // Property accessors
-  
+
     public String getTableClassName() {
         return this.tableClassName;
     }
@@ -160,7 +160,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     public void setTableClassName(String tableClassName) {
         this.tableClassName = tableClassName;
     }
-  
+
     public String getParamName() {
         return this.paramName;
     }
@@ -168,7 +168,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     public void setParamName(String paramName) {
         this.paramName = paramName;
     }
-  
+
     public String getParamLabel() {
         return this.paramLabel;
     }
@@ -176,7 +176,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     public void setParamLabel(String paramLabel) {
         this.paramLabel = paramLabel;
     }
-  
+
     public String getParamType() {
         return this.paramType;
     }
@@ -184,7 +184,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     public void setParamType(String paramType) {
         this.paramType = paramType;
     }
-  
+
     public String getDefaultValue() {
         return this.defaultValue;
     }
@@ -192,7 +192,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
     }
-  
+
     public String getFilterSql() {
         return this.filterSql;
     }
@@ -200,7 +200,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     public void setFilterSql(String filterSql) {
         this.filterSql = filterSql;
     }
-  
+
     public String getSelectDataType() {
         return this.selectDataType;
     }
@@ -208,7 +208,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     public void setSelectDataType(String selectDataType) {
         this.selectDataType = selectDataType;
     }
-  
+
     public String getSelectDataCatalog() {
         return this.selectDataCatalog;
     }
@@ -216,7 +216,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     public void setSelectDataCatalog(String selectDataCatalog) {
         this.selectDataCatalog = selectDataCatalog;
     }
-  
+
     public String getSelectSql() {
         return this.selectSql;
     }
@@ -224,7 +224,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     public void setSelectSql(String selectSql) {
         this.selectSql = selectSql;
     }
-  
+
     public String getSelectJson() {
         return this.selectJson;
     }
@@ -242,9 +242,9 @@ public class QueryFilterCondition implements java.io.Serializable {
     }
 
     public QueryFilterCondition copy(QueryFilterCondition other){
-  
+
         this.setConditionNo(other.getConditionNo());
-  
+
         this.tableClassName= other.getTableClassName();
         this.paramName= other.getParamName();
         this.paramLabel= other.getParamLabel();
@@ -290,7 +290,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     }
 
     public QueryFilterCondition clearProperties(){
-  
+
         this.tableClassName= null;
         this.paramName= null;
         this.paramLabel= null;

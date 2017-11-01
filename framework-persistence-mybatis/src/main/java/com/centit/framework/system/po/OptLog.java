@@ -37,13 +37,13 @@ public class OptLog implements java.io.Serializable {
      */
     @Column(name = "LOG_LEVEL")
     @NotNull(message = "字段不能为空")
-    @Size(max = 2, message = "字段长度不能大于{max}")
+    @Size(max = 2, message = "大于{max}")
     private String logLevel = OperationLog.LEVEL_INFO;
 
 
     @Column(name = "USER_CODE")
     @NotNull(message = "字段不能为空")
-    @Size(max = 8, message = "字段长度不能大于{max}")
+    @Size(max = 8, message = "大于{max}")
     @DictionaryMap(fieldName="userName",value="userCode")
     private String userCode;
 
@@ -57,7 +57,7 @@ public class OptLog implements java.io.Serializable {
      */
     @Column(name = "OPT_ID")
     @NotNull(message = "字段不能为空")
-    @Size(max = 64, message = "字段长度不能大于{max}")
+    @Size(max = 64, message = "大于{max}")
     @DictionaryMap(fieldName="optIdText",value="optId")
     private String optId;
 
@@ -66,7 +66,7 @@ public class OptLog implements java.io.Serializable {
      * 一般用于关联到业务主体
      */
     @Column(name = "OPT_TAG")
-    @Size(max = 200, message = "字段长度不能大于{max}")
+    @Size(max = 200, message = "大于{max}")
     private String optTag;
 
     /**
@@ -75,7 +75,7 @@ public class OptLog implements java.io.Serializable {
      * 方法使用 P_OPT_LOG_METHOD... 常量表示
      */
     @Column(name = "OPT_METHOD")
-    @Size(max = 64, message = "字段长度不能大于{max}")
+    @Size(max = 64, message = "大于{max}")
     private String optMethod;
 
     /**
@@ -212,7 +212,7 @@ public class OptLog implements java.io.Serializable {
     public void setOldValue(String oldvalue) {
         this.oldValue = oldvalue;
     }
-    
+
     public void copy(OperationLog other) {
         this.logLevel = other.getLogLevel();
         this.userCode = other.getUserCode();
@@ -239,9 +239,9 @@ public class OptLog implements java.io.Serializable {
         this.optContent = other.getOptContent();
         this.oldValue = other.getOldValue();
         this.newValue = other.getNewValue();
-        
+
       //  this.optTag = other.getoptTag();
-        
+
         this.optTag = other.getOptTag();
     }
 

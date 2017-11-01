@@ -32,27 +32,27 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
     @Column(name = "OBTAIN_DATE")
     @Temporal(TemporalType.DATE)
     private Date obtainDate; // 获得角色时间
-    
+
     @Column(name = "CHANGE_DESC")
-    @Length(max = 256, message = "字段长度不能大于{max}")
+    @Length(max = 256, message = "大于{max}")
     private String changeDesc; // 说明
 
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
-    
+
     //创建人、更新人、更新时间
     /**
      * CREATOR(创建人) 创建人
      */
     @Column(name = "CREATOR")
-    @Length(max = 32, message = "字段长度不能大于{max}")
+    @Length(max = 32, message = "大于{max}")
     private String  creator;
        /**
      * UPDATOR(更新人) 更新人
      */
     @Column(name = "UPDATOR")
-    @Length(max = 32, message = "字段长度不能大于{max}")
+    @Length(max = 32, message = "大于{max}")
     private String  updator;
     /**
      * UPDATEDATE(更新时间) 更新时间
@@ -70,7 +70,7 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
     public UserRole() {
         this.id=new UserRoleId();
     }
-    
+
     public String getLoginName() {
         String userCode = getUserCode();
 
@@ -97,7 +97,7 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
 
         return null;
     }
-    
+
     /**
      * minimal constructor
      * @param id UserRoleId
@@ -149,7 +149,7 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
     public String getRoleName(){
         return CodeRepositoryUtil.getValue("roleCode", this.getRoleCode());
     }
- 
+
     public void setRoleCode(String rolecode) {
         if (this.id == null)
             this.id = new UserRoleId();
@@ -178,7 +178,7 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
     public void setChangeDesc(String changedesc) {
         this.changeDesc = changedesc;
     }
-    
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -214,7 +214,7 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
         if (other.getCreateDate() != null)
             this.createDate = other.getCreateDate();
     }
-    
+
     //创建人、更新人、更新时间
     public String getCreator() {
           return this.creator;

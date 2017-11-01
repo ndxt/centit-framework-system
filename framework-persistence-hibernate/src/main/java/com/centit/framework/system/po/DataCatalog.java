@@ -33,7 +33,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
     private String catalogCode; // 类别代码
 
     @Column(name = "CATALOG_NAME")
-    @Length(max = 64, message = "字段长度不能大于{max}")
+    @Length(max = 64, message = "大于{max}")
     private String catalogName;// 类别名称
 
     @Column(name = "CATALOG_STYLE")
@@ -49,11 +49,11 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
     private String catalogType;// 类别形式
 
     @Column(name = "CATALOG_DESC")
-    @Length(max = 256, message = "字段长度不能大于{max}")
+    @Length(max = 256, message = "大于{max}")
     private String catalogDesc;// 类别描述
 
     @Column(name = "FIELD_DESC")
-    @Length(max = 1024, message = "字段长度不能大于{max}")
+    @Length(max = 1024, message = "大于{max}")
     private String fieldDesc; // 字典字段描述
 
     @Column(name = "NEED_CACHE")
@@ -63,7 +63,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
     private String needCache; // 是否需要缓存
 
     @Column(name = "OPT_ID")
-    @Length(max = 16, message = "字段长度不能大于{max}")
+    @Length(max = 16, message = "大于{max}")
     @DictionaryMap(fieldName="optName", value="optId")
     private String optId;
 
@@ -76,13 +76,13 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
      * CREATOR(创建人) 创建人
      */
     @Column(name = "CREATOR")
-    @Length(max = 32, message = "字段长度不能大于{max}")
+    @Length(max = 32, message = "大于{max}")
     private String  creator;
        /**
      * UPDATOR(更新人) 更新人
      */
     @Column(name = "UPDATOR")
-    @Length(max = 32, message = "字段长度不能大于{max}")
+    @Length(max = 32, message = "大于{max}")
     private String  updator;
     /**
      * UPDATEDATE(更新时间) 更新时间
@@ -139,7 +139,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
         this.needCache = needCache;
     }
 
- 
+
     public String getCatalogCode() {
         return this.catalogCode;
     }
@@ -219,7 +219,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
     public void setNeedCache(String needCache) {
         this.needCache = needCache;
     }
-    
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -227,7 +227,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
-    
+
     //创建人、更新人、更新时间
     public String getCreator() {
         return this.creator;

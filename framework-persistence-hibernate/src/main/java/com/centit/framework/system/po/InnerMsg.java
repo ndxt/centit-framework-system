@@ -36,121 +36,121 @@ public class InnerMsg implements  Serializable{
     @GeneratedValue(generator = "assignedGenerator")
     @GenericGenerator(name = "assignedGenerator", strategy = "assigned")
     private String msgCode;
-    
+
     /**
      * 发送人
      */
     @Column(name="SENDER")
     @NotBlank
-    @Length(max = 128, message = "字段长度不能大于{max}")
+    @Length(max = 128, message = "大于{max}")
     @DictionaryMap(fieldName="senderName",value="userCode")
     private String sender;
-      
+
     /**
      * 发送时间
      */
     @Column(name = "SEND_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date sendDate;
-    
+
     /**
      * 标题
      */
     @Column(name="MSG_TITLE")
-    @Length(max = 128, message = "字段长度不能大于{max}")
+    @Length(max = 128, message = "大于{max}")
     private String msgTitle;
-    
+
     /**
      * 消息类别：P=个人为消息   A=机构为公告  M=消息
      */
     @Column(name = "MSG_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String msgType;
-    
+
     /**
      *  消息类别：I=收件箱 O=发件箱 D=草稿箱 T=废件箱
      */
     @Column(name = "MAIL_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String mailType;
-    
-    
+
+
     /**
      *  邮箱删除前状：I=收件箱 O=发件箱 D=草稿箱 T=废件箱
      */
     @Column(name = "MAIL_UNDEL_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String mailUnDelType;
-    
+
     /**
      * 接收人中文名
      */
     @Column(name="RECEIVE_NAME")
-    @Length(max = 2048, message = "字段长度不能大于{max}")
+    @Length(max = 2048, message = "大于{max}")
     private String receiveName;
-     
+
     /**
          总数为发送人和接收人数量相加，发送和接收人删除消息时-1，当数量为0时真正删除此条记录
          消息类型为消息时不需要设置
      */
     @Column(name = "HOLD_USERS")
     private Long holdUsers;
-    
+
     /**
-             消息状态：未读/已读/删除 
+             消息状态：未读/已读/删除
     */
     @Column(name = "MSG_STATE")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String msgState;
-    
+
     /**
      * 消息正文
      */
     @Column(name="MSG_CONTENT")
     @NotBlank(message = "字段不能为空")
     private String msgContent;
-    
+
     /**
     *用户配置多邮箱时使用*/
     @Column(name="EMAIL_ID")
-    @Length(max = 8, message = "字段长度不能大于{max}")
+    @Length(max = 8, message = "大于{max}")
     private String emailId;
-    
+
     /**
      *功能模块 */
     @Column(name="OPT_ID")
-    @Length(max = 64, message = "字段长度不能大于{max}")
+    @Length(max = 64, message = "大于{max}")
     private String optId;
-    
+
     /**
      *操作方法 */
     @Column(name="OPT_METHOD")
-    @Length(max = 64, message = "字段长度不能大于{max}")
+    @Length(max = 64, message = "大于{max}")
     private String optMethod;
-    
+
     /**
      *操作业务标记 */
     @Column(name="OPT_TAG")
-    @Length(max = 200, message = "字段长度不能大于{max}")
+    @Length(max = 200, message = "大于{max}")
     private String optTag;
-    
+
     /**
              一个消息可以有多个收件人
      */
     @OneToMany(mappedBy="mInnerMsg",orphanRemoval=true,fetch = FetchType.LAZY)
     @JSONField(serialize=false)
-    private List<InnerMsgRecipient> recipients;  
+    private List<InnerMsgRecipient> recipients;
 
     public InnerMsg(){
-        
+
     }
-    
+
     public InnerMsg(String sender,String msgTitle,String msgContent){
         this.sender=sender;
         this.msgTitle=msgTitle;
         this.msgContent=msgContent;
     }
-    
+
     public String getMsgState() {
         return msgState;
     }

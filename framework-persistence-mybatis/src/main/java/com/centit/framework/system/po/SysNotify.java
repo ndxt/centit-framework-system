@@ -35,34 +35,34 @@ public class SysNotify implements Serializable {
      * 发送人
      */
     @Column(name = "Notify_Sender")
-    @Size(max = 100, message = "字段长度不能大于{max}")
+    @Size(max = 100, message = "大于{max}")
     @NotNull
     private String notifySender;
     /**
      * 发送人
      */
     @Column(name = "Notify_Receiver")
-    @Size(max = 100, message = "字段长度不能大于{max}")
+    @Size(max = 100, message = "大于{max}")
     @NotNull
     private String notifyReceiver;
     /**
      * 主题
      */
     @Column(name = "Msg_Subject")
-    @Size(max = 200, message = "字段长度不能大于{max}")
+    @Size(max = 200, message = "大于{max}")
     @NotNull
     private String msgSubject;
     /**
      * 内容
      */
     @Column(name = "Msg_Content")
-    @Size(max = 2000, message = "字段长度不能大于{max}")
+    @Size(max = 2000, message = "大于{max}")
     private String msgContent;
     /**
      * 通知方式
      */
     @Column(name = "notice_Type")
-    @Size(max = 100, message = "字段长度不能大于{max}")
+    @Size(max = 100, message = "大于{max}")
     @NotNull
     private String notifyType;
     /**
@@ -76,27 +76,27 @@ public class SysNotify implements Serializable {
      * 失败原因
      */
     @Column(name = "Error_Msg")
-    @Size(max = 500, message = "字段长度不能大于{max}")
+    @Size(max = 500, message = "大于{max}")
     private String errorMsg;
 
     /**
      *功能模块 */
     @Column(name="OPT_ID")
-    @Size(max = 64, message = "字段长度不能大于{max}")
+    @Size(max = 64, message = "大于{max}")
     private String optId;
-    
+
     /**
      *操作方法 */
     @Column(name="OPT_METHOD")
-    @Size(max = 64, message = "字段长度不能大于{max}")
+    @Size(max = 64, message = "大于{max}")
     private String optMethod;
-    
+
     /**
      *操作业务标记 */
     @Column(name="OPT_TAG")
-    @Size(max = 200, message = "字段长度不能大于{max}")
+    @Size(max = 200, message = "大于{max}")
     private String optTag;
-    
+
     /**
      * 发送时间
      */
@@ -196,7 +196,7 @@ public class SysNotify implements Serializable {
     public void setNotifyTime(Date notifyTime) {
         this.notifyTime = notifyTime;
     }
-    
+
     public String getOptId() {
         return optId;
     }

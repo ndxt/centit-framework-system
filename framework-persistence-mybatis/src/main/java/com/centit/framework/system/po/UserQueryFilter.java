@@ -14,10 +14,10 @@ import javax.validation.constraints.Size;
 
 
 /**
- * create by scaffold 2016-02-29 
+ * create by scaffold 2016-02-29
  * @author codefan@sina.com
- 
-  用户自定义过滤条件表null   
+
+  用户自定义过滤条件表null
 */
 @Entity
 @Table(name = "F_USER_QUERY_FILTER")
@@ -44,26 +44,26 @@ public class UserQueryFilter implements java.io.Serializable {
      */
     @Column(name = "MODLE_CODE")
     @NotNull(message = "字段不能为空")
-    @Size(max = 64, message = "字段长度不能大于{max}")
+    @Size(max = 64, message = "大于{max}")
     private String  modleCode;
     /**
      * 筛选器名称 用户自行定义的名称
      */
     @Column(name = "FILTER_NAME")
     @NotNull(message = "字段不能为空")
-    @Size(max = 64, message = "字段长度不能大于{max}")
+    @Size(max = 64, message = "大于{max}")
     private String  filterName;
     /**
      * 条件变量名 变量值，json格式，对应一个map
      */
     @Column(name = "FILTER_VALUE")
     @NotNull(message = "字段不能为空")
-    @Size(max = 3200, message = "字段长度不能大于{max}")
+    @Size(max = 3200, message = "大于{max}")
     private String  filterValue;
 
     @Column(name = "IS_DEFAULT")
     @NotNull(message = "字段不能为空")
-    @Size(max = 1, message = "字段长度不能大于{max}")
+    @Size(max = 1, message = "大于{max}")
     private String  isDefault;
 
     @Column(name = "CREATE_DATE", nullable = false)
@@ -86,7 +86,7 @@ public class UserQueryFilter implements java.io.Serializable {
         this.filterName= filterName;
         this.filterValue= filterValue;
     }
-  
+
     public Long getFilterNo() {
         return this.filterNo;
     }
@@ -95,7 +95,7 @@ public class UserQueryFilter implements java.io.Serializable {
         this.filterNo = filterNo;
     }
     // Property accessors
-  
+
     public String getModleCode() {
         return this.modleCode;
     }
@@ -109,7 +109,7 @@ public class UserQueryFilter implements java.io.Serializable {
     public void setModleCode(String modleCode) {
         this.modleCode = modleCode;
     }
-  
+
     public String getFilterName() {
         return this.filterName;
     }
@@ -117,7 +117,7 @@ public class UserQueryFilter implements java.io.Serializable {
     public void setFilterName(String filterName) {
         this.filterName = filterName;
     }
-  
+
     public String getFilterValue() {
         return this.filterValue;
     }
@@ -150,7 +150,7 @@ public class UserQueryFilter implements java.io.Serializable {
 
 
     public UserQueryFilter copy(UserQueryFilter other){
-  
+
         this.setFilterNo(other.getFilterNo());
         this.userCode= other.getUserCode();
         this.modleCode= other.getModleCode();
@@ -163,7 +163,7 @@ public class UserQueryFilter implements java.io.Serializable {
     }
 
     public UserQueryFilter copyNotNullProperty(UserQueryFilter other){
-  
+
     if( other.getFilterNo() != null)
         this.setFilterNo(other.getFilterNo());
         if( other.getUserCode() != null)
