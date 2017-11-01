@@ -31,7 +31,7 @@ import java.util.Map;
 public class OptLogController extends BaseController {
 
     @Resource
-    @NotNull 
+    @NotNull
     private OptLogManager optLogManager;
 
     private String optId = "OPTLOG";
@@ -48,40 +48,9 @@ public class OptLogController extends BaseController {
     @RequestMapping
     public void list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = convertSearchColumn(request);
-        /*List<OptLog> listObjectsAll = null;
-        if (null == pageDesc) {
 
-            listObjectsAll = optLogManager.listObjectsAll(searchColumn);
-        } else
-            listObjectsAll = optLogManager.listObjectsAll(searchColumn, pageDesc);
-
-        SimplePropertyPreFilter simplePropertyPreFilter = null;
-        if (ArrayUtils.isNotEmpty(field)) {
-            simplePropertyPreFilter = new SimplePropertyPreFilter(OptLog.class, field);
-        }
-
-        if (null == pageDesc) {
-            JsonResultUtils.writeSingleDataJson(listObjectsAll, response, simplePropertyPreFilter);
-            return;
-        }*/
-        if(!StringUtils.isEmpty(searchColumn.get("optTimeEnd"))){
-            String endDate = searchColumn.get("optTimeEnd").toString();
-            SimpleDateFormat fmt = new SimpleDateFormat("yy-MM-dd");
-            try {
-                Date date = fmt.parse(endDate);
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(date);
-                calendar.add(Calendar.DAY_OF_MONTH, 1);
-                Date resultDate = calendar.getTime();
-                String resultString = fmt.format(resultDate);
-                searchColumn.put("optTimeEnd", resultString);
-            }catch(ParseException e){
-                logger.error("日期转换出错",e);
-            }
-        }
-        
         JSONArray jsonArray = optLogManager.listObjectsAsJson(field, searchColumn, pageDesc);
-        
+
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, jsonArray);
         resData.addResponseData(PAGE_DESC, pageDesc);
