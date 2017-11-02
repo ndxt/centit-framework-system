@@ -37,34 +37,34 @@ public class SysNotify implements Serializable {
      * 发送人
      */
     @Column(name = "Notify_Sender")
-    @Length(max = 100, message = "大于{max}")
+    @Length(max = 100, message = "字段长度不能大于{max}")
     @NotBlank
     private String notifySender;
     /**
      * 发送人
      */
     @Column(name = "Notify_Receiver")
-    @Length(max = 100, message = "大于{max}")
+    @Length(max = 100, message = "字段长度不能大于{max}")
     @NotBlank
     private String notifyReceiver;
     /**
      * 主题
      */
     @Column(name = "Msg_Subject")
-    @Length(max = 200, message = "大于{max}")
+    @Length(max = 200, message = "字段长度不能大于{max}")
     @NotBlank
     private String msgSubject;
     /**
      * 内容
      */
     @Column(name = "Msg_Content")
-    @Length(max = 2000, message = "大于{max}")
+    @Length(max = 2000, message = "字段长度不能大于{max}")
     private String msgContent;
     /**
      * 通知方式
      */
     @Column(name = "notice_Type")
-    @Length(max = 100, message = "大于{max}")
+    @Length(max = 100, message = "字段长度不能大于{max}")
     @NotBlank
     private String notifyType;
     /**
@@ -78,25 +78,25 @@ public class SysNotify implements Serializable {
      * 失败原因
      */
     @Column(name = "Error_Msg")
-    @Length(max = 500, message = "大于{max}")
+    @Length(max = 500, message = "字段长度不能大于{max}")
     private String errorMsg;
 
     /**
      *功能模块 */
     @Column(name="OPT_ID")
-    @Length(max = 64, message = "大于{max}")
+    @Length(max = 64, message = "字段长度不能大于{max}")
     private String optId;
 
     /**
      *操作方法 */
     @Column(name="OPT_METHOD")
-    @Length(max = 64, message = "大于{max}")
+    @Length(max = 64, message = "字段长度不能大于{max}")
     private String optMethod;
 
     /**
      *操作业务标记 */
     @Column(name="OPT_TAG")
-    @Length(max = 200, message = "大于{max}")
+    @Length(max = 200, message = "字段长度不能大于{max}")
     private String optTag;
 
     /**

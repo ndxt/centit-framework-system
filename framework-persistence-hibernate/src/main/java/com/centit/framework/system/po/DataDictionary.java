@@ -39,11 +39,11 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
     private DataDictionaryId id; // 主键id
 
     @Column(name = "EXTRA_CODE")
-    @Length(max = 16, message = "大于{max}")
+    @Length(max = 16, message = "字段长度不能大于{max}")
     private String extraCode; // 附加代码1
 
     @Column(name = "EXTRA_CODE2")
-    @Length(max = 16, message = "大于{max}")
+    @Length(max = 16, message = "字段长度不能大于{max}")
     private String extraCode2; // 附加代码2
 
     @Column(name = "DATA_TAG")
@@ -53,7 +53,7 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
 
     @Column(name = "DATA_VALUE")
     @NotBlank(message = "字段不能为空")
-    @Length(max = 2048, message = "大于{max}")
+    @Length(max = 2048, message = "字段长度不能大于{max}")
     private String dataValue; // 数据值
 
     @Transient
@@ -70,7 +70,7 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
     private Integer dataOrder;
 
     @Column(name = "DATA_DESC")
-    @Length(max = 256, message = "大于{max}")
+    @Length(max = 256, message = "字段长度不能大于{max}")
     private String dataDesc; // 备注
 
     @Column(name = "CREATE_DATE", nullable = false)

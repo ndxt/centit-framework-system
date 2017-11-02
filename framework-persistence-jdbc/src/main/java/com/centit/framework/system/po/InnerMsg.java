@@ -33,7 +33,7 @@ public class InnerMsg implements  Serializable{
      */
     @Column(name="SENDER")
     @NotBlank
-    @Length(max = 128, message = "大于{max}")
+    @Length(max = 128, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="senderName",value="userCode")
     private String sender;
 
@@ -49,7 +49,7 @@ public class InnerMsg implements  Serializable{
      * 标题
      */
     @Column(name="MSG_TITLE")
-    @Length(max = 128, message = "大于{max}")
+    @Length(max = 128, message = "字段长度不能大于{max}")
     private String msgTitle;
 
     /**
@@ -78,7 +78,7 @@ public class InnerMsg implements  Serializable{
      * 接收人中文名
      */
     @Column(name="RECEIVE_NAME")
-    @Length(max = 2048, message = "大于{max}")
+    @Length(max = 2048, message = "字段长度不能大于{max}")
     private String receiveName;
 
     /**
@@ -105,25 +105,25 @@ public class InnerMsg implements  Serializable{
     /**
     *用户配置多邮箱时使用*/
     @Column(name="EMAIL_ID")
-    @Length(max = 8, message = "大于{max}")
+    @Length(max = 8, message = "字段长度不能大于{max}")
     private String emailId;
 
     /**
      *功能模块 */
     @Column(name="OPT_ID")
-    @Length(max = 64, message = "大于{max}")
+    @Length(max = 64, message = "字段长度不能大于{max}")
     private String optId;
 
     /**
      *操作方法 */
     @Column(name="OPT_METHOD")
-    @Length(max = 64, message = "大于{max}")
+    @Length(max = 64, message = "字段长度不能大于{max}")
     private String optMethod;
 
     /**
      *操作业务标记 */
     @Column(name="OPT_TAG")
-    @Length(max = 200, message = "大于{max}")
+    @Length(max = 200, message = "字段长度不能大于{max}")
     private String optTag;
 
     /**

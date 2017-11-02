@@ -61,13 +61,13 @@ public class OptMethod implements IOptMethod,EntityWithTimestamp, java.io.Serial
      * CREATOR(创建人) 创建人
      */
     @Column(name = "CREATOR")
-    @Length(max = 32, message = "大于{max}")
+    @Length(max = 32, message = "字段长度不能大于{max}")
     private String  creator;
        /**
      * UPDATOR(更新人) 更新人
      */
     @Column(name = "UPDATOR")
-    @Length(max = 32, message = "大于{max}")
+    @Length(max = 32, message = "字段长度不能大于{max}")
     private String  updator;
     /**
      * UPDATEDATE(更新时间) 更新时间

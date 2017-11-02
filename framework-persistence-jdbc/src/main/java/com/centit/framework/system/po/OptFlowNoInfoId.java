@@ -21,7 +21,7 @@ public class OptFlowNoInfoId implements java.io.Serializable {
 
     @Column(name = "OWNER_CODE")
     @NotBlank(message = "字段不能为空")
-    @Length(max = 8, message = "大于{max}")
+    @Length(max = 8, message = "字段长度不能大于{max}")
     private String ownerCode;
 
     @Column(name = "CODE_DATE")
@@ -31,7 +31,7 @@ public class OptFlowNoInfoId implements java.io.Serializable {
 
     @Column(name = "CODE_CODE")
     @NotBlank(message = "字段不能为空")
-    @Length(max = 16, message = "大于{max}")
+    @Length(max = 16, message = "字段长度不能大于{max}")
     private String codeCode;
 
     // Constructors
