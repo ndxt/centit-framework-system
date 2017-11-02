@@ -38,12 +38,13 @@ define(function(require) {
 			Core.ajax(Config.ContextPath + 'system/userinfo/' + data.userCode, {
 				method: 'get'
 			}).then(function(data) {
-				_self.data = data;
-
-				form.form('disableValidation').form('load', data)
-					.form('readonly', ['userName', 'loginName'])
+				// _self.data = data;
+        data =data.userInfo;
+        form.form('disableValidation').form('load', data)
+					.form('readonly', ['userName', 'loginName','regCellPhone','regEmail','userDesc'])
 					.form('focus');
 			});
+
 			//获取角色信息table中所需要的数据
 			var tableRole = panel.find('table.role');
 			tableRole.cdatagrid({
