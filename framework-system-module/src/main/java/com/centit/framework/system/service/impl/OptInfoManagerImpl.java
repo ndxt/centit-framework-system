@@ -420,6 +420,12 @@ public class OptInfoManagerImpl implements OptInfoManager {
                 optInfoDao.mergeObject(o);
             }
         }
-    }
+        List<OptInfo> optInfos = findSubOptInfo(optInfo.getOptId());
+        optInfos.addAll(findPreOptInfo(optInfo.getPreOptId()));
+        for(OptInfo o : optInfos) {
+          o.setOptType(optInfo.getOptType());
+          optInfoDao.mergeObject(o);
+        }
+      }
 
 }

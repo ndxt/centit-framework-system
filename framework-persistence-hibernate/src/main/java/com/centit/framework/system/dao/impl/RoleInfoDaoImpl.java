@@ -34,18 +34,18 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
             filterField.put("ROLENAME", CodeBook.LIKE_HQL_ID);
             filterField.put("ROLEDESC", CodeBook.LIKE_HQL_ID);
             filterField.put("isValid", CodeBook.EQUAL_HQL_ID);
-            filterField.put("roleType", CodeBook.EQUAL_HQL_ID); 
+            filterField.put("roleType", CodeBook.EQUAL_HQL_ID);
             filterField.put("unitCode", CodeBook.EQUAL_HQL_ID);
-            filterField.put("NP_unitCode", "unitCode is null"); 
+            filterField.put("NP_unitCode", "unitCode is null");
             filterField.put("roleNameEq", "roleName = :roleNameEq");
 
             filterField.put("(date)createDateBeg", "createDate>= :createDateBeg");
-            
-            filterField.put("(date)createDateEnd", "createDate< :createDateEnd");
+
+            filterField.put("(nextday)createDateEnd", "createDate< :createDateEnd");
         }
         return filterField;
     }
-   
+
     @SuppressWarnings("unchecked")
     @Transactional
     public List<Object> listRoleOptMethods(String rolecode) {
@@ -55,7 +55,7 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
                 (this,hql,  new Object[]{rolecode});
     }
 
-    
+
     /**
      * 对角色信息进行模糊搜索，适用于带搜索条件的下拉框。
      *
@@ -73,9 +73,9 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
             if (i != field.length - 1) {
                 hql.append(" or ");
             }
-            params[i] = sMatch; 
+            params[i] = sMatch;
         }
-        return listObjects( hql.toString(),params);       
+        return listObjects( hql.toString(),params);
     }
 
     public int countRoleUserSum(String roleCode){
