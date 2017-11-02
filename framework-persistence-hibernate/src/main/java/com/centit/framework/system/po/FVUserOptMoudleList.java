@@ -27,23 +27,23 @@ public class FVUserOptMoudleList implements java.io.Serializable {
     private String optid;           //业务模块类
 
     @Column(name = "USER_CODE")
-    @Length(max = 8, message = "字段长度不能大于{max}")
+    @Length(max = 8, message = "大于{max}")
     private String userCode;        //用户代码
 
     @Column(name = "OPT_NAME")
-    @Length(max = 32, message = "字段长度不能大于{max}")
+    @Length(max = 32, message = "大于{max}")
     private String optname;
 
     @Column(name = "PRE_OPT_ID")
-    @Length(max = 8, message = "字段长度不能大于{max}")
+    @Length(max = 8, message = "大于{max}")
     private String preoptid;
 
     @Column(name = "FORM_CODE")
-    @Length(max = 4, message = "字段长度不能大于{max}")
+    @Length(max = 4, message = "大于{max}")
     private String formcode;
 
     @Column(name = "OPT_URL")
-    @Length(max = 256, message = "字段长度不能大于{max}")
+    @Length(max = 256, message = "大于{max}")
     private String opturl;
 
     /**
@@ -52,7 +52,7 @@ public class FVUserOptMoudleList implements java.io.Serializable {
      * 与angularjs路由匹配
      */
     @Column(name = "OPT_ROUTE")
-    @Length(max = 256, message = "字段长度不能大于{max}")
+    @Length(max = 256, message = "大于{max}")
     private String optRoute;
 
     @Column(name = "OPT_TYPE")
@@ -60,11 +60,11 @@ public class FVUserOptMoudleList implements java.io.Serializable {
     private String opttype;
 
     @Column(name = "MSG_NO")
-    @Length(max = 10, message = "字段长度不能大于{max}")
+    @Length(max = 10, message = "大于{max}")
     private Long msgno;
 
     @Column(name = "MSG_PRM")
-    @Length(max = 256, message = "字段长度不能大于{max}")
+    @Length(max = 256, message = "大于{max}")
     private String msgprm;
 
     @Column(name = "IS_IN_TOOLBAR")
@@ -72,15 +72,15 @@ public class FVUserOptMoudleList implements java.io.Serializable {
     private String isintoolbar;
 
     @Column(name = "IMG_INDEX")
-    @Length(max = 10, message = "字段长度不能大于{max}")
+    @Length(max = 10, message = "大于{max}")
     private Long imgindex;
 
     @Column(name = "TOP_OPT_ID")
-    @Length(max = 8, message = "字段长度不能大于{max}")
+    @Length(max = 8, message = "大于{max}")
     private String topoptid;
 
     @Column(name = "ORDER_IND")
-    @Length(max = 4, message = "字段长度不能大于{max}")
+    @Length(max = 4, message = "大于{max}")
     private Long orderind;
 
     @Column(name = "PAGE_TYPE")

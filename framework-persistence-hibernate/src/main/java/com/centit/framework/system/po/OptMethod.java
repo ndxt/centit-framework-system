@@ -31,8 +31,8 @@ public class OptMethod implements IOptMethod,EntityWithTimestamp, java.io.Serial
     private String optName; // 操作名称
 
     @Column(name = "OPT_ID")
-    private String optId; 
-    
+    private String optId;
+
     @Column(name = "OPT_METHOD")
     @Length(max = 50, message = "字段长度必须小于{max}")
     private String optMethod;// 操作方法
@@ -63,13 +63,13 @@ public class OptMethod implements IOptMethod,EntityWithTimestamp, java.io.Serial
      * CREATOR(创建人) 创建人
      */
     @Column(name = "CREATOR")
-    @Length(max = 32, message = "字段长度不能大于{max}")
+    @Length(max = 32, message = "大于{max}")
     private String  creator;
        /**
      * UPDATOR(更新人) 更新人
      */
     @Column(name = "UPDATOR")
-    @Length(max = 32, message = "字段长度不能大于{max}")
+    @Length(max = 32, message = "大于{max}")
     private String  updator;
     /**
      * UPDATEDATE(更新时间) 更新时间
@@ -220,7 +220,7 @@ public class OptMethod implements IOptMethod,EntityWithTimestamp, java.io.Serial
         this.optOrder = other.getOptOrder();
         this.optReq = other.getOptReq();
         this.optUrl = other.getOptUrl();
-        
+
         this.creator=other.creator;
         this.updator=other.updator;
         this.updateDate=other.updateDate;
@@ -239,20 +239,20 @@ public class OptMethod implements IOptMethod,EntityWithTimestamp, java.io.Serial
             this.isInWorkflow = other.getIsInWorkflow();
         if (other.getCreator() != null)
             this.creator =other.getCreator();
-        
+
         if (other.getOptOrder() != null)
             this.optOrder = other.getOptOrder();
         if (other.getOptReq() != null)
             this.optReq = other.getOptReq();
         if (other.getOptUrl() != null)
             this.optUrl = other.getOptUrl();
-        
+
         if (other.getUpdator() != null)
             this.updator =other.getUpdator();
         if (other.getUpdateDate() != null)
             this.updateDate =other.getUpdateDate();
     }
-    
+
     //创建人、更新人、更新时间
     public String getCreator() {
           return this.creator;
