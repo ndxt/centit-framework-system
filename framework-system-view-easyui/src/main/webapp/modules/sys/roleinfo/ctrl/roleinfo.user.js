@@ -7,8 +7,6 @@ define(function(require) {
 	var RoleinfoUserEdit = require('../ctrl/roleinfo.user.edit');
 	var RoleinfoUserRemove = require('../ctrl/roleinfo.user.remove');
 
-
-
 	var RoleInfoUser = Page.extend(function() {
 		var _self = this;
 
@@ -31,13 +29,14 @@ define(function(require) {
           {field:'changeDesc',title:'备注',
             formatter: function(value,row,index){
 
-                return '<a title="'+value+'">'+value+'</a>';
+              return '<a title="'+value+'">'+value+'</a>';
 
             }
           }
         ]]
       })
-		};
+
+    };
 	});
 
 	return RoleInfoUser;

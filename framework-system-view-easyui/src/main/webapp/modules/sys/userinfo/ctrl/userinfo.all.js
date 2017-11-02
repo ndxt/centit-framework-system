@@ -49,7 +49,17 @@ define(function(require) {
 			tableRole.cdatagrid({
 				controller: _self,
 				url: Config.ContextPath+'system/userrole/userroles/'+data.userCode/*+'?type=S'*/
-			});
+			}).datagrid({
+        columns:[[
+          {field:'changeDesc',title:'备注',
+            formatter: function(value,row,index){
+
+              return '<a title="'+value+'">'+value+'</a>';
+
+            }
+          }
+        ]]
+      });
 			//获取角色信息table中所需要的数据
 /*			var tableRole = panel.find('table.unitRole');
 			tableRole.cdatagrid({
