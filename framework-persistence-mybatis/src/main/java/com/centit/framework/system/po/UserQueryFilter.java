@@ -44,26 +44,26 @@ public class UserQueryFilter implements java.io.Serializable {
      */
     @Column(name = "MODLE_CODE")
     @NotNull(message = "字段不能为空")
-    @Size(max = 64, message = "大于{max}")
+    @Size(max = 64, message = "字段长度不能大于{max}")
     private String  modleCode;
     /**
      * 筛选器名称 用户自行定义的名称
      */
     @Column(name = "FILTER_NAME")
     @NotNull(message = "字段不能为空")
-    @Size(max = 64, message = "大于{max}")
+    @Size(max = 64, message = "字段长度不能大于{max}")
     private String  filterName;
     /**
      * 条件变量名 变量值，json格式，对应一个map
      */
     @Column(name = "FILTER_VALUE")
     @NotNull(message = "字段不能为空")
-    @Size(max = 3200, message = "大于{max}")
+    @Size(max = 3200, message = "字段长度不能大于{max}")
     private String  filterValue;
 
     @Column(name = "IS_DEFAULT")
     @NotNull(message = "字段不能为空")
-    @Size(max = 1, message = "大于{max}")
+    @Size(max = 1, message = "字段长度不能大于{max}")
     private String  isDefault;
 
     @Column(name = "CREATE_DATE", nullable = false)

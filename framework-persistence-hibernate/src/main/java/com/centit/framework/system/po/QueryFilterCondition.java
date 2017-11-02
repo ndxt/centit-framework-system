@@ -42,39 +42,39 @@ public class QueryFilterCondition implements java.io.Serializable {
      */
     @Column(name = "TABLE_CLASS_NAME")
     @NotBlank(message = "字段不能为空")
-    @Length(max = 64, message = "大于{max}")
+    @Length(max = 64, message = "字段长度不能大于{max}")
     private String  tableClassName;
     /**
      * 参数名 参数名
      */
     @Column(name = "PARAM_NAME")
     @NotBlank(message = "字段不能为空")
-    @Length(max = 64, message = "大于{max}")
+    @Length(max = 64, message = "字段长度不能大于{max}")
     private String  paramName;
     /**
      * 参数提示 参数输入框提示
      */
     @Column(name = "PARAM_LABEL")
     @NotBlank(message = "字段不能为空")
-    @Length(max = 120, message = "大于{max}")
+    @Length(max = 120, message = "字段长度不能大于{max}")
     private String  paramLabel;
     /**
      * 参数类型 参数类型：S 字符串，L 数字， N 有小数点数据， D 日期， T 时间戳， Y 年， M 月
      */
     @Column(name = "PARAM_TYPE")
-    @Length(max = 8, message = "大于{max}")
+    @Length(max = 8, message = "字段长度不能大于{max}")
     private String  paramType;
     /**
      * 参数默认值值 null
      */
     @Column(name = "DEFAULT_VALUE")
-    @Length(max = 100, message = "大于{max}")
+    @Length(max = 100, message = "字段长度不能大于{max}")
     private String  defaultValue;
     /**
      * 添加语句 过滤语句，将会拼装到sql语句中
      */
     @Column(name = "FILTER_SQL")
-    @Length(max = 200, message = "大于{max}")
+    @Length(max = 200, message = "字段长度不能大于{max}")
     private String  filterSql;
     /**
      * 参考类型 数据下拉框内容； N ：没有， D 数据字典, S 通过sql语句获得， J json数据直接获取
@@ -82,25 +82,25 @@ public class QueryFilterCondition implements java.io.Serializable {
      */
     @Column(name = "SELECT_DATA_TYPE")
     @NotBlank(message = "字段不能为空")
-    @Length(max = 0, message = "大于{max}")
+    @Length(max = 0, message = "字段长度不能大于{max}")
     private String  selectDataType;
     /**
      * 数据字典类别 数据字典
      */
     @Column(name = "SELECT_DATA_CATALOG")
-    @Length(max = 64, message = "大于{max}")
+    @Length(max = 64, message = "字段长度不能大于{max}")
     private String  selectDataCatalog;
     /**
      * SQL语句 有两个返回字段的sql语句
      */
     @Column(name = "SELECT_SQL")
-    @Length(max = 1000, message = "大于{max}")
+    @Length(max = 1000, message = "字段长度不能大于{max}")
     private String  selectSql;
     /**
      * 枚举类型 KEY,Value数值对，JSON格式
      */
     @Column(name = "SELECT_JSON")
-    @Length(max = 2000, message = "大于{max}")
+    @Length(max = 2000, message = "字段长度不能大于{max}")
     private String  selectJson;
 
     @Column(name = "CREATE_DATE", nullable = false)

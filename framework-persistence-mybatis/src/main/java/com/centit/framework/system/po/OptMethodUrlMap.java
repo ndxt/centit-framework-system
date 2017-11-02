@@ -20,7 +20,7 @@ public class OptMethodUrlMap implements java.io.Serializable {
     private String optCode;// 操作代码
 
     @Column(name = "OPT_DEF_URL")
-    @Size(max = 50, message = "大于{max}")
+    @Size(max = 50, message = "字段长度不能大于{max}")
     private String optDefUrl; // 操作名称
 
     @Column(name = "OPT_REQ")

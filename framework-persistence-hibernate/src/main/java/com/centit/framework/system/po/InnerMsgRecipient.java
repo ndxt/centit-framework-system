@@ -46,7 +46,7 @@ public class InnerMsgRecipient implements Serializable{
      */
     @Column(name = "RECEIVE")
     @NotBlank
-    @Length(max = 2048, message = "大于{max}")
+    @Length(max = 2048, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="receiverName",value="userCode")
     private String receive;
 

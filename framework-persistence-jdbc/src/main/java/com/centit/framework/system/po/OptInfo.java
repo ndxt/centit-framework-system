@@ -30,12 +30,12 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
 
     @OrderBy
     @Column(name = "PRE_OPT_ID")
-    @Length(max = 32, message = "大于{max}")
+    @Length(max = 32, message = "字段长度不能大于{max}")
     private String preOptId; // 上级业务模块编号
 
     @Column(name = "OPT_NAME")
     @NotBlank(message = "字段不能为空")
-    @Length(max = 100, message = "大于{max}")
+    @Length(max = 100, message = "字段长度不能大于{max}")
     private String optName; // 业务名称
     /**
      * S:实施业务, O:普通业务, W:流程业务, I:项目业务
@@ -45,7 +45,7 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     private String optType; // 业务类别
 
     @Column(name = "FORM_CODE")
-    @Length(max = 4, message = "大于{max}")
+    @Length(max = 4, message = "字段长度不能大于{max}")
     private String formCode; // 界面代码(C/S)
 
     /**
@@ -54,34 +54,34 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
      * 与angularjs路由匹配
      */
     @Column(name = "OPT_ROUTE")
-    @Length(max = 256, message = "大于{max}")
+    @Length(max = 256, message = "字段长度不能大于{max}")
     private String optRoute;
 
     @Column(name = "OPT_URL")
-    @Length(max = 256, message = "大于{max}")
+    @Length(max = 256, message = "字段长度不能大于{max}")
     private String optUrl; // 业务url（b/s）
 
     @Column(name = "MSG_NO")
-    @Range(max = 1000000000, message = "大于{max}")
+    @Range(max = 1000000000, message = "字段长度不能大于{max}")
     private Long msgNo; // 消息编号
 
     @Column(name = "MSG_PRM")
-    @Length(max = 256, message = "大于{max}")
+    @Length(max = 256, message = "字段长度不能大于{max}")
     private String msgPrm; // 业务参数
 
     @Column(name = "IS_IN_TOOLBAR")
     private String isInToolbar; // 是否放入工具栏
 
     @Column(name = "IMG_INDEX")
-    @Range(max = 100000, message = "大于{max}")
+    @Range(max = 100000, message = "字段长度不能大于{max}")
     private Long imgIndex; // 图标编号
 
     @Column(name = "TOP_OPT_ID")
-    @Length(max = 8, message = "大于{max}")
+    @Length(max = 8, message = "字段长度不能大于{max}")
     private String topOptId; // 顶层业务编号
 
     @Column(name = "FLOW_CODE")
-    @Length(max = 8, message = "大于{max}")
+    @Length(max = 8, message = "字段长度不能大于{max}")
     private String flowCode; // 流程代码
 
     @Column(name = "PAGE_TYPE")
@@ -90,19 +90,19 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
 
     @OrderBy
     @Column(name = "ORDER_IND")
-    @Range(max = 100000, message = "大于{max}")
+    @Range(max = 100000, message = "字段长度不能大于{max}")
     private Long orderInd; // 业务顺序
 
     @Column(name = "ICON")
-    @Length(max = 512, message = "大于{max}")
+    @Length(max = 512, message = "字段长度不能大于{max}")
     private String icon;// 图标
 
     @Column(name = "HEIGHT")
-    @Range(max = 100000, message = "大于{max}")
+    @Range(max = 100000, message = "字段长度不能大于{max}")
     private Long height;// 高度
 
     @Column(name = "WIDTH")
-    @Range(max = 100000, message = "大于{max}")
+    @Range(max = 100000, message = "字段长度不能大于{max}")
     private Long width;// 宽度
 
 
@@ -115,13 +115,13 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
      * CREATOR(创建人) 创建人
      */
     @Column(name = "CREATOR")
-    @Length(max = 32, message = "大于{max}")
+    @Length(max = 32, message = "字段长度不能大于{max}")
     private String  creator;
        /**
      * UPDATOR(更新人) 更新人
      */
     @Column(name = "UPDATOR")
-    @Length(max = 32, message = "大于{max}")
+    @Length(max = 32, message = "字段长度不能大于{max}")
     private String  updator;
     /**
      * UPDATEDATE(更新时间) 更新时间

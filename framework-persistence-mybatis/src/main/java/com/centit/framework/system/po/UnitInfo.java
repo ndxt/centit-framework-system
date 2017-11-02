@@ -41,7 +41,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
     private String unitCode; // 机构代码
 
     @Column(name = "PARENT_UNIT")
-    @Size(max = 32, message = "大于{max}")
+    @Size(max = 32, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="parentUnitName",value="unitCode")
     private String parentUnit; // 上级机构代码
 
@@ -57,27 +57,27 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
 
     @Column(name = "UNIT_NAME")
     @NotNull(message = "字段不能为空")
-    @Size(max = 300, message = "大于{max}")
+    @Size(max = 300, message = "字段长度不能大于{max}")
     private String unitName;// 机构名称
 
     @Column(name = "ENGLISH_NAME")
-    @Size(max = 300, message = "大于{max}")
+    @Size(max = 300, message = "字段长度不能大于{max}")
     private String englishName;// 机构英文名称
 
     @Column(name = "UNIT_SHORT_NAME")
-    @Size(max = 32, message = "大于{max}")
+    @Size(max = 32, message = "字段长度不能大于{max}")
     private String unitShortName;
 
     @Column(name = "UNIT_WORD")
-    @Size(max = 100, message = "大于{max}")
+    @Size(max = 100, message = "字段长度不能大于{max}")
     private String unitWord;//机构自定义编码
 
     @Column(name = "UNIT_TAG")
-    @Size(max = 100, message = "大于{max}")
+    @Size(max = 100, message = "字段长度不能大于{max}")
     private String unitTag;//机构标识用于第三方系统关联
 
     @Column(name = "UNIT_DESC")
-    @Size(max = 256, message = "大于{max}")
+    @Size(max = 256, message = "字段长度不能大于{max}")
     private String unitDesc; // 机构描述
 
     @Column(name = "ADDRBOOK_ID")
@@ -93,11 +93,11 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
     private Long unitGrade;//机构等级
 
     @Column(name = "DEP_NO")// 机构编码
-    @Size(max = 100, message = "大于{max}")
+    @Size(max = 100, message = "字段长度不能大于{max}")
     private String depNo;
 
     @Column(name = "UNIT_PATH")// 机构编码
-    @Size(max = 1000, message = "大于{max}")
+    @Size(max = 1000, message = "字段长度不能大于{max}")
     private String unitPath;
 
     @Transient
@@ -109,7 +109,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         this.state = state;
     }
     @Column(name = "UNIT_MANAGER")
-    @Size(max = 32, message = "大于{max}")
+    @Size(max = 32, message = "字段长度不能大于{max}")
     private String unitManager; // 部门负责人
 
     public String getUnitManager() {
@@ -128,13 +128,13 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
      * CREATOR(创建人) 创建人
      */
     @Column(name = "CREATOR")
-    @Size(max = 32, message = "大于{max}")
+    @Size(max = 32, message = "字段长度不能大于{max}")
     private String  creator;
        /**
      * UPDATOR(更新人) 更新人
      */
     @Column(name = "UPDATOR")
-    @Size(max = 32, message = "大于{max}")
+    @Size(max = 32, message = "字段长度不能大于{max}")
     private String  updator;
     /**
      * UPDATEDATE(更新时间) 更新时间

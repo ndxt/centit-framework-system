@@ -40,7 +40,7 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
     private Date obtainDate; // 获得角色时间
 
     @Column(name = "CHANGE_DESC")
-    @Size(max = 256, message = "大于{max}")
+    @Size(max = 256, message = "字段长度不能大于{max}")
     private String changeDesc; // 说明
 
     @Column(name = "CREATE_DATE", nullable = false)
@@ -52,13 +52,13 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
      * CREATOR(创建人) 创建人
      */
     @Column(name = "CREATOR")
-    @Size(max = 32, message = "大于{max}")
+    @Size(max = 32, message = "字段长度不能大于{max}")
     private String  creator;
        /**
      * UPDATOR(更新人) 更新人
      */
     @Column(name = "UPDATOR")
-    @Size(max = 32, message = "大于{max}")
+    @Size(max = 32, message = "字段长度不能大于{max}")
     private String  updator;
     /**
      * UPDATEDATE(更新时间) 更新时间

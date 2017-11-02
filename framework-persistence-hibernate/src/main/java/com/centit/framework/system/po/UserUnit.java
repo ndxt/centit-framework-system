@@ -32,30 +32,30 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
 
     @Column(name = "UNIT_CODE")
     @NotBlank(message = "字段不能为空")
-    @Length(max = 32, message = "大于{max}")
+    @Length(max = 32, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="unitName",value="unitCode")
     private String unitCode; // 机构代码
 
     @Column(name = "USER_CODE")
     @NotBlank(message = "字段不能为空")
     @DictionaryMap(fieldName="userName",value="userCode")
-    @Length(max = 32, message = "大于{max}")
+    @Length(max = 32, message = "字段长度不能大于{max}")
     private String userCode; // 用户代码
 
     @Column(name = "USER_STATION")
     @NotBlank(message = "字段不能为空")
-    @Length(max = 16, message = "大于{max}")
+    @Length(max = 16, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="userStationText",value="StationType")
     private String userStation; // 岗位
 
     @Column(name = "USER_RANK")
     @NotBlank(message = "字段不能为空")
-    @Length(max = 16, message = "大于{max}")
+    @Length(max = 16, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="userRankText",value="RankType")
     private String userRank; // 职务
 
     @Column(name = "RANK_MEMO")
-    @Length(max = 256, message = "大于{max}")
+    @Length(max = 256, message = "字段长度不能大于{max}")
     private String rankMemo; // 备注
 
     @Column(name = "IS_PRIMARY")
@@ -78,13 +78,13 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
      * CREATOR(创建人) 创建人
      */
     @Column(name = "CREATOR")
-    @Length(max = 32, message = "大于{max}")
+    @Length(max = 32, message = "字段长度不能大于{max}")
     private String  creator;
        /**
      * UPDATOR(更新人) 更新人
      */
     @Column(name = "UPDATOR")
-    @Length(max = 32, message = "大于{max}")
+    @Length(max = 32, message = "字段长度不能大于{max}")
     private String  updator;
     /**
      * UPDATEDATE(更新时间) 更新时间
