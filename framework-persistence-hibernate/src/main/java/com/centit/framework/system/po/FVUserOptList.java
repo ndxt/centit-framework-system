@@ -23,15 +23,15 @@ public class FVUserOptList implements java.io.Serializable {
     private FVUserOptListId id; //主键
 
     @Column(name = "OPT_NAME")
-    @Length(max = 50, message = "字段长度不能大于{max}")
+    @Length(max = 50, message = "大于{max}")
     private String optName;     //业务名字
 
     @Column(name = "OPT_ID")
-    @Length(max = 8, message = "字段长度不能大于{max}")
+    @Length(max = 8, message = "大于{max}")
     private String optId;       //业务编号
 
     @Column(name = "OPT_METHOD")
-    @Length(max = 50, message = "字段长度不能大于{max}")
+    @Length(max = 50, message = "大于{max}")
     private String optMethod;   //业务方法？？
 
     // Constructors
@@ -97,8 +97,8 @@ public class FVUserOptList implements java.io.Serializable {
         if(this.id==null)
             this.id = new FVUserOptListId();
         this.id.setOptcode(optcode);
-    }    
-    
+    }
+
     public String getOptName() {
         return this.optName;
     }

@@ -41,7 +41,7 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
     private String roleCode; // 角色代码
 
     @Column(name = "ROLE_NAME")
-    @Size(max = 300, message = "字段长度不能大于{max}")
+    @Size(max = 300, message = "大于{max}")
     private String roleName; // 角色名称
 
     @Column(name = "IS_VALID")
@@ -51,21 +51,21 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
     private String isValid; // 是否生效
 
     /**
-     * S为系统角色  I为项目角色  W 工作流角色  
+     * S为系统角色  I为项目角色  W 工作流角色
      */
     @Column(name = "ROLE_TYPE")
     @Size(max = 1, message = "字段长度必须为{max}")
     private String roleType; // 角色类别
 
     @Column(name = "UNIT_CODE")
-    @Size(max = 32, message = "字段长度不能大于{max}")
+    @Size(max = 32, message = "大于{max}")
     private String unitCode; // 角色所属机构
 
-    
+
     @Column(name = "ROLE_DESC")
-    @Size(max = 256, message = "字段长度不能大于{max}")
+    @Size(max = 256, message = "大于{max}")
     private String roleDesc; // 角色描述
-    
+
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
@@ -74,13 +74,13 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
      * CREATOR(创建人) 创建人
      */
     @Column(name = "CREATOR")
-    @Size(max = 32, message = "字段长度不能大于{max}")
+    @Size(max = 32, message = "大于{max}")
     private String  creator;
        /**
      * UPDATOR(更新人) 更新人
      */
     @Column(name = "UPDATOR")
-    @Size(max = 32, message = "字段长度不能大于{max}")
+    @Size(max = 32, message = "大于{max}")
     private String  updator;
     /**
      * UPDATEDATE(更新时间) 更新时间
@@ -155,7 +155,7 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
     public void setRoleDesc(String roledesc) {
         this.roleDesc = roledesc;
     }
-    
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -230,7 +230,7 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
         this.updateDate=other.updateDate;
     }
 
-   
+
     public String getCreator() {
         return this.creator;
     }

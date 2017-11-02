@@ -21,22 +21,22 @@ import com.centit.framework.core.dao.DictionaryMap;
 @Entity
 @Table(name="M_INNERMSG_RECIPIENT")
 public class InnerMsgRecipient implements Serializable{
-    
+
     /**
      * 接收人主键
      */
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @Column(name="ID")
     @GeneratedValue(generator = "assignedGenerator")
     @GenericGenerator(name = "assignedGenerator", strategy = "assigned")
     private String id;//
-    
+
     /**
      * 消息编码
      */
-    
+
     @ManyToOne
     @JoinColumn(name="MSG_CODE",updatable=false)
     //@JSONField(serialize=false)
@@ -46,16 +46,16 @@ public class InnerMsgRecipient implements Serializable{
      */
     @Column(name = "RECEIVE")
     @NotBlank
-    @Length(max = 2048, message = "字段长度不能大于{max}")
+    @Length(max = 2048, message = "大于{max}")
     @DictionaryMap(fieldName="receiverName",value="userCode")
     private String receive;
-    
+
     /**
      * 回复消息
      */
     @Column(name = "REPLY_MSG_CODE")
     private int replyMsgCode;
-    
+
     /**
      *  接收人类别:
         P=个人为消息
@@ -65,7 +65,7 @@ public class InnerMsgRecipient implements Serializable{
     @Column(name = "RECEIVE_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String receiveType;
-    
+
     /**
      *  消息类型:
         T=收件人
@@ -75,7 +75,7 @@ public class InnerMsgRecipient implements Serializable{
     @Column(name = "MAIL_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String mailType;
-    
+
     /**
      * 消息状态：
      *  U=未读
@@ -85,44 +85,44 @@ public class InnerMsgRecipient implements Serializable{
     @Column(name = "MSG_STATE")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String msgState;
-    
-        
+
+
     public void setMInnerMsg(InnerMsg InnerMsg){
         this.mInnerMsg=InnerMsg;
     }
     public InnerMsgRecipient(){
-        
+
     }
-    
+
     public String getMsgCode() {
         return this.getMInnerMsg().getMsgCode();
     }
-    
-   
+
+
     public InnerMsg getMInnerMsg() {
         return this.mInnerMsg;
     }
-    
+
     public String getSender() {
         if (null != getMInnerMsg()) {
             return getMInnerMsg().getSender();
-        }        
+        }
         return "";
     }
-    
+
     public String getMsgTitle() {
         if (null != getMInnerMsg()) {
             return getMInnerMsg().getMsgTitle();
         }
-        
+
         return "";
     }
-    
+
     public Date getSendDate() {
         if (null != getMInnerMsg()) {
             return getMInnerMsg().getSendDate();
         }
-        
+
         return null;
     }
 
@@ -133,7 +133,7 @@ public class InnerMsgRecipient implements Serializable{
     public void setMsgState(String msgState) {
         this.msgState = msgState;
     }
-    
+
     public String getReceive() {
         return receive;
     }
@@ -173,14 +173,14 @@ public class InnerMsgRecipient implements Serializable{
     public void setId(String id) {
         this.id = id;
     }
-    
+
     public String getMsgContent(){
         if(null!=this.getMInnerMsg())
             return this.getMInnerMsg().getMsgContent();
         else
            return null;
     }
-    
+
     public String getMsgTypeText(){
         switch(getMInnerMsg().getMsgType()){
             case("P"):{
@@ -194,5 +194,5 @@ public class InnerMsgRecipient implements Serializable{
             }
         }
     }
-    
+
 }
