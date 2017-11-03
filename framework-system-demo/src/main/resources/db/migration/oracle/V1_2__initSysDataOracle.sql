@@ -433,5 +433,5 @@ insert into F_ROLEPOWER(role_code,opt_code,update_Date,create_date,opt_scope_cod
 insert into F_USERROLE (USER_CODE, ROLE_CODE, OBTAIN_DATE, 
       SECEDE_DATE, CHANGE_DESC, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
 values ('u0000000', 'G-SYSADMIN', sysdate, 
- sysdate,'' ,sysdate, sysdate,'u0000000','u0000000');
+ null,'' ,sysdate, sysdate,'u0000000','u0000000');
   commit;
