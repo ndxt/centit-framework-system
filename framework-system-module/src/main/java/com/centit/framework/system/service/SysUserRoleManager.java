@@ -3,6 +3,7 @@ package com.centit.framework.system.service;
 import java.util.List;
 import java.util.Map;
 
+import com.centit.framework.system.po.UserInfo;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
@@ -17,13 +18,15 @@ import com.centit.framework.system.po.UserRoleId;
  */
 public interface SysUserRoleManager{
 
-    public List<UserRole> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
+    List<UserRole> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
 
-    public UserRole getObjectById(UserRoleId id);
+    UserRole getObjectById(UserRoleId id);
 
-    public void mergeObject(UserRole dbUserRole);
+    void mergeObject(UserRole dbUserRole);
 
-    public void deleteObjectById(UserRoleId id);
+    void deleteObjectById(UserRoleId id);
 
-    public void mergeObject(UserRole dbUserRole, UserRole userRole);
+    void mergeObject(UserRole dbUserRole, UserRole userRole);
+
+    List<UserInfo> listUsersByRole(String roleCode);
 }

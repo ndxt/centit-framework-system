@@ -14,7 +14,6 @@
         <servlet-api.version>3.1.0</servlet-api.version>
         <ehcache.version>2.10.4</ehcache.version>
         <commons-codec.version>1.10</commons-codec.version>
-        <persistence-api.version>1.0.2</persistence-api.version>
 
         <ojdbc6.version>11.2.0.4</ojdbc6.version>
         <junit.version>4.12</junit.version>
@@ -149,7 +148,7 @@
                     </execution>
                 </executions>
             </plugin>
-
+<!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -162,7 +161,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
             <!-- GPG自动签名的插件-->
 
             <!--<plugin>

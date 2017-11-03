@@ -18,10 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service("sysUnitManager")
 @Transactional
@@ -35,12 +32,12 @@ public class SysUnitManagerImpl implements SysUnitManager {
     @Resource
     @NotNull
     protected UnitInfoDao unitInfoDao;
-    
+
     @Override
     public List<UnitInfo> listObjectsAsSort(Map<String, Object> searchColumn) {
         List<UnitInfo> listObjects = unitInfoDao.listObjects(searchColumn);
         Iterator<UnitInfo> unitInfos = listObjects.iterator();
-       
+
         while (unitInfos.hasNext()) {
             UnitInfo unitInfo = unitInfos.next();
             if (StringBaseOpt.isNvl(unitInfo.getParentUnit()) || "0".equals(unitInfo.getParentUnit())) {
@@ -77,15 +74,15 @@ public class SysUnitManagerImpl implements SysUnitManager {
         }
         return newObj;
     }
-    
 
-  
+
+
 
     @Override
     public List<UserInfo> getUnitUsers(String unitCode) {
         return unitInfoDao.listUnitUsers(unitCode);
-    } 
-    
+    }
+
     @Override
     public List<UserInfo> getRelationUsers(String unitCode) {
         return unitInfoDao.listRelationUsers(unitCode);
@@ -111,8 +108,8 @@ public class SysUnitManagerImpl implements SysUnitManager {
             unitInfoDao.mergeObject(subUnit);
         }
     }
-    
-        
+
+
     @Override
     @CacheEvict(value = {"UnitInfo","UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
     @Transactional
@@ -126,11 +123,11 @@ public class SysUnitManagerImpl implements SysUnitManager {
             ui.setParentUnit(ui.getUnitPath().substring(noupl));
             unitInfoDao.mergeObject(ui);
         }
-    
-        userUnitDao.deleteUserUnitByUnit(unitinfo.getUnitCode());        
+
+//        userUnitDao.deleteUserUnitByUnit(unitinfo.getUnitCode());
         unitInfoDao.deleteObjectById(unitinfo.getUnitCode());
     }
-    
+
     @Override
     @CacheEvict(value = "UnitInfo",allEntries = true)
     @Transactional
@@ -155,7 +152,15 @@ public class SysUnitManagerImpl implements SysUnitManager {
                 unitInfo.getUnitName(), unitInfo.getParentUnit(), unitInfo.getUnitCode());
         return dbUnitInfo == null ? true : false;
     }
-    
+
+  @Override
+  @Transactional
+  public boolean isUniqueOrder(UnitInfo unitInfo){
+    UnitInfo dbUnitInfo = unitInfoDao.getPeerUnitByParentUnit(
+      unitInfo.getParentUnit(), unitInfo.getUnitOrder());
+    return dbUnitInfo == null ? true : false;
+  }
+
     @Override
     @CacheEvict(value = "UnitInfo",allEntries = true)
     @Transactional
@@ -187,12 +192,12 @@ public class SysUnitManagerImpl implements SysUnitManager {
             return null;
         return unitInfoDao.listAllSubUnits(primaryUnit);
     }
-    
+
     @Override
     @Transactional
     public List<UnitInfo> listAllSubObjectsAsSort(String primaryUnit) {
         List<UnitInfo> listObjects = unitInfoDao.listAllSubUnits(primaryUnit);
-        Iterator<UnitInfo> unitInfos = listObjects.iterator();        
+        Iterator<UnitInfo> unitInfos = listObjects.iterator();
         while (unitInfos.hasNext()) {
             UnitInfo unitInfo = unitInfos.next();
             if (StringBaseOpt.isNvl(unitInfo.getParentUnit()) || "0".equals(unitInfo.getParentUnit())) {
@@ -260,6 +265,12 @@ public class SysUnitManagerImpl implements SysUnitManager {
         }
     }
 
-
-    
+    @Override
+    @Transactional
+    public List<UnitInfo> listValidSubUnit(String unitCode){
+        Map<String, Object> map = new HashMap<>();
+        map.put("parentUnit", unitCode);
+        map.put("isvalid", "T");
+        return unitInfoDao.listObjects(map);
+    }
 }

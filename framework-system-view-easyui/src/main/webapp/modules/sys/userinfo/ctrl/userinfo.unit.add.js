@@ -1,9 +1,9 @@
 define(function(require) {
 	var Config = require('config');
 	var Core = require('core/core');
-	
+
 	var Page = require('core/page');
-	
+
 	// 机构添加用户
 	var UserInfoUnitAdd = Page.extend(function() {
 		var _self=this;
@@ -11,30 +11,30 @@ define(function(require) {
 		this.object = {
 			isPrimary: 'T'
 		};
-		
+
 		// @override
 		this.load = function(panel) {
 			var _self=this;
 			// 获取父窗口的用户信息
-			var userinfo = this.parent.data;
-			
+			var userinfo = this.parent.data.userInfo;
+
 			var data = this.data = $.extend({}, this.object, {
 				userCode: userinfo.userCode,
 				userName: userinfo.userName
 			});
-			
+
 			panel.find('form').form('disableValidation')
 				.form('load', data)
 
 		};
-		
+
 		// @override
 		this.submit = function(panel, data, closeCallback) {
 			var form = panel.find('form');
-			
+
 			form.form('enableValidation');
 			var isValid = form.form('validate');
-			
+
 			if (isValid) {
 				form.form('ajax', {
 					url: Config.ContextPath+'system/userunit',
@@ -49,15 +49,15 @@ define(function(require) {
 					closeCallback();
 				});
 			}
-			
+
 			return false;
 		};
-		
+
 		// @override
 		this.onClose = function(table) {
 			table.datagrid('reload');
 		};
 	});
-	
+
 	return UserInfoUnitAdd;
 });

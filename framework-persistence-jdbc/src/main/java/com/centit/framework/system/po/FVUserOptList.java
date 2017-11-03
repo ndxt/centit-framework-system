@@ -97,8 +97,8 @@ public class FVUserOptList implements java.io.Serializable {
         if(this.id==null)
             this.id = new FVUserOptListId();
         this.id.setOptcode(optcode);
-    }    
-    
+    }
+
     public String getOptName() {
         return this.optName;
     }

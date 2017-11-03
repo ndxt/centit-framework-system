@@ -21,8 +21,8 @@ public interface UnitInfoDao {
      int  pageCount(Map<String, Object> filterDescMap);
 
      List<UnitInfo>  pageQuery(Map<String, Object> pageQureyMap);
-    
-    
+
+
      int countChildrenSum(String unitCode);
 
      List<UnitInfo> listObjects();
@@ -53,7 +53,7 @@ public interface UnitInfoDao {
 
     // "select unitname from f_unitinfo where unitcode=?", unitcode ));
      String getUnitNameOfCode(String unitcode);
-    
+
 
 //     List<UnitInfo> listUnitinfoByUnitcodes(List<String> unitcodes);
 
@@ -63,35 +63,37 @@ public interface UnitInfoDao {
      * @param name name
      * @return UnitInfo
      */
-     UnitInfo getUnitByName(String name);
-    
+    UnitInfo getUnitByName(String name);
+
     //return super.getObjectByProperty("unitTag", unitTag);
-     UnitInfo getUnitByTag(String unitTag);
-    
+    UnitInfo getUnitByTag(String unitTag);
+
     //return super.getObjectByProperty("unitWord", unitWord);
-     UnitInfo getUnitByWord(String unitWord);
-    
+    UnitInfo getUnitByWord(String unitWord);
+
     //return super.listObjectByProperty("parentUnit", unitCode);
 //     List<UnitInfo> listSubUnits(String unitCode);
-    
+
     /**
      * @param parentunitcodes List
      * @return List UnitInfo
      */
 //     List<UnitInfo> listSubUnitinfoByParentUnitcodes(List<String> parentunitcodes);
-    
+
     /**
      * 这个方法应该转移到ManagerImpl类中
      * @param primaryUnit primaryUnit
      * @return List UnitInfo
      */
-     List<UnitInfo> listAllSubUnits(String primaryUnit);
+    List<UnitInfo> listAllSubUnits(String primaryUnit);
 
-    
+
     //String hql = "from UnitInfo where unitPath like ?";{unitPath+"/%"});
-     List<UnitInfo> listSubUnitsByUnitPaht(String unitPath);
+    List<UnitInfo> listSubUnitsByUnitPaht(String unitPath);
 
-     List<String> getAllParentUnit();
+    List<String> getAllParentUnit();
 
     UnitInfo getPeerUnitByName(String unitName, String parentCode, String unitCode);
+
+    UnitInfo getPeerUnitByParentUnit(String parentUnit, long unitOrder);
 }

@@ -22,7 +22,7 @@ public class OptMethodUrlMap implements java.io.Serializable {
     @Column(name = "OPT_REQ")
     @Length(max = 6, message = "字段长度必须为{max}")
     private String optReq;
-    
+
 
     public OptMethodUrlMap() {
     }
@@ -43,7 +43,7 @@ public class OptMethodUrlMap implements java.io.Serializable {
         this.optReq = optmethod;
     }
 
- 
+
 
     public String getOptCode() {
         return optCode;
@@ -69,7 +69,7 @@ public class OptMethodUrlMap implements java.io.Serializable {
         this.optReq = optReq;
     }
 
-    
+
     public void copy(OptMethodUrlMap other) {
         this.optCode = other.getOptCode();
         this.optReq = other.getOptReq();

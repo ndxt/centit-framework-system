@@ -27,7 +27,7 @@ public class OptLogDaoImpl extends BaseDaoImpl<OptLog, Long> implements OptLogDa
             filterField.put("logLevel", CodeBook.LIKE_HQL_ID);
             filterField.put(CodeRepositoryUtil.USER_CODE, CodeBook.EQUAL_HQL_ID);
             filterField.put("(date)optTimeBegin", "optTime >= :optTimeBegin ");
-            filterField.put("(date)optTimeEnd", "optTime < :optTimeEnd");
+            filterField.put("(nextday)optTimeEnd", "optTime < :optTimeEnd");
             filterField.put("optId", CodeBook.LIKE_HQL_ID);
             filterField.put("optCode", CodeBook.LIKE_HQL_ID);
             filterField.put("optContent", CodeBook.LIKE_HQL_ID);

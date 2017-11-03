@@ -44,7 +44,7 @@ public class UserInfoController extends BaseController {
     @Resource
     @NotNull
     private SysUserUnitManager sysUserUnitManager;
-    
+
     @Resource
     @NotNull
     private UserSettingManager userSettingManager;
@@ -102,7 +102,7 @@ public class UserInfoController extends BaseController {
     @RequestMapping(method = RequestMethod.POST)
     public void create(@Valid UserInfo userInfo, UserUnit userUnit,
                        HttpServletRequest request, HttpServletResponse response) {
-        
+
         UserInfo dbuserinfo=sysUserManager.loadUserByLoginname(userInfo.getLoginName());
         if(null!=dbuserinfo) {
              JsonResultUtils.writeErrorMessageJson(
@@ -111,10 +111,10 @@ public class UserInfoController extends BaseController {
              return;
         }
         userInfo.setUserCode(sysUserManager.getNextUserCode());
-        
+
         if(null!=userInfo.getUserUnits()){
             for(UserUnit uu:userInfo.getUserUnits()){
-                uu.setUserCode(userInfo.getUserCode()); 
+                uu.setUserCode(userInfo.getUserCode());
             }
         }
         if(null!=userInfo.listUserRoles()){
@@ -122,9 +122,8 @@ public class UserInfoController extends BaseController {
                 ur.setUserCode(userInfo.getUserCode());
             }
         }
+        userUnit.setCreator(getLoginUserCode(request));
         sysUserManager.saveNewUserInfo(userInfo,userUnit);
-        
-        
         JsonResultUtils.writeSingleDataJson(userInfo, response);
 
 
@@ -141,13 +140,23 @@ public class UserInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{userCode}", method = RequestMethod.PUT)
-    public void edit(@PathVariable String userCode, @Valid UserInfo userInfo,
+    public void edit(@PathVariable String userCode, @Valid UserInfo userInfo, UserUnit userUnit,
                      HttpServletRequest request, HttpServletResponse response) {
-        
+
         UserInfo dbUserInfo = sysUserManager.getObjectById(userCode);
         if (null == dbUserInfo) {
             JsonResultUtils.writeErrorMessageJson("当前用户不存在", response);
             return;
+        }
+        //删除旧主机构
+        if(!dbUserInfo.getPrimaryUnit().equals(userInfo.getPrimaryUnit())){
+            sysUserUnitManager.deletePrimaryUnitByUserCode(userCode);
+            userUnit.setUserCode(userInfo.getUserCode());
+            userUnit.setUnitCode(userInfo.getPrimaryUnit());
+            userUnit.setIsPrimary("T");
+            userUnit.setCreator(getLoginUserCode(request));
+            sysUserUnitManager.saveNewUserUnit(userUnit);
+
         }
         UserInfo oldValue= new UserInfo();
         oldValue.copy(dbUserInfo);
@@ -159,7 +168,7 @@ public class UserInfoController extends BaseController {
         }
 
         sysUserManager.updateUserInfo(userInfo);
-        
+
         JsonResultUtils.writeBlankJson(response);
 
         /*********log*********/
@@ -189,14 +198,18 @@ public class UserInfoController extends BaseController {
      */
     @RequestMapping(value = "/{userCode}", method = RequestMethod.GET)
     public void getUserInfo(@PathVariable String userCode, HttpServletResponse response) {
-        UserInfo userDetails = sysUserManager.getObjectById(userCode);
+        UserInfo userInfo = sysUserManager.getObjectById(userCode);
+        UserUnit userUnit = sysUserUnitManager.getPrimaryUnitByUserCode(userCode);
+        ResponseMapData responseData = new ResponseMapData();
+        responseData.addResponseData("userInfo", userInfo);
+        responseData.addResponseData("userUnit", userUnit);
 
-        Map<Class<?>, String[]> excludes  =new HashMap<Class<?>, String[]>();
+        Map<Class<?>, String[]> excludes  =new HashMap<>();
         excludes.put(UserUnit.class,new String[]{"userInfo"});
         excludes.put(UserRole.class,new String[]{"userInfo"});
-        JsonResultUtils.writeSingleDataJson(userDetails,response, JsonPropertyUtils.getExcludePropPreFilter(excludes));
+        JsonResultUtils.writeResponseDataAsJson(responseData,response, JsonPropertyUtils.getExcludePropPreFilter(excludes));
     }
-    
+
     /**
      * 通过用户代码获取角色
      *
@@ -204,9 +217,9 @@ public class UserInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/allroles/{userCode}", method = RequestMethod.GET)
-    public void listRolesByUser(@PathVariable String userCode, 
+    public void listRolesByUser(@PathVariable String userCode,
              HttpServletResponse response) {
-        
+
         List<RoleInfo> roles = sysUserManager.listUserValidRoles(userCode);
         JsonResultUtils.writeSingleDataJson(roles, response);
     }
@@ -239,7 +252,7 @@ public class UserInfoController extends BaseController {
      * @throws IOException IOException
      */
     @RequestMapping(value = "/exists/{loginName}", method = RequestMethod.GET)
-    public void isExists(@PathVariable String loginName, 
+    public void isExists(@PathVariable String loginName,
             HttpServletRequest request,HttpServletResponse response) throws IOException {
         UserInfo userInfo = sysUserManager.loadUserByLoginname(loginName);
 
@@ -258,7 +271,7 @@ public class UserInfoController extends BaseController {
     @RequestMapping(value = "/change/{userCode}", method = RequestMethod.PUT)
     public void changePwd(@PathVariable String userCode, String password, String newPassword,
             HttpServletRequest request,HttpServletResponse response) {
-        
+
         sysUserManager.setNewPassword(userCode, password, newPassword);
 
         JsonResultUtils.writeBlankJson(response);
@@ -305,7 +318,7 @@ public class UserInfoController extends BaseController {
 
             return;
         }
-        
+
         sysUserManager.resetPwd(userCodes);
 
         JsonResultUtils.writeBlankJson(response);
@@ -351,5 +364,5 @@ public class UserInfoController extends BaseController {
         }
         JsonResultUtils.writeSuccessJson(response);
     }
-    
+
 }

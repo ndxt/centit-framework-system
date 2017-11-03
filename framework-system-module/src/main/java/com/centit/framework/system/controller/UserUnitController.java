@@ -130,7 +130,7 @@ public class UserUnitController extends BaseController {
         UserInfo user = sysUserManager.getObjectById(this.getLoginUser(request).getUserCode());
         Map<String, Object> filterMap = convertSearchColumn(request);
         filterMap.put("userCode", userCode);
-        filterMap.put("unitCode", user.getPrimaryUnit());
+//        filterMap.put("unitCode", user.getPrimaryUnit());
 
         List<UserUnit> listObjects = sysUserUnitManager.listObjects(filterMap, pageDesc);
 
@@ -200,6 +200,7 @@ public class UserUnitController extends BaseController {
     @RequestMapping(method = RequestMethod.POST)
     public void create(@Valid UserUnit userUnit,HttpServletRequest request, HttpServletResponse response) {
 
+        userUnit.setCreator(getLoginUserCode(request));
         sysUserUnitManager.saveNewUserUnit(userUnit);
 
         JsonResultUtils.writeBlankJson(response);
@@ -222,9 +223,11 @@ public class UserUnitController extends BaseController {
     public void edit(@PathVariable String userunitid, @Valid UserUnit userUnit,
                      HttpServletRequest request, HttpServletResponse response) {
 
+        userUnit.setUpdator(getLoginUserCode(request));
         UserUnit dbUserUnit = sysUserUnitManager.getObjectById(userunitid);
         if (null == dbUserUnit) {
             JsonResultUtils.writeErrorMessageJson("当前机构中无此用户", response);
+            return;
         }
 
         UserUnit oldValue = new UserUnit();
@@ -233,7 +236,7 @@ public class UserUnitController extends BaseController {
         dbUserUnit.copy(userUnit);
 
         sysUserUnitManager.updateUserUnit(dbUserUnit);
-        
+
         JsonResultUtils.writeSingleDataJson(userUnit, response);
 
         /*********log*********/
@@ -253,6 +256,10 @@ public class UserUnitController extends BaseController {
     public void delete(@PathVariable String userunitid,
                        HttpServletRequest request, HttpServletResponse response) {
         UserUnit dbUserUnit = sysUserUnitManager.getObjectById(userunitid);
+        if("T".equals(dbUserUnit.getIsPrimary())){
+            JsonResultUtils.writeErrorMessageJson("主机构组织信息不能删除！", response);
+            return;
+        }
 
         sysUserUnitManager.deleteObject(dbUserUnit);
 

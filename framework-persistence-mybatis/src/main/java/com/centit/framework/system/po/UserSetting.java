@@ -70,7 +70,7 @@ public class UserSetting implements IUserSetting,java.io.Serializable {
         this.cid = id;
 
     }
-    
+
     public UserSetting(String userCode, String paramCode,String paramValue, String paramName) {
         this.cid = new UserSettingId(userCode, paramCode);
         this.paramValue = paramValue;
@@ -78,7 +78,7 @@ public class UserSetting implements IUserSetting,java.io.Serializable {
         this.paramName = paramName;
         this.createDate = DatetimeOpt.currentUtilDate();
     }
-    
+
     public UserSetting(String userCode, String paramCode,String paramValue,
                 String paramClass, String paramName) {
         this.cid = new UserSettingId(userCode, paramCode);

@@ -14,7 +14,7 @@ import java.util.*;
 
 /**
  * FAddressBook entity.
- * 
+ *
  * @author codefan@hotmail.com
  */
 // 业务模块表
@@ -28,11 +28,11 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     @GeneratedValue(generator = "assignedGenerator")
     @GenericGenerator(name = "assignedGenerator", strategy = "assigned")
     private String optId; // 业务编号
-    
+
     @Column(name = "PRE_OPT_ID")
     @Length(max = 32, message = "字段长度不能大于{max}")
     private String preOptId; // 上级业务模块编号
-    
+
     @Column(name = "OPT_NAME")
     @NotBlank(message = "字段不能为空")
     @Length(max = 100, message = "字段长度不能大于{max}")
@@ -50,13 +50,13 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
 
     /**
      * 系统菜单路由
-     * 
+     *
      * 与angularjs路由匹配
      */
     @Column(name = "OPT_ROUTE")
     @Length(max = 256, message = "字段长度不能大于{max}")
     private String optRoute;
-    
+
     @Column(name = "OPT_URL")
     @Length(max = 256, message = "字段长度不能大于{max}")
     private String optUrl; // 业务url（b/s）
@@ -87,7 +87,7 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     @Column(name = "PAGE_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String pageType; // 页面打开方式 D: DIV I： iFrame
-    
+
     @Column(name = "ORDER_IND")
     @Range(max = 100000, message = "字段长度不能大于{max}")
     private Long orderInd; // 业务顺序
@@ -104,7 +104,7 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     @Range(max = 100000, message = "字段长度不能大于{max}")
     private Long width;// 宽度
 
-    
+
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
@@ -140,10 +140,10 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     public void setState(String state) {
         this.state = state;
     }
-    
+
     @Transient
-    private List<OptMethod> optMethods;    
-    
+    private List<OptMethod> optMethods;
+
     @Transient
     private List<OptDataScope> dataScopes;
 
@@ -328,7 +328,7 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
 
     /**
      * 页面打开方式 D: DIV I： iFrame
-     * 
+     *
      * @return PageType
      */
     public String getPageType() {
@@ -337,13 +337,13 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
 
     /**
      * 页面打开方式 D: DIV I： iFrame
-     * 
+     *
      * @param pageType pageType
      */
     public void setPageType(String pageType) {
         this.pageType = pageType;
     }
-    
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -444,7 +444,7 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     public List<OptInfo> getChildren() {
         return children;
     }
-    
+
     public void  addChild(OptInfo child) {
         if(children==null)
             children = new ArrayList<>();
@@ -485,7 +485,7 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
         }
         return optMethods;
     }
-    
+
     public void setOptMethods(List<OptMethod> optDefs) {
         this.optMethods = optDefs;
     }
@@ -498,7 +498,7 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     public void addOptMethod(OptMethod optDef) {
         getOptMethods().add(optDef);
     }
-    
+
     public void addAllOptMethods(List<OptMethod> optDefs) {
         getOptMethods().clear();
         if (CollectionUtils.isEmpty(optDefs)) {
@@ -512,7 +512,7 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
         getOptMethods().addAll(optDefs);
     }
 
-    
+
     public void addAllDataScopes(List<OptDataScope> dataScopeByOptID) {
         getDataScopes().clear();
         if (CollectionUtils.isEmpty(dataScopeByOptID)) {

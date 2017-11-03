@@ -2,7 +2,7 @@ define(function(require) {
 	var Config = require('config');
 	var Core = require('core/core');
 	var Page = require('core/page');
-	
+
 	var UnitInfoAdd = require('../ctrl/unitinfo.add');
 	var UnitInfoAddTop = require('../ctrl/unitinfo.add.top');
 	var UnitInfoEdit = require('../ctrl/unitinfo.edit');
@@ -10,28 +10,28 @@ define(function(require) {
 	var UnitInfoUser = require('../ctrl/unitinfo.user');
 	var UnitOperate=require('../ctrl/unitinfo.operate');
 	var UnitInfo = Page.extend(function() {
-		
+
 		var UnitInfoEditObj = new UnitInfoEdit('unitinfo_edit');
 		var UnitInfoUserObj = new UnitInfoUser('unitinfo_user');
 
 		this.injecte([
-		  new UnitInfoAddTop('unitinfo_add_top'),            
+		  new UnitInfoAddTop('unitinfo_add_top'),
 		  new UnitInfoAdd('unitinfo_add'),
 		  UnitInfoEditObj,
 		  new UnitInfoRemove('unitinfo_remove'),
 		  new UnitOperate('unitinfo_operate'),
 		  UnitInfoUserObj
 		]);
-		
-		
+
+
 		// @override
 		this.load = function(panel) {
 			var table = this.table = panel.find('table');
 			var currentUnit=null;
-			
+
 			table.ctreegrid({
 				controller: this,
-				
+
 				rowStyler: function(row) {
 					if (row && row.isValid == 'F') {
 						return {
@@ -39,27 +39,27 @@ define(function(require) {
 						};
 					}
 				},
-				
+
 				//给table增加单行点击事件
 				onClickRow: function(row) {
 					// 点击当前节点不响应
 					if (row.unitCode == currentUnit) return;
-					
+
 					currentUnit = row.unitCode;
 					var panel = $('#unitinfo_panel').layout('panel', 'east');
-					
+
 //					panel.panel(options);
 					panel.data('panel').options.onLoad = function() {
 						UnitInfoUserObj.init(panel, row);
 					};
-					panel.panel('setTitle', row.unitName + ' 组织信息');
+					panel.panel('setTitle', row.unitName + ' 机构用户');
 					panel.panel('refresh', Config.ViewContextPath + 'modules/sys/unitinfo/unitinfo-user-default.html');
 				}
 			});
 		};
 
 	});
-	
+
 	return UnitInfo;
 });
 

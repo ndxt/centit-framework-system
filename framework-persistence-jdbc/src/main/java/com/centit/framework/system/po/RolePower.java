@@ -24,7 +24,7 @@ public class RolePower implements IRolePower, EntityWithTimestamp, java.io.Seria
 
     @EmbeddedId
     private RolePowerId id; // 主键id
-   
+
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
@@ -74,7 +74,7 @@ public class RolePower implements IRolePower, EntityWithTimestamp, java.io.Seria
         this.optScopeCodes = optScopeCodes;
         this.createDate = DatetimeOpt.currentUtilDate();
     }
-    
+
     // Property accessors
     public RolePowerId getId() {
         return this.id;
@@ -89,7 +89,7 @@ public class RolePower implements IRolePower, EntityWithTimestamp, java.io.Seria
             this.id = new RolePowerId();
         return this.id.getRoleCode();
     }
-    
+
     public void setRoleCode(String rolecode) {
         if(this.id==null)
             this.id = new RolePowerId();
@@ -117,7 +117,7 @@ public class RolePower implements IRolePower, EntityWithTimestamp, java.io.Seria
             return null;
         return optScopeCodes.split(",");
     }
-    
+
     public void setOptScopeCodes(String optScopeCodes) {
         this.optScopeCodes = optScopeCodes;
     }
@@ -139,7 +139,7 @@ public class RolePower implements IRolePower, EntityWithTimestamp, java.io.Seria
         this.updator=other.updator;
         this.updateDate=other.updateDate;
     }
-    
+
 
     public Date getCreateDate() {
         return createDate;
@@ -156,12 +156,12 @@ public class RolePower implements IRolePower, EntityWithTimestamp, java.io.Seria
         }
         return getId().equals(((RolePower)obj).getId());
     }
-    
+
     @Override
-    public int hashCode() {       
+    public int hashCode() {
         return this.getId().hashCode();
     }
-    
+
    //创建人、更新人、更新时间
     public String getCreator() {
           return this.creator;

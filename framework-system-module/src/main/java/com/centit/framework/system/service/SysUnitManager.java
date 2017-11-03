@@ -18,7 +18,7 @@ public interface SysUnitManager{
     List<UserInfo> getUnitUsers(String unitCode);
 
     List<UserInfo> getRelationUsers(String unitCode);
- 
+
     String getUnitCode(String depno);
 
     UnitInfo getUnitByName(String name);
@@ -31,10 +31,18 @@ public interface SysUnitManager{
      * @param isValid 状态码
      */
     void changeStatus(String unitCode, String isValid);
-    void deleteUnitInfo(UnitInfo unitinfo);
+
+  /**
+   * 删除机构
+   * @param unitinfo 机构对象
+   */
+  void deleteUnitInfo(UnitInfo unitinfo);
+
     String saveNewUnitInfo(UnitInfo unitinfo);
 
     boolean isUniqueName(UnitInfo unitInfo);
+
+    boolean isUniqueOrder(UnitInfo unitInfo);
 
     void updateUnitInfo(UnitInfo unitinfo);
     List<UnitInfo> listAllSubObjects(String primaryUnit);
@@ -42,4 +50,6 @@ public interface SysUnitManager{
 
     boolean hasChildren(String unitCode);
     void checkState(List<UnitInfo> objs);
+
+    List<UnitInfo> listValidSubUnit(String unitCode);
 }

@@ -1,5 +1,7 @@
 package com.centit.framework.system.service.impl;
 
+import com.centit.framework.system.dao.UserInfoDao;
+import com.centit.framework.system.po.UserInfo;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.UserRoleDao;
@@ -11,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,10 +27,13 @@ import java.util.Map;
 @Service
 @Transactional
 public class SysUserRoleManagerImpl implements SysUserRoleManager {
- 
+
     @Resource
     @NotNull
     protected UserRoleDao userRoleDao;
+
+    @Resource
+    private UserInfoDao userInfoDao;
 
     @Override
     public void mergeObject(UserRole dbUserRole, UserRole userRole) {
@@ -54,5 +60,13 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
     @Override
     public void deleteObjectById(UserRoleId id) {
         userRoleDao.deleteObjectById(id);
+    }
+
+    @Override
+    @Transactional
+    public List<UserInfo> listUsersByRole(String roleCode){
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("queryByRole", roleCode);
+        return userInfoDao.listObjects(map);
     }
 }

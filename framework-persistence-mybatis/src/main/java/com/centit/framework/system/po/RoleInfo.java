@@ -51,7 +51,7 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
     private String isValid; // 是否生效
 
     /**
-     * S为系统角色  I为项目角色  W 工作流角色  
+     * S为系统角色  I为项目角色  W 工作流角色
      */
     @Column(name = "ROLE_TYPE")
     @Size(max = 1, message = "字段长度必须为{max}")
@@ -61,11 +61,11 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
     @Size(max = 32, message = "字段长度不能大于{max}")
     private String unitCode; // 角色所属机构
 
-    
+
     @Column(name = "ROLE_DESC")
     @Size(max = 256, message = "字段长度不能大于{max}")
     private String roleDesc; // 角色描述
-    
+
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
@@ -155,7 +155,7 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
     public void setRoleDesc(String roledesc) {
         this.roleDesc = roledesc;
     }
-    
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -230,7 +230,7 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
         this.updateDate=other.updateDate;
     }
 
-   
+
     public String getCreator() {
         return this.creator;
     }

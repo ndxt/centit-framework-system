@@ -206,7 +206,7 @@ public class OptLog implements java.io.Serializable {
     public void setOldValue(String oldvalue) {
         this.oldValue = oldvalue;
     }
-    
+
     public void copy(OperationLog other) {
         this.logLevel = other.getLogLevel();
         this.userCode = other.getUserCode();
@@ -233,7 +233,7 @@ public class OptLog implements java.io.Serializable {
         this.optContent = other.getOptContent();
         this.oldValue = other.getOldValue();
         this.newValue = other.getNewValue();
-        
+
         this.optTag = other.getoptTag();
     }
 

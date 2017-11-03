@@ -8,10 +8,10 @@ import java.util.Date;
 
 
 /**
- * create by scaffold 2016-03-01 
+ * create by scaffold 2016-03-01
  * @author codefan@sina.com
- 
-  系统内置查询方式null   
+
+  系统内置查询方式null
 */
 @Entity
 @Table(name = "F_QUERY_FILTER_CONDITION")
@@ -69,7 +69,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     private String  filterSql;
     /**
      * 参考类型 数据下拉框内容； N ：没有， D 数据字典, S 通过sql语句获得， J json数据直接获取
- 
+
      */
     @Column(name = "SELECT_DATA_TYPE")
     @NotBlank(message = "字段不能为空")
@@ -134,7 +134,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     }
 
 
-  
+
     public Long getConditionNo() {
         return this.conditionNo;
     }
@@ -143,7 +143,7 @@ public class QueryFilterCondition implements java.io.Serializable {
         this.conditionNo = conditionNo;
     }
     // Property accessors
-  
+
     public String getTableClassName() {
         return this.tableClassName;
     }
@@ -151,7 +151,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     public void setTableClassName(String tableClassName) {
         this.tableClassName = tableClassName;
     }
-  
+
     public String getParamName() {
         return this.paramName;
     }
@@ -159,7 +159,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     public void setParamName(String paramName) {
         this.paramName = paramName;
     }
-  
+
     public String getParamLabel() {
         return this.paramLabel;
     }
@@ -167,7 +167,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     public void setParamLabel(String paramLabel) {
         this.paramLabel = paramLabel;
     }
-  
+
     public String getParamType() {
         return this.paramType;
     }
@@ -175,7 +175,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     public void setParamType(String paramType) {
         this.paramType = paramType;
     }
-  
+
     public String getDefaultValue() {
         return this.defaultValue;
     }
@@ -183,7 +183,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
     }
-  
+
     public String getFilterSql() {
         return this.filterSql;
     }
@@ -191,7 +191,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     public void setFilterSql(String filterSql) {
         this.filterSql = filterSql;
     }
-  
+
     public String getSelectDataType() {
         return this.selectDataType;
     }
@@ -199,7 +199,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     public void setSelectDataType(String selectDataType) {
         this.selectDataType = selectDataType;
     }
-  
+
     public String getSelectDataCatalog() {
         return this.selectDataCatalog;
     }
@@ -207,7 +207,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     public void setSelectDataCatalog(String selectDataCatalog) {
         this.selectDataCatalog = selectDataCatalog;
     }
-  
+
     public String getSelectSql() {
         return this.selectSql;
     }
@@ -215,7 +215,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     public void setSelectSql(String selectSql) {
         this.selectSql = selectSql;
     }
-  
+
     public String getSelectJson() {
         return this.selectJson;
     }
@@ -233,9 +233,9 @@ public class QueryFilterCondition implements java.io.Serializable {
     }
 
     public QueryFilterCondition copy(QueryFilterCondition other){
-  
+
         this.setConditionNo(other.getConditionNo());
-  
+
         this.tableClassName= other.getTableClassName();
         this.paramName= other.getParamName();
         this.paramLabel= other.getParamLabel();
@@ -281,7 +281,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     }
 
     public QueryFilterCondition clearProperties(){
-  
+
         this.tableClassName= null;
         this.paramName= null;
         this.paramLabel= null;

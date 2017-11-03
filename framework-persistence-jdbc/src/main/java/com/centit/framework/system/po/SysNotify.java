@@ -77,19 +77,19 @@ public class SysNotify implements Serializable {
     @Column(name="OPT_ID")
     @Length(max = 64, message = "字段长度不能大于{max}")
     private String optId;
-    
+
     /**
      *操作方法 */
     @Column(name="OPT_METHOD")
     @Length(max = 64, message = "字段长度不能大于{max}")
     private String optMethod;
-    
+
     /**
      *操作业务标记 */
     @Column(name="OPT_TAG")
     @Length(max = 200, message = "字段长度不能大于{max}")
     private String optTag;
-    
+
     /**
      * 发送时间
      */
@@ -189,7 +189,7 @@ public class SysNotify implements Serializable {
     public void setNotifyTime(Date notifyTime) {
         this.notifyTime = notifyTime;
     }
-    
+
     public String getOptId() {
         return optId;
     }

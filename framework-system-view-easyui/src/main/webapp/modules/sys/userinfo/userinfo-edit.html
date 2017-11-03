@@ -1,7 +1,7 @@
 <form class="form centit">
 	<input type="hidden" name="userCode"/>
 	<input type="hidden" name="isPrimary" value="T"/>
-	
+
 	<div class="fields two">
 		<div class="field required">
 			<label>用户名</label>
@@ -10,19 +10,19 @@
 		</div>
 		<div class="field required">
 			<label>登录名</label>
-			<input type="text" class="easyui-textbox" name="loginName" style="width:100%;" 
+			<input type="text" class="easyui-textbox" name="loginName" style="width:100%;"
 				required />
 		</div>
 	</div>
 	<div class="fields two">
-		<div class="field ">
+		<div class="field">
 			<label>电话</label>
-			<input type="text" class="easyui-textbox" name="regCellPhone" style="width:100%;" 
+			<input type="text" class="easyui-textbox" name="regCellPhone" style="width:100%;"
 				 validType="phoneOrMobile" />
 		</div>
-		<div class="field ">
+		<div class="field">
 			<label>邮箱</label>
-			<input type="text" class="easyui-textbox" name="regEmail" style="width:100%;" 
+			<input type="text" class="easyui-textbox" name="regEmail" style="width:100%;"
 				 validType="email" />
 		</div>
 	</div>
@@ -43,6 +43,6 @@
 	</div>
 	<div class="field">
 		<label>描述</label>
-		<input type="text" class="easyui-textbox" name="userDesc"  multiline="true" style="width:100%; height: 100px;"/>
+		<input validType="maxLength[255]" type="text" class="easyui-textbox" name="userDesc"  multiline="true" style="width:100%; height: 100px;"/>
 	</div>
 </form>

@@ -5,22 +5,32 @@
 			<input type="text" class="easyui-textbox" name="unitName"
 				readonly="true" />
 		</div>
-		
+
 		<div class="field">
 			<label id="d@organizationCode">机构编码</label>
-			<input type="text" class="easyui-textbox" name="unitWord" 
+			<input type="text" class="easyui-textbox" name="unitWord"
 				readonly="true" />
 		</div>
+    <div class="field">
+        <label id="e@name">用户名</label>
+        <input type="text" class="easyui-textbox" name="s_userName" />
+    </div>
+    <a class="easyui-linkbutton btn-search" iconCls="icon-search" style="margin-left:20px;margin-top: 19px" ><p  id="e@btn.search">搜索</p></a>
+    <a class="easyui-linkbutton" style="margin-top: 19px" iconcls="icon-reload">
+      <p>重置</p>
+    </a>
+
 	</div>
 </form>
 
-<table style="width: 95%; margin: 0 auto;"
+<table style="width: 100%; margin: 0 auto;"
 	pagination="true"
 	toolbar=".temp-toolbar"
-	remoteSort="false" 
+	remoteSort="false"
 	sortName="isPrimary"
 	sortOrder="desc"
-	layoutH="120"
+	layoutH="80"
+
 	>
 	<thead>
 		<tr>
@@ -38,11 +48,11 @@
 <div class="temp-toolbar">
 	<a rel="unitinfo_user_add" iconCls="icon-add" href="modules/sys/unitinfo/unitinfo-user-info.html"
 		target="dialog" trigger="none" title="添加人员" btnValue="添加" width="500" height="360"><p  id="d@link.add">新增</p></a>
-	
+
 	<a  rel="unitinfo_user_edit" iconCls="icon-edit" href="modules/sys/unitinfo/unitinfo-user-info.html"
 		target="dialog" trigger="single" title="编辑  {{userName}} 机构信息" btnValue="更新" width="500" height="360"><p id="d@link.edit">编辑</p></a>
-	<hr>	
-		
+	<hr>
+
 	<a  rel="unitinfo_user_remove" iconCls="icon-base icon-base-ban"
 		target="confirm" trigger="single" title="确定将 {{userName}} 从机构中移出吗？"><p id="d@btn.delete">删除</p></a>
 </div>

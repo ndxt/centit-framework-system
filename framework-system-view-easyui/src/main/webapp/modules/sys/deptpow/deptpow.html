@@ -1,17 +1,30 @@
 <div class="easyui-layout" style="width:100%;height:100%;" id="deptpow_panel">
 <div data-options="region:'center'" style="width: 50%">
+  <div class="easyui-panel search-body" cls="search" style="width: 100%">
+    <form class="clearFromValue">
+      <div class="search-item">
+        <label id="d@organizationName">机构名称</label> <input
+        class="easyui-textbox" name="s_unitName" id="s_unitName" />
+      </div>
+      <a class="easyui-linkbutton btn-search" iconCls="icon-search"><p id="e@btn.search">搜索</p></a>
+      <a class="easyui-linkbutton" style="margin-top: 8px;" iconcls="icon-reload" group="" id=""
+         onclick="javascript:$(this).parent('.clearFromValue').form('clear');$('.defaultChecked').prop('checked','true');">
+        <p>重置</p>
+      </a>
+    </form>
+  </div>
 <table class="easyui-treegrid"
 		url="/system/unitinfo/subunits?struct=true"
-	    layoutH="68"
-       data-options="fitColumns: true,	method: 'get',idField: 'unitCode',treeField: 'unitName',
-							showFooter: true,toolbar:'.temp-toolbar'" method="post">
+	    layoutH="65"
+       data-options="	pagination:true,method: 'get',idField: 'unitCode',treeField: 'unitName',
+							showFooter: true,toolbar:'.temp-toolbar'" method="post" search=".search">
     <thead>
         <tr>
         	<th id="e@serialNumber" data-options="field:'unitCode'" hidden="true">编号</th>
-            <th id="e@name" data-options="field:'unitName'" width="30%">名称</th>
-            <th id="e@encoding" data-options="field:'unitWord'" width="12%" align="center">编码</th>
-            <th id="e@classes" data-options="field:'unitTypeText'" width="15%" align="center">类别</th>
-            <th id="e@describe" data-options="field:'unitDesc'" width="40%">描述</th>
+            <th id="e@name" data-options="field:'unitName'" width="200">名称</th>
+            <th id="e@encoding" data-options="field:'unitWord'" width="100" align="center">编码</th>
+            <th id="e@classes" data-options="field:'unitTypeText'" width="130" align="center">类别</th>
+            <th id="e@describe" data-options="field:'unitDesc'" width="320">描述</th>
         </tr>
     </thead>
 </table>
@@ -19,7 +32,7 @@
 <div class="temp-toolbar">
 	<a iconCls="icon-add" href="modules/sys/deptpow/deptpow-info.html" trigger="single"
 		target="dialog" rel="deptpow_add" title="新增 {{unitName}} 下级机构" width="640" height="500" btnValue="添加"><p  id="e@link.subOrganization">下级机构</p></a>
-	<hr>	
+	<hr>
 	<a iconCls="icon-edit" href="modules/sys/deptpow/deptpow-edit.html" trigger="single"
 		target="dialog" rel="deptpow_edit" title="编辑 {{unitName}}" width="640" height="500" btnValue="更新"><p  id="e@link.edit">编辑</p></a>
 	<hr>
@@ -35,12 +48,12 @@
 <script>
 	$.parser.onComplete = function(panel) {
 		$.parser.onComplete = $.noop;
-		
+
 		requirejs([
 					'core/filter/filter.dictionary',
 		           'modules/sys/deptpow/ctrl/deptpow'
 		          ], function(FilterDictionary, DeptPow) {
-			
+
 			FilterDictionary.add(['YesOrNo']).then(function() {
 				new DeptPow('deptpow', panel).load(panel);
 			});

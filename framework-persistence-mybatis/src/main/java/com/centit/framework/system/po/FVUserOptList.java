@@ -25,7 +25,7 @@ public class FVUserOptList implements java.io.Serializable {
     @Column(name = "OPT_CODE")
     @NotNull(message = "字段不能为空")
     private String optcode;     //业务代码
-    
+
     // Fields
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -75,7 +75,7 @@ public class FVUserOptList implements java.io.Serializable {
         this.id = id;
     }
 
-  
+
 
     public String getUserCode() {
         return userCode;

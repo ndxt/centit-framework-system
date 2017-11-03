@@ -141,7 +141,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
         this.needCache = needCache;
     }
 
- 
+
     public String getCatalogCode() {
         return this.catalogCode;
     }
@@ -221,7 +221,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
     public void setNeedCache(String needCache) {
         this.needCache = needCache;
     }
-    
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -229,7 +229,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
-    
+
     //创建人、更新人、更新时间
     public String getCreator() {
         return this.creator;

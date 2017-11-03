@@ -43,7 +43,7 @@ public class UserRoleController extends BaseController {
      * 系统日志中记录
      */
     private String optId = "USERROLE";//CodeRepositoryUtil.getCode("OPTID", "userRole");
-    
+
     /**
      * 通过角色代码获取用户
      *
@@ -56,12 +56,9 @@ public class UserRoleController extends BaseController {
     public void listUsersByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = convertSearchColumn(request);
         filterMap.put("roleCode", roleCode);
-        if(!Objects.isNull(filterMap.get("userName"))){
-            filterMap.put("userName", "%"+filterMap.get("userName")+"%");
-        }
         listObject(filterMap, pageDesc, response);
     }
-    
+
     /**
      * 通过用户代码获取角色
      *
@@ -74,7 +71,7 @@ public class UserRoleController extends BaseController {
     public void listRolesByUser(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = convertSearchColumn(request);
         filterMap.put("userCode", userCode);
-        
+
         String type = request.getParameter("type");
         if("S".equals(type)){
             filterMap.put("NP_userRoleType", true);
@@ -85,8 +82,8 @@ public class UserRoleController extends BaseController {
 
         listObject(filterMap, pageDesc, response);
     }
-    
-    
+
+
     /**
      * 查询所有用户角色
      *
@@ -116,7 +113,7 @@ public class UserRoleController extends BaseController {
      */
     @RequestMapping(value = "/{roleCode}/{userCode}", method = RequestMethod.GET)
     public void getUserRole(@PathVariable String roleCode, @PathVariable String userCode, HttpServletResponse response) {
-        
+
         UserRole userRole = sysUserRoleManager.getObjectById(new UserRoleId(userCode,roleCode));
 
         if (null == userRole) {
@@ -127,7 +124,7 @@ public class UserRoleController extends BaseController {
         Map<Class<?>, String[]> excludes = new HashMap<>();
         excludes.put(RoleInfo.class, new String[]{"rolePowers"});
 
- 
+
         JsonResultUtils.writeSingleDataJson(userRole, response, JsonPropertyUtils.getExcludePropPreFilter(excludes));
     }
 
@@ -154,7 +151,7 @@ public class UserRoleController extends BaseController {
         }
 
         JsonResultUtils.writeBlankJson(response);
-        
+
         /*********log*********/
         OperationLogCenter.logNewObject(request,optId, userRole.getUserCode()+"-"+ userRole.getRoleCode(),
                 OperationLog.P_OPT_LOG_METHOD_C, "新增用户角色关联" , userRole);
@@ -183,13 +180,10 @@ public class UserRoleController extends BaseController {
 
         sysUserRoleManager.mergeObject(dbUserRole, userRole);
         JsonResultUtils.writeSingleDataJson(userRole, response);
-        
-        /*********log*********/
 
-        StringBuilder optContent = new StringBuilder();
-        optContent.append("更改用户角色信息:" + JSON.toJSONString(userRole.getId()));
+        /*********log*********/
         OperationLogCenter.logUpdateObject(request,optId,dbUserRole.getUserCode(),
-                OperationLog.P_OPT_LOG_METHOD_U,  optContent.toString(),userRole,dbUserRole);
+                OperationLog.P_OPT_LOG_METHOD_U,"更改用户角色信息:" + JSON.toJSONString(userRole.getId()) ,userRole,dbUserRole);
         /*********log*********/
     }
 
@@ -216,7 +210,7 @@ public class UserRoleController extends BaseController {
         }
         JsonResultUtils.writeBlankJson(response);
     }
-    
+
     /**
      * 删除用户角色关联信息
      * @param roleCode 角色代码

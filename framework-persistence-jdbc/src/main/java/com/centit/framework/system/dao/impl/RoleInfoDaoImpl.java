@@ -27,15 +27,15 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
             filterField.put("(like)publicUnitRole", "(ROLE_CODE like :publicUnitRole or ROLE_CODE like 'P-%')");
             filterField.put("(startwith)UNITROLE", "(ROLE_CODE like :UNITROLE)");
             filterField.put("NP_GLOBAL", "(ROLE_CODE like 'G-%' or roleCode like 'P-%')");
-            filterField.put("ROLENAME", CodeBook.LIKE_HQL_ID);
+            filterField.put("roleName", CodeBook.LIKE_HQL_ID);
             filterField.put("ROLEDESC", CodeBook.LIKE_HQL_ID);
             filterField.put("isValid", CodeBook.EQUAL_HQL_ID);
-            filterField.put("roleType", CodeBook.EQUAL_HQL_ID); 
+            filterField.put("roleType", CodeBook.EQUAL_HQL_ID);
             filterField.put("unitCode", CodeBook.EQUAL_HQL_ID);
             filterField.put("NP_unitCode", "UNIT_CODE is null");
             filterField.put("roleNameEq", "ROLE_NAME = :roleNameEq");
             filterField.put("(date)createDateBeg", "CREATE_DATE>= :createDateBeg");
-            filterField.put("(date)createDateEnd", "CREATE_DATE< :createDateEnd");
+            filterField.put("(nextday)createDateEnd", "CREATE_DATE< :createDateEnd");
         }
         return filterField;
     }
@@ -63,7 +63,7 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
                 (ConnectionCallback<List<VOptTree>>) conn ->
                         OrmDaoUtils.listAllObjects(conn,  VOptTree.class));
     }
-   
+
     @SuppressWarnings("unchecked")
     @Transactional
     public List<Object> listRoleOptMethods(String rolecode) {
@@ -74,7 +74,7 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
                 this,hql,  new Object[]{rolecode});
     }
 
-    
+
     /**
      * 对角色信息进行模糊搜索，适用于带搜索条件的下拉框。
      *

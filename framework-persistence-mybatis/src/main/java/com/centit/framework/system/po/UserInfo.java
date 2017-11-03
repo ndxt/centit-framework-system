@@ -91,7 +91,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     private String regEmail; // 注册email
 
     @Column(name="ID_CARD_NO")
-    @Length(max=20,message="字段长度不能大于{max}")
+    @Length(max=20,message="大于{max}")
     private String idCardNo;
 
     @Column(name = "USER_PWD")
@@ -104,11 +104,11 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     private String regCellPhone;
 
     @Column(name = "USER_WORD")
-    @Length(max = 100, message = "字段长度不能}大于{max}")
+    @Length(max = 100, message = "}大于{max}")
     private String userWord;
 
     @Column(name = "USER_TAG")
-    @Length(max = 100, message = "字段长度不能}大于{max}")
+    @Length(max = 100, message = "}大于{max}")
     private String userTag;
 
     @Column(name = "USER_ORDER")
@@ -195,7 +195,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         userUnits = null;
         primaryUnit = null;
         userRoles = null;
-       
+
         //this.userType = "U";
     }
 
@@ -229,7 +229,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
             primaryUnit = null;
             }
 
-    
+
     public UserInfo(String userCode, String userpin,String usertype, String userstate,
                     String loginname, String username, String userdesc,
                     String usertag, String englishname,
@@ -312,7 +312,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     public void setUserType(String userType) {
         this.userType = userType;
     }
-    
+
     public void setUserName(String username) {
         this.userName = username;
     }
@@ -401,7 +401,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     public String getPrimaryUnit() {
         return primaryUnit;
     }
-      
+
     public void setPrimaryUnit(String primaryUnit) {
         this.primaryUnit = primaryUnit;
     }
@@ -439,7 +439,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     public void setUpdator(String updator) {
         this.updator = updator;
     }
-  
+
     public Date getUpdateDate() {
         return updateDate;
     }
@@ -558,7 +558,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     public void setUserUnits(List<UserUnit> userUnits) {
         this.userUnits = userUnits;
     }
-    
+
     public List<UserRole> listUserRoles() {
         if(null==userRoles)
             userRoles=new ArrayList<UserRole>();
@@ -568,15 +568,15 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     public void setUserRoles(List<UserRole> userRoles) {
         this.userRoles = userRoles;
     }
-    
+
     private void addUserUnit(UserUnit userunit) {
         this.getUserUnits().add(userunit);
-        
+
     }
 
     private void removeUserUnit(UserUnit odt) {
         this.getUserUnits().remove(odt);
-        
+
     }
 
     private void addUserRole(UserRole userrole) {
@@ -586,7 +586,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
 
     private void removeUserRole(UserRole odt) {
         this.listUserRoles().remove(odt);
-        
+
     }
     /**
      * 替换子类对象数组，这个函数主要是考虑hibernate中的对象的状态，以避免对象状态不一致的问题
@@ -608,7 +608,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         boolean found = false;
         Set<UserRole> oldObjs = new HashSet<UserRole>();
         oldObjs.addAll(listUserRoles());
-        
+
         for(Iterator<UserRole> it=oldObjs.iterator(); it.hasNext();){
             UserRole odt = it.next();
             found = false;
@@ -636,7 +636,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
             }
             if(! found)
                 addUserRole(newdt);
-        }   
+        }
     }
      /**
      * 替换子类对象数组，这个函数主要是考虑hibernate中的对象的状态，以避免对象状态不一致的问题
@@ -657,7 +657,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         boolean found = false;
         Set<UserUnit> oldObjs = new HashSet<UserUnit>();
         oldObjs.addAll(getUserUnits());
-        
+
         for(Iterator<UserUnit> it=oldObjs.iterator(); it.hasNext();){
             UserUnit odt = it.next();
             found = false;
@@ -685,7 +685,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
             }
             if(! found)
                 addUserUnit(newdt);
-        }   
+        }
     }
 
 }

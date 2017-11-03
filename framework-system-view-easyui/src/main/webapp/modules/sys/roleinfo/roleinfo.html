@@ -1,4 +1,4 @@
-<div class="easyui-layout" id="roleinfo_layout" data-options="fit:true">
+<div class="easyui-layout" id="roleinfo_layout" data-options="fit:true" >
 	<div data-options="region:'center'" style="width:50%;">
 		<div class="easyui-panel search-body" cls="search" style="width: 100%">
 			<form class="clearFromValue" id="roleinfoform">
@@ -6,12 +6,12 @@
 					<label id="d@encoding">编码</label>
 					<input type="text" class="easyui-textbox" name="s_roleCode" />
 				</div>
-				
+
 				<div class="search-item">
 					<label id="d@name">名称</label>
 					<input type="text" class="easyui-textbox" name="s_roleName" />
 				</div>
-				
+
 				<div class="search-item">
 					<label id="d@state">状态</label>
 					<input type="radio" name="s_isValid" value=""  /> <p  id="d@all">全部</p>
@@ -36,21 +36,22 @@
 			sortName="createDate" sortOrder="desc"
 			search=".search"
 			toolbar=".temp-toolbar"
-			layoutH="110"
+			layoutH="120"
 			border="false"
 			method="post"
+
 			>
 			<thead>
 				<tr>
 					<th id="d1@encoding" data-options="field:'roleCode'" width="100" sortable="true">编码</th>
 					<th id="d1@name" data-options="field:'roleName'" width="125" sortable="true">名称</th>
 					<th id="d1@createTime" data-options="field:'createDate'" width="125" sortable="true" align="center" format="Date:yyyy-MM-dd">创建时间</th>
-					<th id="d1@describe" data-options="field:'roleDesc'" width="355">描述</th>
+					<th maxlinid="d1@describe" data-options="field:'roleDesc'" width="355">描述</th>
 				</tr>
 			</thead>
 		</table>
 	</div>
-	
+
 	<div data-options="region:'east', split: true, collapsible: false" style="width:50%" title="角色用户">
 
 	</div>
@@ -78,7 +79,7 @@
 <script>
 	$.parser.onComplete = function(panel) {
 		$.parser.onComplete = $.noop;
-		
+
 		requirejs([
 		           'modules/sys/roleinfo/ctrl/roleinfo'
 		          ], function(RoleInfo) {

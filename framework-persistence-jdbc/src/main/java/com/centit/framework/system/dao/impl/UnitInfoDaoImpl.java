@@ -28,7 +28,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
         if (filterField == null) {
             filterField = new HashMap<>();
             filterField.put("unitCode", CodeBook.EQUAL_HQL_ID);
-            filterField.put("UNITNAME", CodeBook.LIKE_HQL_ID);
+            filterField.put("unitName", CodeBook.LIKE_HQL_ID);
             filterField.put("ISVALID", CodeBook.EQUAL_HQL_ID);
             filterField.put("UNITTAG", CodeBook.EQUAL_HQL_ID);
             filterField.put("UNITWORD", CodeBook.EQUAL_HQL_ID);
@@ -130,13 +130,12 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
 
     @Transactional(propagation=Propagation.MANDATORY)
     public List<UnitInfo> listSubUnitsByUnitPaht(String unitPath){
-        return listObjectsByProperty("unitPath", unitPath+"%");
+        return listObjects(QueryUtils.createSqlParamsMap("unitPath", unitPath+"%" ));
     }
 
     public List<String> getAllParentUnit(){
-       String sql = "select distinct t.parent_unit from f_unitinfo t ";
-
-        return this.getJdbcTemplate().queryForList(sql, String.class);
+        return this.getJdbcTemplate().queryForList(
+          "select distinct t.parent_unit from f_unitinfo t ", String.class);
     }
 
     @Override
@@ -150,9 +149,9 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     }
 
     public int countChildrenSum(String unitCode){
-        String sql = "select count(1) as subunits from F_UNITINFO where PARENT_UNIT = ?";
-
-        return this.getJdbcTemplate().queryForObject(sql, Integer.class, unitCode);
+        return this.getJdbcTemplate().queryForObject(
+          "select count(*) as subunits from F_UNITINFO where PARENT_UNIT = ?",
+          Integer.class, unitCode);
     }
 
     /**
@@ -177,4 +176,27 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
         }
         return list.get(0);
     }
+
+  /**
+   * 根据PARENT_UNIT和UNIT_ORDER获取同级机构
+   * @param parentUnit 机构名称
+   * @param unitOrder 父类代码
+   * @return UnitInfo 机构信息
+   */
+  @Override
+  public UnitInfo getPeerUnitByParentUnit(String parentUnit, long unitOrder) {
+    String sql = "select u.UNIT_CODE, u.PARENT_UNIT, u.UNIT_TYPE, u.IS_VALID, u.UNIT_NAME, u.ENGLISH_NAME," +
+      " u.UNIT_SHORT_NAME, u.UNIT_WORD, u.UNIT_TAG, u.UNIT_DESC, u.ADDRBOOK_ID, u.UNIT_ORDER, u.UNIT_GRADE," +
+      " u.DEP_NO, u.UNIT_PATH, u.UNIT_MANAGER, u.CREATE_DATE, u.CREATOR, u.UPDATOR, u.UPDATE_DATE " +
+      "from F_UNITINFO u " +
+      "where u.UNIT_ORDER = :unitOrder and u.PARENT_UNIT = :parentUnit ";
+
+    List<UnitInfo> list = listObjectsBySql(sql, QueryUtils.createSqlParamsMap(
+      "unitOrder", unitOrder, "parentUnit", parentUnit));
+
+    if(list == null || list.size() == 0){
+      return null;
+    }
+    return list.get(0);
+  }
 }

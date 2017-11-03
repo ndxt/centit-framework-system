@@ -20,7 +20,7 @@ import java.util.*;
 
 @Service("functionManager")
 public class OptInfoManagerImpl implements OptInfoManager {
- 
+
     @Resource
     @NotNull
     protected OptInfoDao optInfoDao;
@@ -28,17 +28,17 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Resource(name = "optMethodDao")
     @NotNull
     protected OptMethodDao optMethodDao;
-    
-    
+
+
     @Resource(name = "optDataScopeDao")
     @NotNull
     protected OptDataScopeDao dataScopeDao;
-    
+
     @Resource(name = "rolePowerDao")
     @NotNull
     protected RolePowerDao rolePowerDao;
-    
- 
+
+
     @Override
     @Transactional(readOnly = true)
     public Map<String, OptInfo> listObjectToOptRepo() {
@@ -52,14 +52,14 @@ public class OptInfoManagerImpl implements OptInfoManager {
 
         return optRepo;
     }
-    
+
     @Override
     @CacheEvict(value="OptInfo",allEntries = true)
     @Transactional
     public void updateOptInfoProperties(OptInfo optinfo){
         optInfoDao.mergeObject(optinfo);
     }
-    
+
     @Override
     @Transactional
     public boolean hasChildren(String optId){
@@ -82,9 +82,9 @@ public class OptInfoManagerImpl implements OptInfoManager {
         }else{
             optInfo.setPreOptId("0");
         }
-        
+
         optInfoDao.saveNewObject( optInfo );
-        
+
         if(optInfo.getOptMethods()!=null && optInfo.getOptMethods().size()>0 ){
             // 对于显示的菜单添加显示权限
             for(OptMethod o : optInfo.getOptMethods()){
@@ -92,37 +92,37 @@ public class OptInfoManagerImpl implements OptInfoManager {
                 o.setOptId(optInfo.getOptId());
                 optMethodDao.saveNewObject(o);
             }
-        }else if (!"W".equals(optInfo.getOptType())) {            
+        }else if (!"W".equals(optInfo.getOptType())) {
             OptMethod createDef = new OptMethod();
             createDef.setOptCode(optMethodDao.getNextOptCode());
             createDef.setOptId(optInfo.getOptId());
             createDef.setOptName("新建");
             createDef.setOptUrl("/");
             createDef.setOptReq("C");
-            createDef.setOptDesc("新建（系统默认）");            
+            createDef.setOptDesc("新建（系统默认）");
             optMethodDao.saveNewObject(createDef);
-            
+
             OptMethod updateDef = new OptMethod();
             updateDef.setOptCode(optMethodDao.getNextOptCode());
             updateDef.setOptId(optInfo.getOptId());
             updateDef.setOptName("编辑");
             updateDef.setOptUrl("/*");
             updateDef.setOptReq("U");
-            updateDef.setOptDesc("编辑（系统默认）");            
+            updateDef.setOptDesc("编辑（系统默认）");
             optMethodDao.saveNewObject(updateDef);
-            
+
             OptMethod deleteDef = new OptMethod();
             deleteDef.setOptCode(optMethodDao.getNextOptCode());
             deleteDef.setOptId(optInfo.getOptId());
             deleteDef.setOptName("删除");
             deleteDef.setOptUrl("/*");
             deleteDef.setOptReq("D");
-            deleteDef.setOptDesc("删除（系统默认）");            
+            deleteDef.setOptDesc("删除（系统默认）");
             optMethodDao.saveNewObject(deleteDef);
         }
     }
-    
-    
+
+
     @Override
     @CacheEvict(value="OptInfo",allEntries = true)
     @Transactional
@@ -231,25 +231,27 @@ public class OptInfoManagerImpl implements OptInfoManager {
         optMethodDao.deleteOptMethodsByOptID(optId);
         optInfoDao.deleteObjectById(optId);
     }
-    
+
     @Override
     @Transactional
     public void deleteOptInfo(OptInfo optinfo){
         deleteOptInfoById(optinfo.getOptId());
     }
-    
+
     @Override
     @Transactional
     public List<OptInfo> listSysAndOptPowerOpts(){
-        return optInfoDao.listObjectsByCon("  (optType='S' or optType='O')");
+//        return optInfoDao.listObjectsByCon("  (optType='S' or optType='O')");
+        return optInfoDao.listMenuByTypes("S", "O");
     }
-    
+
     @Override
     @Transactional
     public List<OptInfo> listItemPowerOpts(){
-        return optInfoDao.listObjectsByCon("  optType='I'");
+//        return optInfoDao.listObjectsByCon("  optType='I'");
+        return optInfoDao.listMenuByTypes("I");
     }
-    
+
     /**
      * 获取用户数据权限过滤器
      * @param sUserCode sUserCode
@@ -282,7 +284,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
         return dataScopeDao.listDataFiltersByIds(scopeCodes);
     }
 
-   
+
     @Override
     @Transactional
     public List<OptInfo> listObjectFormatTree(List<OptInfo> optInfos,boolean fillDefAndScope) {
@@ -290,7 +292,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
         Iterator<OptInfo> menus = optInfos.iterator();
         List<OptInfo> parentMenu = new ArrayList<OptInfo>();
         while (menus.hasNext()) {
-            
+
             OptInfo optInfo = menus.next();
             //去掉级联关系后需要手动维护这个属性
             if(fillDefAndScope){
@@ -308,16 +310,17 @@ public class OptInfoManagerImpl implements OptInfoManager {
             }
             if(!getParent)
                 parentMenu.add(optInfo);
-        }        
+        }
         return parentMenu;
     }
-    
+
     @Override
     @Transactional
     public List<OptInfo> listOptWithPowerUnderUnit(String sUnitCode) {
-        List<OptInfo>  allOpts = optInfoDao.listObjectsByCon(" (optType='S' or optType='O')");
+//        List<OptInfo>  allOpts = optInfoDao.listObjectsByCon(" (optType='S' or optType='O')");
+        List<OptInfo>  allOpts = optInfoDao.listMenuByTypes("S", "O");
         List<OptMethod> optDefs = optMethodDao.listOptMethodByRoleCode("G$"+sUnitCode);
-        Set<OptInfo> roleOpts = new HashSet<OptInfo>();
+        Set<OptInfo> roleOpts = new HashSet<>();
 
         for(OptInfo optInfo : allOpts) {
             //去掉级联关系后需要手动维护这个属性
@@ -417,6 +420,12 @@ public class OptInfoManagerImpl implements OptInfoManager {
                 optInfoDao.mergeObject(o);
             }
         }
-    }
+        List<OptInfo> optInfos = findSubOptInfo(optInfo.getOptId());
+        optInfos.addAll(findPreOptInfo(optInfo.getPreOptId()));
+        for(OptInfo o : optInfos) {
+          o.setOptType(optInfo.getOptType());
+          optInfoDao.mergeObject(o);
+        }
+      }
 
 }

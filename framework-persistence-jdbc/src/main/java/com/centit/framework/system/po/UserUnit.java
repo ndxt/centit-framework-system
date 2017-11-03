@@ -3,6 +3,10 @@ package com.centit.framework.system.po;
 import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IUserUnit;
+import com.centit.support.database.orm.GeneratorCondition;
+import com.centit.support.database.orm.GeneratorTime;
+import com.centit.support.database.orm.GeneratorType;
+import com.centit.support.database.orm.ValueGenerator;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -26,7 +30,7 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
     @Column(name = "USER_UNIT_ID")
     @Length(max = 64)
     private String userUnitId;
-    
+
     @Column(name = "UNIT_CODE")
     @DictionaryMap(fieldName="unitName",value="unitCode")
     private String unitCode; // 机构代码
@@ -43,7 +47,7 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
     @Column(name = "USER_RANK")
     @Length(max = 32, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="userRankText",value="RankType")
-    private String userRank; // 职务 
+    private String userRank; // 职务
 
     @Column(name = "RANK_MEMO")
     @Length(max = 256, message = "字段长度不能大于{max}")
@@ -56,14 +60,15 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
 
     @Column(name = "USER_ORDER")
     private Long userOrder;    //用户排序号
-    
+
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
+    @ValueGenerator( strategy= GeneratorType.FUNCTIION, value = "now")
     protected Date createDate;
 
     @Transient
-    private String unitName; // 机构名称     
-    
+    private String unitName; // 机构名称
+
     //创建人、更新人、更新时间
     /**
      * CREATOR(创建人) 创建人
@@ -81,6 +86,7 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
      * UPDATEDATE(更新时间) 更新时间
      */
     @Column(name = "UPDATE_DATE")
+    @ValueGenerator( strategy= GeneratorType.FUNCTIION, value = "now", condition = GeneratorCondition.ALWAYS, occasion = GeneratorTime.ALWAYS )
     private Date  updateDate;
     //结束
 
@@ -106,7 +112,7 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
     public void setUserUnitId(String userunitid) {
         this.userUnitId = userunitid;
     }
-    
+
     /**
      * minimal constructor
      * @param id String
@@ -168,7 +174,7 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
     public void setUserCode(String userCode) {
         this.userCode = userCode;
     }
-    
+
     public String getRankMemo() {
         return this.rankMemo;
     }
@@ -191,7 +197,7 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
         this.isPrimary = isprimary;
     }
 
-   
+
     public void setUnitName(String unitname) {
         this.unitName = unitname;
     }
@@ -211,7 +217,7 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
     public void setUserOrder(Long userorder) {
         this.userOrder = userorder;
     }
-    
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -271,7 +277,7 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
         if (other.getUpdateDate() != null)
             this.updateDate =other.getUpdateDate();
     }
-    
+
     //创建人、更新人、更新时间
     public String getCreator() {
           return this.creator;
