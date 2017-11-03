@@ -23,18 +23,15 @@ define(function(require) {
 			var table = panel.find('table');
 			table.cdatagrid({
 				controller: _self,
-				url: Config.ContextPath+'system/userrole/roleusers/'+data.roleCode+'?s_userCode_isValid=T'
-			}).datagrid({
-        columns:[[
-          {field:'changeDesc',title:'备注',
-            formatter: function(value,row,index){
-
-              return '<a title="'+value+'">'+value+'</a>';
-
+				url: Config.ContextPath+'system/userrole/roleusers/'+data.roleCode+'?s_userCode_isValid=T',
+        columns: {
+          changeDesc: {
+            formatter: function (value, row, index) {
+              return '<a title="' + value + '">' + value + '</a>';
             }
           }
-        ]]
-      })
+        }
+			})
 
     };
 	});

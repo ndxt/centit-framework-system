@@ -47,7 +47,15 @@ define(function(require) {
 						});
 					}
 
-				}
+				},
+        columns: {
+          rankMemo: {
+            formatter: function (value, row, index) {
+
+              return '<a title="' + value + '">' + value + '</a>';
+            }
+          }
+        }
 			})
 		};
 
