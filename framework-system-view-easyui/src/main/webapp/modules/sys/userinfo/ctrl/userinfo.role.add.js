@@ -19,6 +19,7 @@ define(function(require) {
 			// 获取父窗口的用户信息
 			var userinfo = this.parent.data.userInfo;
 
+
 			var data = this.data = $.extend({}, this.object, {
 				userCode: userinfo.userCode,
 				userName: userinfo.userName
