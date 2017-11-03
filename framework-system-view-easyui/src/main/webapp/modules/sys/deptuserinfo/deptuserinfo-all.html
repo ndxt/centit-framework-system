@@ -32,19 +32,20 @@
 		</div>
 	</div>
 	<div class="fields two">
-	<div class="field">
-			<div class="centit radio">
-				<input type="radio" name="isValid" value="T" disabled/>
-				<label id="a@inUse">在用</label>
 
-				<input type="radio" name="isValid" value="F" disabled/>
-				<label id="a@forbidden">禁用</label>
-			</div>
-		</div>
 	<div class="field">
 		<label id="a@describe">描述</label>
 		<input type="text" class="easyui-textbox" name="userDesc" height="20" multiline="true" style="height: 60px;" readonly />
 	</div>
+    <div class="field">
+      <div class="centit radio">
+        <input type="radio" name="isValid" value="T" disabled/>
+        <label id="a@inUse">在用</label>
+
+        <input type="radio" name="isValid" value="F" disabled/>
+        <label id="a@forbidden">禁用</label>
+      </div>
+    </div>
 	</div>
 </form>
 
@@ -115,13 +116,13 @@
          min-height="234">
     <thead frozen="true">
     <tr>
-      <th id="a@rolename" field="roleName"  width="30%">角色名称</th>
-      <th id="a@effectiveDate" field="obtainDate" width="33%" align="center" format="Date:yyyy-MM-dd">生效日期</th>
+      <th id="a@rolename" field="roleName"  width="15%">角色名称</th>
+      <th id="a@effectiveDate" field="obtainDate" width="15%" align="center" format="Date:yyyy-MM-dd">生效日期</th>
     </tr>
     </thead>
     <thead>
     <tr>
-      <th id="a@remarks" field="changeDesc" width="90">备注</th>
+      <th id="a@remarks" field="changeDesc" width="70%">备注</th>
     </tr>
     </thead>
   </table>
