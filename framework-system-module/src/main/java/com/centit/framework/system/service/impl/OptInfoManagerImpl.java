@@ -386,7 +386,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
 
     private List<OptInfo> findSubOptInfo(String optId){
         List<OptInfo> result = new ArrayList<>();
-        List<OptInfo> optInfos = optInfoDao.listObjectByProperty("preOptId",optId);
+        List<OptInfo> optInfos = optInfoDao.listObjectByParentOptid(optId);
         if(optInfos != null && optInfos.size() > 0){
             result.addAll(optInfos);
             for(OptInfo o : optInfos){

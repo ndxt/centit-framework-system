@@ -95,5 +95,5 @@ public interface UnitInfoDao {
 
     UnitInfo getPeerUnitByName(String unitName, String parentCode, String unitCode);
 
-    UnitInfo getPeerUnitByParentUnit(String parentUnit, long unitOrder);
+    Integer isExistsUnitByParentAndOrder(String parentUnit, long unitOrder);
 }

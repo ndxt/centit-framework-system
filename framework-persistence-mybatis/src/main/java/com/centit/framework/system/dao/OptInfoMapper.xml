@@ -58,8 +58,8 @@
 
 	<!-- 查询核心SQL -->
 	<sql id="coreSql">
-		<![CDATA[ 
-			select 
+		<![CDATA[
+			select
 			        u.OPT_ID,
 					u.PRE_OPT_ID,
 					u.OPT_NAME,
@@ -89,8 +89,8 @@
 	<!--分页计数 -->
 	<select id="pageCount" parameterType="map" resultType="int">
  	 <![CDATA[
-	   select count(0) cnt 
-	     from 
+	   select count(0) cnt
+	     from
              F_OPTINFO u
        ]]>
 		<where>
@@ -116,7 +116,7 @@
 	<select id="getObjectById" parameterType="String" resultMap="OptInfo">
 		<include refid="coreSql" />
 		<where>
-         <![CDATA[ 
+         <![CDATA[
 	                u.OPT_ID=#{optId}
            ]]>
 		</where>
@@ -273,14 +273,14 @@
 
 	<!--删除记录 -->
 	<delete id="deleteObjectById" parameterType="String" timeout="2000">
-    <![CDATA[ 
-       delete from F_OPTINFO u where u.OPT_ID=#{optId}  
+    <![CDATA[
+       delete from F_OPTINFO u where u.OPT_ID=#{optId}
      ]]>
 	</delete>
 
 	<delete id="deleteObject" parameterType="com.centit.framework.system.po.OptInfo">
-    <![CDATA[ 
-       delete from F_OPTINFO where u.OPT_ID=#{optId}  
+    <![CDATA[
+       delete from F_OPTINFO where u.OPT_ID=#{optId}
      ]]>
 	</delete>
 
@@ -362,7 +362,7 @@
 		CREATOR,
 		UPDATOR,
 		UPDATE_DATE
-		from F_OPTINFO where OPT_URL='...' 
+		from F_OPTINFO where OPT_URL='...'
 		order by ORDER_IND
 	</select>
 	<select id="getMenuFuncByUserID" parameterType="map"
@@ -430,4 +430,19 @@
 			and OPT_METHOD =#{optMethod}
 		</if>
 	</select>
+
+
+  <select id="listObjectByParentOptid" resultMap="OptInfo" >
+    <include refid="coreSql" />
+    where u.PRE_OPT_ID = #{opId}
+  </select>
+
+  <select id="listObjectByOptId" resultMap="OptInfo">
+    <include refid="coreSql" />
+    where u.OPT_TYPE in
+    <foreach item="ot" collection="types" open="(" separator="," close=")">
+        #{ot}
+    </foreach>
+  </select>
+
 </mapper>

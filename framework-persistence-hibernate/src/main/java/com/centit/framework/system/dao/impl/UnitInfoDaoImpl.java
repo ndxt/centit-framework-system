@@ -6,6 +6,8 @@ import com.centit.framework.hibernate.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UnitInfoDao;
 import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserInfo;
+import com.centit.support.algorithm.NumberBaseOpt;
+import com.centit.support.database.utils.QueryUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +56,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     }
 
     @SuppressWarnings("unchecked")
-    @Transactional(propagation=Propagation.MANDATORY) 
+    @Transactional(propagation=Propagation.MANDATORY)
     public List<UserInfo> listUnitUsers(String unitCode) {
         String sSqlsen = "select a.* " +
                 "from F_USERINFO a join F_USERUNIT b on(a.USERCODE=b.USERCODE) " +
@@ -65,7 +67,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     }
 
     @SuppressWarnings("unchecked")
-    @Transactional(propagation=Propagation.MANDATORY) 
+    @Transactional(propagation=Propagation.MANDATORY)
     public List<UserInfo> listRelationUsers(String unitCode) {
         String sSqlsen = "select * FROM F_USERINFO ui where ui.USERCODE in " +
                 "(select USERCODE from F_USERUNIT where UNITCODE= ? ) or " +
@@ -117,17 +119,17 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
         }
         return null;
     }
-    
+
     @Transactional
     public UnitInfo getUnitByTag(String unitTag) {
         return super.getObjectByProperty("unitTag", unitTag);
     }
-    
+
     @Transactional
     public UnitInfo getUnitByWord(String unitWord) {
         return super.getObjectByProperty("unitWord", unitWord);
     }
-    
+
     @Transactional
     public List<UnitInfo> listSubUnits(String unitCode){
         return super.listObjectByProperty("parentUnit", unitCode);
@@ -144,8 +146,8 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
         }
         return null;
     }
-    
-    @Transactional(propagation=Propagation.MANDATORY) 
+
+    @Transactional(propagation=Propagation.MANDATORY)
     public List<UnitInfo> listSubUnitsByUnitPaht(String unitPath){
         String hql = "from UnitInfo where unitPath like ?";
         return listObjects(hql,
@@ -180,5 +182,24 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
         if(unitInfos==null || unitInfos.size()==0)
             return null;
         return unitInfos.get(0);
+    }
+
+    /**
+     * 根据PARENT_UNIT和UNIT_ORDER获取同级机构
+     * @param parentUnit 机构名称
+     * @param unitOrder 父类代码
+     * @return UnitInfo 机构信息
+     */
+    @Override
+    public Integer isExistsUnitByParentAndOrder(String parentUnit, long unitOrder) {
+      String sql = "select count(*) as existUnit " +
+          "from UnitInfo u  " +
+          "where u.unitOrder = :unitOrder and u.parentUnit = :parentUnit ";
+
+       Object object = DatabaseOptUtils.getSingleObjectByHql( this, sql, QueryUtils.createSqlParamsMap(
+          "unitOrder", unitOrder, "parentUnit", parentUnit));
+
+
+      return NumberBaseOpt.castObjectToInteger(object);
     }
 }

@@ -72,13 +72,13 @@ public interface OptInfoDao extends BaseDao {
     // DatabaseOptUtils.findObjectsByHql(this, "from OptMethodUrlMap");
      List<OptMethodUrlMap> listAllOptMethodUrlMap();
 
-    List<OptInfo> listObjectByProperty(String propertyName, Object propertyValue);
+    List<OptInfo> listObjectByParentOptid(@Param("optId") String optId);
 
   /**
    * 根据菜单类型获取菜单
    * @param types 类型数组
    * @return 菜单列表
    */
-//  List<OptInfo> listMenuByTypes(String... types); todo
+   List<OptInfo> listMenuByTypes(@Param("types") String... types);
 
 }

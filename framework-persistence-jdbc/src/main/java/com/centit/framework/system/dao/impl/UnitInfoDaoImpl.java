@@ -6,6 +6,7 @@ import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UnitInfoDao;
 import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserInfo;
+import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.QueryUtils;
@@ -177,26 +178,22 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
         return list.get(0);
     }
 
-  /**
-   * 根据PARENT_UNIT和UNIT_ORDER获取同级机构
-   * @param parentUnit 机构名称
-   * @param unitOrder 父类代码
-   * @return UnitInfo 机构信息
-   */
-  @Override
-  public UnitInfo getPeerUnitByParentUnit(String parentUnit, long unitOrder) {
-    String sql = "select u.UNIT_CODE, u.PARENT_UNIT, u.UNIT_TYPE, u.IS_VALID, u.UNIT_NAME, u.ENGLISH_NAME," +
-      " u.UNIT_SHORT_NAME, u.UNIT_WORD, u.UNIT_TAG, u.UNIT_DESC, u.ADDRBOOK_ID, u.UNIT_ORDER, u.UNIT_GRADE," +
-      " u.DEP_NO, u.UNIT_PATH, u.UNIT_MANAGER, u.CREATE_DATE, u.CREATOR, u.UPDATOR, u.UPDATE_DATE " +
-      "from F_UNITINFO u " +
-      "where u.UNIT_ORDER = :unitOrder and u.PARENT_UNIT = :parentUnit ";
+    /**
+     * 根据PARENT_UNIT和UNIT_ORDER获取同级机构
+     * @param parentUnit 机构名称
+     * @param unitOrder 父类代码
+     * @return UnitInfo 机构信息
+     */
+    @Override
+    public Integer isExistsUnitByParentAndOrder(String parentUnit, long unitOrder) {
+        String sql = "select count(*) as existUnit " +
+          "from F_UNITINFO u " +
+          "where u.UNIT_ORDER = :unitOrder and u.PARENT_UNIT = :parentUnit ";
 
-    List<UnitInfo> list = listObjectsBySql(sql, QueryUtils.createSqlParamsMap(
-      "unitOrder", unitOrder, "parentUnit", parentUnit));
+        Object object = DatabaseOptUtils.getScalarObjectQuery(this, sql, QueryUtils.createSqlParamsMap(
+          "unitOrder", unitOrder, "parentUnit", parentUnit));
 
-    if(list == null || list.size() == 0){
-      return null;
+
+        return NumberBaseOpt.castObjectToInteger(object);
     }
-    return list.get(0);
-  }
 }

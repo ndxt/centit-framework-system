@@ -130,9 +130,10 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     }
 
     @Override
-    public List<OptInfo> listObjectByProperty(String propertyName, Object propertyValue) {
-        return super.listObjectsByProperty(propertyName,propertyValue);
+    public List<OptInfo> listObjectByParentOptid(String optId){
+        return this.listObjectsByProperty("preOptId", optId);
     }
+
 
     public int countChildrenSum(String optId){
         return pageCount(QueryUtils.createSqlParamsMap("preOptId",optId) );

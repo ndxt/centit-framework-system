@@ -176,6 +176,10 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
         return this.listObjects("From OptInfo where "+condition);
     }
 
+    public List<OptInfo> listObjectByParentOptid(String optId){
+        return this.listObjects("From OptInfo where preOptId = ?", optId);
+    }
+
     @Override
     public List<OptInfo> listMenuByTypes(String... types){
       Map<String, Object> map = new HashMap<>(2);

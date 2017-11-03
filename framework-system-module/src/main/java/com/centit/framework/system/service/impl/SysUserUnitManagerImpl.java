@@ -176,6 +176,6 @@ public class SysUserUnitManagerImpl
     @Override
     @Transactional
     public void deletePrimaryUnitByUserCode(String userCode){
-        userUnitDao.deleteObjectForceById(userUnitDao.getPrimaryUnitByUserId(userCode).getUserUnitId());
+        userUnitDao.deleteObjectById(userUnitDao.getPrimaryUnitByUserId(userCode).getUserUnitId());
     }
 }
