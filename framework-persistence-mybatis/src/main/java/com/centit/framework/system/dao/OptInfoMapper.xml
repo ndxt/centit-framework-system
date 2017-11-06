@@ -434,7 +434,7 @@
 
   <select id="listObjectByParentOptid" resultMap="OptInfo" >
     <include refid="coreSql" />
-    where u.PRE_OPT_ID = #{opId}
+    where u.PRE_OPT_ID = #{optId}
   </select>
 
   <select id="listObjectByOptId" resultMap="OptInfo">
