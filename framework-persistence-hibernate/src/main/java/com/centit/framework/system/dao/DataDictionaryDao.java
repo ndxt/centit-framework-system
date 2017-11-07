@@ -19,12 +19,13 @@ public interface DataDictionaryDao {
     void deleteObjectById(DataDictionaryId dd);
 
     void mergeObject(DataDictionary dataDictionary);
+
     //listObjectsAll("FROM DataDictionary ORDER BY id.catalogCode, dataOrder");
     List<DataDictionary> getWholeDictionary();
-    
+
     //listObjectsAll("FROM DataDictionary WHERE id.catalogCode = ? ORDER BY dataOrder", catalogCode);
     List<DataDictionary> listDataDictionary(String catalogCode);
-    
+
     //用序列生成
     String getNextPrimarykey();
 
