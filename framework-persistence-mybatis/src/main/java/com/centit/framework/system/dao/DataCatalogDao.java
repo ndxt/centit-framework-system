@@ -15,7 +15,7 @@ public interface DataCatalogDao extends BaseDao{
 
     DataCatalog getObjectById(String catalogCode);
 
-    String saveNewObject(DataCatalog dataCatalog);
+    void saveNewObject(DataCatalog dataCatalog);
 
     void mergeObject(DataCatalog dataCatalog);
 
@@ -28,7 +28,7 @@ public interface DataCatalogDao extends BaseDao{
 
     //listObjectsAll("FROM DataCatalog WHERE catalogStyle='S'");
     List<DataCatalog> listSysCatalog();
-    
+
     //分页  //startRow  startRow
     int  pageCount(Map<String, Object> filterDescMap);
     List<DataCatalog>  pageQuery(Map<String, Object> pageQureyMap);
