@@ -28,5 +28,6 @@ public interface DataCatalogDao{
 
     //分页  //startRow  startRow
     int  pageCount(Map<String, Object> filterDescMap);
+
     List<DataCatalog>  pageQuery(Map<String, Object> pageQureyMap);
 }
