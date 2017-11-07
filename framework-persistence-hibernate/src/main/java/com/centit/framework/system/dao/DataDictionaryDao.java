@@ -27,6 +27,7 @@ public interface DataDictionaryDao {
     List<DataDictionary> listDataDictionary(String catalogCode);
 
     //用序列生成
+    @Deprecated
     String getNextPrimarykey();
 
     //批量删除 DatabaseOptUtils.doExecuteHql(this, "delete from DataDictionary where id.catalogCode =?", catalog);
