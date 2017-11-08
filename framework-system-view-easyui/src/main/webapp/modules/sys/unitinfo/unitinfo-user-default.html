@@ -4,17 +4,17 @@
   }
 </style>
 
-<div class="easyui-panel search-body" cls="search ">
+<div class="easyui-panel search-body"  cls="search ">
   <form class="clearFromValue">
+  <div class="search-item">
+    <label id="e@name">用户名</label>
+    <input type="text" class="easyui-textbox" name="s_userName" />
+  </div>
+  <a class="easyui-linkbutton btn-search" iconCls="icon-search" ><p  id="e@btn.search">搜索</p></a>
+  <a class="easyui-linkbutton" style="margin-top:8px;" iconcls="icon-reload" onclick="javascript:$(this).parent('.clearFromValue').form('clear');$('.defaultChecked').prop('checked','true');" group="" id="">
+    <p>重置</p>
+  </a>
 
-    <div class="search-item">
-      <label id="e@name">用户名</label>
-      <input type="text" class="easyui-textbox" name="s_userName" />
-    </div>
-    <a class="easyui-linkbutton btn-search" iconCls="icon-search"><p  id="e@btn.search">搜索</p></a>
-    <a class="easyui-linkbutton" style="margin-top:8px;" iconcls="icon-reload" onclick="javascript:$(this).parent('.clearFromValue').form('clear');$('.defaultChecked').prop('checked','true');" group="" id="">
-      <p>重置</p>
-    </a>
   </form>
 </div>
 <table style="margin: 2px auto;"
@@ -32,13 +32,13 @@
 		<tr>
 			<th id="c@userSort" field="userOrder" hidden="true">用户顺序</th>
 			<th id="c@username" field="userCode" format="AllUser" width="15%" sortable="true">用户名称</th>
-			<th id="a@organizationName" field="unitCode" width="25%" format="Unit">机构名称</th>
-			<th id="c@post" field="userStation" width="25%" sortable="true" format="Dictionary:StationType"
+			<th id="a@organizationName" field="unitCode" width="15%" format="Unit">机构名称</th>
+			<th id="c@post" field="userStation" width="15%" sortable="true" format="Dictionary:StationType"
 				data-options="editor:{type:'combobox', options:{method:'get',url:'system/cp/dictionary/StationType?',valueField: 'dataCode',textField:'dataValue'}}">岗位</th>
-			<th id="c@job" field="userRank" width="25%" sortable="true" format="Dictionary:RankType"
+			<th id="c@job" field="userRank" width="15%" sortable="true" format="Dictionary:RankType"
 				data-options="editor:{type:'combobox', options:{method:'get',url:'system/cp/dictionary/RankType?',valueField: 'dataCode',textField:'dataValue'}}">职务</th>
 			<th  field="isPrimary" width="10%" format="Dictionary:YesOrNo">是否主机构</th>
-			<th id="c@remarks" field="rankMemo" width="35%" align="center" sortable="true" sortable="true">备注</th>
+			<th id="c@remarks" field="rankMemo" width="30%" align="center" sortable="true" sortable="true">备注</th>
 		</tr>
 	</thead>
 </table>
