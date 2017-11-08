@@ -1,6 +1,8 @@
 package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
@@ -92,7 +94,7 @@ public class UserRoleController extends BaseController {
      * @param response HttpServletResponse
      */
     protected void listObject(Map<String, Object> filterMap, PageDesc pageDesc, HttpServletResponse response) {
-        List<UserRole> listObjects = sysUserRoleManager.listObjects(filterMap, pageDesc);
+        JSONArray listObjects = sysUserRoleManager.listObjects(filterMap, pageDesc);
 
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, listObjects);
@@ -100,7 +102,6 @@ public class UserRoleController extends BaseController {
 
         Map<Class<?>, String[]> excludes = new HashMap<>();
         excludes.put(RoleInfo.class, new String[]{"rolePowers"});
-
         JsonResultUtils.writeResponseDataAsJson(resData, response, JsonPropertyUtils.getExcludePropPreFilter(excludes));
     }
 
