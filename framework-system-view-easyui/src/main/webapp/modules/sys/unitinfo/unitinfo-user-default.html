@@ -4,18 +4,16 @@
   }
 </style>
 
-<div class="easyui-panel search-body" style="padding: 0" cls="search ">
-  <form class="clearFromValue form centit">
-<div class="two fields">
-  <div class="field">
+<div class="easyui-panel search-body"  cls="search ">
+  <form class="clearFromValue">
+  <div class="search-item">
     <label id="e@name">用户名</label>
     <input type="text" class="easyui-textbox" name="s_userName" />
   </div>
-  <a class="easyui-linkbutton btn-search" iconCls="icon-search" style="margin-top:20px;margin-left: 15px"><p  id="e@btn.search">搜索</p></a>
-  <a class="easyui-linkbutton" style="margin-top:20px;" iconcls="icon-reload" onclick="javascript:$(this).parent('.clearFromValue').form('clear');$('.defaultChecked').prop('checked','true');" group="" id="">
+  <a class="easyui-linkbutton btn-search" iconCls="icon-search" ><p  id="e@btn.search">搜索</p></a>
+  <a class="easyui-linkbutton" style="margin-top:8px;" iconcls="icon-reload" onclick="javascript:$(this).parent('.clearFromValue').form('clear');$('.defaultChecked').prop('checked','true');" group="" id="">
     <p>重置</p>
   </a>
-</div>
 
   </form>
 </div>
