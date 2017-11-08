@@ -67,7 +67,7 @@
 			  and u.USER_WORD=#{userWord}
 		</if>
 		<if test="byUnderUnit != null  and byUnderUnit != '' ">
-			  and u.USER_CODE in ( select  id.USER_CODE from F_USERUNIT id where id.UNIT_CODE = #{byUnderUnit} )
+			  and u.PRIMARY_UNIT = #{byUnderUnit}
 		</if>
 		<if test="queryByUnit != null  and queryByUnit != '' ">
 			  and u.USER_CODE in ( select  id.USER_CODE from F_USERUNIT id where id.UNIT_CODE = #{queryByUnit} )
