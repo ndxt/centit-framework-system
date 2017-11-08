@@ -47,7 +47,7 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
 
     @Column(name = "USER_STATION")
     @Size(max = 32, message = "字段长度不能大于{max}")
-    @DictionaryMap(fieldName="userStationText",value="USERSTATION")
+    @DictionaryMap(fieldName="userStationText",value="StationType")
     private String userStation; // 岗位
 
     @Column(name = "USER_RANK")

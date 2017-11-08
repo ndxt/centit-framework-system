@@ -1,5 +1,7 @@
 package com.centit.framework.system.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.system.dao.UserInfoDao;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.support.database.utils.PageDesc;
@@ -43,8 +45,10 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
     }
 
     @Override
-    public List<UserRole> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return userRoleDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap,pageDesc,userRoleDao.pageCount(filterMap)));
+    public JSONArray listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
+        List<UserRole> userRoles = userRoleDao.pageQuery(
+                QueryParameterPrepare.prepPageParams(filterMap,pageDesc,userRoleDao.pageCount(filterMap)));
+        return DictionaryMapUtils.objectsToJSONArray(userRoles);
     }
 
     @Override
