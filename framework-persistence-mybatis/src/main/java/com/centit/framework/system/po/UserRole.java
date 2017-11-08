@@ -146,7 +146,6 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
         return this.id.getRoleCode();
     }
 
-
     public void setRoleCode(String rolecode) {
         if (this.id == null)
             this.id = new UserRoleId();

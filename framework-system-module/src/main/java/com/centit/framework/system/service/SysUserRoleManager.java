@@ -3,6 +3,8 @@ package com.centit.framework.system.service;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONArray;
+import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.system.po.UserRole;
@@ -18,7 +20,7 @@ import com.centit.framework.system.po.UserRoleId;
  */
 public interface SysUserRoleManager{
 
-    List<UserRole> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
+    JSONArray listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
 
     UserRole getObjectById(UserRoleId id);
 

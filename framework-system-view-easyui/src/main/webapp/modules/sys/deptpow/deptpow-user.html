@@ -11,36 +11,48 @@
 			<input type="text" class="easyui-textbox" name="unitWord"
 				readonly="true" />
 		</div>
-    <div class="field">
-        <label id="e@name">用户名</label>
-        <input type="text" class="easyui-textbox" name="s_userName" />
-    </div>
-    <a class="easyui-linkbutton btn-search" iconCls="icon-search" style="margin-left:20px;margin-top: 19px" ><p  id="e@btn.search">搜索</p></a>
-    <a class="easyui-linkbutton" style="margin-top: 19px" iconcls="icon-reload">
-      <p>重置</p>
-    </a>
+    <!--<div class="field">-->
+        <!--<label id="e@name">用户名</label>-->
+        <!--<input type="text" class="easyui-textbox" name="s_userName" />-->
+    <!--</div>-->
+    <!--<a class="easyui-linkbutton btn-search" iconCls="icon-search" style="margin-left:20px;margin-top: 19px" ><p  id="e@btn.search">搜索</p></a>-->
+    <!--<a class="easyui-linkbutton" style="margin-top: 19px" iconcls="icon-reload">-->
+      <!--<p>重置</p>-->
+    <!--</a>-->
 
 	</div>
 </form>
+<div class="easyui-panel search-body" cls="search " style="width: 100%;border: none;padding: 0">
+  <form class="clearFromValue">
 
+    <div class="search-item">
+      <label id="e@name">用户名</label>
+      <input type="text" class="easyui-textbox" name="s_userName" />
+    </div>
+    <a class="easyui-linkbutton btn-search" iconCls="icon-search"><p  id="e@btn.search">搜索</p></a>
+    <a class="easyui-linkbutton" style="margin-top:8px;" iconcls="icon-reload" onclick="javascript:$('.clearFromValue').form('clear');$('.defaultChecked').prop('checked','true');" group="" id="">
+      <p>重置</p>
+    </a>
+  </form>
+</div>
 <table style="width: 100%; margin: 0 auto;"
 	pagination="true"
 	toolbar=".temp-toolbar"
 	remoteSort="false"
 	sortName="isPrimary"
 	sortOrder="desc"
-	layoutH="80"
+	layoutH="130"
 
 	>
 	<thead>
 		<tr>
 			<th id="d@userCode" field="userCode" hidden="true">用户编码</th>
-			<th field="userName" width="150" sortable="true">用户名称</th>
+			<th field="userName" width="25%" sortable="true">用户名称</th>
 			<th id="d@stationCode" field="userStation" hidden="true">岗位代码</th>
-			<th id="d@station" field="userStationText" width="150" sortable="true">岗位</th>
+			<th id="d@station" field="userStationText" width="25%" sortable="true">岗位</th>
 			<th id="d@jobCode" field="userRank" hidden="true">职务代码</th>
-			<th id="d@job" field="userRankText" width="150" sortable="true">职务</th>
-			<th id="d@primaryOrganization" field="isPrimary" width="100" align="center" sortable="true" sortable="true" format="Dictionary:YesOrNo">主机构</th>
+			<th id="d@job" field="userRankText" width="25%" sortable="true">职务</th>
+			<th id="d@primaryOrganization" field="isPrimary" width="25%" align="center" sortable="true" sortable="true" format="Dictionary:YesOrNo">主机构</th>
 		</tr>
 	</thead>
 </table>
