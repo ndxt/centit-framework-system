@@ -29,7 +29,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
             filterField.put("userCode", "userCode = :userCode");
             filterField.put("isPrimary", CodeBook.EQUAL_HQL_ID);
             filterField.put("unitName", CodeBook.LIKE_HQL_ID);
-            filterField.put("userName", "userCode in (select userCode from UserInfo where userName like :userName)");
+            filterField.put("(like)userName", "userCode in (select userCode from UserInfo where userName like :userName)");
             filterField.put("isValid", "userCode in (select userCode from UserInfo where isValid = :isValid)");
 
             filterField.put(CodeBook.ORDER_BY_HQL_ID, "userOrder asc");
