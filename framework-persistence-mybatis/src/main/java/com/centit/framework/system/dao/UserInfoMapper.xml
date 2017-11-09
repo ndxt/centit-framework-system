@@ -41,18 +41,18 @@
 
 
 	<!-- 查询条件 -->
-	<sql id="condition">
+	<sql id="condition" databaseId="oracle">
 		<if test="userCode != null  and userCode != ''  ">
-			  and u.USER_CODE like CONCAT('%', #{userCode}, '%')
+			  and u.USER_CODE like '%'|| #{userCode}||'%'
 		</if>
 		<if test="userName != null  and userName != '' ">
-			  and u.USER_NAME like CONCAT('%', #{userName}, '%')
+			  and u.USER_NAME like '%'|| #{userName}||'%'
 		</if>
 		<if test="isValid != null  and isValid != '' ">
 			  and u.IS_VALID = #{isValid}
 		</if>
 		<if test="loginName != null  and loginName != ''   ">
-			  and u.LOGIN_NAME like CONCAT('%', #{loginName}, '%')
+			  and u.LOGIN_NAME like '%'|| #{loginName}||'%'
 		</if>
 		<if test="userState != null  and userState != '' ">
 			  and u.USER_STATE = #{userState}
@@ -82,6 +82,48 @@
 			  and u.USER_CODE in (select r.USER_CODE from F_USERROLE r, F_ROLEINFO i where r.ROLE_CODE = #{queryByRole} and r.ROLE_CODE = i.ROLE_CODE and i.IS_VALID = 'T')
 		</if>
 	</sql>
+
+  <sql id="condition" databaseId="mysql">
+    <if test="userCode != null  and userCode != ''  ">
+      and u.USER_CODE like concat('%', #{userCode}, '%')
+    </if>
+    <if test="userName != null  and userName != '' ">
+      and u.USER_NAME like concat('%', #{userName}, '%')
+    </if>
+    <if test="isValid != null  and isValid != '' ">
+      and u.IS_VALID = #{isValid}
+    </if>
+    <if test="loginName != null  and loginName != ''   ">
+      and u.LOGIN_NAME like concat('%', #{loginName}, '%')
+    </if>
+    <if test="userState != null  and userState != '' ">
+      and u.USER_STATE = #{userState}
+    </if>
+    <if test="userOrder != null  and userOrder != '' ">
+      and u.USER_ORDER = #{userOrder}
+    </if>
+    <if test="userTag != null  and userTag != '' ">
+      and u.USER_TAG=#{userTag}
+    </if>
+    <if test="userWord != null  and userWord != '' ">
+      and u.USER_WORD=#{userWord}
+    </if>
+    <if test="byUnderUnit != null  and byUnderUnit != '' ">
+      and u.PRIMARY_UNIT = #{byUnderUnit}
+    </if>
+    <if test="queryByUnit != null  and queryByUnit != '' ">
+      and u.USER_CODE in ( select  id.USER_CODE from F_USERUNIT id where id.UNIT_CODE = #{queryByUnit} )
+    </if>
+    <if test="queryByGW != null  and queryByGW != '' ">
+      and u.USER_CODE in ( select  id.USER_CODE from F_USERUNIT id where id.USER_STATION = #{queryByGW} )
+    </if>
+    <if test="queryByXZ != null  and queryByXZ != '' ">
+      and u.USER_CODE in ( select  id.USER_CODE from F_USERUNIT id where id.USER_RANK = #{queryByXZ} )
+    </if>
+    <if test="queryByRole != null  and queryByRole != '' ">
+      and u.USER_CODE in (select r.USER_CODE from F_USERROLE r, F_ROLEINFO i where r.ROLE_CODE = #{queryByRole} and r.ROLE_CODE = i.ROLE_CODE and i.IS_VALID = 'T')
+    </if>
+  </sql>
 
 	<!-- 查询核心SQL -->
 	<sql id="coreSql">
