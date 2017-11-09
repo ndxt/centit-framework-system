@@ -2,16 +2,14 @@ package com.centit.framework.system.config;
 
 import com.centit.framework.config.SecurityCasCondition;
 import com.centit.framework.config.SpringSecurityBaseConfig;
-import com.centit.framework.security.*;
-import com.centit.framework.security.model.CentitSessionRegistry;
-import com.centit.framework.security.model.CentitUserDetailsService;
+import com.centit.framework.security.AjaxAuthenticationFailureHandler;
+import com.centit.framework.security.AjaxAuthenticationSuccessHandler;
+import com.centit.framework.security.DaoFilterSecurityInterceptor;
 import com.centit.support.algorithm.BooleanBaseOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import org.jasig.cas.client.session.SingleSignOutFilter;
 import org.jasig.cas.client.validation.Cas20ServiceTicketValidator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Conditional;
-import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
@@ -22,17 +20,12 @@ import org.springframework.security.cas.web.CasAuthenticationFilter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-
 import java.util.ArrayList;
 import java.util.List;
-
-//import com.centit.framework.staticsystem.service.StaticEnvironmentManager;
-//import com.centit.framework.staticsystem.service.impl.UserDetailsServiceImpl;
 
 /**
  * Created by zou_wy on 2017/3/29.
@@ -56,7 +49,7 @@ public class SpringSecurityCasConfig extends SpringSecurityBaseConfig {
         CasAuthenticationEntryPoint casEntryPoint = createCasEntryPoint(casServiceProperties);
 
         if(BooleanBaseOpt.castObjectToBoolean(env.getProperty("http.csrf.enable"),false)) {
-            http.csrf();
+            http.csrf().csrfTokenRepository(csrfTokenRepository);
         } else {
             http.csrf().disable();
         }

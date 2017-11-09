@@ -2,27 +2,21 @@ package com.centit.framework.system.config;
 
 import com.centit.framework.config.SecurityDaoCondition;
 import com.centit.framework.config.SpringSecurityBaseConfig;
-import com.centit.framework.security.*;
+import com.centit.framework.security.AjaxAuthenticationSuccessHandler;
+import com.centit.framework.security.DaoFilterSecurityInterceptor;
+import com.centit.framework.security.PretreatmentAuthenticationProcessingFilter;
 import com.centit.framework.security.model.CentitPasswordEncoder;
-import com.centit.framework.security.model.CentitPasswordEncoderImpl;
-import com.centit.framework.security.model.CentitSessionRegistry;
-import com.centit.framework.security.model.CentitUserDetailsService;
 import com.centit.support.algorithm.BooleanBaseOpt;
 import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Conditional;
-import org.springframework.core.env.Environment;
-import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
@@ -31,7 +25,6 @@ import org.springframework.security.web.authentication.logout.CookieClearingLogo
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.csrf.CsrfLogoutHandler;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +42,7 @@ public class SpringSecurityDaoConfig extends SpringSecurityBaseConfig {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         if(BooleanBaseOpt.castObjectToBoolean(env.getProperty("http.csrf.enable"),false)) {
-            http.csrf();
+            http.csrf().csrfTokenRepository(csrfTokenRepository);
         } else {
             http.csrf().disable();
         }
@@ -86,8 +79,6 @@ public class SpringSecurityDaoConfig extends SpringSecurityBaseConfig {
     private LoginUrlAuthenticationEntryPoint authenticationEntryPoint() {
         return new LoginUrlAuthenticationEntryPoint("/system/mainframe/login");
     }
-
-
 
     private UsernamePasswordAuthenticationFilter createPretreatmentAuthenticationProcessingFilter(
         AuthenticationManager authenticationManager,AjaxAuthenticationSuccessHandler ajaxSuccessHandler,
@@ -139,5 +130,4 @@ public class SpringSecurityDaoConfig extends SpringSecurityBaseConfig {
         providerList.add(authenticationProvider);
         return new ProviderManager(providerList);
     }
-
 }
