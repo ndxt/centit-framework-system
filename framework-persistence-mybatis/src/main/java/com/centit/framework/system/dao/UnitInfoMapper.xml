@@ -43,11 +43,11 @@
 		<if test="unitWord != null and unitWord != ''  ">
 			  and u.UNIT_WORD = #{unitWord}
 		</if>
-		<if test="PARENTUNIT != null  and PARENTUNIT != ''  ">
-			  and u.PARENT_UNIT = #{PARENT_UNIT}
+		<if test="parentUnit != null  and parentUnit != ''  ">
+			  and u.PARENT_UNIT = #{parentUnit}
 		</if>
-		<if test="NPTOPUnit != null  and NPTOPUnit != '' ">
-			  and (u.PARENT_UNIT is null or PARENT_UNIT='0')
+		<if test="NP_TOPUnit != null  and NP_TOPUnit != '' ">
+			  and (u.PARENT_UNIT is null or u.PARENT_UNIT='0')
 		</if>
 	</sql>
 
