@@ -9,14 +9,14 @@ define(function(require) {
 	var DeptRoleOperate = require('../ctrl/deptrole.operate');
 	var DeptRoleUser = require('../ctrl/deptroleinfo.user');
 	DeptRoleUser = new DeptRoleUser('deptroleinfo_user');
-	
-    
+
+
 	// 角色信息列表
 	var DeptRole = Page.extend(function() {
 		this.injecte([
-	        new DeptRoleAdd('deptrole_add'), 
-	        new DeptRoleEdit('deptrole_edit'), 
-	        new DeptRoleRemove('deptrole_remove'), 
+	        new DeptRoleAdd('deptrole_add'),
+	        new DeptRoleEdit('deptrole_edit'),
+	        new DeptRoleRemove('deptrole_remove'),
 	        new DeptRoleOperate('deptrole_operate'),
 	        DeptRoleUser
 	    ]);
@@ -33,7 +33,15 @@ define(function(require) {
 				queryParams: {
 					s_isValid: 'T'
 				},
-				
+        columns: {
+          roleDesc: {
+            formatter: function (value, row, index) {
+
+              return '<a title="' + value + '">' + value + '</a>';
+            }
+          }
+        },
+
 				rowStyler: function(index, row) {
 					if (row.isValid == 'F') {
 						return {'class': 'ban'};
@@ -52,6 +60,6 @@ define(function(require) {
 			});
 		};
 	});
-	
+
 	return DeptRole;
 });
