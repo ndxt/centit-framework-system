@@ -29,7 +29,7 @@
 	</resultMap>
 
 	<!-- 查询条件 -->
-	<sql id="condition">
+	<sql id="condition" databaseId="oracle">
 		<if test="OPTID != null   and OPTID != ''  ">
 			and u.OPT_ID = #{OPTID}
 		</if>
@@ -42,7 +42,7 @@
 		<if test="preOptId != null  and preOptId != ''  ">
 			and u.PRE_OPT_ID =#{preOptId}
 		</if>
-		<if test="NPTOPOPT != null  and NPTOPOPT != ''  ">
+		<if test="NP_TOPOPT != null  and NP_TOPOPT != ''  ">
 			and (u.PRE_OPT_ID is null or u.PRE_OPT_ID='0')
 		</if>
 		<if test="OPTTYPE != null  and OPTTYPE != ''   ">
@@ -55,6 +55,32 @@
 			and u.IS_IN_TOOLBAR =#{ISINTOOLBAR}
 		</if>
 	</sql>
+  <sql id="condition" databaseId="mysql">
+    <if test="OPTID != null   and OPTID != ''  ">
+      and u.OPT_ID = #{OPTID}
+    </if>
+    <if test="OPTURL != null   and OPTURL != ''  ">
+      and u.OPT_URL =#{OPTURL}
+    </if>
+    <if test="OPTNAME != null  and OPTNAME != ''  ">
+      and u.OPT_NAME like concat('%', #{OPTNAME}, '%')
+    </if>
+    <if test="preOptId != null  and preOptId != ''  ">
+      and u.PRE_OPT_ID =#{preOptId}
+    </if>
+    <if test="NP_TOPOPT != null  and NP_TOPOPT != ''  ">
+      and (u.PRE_OPT_ID is null or u.PRE_OPT_ID='0')
+    </if>
+    <if test="OPTTYPE != null  and OPTTYPE != ''   ">
+      and u.OPT_TYPE =#{OPTTYPE}
+    </if>
+    <if test="TOPOPTID != null  and TOPOPTID != ''   ">
+      and u.TOP_OPT_ID =#{TOPOPTID}
+    </if>
+    <if test="ISINTOOLBAR != null  and ISINTOOLBAR != ''   ">
+      and u.IS_IN_TOOLBAR =#{ISINTOOLBAR}
+    </if>
+  </sql>
 
 	<!-- 查询核心SQL -->
 	<sql id="coreSql">
