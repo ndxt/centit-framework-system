@@ -53,6 +53,9 @@
 		<if test="NP_unitCode != null  and NP_unitCode != ''   ">
 			  and u.UNIT_CODE is null
 		</if>
+    <if test="publicUnitRole != null  and publicUnitRole != ''  ">
+      and (u.ROLE_CODE like #{publicUnitRole} or u.ROLE_CODE like 'P-%' )
+    </if>
     <if test="createDateBeg != null and createDateBeg != ''   ">
         <![CDATA[ and DATE_FORMAT(u.CREATE_DATE, '%Y-%m-%d') >= DATE_FORMAT(#{createDateBeg}, '%Y-%m-%d') ]]>
     </if>
