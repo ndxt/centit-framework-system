@@ -23,7 +23,7 @@
 
 
 	<!-- 查询条件 -->
-	<sql id="condition">
+	<sql id="condition" databaseId="oracle">
 		<if test="roleCode != null  and roleCode != '' ">
 			  and u.ROLE_CODE =#{roleCode}
 		</if>
@@ -31,10 +31,10 @@
 			  and u.USER_CODE =#{userCode}
 		</if>
 		<if test="roleName != null  and roleName != '' ">
-			  and u.ROLE_NAME  like concat('%', #{roleName}, '%')
+			  and u.ROLE_NAME  like '%'|| #{roleName}||'%'
 		</if>
     <if test="userName != null  and userName != '' ">
-      and u.USER_CODE in (select id.USER_CODE from F_USERINFO id where id.USER_NAME like concat('%', #{userName}, '%'))
+      and u.USER_CODE in (select id.USER_CODE from F_USERINFO id where id.USER_NAME like '%'|| #{userName}||'%')
     </if>
 		<if test="NP_unitRoleType != null  and NP_unitRoleType != '' ">
 			  and u.ROLE_CODE in (select ROLE_CODE from F_ROLEINFO where UNIT_CODE is not null)
@@ -46,6 +46,30 @@
 			 and u.USER_CODE in (select USER_CODE from F_ROLEINFO where IS_VALID =#{userCode_isValid})
 		</if>
 	</sql>
+
+  <sql id="condition" databaseId="mysql">
+    <if test="roleCode != null  and roleCode != '' ">
+      and u.ROLE_CODE =#{roleCode}
+    </if>
+    <if test="userCode != null  and userCode != '' ">
+      and u.USER_CODE =#{userCode}
+    </if>
+    <if test="roleName != null  and roleName != '' ">
+      and u.ROLE_NAME  like concat('%', #{roleName}, '%')
+    </if>
+    <if test="userName != null  and userName != '' ">
+      and u.USER_CODE in (select id.USER_CODE from F_USERINFO id where id.USER_NAME like concat('%', #{userName}, '%'))
+    </if>
+    <if test="NP_unitRoleType != null  and NP_unitRoleType != '' ">
+      and u.ROLE_CODE in (select ROLE_CODE from F_ROLEINFO where UNIT_CODE is not null)
+    </if>
+    <if test="NP_userRoleType != null  and NP_userRoleType != '' ">
+      and u.ROLE_CODE not in (select ROLE_CODE from F_ROLEINFO where UNIT_CODE is not null)
+    </if>
+    <if test="userCode_isValid != null  and userCode_isValid != '' ">
+      and u.USER_CODE in (select USER_CODE from F_ROLEINFO where IS_VALID =#{userCode_isValid})
+    </if>
+  </sql>
 
 	<!-- 查询核心SQL -->
 	<sql id="coreSql">
