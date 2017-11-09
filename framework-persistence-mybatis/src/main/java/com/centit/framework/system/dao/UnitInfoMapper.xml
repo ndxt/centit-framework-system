@@ -27,7 +27,7 @@
 	</resultMap>
 
 	<!-- 查询条件 -->
-	<sql id="condition">
+	<sql id="condition" databaseId="oracle">
 		<if test="unitCode != null  and unitCode != '' ">
 			  and u.UNIT_CODE = #{unitCode}
 		</if>
@@ -50,6 +50,30 @@
 			  and (u.PARENT_UNIT is null or u.PARENT_UNIT='0')
 		</if>
 	</sql>
+
+  <sql id="condition" databaseId="mysql">
+    <if test="unitCode != null  and unitCode != '' ">
+      and u.UNIT_CODE = #{unitCode}
+    </if>
+    <if test="unitName != null  and unitName != ''  ">
+      and u.UNIT_NAME like concat('%', #{unitName}, '%')
+    </if>
+    <if test="isValid != null  and isValid != ''   ">
+      and u.IS_VALID = #{isValid}
+    </if>
+    <if test="unitTag != null  and unitTag != ''   ">
+      and u.UNIT_TAG = #{unitTag}
+    </if>
+    <if test="unitWord != null and unitWord != ''  ">
+      and u.UNIT_WORD = #{unitWord}
+    </if>
+    <if test="parentUnit != null  and parentUnit != ''  ">
+      and u.PARENT_UNIT = #{parentUnit}
+    </if>
+    <if test="NP_TOPUnit != null  and NP_TOPUnit != '' ">
+      and (u.PARENT_UNIT is null or u.PARENT_UNIT='0')
+    </if>
+  </sql>
 
 	<!-- 查询核心SQL -->
 	<sql id="coreSql">
@@ -234,7 +258,7 @@
 	<!--更新单据 end -->
 
    <!--Merge单据 start -->
-	<update id="mergeObject" parameterType="com.centit.framework.system.po.UnitInfo" timeout="2000">
+	<update id="mergeObject" databaseId="oracle" parameterType="com.centit.framework.system.po.UnitInfo" timeout="2000">
 	      merge into F_UNITINFO t
 		    using ( select #{unitCode} as UNIT_CODE  from dual) t1
 		    on(t.UNIT_CODE = t1.UNIT_CODE)
@@ -246,6 +270,10 @@
 		   <include refid="updSql" />
 		    where UNIT_CODE=#{unitCode}
 	</update>
+  <update id="mergeObject" databaseId="mysql" parameterType="com.centit.framework.system.po.UnitInfo" timeout="2000">
+    replace into F_UNITINFO
+    <include refid="insertSql" />
+  </update>
 	<!--Merge单据 end -->
    <!--插入新单据 end -->
 

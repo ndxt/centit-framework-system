@@ -23,11 +23,13 @@
 </div>
 <table url="system/dictionary?_search=true&field=catalogCode&field=catalogName&field=catalogDesc&field=catalogStyle&field=catalogType&field=optId"
 	idField="catalogCode"
-	sortName="updateDate"
-	sortOrder="desc"
+	sortName="catalogCode"
+	sortOrder="asc"
 	search=".search"
 	toolbar=".temp-toolbar"
-	layoutH=".search">
+	layoutH=".search"
+  remoteSort="ture"
+>
 	<thead data-options="frozen:true">
 		<tr>
 			<th id="d1@encoding" data-options="field:'catalogCode'" width="150" sortable="true" >编码</th>

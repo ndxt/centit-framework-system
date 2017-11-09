@@ -20,7 +20,7 @@
 	</resultMap>
 
 	<!-- 查询条件 -->
-	<sql id="condition">
+	<sql id="condition" databaseId="oracle">
 		<if test="userCode_isValid != null  and userCode_isValid != '' ">
 			  and u.USER_CODE in (select USER_CODE from F_USERINFO where IS_VALID =#{userCode_isValid})
 		</if>
@@ -42,7 +42,37 @@
 		<if test="unitName != null  and unitName != '' ">
 			  and k.UNIT_NAME like '%'|| #{unitName}||'%'
 		</if>
+    <if test="userName != null  and userName != '' ">
+      and u.USER_CODE in (select USER_CODE from F_USERINFO where USER_NAME like '%'|| #{userName}||'%')
+    </if>
 	</sql>
+
+  <sql id="condition" databaseId="mysql">
+    <if test="userCode_isValid != null  and userCode_isValid != '' ">
+      and u.USER_CODE in (select USER_CODE from F_USERINFO where IS_VALID =#{userCode_isValid})
+    </if>
+    <if test="unitCode != null  and unitCode != '' ">
+      and u.UNIT_CODE =#{unitCode}
+    </if>
+    <if test="userStation != null  and userStation != '' ">
+      and u.USER_STATION  = #{userStation}
+    </if>
+    <if test="unitRank != null   and unitRank != '' ">
+      and u.UNIT_RANK  = #{unitRank}
+    </if>
+    <if test="userCode != null   and userCode != ''  ">
+      and u.USER_CODE  = #{userCode}
+    </if>
+    <if test="isPrimary != null  and isPrimary != '' ">
+      and u.IS_PRIMARY  = #{isPrimary}
+    </if>
+    <if test="unitName != null  and unitName != '' ">
+      and k.UNIT_NAME like concat('%', #{unitName}, '%')
+    </if>
+    <if test="userName != null  and userName != '' ">
+      and u.USER_CODE in (select USER_CODE from F_USERINFO where USER_NAME like concat('%', #{userName}, '%'))
+    </if>
+  </sql>
 
 	<!-- 查询核心SQL -->
 	<sql id="coreSql">
