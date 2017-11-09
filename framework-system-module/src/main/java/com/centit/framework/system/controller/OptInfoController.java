@@ -231,6 +231,12 @@ public class OptInfoController extends BaseController {
       if (parentOpt == null)
         optInfo.setPreOptId(dbOptInfo.getPreOptId());
     }
+
+    if (!optInfoManager.hasChildren(optId)) {
+      if (StringUtils.isBlank(optInfo.getOptUrl()) || "...".equals(optInfo.getOptUrl()))
+        optInfo.setOptUrl(optInfo.getOptRoute());
+    }
+
     /*********log*********/
     OptInfo oldValue = new OptInfo();
     BeanUtils.copyProperties(dbOptInfo, oldValue);

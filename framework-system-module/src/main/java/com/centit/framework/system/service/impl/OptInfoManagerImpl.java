@@ -75,8 +75,9 @@ public class OptInfoManagerImpl implements OptInfoManager {
         // 父级url必须设成...
         OptInfo parentOpt = optInfoDao.getObjectById(optInfo.getPreOptId());
         if (null != parentOpt) {
-            if(!"...".equals(parentOpt.getOptRoute())){
+            if(!"...".equals(parentOpt.getOptRoute()) || !"...".equals(parentOpt.getOptUrl())){
                 parentOpt.setOptRoute("...");
+                parentOpt.setOptUrl("...");
                 optInfoDao.mergeObject(parentOpt);
             }
         }else{
