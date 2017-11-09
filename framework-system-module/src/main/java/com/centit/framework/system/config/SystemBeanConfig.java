@@ -1,6 +1,7 @@
 package com.centit.framework.system.config;
 
 import com.centit.framework.listener.InitialWebRuntimeEnvironment;
+import com.centit.framework.security.model.CentitPasswordEncoder;
 import com.centit.framework.security.model.CentitPasswordEncoderImpl;
 import com.centit.framework.security.model.CentitSessionRegistry;
 import com.centit.framework.security.model.MemorySessionRegistryImpl;
@@ -47,7 +48,7 @@ public class SystemBeanConfig implements EnvironmentAware {
     }
 
     @Bean
-    public CentitPasswordEncoderImpl passwordEncoder() {
+    public CentitPasswordEncoder passwordEncoder() {
         return  new CentitPasswordEncoderImpl();
     }
 

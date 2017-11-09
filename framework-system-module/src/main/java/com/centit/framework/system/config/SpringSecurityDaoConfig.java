@@ -1,11 +1,15 @@
 package com.centit.framework.system.config;
 
 import com.centit.framework.config.SecurityDaoCondition;
+import com.centit.framework.config.SpringSecurityBaseConfig;
 import com.centit.framework.security.*;
+import com.centit.framework.security.model.CentitPasswordEncoder;
 import com.centit.framework.security.model.CentitPasswordEncoderImpl;
 import com.centit.framework.security.model.CentitSessionRegistry;
 import com.centit.framework.security.model.CentitUserDetailsService;
 import com.centit.support.algorithm.BooleanBaseOpt;
+import com.centit.support.algorithm.NumberBaseOpt;
+import com.centit.support.algorithm.StringBaseOpt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Conditional;
@@ -37,22 +41,10 @@ import java.util.List;
  */
 @EnableWebSecurity
 @Conditional(SecurityDaoCondition.class)
-public class SpringSecurityDaoConfig extends WebSecurityConfigurerAdapter {
+public class SpringSecurityDaoConfig extends SpringSecurityBaseConfig {
 
     @Autowired
-    private Environment env;
-
-    @Autowired
-    private HttpSessionCsrfTokenRepository csrfTokenRepository;
-
-    @Autowired
-    private CentitPasswordEncoderImpl passwordEncoder;
-
-    @Autowired
-    private CentitUserDetailsService centitUserDetailsService;
-
-    @Autowired
-    private CentitSessionRegistry centitSessionRegistry;
+    private CentitPasswordEncoder passwordEncoder;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -73,14 +65,14 @@ public class SpringSecurityDaoConfig extends WebSecurityConfigurerAdapter {
 
         AuthenticationManager authenticationManager = createAuthenticationManager(authenticationProvider);
 
-        DaoFilterSecurityInterceptor centitPowerFilter = createCentitPowerFilter(authenticationManager,
-                new DaoInvocationSecurityMetadataSource(),
-                new DaoAccessDecisionManager(),
-                centitSessionRegistry );
+        DaoFilterSecurityInterceptor centitPowerFilter = createCentitPowerFilter(
+                  authenticationManager,
+                  createCentitAccessDecisionManager(),
+                  createCentitSecurityMetadataSource());
 
         AuthenticationFailureHandler ajaxFailureHandler = createAjaxFailureHandler();
 
-        AjaxAuthenticationSuccessHandler ajaxSuccessHandler = createAjaxSuccessHandler();
+        AjaxAuthenticationSuccessHandler ajaxSuccessHandler = createAjaxSuccessHandler(centitUserDetailsService);
 
         UsernamePasswordAuthenticationFilter pretreatmentAuthenticationProcessingFilter =
                 createPretreatmentAuthenticationProcessingFilter(
@@ -97,54 +89,36 @@ public class SpringSecurityDaoConfig extends WebSecurityConfigurerAdapter {
 
 
 
-    private DaoFilterSecurityInterceptor createCentitPowerFilter(AuthenticationManager authenticationManager,
-                                     FilterInvocationSecurityMetadataSource centitSecurityMetadataSource,
-                                     AccessDecisionManager centitAccessDecisionManagerBean,
-                                     CentitSessionRegistry centitSessionRegistry) {
-
-        DaoFilterSecurityInterceptor centitPowerFilter = new DaoFilterSecurityInterceptor();
-        centitPowerFilter.setAuthenticationManager(authenticationManager);
-        centitPowerFilter.setAccessDecisionManager(centitAccessDecisionManagerBean);
-        centitPowerFilter.setSecurityMetadataSource(centitSecurityMetadataSource);
-        centitPowerFilter.setSessionRegistry(centitSessionRegistry);
-        return centitPowerFilter;
-    }
-
-
-    private AuthenticationFailureHandler createAjaxFailureHandler() {
-        AjaxAuthenticationFailureHandler ajaxFailureHandler = new AjaxAuthenticationFailureHandler();
-        ajaxFailureHandler.setDefaultFailureUrl("/system/mainframe/login/error");
-        ajaxFailureHandler.setWriteLog(false);
-        return ajaxFailureHandler;
-    }
-
-
-    private AjaxAuthenticationSuccessHandler createAjaxSuccessHandler() {
-        AjaxAuthenticationSuccessHandler ajaxSuccessHandler = new AjaxAuthenticationSuccessHandler();
-        ajaxSuccessHandler.setWriteLog(true);
-        ajaxSuccessHandler.setUserDetailsService(centitUserDetailsService);
-        return ajaxSuccessHandler;
-    }
-
-
     private UsernamePasswordAuthenticationFilter createPretreatmentAuthenticationProcessingFilter(
-            AuthenticationManager authenticationManager,AjaxAuthenticationSuccessHandler ajaxSuccessHandler,
-            AuthenticationFailureHandler ajaxFailureHandler) {
+        AuthenticationManager authenticationManager,AjaxAuthenticationSuccessHandler ajaxSuccessHandler,
+        AuthenticationFailureHandler ajaxFailureHandler) {
 
         PretreatmentAuthenticationProcessingFilter
-                pretreatmentAuthenticationProcessingFilter = new PretreatmentAuthenticationProcessingFilter();
+            pretreatmentAuthenticationProcessingFilter = new PretreatmentAuthenticationProcessingFilter();
         pretreatmentAuthenticationProcessingFilter.setAuthenticationManager(authenticationManager);
-        pretreatmentAuthenticationProcessingFilter.setCheckCaptcha(false);
-        pretreatmentAuthenticationProcessingFilter.setMaxTryTimes(0);
-        pretreatmentAuthenticationProcessingFilter.setCheckTimeTnterval(3);
-        pretreatmentAuthenticationProcessingFilter.setCheckType("loginName");
-        pretreatmentAuthenticationProcessingFilter.setLockMinites(3);
-        pretreatmentAuthenticationProcessingFilter.setContinueChainBeforeSuccessfulAuthentication(false);
+        pretreatmentAuthenticationProcessingFilter.setCheckCaptchaTime(
+            NumberBaseOpt.castObjectToInteger(env.getProperty("login.captcha.checkTime"),0));
+        pretreatmentAuthenticationProcessingFilter.setCheckCaptchaType(
+            NumberBaseOpt.castObjectToInteger(env.getProperty("login.captcha.checkType"),0));
+        pretreatmentAuthenticationProcessingFilter.setRetryCheckType(
+            StringBaseOpt.emptyValue( env.getProperty("login.retry.checkType"),"H"));
+
+        pretreatmentAuthenticationProcessingFilter.setRetryMaxTryTimes(
+            NumberBaseOpt.castObjectToInteger(env.getProperty("login.retry.maxTryTimes"),0));
+
+        pretreatmentAuthenticationProcessingFilter.setRetryLockMinites(
+            NumberBaseOpt.castObjectToInteger(env.getProperty("login.retry.lockMinites"),10));
+
+        pretreatmentAuthenticationProcessingFilter.setRetryCheckTimeTnterval(
+            NumberBaseOpt.castObjectToInteger(env.getProperty("login.retry.checkTimeTnterval"),3));
+
+        pretreatmentAuthenticationProcessingFilter.setContinueChainBeforeSuccessfulAuthentication(
+            BooleanBaseOpt.castObjectToBoolean(
+                env.getProperty("http.filter.chain.continueBeforeSuccessfulAuthentication"),false));
         pretreatmentAuthenticationProcessingFilter.setAuthenticationFailureHandler(ajaxFailureHandler);
         pretreatmentAuthenticationProcessingFilter.setAuthenticationSuccessHandler(ajaxSuccessHandler);
         return pretreatmentAuthenticationProcessingFilter;
     }
-
     private LogoutFilter logoutFilter() {
         return new LogoutFilter("/system/mainframe/login",
                                 new CsrfLogoutHandler(csrfTokenRepository),

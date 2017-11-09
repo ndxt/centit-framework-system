@@ -49,7 +49,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Resource
     @NotNull
     protected DataCatalogDao dataCatalogDao;
- 
+
     @Resource
     @NotNull
     private UserUnitDao userUnitDao;
@@ -57,15 +57,15 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Resource
     @NotNull
     protected UnitInfoDao unitInfoDao;
- 
+
     @Resource
     @NotNull
     protected RoleInfoDao roleInfoDao;
-    
+
     @Resource
     @NotNull
     private UserRoleDao userRoleDao;
-    
+
     @Resource
     @NotNull
     protected OptMethodDao optMethodDao;
@@ -141,9 +141,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         // 获取当前菜单的子菜单
         Iterator<OptInfo> menus = optInfos.iterator();
         OptInfo parentOpt = null;
-        
+
         List<OptInfo> parentMenu = new ArrayList<OptInfo>();
-        while (menus.hasNext()) {            
+        while (menus.hasNext()) {
             OptInfo optInfo = menus.next();
             if (superOptId!=null && superOptId.equals(optInfo.getOptId())) {
                 parentOpt=optInfo;
@@ -418,7 +418,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
 
-    @Transactional
+//    @Transactional
     private CentitUserDetailsImpl fillUserDetailsField(UserInfo userinfo ){
          CentitUserDetailsImpl sysuser = new CentitUserDetailsImpl();
          sysuser.copy(userinfo);
@@ -477,14 +477,14 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
          }
          return sysuser;
     }
-   
+
     @Override
     @Transactional
     public CentitUserDetailsImpl loadUserDetailsByLoginName(String loginName) {
          UserInfo userinfo = sysuserdao.getUserByLoginName(loginName);
          if(userinfo==null)
              return null;
-         return fillUserDetailsField(userinfo); 
+         return fillUserDetailsField(userinfo);
     }
 
     @Override
@@ -493,7 +493,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
          UserInfo userinfo = sysuserdao.getUserByCode(userCode);
          if(userinfo==null)
              return null;
-         return fillUserDetailsField(userinfo); 
+         return fillUserDetailsField(userinfo);
     }
 
     @Override

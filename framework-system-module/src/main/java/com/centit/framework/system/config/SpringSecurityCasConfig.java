@@ -1,10 +1,12 @@
 package com.centit.framework.system.config;
 
 import com.centit.framework.config.SecurityCasCondition;
+import com.centit.framework.config.SpringSecurityBaseConfig;
 import com.centit.framework.security.*;
 import com.centit.framework.security.model.CentitSessionRegistry;
 import com.centit.framework.security.model.CentitUserDetailsService;
 import com.centit.support.algorithm.BooleanBaseOpt;
+import com.centit.support.algorithm.StringBaseOpt;
 import org.jasig.cas.client.session.SingleSignOutFilter;
 import org.jasig.cas.client.validation.Cas20ServiceTicketValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,16 +40,7 @@ import java.util.List;
 //@PropertySource("classpath:system.properties")
 @EnableWebSecurity
 @Conditional(SecurityCasCondition.class)
-public class SpringSecurityCasConfig extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private Environment env;
-
-    @Autowired
-    public CentitSessionRegistry centitSessionRegistry;
-
-    @Autowired
-    private CentitUserDetailsService centitUserDetailsService;
+public class SpringSecurityCasConfig extends SpringSecurityBaseConfig {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -67,24 +60,25 @@ public class SpringSecurityCasConfig extends WebSecurityConfigurerAdapter {
         } else {
             http.csrf().disable();
         }
+        String defaultTargetUrl = env.getProperty("login.success.targetUrl");
         http.logout()
-                .logoutSuccessUrl("/index.jsp")
+                .logoutSuccessUrl(StringBaseOpt.emptyValue(defaultTargetUrl,"/"))
                 .and()
             .exceptionHandling().accessDeniedPage("/service/exception/accessDenied")
                 .and()
             .httpBasic()
                 .authenticationEntryPoint(casEntryPoint);
 
-        AjaxAuthenticationSuccessHandler ajaxSuccessHandler = createAjaxSuccessHandler();
+        AjaxAuthenticationSuccessHandler ajaxSuccessHandler = createAjaxSuccessHandler(centitUserDetailsService);
         AjaxAuthenticationFailureHandler ajaxFailureHandler = createAjaxFailureHandler();
         CasAuthenticationProvider casAuthenticationProvider = createCasAuthenticationProvider(casServiceProperties);
         AuthenticationManager authenticationManager = creatAuthenticationManager(casAuthenticationProvider);
         CasAuthenticationFilter casFilter = createCasFilter(authenticationManager, ajaxSuccessHandler, ajaxFailureHandler);
 
-        DaoAccessDecisionManager centitAccessDecisionManagerBean = createCentitAccessDecisionManagerBean();
-        DaoInvocationSecurityMetadataSource centitSecurityMetadataSource = createCentitSecurityMetadataSource();
-        DaoFilterSecurityInterceptor centitPowerFilter = createCentitPowerFilter(authenticationManager,
-                centitAccessDecisionManagerBean,centitSecurityMetadataSource);
+        DaoFilterSecurityInterceptor centitPowerFilter = createCentitPowerFilter(
+                authenticationManager,
+                createCentitAccessDecisionManager(),
+                createCentitSecurityMetadataSource());
 
         http.addFilterAt(casFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(centitPowerFilter, FilterSecurityInterceptor.class)
@@ -115,38 +109,6 @@ public class SpringSecurityCasConfig extends WebSecurityConfigurerAdapter {
         return casAuthenticationProvider;
     }
 
-    private DaoAccessDecisionManager createCentitAccessDecisionManagerBean() {
-        return new DaoAccessDecisionManager();
-    }
-
-    private DaoInvocationSecurityMetadataSource createCentitSecurityMetadataSource() {
-        return new DaoInvocationSecurityMetadataSource();
-    }
-
-    private DaoFilterSecurityInterceptor createCentitPowerFilter(AuthenticationManager authenticationManager,
-                                      DaoAccessDecisionManager centitAccessDecisionManagerBean,
-                                      DaoInvocationSecurityMetadataSource centitSecurityMetadataSource) {
-
-        DaoFilterSecurityInterceptor centitPowerFilter = new DaoFilterSecurityInterceptor();
-        centitPowerFilter.setAuthenticationManager(authenticationManager);
-        centitPowerFilter.setAccessDecisionManager(centitAccessDecisionManagerBean);
-        centitPowerFilter.setSecurityMetadataSource(centitSecurityMetadataSource);
-        centitPowerFilter.setSessionRegistry(centitSessionRegistry);
-        return centitPowerFilter;
-    }
-
-    private AjaxAuthenticationFailureHandler createAjaxFailureHandler() {
-        AjaxAuthenticationFailureHandler ajaxFailureHandler = new AjaxAuthenticationFailureHandler();
-        ajaxFailureHandler.setDefaultFailureUrl("/system/mainframe/login/error");
-        ajaxFailureHandler.setWriteLog(false);
-        return ajaxFailureHandler;
-    }
-
-    private AjaxAuthenticationSuccessHandler createAjaxSuccessHandler() {
-        AjaxAuthenticationSuccessHandler ajaxSuccessHandler = new AjaxAuthenticationSuccessHandler();
-        ajaxSuccessHandler.setWriteLog(true);
-        return ajaxSuccessHandler;
-    }
 
     private CasAuthenticationFilter createCasFilter(AuthenticationManager authenticationManager,
                                                     AjaxAuthenticationSuccessHandler ajaxSuccessHandler,
