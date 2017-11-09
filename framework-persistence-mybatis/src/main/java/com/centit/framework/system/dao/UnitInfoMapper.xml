@@ -27,7 +27,7 @@
 	</resultMap>
 
 	<!-- 查询条件 -->
-	<sql id="condition">
+	<sql id="condition" databaseId="oracle">
 		<if test="unitCode != null  and unitCode != '' ">
 			  and u.UNIT_CODE = #{unitCode}
 		</if>
@@ -50,6 +50,30 @@
 			  and (u.PARENT_UNIT is null or u.PARENT_UNIT='0')
 		</if>
 	</sql>
+
+  <sql id="condition" databaseId="mysql">
+    <if test="unitCode != null  and unitCode != '' ">
+      and u.UNIT_CODE = #{unitCode}
+    </if>
+    <if test="unitName != null  and unitName != ''  ">
+      and u.UNIT_NAME like concat('%', #{unitName}, '%')
+    </if>
+    <if test="isValid != null  and isValid != ''   ">
+      and u.IS_VALID = #{isValid}
+    </if>
+    <if test="unitTag != null  and unitTag != ''   ">
+      and u.UNIT_TAG = #{unitTag}
+    </if>
+    <if test="unitWord != null and unitWord != ''  ">
+      and u.UNIT_WORD = #{unitWord}
+    </if>
+    <if test="parentUnit != null  and parentUnit != ''  ">
+      and u.PARENT_UNIT = #{parentUnit}
+    </if>
+    <if test="NP_TOPUnit != null  and NP_TOPUnit != '' ">
+      and (u.PARENT_UNIT is null or u.PARENT_UNIT='0')
+    </if>
+  </sql>
 
 	<!-- 查询核心SQL -->
 	<sql id="coreSql">
