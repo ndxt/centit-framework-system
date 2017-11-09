@@ -43,11 +43,11 @@
 			  and k.UNIT_NAME like '%'|| #{unitName}||'%'
 		</if>
 	</sql>
-	
+
 	<!-- 查询核心SQL -->
 	<sql id="coreSql">
-		<![CDATA[ 
-			select 
+		<![CDATA[
+			select
 				u.USER_UNIT_ID,
 				u.UNIT_CODE,
 				u.USER_CODE,
@@ -64,12 +64,12 @@
 		      from F_USERUNIT u left join F_UNITINFO k on u.UNIT_CODE=k.UNIT_CODE
 	  ]]>
 	</sql>
-	
+
 	<!--分页计数 -->
 	<select id="pageCount" parameterType="map" resultType="int">
  	 <![CDATA[
-	   select count(0) cnt 
-	     from 
+	   select count(0) cnt
+	     from
              F_USERUNIT u
        ]]>
 		<where>
@@ -93,13 +93,13 @@
 	<select id="getObjectById" parameterType="String" resultMap="UserUnit">
 		<include refid="coreSql" />
 		<where>
-         <![CDATA[ 
+         <![CDATA[
 	                u.USER_UNIT_ID=#{userUnitId}
            ]]>
 		</where>
 	</select>
 	<!--查询单条记录 结束 -->
-	
+
     <!--插入新单据 start -->
     <sql id="insertSql">
 		   (
@@ -140,39 +140,39 @@
 <!-- 			<if test="userUnitId !=null ">  -->
 <!-- 					USER_UNIT_ID  =  #{userUnitId},  -->
 <!-- 			</if>  -->
-			<if test="unitCode !=null "> 
-					UNIT_CODE  =  #{unitCode}, 
-			</if> 
-			<if test="userCode !=null "> 
-					USER_CODE  =  #{userCode}, 
-			</if> 
-			<if test="userStation !=null "> 
-					USER_STATION  =  #{userStation}, 
-			</if> 
-			<if test="userRank !=null "> 
-					USER_RANK  =  #{userRank}, 
-			</if> 
-			<if test="rankMemo !=null "> 
-					RANK_MEMO  =  #{rankMemo}, 
-			</if> 
-			<if test="isPrimary !=null "> 
-					IS_PRIMARY  =  #{isPrimary}, 
-			</if> 
-			<if test="userOrder !=null "> 
-					USER_ORDER  =  #{userOrder}, 
-			</if> 
-			<if test="createDate !=null "> 
-					CREATE_DATE  =  #{createDate}, 
-			</if> 
-			<if test="creator !=null "> 
-					CREATOR  =  #{creator}, 
-			</if> 
-			<if test="updator !=null "> 
-					UPDATOR  =  #{updator}, 
-			</if> 
-			<if test="updateDate !=null "> 
-					UPDATE_DATE  =  #{updateDate}, 
-			</if> 
+			<if test="unitCode !=null ">
+					UNIT_CODE  =  #{unitCode},
+			</if>
+			<if test="userCode !=null ">
+					USER_CODE  =  #{userCode},
+			</if>
+			<if test="userStation !=null ">
+					USER_STATION  =  #{userStation},
+			</if>
+			<if test="userRank !=null ">
+					USER_RANK  =  #{userRank},
+			</if>
+			<if test="rankMemo !=null ">
+					RANK_MEMO  =  #{rankMemo},
+			</if>
+			<if test="isPrimary !=null ">
+					IS_PRIMARY  =  #{isPrimary},
+			</if>
+			<if test="userOrder !=null ">
+					USER_ORDER  =  #{userOrder},
+			</if>
+			<if test="createDate !=null ">
+					CREATE_DATE  =  #{createDate},
+			</if>
+			<if test="creator !=null ">
+					CREATOR  =  #{creator},
+			</if>
+			<if test="updator !=null ">
+					UPDATOR  =  #{updator},
+			</if>
+			<if test="updateDate !=null ">
+					UPDATE_DATE  =  #{updateDate},
+			</if>
 		</set>
 	</sql>
 	<update id="updateObject" parameterType="com.centit.framework.system.po.UserUnit" timeout="2000">
@@ -181,19 +181,19 @@
 	     where   USER_UNIT_ID=#{userUnitId}
 	</update>
 	<!--更新单据 end -->
-   
+
    <!--Merge单据 start -->
 	<update id="mergeObject" databaseId="oracle" parameterType="com.centit.framework.system.po.UserUnit" timeout="2000">
-	      merge into F_USERUNIT t  
-		    using ( select #{userUnitId} as USER_UNIT_ID    from dual) t1  
-		    on(t.USER_UNIT_ID = t1.USER_UNIT_ID )  
+	      merge into F_USERUNIT t
+		    using ( select #{userUnitId} as USER_UNIT_ID    from dual) t1
+		    on(t.USER_UNIT_ID = t1.USER_UNIT_ID )
 		 when not matched then
 		   insert
 		   <include refid="insertSql" />
-		 when matched then 
+		 when matched then
 		 update
-		   <include refid="updSql" />   
-		    where USER_UNIT_ID=#{userUnitId} 
+		   <include refid="updSql" />
+		    where USER_UNIT_ID=#{userUnitId}
 	</update>
 	<update id="mergeObject" databaseId="mysql" parameterType="com.centit.framework.system.po.UserUnit" timeout="2000">
 		replace into F_USERUNIT
@@ -201,16 +201,16 @@
 	</update>
 	<!--Merge单据 end -->
    <!--插入新单据 end -->
-   
+
 	<!--删除记录  -->
 	<delete id="deleteObject" parameterType="com.centit.framework.system.po.UserUnit" timeout="2000">
-    <![CDATA[ 
-       delete from F_USERUNIT where USER_UNIT_ID=#{userUnitId} 
+    <![CDATA[
+       delete from F_USERUNIT where USER_UNIT_ID=#{userUnitId}
      ]]>
 	</delete>
 	<delete id="deleteObjectById" parameterType="String" timeout="2000">
-    <![CDATA[ 
-       delete from F_USERUNIT where USER_UNIT_ID=#{userUnitId} 
+    <![CDATA[
+       delete from F_USERUNIT where USER_UNIT_ID=#{userUnitId}
      ]]>
 	</delete>
 	<!--删除记录 结束 -->
@@ -244,10 +244,10 @@
 	]]>
 	</delete>
 	<delete id="deleteUserUnitByUser" parameterType="String">
-		delete F_USERUNIT  where USER_CODE = #{userCode}
+		delete from F_USERUNIT  where USER_CODE = #{userCode}
 	</delete>
 	<delete id="deleteUserUnitByUnit" parameterType="String">
-		delete F_USERUNIT  where USER_CODE = #{userCode}
+		delete from F_USERUNIT  where USER_CODE = #{userCode}
 	</delete>
 	<select id="getPrimaryUnitByUserId" parameterType="String" resultMap="UserUnit">
 		<include refid="coreSql" />
@@ -255,7 +255,7 @@
 	</select>
 	<select id="listUnitUsersByUnitCode" parameterType="String" resultMap="UserUnit">
 		<include refid="coreSql" />
-		where USER_CODE=#{unitCode} 
+		where USER_CODE=#{unitCode}
 	</select>
 	<select id="listUserUnitsByRoleAndUnit" parameterType="String" resultMap="UserUnit">
 		${SQL}
@@ -263,7 +263,7 @@
 	<select id="listUserUnitByIds" parameterType="String" resultMap="UserUnit">
 		<include refid="coreSql" />
 		<if test="ids != null ">
-		<foreach item="id" collection="ids" 
+		<foreach item="id" collection="ids"
 			open="  and   u.userUnitId in (" close=")" index="">
 			#{id, jdbcType=String}
 		</foreach>
