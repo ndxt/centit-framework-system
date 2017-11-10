@@ -18,7 +18,6 @@ INSERT INTO F_USERUNIT(USER_UNIT_ID, UNIT_CODE, USER_CODE, Is_Primary, User_Stat
 update_Date, Create_Date) VALUES ('s000000000','U00001','u0000000','T','pf','CZ',null,'1',sysdate,sysdate);
 
 -- 初始化数据字典
-
 insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
 values ('MsgType', '消息类型', 'U', 'L', '测试测试', null, sysdate, null, 'innermsg', '1','u0000000','u0000000');
 
