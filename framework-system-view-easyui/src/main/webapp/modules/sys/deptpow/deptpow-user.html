@@ -27,7 +27,7 @@
 
     <div class="search-item">
       <label id="e@name">用户名</label>
-      <input type="text" class="easyui-textbox" name="s_userName" />
+      <input type="text" class="easyui-textbox" name="s_userName" id="s_unitName"/>
     </div>
     <a class="easyui-linkbutton btn-search" iconCls="icon-search"><p  id="e@btn.search">搜索</p></a>
     <a class="easyui-linkbutton" style="margin-top:8px;" iconcls="icon-reload" onclick="javascript:$('.clearFromValue').form('clear');$('.defaultChecked').prop('checked','true');" group="" id="">
@@ -35,6 +35,7 @@
     </a>
   </form>
 </div>
+
 <table style="width: 100%; margin: 0 auto;"
 	pagination="true"
 	toolbar=".temp-toolbar"
@@ -42,6 +43,7 @@
 	sortName="isPrimary"
 	sortOrder="desc"
 	layoutH="130"
+  search=".search"
 	>
 	<thead>
 		<tr>
