@@ -256,11 +256,11 @@ public class SysUnitManagerImpl implements SysUnitManager {
                 if(objs.contains(u.getUnitCode()))
                     u.setState("closed");
                 else
-                    u.setState("opend");
+                    u.setState("open");
             }
         }else{
             for (UnitInfo u : listObjects){
-                u.setState("opend");
+                u.setState("open");
             }
         }
     }
@@ -270,7 +270,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
     public List<UnitInfo> listValidSubUnit(String unitCode){
         Map<String, Object> map = new HashMap<>();
         map.put("parentUnit", unitCode);
-        map.put("isvalid", "T");
+        map.put("isValid", "T");
         return unitInfoDao.listObjects(map);
     }
 }
