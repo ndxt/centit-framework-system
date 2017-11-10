@@ -18,7 +18,6 @@ INSERT INTO F_USERUNIT(USER_UNIT_ID, UNIT_CODE, USER_CODE, Is_Primary, User_Stat
 update_Date, Create_Date) VALUES ('s000000000','U00001','u0000000','T','pf','CZ',null,'1',sysdate,sysdate);
 
 -- 初始化数据字典
-
 insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
 values ('MsgType', '消息类型', 'U', 'L', '测试测试', null, sysdate, null, 'innermsg', '1','u0000000','u0000000');
 
@@ -45,6 +44,7 @@ values ('SUPPORT_LANG', '系统支持的语言', 'U', 'L', '系统支持的语言,需要在system
 
 insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
 values ('LogLevel', '日志类型', 'F', 'L', '日志类型', '日志类型', sysdate, sysdate, 'OptLog', '1','u0000000','u0000000');
+INSERT INTO f_datacatalog VALUES ('YesOrNo', '是否', 'S', 'L', null, null, null, null, null, '1', null, null);
 
 
 insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
@@ -227,6 +227,8 @@ values ('LogLevel', '1', null, null, 'T', '错误提示', 'F', null, sysdate, sysdat
 insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
 values ('LogLevel', '0', null, null, 'T', '操作日志', 'F', null, sysdate, sysdate, 1);
 
+INSERT INTO f_datadictionary VALUES ('YesOrNo', 'F', null, null, null, '否', null, null, null, null, null);
+INSERT INTO f_datadictionary VALUES ('YesOrNo', 'T', null, null, null, '是', null, null, null, null, null);
 
 -- 初始化业务菜单
 insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)

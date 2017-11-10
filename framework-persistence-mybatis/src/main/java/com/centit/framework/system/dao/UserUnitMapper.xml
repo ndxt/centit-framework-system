@@ -52,7 +52,7 @@
       and u.USER_CODE in (select USER_CODE from F_USERINFO where IS_VALID =#{userCode_isValid})
     </if>
     <if test="unitCode != null  and unitCode != '' ">
-      and u.UNIT_CODE =#{unitCode}
+      and (u.UNIT_CODE =#{unitCode} || k.UNIT_PATH like concat('%/', #{unitCode}, '%'))
     </if>
     <if test="userStation != null  and userStation != '' ">
       and u.USER_STATION  = #{userStation}
@@ -100,7 +100,7 @@
  	 <![CDATA[
 	   select count(0) cnt
 	     from
-             F_USERUNIT u
+             F_USERUNIT u left join F_UNITINFO k on u.UNIT_CODE=k.UNIT_CODE
        ]]>
 		<where>
 			<include refid="condition" />

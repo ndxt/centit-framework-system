@@ -6,26 +6,26 @@
 			<label id="b@encoding">编码</label>
 			<input type="text" class="easyui-textbox" name="s_roleCode" />
 		</div>
-		
+
 		<div class="search-item">
 			<label id="b@name">名称</label>
 			<input type="text" class="easyui-textbox" name="s_roleName" />
 		</div>
-		
+
 		<div class="search-item">
 			<label id="b@state">状态</label>
 			<input type="radio" name="s_isValid" value=""  /> <p id="b@all">全部</p>
 			<input type="radio" name="s_isValid" value="T" checked="checked"  class="defaultChecked"/> <p id="b@inUse">在用</p>
 			<input type="radio" name="s_isValid" value="F" /> <p id="b@forbidden">禁用</p>
 		</div>
-		
+
 		<div class="search-item">
 			<label id="b@createTime">创建时间</label>
 			<input type="text" class="easyui-datebox" name="s_createDateBeg" id="s_createDateBeg" validType="nowtime['#s_createDateEnd']"/>
 			<span id="b@to">到</span>
 			<input type="text" class="easyui-datebox" name="s_createDateEnd" id="s_createDateEnd" validType="compare['#deptroleform #s_createDateBeg']"/>
 		</div>
-		
+
 		<a class="easyui-linkbutton btn-search" iconCls="icon-search"><p  id="b@btn.search">搜索</p></a>
 		<a class="easyui-linkbutton" style="margin-top:8px;" iconcls="icon-reload" onclick="javascript:$('#deptroleform').form('clear');$('.defaultChecked').prop('checked','true');" group="" id="">
 			<p>重置</p>
@@ -37,7 +37,7 @@
 	sortName="createDate" sortOrder="desc"
 	search=".search"
 	toolbar=".temp-toolbar"
-	layoutH=".search"	
+	layoutH=".search"
 	>
 	<thead>
 		<tr>
@@ -48,7 +48,7 @@
 						  	if(value=='T') return '在用';
 						  	else if(value=='F') return '禁用';
 						  }" width="125" sortable="true" >状态</th>
-			<th id="b@createTime" data-options="field:'createDate'" width="125" sortable="true">创建时间</th>
+			<th id="b@createTime" data-options="field:'createDate'" width="125" sortable="true" align="center" format="Date:yyyy-MM-dd">创建时间</th>
 			<th id="b@describe" data-options="field:'roleDesc'" width="355">描述</th>
 		</tr>
 	</thead>
@@ -57,12 +57,12 @@
 <div class="temp-toolbar">
 	<a iconCls="icon-add" href="modules/sys/deptrole/deptrole-info.html" trigger="none"
 		target="dialog" rel="deptrole_add" title="新增角色" width="320" height="420" btnValue="添加"><p  id="b@link.add">新增</p></a>
-		
+
 	<a iconCls="icon-edit" href="modules/sys/deptrole/deptrole-info.html" trigger="single"
 		target="dialog" rel="deptrole_edit" title="编辑 {{roleName}} 角色" width="320" height="420" btnValue="更新"><p  id="b@link.edit">编辑</p></a>
-		
+
 	<hr>
-	
+
 	<a iconCls="icon-base icon-base-gear" href="modules/sys/deptrole/deptrole-power.html" trigger="single"
 		target="dialog" rel="deptrole_operate" title="编辑 {{roleName}} 操作权限" width="320" height="600" btnValue="更新"><p  id="b@link.authorityManage">操作权限</p></a>
 				<hr>
@@ -78,7 +78,7 @@
 <script>
 	$.parser.onComplete = function(panel) {
 		$.parser.onComplete = $.noop;
-		
+
 		requirejs([
 		           'modules/sys/deptrole/ctrl/deptrole'
 		          ], function(DeptRole) {

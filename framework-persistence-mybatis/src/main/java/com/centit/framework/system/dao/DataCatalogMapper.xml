@@ -19,7 +19,7 @@
 	</resultMap>
 
 	<!-- 查询条件 -->
-	<sql id="condition">
+	<sql id="condition" databaseId="oracle">
 		<if test="catalogCode != null   and catalogCode != ''  ">
 			  and u.CATALOG_CODE like '%'||#{catalogCode}||'%'
 		</if>
@@ -36,6 +36,24 @@
 			  and u.OPT_ID = #{optId}
 	   </if>
 	</sql>
+
+    <sql id="condition" databaseId="mysql">
+        <if test="catalogCode != null   and catalogCode != ''  ">
+            and u.CATALOG_CODE like concat('%', #{catalogCode}, '%')
+        </if>
+        <if test="catalogName != null   and catalogName != ''  ">
+            and u.CATALOG_NAME like concat('%', #{catalogName}, '%')
+        </if>
+        <if test="catalogStyle != null  and catalogStyle != ''   ">
+            and u.CATALOG_STYLE = #{catalogStyle}
+        </if>
+        <if test="catalogType != null  and catalogType != ''  ">
+            and u.CATALOG_TYPE = #{catalogType}
+        </if>
+        <if test="optId != null  and optId != ''  ">
+            and u.OPT_ID = #{optId}
+        </if>
+    </sql>
 
 	<!-- 查询核心SQL -->
 	<sql id="coreSql">

@@ -1,5 +1,6 @@
 package com.centit.framework.system.po;
 
+import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IDataCatalog;
 import org.apache.commons.lang3.StringUtils;
@@ -62,6 +63,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
 
     @Column(name = "OPT_ID")
     @Size(max = 16, message = "字段长度不能大于{max}")
+    @DictionaryMap(value = "optId", fieldName = "optName")
     private String optId;
 
     @Column(name = "CREATE_DATE", nullable = false)
