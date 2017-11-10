@@ -2,16 +2,16 @@ define(function(require) {
 	var Config = require('config');
 	var Core = require('core/core');
 	var Page = require('core/page');
-	
+
 	var UnitInfoAdd = require('../ctrl/deptpow.add');
 	var UnitInfoEdit = require('../ctrl/deptpow.edit');
 	var UnitInfoRemove = require('../ctrl/deptpow.remove');
-	
+
 	var UnitInfoUser = require('../ctrl/deptpow.user');
 	var unitInfoUser = new UnitInfoUser('deptpow_user');
-	
+
 	var DeptPow = Page.extend(function() {
-		
+
 		this.injecte([
 		  new UnitInfoAdd('deptpow_add'),
 		  new UnitInfoEdit('deptpow_edit'),
@@ -23,10 +23,10 @@ define(function(require) {
 		// @override
 		this.load = function(panel) {
 			var table = this.table = panel.find('table');
-			
+
 			table.ctreegrid({
 				controller: this,
-				
+
 				rowStyler: function(row) {
 					if (row && row.isValid == 'F') {
 						return {
@@ -49,7 +49,7 @@ define(function(require) {
 		};
 
 	});
-	
+
 	return DeptPow;
 });
 

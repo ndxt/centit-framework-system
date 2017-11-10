@@ -47,7 +47,14 @@ define(function(require) {
 						return {'class': 'ban'};
 					}
 				},
+        columns: {
+          roleDesc: {
+            formatter: function (value, row, index) {
 
+              return '<a title="' + value + '">' + value + '</a>';
+            }
+          }
+        },
 				onClickRow: function(index, row) {
 					if (selectedIndex == index) return;
 					selectedIndex = index;
