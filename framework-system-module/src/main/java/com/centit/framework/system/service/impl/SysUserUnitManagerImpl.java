@@ -139,7 +139,8 @@ public class SysUserUnitManagerImpl
           if(origPrimUnit!=null){
             origPrimUnit.setIsPrimary("F");
             userunit.setIsPrimary("T");
-            userUnitDao.mergeObject(origPrimUnit);
+            userUnitDao.updateObject(origPrimUnit);
+//            userUnitDao.mergeObject(origPrimUnit);
           }
           UserInfo user=userInfoDao.getObjectById(userunit.getUserCode());
           if(user != null) {
@@ -147,7 +148,8 @@ public class SysUserUnitManagerImpl
             userInfoDao.mergeObject(user);
           }
         }
-        userUnitDao.updateObject(userunit);
+      userUnitDao.mergeObject(userunit);
+//        userUnitDao.updateObject(userunit);
     }
 
     @Override
