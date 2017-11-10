@@ -303,18 +303,29 @@
 	<!--Merge单据 end -->
 
 	<!--删除记录 -->
-	<delete id="deleteObjectById" parameterType="String" timeout="2000">
-    <![CDATA[
+	<delete id="deleteObjectById" databaseId="oracle" parameterType="String" timeout="2000">
+  <![CDATA[
        delete from F_OPTINFO u where u.OPT_ID=#{optId}
      ]]>
-	</delete>
+</delete>
 
-	<delete id="deleteObject" parameterType="com.centit.framework.system.po.OptInfo">
+  <delete id="deleteObject" databaseId="oracle" parameterType="com.centit.framework.system.po.OptInfo">
     <![CDATA[
        delete from F_OPTINFO where u.OPT_ID=#{optId}
      ]]>
-	</delete>
+  </delete>
 
+  <delete id="deleteObjectById" databaseId="mysql" parameterType="String" timeout="2000">
+    <![CDATA[
+       delete from F_OPTINFO where OPT_ID=#{optId}
+     ]]>
+  </delete>
+
+  <delete id="deleteObject" databaseId="mysql" parameterType="com.centit.framework.system.po.OptInfo">
+    <![CDATA[
+       delete from F_OPTINFO where OPT_ID=#{optId}
+     ]]>
+  </delete>
 	<!--删除记录 结束 -->
 
 	<select id="listObjects" parameterType="map" resultMap="OptInfo">
