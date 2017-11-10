@@ -247,11 +247,8 @@ public class UnitInfoController extends BaseController {
                     "机构名"+unitInfo.getUnitName()+"已存在，请更换！", response);
             return;
         }
-      if(!sysUnitManager.isUniqueOrder(unitInfo)){
-        JsonResultUtils.writeErrorMessageJson(
-          ResponseData.ERROR_FIELD_INPUT_CONFLICT,
-          "同级机构排序号"+unitInfo.getUnitOrder()+"已存在，请更换！", response);
-        return;
+      while (!sysUnitManager.isUniqueOrder(unitInfo)){
+        unitInfo.setUnitOrder(unitInfo.getUnitOrder()+1);
       }
         sysUnitManager.saveNewUnitInfo(unitInfo);
 

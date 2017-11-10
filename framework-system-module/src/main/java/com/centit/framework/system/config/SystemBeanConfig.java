@@ -1,6 +1,7 @@
 package com.centit.framework.system.config;
 
 import com.centit.framework.listener.InitialWebRuntimeEnvironment;
+import com.centit.framework.security.model.CentitPasswordEncoder;
 import com.centit.framework.security.model.CentitPasswordEncoderImpl;
 import com.centit.framework.security.model.CentitSessionRegistry;
 import com.centit.framework.security.model.MemorySessionRegistryImpl;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 @PropertySource("classpath:system.properties")
@@ -47,12 +49,12 @@ public class SystemBeanConfig implements EnvironmentAware {
     }
 
     @Bean
-    public CentitPasswordEncoderImpl passwordEncoder() {
+    public CentitPasswordEncoder passwordEncoder() {
         return  new CentitPasswordEncoderImpl();
     }
 
     @Bean
-    public HttpSessionCsrfTokenRepository csrfTokenRepository() {
+    public CsrfTokenRepository csrfTokenRepository() {
         return new HttpSessionCsrfTokenRepository();
     }
 

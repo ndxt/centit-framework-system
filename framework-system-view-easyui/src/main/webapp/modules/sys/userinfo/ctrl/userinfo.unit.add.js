@@ -16,7 +16,8 @@ define(function(require) {
 		this.load = function(panel) {
 			var _self=this;
 			// 获取父窗口的用户信息
-			var userinfo = this.parent.data.userInfo;
+			//var userinfo = this.parent.data.userInfo;
+      var userinfo = this.parent.data;
 
 			var data = this.data = $.extend({}, this.object, {
 				userCode: userinfo.userCode,

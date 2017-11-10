@@ -153,13 +153,13 @@ public class SysUnitManagerImpl implements SysUnitManager {
         return dbUnitInfo == null ? true : false;
     }
 
-  @Override
-  @Transactional
-  public boolean isUniqueOrder(UnitInfo unitInfo){
-    UnitInfo dbUnitInfo = unitInfoDao.getPeerUnitByParentUnit(
-      unitInfo.getParentUnit(), unitInfo.getUnitOrder());
-    return dbUnitInfo == null ? true : false;
-  }
+    @Override
+    @Transactional
+    public boolean isUniqueOrder(UnitInfo unitInfo){
+        Integer exists = unitInfoDao.isExistsUnitByParentAndOrder(
+            unitInfo.getParentUnit(), unitInfo.getUnitOrder());
+        return exists == null ? true : exists<1;
+    }
 
     @Override
     @CacheEvict(value = "UnitInfo",allEntries = true)

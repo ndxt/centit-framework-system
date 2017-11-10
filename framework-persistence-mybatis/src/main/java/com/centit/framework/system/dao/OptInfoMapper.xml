@@ -29,7 +29,7 @@
 	</resultMap>
 
 	<!-- 查询条件 -->
-	<sql id="condition">
+	<sql id="condition" databaseId="oracle">
 		<if test="OPTID != null   and OPTID != ''  ">
 			and u.OPT_ID = #{OPTID}
 		</if>
@@ -42,7 +42,7 @@
 		<if test="preOptId != null  and preOptId != ''  ">
 			and u.PRE_OPT_ID =#{preOptId}
 		</if>
-		<if test="NPTOPOPT != null  and NPTOPOPT != ''  ">
+		<if test="NP_TOPOPT != null  and NP_TOPOPT != ''  ">
 			and (u.PRE_OPT_ID is null or u.PRE_OPT_ID='0')
 		</if>
 		<if test="OPTTYPE != null  and OPTTYPE != ''   ">
@@ -55,11 +55,37 @@
 			and u.IS_IN_TOOLBAR =#{ISINTOOLBAR}
 		</if>
 	</sql>
+  <sql id="condition" databaseId="mysql">
+    <if test="OPTID != null   and OPTID != ''  ">
+      and u.OPT_ID = #{OPTID}
+    </if>
+    <if test="OPTURL != null   and OPTURL != ''  ">
+      and u.OPT_URL =#{OPTURL}
+    </if>
+    <if test="OPTNAME != null  and OPTNAME != ''  ">
+      and u.OPT_NAME like concat('%', #{OPTNAME}, '%')
+    </if>
+    <if test="preOptId != null  and preOptId != ''  ">
+      and u.PRE_OPT_ID =#{preOptId}
+    </if>
+    <if test="NP_TOPOPT != null  and NP_TOPOPT != ''  ">
+      and (u.PRE_OPT_ID is null or u.PRE_OPT_ID='0')
+    </if>
+    <if test="OPTTYPE != null  and OPTTYPE != ''   ">
+      and u.OPT_TYPE =#{OPTTYPE}
+    </if>
+    <if test="TOPOPTID != null  and TOPOPTID != ''   ">
+      and u.TOP_OPT_ID =#{TOPOPTID}
+    </if>
+    <if test="ISINTOOLBAR != null  and ISINTOOLBAR != ''   ">
+      and u.IS_IN_TOOLBAR =#{ISINTOOLBAR}
+    </if>
+  </sql>
 
 	<!-- 查询核心SQL -->
 	<sql id="coreSql">
-		<![CDATA[ 
-			select 
+		<![CDATA[
+			select
 			        u.OPT_ID,
 					u.PRE_OPT_ID,
 					u.OPT_NAME,
@@ -89,8 +115,8 @@
 	<!--分页计数 -->
 	<select id="pageCount" parameterType="map" resultType="int">
  	 <![CDATA[
-	   select count(0) cnt 
-	     from 
+	   select count(0) cnt
+	     from
              F_OPTINFO u
        ]]>
 		<where>
@@ -116,7 +142,7 @@
 	<select id="getObjectById" parameterType="String" resultMap="OptInfo">
 		<include refid="coreSql" />
 		<where>
-         <![CDATA[ 
+         <![CDATA[
 	                u.OPT_ID=#{optId}
            ]]>
 		</where>
@@ -256,7 +282,7 @@
 	<!--更新单据 end -->
 
 	<!--Merge单据 start -->
-	<update id="mergeObject" parameterType="com.centit.framework.system.po.OptInfo" timeout="2000">
+	<update id="mergeObject" databaseId="oracle" parameterType="com.centit.framework.system.po.OptInfo" timeout="2000">
 		merge into F_OPTINFO t
 		using ( select #{optId} as OPT_ID from dual) t1
 		on(t.OPT_ID = t1.OPT_ID)
@@ -269,21 +295,37 @@
 		<include refid="updSql" />
 		where OPT_ID=#{optId}
 	</update>
+
+  <update id="mergeObject" databaseId="mysql" parameterType="com.centit.framework.system.po.OptInfo" timeout="2000">
+    replace into F_OPTINFO
+    <include refid="insertSql" />
+  </update>
 	<!--Merge单据 end -->
 
 	<!--删除记录 -->
-	<delete id="deleteObjectById" parameterType="String" timeout="2000">
-    <![CDATA[ 
-       delete from F_OPTINFO u where u.OPT_ID=#{optId}  
+	<delete id="deleteObjectById" databaseId="oracle" parameterType="String" timeout="2000">
+  <![CDATA[
+       delete from F_OPTINFO u where u.OPT_ID=#{optId}
      ]]>
-	</delete>
+</delete>
 
-	<delete id="deleteObject" parameterType="com.centit.framework.system.po.OptInfo">
-    <![CDATA[ 
-       delete from F_OPTINFO where u.OPT_ID=#{optId}  
+  <delete id="deleteObject" databaseId="oracle" parameterType="com.centit.framework.system.po.OptInfo">
+    <![CDATA[
+       delete from F_OPTINFO where u.OPT_ID=#{optId}
      ]]>
-	</delete>
+  </delete>
 
+  <delete id="deleteObjectById" databaseId="mysql" parameterType="String" timeout="2000">
+    <![CDATA[
+       delete from F_OPTINFO where OPT_ID=#{optId}
+     ]]>
+  </delete>
+
+  <delete id="deleteObject" databaseId="mysql" parameterType="com.centit.framework.system.po.OptInfo">
+    <![CDATA[
+       delete from F_OPTINFO where OPT_ID=#{optId}
+     ]]>
+  </delete>
 	<!--删除记录 结束 -->
 
 	<select id="listObjects" parameterType="map" resultMap="OptInfo">
@@ -362,7 +404,7 @@
 		CREATOR,
 		UPDATOR,
 		UPDATE_DATE
-		from F_OPTINFO where OPT_URL='...' 
+		from F_OPTINFO where OPT_URL='...'
 		order by ORDER_IND
 	</select>
 	<select id="getMenuFuncByUserID" parameterType="map"
@@ -430,4 +472,19 @@
 			and OPT_METHOD =#{optMethod}
 		</if>
 	</select>
+
+
+  <select id="listObjectByParentOptid" resultMap="OptInfo" >
+    <include refid="coreSql" />
+    where u.PRE_OPT_ID = #{optId}
+  </select>
+
+  <select id="listObjectByOptId" resultMap="OptInfo">
+    <include refid="coreSql" />
+    where u.OPT_TYPE in
+    <foreach item="ot" collection="types" open="(" separator="," close=")">
+        #{ot}
+    </foreach>
+  </select>
+
 </mapper>

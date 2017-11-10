@@ -1,14 +1,12 @@
 package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.centit.framework.common.ViewDataTransform;
-import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
+import com.centit.framework.common.ViewDataTransform;
+import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
-import com.centit.framework.model.basedata.IOptInfo;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
@@ -16,7 +14,6 @@ import com.centit.framework.system.service.OptInfoManager;
 import com.centit.framework.system.service.OptMethodManager;
 import com.centit.framework.system.service.SysRoleManager;
 import com.centit.support.json.JsonPropertyUtils;
-import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -31,7 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -92,9 +88,7 @@ public class OptInfoController extends BaseController {
         "isInToolbar", "isInToolbar",
         "state", "state",
         "optMethods", "optMethods"
-      ), (jsonObject, obj) -> {
-        jsonObject.put("external", !("D".equals(obj.getPageType())));
-      });
+      ), (jsonObject, obj) -> jsonObject.put("external", !("D".equals(obj.getPageType()))));
   }
 
   /**
@@ -163,10 +157,10 @@ public class OptInfoController extends BaseController {
   @RequestMapping(value = "/unitpoweropts/{unitCode}", method = RequestMethod.GET)
   public void listUnitPowerOpts(@PathVariable String unitCode, String[] field,
                                 HttpServletResponse response) {
-      List<OptInfo> listObjects = optInfoManager.listOptWithPowerUnderUnit(unitCode);
-      listObjects = optInfoManager.listObjectFormatTree(listObjects, false);
+    List<OptInfo> listObjects = optInfoManager.listOptWithPowerUnderUnit(unitCode);
+    listObjects = optInfoManager.listObjectFormatTree(listObjects, false);
 
-      JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(listObjects), response);
+    JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(listObjects), response);
   }
 
   /**
@@ -237,6 +231,12 @@ public class OptInfoController extends BaseController {
       if (parentOpt == null)
         optInfo.setPreOptId(dbOptInfo.getPreOptId());
     }
+
+    if (!optInfoManager.hasChildren(optId)) {
+      if (StringUtils.isBlank(optInfo.getOptUrl()) || "...".equals(optInfo.getOptUrl()))
+        optInfo.setOptUrl(optInfo.getOptRoute());
+    }
+
     /*********log*********/
     OptInfo oldValue = new OptInfo();
     BeanUtils.copyProperties(dbOptInfo, oldValue);

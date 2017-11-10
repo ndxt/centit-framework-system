@@ -26,22 +26,22 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
             filterField.put("roleCode", "id.roleCode = :roleCode");
 
             filterField.put("userCode", "id.userCode = :userCode");
-          
+
             filterField.put("roleName", CodeBook.LIKE_HQL_ID);
-            
+
             filterField.put("NP_unitRoleType", "id.roleCode in (select roleCode from RoleInfo where unitCode is not null)");
             filterField.put("NP_userRoleType", "id.roleCode not in (select roleCode from RoleInfo where unitCode is not null)");
 
             filterField.put("userCode_isValid", "id.userCode in (select userCode from UserInfo where isValid = :userCode_isValid)");
-            
+
             filterField.put(CodeBook.ORDER_BY_HQL_ID, " id.userCode ");
 
-            filterField.put("userName", "id.userCode in (select userCode from UserInfo where userName like :userName)");
+            filterField.put("(like)userName", "id.userCode in (select userCode from UserInfo where userName like :userName)");
 
         }
         return filterField;
     }
-    
+
     @Transactional
     public void deleteByRoleId(String roid) {
         DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.roleCode = ?", roid);
@@ -58,7 +58,7 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
     @SuppressWarnings("unchecked")
     @Transactional
     public List<FVUserRoles> getSysRolesByUserId(String userCode) {
- 
+
         final String sSqlsen = "from FVUserRoles v where id.userCode = ?";
         List<FVUserRoles> ls = (List<FVUserRoles>) DatabaseOptUtils.findObjectsByHql(
                 this, sSqlsen, new Object[]{userCode});

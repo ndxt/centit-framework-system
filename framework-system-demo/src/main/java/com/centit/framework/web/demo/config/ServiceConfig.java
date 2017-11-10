@@ -2,9 +2,9 @@ package com.centit.framework.web.demo.config;
 
 import com.centit.framework.components.impl.NotificationCenterImpl;
 import com.centit.framework.components.impl.TextOperationLogWriterImpl;
-import com.centit.framework.jdbc.config.JdbcConfig;
 import com.centit.framework.model.adapter.NotificationCenter;
 import com.centit.framework.model.adapter.OperationLogWriter;
+import com.centit.framework.mybatis.config.MybatisConfig;
 import com.centit.framework.system.config.SpringSecurityCasConfig;
 import com.centit.framework.system.config.SpringSecurityDaoConfig;
 import com.centit.framework.system.config.SystemBeanConfig;
@@ -16,7 +16,7 @@ import org.springframework.context.annotation.*;
  */
 @Configuration
 @Import({
-        JdbcConfig.class,
+        MybatisConfig.class,
         SystemBeanConfig.class,
         SpringSecurityDaoConfig.class,
         SpringSecurityCasConfig.class})

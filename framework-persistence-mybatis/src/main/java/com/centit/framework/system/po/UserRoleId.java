@@ -1,5 +1,7 @@
 package com.centit.framework.system.po;
 
+import com.centit.framework.core.dao.DictionaryMap;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
@@ -23,6 +25,7 @@ public class UserRoleId implements java.io.Serializable {
 
     @Column(name = "ROLE_CODE")
     @NotNull(message = "字段不能为空")
+    @DictionaryMap(value="roleCode", fieldName = "roleName")
     private String roleCode; // 角色代码
 
     // Constructors
@@ -56,7 +59,7 @@ public class UserRoleId implements java.io.Serializable {
         this.roleCode = rolecode;
     }
 
-  
+
     public boolean equals(Object other) {
         if ((this == other))
             return true;

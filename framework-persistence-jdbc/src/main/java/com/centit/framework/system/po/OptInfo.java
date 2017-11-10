@@ -135,6 +135,8 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
 
     @Transient
     private String state;
+
+    @Override
     public String getState() {
         return state;
     }

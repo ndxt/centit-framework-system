@@ -1,20 +1,19 @@
 package com.centit.framework.system.po;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import com.centit.framework.core.dao.DictionaryMap;
+import com.centit.framework.core.po.EntityWithTimestamp;
+import com.centit.framework.model.basedata.IDataCatalog;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.util.HtmlUtils;
-
-import com.centit.framework.core.po.EntityWithTimestamp;
-import com.centit.framework.model.basedata.IDataCatalog;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * FAddressBook entity.
@@ -64,6 +63,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
 
     @Column(name = "OPT_ID")
     @Size(max = 16, message = "字段长度不能大于{max}")
+    @DictionaryMap(value = "optId", fieldName = "optName")
     private String optId;
 
     @Column(name = "CREATE_DATE", nullable = false)
