@@ -48,6 +48,7 @@ values ('SUPPORT_LANG', '系统支持的语言', 'U', 'L', '系统支持的语�
 insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
 values ('LogLevel', '日志类型', 'F', 'L', '日志类型', '日志类型', parsedatetime('07-04-2016', 'dd-MM-yyyy'), parsedatetime('07-04-2016', 'dd-MM-yyyy'), 'OptLog', '1','u0000000','u0000000');
 
+INSERT INTO f_datacatalog VALUES ('YesOrNo', '是否', 'S', 'L', null, null, null, null, null, '1', null, null);
 
 insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
 values ('MsgType', 'P', null, null, 'T', '个人消息', 'U', null, parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, null);
@@ -229,6 +230,8 @@ values ('LogLevel', '1', null, null, 'T', '错误提示', 'F', null, parsedateti
 insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
 values ('LogLevel', '0', null, null, 'T', '操作日志', 'F', null, parsedatetime('07-04-2016', 'dd-MM-yyyy'), parsedatetime('07-04-2016', 'dd-MM-yyyy'), 1);
 
+INSERT INTO f_datadictionary VALUES ('YesOrNo', 'F', null, null, null, '否', null, null, null, null, null);
+INSERT INTO f_datadictionary VALUES ('YesOrNo', 'T', null, null, null, '是', null, null, null, null, null);
 
 -- 初始化业务菜单
 insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
