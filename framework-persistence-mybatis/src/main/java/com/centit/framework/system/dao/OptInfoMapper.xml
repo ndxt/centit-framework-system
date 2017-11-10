@@ -352,6 +352,10 @@
 		<include refid="coreSql" />
 	</select>
 
+    <select id="listMenuByTypes" resultMap="OptInfo">
+        <include refid="coreSql" />
+        where opt_TYPE = #{optType1} or opt_TYPE = #{optType2}
+    </select>
 
 	<select id="countChildrenSum" parameterType="String" resultType="int">
 		select count(1) as
