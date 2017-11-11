@@ -52,4 +52,5 @@ public interface SysUnitManager{
     void checkState(List<UnitInfo> objs);
 
     List<UnitInfo> listValidSubUnit(String unitCode);
+
 }

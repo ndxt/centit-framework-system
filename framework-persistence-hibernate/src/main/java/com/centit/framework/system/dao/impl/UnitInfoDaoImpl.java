@@ -151,7 +151,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     public List<UnitInfo> listSubUnitsByUnitPaht(String unitPath){
         String hql = "from UnitInfo where unitPath like ?";
         return listObjects(hql,
-            new Object[]{unitPath+"/%"});
+            new Object[]{unitPath+"%"});
     }
 
     public List<String> getAllParentUnit(){

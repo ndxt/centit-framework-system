@@ -33,4 +33,11 @@ public interface SysUserUnitManager{
     List<UserUnit> listUnitUsersByUnitCode(String unitCode);
 
     void deletePrimaryUnitByUserCode(String userCode);
+
+  /**
+   * 获取某机构(包含)下 所有 用户
+   * @param unitCode 机构Code
+   * @return 机构列表
+   */
+    List<UserUnit> listSubUsersByUnitCode(String unitCode);
 }

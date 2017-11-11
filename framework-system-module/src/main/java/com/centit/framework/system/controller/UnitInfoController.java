@@ -10,6 +10,7 @@ import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.DictionaryMapUtils;
+import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.system.po.*;
@@ -68,14 +69,13 @@ public class UnitInfoController extends BaseController {
     /**
      * 查询所有机构信息
      *
-     * @param field    需要显示的字段
      * @param struct    boolean
      * @param id        id
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
     @RequestMapping(method = RequestMethod.GET)
-    public void list(String[] field, boolean struct, String id,
+    public void list(boolean struct, String id,
                      HttpServletRequest request,
                      HttpServletResponse response) {
 
@@ -92,10 +92,9 @@ public class UnitInfoController extends BaseController {
                                         ((JSONObject)p).getString("unitCode"),
                                         ((JSONObject)c).getString("parentUnit")), "children");
             }
-            JsonResultUtils.writeSingleDataJson(ja,
-                    response, JsonPropertyUtils.getIncludePropPreFilter(JSONObject.class, field));
+            JsonResultUtils.writeSingleDataJson(ja, response);
         }else{
-            Map<String,Object> filterMap = new HashMap<>();
+            Map<String,Object> filterMap = new HashMap<>(2);
             if (StringUtils.isNotBlank(id)) {
                 filterMap.put("parentUnit", id);
             }else{
@@ -103,10 +102,6 @@ public class UnitInfoController extends BaseController {
             }
             List<UnitInfo>  listObjects= sysUnitManager.listObjects(filterMap);
             sysUnitManager.checkState(listObjects);
-             /*for (UnitInfo unit : listObjects) {
-                 unit.setState(sysUnitManager.hasChildren(unit.getUnitCode())?
-                   "closed":"open");
-            }*/
             JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
             JsonResultUtils.writeSingleDataJson(ja, response, null);
         }
@@ -115,45 +110,38 @@ public class UnitInfoController extends BaseController {
     /**
      * 查询所有子机构信息
      *
-     * @param field    需要显示的字段
      * @param id    String parentUnit 父类机构
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/subunits",method = RequestMethod.GET)
-    public void listSub(String[] field, String id,
-                        HttpServletRequest request, HttpServletResponse response) {
+    public void listSub(String id, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = convertSearchColumn(request);
         UserInfo user=sysUserMag.getObjectById(this.getLoginUser(request).getUserCode());
-        searchColumn.put("parentUnit", StringUtils.isNotBlank(id) ? id : user.getPrimaryUnit());
-        List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn);
-        if(listObjects == null){
-            JsonResultUtils.writeSuccessJson(response);
-            return;
+
+        String unitName = StringBaseOpt.castObjectToString(searchColumn.get("unitName"));
+
+        if(StringUtils.isNotBlank(unitName) && StringUtils.isBlank(id)){
+
+            List<UnitInfo> listObjects= sysUnitManager.listObjects(searchColumn);
+            JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
+            JsonResultUtils.writeSingleDataJson(ja, response);
+        }else{
+            Map<String,Object> filterMap = new HashMap<>(2);
+            if (StringUtils.isNotBlank(id)) {
+              filterMap.put("parentUnit", id);
+            }else{
+              filterMap.put("parentUnit", StringUtils.isNotBlank(id) ? id : user.getPrimaryUnit());
+            }
+            List<UnitInfo>  listObjects= sysUnitManager.listObjects(filterMap);
+            sysUnitManager.checkState(listObjects);
+                 for (UnitInfo unit : listObjects) {
+                     unit.setState(sysUnitManager.hasChildren(unit.getUnitCode())?
+                       "closed":"open");
+                }
+            JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
+            JsonResultUtils.writeSingleDataJson(ja, response, null);
         }
-//        Collections.sort(listObjects, (o1, o2) -> {
-//            if (o2.getUnitOrder() == null && o1.getUnitOrder() == null) {
-//                return 0;
-//            }
-//            if (o2.getUnitOrder() == null) {
-//                return 1;
-//            }
-//            if (o1.getUnitOrder() == null) {
-//                return -1;
-//            }
-//            return Long.compare(o1.getUnitOrder(), o2.getUnitOrder());
-//        });
-        sysUnitManager.checkState(listObjects);
-        JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
-//        if(struct){
-//            ja = ListOpt.srotAsTreeAndToJSON(ja, (p, c) ->
-//                    StringUtils.equals(
-//                                    ((JSONObject)p).getString("unitCode"),
-//                                    ((JSONObject)c).getString("parentUnit")),
-//                    "children");
-//        }
-        JsonResultUtils.writeSingleDataJson(ja,
-                response, JsonPropertyUtils.getIncludePropPreFilter(JSONObject.class, field));
       }
 
     /**
@@ -465,8 +453,9 @@ public class UnitInfoController extends BaseController {
         //为空时更新RoleInfo中字段数据
        if (ArrayUtils.isNotEmpty(optCodesArray)) {
            for (String optCode : optCodesArray) {
-               if(StringUtils.isNotBlank(optCode))
-                   rolePowers.add(new RolePower(new RolePowerId(roleInfo.getRoleCode(), optCode)));
+               if(StringUtils.isNotBlank(optCode)) {
+                 rolePowers.add(new RolePower(new RolePowerId(roleInfo.getRoleCode(), optCode)));
+               }
            }
        }
 

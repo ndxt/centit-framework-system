@@ -188,8 +188,9 @@ public class SysUnitManagerImpl implements SysUnitManager {
     @Override
     @Transactional
     public List<UnitInfo> listAllSubObjects(String primaryUnit) {
-        if(StringUtils.isBlank(primaryUnit))
-            return null;
+        if(StringUtils.isBlank(primaryUnit)) {
+          return null;
+        }
         return unitInfoDao.listAllSubUnits(primaryUnit);
     }
 

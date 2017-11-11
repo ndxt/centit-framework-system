@@ -140,9 +140,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Transactional
     public Map<String, List> updateOperationPower(OptInfo optInfo) {
 
-//        syncState(optInfo);
-//
-//        optInfoDao.mergeObject(optInfo);
+        optInfoDao.mergeObject(optInfo);
 
         Map<String, List> result = new HashMap<>();
 
@@ -266,21 +264,25 @@ public class OptInfoManagerImpl implements OptInfoManager {
 
         List<String> dataScopes = optInfoDao.listUserDataPowerByOptMethod(sUserCode, sOptId, sOptMethod);
 
-        if(dataScopes==null || dataScopes.size()==0)
-            return null;
+        if(dataScopes==null || dataScopes.size()==0) {
+          return null;
+        }
 
         Set<String> scopeCodes = new HashSet<String>();
         for(String scopes : dataScopes){
-            if(scopes==null || "null".equalsIgnoreCase(scopes) || "all".equalsIgnoreCase(scopes))
-                return null;
+            if(scopes==null || "null".equalsIgnoreCase(scopes) || "all".equalsIgnoreCase(scopes)) {
+              return null;
+            }
             String [] codes = scopes.split(",");
             for (String code : codes) {
-                if(code!=null && !"".equals(code.trim()))
-                    scopeCodes.add(code.trim());
+                if(code!=null && !"".equals(code.trim())) {
+                  scopeCodes.add(code.trim());
+                }
             }
         }
-        if(scopeCodes.size()==0)
-            return null;
+        if(scopeCodes.size()==0) {
+          return null;
+        }
 
         return dataScopeDao.listDataFiltersByIds(scopeCodes);
     }
@@ -309,8 +311,9 @@ public class OptInfoManagerImpl implements OptInfoManager {
                     break;
                 }
             }
-            if(!getParent)
-                parentMenu.add(optInfo);
+            if(!getParent) {
+              parentMenu.add(optInfo);
+            }
         }
         return parentMenu;
     }
@@ -326,8 +329,9 @@ public class OptInfoManagerImpl implements OptInfoManager {
         for(OptInfo optInfo : allOpts) {
             //去掉级联关系后需要手动维护这个属性
             for(OptMethod def: optDefs){
-                if(optInfo.getOptId().equals(def.getOptId()))
-                    optInfo.addOptMethod(def);
+                if(optInfo.getOptId().equals(def.getOptId())) {
+                  optInfo.addOptMethod(def);
+                }
             }
             if(optInfo.getOptMethods().size()>0){
                 optInfo.addAllDataScopes( dataScopeDao.getDataScopeByOptID(optInfo.getOptId()));
@@ -350,8 +354,9 @@ public class OptInfoManagerImpl implements OptInfoManager {
                     }
                 }
             }
-            if(parents==0)
-                break;
+            if(parents==0) {
+              break;
+            }
             preParents = parentMenu;
         }
         List<OptInfo> roleOptInfos = new ArrayList<OptInfo>();

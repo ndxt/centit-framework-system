@@ -19,9 +19,10 @@ import java.util.Map;
 @Repository("userUnitDao")
 public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements UserUnitDao {
 
+    @Override
     public Map<String, String> getFilterField() {
         if (filterField == null) {
-            filterField = new HashMap<>();
+            filterField = new HashMap<>(20);
             filterField.put("userCode_isValid", "userCode in (select us.USER_CODE" +
                     " from f_userinfo us where us.IS_VALID = :userCode_isValid)");
             filterField.put("unitCode","(unitCode = :unitCode or unitCode in " +
@@ -37,7 +38,6 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
                     "us.IS_VALID = :isValid)");
 
             filterField.put(CodeBook.ORDER_BY_HQL_ID, "userOrder asc");
-
         }
         return filterField;
     }
