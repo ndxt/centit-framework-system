@@ -167,6 +167,10 @@ public class UserInfoController extends BaseController {
             oldValue.setUserRoles(null);
         }
 
+        if (StringUtils.isBlank(userInfo.getUserPin())){
+            userInfo.setUserPin(dbUserInfo.getUserPin());
+        }
+
         sysUserManager.updateUserInfo(userInfo);
 
         JsonResultUtils.writeBlankJson(response);
