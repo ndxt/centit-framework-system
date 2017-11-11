@@ -120,6 +120,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
         return super.listObjectsByProperty("parentUnit", unitCode);
     }
 
+    @Override
     @Transactional(propagation=Propagation.MANDATORY)
     public List<UnitInfo> listAllSubUnits(String unitCode){
         UnitInfo unitInfo = super.getObjectById(unitCode);
@@ -129,6 +130,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
         return null;
     }
 
+    @Override
     @Transactional(propagation=Propagation.MANDATORY)
     public List<UnitInfo> listSubUnitsByUnitPaht(String unitPath){
         return listObjects(QueryUtils.createSqlParamsMap("unitPath", unitPath+"%" ));

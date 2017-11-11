@@ -81,6 +81,7 @@ public interface UnitInfoDao {
 //     List<UnitInfo> listSubUnitinfoByParentUnitcodes(List<String> parentunitcodes);
 
     /**
+     * 获取 某机构(包含) 下所有下属机构
      * 这个方法应该转移到ManagerImpl类中
      * @param primaryUnit primaryUnit
      * @return List UnitInfo
@@ -89,7 +90,7 @@ public interface UnitInfoDao {
 
 
     //String hql = "from UnitInfo where unitPath like ?";{unitPath+"/%"});
-     List<UnitInfo> listSubUnitsByUnitPaht(String unitPath);
+//     List<UnitInfo> listSubUnitsByUnitPaht(String unitPath);
 
 
      List<String> getAllParentUnit();

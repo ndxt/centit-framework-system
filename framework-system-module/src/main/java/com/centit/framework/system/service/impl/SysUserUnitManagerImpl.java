@@ -1,6 +1,8 @@
 package com.centit.framework.system.service.impl;
 
 import com.centit.framework.components.CodeRepositoryUtil;
+import com.centit.framework.system.dao.UnitInfoDao;
+import com.centit.framework.system.po.UnitInfo;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.model.basedata.IDataDictionary;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +44,9 @@ public class SysUserUnitManagerImpl
     @Resource(name = "userInfoDao")
     @NotNull
     private UserInfoDao userInfoDao;
+
+    @Resource
+    private UnitInfoDao unitInfoDao;
 
     @Override
     @Transactional(readOnly = true)
@@ -180,4 +186,16 @@ public class SysUserUnitManagerImpl
     public void deletePrimaryUnitByUserCode(String userCode){
         userUnitDao.deleteObjectById(userUnitDao.getPrimaryUnitByUserId(userCode).getUserUnitId());
     }
+
+    @Override
+    @Transactional
+    public List<UserUnit> listSubUsersByUnitCode(String unitCode){
+        List<UserUnit> result = new ArrayList<>();
+        List<UnitInfo> unitInfos = unitInfoDao.listAllSubUnits(unitCode);
+        for(UnitInfo u : unitInfos){
+            result.addAll(userUnitDao.listUnitUsersByUnitCode(u.getUnitCode()));
+        }
+        return result;
+    }
+
 }

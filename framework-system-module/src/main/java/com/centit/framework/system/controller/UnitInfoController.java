@@ -465,8 +465,9 @@ public class UnitInfoController extends BaseController {
         //为空时更新RoleInfo中字段数据
        if (ArrayUtils.isNotEmpty(optCodesArray)) {
            for (String optCode : optCodesArray) {
-               if(StringUtils.isNotBlank(optCode))
-                   rolePowers.add(new RolePower(new RolePowerId(roleInfo.getRoleCode(), optCode)));
+               if(StringUtils.isNotBlank(optCode)) {
+                 rolePowers.add(new RolePower(new RolePowerId(roleInfo.getRoleCode(), optCode)));
+               }
            }
        }
 
