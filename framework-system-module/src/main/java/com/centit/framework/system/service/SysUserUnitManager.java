@@ -39,5 +39,5 @@ public interface SysUserUnitManager{
    * @param unitCode 机构Code
    * @return 机构列表
    */
-    List<UserUnit> listSubUsersByUnitCode(String unitCode);
+    List<UserUnit> listSubUsersByUnitCode(String unitCode, Map<String, Object> map);
 }

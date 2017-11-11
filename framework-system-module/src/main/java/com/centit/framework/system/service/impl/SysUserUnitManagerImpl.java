@@ -189,11 +189,13 @@ public class SysUserUnitManagerImpl
 
     @Override
     @Transactional
-    public List<UserUnit> listSubUsersByUnitCode(String unitCode){
+    public List<UserUnit> listSubUsersByUnitCode(String unitCode, Map<String, Object> map){
         List<UserUnit> result = new ArrayList<>();
         List<UnitInfo> unitInfos = unitInfoDao.listAllSubUnits(unitCode);
         for(UnitInfo u : unitInfos){
-            result.addAll(userUnitDao.listUnitUsersByUnitCode(u.getUnitCode()));
+//            result.addAll(userUnitDao.listUnitUsersByUnitCode(u.getUnitCode()));
+            map.put("unitCode", u.getUnitCode());
+            result.addAll(userUnitDao.listObjects(map));
         }
         return result;
     }

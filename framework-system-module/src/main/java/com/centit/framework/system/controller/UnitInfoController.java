@@ -135,10 +135,10 @@ public class UnitInfoController extends BaseController {
             }
             List<UnitInfo>  listObjects= sysUnitManager.listObjects(filterMap);
             sysUnitManager.checkState(listObjects);
-                 for (UnitInfo unit : listObjects) {
-                     unit.setState(sysUnitManager.hasChildren(unit.getUnitCode())?
-                       "closed":"open");
-                }
+//                 for (UnitInfo unit : listObjects) {
+//                     unit.setState(sysUnitManager.hasChildren(unit.getUnitCode())?
+//                       "closed":"open");
+//                }
             JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
             JsonResultUtils.writeSingleDataJson(ja, response, null);
         }

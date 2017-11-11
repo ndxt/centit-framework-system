@@ -90,7 +90,7 @@ public interface UnitInfoDao {
 
 
     //String hql = "from UnitInfo where unitPath like ?";{unitPath+"/%"});
-//     List<UnitInfo> listSubUnitsByUnitPaht(String unitPath);
+     List<UnitInfo> listSubUnitsByUnitPaht(String unitPath);
 
 
      List<String> getAllParentUnit();
