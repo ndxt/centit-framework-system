@@ -131,10 +131,11 @@ public class SysUserUnitManagerImpl
         filterDesc.put("userStation", stationCode);
         filterDesc.put("userCode", userCode);
         List<UserUnit> list=userUnitDao.listObjects(filterDesc);
-        if(null!=list&& list.size()!=0)
-            return true;
-        else
-            return false;
+        if(null!=list&& list.size()!=0) {
+          return true;
+        } else {
+          return false;
+        }
     }
 
     @Override
