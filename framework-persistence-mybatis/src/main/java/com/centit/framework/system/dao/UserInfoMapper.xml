@@ -81,6 +81,9 @@
 		<if test="queryByRole != null  and queryByRole != '' ">
 			  and u.USER_CODE in (select r.USER_CODE from F_USERROLE r, F_ROLEINFO i where r.ROLE_CODE = #{queryByRole} and r.ROLE_CODE = i.ROLE_CODE and i.IS_VALID = 'T')
 		</if>
+    <if test="unitCode != null  and unitCode != '' ">
+      and k.UNIT_PATH like '%/'|| #{unitCode}|| '%')
+    </if>
 	</sql>
 
   <sql id="condition" databaseId="mysql">
@@ -123,6 +126,9 @@
     <if test="queryByRole != null  and queryByRole != '' ">
       and u.USER_CODE in (select r.USER_CODE from F_USERROLE r, F_ROLEINFO i where r.ROLE_CODE = #{queryByRole} and r.ROLE_CODE = i.ROLE_CODE and i.IS_VALID = 'T')
     </if>
+    <if test="unitCode != null  and unitCode != '' ">
+      and k.UNIT_PATH like concat('%/', #{unitCode}, '%')
+    </if>
   </sql>
 
 	<!-- 查询核心SQL -->
@@ -153,7 +159,7 @@
 					u.CREATOR,
 					u.UPDATOR,
 					u.UPDATE_DATE
-		      from F_USERINFO u
+		      from F_USERINFO u left join F_UNITINFO k on u.PRIMARY_UNIT = k.UNIT_CODE
 	  ]]>
 	</sql>
 
@@ -162,7 +168,7 @@
  	 <![CDATA[
 	   select count(0) cnt
 	     from
-             F_USERINFO u
+             F_USERINFO u left join F_UNITINFO k on u.PRIMARY_UNIT = k.UNIT_CODE
        ]]>
 		<where>
 			<include refid="condition" />

@@ -47,8 +47,9 @@ insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TY
 values ('SUPPORT_LANG', '系统支持的语言', 'U', 'L', '系统支持的语言,需要在system.properties中把参数sys.multi_lang设置为true才会生效', null, str_to_date('28-01-2016 20:33:23', '%d-%m-%Y %H:%i:%s'), null, 'DICTSET_M', '1','u0000000','u0000000');
 
 insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
-values ('LogLevel', '日志类型', 'F', 'L', '日志类型', '日志类型', str_to_date('07-04-2016', '%d-%m-%Y'), str_to_date('07-04-2016', '%d-%m-%Y'), 'OptLog', '1','u0000000','u0000000');
-INSERT INTO f_datacatalog VALUES ('YesOrNo', '是否', 'S', 'L', null, null, null, null, null, '1', null, null);
+values ('LogLevel', '日志类型', 'F', 'L', '日志类型', '日志类型', str_to_date('07-04-2016', '%d-%m-%Y'), str_to_date('07-04-2016', '%d-%m-%Y'), 'OPTLOG', '1','u0000000','u0000000');
+insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
+VALUES ('YesOrNo', '是否', 'S', 'L', '是否', '是否',str_to_date('07-04-2016', '%d-%m-%Y'), str_to_date('07-04-2016', '%d-%m-%Y'), 'DICTSET_M', '1', 'u0000000','u0000000');
 
 
 insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
@@ -434,14 +435,14 @@ insert into F_OPTDEF(opt_code,opt_id,opt_name,opt_method,opt_desc,
 			is_in_workflow,UPDATE_DATE,create_date,opt_url,opt_req,CREATOR,UPDATOR)
 select  sequence_nextval('S_OPTDEFCODE'),opt_id , '查看', 'list',  '查看',
 		'F',now(),now(),'/*','R' ,CREATOR,UPDATOR
-		from F_OptInfo where opt_id not in (select opt_id from F_OPTDEF);  
+		from F_OptInfo where opt_id not in (select opt_id from F_OPTDEF);
 
 insert into F_ROLEPOWER(role_code,opt_code,update_Date,create_date,opt_scope_codes,CREATOR,UPDATOR)
 	select 'G-SYSADMIN',opt_code,now(),now(),'',CREATOR,UPDATOR from F_OPTDEF;
 
-insert into F_USERROLE (USER_CODE, ROLE_CODE, OBTAIN_DATE, 
+insert into F_USERROLE (USER_CODE, ROLE_CODE, OBTAIN_DATE,
 			SECEDE_DATE, CHANGE_DESC, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('u0000000', 'G-SYSADMIN', STR_TO_DATE('23-05-2012','%d-%m-%Y'), 
+values ('u0000000', 'G-SYSADMIN', STR_TO_DATE('23-05-2012','%d-%m-%Y'),
 	STR_TO_DATE('01-10-2020', '%d-%m-%Y'),'' ,now(), now(),'u0000000','u0000000');
 	commit;
 
