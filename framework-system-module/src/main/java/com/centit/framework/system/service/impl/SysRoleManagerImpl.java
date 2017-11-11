@@ -143,7 +143,8 @@ public class SysRoleManagerImpl implements SysRoleManager {
         List<RolePower> rps = rolePowerDao.listRolePowersByRoleCode(o.getRoleCode());
 
         if(newRPs == null || newRPs.size()<1) {
-            return rps;
+          rolePowerDao.deleteRolePowersByRoleCode(o.getRoleCode());
+          return rps;
         }
 
         for(RolePower rp : newRPs){
