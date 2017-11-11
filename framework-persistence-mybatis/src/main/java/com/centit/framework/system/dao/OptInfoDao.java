@@ -22,7 +22,6 @@ public interface OptInfoDao extends BaseDao {
 
     List<OptInfo> listObjectsAll();
 
-    List<OptInfo> listMenuByTypes(@Param("optType1") String optType1, @Param("optType2") String optType2);
 
     void deleteObject(OptInfo optMethod);
 
