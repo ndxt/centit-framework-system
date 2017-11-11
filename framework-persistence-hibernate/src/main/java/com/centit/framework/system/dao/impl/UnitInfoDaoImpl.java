@@ -160,8 +160,8 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     }
 
     public int countChildrenSum(String unitCode){
-        return (int)DatabaseOptUtils.getSingleObjectBySql(this,
-                "select count(1) as subunits from F_UNITINFO where PARENT_UNIT = ?",  unitCode);
+        return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getSingleObjectBySql(this,
+          "select count(1) as subunits from F_UNITINFO where PARENT_UNIT = ?",  unitCode));
     }
 
     /**
