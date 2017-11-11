@@ -18,8 +18,8 @@ define(function(require) {
 
 				form
 					.form('disableValidation')
-					.form('load', data.userInfo)
-					.form('load', data.userUnit);
+          .form('load', data.userUnit)
+					.form('load', data.userInfo);
 			});
 		};
 
