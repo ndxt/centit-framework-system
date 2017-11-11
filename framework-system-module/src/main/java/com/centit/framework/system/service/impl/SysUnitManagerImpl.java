@@ -136,10 +136,11 @@ public class SysUnitManagerImpl implements SysUnitManager {
         unitinfo.setUnitCode(unitInfoDao.getNextKey());
         UnitInfo parentUnit = unitInfoDao.getObjectById(unitinfo.getParentUnit());
 
-        if (parentUnit == null)
-            unitinfo.setUnitPath("/" + unitinfo.getUnitCode());
-        else
-            unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitCode());
+        if (parentUnit == null) {
+          unitinfo.setUnitPath("/" + unitinfo.getUnitCode());
+        } else {
+          unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitCode());
+        }
 
         unitInfoDao.saveNewObject(unitinfo);
         return unitinfo.getUnitCode();
