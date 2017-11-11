@@ -311,7 +311,7 @@
 
   <delete id="deleteObject" databaseId="oracle" parameterType="com.centit.framework.system.po.OptInfo">
     <![CDATA[
-       delete from F_OPTINFO where u.OPT_ID=#{optId}
+       delete from F_OPTINFO u where u.OPT_ID=#{optId}
      ]]>
   </delete>
 
