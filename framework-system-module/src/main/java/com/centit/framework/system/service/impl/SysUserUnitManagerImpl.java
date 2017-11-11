@@ -141,20 +141,19 @@ public class SysUserUnitManagerImpl
     @CacheEvict(value ={"UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
     public void updateUserUnit(UserUnit userunit) {
         if ("T".equals(userunit.getIsPrimary())) {
-          UserUnit origPrimUnit=userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode());
-          if(origPrimUnit!=null){
-            origPrimUnit.setIsPrimary("F");
-            userunit.setIsPrimary("T");
-            userUnitDao.updateObject(origPrimUnit);
-//            userUnitDao.mergeObject(origPrimUnit);
-          }
-          UserInfo user=userInfoDao.getObjectById(userunit.getUserCode());
-          if(user != null) {
-            user.setPrimaryUnit(userunit.getUnitCode());
-            userInfoDao.mergeObject(user);
-          }
+            UserUnit origPrimUnit=userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode());
+            if(origPrimUnit!=null && ! origPrimUnit.getUserUnitId().equals(userunit.getUserUnitId())){
+                origPrimUnit.setIsPrimary("F");
+                userunit.setIsPrimary("T");
+                userUnitDao.updateObject(origPrimUnit);
+            }
+            UserInfo user=userInfoDao.getObjectById(userunit.getUserCode());
+            if(user != null) {
+                user.setPrimaryUnit(userunit.getUnitCode());
+                userInfoDao.mergeObject(user);
+            }
         }
-      userUnitDao.mergeObject(userunit);
+       userUnitDao.mergeObject(userunit);
 //        userUnitDao.updateObject(userunit);
     }
 
