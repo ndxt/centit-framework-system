@@ -392,7 +392,7 @@
 		 <include refid="coreSql" />
 	</select>
 	<select id="getNextKey" databaseId="oracle" resultType="String">
-		SELECT 'U' || LPAD((SELECT S_USERCODE.nextval from dual), 7, '0')
+		SELECT 'U' || LPAD(to_char(S_USERCODE.nextval), 7, '0') from dual
 	</select>
 	<select id="getNextKey" databaseId="mysql" resultType="String">
 		SELECT CONCAT('U', LPAD((SELECT sequence_nextval('S_USERCODE')), 7, '0'))

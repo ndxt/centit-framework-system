@@ -294,10 +294,10 @@
 		 <include refid="coreSql" />
 	</select>
 	<select id="getNextKey" databaseId="oracle" resultType="String">
-    SELECT LPAD((SELECT S_UNITCODE.nextval from dual), 6, '0')
+    SELECT LPAD(to_char(S_UNITCODE.nextval), 6, '0') from dual
 	</select>
 	<select id="getNextKey" databaseId="mysql" resultType="String">
-    SELECT LPAD((SELECT sequence_nextval('S_USERCODE')), 6, '0')
+    SELECT LPAD((SELECT sequence_nextval('S_UNITCODE')), 6, '0')
 	</select>
 	<select id="getUnitCode" resultType="String" parameterType="String">
 		<include refid="coreSql" />
