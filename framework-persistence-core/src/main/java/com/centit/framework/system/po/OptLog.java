@@ -233,8 +233,6 @@ public class OptLog implements java.io.Serializable {
         this.optContent = other.getOptContent();
         this.oldValue = other.getOldValue();
         this.newValue = other.getNewValue();
-
-        this.optTag = other.getoptTag();
     }
 
     public void copyNotNullProperty(OptLog other) {
@@ -273,14 +271,6 @@ public class OptLog implements java.io.Serializable {
         this.newValue = null;
         this.oldValue = null;
         this.optTag=null;
-    }
-
-    public String getoptTag() {
-        return optTag;
-    }
-
-    public void setoptTag(String optTag) {
-        this.optTag = optTag;
     }
 
     public String getOptMethodText() {

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 
-@Repository
+@Repository("optFlowNoPoolDao")
 public interface OptFlowNoPoolDao
     extends com.centit.framework.system.dao.OptFlowNoPoolDao {
     /**

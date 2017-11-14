@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 
-@Repository
+@Repository("optLogDao")
 public interface OptLogDao
   extends com.centit.framework.system.dao.OptLogDao {
 

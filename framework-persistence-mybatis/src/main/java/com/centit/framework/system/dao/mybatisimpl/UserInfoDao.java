@@ -3,7 +3,7 @@ package com.centit.framework.system.dao.mybatisimpl;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository("userInfoDao")
 public interface UserInfoDao
     extends com.centit.framework.system.dao.UserInfoDao {
       @Override

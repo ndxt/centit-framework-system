@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+@Repository("userSettingDao")
 public interface UserSettingDao
   extends com.centit.framework.system.dao.UserSettingDao {
       // return listObjectsAll("From UserSetting where cid.userCode=?",userCode);

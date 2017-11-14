@@ -1,14 +1,12 @@
 package com.centit.framework.system.dao.mybatisimpl;
 
-import com.centit.framework.mybatis.dao.BaseDao;
 import com.centit.framework.system.po.UserUnit;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
-@Repository
+@Repository("userUnitDao")
 public interface UserUnitDao
     extends com.centit.framework.system.dao.UserUnitDao {
       //"FROM UserUnit where userCode=? and unitCode=?",new Object[]{userCode,unitCode});

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+@Repository("innerMsgRecipientDao")
 public interface InnerMsgRecipientDao
   extends com.centit.framework.system.dao.InnerMsgRecipientDao {
 

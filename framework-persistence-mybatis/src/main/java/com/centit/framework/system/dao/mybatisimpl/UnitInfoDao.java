@@ -4,7 +4,7 @@ import com.centit.framework.system.po.UnitInfo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository("unitInfoDao")
 public interface UnitInfoDao
   extends com.centit.framework.system.dao.UnitInfoDao {
 

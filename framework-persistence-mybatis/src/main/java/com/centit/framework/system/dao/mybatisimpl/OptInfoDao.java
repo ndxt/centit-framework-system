@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+@Repository("optInfoDao")
 public interface OptInfoDao
     extends com.centit.framework.system.dao.OptInfoDao {
 

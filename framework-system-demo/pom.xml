@@ -56,7 +56,6 @@
             <!--<artifactId>framework-persistence-hibernate</artifactId>-->
             <artifactId>framework-persistence-mybatis</artifactId>
             <version>${centit.framework.version}</version>
-            <scope>runtime</scope>
         </dependency>
 
         <dependency>

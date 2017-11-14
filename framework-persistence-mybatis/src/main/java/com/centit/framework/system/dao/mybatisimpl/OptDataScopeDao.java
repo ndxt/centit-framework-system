@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Collection;
 import java.util.List;
 
-@Repository
+@Repository("optDataScopeDao")
 public interface OptDataScopeDao
   extends com.centit.framework.system.dao.OptDataScopeDao {
        // listObjectsAll("FROM OptDataScope WHERE optId in ?", scopeCodes)
