@@ -195,7 +195,7 @@ define(function (require) {
                 var field = name.field;
 
                 // 默认需要加入 或者在字段定义中选择使用
-                if ((name.require || fieldDesc[field].isUse == 'T') && fieldDesc["extraCode2"].isUse == 'F') {
+                if ((name.require || fieldDesc[field].isUse == 'T') && fieldDesc["extraCode2"].isUse == 'T') {
                 	// 覆盖默认值
                 	if (fieldDesc[field]) {
                         column = $.extend(true, {}, DefautColumns[field], {
