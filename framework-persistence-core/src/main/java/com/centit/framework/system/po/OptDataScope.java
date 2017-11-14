@@ -20,7 +20,7 @@ public class OptDataScope implements IOptDataScope,Serializable{
 
     @Id
     @Column(name = "OPT_SCOPE_CODE")
-    @GeneratedValue(generator = "assignedGenerator")
+    //@GeneratedValue(generator = "assignedGenerator")
     private String optScopeCode;// 操作代码
 
     @Column(name = "SCOPE_NAME")
@@ -28,7 +28,7 @@ public class OptDataScope implements IOptDataScope,Serializable{
     private String scopeName; // 操作名称
 
     @Column(name = "OPT_ID")
-    private String optId; 
+    private String optId;
 
     /**
      * 数据范围条件
@@ -48,7 +48,7 @@ public class OptDataScope implements IOptDataScope,Serializable{
     @Length(max = 1000, message = "字段长度必须小于{max}")
     private String scopeMemo; // 操作说明
 
- 
+
     // Constructors
 
     /**
@@ -73,7 +73,7 @@ public class OptDataScope implements IOptDataScope,Serializable{
         this.scopeMemo = optdesc;
     }
 
-  
+
     public String getOptId() {
         return optId;
     }
@@ -157,7 +157,7 @@ public class OptDataScope implements IOptDataScope,Serializable{
           }
           return false;
       }
-    
+
     @Override
       public int hashCode(){
         return optScopeCode==null?0:optScopeCode.hashCode();

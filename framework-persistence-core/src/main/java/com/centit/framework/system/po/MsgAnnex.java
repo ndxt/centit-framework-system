@@ -10,22 +10,22 @@ import java.io.Serializable;
 @Table(name="M_MSGANNEX")
 public class MsgAnnex implements Serializable{
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
-    
+
     @ManyToOne
     @JSONField(serialize=false)
     @JoinColumn(name = "Msg_Code", insertable = false, updatable = false)
     private InnerMsg mInnerMsg;//
-    
+
     @Column(name = "INFO_CODE")
     @Length( max=16,message = "字段长度必须小于{max}")
     private String infoCode;//消息代码
-    
+
     @Id
     @Column(name="MSG_ANNEX_ID")
-    @GeneratedValue(generator = "assignedGenerator")
+    //@GeneratedValue(generator = "assignedGenerator")
     private String msgAnnexId;//附件主键
 
     public String getMsgAnnexId() {
@@ -47,5 +47,5 @@ public class MsgAnnex implements Serializable{
     public void setInfoCode(String infoCode) {
         this.infoCode = infoCode;
     }
-    
+
 }

@@ -10,7 +10,7 @@ public class VOptTree {
 
     @Id
     @Column(name = "MENU_ID")
-    @GeneratedValue(generator = "assignedGenerator")
+    //@GeneratedValue(generator = "assignedGenerator")
     private String menu_id;
 
     @Column(name = "PARENT_ID")

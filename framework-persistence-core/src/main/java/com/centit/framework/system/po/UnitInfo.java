@@ -33,7 +33,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
 
     @Id
     @Column(name = "UNIT_CODE")
-    @GeneratedValue(generator = "assignedGenerator")
+    //@GeneratedValue(generator = "assignedGenerator")
     private String unitCode; // 机构代码
 
     @Column(name = "PARENT_UNIT")

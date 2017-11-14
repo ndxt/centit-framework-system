@@ -25,7 +25,7 @@ public class InnerMsg implements  Serializable{
      */
     @Id
     @Column(name="MSG_CODE")
-    @GeneratedValue(generator = "assignedGenerator")
+    //@GeneratedValue(generator = "assignedGenerator")
     @ValueGenerator(strategy = GeneratorType.SEQUENCE, value = "S_MSGCODE")
     private String msgCode;
 

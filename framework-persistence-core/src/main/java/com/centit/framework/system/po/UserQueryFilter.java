@@ -23,7 +23,7 @@ public class UserQueryFilter implements java.io.Serializable {
      */
     @Id
     @Column(name = "FILTER_NO")
-    @GeneratedValue(generator = "assignedGenerator")
+    //@GeneratedValue(generator = "assignedGenerator")
     private Long filterNo;
 
     @Column(name = "USER_CODE")

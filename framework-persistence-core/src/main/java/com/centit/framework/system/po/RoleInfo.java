@@ -27,7 +27,7 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
 
     @Id
     @Column(name = "ROLE_CODE")
-    @GeneratedValue(generator = "assignedGenerator")
+    //@GeneratedValue(generator = "assignedGenerator")
     private String roleCode; // 角色代码
 
     @Column(name = "ROLE_NAME")

@@ -21,7 +21,7 @@ public class SysNotify implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "Notify_ID")
-    @GeneratedValue(generator = "assignedGenerator")
+    //@GeneratedValue(generator = "assignedGenerator")
     private Long notifyId;
 
     /**

@@ -28,7 +28,7 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
 
     @Id
     @Column(name = "USER_UNIT_ID")
-    @GeneratedValue(generator = "assignedGenerator")
+    //@GeneratedValue(generator = "assignedGenerator")
     @Length(max = 64)
     private String userUnitId;
 
