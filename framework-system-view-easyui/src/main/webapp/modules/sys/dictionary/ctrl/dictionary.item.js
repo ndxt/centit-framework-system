@@ -60,7 +60,7 @@ define(function (require) {
                 // 树形结构
                 if ('T' == data.catalogType) {
                     temp = table.treegrid('getData');
-                    
+
                     Utils.walkTreeBefore(temp, function (obj, parent) {
                         if (parent) {
                             obj.extraCode = parent.dataCode;
@@ -94,7 +94,7 @@ define(function (require) {
                     }
 
                     item.dataOrder = order++;
-                    
+
                     // 无需传到后台的值
                     delete item.children;
                 });
@@ -148,15 +148,15 @@ define(function (require) {
                 editor: 'text'
             },
             dataTag: {
-            	field: 'dataTag', 
-            	title: '标记', 
-            	width: 80, 
+            	field: 'dataTag',
+            	title: '标记',
+            	width: 80,
             	editor: 'text'
     		},
             dataDesc: {
-            	field: 'dataDesc', 
-            	title: '数据描述', 
-            	width: 600, 
+            	field: 'dataDesc',
+            	title: '数据描述',
+            	width: 600,
             	editor: 'text'
     		}
         };
@@ -195,7 +195,7 @@ define(function (require) {
                 var field = name.field;
 
                 // 默认需要加入 或者在字段定义中选择使用
-                if (name.require || fieldDesc[field].isUse == 'T') {
+                if ((name.require || fieldDesc[field].isUse == 'T') && fieldDesc["extraCode2"].isUse == 'F') {
                 	// 覆盖默认值
                 	if (fieldDesc[field]) {
                         column = $.extend(true, {}, DefautColumns[field], {
@@ -205,7 +205,7 @@ define(function (require) {
                 	else {
                         column = DefautColumns[field];
                 	}
-                	
+
                     // 固定列
                     if (name.frozen) {
                         frozenColumns[0].push(column);
@@ -255,8 +255,8 @@ define(function (require) {
                 frozenColumns: columnsMap.frozenColumns,
 
                 //field:字段，value:字段值
-//				onClickCell:function(index, field, value){	
-//					
+//				onClickCell:function(index, field, value){
+//
 //				var row = table.datagrid('getRowData', index)
 //
 //				Dialog.open({
@@ -284,7 +284,7 @@ define(function (require) {
             var treeData = Utils.makeTree(data.dataDictionaries, function (parent) {
                 return this.extraCode == parent.dataCode;
             });
-            
+
             // 设定虚拟id和pid
             Utils.walkTreeBefore(treeData, function(obj, parent) {
                 obj._id = obj.dataCode + new Date().getTime();
