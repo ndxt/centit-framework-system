@@ -11,6 +11,8 @@
         <centit.ui.version>3.0.1-SNAPSHOT</centit.ui.version>
         <centit.persistence.version>1.0.1-SNAPSHOT</centit.persistence.version>
 
+        <hibernate.validator.version>5.4.2.Final</hibernate.validator.version>
+        <persistence-api.version>2.2</persistence-api.version>
         <servlet-api.version>3.1.0</servlet-api.version>
         <ehcache.version>2.10.4</ehcache.version>
         <commons-codec.version>1.10</commons-codec.version>
@@ -92,6 +94,7 @@
         <module>framework-system-view-easyui</module>
         <module>framework-system-module</module>
         <module>framework-persistence-jdbc</module>
+      <module>framework-persistence-core</module>
     </modules>
 
     <!-- mvn deploy -DpomFile=pom.xml -->

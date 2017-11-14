@@ -31,7 +31,7 @@
 
         <dependency>
             <groupId>com.centit.framework</groupId>
-            <artifactId>framework-core</artifactId>
+            <artifactId>framework-persistence-core</artifactId>
             <version>${centit.framework.version}</version>
         </dependency>
 

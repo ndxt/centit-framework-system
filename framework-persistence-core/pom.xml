@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>framework-system-parent</artifactId>
+    <groupId>com.centit.framework</groupId>
+    <version>4.0.2-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>framework-persistence-core</artifactId>
+
+  <name>com.centit.framework:framework-persistence-core</name>
+  <packaging>jar</packaging>
+  <description>定义了一组和core兼容的表结构 和 Dao接口</description>
+
+
+  <dependencies>
+
+    <dependency>
+      <groupId>com.centit.framework</groupId>
+      <artifactId>framework-core</artifactId>
+      <version>${centit.framework.version}</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>com.centit.framework</groupId>
+      <artifactId>centit-persistence-core</artifactId>
+      <version>${centit.persistence.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.persistence</groupId>
+      <artifactId>javax.persistence-api</artifactId>
+      <version>${persistence-api.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>${hibernate.validator.version}</version>
+    </dependency>
+
+
+  </dependencies>
+
+</project>
