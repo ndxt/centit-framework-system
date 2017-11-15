@@ -56,7 +56,6 @@ define(function(require) {
 				              {
 				            	  field:'isUse',title:'是否使用', width:'30%',
 				            	  align: 'center',
-				            	  editor:{type:'checkbox', options:{on: 'T', off: 'F'}},
 				            	  formatter: function(value) { return value == 'T' ? '是':'否'}
 				              },
 				          ]];
@@ -65,12 +64,12 @@ define(function(require) {
 
 			// 字段描述表格展示数据
 			var data = {"total":6,"rows":[
-              {field: 'dataCode', 	"name":"编码",	  "value":fieldMap.dataCode.value,       "isUse": fieldMap.dataCode.isUse},
-              {field: 'dataValue', 	"name":"数值",	  "value":fieldMap.dataValue.value,       "isUse": fieldMap.dataValue.isUse},
-              {field: 'extraCode', 	"name":"扩展编码",	"value":fieldMap.extraCode.value,	"editor":"text",	"isUse": fieldMap.extraCode.isUse},
-              {field: 'extraCode2', "name":"排序",	"value":fieldMap.extraCode2.value,	"editor":"text",	"isUse": fieldMap.extraCode2.isUse},
-              {field: 'dataTag', 	"name":"数据标记",	"value":fieldMap.dataTag.value,	"editor":"text",	"isUse": fieldMap.dataTag.isUse},
-              {field: 'dataDesc', 	"name":"数据描述",	"value":fieldMap.dataDesc.value,		"isUse": fieldMap.dataDesc.isUse}
+              {field: 'dataCode', 	"name":"编码",	  "value":fieldMap.dataCode.value, "isUse": fieldMap.dataCode.isUse},
+              {field: 'dataValue', 	"name":"数值",	  "value":fieldMap.dataValue.value, "isUse": fieldMap.dataValue.isUse},
+              {field: 'extraCode', 	"name":"扩展编码",	"value":fieldMap.extraCode.value,"isUse": fieldMap.extraCode.isUse},
+              {field: 'extraCode2', "name":"排序",	"value":fieldMap.extraCode2.value,"isUse": fieldMap.extraCode2.isUse},
+              {field: 'dataTag', 	"name":"数据标记",	"value":fieldMap.dataTag.value,"isUse": fieldMap.dataTag.isUse},
+              {field: 'dataDesc', 	"name":"数据描述",	"value":fieldMap.dataDesc.value,	"editor":"text","isUse": fieldMap.dataDesc.isUse}
             ]};
 
 			panel.find('table#property_desc')
