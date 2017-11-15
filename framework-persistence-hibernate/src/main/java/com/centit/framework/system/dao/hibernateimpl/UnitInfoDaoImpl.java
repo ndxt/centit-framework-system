@@ -40,9 +40,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
 
     @Transactional
     public String getNextKey() {
-    /*    return getNextKeyByHqlStrOfMax("unitCode",
-                        "FUnitinfo WHERE unitCode !='99999999'",6);*/
-        return DatabaseOptUtils.getNextKeyBySequence(this, "S_UNITCODE", 6);
+        return DatabaseOptUtils.getNextValueOfSequence(this, "S_UNITCODE");
     }
 
     @Transactional

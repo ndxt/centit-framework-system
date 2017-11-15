@@ -30,12 +30,12 @@ public interface UserInfoDao {
      * hql = "SELECT COUNT(*) FROM UserInfo WHERE userCode = " + QueryUtils.buildStringForQuery(user.getUserCode());
      * hql = "SELECT COUNT(*) FROM UserInfo WHERE loginName = " + QueryUtils.buildStringForQuery(user.getLoginName());
      *             " AND userCode  " + QueryUtils.buildStringForQuery(user.getUserCode());
-     * 
+     *
      *  放到impl中去了
      * @return int
      */
     //boolean checkIfUserExists(UserInfo user);
-    
+
      int isLoginNameExist(String userCode, String loginName);
      int isCellPhoneExist(String userCode, String regCellPhone);
      int isEmailExist(String userCode, String regEmail);
@@ -45,9 +45,6 @@ public interface UserInfoDao {
     //"U"+ DatabaseOptUtils.getNextKeyBySequence(this, "S_USERCODE", 7);
     String getNextKey();
 
-    //设置主键 o.setUserCode(this.getNextKey()); 和初始密码
-    void saveObject(UserInfo o);
-    
     //hql = "FROM FVUserOptList urv where urv.id.userCode=?";
     List<FVUserOptList> getAllOptMethodByUser(String userCode);
     /*
@@ -56,40 +53,40 @@ public interface UserInfoDao {
      * "FROM FUserinfo WHERE username = ? AND userpin = ? ", new Object[] {
      * userName, password }).get(0); }
      */
-   
+
     //return this.listObjectsAll(filterMap);
     List<UserInfo> listUnderUnit(Map<String, Object> filterMap);
 
     // return this.listObjectsAll(filterMap, pageDesc);
     //List<UserInfo> listUnderUnit(Map<String, Object> filterMap, PageDesc pageDesc);
-    
+
     //return getObjectById(userCode);
     UserInfo getUserByCode(String userCode);
-    
-    
+
+
     // return super.getObjectByProperty("loginName",loginName.toLowerCase());
     UserInfo getUserByLoginName(String loginName);
-    
+
     // return super.getObjectByProperty("regEmail", regEmail);
     UserInfo getUserByRegEmail(String regEmail);
-    
+
     //return super.getObjectByProperty("regCellPhone", regCellPhone);
     UserInfo getUserByRegCellPhone(String regCellPhone);
-    
+
     //return super.getObjectByProperty("userTag", userTag);
     UserInfo getUserByTag(String userTag);
-    
+
     //return super.getObjectByProperty("userWord", userWord);
     UserInfo getUserByUserWord(String userWord);
     UserInfo getUserByIdCardNo(String idCardNo);
 
-  
+
 //    List<UserInfo> listUserinfoByUsercodes(List<String> userCodes);
 
-  
+
 //    List<UserInfo> listUserinfoByLoginname(List<String> loginnames);
-    
+
     //add by zhuxw
     void restPwd(UserInfo user);
-    
+
 }

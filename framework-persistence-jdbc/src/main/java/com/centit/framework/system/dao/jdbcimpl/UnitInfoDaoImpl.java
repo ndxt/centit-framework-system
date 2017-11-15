@@ -43,8 +43,8 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
 
     @Transactional
     public String getNextKey() {
-        return StringBaseOpt.fillZeroForString(
-                String.valueOf(DatabaseOptUtils.getSequenceNextValue(this, "S_UNITCODE")), 6);
+        return StringBaseOpt.objectToString(
+          DatabaseOptUtils.getSequenceNextValue(this, "S_UNITCODE"));
     }
 
     @Transactional
