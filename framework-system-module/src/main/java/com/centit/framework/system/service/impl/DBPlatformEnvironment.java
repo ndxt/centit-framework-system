@@ -14,6 +14,8 @@ import com.centit.framework.system.po.*;
 import com.centit.framework.system.security.CentitUserDetailsImpl;
 import com.centit.support.algorithm.StringRegularOpt;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.ConfigAttribute;
@@ -27,6 +29,8 @@ import java.util.*;
 
 @Service("platformEnvironment")
 public class DBPlatformEnvironment implements PlatformEnvironment {
+
+  public static final Logger logger = LoggerFactory.getLogger(DBPlatformEnvironment.class);
 
     @Resource
     private CentitPasswordEncoder passwordEncoder;
@@ -257,6 +261,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                     try {
                         uu.setXzRank(Integer.valueOf(dd.getExtraCode()));
                     } catch (Exception e) {
+                        logger.error(e.getMessage(),e);
                         uu.setXzRank(CodeRepositoryUtil.MAXXZRANK);
                     }
                  }
@@ -281,6 +286,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                     try {
                         uu.setXzRank(Integer.valueOf(dd.getExtraCode()));
                     } catch (Exception e) {
+                        logger.error(e.getMessage(),e);
                         uu.setXzRank(CodeRepositoryUtil.MAXXZRANK);
                     }
                  }

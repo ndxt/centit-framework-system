@@ -13,6 +13,8 @@ import com.centit.framework.system.po.UserUnit;
 import com.centit.framework.system.service.SysUserUnitManager;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.algorithm.StringRegularOpt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +37,7 @@ import java.util.Map;
 @Transactional
 public class SysUserUnitManagerImpl
     implements SysUserUnitManager {
+  public static final Logger logger = LoggerFactory.getLogger(SysUserUnitManagerImpl.class);
 
     @Resource
     @NotNull
@@ -67,6 +70,7 @@ public class SysUserUnitManagerImpl
                     try {
                         uu.setXzRank(Integer.valueOf(dd.getExtraCode()));
                     } catch (Exception e) {
+                        logger.error(e.getMessage(),e);
                         uu.setXzRank(CodeRepositoryUtil.MAXXZRANK);
                     }
                  }
