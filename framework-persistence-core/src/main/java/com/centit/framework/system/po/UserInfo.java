@@ -30,7 +30,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
 
     @Id
     @Column(name = "USER_CODE")
-    @GeneratedValue(generator = "assignedGenerator")
+    //@GeneratedValue(generator = "assignedGenerator")
     private String userCode; // 用户代码
 
     //密码不参与返回序列化

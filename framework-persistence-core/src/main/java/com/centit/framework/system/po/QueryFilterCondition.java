@@ -23,7 +23,7 @@ public class QueryFilterCondition implements java.io.Serializable {
      */
     @Id
     @Column(name = "CONDITION_NO")
-    @GeneratedValue(generator = "assignedGenerator")
+    //@GeneratedValue(generator = "assignedGenerator")
     private Long conditionNo;
 
     /**

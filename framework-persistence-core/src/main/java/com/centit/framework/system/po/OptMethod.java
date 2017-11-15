@@ -21,7 +21,7 @@ public class OptMethod implements IOptMethod,EntityWithTimestamp, java.io.Serial
 
     @Id
     @Column(name = "OPT_CODE")
-    @GeneratedValue(generator = "assignedGenerator")
+    //@GeneratedValue(generator = "assignedGenerator")
     private String optCode;// 操作代码
 
     @Column(name = "OPT_NAME")

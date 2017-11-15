@@ -25,7 +25,7 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
 
     @Id
     @Column(name = "OPT_ID")
-    @GeneratedValue(generator = "assignedGenerator")
+    //@GeneratedValue(generator = "assignedGenerator")
     private String optId; // 业务编号
 
     @OrderBy

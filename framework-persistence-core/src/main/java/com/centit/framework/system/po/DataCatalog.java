@@ -31,7 +31,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
 
     @Id
     @Column(name = "CATALOG_CODE")
-    @GeneratedValue(generator = "assignedGenerator")
+    //@GeneratedValue(generator = "assignedGenerator")
     private String catalogCode; // 类别代码
 
     @Column(name = "CATALOG_NAME")

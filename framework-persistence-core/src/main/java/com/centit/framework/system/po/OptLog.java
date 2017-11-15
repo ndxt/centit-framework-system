@@ -20,7 +20,7 @@ public class OptLog implements java.io.Serializable {
 
     @Id
     @Column(name = "LOG_ID")
-    @GeneratedValue(generator = "assignedGenerator")
+    //@GeneratedValue(generator = "assignedGenerator")
     private Long logId;
 
     /**

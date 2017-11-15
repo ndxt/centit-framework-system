@@ -17,7 +17,7 @@ public class FVUserOptMoudleList implements java.io.Serializable {
     // Fields
     @Id
     @Column(name = "OPT_ID")
-    @GeneratedValue(generator = "assignedGenerator")
+    //@GeneratedValue(generator = "assignedGenerator")
     private String optid;           //业务模块类
 
     @Column(name = "USER_CODE")
