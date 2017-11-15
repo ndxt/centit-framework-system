@@ -145,7 +145,8 @@ define(function (require) {
                 field: 'extraCode2',
                 title: '排序',
                 width: 150,
-                editor: 'text'
+                editor: 'text',
+                sortable:'true'
             },
             dataTag: {
             	field: 'dataTag',
