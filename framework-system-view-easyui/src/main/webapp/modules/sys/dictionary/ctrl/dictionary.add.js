@@ -37,7 +37,7 @@ define(function(require) {
 					dataCode: {value: '编码', isUse: 'T'},
 					dataValue: {value: '数值', isUse: 'T'},
 					extraCode: {value: '扩展编码', isUse: 'F'},
-					extraCode2: {value: '扩展编码2', isUse: 'F'},
+					extraCode2: {value: '排序', isUse: 'F'},
 					dataTag: {value: '数据标记', isUse: 'F'},
 					dataDesc: {value: '数据描述', isUse: 'T'}
 				}, fieldMap);
@@ -47,6 +47,7 @@ define(function(require) {
 		};
 
 		// 添加字段命名列表，顺序分别是：编码、扩展编码、扩展编码2、数据标记、数值、数据描述 ，共6个字段。在明细中按照这个顺序显示。
+    //扩展编码2改为排序
 		this.initPropertyFields = function(panel, value) {
 			// 列描述
 			var columns = [[
@@ -67,7 +68,7 @@ define(function(require) {
               {field: 'dataCode', 	"name":"编码",	  "value":fieldMap.dataCode.value,       "isUse": fieldMap.dataCode.isUse},
               {field: 'dataValue', 	"name":"数值",	  "value":fieldMap.dataValue.value,       "isUse": fieldMap.dataValue.isUse},
               {field: 'extraCode', 	"name":"扩展编码",	"value":fieldMap.extraCode.value,	"editor":"text",	"isUse": fieldMap.extraCode.isUse},
-              {field: 'extraCode2', "name":"扩展编码2",	"value":fieldMap.extraCode2.value,	"editor":"text",	"isUse": fieldMap.extraCode2.isUse},
+              {field: 'extraCode2', "name":"排序",	"value":fieldMap.extraCode2.value,	"editor":"text",	"isUse": fieldMap.extraCode2.isUse},
               {field: 'dataTag', 	"name":"数据标记",	"value":fieldMap.dataTag.value,	"editor":"text",	"isUse": fieldMap.dataTag.isUse},
               {field: 'dataDesc', 	"name":"数据描述",	"value":fieldMap.dataDesc.value,		"isUse": fieldMap.dataDesc.isUse}
             ]};
