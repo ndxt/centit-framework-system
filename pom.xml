@@ -95,6 +95,7 @@
         <module>framework-system-module</module>
         <module>framework-persistence-jdbc</module>
       <module>framework-persistence-core</module>
+      <module>framework-system-demo</module>
     </modules>
 
     <!-- mvn deploy -DpomFile=pom.xml -->

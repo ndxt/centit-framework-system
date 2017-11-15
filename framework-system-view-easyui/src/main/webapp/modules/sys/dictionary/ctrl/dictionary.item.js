@@ -116,13 +116,13 @@ define(function (require) {
             icon: {
                 field: 'icon'
             },
-            dataOrder: {
-                field: 'dataOrder',
-                title: '排序',
-                align: 'center',
-                width: 50,
-                editor: {type: 'numberbox', options: {required: true}}
-            },
+            // dataOrder: {
+            //     field: 'dataOrder',
+            //     title: '排序',
+            //     align: 'center',
+            //     width: 50,
+            //     editor: {type: 'numberbox', options: {required: true}}
+            // },
             dataCode: {
                 field: 'dataCode',
                 title: '编码',
@@ -143,7 +143,7 @@ define(function (require) {
             },
             extraCode2: {
                 field: 'extraCode2',
-                title: '扩展代码2',
+                title: '排序',
                 width: 150,
                 editor: 'text'
             },
@@ -162,7 +162,8 @@ define(function (require) {
         };
 
         // 列表列
-        var ListColumnNames = [{field: 'dataOrder', require: true, frozen: true},
+        var ListColumnNames = [
+          //{field: 'dataOrder', require: true, frozen: true},
             {field: 'dataCode', require: true, frozen: true},
             {field: 'dataValue', require: true, frozen: true},
             {field: 'extraCode', frozen: true},
@@ -193,7 +194,7 @@ define(function (require) {
             // 加载需要的列
             columnNames.forEach(function (name) {
                 var field = name.field;
-
+                  console.log(field)
                 // 默认需要加入 或者在字段定义中选择使用
                 if ((name.require || fieldDesc[field].isUse == 'T') && fieldDesc['extraCode2'].isUse == 'F') {
                 	// 覆盖默认值
