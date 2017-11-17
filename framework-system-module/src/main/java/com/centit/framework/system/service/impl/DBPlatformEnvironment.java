@@ -520,87 +520,87 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         return fillUserDetailsField(userinfo);
     }
 
-       private static List<OptInfo> getMenuFuncs(List<OptInfo> preOpts, List<FVUserOptMoudleList> ls) {
-            boolean isNeeds[] = new boolean[preOpts.size()];
+    private static List<OptInfo> getMenuFuncs(List<OptInfo> preOpts, List<FVUserOptMoudleList> ls) {
+        boolean isNeeds[] = new boolean[preOpts.size()];
+        for (int i = 0; i < preOpts.size(); i++) {
+            isNeeds[i] = false;
+        }
+        List<OptInfo> opts = new ArrayList<>();
+
+        for (FVUserOptMoudleList opm : ls) {
+            OptInfo opt = new OptInfo();
+            opt.setFormCode(opm.getFormcode());
+            opt.setImgIndex(opm.getImgindex());
+            opt.setIsInToolbar(opm.getIsintoolbar());
+            opt.setMsgNo(opm.getMsgno());
+            opt.setMsgPrm(opm.getMsgprm());
+            opt.setOptId(opm.getOptid());
+            opt.setOptType(opm.getOpttype());
+            opt.setOptName(opm.getOptname());
+            opt.setOptUrl(opm.getOpturl());
+            opt.setPreOptId(opm.getPreoptid());
+            opt.setTopOptId(opm.getTopoptid());
+            opt.setPageType(opm.getPageType());
+            opt.setOptRoute(opm.getOptRoute());
+
+            opts.add(opt);
             for (int i = 0; i < preOpts.size(); i++) {
-                isNeeds[i] = false;
+                if (opt.getPreOptId() != null && opt.getPreOptId().equals(preOpts.get(i).getOptId())) {
+                    isNeeds[i] = true;
+                    break;
+                }
             }
-            List<OptInfo> opts = new ArrayList<OptInfo>();
+        }
 
-            for (FVUserOptMoudleList opm : ls) {
-                OptInfo opt = new OptInfo();
-                opt.setFormCode(opm.getFormcode());
-                opt.setImgIndex(opm.getImgindex());
-                opt.setIsInToolbar(opm.getIsintoolbar());
-                opt.setMsgNo(opm.getMsgno());
-                opt.setMsgPrm(opm.getMsgprm());
-                opt.setOptId(opm.getOptid());
-                opt.setOptType(opm.getOpttype());
-                opt.setOptName(opm.getOptname());
-                opt.setOptUrl(opm.getOpturl());
-                opt.setPreOptId(opm.getPreoptid());
-                opt.setTopOptId(opm.getTopoptid());
-                opt.setPageType(opm.getPageType());
-                opt.setOptRoute(opm.getOptRoute());
+        List<OptInfo> needAdd = new ArrayList<>();
+        for (int i = 0; i < preOpts.size(); i++) {
+            if (isNeeds[i]) {
+                needAdd.add(preOpts.get(i));
+            }
+        }
 
-                opts.add(opt);
-                for (int i = 0; i < preOpts.size(); i++) {
-                    if (opt.getPreOptId() != null && opt.getPreOptId().equals(preOpts.get(i).getOptId())) {
-                        isNeeds[i] = true;
+        boolean isNeeds2[] = new boolean[preOpts.size()];
+        while (true) {
+            int nestedMenu = 0;
+            for (int i = 0; i < preOpts.size(); i++)
+                isNeeds2[i] = false;
+
+            for (int i = 0; i < needAdd.size(); i++) {
+                for (int j = 0; j < preOpts.size(); j++) {
+                    if (!isNeeds[j] && needAdd.get(i).getPreOptId() != null
+                            && needAdd.get(i).getPreOptId().equals(preOpts.get(j).getOptId())) {
+                        isNeeds[j] = true;
+                        isNeeds2[j] = true;
+                        nestedMenu++;
                         break;
                     }
                 }
             }
+            if (nestedMenu == 0)
+                break;
 
-            List<OptInfo> needAdd = new ArrayList<OptInfo>();
+            needAdd.clear();
             for (int i = 0; i < preOpts.size(); i++) {
-                if (isNeeds[i]) {
+                if (isNeeds2[i]) {
                     needAdd.add(preOpts.get(i));
                 }
             }
 
-            boolean isNeeds2[] = new boolean[preOpts.size()];
-            while (true) {
-                int nestedMenu = 0;
-                for (int i = 0; i < preOpts.size(); i++)
-                    isNeeds2[i] = false;
-
-                for (int i = 0; i < needAdd.size(); i++) {
-                    for (int j = 0; j < preOpts.size(); j++) {
-                        if (!isNeeds[j] && needAdd.get(i).getPreOptId() != null
-                                && needAdd.get(i).getPreOptId().equals(preOpts.get(j).getOptId())) {
-                            isNeeds[j] = true;
-                            isNeeds2[j] = true;
-                            nestedMenu++;
-                            break;
-                        }
-                    }
-                }
-                if (nestedMenu == 0)
-                    break;
-
-                needAdd.clear();
-                for (int i = 0; i < preOpts.size(); i++) {
-                    if (isNeeds2[i]) {
-                        needAdd.add(preOpts.get(i));
-                    }
-                }
-
-            }
-
-            for (int i = 0; i < preOpts.size(); i++) {
-                if (isNeeds[i]) {
-                    opts.add(preOpts.get(i));
-                }
-            }
-            return opts;
-            // end
-//            ListOpt.sortAsTree(opts, new ListOpt.ParentChild<OptInfo>() {
-//                @Override
-//                public boolean parentAndChild(OptInfo p, OptInfo c) {
-//                    return p.getOptId().equals(c.getPreOptId());
-//                }
-//
-//            });
         }
+
+        for (int i = 0; i < preOpts.size(); i++) {
+            if (isNeeds[i]) {
+                opts.add(preOpts.get(i));
+            }
+        }
+        return opts;
+        // end
+    //            ListOpt.sortAsTree(opts, new ListOpt.ParentChild<OptInfo>() {
+    //                @Override
+    //                public boolean parentAndChild(OptInfo p, OptInfo c) {
+    //                    return p.getOptId().equals(c.getPreOptId());
+    //                }
+    //
+    //            });
+    }
 }

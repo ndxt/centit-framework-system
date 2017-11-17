@@ -74,20 +74,6 @@ public interface UnitInfoDao {
     //return super.listObjectByProperty("parentUnit", unitCode);
 //     List<UnitInfo> listSubUnits(String unitCode);
 
-    /**
-     * @param parentunitcodes List
-     * @return List UnitInfo
-     */
-//     List<UnitInfo> listSubUnitinfoByParentUnitcodes(List<String> parentunitcodes);
-
-    /**
-     * 这个方法应该转移到ManagerImpl类中
-     * @param primaryUnit primaryUnit
-     * @return List UnitInfo
-     */
-    List<UnitInfo> listAllSubUnits(String primaryUnit);
-
-
     //String hql = "from UnitInfo where unitPath like ?";{unitPath+"/%"});
     List<UnitInfo> listSubUnitsByUnitPaht(String unitPath);
 

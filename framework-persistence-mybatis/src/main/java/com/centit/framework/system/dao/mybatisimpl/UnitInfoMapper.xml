@@ -350,7 +350,7 @@
 
 	<select id="listSubUnitsByUnitPaht" parameterType="String" resultMap="UnitInfo">
 			<include refid="coreSql" />
-			where unit_Path like #{unitPath}||'/%'
+			where unit_Path like #{unitPath}||'%'
 	</select>
 	<select id="listUnitinfoByUnitcodes">
 		<include refid="coreSql" />

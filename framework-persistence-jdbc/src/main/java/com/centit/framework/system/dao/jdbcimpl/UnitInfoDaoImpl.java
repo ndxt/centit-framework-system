@@ -122,16 +122,6 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
 
     @Override
     @Transactional(propagation=Propagation.MANDATORY)
-    public List<UnitInfo> listAllSubUnits(String unitCode){
-        UnitInfo unitInfo = super.getObjectById(unitCode);
-        if(unitInfo != null) {
-            return listSubUnitsByUnitPaht(unitInfo.getUnitPath());
-        }
-        return null;
-    }
-
-    @Override
-    @Transactional(propagation=Propagation.MANDATORY)
     public List<UnitInfo> listSubUnitsByUnitPaht(String unitPath){
         return listObjects(QueryUtils.createSqlParamsMap("unitPath", unitPath+"%" ));
     }

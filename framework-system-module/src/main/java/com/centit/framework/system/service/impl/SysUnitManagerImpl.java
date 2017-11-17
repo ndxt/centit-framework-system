@@ -106,7 +106,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
     @CacheEvict(value = "UnitInfo",allEntries = true)
     @Transactional
     public void changeStatus(String unitCode, String isValid) {
-        List<UnitInfo> allSubUnits = unitInfoDao.listAllSubUnits(unitCode);
+        List<UnitInfo> allSubUnits = listAllSubUnits(unitCode);
         for (UnitInfo subUnit : allSubUnits) {
             subUnit.setIsValid(isValid);
             unitInfoDao.mergeObject(subUnit);
@@ -212,13 +212,13 @@ public class SysUnitManagerImpl implements SysUnitManager {
         if(StringUtils.isBlank(primaryUnit)) {
           return null;
         }
-        return unitInfoDao.listAllSubUnits(primaryUnit);
+        return listAllSubUnits(primaryUnit);
     }
 
     @Override
     @Transactional
     public List<UnitInfo> listAllSubObjectsAsSort(String primaryUnit) {
-        List<UnitInfo> listObjects = unitInfoDao.listAllSubUnits(primaryUnit);
+        List<UnitInfo> listObjects = listAllSubUnits(primaryUnit);
         Iterator<UnitInfo> unitInfos = listObjects.iterator();
         while (unitInfos.hasNext()) {
             UnitInfo unitInfo = unitInfos.next();
@@ -294,5 +294,16 @@ public class SysUnitManagerImpl implements SysUnitManager {
         map.put("parentUnit", unitCode);
         map.put("isValid", "T");
         return unitInfoDao.listObjects(map);
+    }
+
+    @Override
+    @Transactional
+    public List<UnitInfo> listAllSubUnits(String unitCode){
+
+      UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
+      if(unitInfo != null) {
+        return unitInfoDao.listSubUnitsByUnitPaht(unitInfo.getUnitPath());
+      }
+      return null;
     }
 }

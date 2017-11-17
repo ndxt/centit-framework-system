@@ -3,6 +3,7 @@ package com.centit.framework.system.service.impl;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.system.dao.UnitInfoDao;
 import com.centit.framework.system.po.UnitInfo;
+import com.centit.framework.system.service.SysUnitManager;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.model.basedata.IDataDictionary;
@@ -17,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -44,12 +46,12 @@ public class SysUserUnitManagerImpl
     protected UserUnitDao userUnitDao;
 
 
-    @Resource(name = "userInfoDao")
+    @Resource
     @NotNull
     private UserInfoDao userInfoDao;
 
     @Resource
-    private UnitInfoDao unitInfoDao;
+    private SysUnitManager sysUnitManager;
 
     @Override
     @Transactional(readOnly = true)
@@ -195,8 +197,11 @@ public class SysUserUnitManagerImpl
     @Transactional
     public List<UserUnit> listSubUsersByUnitCode(String unitCode, Map<String, Object> map){
         List<UserUnit> result = new ArrayList<>();
-        result.addAll(userUnitDao.listObjects(map));
+        List<UnitInfo> unitInfos = sysUnitManager.listAllSubUnits(unitCode);
+        for(UnitInfo u : unitInfos){
+          map.put("unitCode", u.getUnitCode());
+          result.addAll(userUnitDao.listObjects(map));
+        }
         return result;
     }
-
 }
