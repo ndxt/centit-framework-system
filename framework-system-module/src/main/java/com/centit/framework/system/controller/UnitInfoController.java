@@ -117,7 +117,7 @@ public class UnitInfoController extends BaseController {
     @RequestMapping(value = "/subunits",method = RequestMethod.GET)
     public void listSub(String id, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = convertSearchColumn(request);
-        UserInfo user=sysUserMag.getObjectById(this.getLoginUser(request).getUserCode());
+        UserInfo user=sysUserMag.getObjectById(super.getLoginUserCode(request));
 
         String unitName = StringBaseOpt.castObjectToString(searchColumn.get("unitName"));
 
@@ -152,7 +152,7 @@ public class UnitInfoController extends BaseController {
      */
     @RequestMapping(value = "/underunits", method = RequestMethod.GET)
     public void allunits(String id, HttpServletRequest request, HttpServletResponse response) {
-        UserInfo user=sysUserMag.getObjectById(this.getLoginUser(request).getUserCode());
+        UserInfo user=sysUserMag.getObjectById(super.getLoginUserCode(request));
         Map<String,Object> filterMap = new HashMap<>();
         if (StringUtils.isNotBlank(id)) {
             filterMap.put("parentUnit", id);

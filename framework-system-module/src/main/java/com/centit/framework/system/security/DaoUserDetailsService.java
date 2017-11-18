@@ -1,13 +1,19 @@
 package com.centit.framework.system.security;
 
+import com.centit.framework.model.adapter.PlatformEnvironment;
+import com.centit.framework.security.model.CentitSecurityMetadata;
 import com.centit.framework.security.model.CentitUserDetails;
 import com.centit.framework.security.model.CentitUserDetailsService;
-import com.centit.framework.system.dao.*;
-import com.centit.framework.system.po.*;
+import com.centit.framework.system.dao.UserInfoDao;
+import com.centit.framework.system.dao.UserRoleDao;
+import com.centit.framework.system.dao.UserSettingDao;
+import com.centit.framework.system.po.FVUserRoles;
+import com.centit.framework.system.po.UserInfo;
+import com.centit.framework.system.po.UserSetting;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,146 +21,71 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Service("centitUserDetailsService")
-public class DaoUserDetailsService 
+public class DaoUserDetailsService
     implements CentitUserDetailsService,UserDetailsService,
         AuthenticationUserDetailsService<Authentication> {
 
     @Resource
-    private UserInfoDao sysuserdao;
+    @NotNull
+    private PlatformEnvironment platformEnvironment;
 
     @Resource
-    private UnitInfoDao sysunitdao;
-    
-    @Resource
-    private UserUnitDao userUnitdao;
+    @NotNull
+    private UserSettingDao userSettingDao;
 
     @Resource
+    @NotNull
     private UserRoleDao userRoleDao;
 
     @Resource
-    private UserSettingDao userSettingDao;
-    
+    @NotNull
+    private UserInfoDao userInfoDao;
+
     @Transactional
-    public Collection<GrantedAuthority> loadUserAuthorities(String loginname) throws UsernameNotFoundException {
-        UserInfo userinfo = sysuserdao.getUserByLoginName(loginname);
+    public Collection<GrantedAuthority> loadUserAuthorities(String loginName) throws UsernameNotFoundException {
+        UserInfo userinfo = userInfoDao.getUserByLoginName(loginName);
         if(userinfo==null)
-            throw new UsernameNotFoundException("user '" + loginname + "' not found...");
-        CentitUserDetailsImpl sysuser = new CentitUserDetailsImpl();
-        sysuser.copy(userinfo);
-        //sysuser.setSysusrodao(userRoleDao);
-       // List<RoleInfo> roles = userRoleDao.getSysRolesByUserId(sysuser.getUserCode());
-        
-        
+            return null;
         //edit by zhuxw  代码从原框架迁移过来，可和其它地方合并
-        List<RoleInfo> roles = new ArrayList<>();
-        //所有的用户 都要添加这个角色
-        roles.add(new RoleInfo("G-public", "general public","G",
-                "G","T", "general public"));
-        List<FVUserRoles> ls = userRoleDao.getSysRolesByUserId(sysuser.getUserCode());
-        if(ls!=null)
-        {
 
-            for (FVUserRoles l : ls) {
-                RoleInfo roleInfo = new RoleInfo();
+        List<GrantedAuthority> authorities = new ArrayList<>(10);
+        authorities.add( new SimpleGrantedAuthority(
+          CentitSecurityMetadata.ROLE_PREFIX + "G-public" ));
 
-                BeanUtils.copyProperties(l, roleInfo);
-                roles.add(roleInfo);
+        List<FVUserRoles> userRoles = userRoleDao.getSysRolesByUserId(userinfo.getUserCode());
+        if(userRoles!=null){
+            for (FVUserRoles userRole : userRoles) {
+                authorities.add(new SimpleGrantedAuthority(CentitSecurityMetadata.ROLE_PREFIX
+                  + StringUtils.trim(userRole.getRoleCode())));
             }
         }
-       //add  end 
-        
-        
-        sysuser.setAuthoritiesByRoles(roles);
-        return sysuser.getAuthorities();
+        Collections.sort(authorities,Comparator.comparing(GrantedAuthority::getAuthority));
+        return authorities;
     }
 
-    @Transactional
-    private CentitUserDetails fillUserDetailsField(UserInfo userinfo ){
-         CentitUserDetailsImpl sysuser = new CentitUserDetailsImpl();
-         sysuser.copy(userinfo);
-         //sysuser.setSysusrodao(userRoleDao);
-        // List<RoleInfo> roles = userRoleDao.getSysRolesByUserId(sysuser.getUserCode());
-         
-         
-         //edit by zhuxw  代码从原框架迁移过来，可和其它地方合并
-         List<RoleInfo> roles = new ArrayList<>();
-         //所有的用户 都要添加这个角色
-         roles.add(new RoleInfo("G-public", "general public","G",
-                 "G","T", "general public"));
-         List<FVUserRoles> ls = userRoleDao.getSysRolesByUserId(sysuser.getUserCode());
-         if(ls!=null)
-         {
-
-             for (FVUserRoles l : ls) {
-                 RoleInfo roleInfo = new RoleInfo();
-
-                 BeanUtils.copyProperties(l, roleInfo);
-                 roles.add(roleInfo);
-             }
-         }
-        //add  end 
-         
-         
-         List<UserUnit> usun = userUnitdao.listUserUnitsByUserCode(sysuser.getUserCode());
-         sysuser.setUserUnits(usun);
-
-         //sysuser.setUserFuncs(functionDao.getMenuFuncByUserID(sysuser.getUserCode()));
-         if(roles==null || roles.size()<1){
-             sysuser.setIsValid("F");
-             return sysuser;
-         }
-         
-         sysuser.setAuthoritiesByRoles(roles);
-
-         List<FVUserOptList> uoptlist = sysuserdao.getAllOptMethodByUser(sysuser.getUserCode());
-         Map<String, String> userOptList = new HashMap<String, String>();
-         if (uoptlist != null) {
-             for (FVUserOptList opt : uoptlist){
-                 if(!StringUtils.isBlank(opt.getOptMethod()))
-                     userOptList.put(opt.getOptId() + "-" + opt.getOptMethod(), "T");
-             }
-         }
-         // ServletActionContext.getRequest().getSession().setAttribute("userOptList",
-         // userOptList);
-         sysuser.setUserOptList(userOptList);
-         
-         List<UserSetting> uss =userSettingDao.getUserSettingsByCode(sysuser.getUserCode());
-         if(uss!=null){
-             for(UserSetting us :uss)
-                 sysuser.putUserSettingsParams(us.getParamCode(), us.getParamValue());
-         }
-         return sysuser;
-    }
-    
     @Override
-    @Transactional
     public CentitUserDetails loadUserByUsername(String loginname) throws UsernameNotFoundException {
-        CentitUserDetails ud = loadDetailsByLoginName(loginname);
-        if(ud==null)
-            throw new UsernameNotFoundException("user: "+ loginname + " not found!");
-        return ud;
+      CentitUserDetails ud = platformEnvironment.loadUserDetailsByLoginName(loginname);
+      if(ud == null){
+          throw new UsernameNotFoundException("登录名为"+loginname+"的用户不存在！");
+      }
+      return ud;
     }
 
     @Override
-    @Transactional
     public CentitUserDetails loadDetailsByLoginName(String loginname) {
-         UserInfo userinfo = sysuserdao.getUserByLoginName(loginname);
-         if(userinfo==null)
-             return null;
-         return fillUserDetailsField(userinfo); 
+          return loadUserByUsername(loginname);
     }
 
     @Override
-    @Transactional
     public CentitUserDetails loadUserDetails(Authentication token) throws UsernameNotFoundException {
-        return loadUserByUsername(token.getName());       
+        return loadUserByUsername(token.getName());
     }
 
-    
-    
     @Override
     @Transactional
     public void saveUserSetting(String userCode, String paramCode,String paramValue,
@@ -167,28 +98,18 @@ public class DaoUserDetailsService
     @Override
     @Transactional
     public CentitUserDetails loadDetailsByUserCode(String userCode) {
-        UserInfo userinfo = sysuserdao.getUserByCode(userCode);
-        if(userinfo==null)
-               return null;
-        return fillUserDetailsField(userinfo);
+        return platformEnvironment.loadUserDetailsByUserCode(userCode);
     }
 
     @Override
     @Transactional
     public CentitUserDetails loadDetailsByRegEmail(String regEmail) {
-        UserInfo userinfo = sysuserdao.getUserByRegEmail(regEmail);
-        if(userinfo==null)
-               return null;
-        return fillUserDetailsField(userinfo);
+        return platformEnvironment.loadUserDetailsByRegEmail(regEmail);
     }
 
     @Override
     @Transactional
     public CentitUserDetails loadDetailsByRegCellPhone(String regCellPhone) {
-        UserInfo userinfo = sysuserdao.getUserByRegCellPhone(regCellPhone);
-        if(userinfo==null)
-               return null;
-        return fillUserDetailsField(userinfo);
+        return platformEnvironment.loadUserDetailsByRegCellPhone(regCellPhone);
     }
-
 }

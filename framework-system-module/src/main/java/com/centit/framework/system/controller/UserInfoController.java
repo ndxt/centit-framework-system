@@ -191,7 +191,7 @@ public class UserInfoController extends BaseController {
     @RequestMapping(value = "/current", method = RequestMethod.GET)
     public void getCurrentUserInfo(HttpServletRequest request, HttpServletResponse response) {
         CentitUserDetails userDetails = super.getLoginUser(request);
-        UserInfo userinfo = sysUserManager.getObjectById(userDetails.getUserCode());
+        UserInfo userinfo = sysUserManager.getObjectById(userDetails.getUserInfo().getUserCode());
         JsonResultUtils.writeSingleDataJson(userinfo, response);
     }
 

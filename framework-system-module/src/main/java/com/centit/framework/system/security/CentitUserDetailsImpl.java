@@ -1,52 +1,60 @@
 package com.centit.framework.system.security;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import com.alibaba.fastjson.annotation.JSONField;
 import com.centit.framework.security.model.CentitSecurityMetadata;
 import com.centit.framework.security.model.CentitUserDetails;
 import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.UserInfo;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.*;
 
 /**
  * UserInfo entity.
  * @author MyEclipse Persistence Tools
  */
 
-public class CentitUserDetailsImpl
-        extends UserInfo implements CentitUserDetails
-{
-
+public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Serializable{
     private static final long serialVersionUID = 1L;
 
+    public CentitUserDetailsImpl(){
+        arrayAuths = null;
+    }
+
+    public CentitUserDetailsImpl(UserInfo userInfo) {
+        this.userInfo = userInfo;
+        arrayAuths = null;
+    }
+
+    protected UserInfo userInfo;
     // role
     // private Date lastUpdateRoleTime;
     @JSONField(serialize = false)
     private List<GrantedAuthority> arrayAuths;
-    
+
     private Map<String, String> userSettings;
     private Map<String, String> userOptList;
-    
+
+    @Override
+    public UserInfo getUserInfo() {
+      return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+      this.userInfo = userInfo;
+    }
+
     public Map<String, String> getUserSettings() {
         if(userSettings==null)
-            userSettings = new HashMap<String, String>();
+            userSettings = new HashMap<>();
         return userSettings;
     }
 
     public void putUserSettingsParams(String paramCode, String paramValue) {
         if(userSettings==null)
-            userSettings = new HashMap<String, String>();
+            userSettings = new HashMap<>();
         userSettings.put(paramCode, paramValue);
     }
     public void setUserSettings(Map<String, String> userSettings) {
@@ -55,7 +63,7 @@ public class CentitUserDetailsImpl
 
     public Map<String, String> getUserOptList() {
         if(userOptList==null)
-            userOptList = new HashMap<String, String>();
+            userOptList = new HashMap<>();
         return userOptList;
     }
 
@@ -68,61 +76,23 @@ public class CentitUserDetailsImpl
         if (s == null) {
             return false;
         }
-        return "T".equals(s); 
-    }
-    /**
-     * default constructor
-     * @param user UserInfo
-     */
-    public CentitUserDetailsImpl(UserInfo user) {
-        super(user.getUserCode(), user.getUserPin(),user.getUserType(),
-                user.getIsValid(), user.getLoginName(), user.getUserName(), 
-                user.getUserDesc(), user.getLoginTimes(), user.getActiveTime(),
-                user.getLoginIp(), user.getAddrbookId());
-        arrayAuths = null;
-    }
-
-    public CentitUserDetailsImpl() {
-        arrayAuths = null;
-    }
-
-    public CentitUserDetailsImpl(String userCode, String userstate, String loginname, String username) {
-        super(userCode, userstate, loginname, username);
-        arrayAuths = null;
-    }
-
-    public CentitUserDetailsImpl(String userCode, String userpin,  String usertype,String userstate, String loginname, String username,
-                                 String userdesc, Long logintimes, Date activeime, String loginip, Long addrbookid) {
-        super(userCode, userpin,usertype, userstate, loginname, username, userdesc, logintimes, activeime, loginip, addrbookid);
-        arrayAuths = null;
+        return "T".equals(s);
     }
 
     // Property accessors
     public void setAuthoritiesByRoles(List<RoleInfo> roles) {
         if (roles.size() < 1)
             return;
-        arrayAuths = new ArrayList<GrantedAuthority>();
+        arrayAuths = new ArrayList<>();
         for (RoleInfo role : roles) {
             arrayAuths.add(new SimpleGrantedAuthority(CentitSecurityMetadata.ROLE_PREFIX
                     + StringUtils.trim(role.getRoleCode())));
         }
         //排序便于后面比较
-        Collections.sort(arrayAuths,
-                new Comparator<GrantedAuthority>(){
-                    public int compare(GrantedAuthority o1, GrantedAuthority o2) {
-                        return o1.getAuthority().compareTo(o2.getAuthority());
-                    }
-                  }); 
+        Collections.sort(arrayAuths,Comparator.comparing(GrantedAuthority::getAuthority));
         //lastUpdateRoleTime = new Date(System.currentTimeMillis());
     }
 
-    /*private void loadAuthoritys() {
-        lastUpdateRoleTime = new Date(System.currentTimeMillis());
-        // load user roles and translate to Authorities;
-        List<RoleInfo> roles = sysusrodao.getSysRolesByUsid(this.getUserCode());
-        setAuthoritiesByRoles(roles);
-    }
-     */
     @Override
     @JSONField(serialize = false)
     public Collection<GrantedAuthority> getAuthorities() {
@@ -131,7 +101,7 @@ public class CentitUserDetailsImpl
             loadAuthoritys();*/
         return arrayAuths;
     }
-    
+
     /**
      * @return  List UserRoleCodes
      */
@@ -144,46 +114,61 @@ public class CentitUserDetailsImpl
             userRoles.add(auth.getAuthority().substring(2));
         return userRoles;
     }
-    
+
+    @Override
+    public void setLoginIp(String loginHost) {
+        this.userInfo.setLoginIp(loginHost);
+    }
+
+    @Override
+    public void setActiveTime(Date loginTime) {
+        this.userInfo.setActiveTime(loginTime);
+    }
+
     @Override
     public String getUsername() {
-        return this.getLoginName();
+        return this.userInfo.getLoginName();
     }
-    
+
     @Override
     public boolean isAccountNonExpired() {
-        return "T".equals(this.getIsValid());
+        return "T".equals(this.userInfo.getIsValid());
     }
-    
+
     @Override
     public boolean isAccountNonLocked() {
-        return "T".equals(this.getIsValid());
+        return "T".equals(this.userInfo.getIsValid());
     }
-    
+
     @Override
     public boolean isCredentialsNonExpired() {
-        return "T".equals(this.getIsValid());
+        return "T".equals(this.userInfo.getIsValid());
     }
- 
+
     @Override
+    public boolean isEnabled() {
+      return "T".equals(this.userInfo.getIsValid());
+    }
+
+  @Override
     @JSONField(serialize = false)
     public String getPassword() {
-        return this.getUserPin();
+        return this.userInfo.getUserPin();
     }
-    
+
     @Override
     public String getUserSettingValue(String paramCode){
         if(userSettings==null)
-            return null;        
+            return null;
         return userSettings.get(paramCode);
     }
-    
+
     public void setUserSettingValue(String paramCode, String paramValue) {
         if(userSettings==null)
             userSettings=new HashMap<>();
         userSettings.put(paramCode, paramValue);
     }
-    
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer();
@@ -191,25 +176,24 @@ public class CentitUserDetailsImpl
         sb.append(super.toString());
         return sb.toString();
     }
-    
+
     @Override
     public boolean equals(Object other) {
        if(other instanceof CentitUserDetails)
-           return this.getUserCode().equals(((CentitUserDetails) other).getUserCode());
-       if(other instanceof UserInfo)
-           return this.getUserCode().equals(((UserInfo) other).getUserCode());
-       return false;            
+           return this.userInfo.getUserCode().equals(((CentitUserDetails) other).getUserInfo().getUserCode());
+
+       return false;
     }
 
     @Override
     public int hashCode() {
-        return this.getUserCode().hashCode();
+        return this.userInfo.getUserCode().hashCode();
     }
 
     @Override
     @JSONField(serialize = false)
     public Object getCredentials() {
-        return this.getUserPin();
+        return this.userInfo.getUserPin();
     }
 
     @Override
@@ -236,6 +220,6 @@ public class CentitUserDetailsImpl
 
     @Override
     public String getName() {
-        return this.getLoginName();
+        return this.userInfo.getLoginName();
     }
 }

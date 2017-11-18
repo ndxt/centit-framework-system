@@ -41,7 +41,7 @@ import java.util.Map;
 public class UserSettingController extends BaseController {
     @Resource
     private UserSettingManager userSettingManager;
-    
+
     /**
      * 系统日志中记录
      */
@@ -102,7 +102,7 @@ public class UserSettingController extends BaseController {
      */
     @RequestMapping(value = "/{paramCode}", method = RequestMethod.GET)
     public void getUserSetting(@PathVariable String paramCode, HttpServletRequest request, HttpServletResponse response) {
-        UserSettingId id = new UserSettingId(this.getLoginUser(request).getUserCode(), paramCode);
+        UserSettingId id = new UserSettingId(super.getLoginUserCode(request), paramCode);
 
         UserSetting userSetting = userSettingManager.getObjectById(id);
         if (null != userSetting) {
@@ -122,12 +122,12 @@ public class UserSettingController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{paramCode}", method = {RequestMethod.POST, RequestMethod.PUT})
-    public void editUserSetting(@PathVariable String paramCode, @Valid UserSetting userSetting, 
+    public void editUserSetting(@PathVariable String paramCode, @Valid UserSetting userSetting,
                  HttpServletRequest request, BindingResult bindingResult,
                  HttpServletResponse response) {
 
         UserSettingId id = new UserSettingId(
-                this.getLoginUser(request).getUserCode(), paramCode);
+          super.getLoginUserCode(request), paramCode);
         UserSetting dbUserSetting = userSettingManager.getObjectById(id);
 
         if(dbUserSetting!=null){
@@ -140,9 +140,9 @@ public class UserSettingController extends BaseController {
             userSetting.setCid(id);
             userSetting.setCreateDate(new Date());
             userSettingManager.saveUserSetting(userSetting);
-        } 
+        }
         JsonResultUtils.writeBlankJson(response);
-        
+
         OperationLogCenter.logNewObject(request,optId,userSetting.getUserCode(),
                 OperationLog.P_OPT_LOG_METHOD_U,
                 "更新当前用户设置参数",userSetting);
@@ -159,7 +159,8 @@ public class UserSettingController extends BaseController {
     @RequestMapping(value = "/{paramCode}", method = {RequestMethod.DELETE})
     public void deleteUserSetting(@PathVariable String paramCode, HttpServletRequest request,
             HttpServletResponse response) {
-        UserSetting dbUserSetting=userSettingManager.getObjectById(new UserSettingId(this.getLoginUser(request).getUserCode(), paramCode));
+        UserSetting dbUserSetting=userSettingManager.getObjectById(
+            new UserSettingId(super.getLoginUserCode(request), paramCode));
         userSettingManager.deleteObject(dbUserSetting);
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/

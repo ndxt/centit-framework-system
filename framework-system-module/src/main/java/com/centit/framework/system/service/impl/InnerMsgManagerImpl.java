@@ -27,23 +27,10 @@ public class InnerMsgManagerImpl implements InnerMsgManager, MessageSender{
     @Resource(name="innerMsgRecipientDao")
     @NotNull
     private InnerMsgRecipientDao recipientDao;
-    
-    
-//    @Resource
-//    //@NotNull
-//    public void setNotificationCenter(NotificationCenter notificationCenter){
-//        if(notificationCenter!=null){
-//            MessageSender sender =
-//                    ContextLoaderListener.getCurrentWebApplicationContext().
-//                    getBean("innerMessageManager",  MessageSender.class);
-//            // 这个地方不能直接用 this， this不是spring管理的bean，必须从容器中获取托管的 bean
-//            notificationCenter.registerMessageSender("innerMsg", sender);
-//        }
-//    }
-    
+
     /*
      * 更新消息
-     * 
+     *
      */
     @Override
     public void mergeMInnerMsg(InnerMsg msgCopy, InnerMsg msg) {
@@ -52,7 +39,7 @@ public class InnerMsgManagerImpl implements InnerMsgManager, MessageSender{
     }
     /**
      * 发送消息
-     * 
+     *
      */
     @Override
     public String sendMessage(String sender, String receiver,
@@ -75,11 +62,11 @@ public class InnerMsgManagerImpl implements InnerMsgManager, MessageSender{
         recipientDao.saveNewObject(recipient);
             return "OK";
     }
-    
+
     @Override
     public String sendMessage(String sender, String receiver,
         String msgSubject, String msgContent) {
-       
+
         return sendMessage( sender,  receiver,
                  msgSubject,  msgContent,  "msg",
                  "sender", "");
@@ -106,4 +93,5 @@ public class InnerMsgManagerImpl implements InnerMsgManager, MessageSender{
     public InnerMsg getObjectById(String msgCode) {
         return innerMsgDao.getObjectById(msgCode);
     }
+
 }

@@ -366,10 +366,6 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         this.loginIp = loginip;
     }
 
-    public boolean isEnabled() {
-        return "T".equals(isValid);
-    }
-
     public String getLoginName() {
         if (loginName == null)
             return "";

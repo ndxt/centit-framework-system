@@ -37,15 +37,15 @@ import com.centit.framework.security.model.CentitUserDetails;
  */
 
 /**
- * 
+ *
  * 这个类已经废弃了，不需要了
- * 
+ *
  * @author codefan
  * 2015年10月16日
  */
 //@Transactional
 //@Component
-public class PoDataChangesListener implements PreInsertEventListener, 
+public class PoDataChangesListener implements PreInsertEventListener,
         PreUpdateEventListener, PostInsertEventListener,
         PostUpdateEventListener, PostDeleteEventListener {
 
@@ -60,7 +60,7 @@ public class PoDataChangesListener implements PreInsertEventListener,
 
     public void setListeners(List<String> listeners) {
         this.listeners = listeners;
-        
+
         //ParserConfig.getGlobalInstance().putDeserializer(Date.class, null);
     }
 
@@ -155,12 +155,12 @@ public class PoDataChangesListener implements PreInsertEventListener,
         CentitUserDetails loginUser = WebOptUtils.getLoginUser(RequestThreadLocal
                 .getHttpThreadWrapper().getRequest());
         // return "操作用户 " + ((FUserinfo)loginUser).getLoginname() + " " ;
-        return loginUser == null ? "" : loginUser.getUserCode();
+        return loginUser == null ? "" : loginUser.getUserInfo().getUserCode();
     }
 
-    
+
     public boolean requiresPostCommitHanding(EntityPersister persister) {
-       
+
         return false;
     }
 }

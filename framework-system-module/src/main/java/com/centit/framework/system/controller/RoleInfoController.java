@@ -594,8 +594,7 @@ public class RoleInfoController extends BaseController {
             filterMap.put("NP_unitCode", true);
 
         }else if("D".equals(type)){
-            CentitUserDetails user = getLoginUser(request);
-            IUserUnit unit = CodeRepositoryUtil.getUserPrimaryUnit(user.getUserCode());
+            IUserUnit unit = CodeRepositoryUtil.getUserPrimaryUnit(super.getLoginUserCode(request));
             if(unit!=null) {
                 filterMap.put("publicUnitRole", unit.getUnitCode()+"-%");
             }else return;

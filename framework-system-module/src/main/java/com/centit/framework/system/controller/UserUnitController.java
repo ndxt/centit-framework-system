@@ -129,7 +129,7 @@ public class UserUnitController extends BaseController {
     public void listUnitsByUser(@PathVariable String userCode, PageDesc pageDesc,
                                 HttpServletRequest request, HttpServletResponse response) {
 
-        UserInfo user = sysUserManager.getObjectById(this.getLoginUser(request).getUserCode());
+        UserInfo user = sysUserManager.getObjectById(this.getLoginUserCode(request));
         Map<String, Object> filterMap = convertSearchColumn(request);
         filterMap.put("userCode", userCode);
 //        filterMap.put("unitCode", user.getPrimaryUnit());

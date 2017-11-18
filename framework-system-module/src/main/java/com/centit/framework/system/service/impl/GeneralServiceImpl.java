@@ -97,13 +97,13 @@ public  class GeneralServiceImpl implements GeneralService {
             CentitUserDetails userDetails) {
         DataPowerFilter dpf = new DataPowerFilter();
         //当前用户信息
-        dpf.addSourceData("currentUser", userDetails);
+        dpf.addSourceData("currentUser", userDetails.getUserInfo());
         //当前用户主机构信息
         dpf.addSourceData("primaryUnit", CodeRepositoryUtil
-                .getUnitInfoByCode(userDetails.getPrimaryUnit()));
+                .getUnitInfoByCode(userDetails.getUserInfo().getPrimaryUnit()));
         //当前用户所有机构关联关系信息
         dpf.addSourceData("userUnits",
-                CodeRepositoryUtil.getUserUnits(userDetails.getUserCode()));
+                CodeRepositoryUtil.getUserUnits(userDetails.getUserInfo().getUserCode()));
         //当前用户的角色信息
         dpf.addSourceData("userRoles", userDetails.getUserRoleCodes());
 

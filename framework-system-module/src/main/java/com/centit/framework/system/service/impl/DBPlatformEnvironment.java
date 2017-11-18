@@ -30,7 +30,7 @@ import java.util.*;
 @Service("platformEnvironment")
 public class DBPlatformEnvironment implements PlatformEnvironment {
 
-  public static final Logger logger = LoggerFactory.getLogger(DBPlatformEnvironment.class);
+    public static final Logger logger = LoggerFactory.getLogger(DBPlatformEnvironment.class);
 
     @Resource
     private CentitPasswordEncoder passwordEncoder;
@@ -44,11 +44,12 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     private OptInfoDao optInfoDao;
 
     @Resource
-    private UserInfoDao sysuserdao;
+    @NotNull
+    private UserInfoDao userInfoDao;
 
     @Resource
     @NotNull
-    private DataDictionaryDao dictionaryDao;
+    private DataDictionaryDao dataDictionaryDao;
 
     @Resource
     @NotNull
@@ -77,6 +78,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Resource
     @NotNull
     private RolePowerDao rolePowerDao;
+
     /**
      * 刷新数据字典
      *
@@ -196,13 +198,13 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(readOnly = true)
     public UserInfo getUserInfoByUserCode(String userCode) {
-        return sysuserdao.getObjectById(userCode);
+        return userInfoDao.getObjectById(userCode);
     }
 
     @Override
     @Transactional(readOnly = true)
     public UserInfo getUserInfoByLoginName(String loginName) {
-        return sysuserdao.getUserByLoginName(loginName);
+        return userInfoDao.getUserByLoginName(loginName);
     }
 
     @Override
@@ -214,15 +216,15 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional
     public void changeUserPassword(String userCode, String userPassword) {
-        UserInfo user = sysuserdao.getObjectById(userCode);
+        UserInfo user = userInfoDao.getObjectById(userCode);
         user.setUserPin(passwordEncoder.encodePassword(userPassword, user.getUserCode()));
-        sysuserdao.mergeObject(user);
+        userInfoDao.mergeObject(user);
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean checkUserPassword(String userCode, String userPassword) {
-        UserInfo user = sysuserdao.getObjectById(userCode);
+        UserInfo user = userInfoDao.getObjectById(userCode);
         return passwordEncoder.isPasswordValid(user.getUserPin(),
                     userPassword, user.getUserCode());
     }
@@ -231,7 +233,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Cacheable(value = "UserInfo",key = "'userList'" )
     @Transactional(readOnly = true)
     public List<UserInfo> listAllUsers() {
-        return sysuserdao.listObjects();
+        return userInfoDao.listObjects();
     }
 
     @Override
@@ -354,7 +356,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Cacheable(value = "DataDictionary",key="#catalogCode")
     @Transactional(readOnly = true)
     public List<DataDictionary> listDataDictionaries(String catalogCode) {
-        return dictionaryDao.listDataDictionary(catalogCode);
+        return dataDictionaryDao.listDataDictionary(catalogCode);
     }
 
     @Override
@@ -390,7 +392,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional(readOnly = true)
     public Map<String,UserInfo> getUserRepo() {
         Map<String, UserInfo> userInfoMap = new HashMap<>();
-        List<UserInfo> users = sysuserdao.listObjects();
+        List<UserInfo> users = userInfoDao.listObjects();
         if(users!=null){
             for (UserInfo userInfo : users) {
                 userInfoMap.put(userInfo.getUserCode(), userInfo);
@@ -404,7 +406,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional(readOnly = true)
     public Map<String, ? extends IUserInfo> getLoginNameRepo() {
         Map<String, UserInfo> userInfoMap = new HashMap<>();
-        List<UserInfo> users = sysuserdao.listObjects();
+        List<UserInfo> users = userInfoDao.listObjects();
         if(users!=null){
             for (UserInfo userInfo : users) {
                 userInfoMap.put(userInfo.getLoginName(), userInfo);
@@ -426,71 +428,53 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         return depNo;
     }
 
+    //@Transactional
+    private CentitUserDetailsImpl fillUserDetailsField(UserInfo userinfo){
+        List<UserUnit> usun = userUnitDao.listUserUnitsByUserCode(userinfo.getUserCode());
+        userinfo.setUserUnits(usun);
+        CentitUserDetailsImpl sysuser = new CentitUserDetailsImpl(userinfo);
 
-//    @Transactional
-    private CentitUserDetailsImpl fillUserDetailsField(UserInfo userinfo ){
-         CentitUserDetailsImpl sysuser = new CentitUserDetailsImpl();
-         sysuser.copy(userinfo);
-         //sysuser.setSysusrodao(userRoleDao);
-
-
-         //List<RoleInfo> roles = userRoleDao.getSysRolesByUserId(sysuser.getUserCode());
-         //edit by zhuxw  代码从原框架迁移过来，可和其它地方合并
-         List<RoleInfo> roles = new ArrayList<>();
-         //所有的用户 都要添加这个角色
-         roles.add(new RoleInfo("G-public", "general public","G",
+        //List<RoleInfo> roles = userRoleDao.getSysRolesByUserId(sysuser.getUserCode());
+        //edit by zhuxw  代码从原框架迁移过来，可和其它地方合并
+        List<RoleInfo> roles = new ArrayList<>();
+        //所有的用户 都要添加这个角色
+        roles.add(new RoleInfo("G-public", "general public","G",
                  "G","T", "general public"));
-         List<FVUserRoles> ls = userRoleDao.getSysRolesByUserId(sysuser.getUserCode());
-         if(ls!=null) {
-
+        List<FVUserRoles> ls = userRoleDao.getSysRolesByUserId(userinfo.getUserCode());
+        if(ls!=null) {
              for (FVUserRoles l : ls) {
                  RoleInfo roleInfo = new RoleInfo();
-
                  BeanUtils.copyProperties(l, roleInfo);
                  roles.add(roleInfo);
              }
          }
         //add  end
+        //sysuser.setUserFuncs(functionDao.getMenuFuncByUserID(sysuser.getUserCode()));
+        sysuser.setAuthoritiesByRoles(roles);
+        List<FVUserOptList> uoptlist = userInfoDao.getAllOptMethodByUser(userinfo.getUserCode());
+        Map<String, String> userOptList = new HashMap<String, String>();
+        if (uoptlist != null) {
+            for (FVUserOptList opt : uoptlist){
+                if(!StringUtils.isBlank(opt.getOptMethod()))
+                    userOptList.put(opt.getOptId() + "-" + opt.getOptMethod(), "T");
+            }
+        }
+        // ServletActionContext.getRequest().getSession().setAttribute("userOptList",
+        // userOptList);
+        sysuser.setUserOptList(userOptList);
 
-
-
-
-
-         List<UserUnit> usun = userUnitDao.listUserUnitsByUserCode(sysuser.getUserCode());
-         sysuser.setUserUnits(usun);
-
-         //sysuser.setUserFuncs(functionDao.getMenuFuncByUserID(sysuser.getUserCode()));
-         if(roles==null || roles.size()<1){
-             sysuser.setIsValid("F");
-             return sysuser;
-         }
-
-         sysuser.setAuthoritiesByRoles(roles);
-
-         List<FVUserOptList> uoptlist = sysuserdao.getAllOptMethodByUser(sysuser.getUserCode());
-         Map<String, String> userOptList = new HashMap<String, String>();
-         if (uoptlist != null) {
-             for (FVUserOptList opt : uoptlist){
-                 if(!StringUtils.isBlank(opt.getOptMethod()))
-                     userOptList.put(opt.getOptId() + "-" + opt.getOptMethod(), "T");
-             }
-         }
-         // ServletActionContext.getRequest().getSession().setAttribute("userOptList",
-         // userOptList);
-         sysuser.setUserOptList(userOptList);
-
-         List<UserSetting> uss =userSettingDao.getUserSettingsByCode(sysuser.getUserCode());
-         if(uss!=null){
-             for(UserSetting us :uss)
-                 sysuser.putUserSettingsParams(us.getParamCode(), us.getParamValue());
-         }
-         return sysuser;
+        List<UserSetting> uss =userSettingDao.getUserSettingsByCode(userinfo.getUserCode());
+        if(uss!=null){
+            for(UserSetting us :uss)
+                sysuser.putUserSettingsParams(us.getParamCode(), us.getParamValue());
+        }
+        return sysuser;
     }
 
     @Override
     @Transactional
     public CentitUserDetailsImpl loadUserDetailsByLoginName(String loginName) {
-         UserInfo userinfo = sysuserdao.getUserByLoginName(loginName);
+         UserInfo userinfo = userInfoDao.getUserByLoginName(loginName);
          if(userinfo==null)
              return null;
          return fillUserDetailsField(userinfo);
@@ -499,7 +483,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional
     public CentitUserDetailsImpl loadUserDetailsByUserCode(String userCode) {
-         UserInfo userinfo = sysuserdao.getUserByCode(userCode);
+         UserInfo userinfo = userInfoDao.getUserByCode(userCode);
          if(userinfo==null)
              return null;
          return fillUserDetailsField(userinfo);
@@ -508,7 +492,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional
     public CentitUserDetailsImpl loadUserDetailsByRegEmail(String regEmail) {
-        UserInfo userinfo = sysuserdao.getUserByRegEmail(regEmail);
+        UserInfo userinfo = userInfoDao.getUserByRegEmail(regEmail);
            if(userinfo==null)
                 return null;
         return fillUserDetailsField(userinfo);
@@ -517,7 +501,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional
     public CentitUserDetailsImpl loadUserDetailsByRegCellPhone(String regCellPhone) {
-        UserInfo userinfo = sysuserdao.getUserByRegCellPhone(regCellPhone);
+        UserInfo userinfo = userInfoDao.getUserByRegCellPhone(regCellPhone);
            if(userinfo==null) {
              return null;
            }

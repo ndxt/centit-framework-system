@@ -53,13 +53,13 @@ public class InnerMsgRecipientController extends BaseController {
 
         String receive = (String) searchColumn.get("receive");
         if (StringUtils.isBlank(receive)) {
-            searchColumn.put("receive", WebOptUtils.getLoginUser(request).getUserCode());
+            searchColumn.put("receive", WebOptUtils.getLoginUser(request).getUserInfo().getUserCode());
         }
         String s = (String) searchColumn.get("msgTitle");
         if (null != s && StringUtils.isNotBlank(s)) {
             searchColumn.put("msgTitle", "%" + s + "%");
         }
-        
+
         s = (String) searchColumn.get("msgContent");
         if (null != s && StringUtils.isNotBlank(s)) {
             searchColumn.put("msgContent", "%" + s + "%");
@@ -74,16 +74,16 @@ public class InnerMsgRecipientController extends BaseController {
         resData.addResponseData(PAGE_DESC, pageDesc);
         JsonResultUtils.writeResponseDataAsJson(resData, response, JsonPropertyUtils.getIncludePropPreFilter(InnerMsgRecipient.class, field));
     }
-    
+
     @RequestMapping(value = "/unreadMsgCount", method = { RequestMethod.GET })
     public void unreadMsgCount(HttpServletRequest request, HttpServletResponse response) {
-        String currUser = WebOptUtils.getLoginUser(request).getUserCode();
+        String currUser = WebOptUtils.getLoginUser(request).getUserInfo().getUserCode();
         long unreadMsg = innerMsgRecipientManager.getUnreadMessageCount(currUser);
         JsonResultUtils.writeSingleDataJson(unreadMsg, response);
-    } 
+    }
     /**
      * 查询发件箱
-     * 
+     *
      * @param field      显示结果中只需要显示的字段
      * @param pageDesc   PageDesc
      * @param request    HttpServletRequest
@@ -92,10 +92,10 @@ public class InnerMsgRecipientController extends BaseController {
     @RequestMapping(value = "/outbox", method = { RequestMethod.GET })
     public void listOutbox(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = convertSearchColumn(request);
-        
+
         String sender = (String) searchColumn.get("sender");
         if (StringUtils.isBlank(sender)) {
-            searchColumn.put("sender", WebOptUtils.getLoginUser(request).getUserCode());
+            searchColumn.put("sender", WebOptUtils.getLoginUser(request).getUserInfo().getUserCode());
         }
 
         List<InnerMsg> listObjects = null;
@@ -119,7 +119,7 @@ public class InnerMsgRecipientController extends BaseController {
                 .checkUserOptPower("MSGMAG", "givenotify");
         JsonResultUtils.writeSingleDataJson(s, response);
     }
-    
+
     /**
      * 是否有发公告权限
      * @param msgCode   msgCode
@@ -133,7 +133,7 @@ public class InnerMsgRecipientController extends BaseController {
 
     /**
      * 公告列表
-     * 
+     *
      * @param field       显示结果中只需要显示的字段
      * @param pageDesc    PageDesc
      * @param request     HttpServletRequest
@@ -162,9 +162,9 @@ public class InnerMsgRecipientController extends BaseController {
      */
     @RequestMapping(value = "/notify/{unitCode}", method = { RequestMethod.POST })
     public void noticeByUnit(@PathVariable String unitCode,@Valid InnerMsg innerMsg,HttpServletRequest request, HttpServletResponse response) throws Exception {
-       
+
         if (!StringUtils.isNotBlank(innerMsg.getSender())) {
-            innerMsg.setSender(WebOptUtils.getLoginUser(request).getUserCode());
+            innerMsg.setSender(WebOptUtils.getLoginUser(request).getUserInfo().getUserCode());
             //innerMsg.setSenderName(WebOptUtils.getLoginUserName(request));
         }
         if (null == innerMsg.getSendDate()) {
@@ -173,8 +173,8 @@ public class InnerMsgRecipientController extends BaseController {
         innerMsgRecipientManager.noticeByUnitCode(unitCode,innerMsg);
         JsonResultUtils.writeSuccessJson(response);
     }
- 
-    
+
+
     /**
      * 发送或群发消息，recipient必须包含mInnerMsg对象属性，recipient.receive传入是由userCode拼接成的字符串，以逗号隔开
      * @param recipient InnerMsgRecipient
@@ -184,13 +184,13 @@ public class InnerMsgRecipientController extends BaseController {
     @RequestMapping(value = "/sendMsg", method = { RequestMethod.POST })
     public void sendMsg(@Valid InnerMsgRecipient recipient,HttpServletRequest request,
             HttpServletResponse response) {
-        innerMsgRecipientManager.sendMsg(recipient,this.getLoginUser(request).getUserCode());
+        innerMsgRecipientManager.sendMsg(recipient,this.getLoginUser(request).getUserInfo().getUserCode());
         //DataPushSocketServer.pushMessage(recipient.getReceive(), "你有新邮件："+ recipient.getMsgTitle());
         JsonResultUtils.writeSingleDataJson(recipient, response);
     }
-    
-    
-    
+
+
+
     /**
      * 获取当前登录用户
      * @param request HttpServletReqeust
@@ -199,7 +199,7 @@ public class InnerMsgRecipientController extends BaseController {
     @RequestMapping(value = "/loginuser", method = { RequestMethod.GET })
     public void getLoginUserCode(HttpServletResponse response,
             HttpServletRequest request) {
-        String userCode = this.getLoginUser(request).getUserCode();
+        String userCode = this.getLoginUser(request).getUserInfo().getUserCode();
         JsonResultUtils.writeSingleDataJson(userCode, response);
     }
 
@@ -267,13 +267,13 @@ public class InnerMsgRecipientController extends BaseController {
                 .getObjectById(id);*/
         innerMsgRecipientManager.deleteOneRecipientById(id);;
         JsonResultUtils.writeBlankJson(response);
-        //(request, optId, optTag, optMethod, optContent, oldObject); 
+        //(request, optId, optTag, optMethod, optContent, oldObject);
         OperationLogCenter.logDeleteObject(request, "recipient", id ,OperationLog.P_OPT_LOG_METHOD_D,
                  "删除接收这信息","");
 
     }
 
-    
+
     /**
      * 往来消息列表
      * @param sender 用户1
