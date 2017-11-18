@@ -45,6 +45,8 @@ public class SysUserUnitManagerImpl
     @NotNull
     protected UserUnitDao userUnitDao;
 
+    @Resource
+    private UnitInfoDao unitInfoDao;
 
     @Resource
     @NotNull
@@ -195,13 +197,12 @@ public class SysUserUnitManagerImpl
 
     @Override
     @Transactional
-    public List<UserUnit> listSubUsersByUnitCode(String unitCode, Map<String, Object> map){
-        List<UserUnit> result = new ArrayList<>();
-        List<UnitInfo> unitInfos = sysUnitManager.listAllSubUnits(unitCode);
-        for(UnitInfo u : unitInfos){
-          map.put("unitCode", u.getUnitCode());
-          result.addAll(userUnitDao.listObjects(map));
-        }
-        return result;
+    public List<UserUnit> listSubUsersByUnitCode(String unitCode, Map<String, Object> map, PageDesc pageDesc){
+
+       UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
+       if(unitInfo != null){
+          return userUnitDao.listUserUnitByUnitPath(unitInfo.getUnitPath(), map, pageDesc);
+       }
+       return null;
     }
 }

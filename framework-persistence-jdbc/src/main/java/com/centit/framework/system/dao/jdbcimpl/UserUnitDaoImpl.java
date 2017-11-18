@@ -7,6 +7,8 @@ import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.po.UserUnit;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.StringBaseOpt;
+import com.centit.support.database.utils.PageDesc;
+import com.centit.support.database.utils.QueryAndNamedParams;
 import com.centit.support.database.utils.QueryUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,6 +79,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         return ls;
     }
 
+    @Override
     @Transactional
     public List<UserUnit> listObjectByUserUnit(String userCode,String unitCode){
         List<UserUnit> ls = listObjectsByProperties(QueryUtils.createSqlParamsMap(
@@ -88,12 +91,15 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
          */
         return ls;
     }
+
+    @Override
     @Transactional
     public String getNextKey() {
         return "s" + StringBaseOpt.fillZeroForString(
                 String.valueOf(DatabaseOptUtils.getSequenceNextValue(this, "S_USER_UNIT_ID")),9);
     }
 
+    @Override
     @Transactional
     public void deleteOtherPrimaryUnit(UserUnit object) {
         try {
@@ -109,6 +115,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
 
     }
 
+    @Override
     @Transactional
     public void deleteUserUnitByUser(String userCode) {
         Map<String, Object> map = new HashMap<>();
@@ -116,6 +123,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         super.deleteObjectsByProperties(map);
     }
 
+    @Override
     @Transactional
     public void deleteUserUnitByUnit(String unitCode) {
         Map<String, Object> map = new HashMap<>();
@@ -123,6 +131,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         super.deleteObjectsByProperties(map);
     }
 
+    @Override
     @Transactional
     public UserUnit getPrimaryUnitByUserId(String userId) {
         List<UserUnit> list = super.listObjectsByProperties(QueryUtils.createSqlParamsMap(
@@ -134,6 +143,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         }
     }
 
+    @Override
     @Transactional
     public List<UserUnit> listUnitUsersByUnitCode(String unitCode) {
         return listObjectsByProperty("unitCode", unitCode);
@@ -153,19 +163,31 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
                                                    String roleCode, String unitCode) {
         List<UserUnit> ls = null;
         if (unitCode != null && !"".equals(unitCode)) {
-            if ("gw".equals(roleType))
-                ls =listObjectsByProperties(QueryUtils.createSqlParamsMap(
-                        "unitCode",unitCode,"userStation",roleCode));
-            else if ("xz".equals(roleType))
-                ls = listObjectsByProperties(QueryUtils.createSqlParamsMap(
-                        "unitCode",unitCode, "userRank", roleCode));
+            if ("gw".equals(roleType)) {
+              ls = listObjectsByProperties(QueryUtils.createSqlParamsMap(
+                "unitCode", unitCode, "userStation", roleCode));
+            } else if ("xz".equals(roleType)) {
+              ls = listObjectsByProperties(QueryUtils.createSqlParamsMap(
+                "unitCode", unitCode, "userRank", roleCode));
+            }
         } else {
-            if ("gw".equals(roleType))
-                ls = listObjectsByProperty("userStation", roleCode);
-            else if ("xz".equals(roleType))
-                ls = listObjectsByProperty("userRank",roleCode);
+            if ("gw".equals(roleType)) {
+              ls = listObjectsByProperty("userStation", roleCode);
+            } else if ("xz".equals(roleType)) {
+              ls = listObjectsByProperty("userRank", roleCode);
+            }
         }
         return ls;
+    }
+
+    @Override
+    public List<UserUnit> listUserUnitByUnitPath(String unitPath,Map<String, Object> filterMap, PageDesc pageDesc){
+        filterMap.put("unitPath", unitPath);
+        String wSql = "where 1=1" +
+          "[:(STARTWITH)unitPath | and UNIT_CODE IN (select UNIT_CODE from f_unitinfo where UNIT_PATH like :unitPath)]"+
+            "[:(like)userName | and USER_CODE in (select USER_CODE from f_userinfo where USER_NAME like :userName)]";
+        QueryAndNamedParams qap = QueryUtils.translateQuery(wSql, filterMap);
+        return super.listObjectsByFilter(qap.getQuery(), qap.getParams(), pageDesc);
     }
 
 }

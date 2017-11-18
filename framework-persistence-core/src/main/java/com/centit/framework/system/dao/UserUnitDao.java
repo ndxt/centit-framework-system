@@ -1,6 +1,7 @@
 package com.centit.framework.system.dao;
 
 import com.centit.framework.system.po.UserUnit;
+import com.centit.support.database.utils.PageDesc;
 
 import java.util.List;
 import java.util.Map;
@@ -91,4 +92,13 @@ public interface UserUnitDao {
      * @param userunits UserUnit
      */
     void mergeObject(UserUnit userunits);
+
+  /**
+   * 根据unitPath 获取机构及其子机构下用户组信息
+   * @param unitPath 机构层级
+   * @param filterMap 过滤条件
+   * @param pageDesc 分页信息
+   * @return 用户组列表
+   */
+    List<UserUnit> listUserUnitByUnitPath(String unitPath, Map<String, Object> filterMap, PageDesc pageDesc);
 }

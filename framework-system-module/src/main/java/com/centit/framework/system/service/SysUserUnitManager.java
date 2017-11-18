@@ -1,7 +1,7 @@
 package com.centit.framework.system.service;
 
-import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.system.po.UserUnit;
+import com.centit.support.database.utils.PageDesc;
 
 import java.util.List;
 import java.util.Map;
@@ -35,9 +35,11 @@ public interface SysUserUnitManager{
     void deletePrimaryUnitByUserCode(String userCode);
 
   /**
-   * 获取某机构(包含)下 所有 用户
+   * 获取 某机构及其子机构下 所有 用户组
    * @param unitCode 机构Code
-   * @return 机构列表
+   * @param map 过滤条件
+   * @return 用户组列表
    */
-    List<UserUnit> listSubUsersByUnitCode(String unitCode, Map<String, Object> map);
+    List<UserUnit> listSubUsersByUnitCode(String unitCode, Map<String, Object> map, PageDesc pageDesc);
+
 }
