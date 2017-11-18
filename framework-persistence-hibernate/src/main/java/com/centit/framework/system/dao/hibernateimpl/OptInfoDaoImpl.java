@@ -69,6 +69,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
         return opts;
     }
 
+    @Override
     @Transactional
     public List<OptInfo> getMenuFuncByOptUrl(){
         String hql1 = "FROM OptInfo where optUrl='...' order by orderInd ";

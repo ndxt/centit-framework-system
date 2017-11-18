@@ -1,18 +1,19 @@
 package com.centit.framework.system.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
+import com.centit.framework.common.ViewDataTransform;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
+import com.centit.framework.model.adapter.PlatformEnvironment;
+import com.centit.framework.system.po.*;
+import com.centit.framework.system.service.OptInfoManager;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.security.model.CentitUserDetails;
-import com.centit.framework.system.po.RoleInfo;
-import com.centit.framework.system.po.UserInfo;
-import com.centit.framework.system.po.UserRole;
-import com.centit.framework.system.po.UserUnit;
 import com.centit.framework.system.service.SysUserManager;
 import com.centit.framework.system.service.SysUserUnitManager;
 import com.centit.framework.system.service.UserSettingManager;
@@ -289,10 +290,11 @@ public class UserInfoController extends BaseController {
     public void forceChangePwd(@PathVariable String userCode,
                                HttpServletRequest request,HttpServletResponse response) {
         String newPassword = request.getParameter("newPassword");
-        if(StringUtils.isBlank(newPassword))
-            sysUserManager.resetPwd(userCode);
-        else
-            sysUserManager.forceSetPassword(userCode,newPassword);
+        if(StringUtils.isBlank(newPassword)) {
+          sysUserManager.resetPwd(userCode);
+        }else {
+          sysUserManager.forceSetPassword(userCode, newPassword);
+        }
 
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/

@@ -45,9 +45,20 @@ public interface OptInfoDao {
     //"FROM FVUserOptMoudleList where isintoolbar='Y' and userCode=? and optType = " +
     //(isAdmin ? "'S'" : "'O'") + " ORDER BY orderind";
     //return getMenuFuncs(preOpts, ls);
+
+  /**
+   * 查询用户拥有的叶子菜单
+    * @param userCode 用户ID
+   * @param optType 菜单类型
+   * @return List<FVUserOptMoudleList>
+   */
      List<FVUserOptMoudleList> getMenuFuncByUserID(String userCode, String optType);
 
-     List<OptInfo> getMenuFuncByOptUrl();
+    /**
+     * 查询有子菜单 的菜单（opt_url=...）
+     * @return 菜单列表
+     */
+    List<OptInfo> getMenuFuncByOptUrl();
 
 //     List<FVUserOptMoudleList> getMenuFuncByUserID(Map map);
 

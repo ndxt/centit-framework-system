@@ -135,10 +135,11 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional(readOnly = true)
     public String getUserSetting(String userCode, String paramCode) {
         UserSetting us = userSettingDao.getObjectById(new UserSettingId(userCode,paramCode));
-        if(us==null)
-            return null;
-        else
-            return us.getParamValue();
+        if(us==null) {
+          return null;
+        } else {
+          return us.getParamValue();
+        }
     }
 
     private List<OptInfo> formatMenuTree(List<OptInfo> optInfos,String superOptId) {
@@ -146,7 +147,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         Iterator<OptInfo> menus = optInfos.iterator();
         OptInfo parentOpt = null;
 
-        List<OptInfo> parentMenu = new ArrayList<OptInfo>();
+        List<OptInfo> parentMenu = new ArrayList<>();
         while (menus.hasNext()) {
             OptInfo optInfo = menus.next();
             if (superOptId!=null && superOptId.equals(optInfo.getOptId())) {
@@ -160,22 +161,24 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                     break;
                 }
             }
-            if(!getParent)
-                parentMenu.add(optInfo);
+            if(!getParent) {
+              parentMenu.add(optInfo);
+            }
         }
         if (superOptId!=null && parentOpt!=null){
             return parentOpt.getChildren();
-        }else
-            return parentMenu;
+        }else {
+          return parentMenu;
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<OptInfo> listUserMenuOptInfos(String userCode, boolean asAdmin) {
 
-        List<OptInfo> preOpts=optInfoDao.getMenuFuncByOptUrl();
+        List<OptInfo> preOpts = optInfoDao.getMenuFuncByOptUrl();
         String optType = asAdmin ? "S" : "O";
-        List<FVUserOptMoudleList> ls=optInfoDao.getMenuFuncByUserID(userCode, optType);
+        List<FVUserOptMoudleList> ls = optInfoDao.getMenuFuncByUserID(userCode, optType);
         List<OptInfo> menuFunsByUser = getMenuFuncs(preOpts,  ls);
         return formatMenuTree(menuFunsByUser,null);
     }
@@ -515,8 +518,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional
     public CentitUserDetailsImpl loadUserDetailsByRegCellPhone(String regCellPhone) {
         UserInfo userinfo = sysuserdao.getUserByRegCellPhone(regCellPhone);
-           if(userinfo==null)
-                return null;
+           if(userinfo==null) {
+             return null;
+           }
         return fillUserDetailsField(userinfo);
     }
 
