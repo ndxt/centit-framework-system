@@ -71,7 +71,7 @@ public  class GeneralServiceImpl implements GeneralService {
         if (dataScopes == null || dataScopes.size() == 0)
             return null;
 
-        Set<String> scopeCodes = new HashSet<String>();
+        Set<String> scopeCodes = new HashSet<>();
         for (String scopes : dataScopes) {
             if (scopes == null || "null".equalsIgnoreCase(scopes)
                     || "all".equalsIgnoreCase(scopes))
@@ -84,8 +84,7 @@ public  class GeneralServiceImpl implements GeneralService {
         }
         if (scopeCodes.size() == 0)
             return null;
-        Map  temp=new HashMap();
-        temp.put("scopes", scopeCodes);
+
         return dataScopeDao.listDataFiltersByIds(scopeCodes);
     }
     /**

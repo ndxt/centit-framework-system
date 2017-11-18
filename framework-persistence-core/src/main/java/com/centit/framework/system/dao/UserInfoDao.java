@@ -42,11 +42,12 @@ public interface UserInfoDao {
     //"U"+ DatabaseOptUtils.getNextKeyBySequence(this, "S_USERCODE", 7);
     String getNextKey();
 
+  //hql = "FROM FVUserOptList urv where urv.id.userCode=?";
+    List<FVUserOptList> getAllOptMethodByUser(String userCode);
+
     //return this.listObjectsAll(filterMap);
     List<UserInfo> listUnderUnit(Map<String, Object> filterMap);
 
-    // return this.listObjectsAll(filterMap, pageDesc);
-    //List<UserInfo> listUnderUnit(Map<String, Object> filterMap, PageDesc pageDesc);
 
     //return getObjectById(userCode);
     UserInfo getUserByCode(String userCode);
@@ -67,17 +68,6 @@ public interface UserInfoDao {
     //return super.getObjectByProperty("userWord", userWord);
     UserInfo getUserByUserWord(String userWord);
     UserInfo getUserByIdCardNo(String idCardNo);
-
-<<<<<<< HEAD
-//    List<UserInfo> listUserinfoByUsercodes(List<String> userCodes);
-
-=======
-
-//    List<UserInfo> listUserinfoByUsercodes(List<String> userCodes);
-
-
->>>>>>> 67d46959175df85f7c02b9c76e1458ecef7a5b38
-//    List<UserInfo> listUserinfoByLoginname(List<String> loginnames);
 
     //add by zhuxw
     void restPwd(UserInfo user);

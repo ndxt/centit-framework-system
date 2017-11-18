@@ -5,8 +5,6 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import java.util.Date;
-
-
 /**
  * create by scaffold 2016-02-29
  * @author codefan@sina.com
@@ -68,8 +66,6 @@ public class UserQueryFilter implements java.io.Serializable {
     public UserQueryFilter(
         Long filterNo    ,String  userCode
         ,String  modleCode,String  filterName,String  filterValue) {
-
-
         this.filterNo = filterNo;
         this.userCode= userCode;
         this.modleCode= modleCode;
