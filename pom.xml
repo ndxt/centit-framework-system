@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <centit.framework.version>4.0.2-SNAPSHOT</centit.framework.version>
+        <centit.framework.version>4.0.3-SNAPSHOT</centit.framework.version>
         <jdk.version>1.8</jdk.version>
 
         <centit.ui.version>3.0.1-SNAPSHOT</centit.ui.version>
-        <centit.persistence.version>1.0.1-SNAPSHOT</centit.persistence.version>
+        <centit.persistence.version>1.0.2-SNAPSHOT</centit.persistence.version>
 
         <hibernate.validator.version>5.4.2.Final</hibernate.validator.version>
         <persistence-api.version>2.2</persistence-api.version>
@@ -25,7 +25,7 @@
     <groupId>com.centit.framework</groupId>
     <artifactId>framework-system-parent</artifactId>
     <packaging>pom</packaging>
-    <version>4.0.2-SNAPSHOT</version>
+    <version>4.0.3-SNAPSHOT</version>
     <name>com.centit.framework:framework-system-parent</name>
     <description>设计了一套兼容基础用户、组织机构和功能权限、数据权限体系的系统维护页面，作为公司内部研发的基础平台。
     </description>
