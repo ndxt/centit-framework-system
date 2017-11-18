@@ -18,13 +18,10 @@ public interface OptInfoManager{
      * 获取角色菜单中需要权限控制的业务菜单
      * @return 角色菜单中需要权限控制的业务菜单
      */
-     
+
      List<OptInfo> listItemPowerOpts();
-   
+
      List<OptInfo> listSysAndOptPowerOpts();
-
-
-     Map<String, OptInfo> listObjectToOptRepo();
 
     /**
      * 获取用户数据权限过滤器
@@ -48,23 +45,23 @@ public interface OptInfoManager{
      * @return 某一个机构的权限列表供定义机构角色使用
      */
      List<OptInfo> listOptWithPowerUnderUnit(String sUnitCode);
-    
+
      void saveNewOptInfo(OptInfo optinfo);
-    
+
      void updateOptInfoProperties(OptInfo optinfo);
-    
+
      void updateOptInfo(OptInfo optinfo);
 
     Map<String, List> updateOperationPower(OptInfo optInfo);
-    
+
      void deleteOptInfo(OptInfo optinfo);
-    
+
      void deleteOptInfoById(String optId);
-    
+
     // void deleteOptInfoByIdCascade(String optId);
-    
+
      OptInfo getOptInfoById(String optId);
 
      List<OptInfo> getFunctionsByRoleCode(String roleCode);
-    
+
 }

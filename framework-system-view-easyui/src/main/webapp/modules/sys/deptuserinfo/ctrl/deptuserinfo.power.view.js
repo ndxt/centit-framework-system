@@ -26,7 +26,7 @@ define(function(require) {
     };
     // 创建选择操作权限树
     var _createOptInfoTree = function(tree, powers) {
-      Core.ajax(Config.ContextPath + 'system/optinfo/poweropts?field=id&field=iconCls&field=text&field=optMethods&field=children', {
+      Core.ajax(Config.ContextPath + 'system/optinfo/userpoweropts/'+_self.data.userCode, {
         method: 'get'}).then(function(data) {
        /* Utils.walkTree(data, function(obj) {
           var isLeaf = !(obj.children && obj.children.length);

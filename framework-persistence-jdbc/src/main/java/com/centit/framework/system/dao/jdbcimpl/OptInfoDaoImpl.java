@@ -52,25 +52,26 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
         return super.listObjectsBySql(sql, QueryUtils.createSqlParamsMap("userId",userID));
     }
 
+    @Override
     @Transactional
     public List<OptInfo> getMenuFuncByOptUrl(){
         String hql1 = "where OPT_URL='...' order by ORDER_IND ";
         return super.listObjectsByFilter(hql1,(Object[]) null);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     @Transactional
     public List<FVUserOptMoudleList> getMenuFuncByUserID(String userCode, String optType) {
 
         String querySql = "select OPT_ID, USER_CODE, OPT_NAME, PRE_OPT_ID, FORM_CODE,"+
-                "OPT_URL, OPT_ROUTE, OPT_TYPE, MSG_NO, MSG_PRM, "+
-                "IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, "+
-                "PAGE_TYPE "+
-        "from F_V_USEROPTMOUDLELIST "+
-        "where IS_IN_TOOLBAR = 'Y' "+
-        "and USER_CODE = ? "+
-        "and OPT_TYPE = ? "+
-        "order by ORDER_IND ";
+                "OPT_URL, OPT_ROUTE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, " +
+                "TOP_OPT_ID, ORDER_IND, PAGE_TYPE "+
+                "from F_V_USEROPTMOUDLELIST "+
+                "where IS_IN_TOOLBAR = 'Y' "+
+                "and USER_CODE = ? "+
+                "and OPT_TYPE = ? "+
+                "order by ORDER_IND ";
 
         return getJdbcTemplate().execute(
                 (ConnectionCallback<List<FVUserOptMoudleList>>) conn ->

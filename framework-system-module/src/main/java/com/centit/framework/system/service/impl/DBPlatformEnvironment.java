@@ -14,6 +14,8 @@ import com.centit.framework.system.po.*;
 import com.centit.framework.system.security.CentitUserDetailsImpl;
 import com.centit.support.algorithm.StringRegularOpt;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.ConfigAttribute;
@@ -27,6 +29,8 @@ import java.util.*;
 
 @Service("platformEnvironment")
 public class DBPlatformEnvironment implements PlatformEnvironment {
+
+  public static final Logger logger = LoggerFactory.getLogger(DBPlatformEnvironment.class);
 
     @Resource
     private CentitPasswordEncoder passwordEncoder;
@@ -131,10 +135,11 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional(readOnly = true)
     public String getUserSetting(String userCode, String paramCode) {
         UserSetting us = userSettingDao.getObjectById(new UserSettingId(userCode,paramCode));
-        if(us==null)
-            return null;
-        else
-            return us.getParamValue();
+        if(us==null) {
+          return null;
+        } else {
+          return us.getParamValue();
+        }
     }
 
     private List<OptInfo> formatMenuTree(List<OptInfo> optInfos,String superOptId) {
@@ -142,7 +147,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         Iterator<OptInfo> menus = optInfos.iterator();
         OptInfo parentOpt = null;
 
-        List<OptInfo> parentMenu = new ArrayList<OptInfo>();
+        List<OptInfo> parentMenu = new ArrayList<>();
         while (menus.hasNext()) {
             OptInfo optInfo = menus.next();
             if (superOptId!=null && superOptId.equals(optInfo.getOptId())) {
@@ -156,22 +161,24 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                     break;
                 }
             }
-            if(!getParent)
-                parentMenu.add(optInfo);
+            if(!getParent) {
+              parentMenu.add(optInfo);
+            }
         }
         if (superOptId!=null && parentOpt!=null){
             return parentOpt.getChildren();
-        }else
-            return parentMenu;
+        }else {
+          return parentMenu;
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<OptInfo> listUserMenuOptInfos(String userCode, boolean asAdmin) {
 
-        List<OptInfo> preOpts=optInfoDao.getMenuFuncByOptUrl();
+        List<OptInfo> preOpts = optInfoDao.getMenuFuncByOptUrl();
         String optType = asAdmin ? "S" : "O";
-        List<FVUserOptMoudleList> ls=optInfoDao.getMenuFuncByUserID(userCode, optType);
+        List<FVUserOptMoudleList> ls = optInfoDao.getMenuFuncByUserID(userCode, optType);
         List<OptInfo> menuFunsByUser = getMenuFuncs(preOpts,  ls);
         return formatMenuTree(menuFunsByUser,null);
     }
@@ -209,7 +216,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     public void changeUserPassword(String userCode, String userPassword) {
         UserInfo user = sysuserdao.getObjectById(userCode);
         user.setUserPin(passwordEncoder.encodePassword(userPassword, user.getUserCode()));
-        sysuserdao.saveObject(user);
+        sysuserdao.mergeObject(user);
     }
 
     @Override
@@ -257,6 +264,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                     try {
                         uu.setXzRank(Integer.valueOf(dd.getExtraCode()));
                     } catch (Exception e) {
+                        logger.error(e.getMessage(),e);
                         uu.setXzRank(CodeRepositoryUtil.MAXXZRANK);
                     }
                  }
@@ -281,6 +289,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                     try {
                         uu.setXzRank(Integer.valueOf(dd.getExtraCode()));
                     } catch (Exception e) {
+                        logger.error(e.getMessage(),e);
                         uu.setXzRank(CodeRepositoryUtil.MAXXZRANK);
                     }
                  }
@@ -509,92 +518,93 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional
     public CentitUserDetailsImpl loadUserDetailsByRegCellPhone(String regCellPhone) {
         UserInfo userinfo = sysuserdao.getUserByRegCellPhone(regCellPhone);
-           if(userinfo==null)
-                return null;
+           if(userinfo==null) {
+             return null;
+           }
         return fillUserDetailsField(userinfo);
     }
 
-       private static List<OptInfo> getMenuFuncs(List<OptInfo> preOpts, List<FVUserOptMoudleList> ls) {
-            boolean isNeeds[] = new boolean[preOpts.size()];
+    private static List<OptInfo> getMenuFuncs(List<OptInfo> preOpts, List<FVUserOptMoudleList> ls) {
+        boolean isNeeds[] = new boolean[preOpts.size()];
+        for (int i = 0; i < preOpts.size(); i++) {
+            isNeeds[i] = false;
+        }
+        List<OptInfo> opts = new ArrayList<>();
+
+        for (FVUserOptMoudleList opm : ls) {
+            OptInfo opt = new OptInfo();
+            opt.setFormCode(opm.getFormcode());
+            opt.setImgIndex(opm.getImgindex());
+            opt.setIsInToolbar(opm.getIsintoolbar());
+            opt.setMsgNo(opm.getMsgno());
+            opt.setMsgPrm(opm.getMsgprm());
+            opt.setOptId(opm.getOptid());
+            opt.setOptType(opm.getOpttype());
+            opt.setOptName(opm.getOptname());
+            opt.setOptUrl(opm.getOpturl());
+            opt.setPreOptId(opm.getPreoptid());
+            opt.setTopOptId(opm.getTopoptid());
+            opt.setPageType(opm.getPageType());
+            opt.setOptRoute(opm.getOptRoute());
+
+            opts.add(opt);
             for (int i = 0; i < preOpts.size(); i++) {
-                isNeeds[i] = false;
+                if (opt.getPreOptId() != null && opt.getPreOptId().equals(preOpts.get(i).getOptId())) {
+                    isNeeds[i] = true;
+                    break;
+                }
             }
-            List<OptInfo> opts = new ArrayList<OptInfo>();
+        }
 
-            for (FVUserOptMoudleList opm : ls) {
-                OptInfo opt = new OptInfo();
-                opt.setFormCode(opm.getFormcode());
-                opt.setImgIndex(opm.getImgindex());
-                opt.setIsInToolbar(opm.getIsintoolbar());
-                opt.setMsgNo(opm.getMsgno());
-                opt.setMsgPrm(opm.getMsgprm());
-                opt.setOptId(opm.getOptid());
-                opt.setOptType(opm.getOpttype());
-                opt.setOptName(opm.getOptname());
-                opt.setOptUrl(opm.getOpturl());
-                opt.setPreOptId(opm.getPreoptid());
-                opt.setTopOptId(opm.getTopoptid());
-                opt.setPageType(opm.getPageType());
-                opt.setOptRoute(opm.getOptRoute());
+        List<OptInfo> needAdd = new ArrayList<>();
+        for (int i = 0; i < preOpts.size(); i++) {
+            if (isNeeds[i]) {
+                needAdd.add(preOpts.get(i));
+            }
+        }
 
-                opts.add(opt);
-                for (int i = 0; i < preOpts.size(); i++) {
-                    if (opt.getPreOptId() != null && opt.getPreOptId().equals(preOpts.get(i).getOptId())) {
-                        isNeeds[i] = true;
+        boolean isNeeds2[] = new boolean[preOpts.size()];
+        while (true) {
+            int nestedMenu = 0;
+            for (int i = 0; i < preOpts.size(); i++)
+                isNeeds2[i] = false;
+
+            for (int i = 0; i < needAdd.size(); i++) {
+                for (int j = 0; j < preOpts.size(); j++) {
+                    if (!isNeeds[j] && needAdd.get(i).getPreOptId() != null
+                            && needAdd.get(i).getPreOptId().equals(preOpts.get(j).getOptId())) {
+                        isNeeds[j] = true;
+                        isNeeds2[j] = true;
+                        nestedMenu++;
                         break;
                     }
                 }
             }
+            if (nestedMenu == 0)
+                break;
 
-            List<OptInfo> needAdd = new ArrayList<OptInfo>();
+            needAdd.clear();
             for (int i = 0; i < preOpts.size(); i++) {
-                if (isNeeds[i]) {
+                if (isNeeds2[i]) {
                     needAdd.add(preOpts.get(i));
                 }
             }
 
-            boolean isNeeds2[] = new boolean[preOpts.size()];
-            while (true) {
-                int nestedMenu = 0;
-                for (int i = 0; i < preOpts.size(); i++)
-                    isNeeds2[i] = false;
-
-                for (int i = 0; i < needAdd.size(); i++) {
-                    for (int j = 0; j < preOpts.size(); j++) {
-                        if (!isNeeds[j] && needAdd.get(i).getPreOptId() != null
-                                && needAdd.get(i).getPreOptId().equals(preOpts.get(j).getOptId())) {
-                            isNeeds[j] = true;
-                            isNeeds2[j] = true;
-                            nestedMenu++;
-                            break;
-                        }
-                    }
-                }
-                if (nestedMenu == 0)
-                    break;
-
-                needAdd.clear();
-                for (int i = 0; i < preOpts.size(); i++) {
-                    if (isNeeds2[i]) {
-                        needAdd.add(preOpts.get(i));
-                    }
-                }
-
-            }
-
-            for (int i = 0; i < preOpts.size(); i++) {
-                if (isNeeds[i]) {
-                    opts.add(preOpts.get(i));
-                }
-            }
-            return opts;
-            // end
-//            ListOpt.sortAsTree(opts, new ListOpt.ParentChild<OptInfo>() {
-//                @Override
-//                public boolean parentAndChild(OptInfo p, OptInfo c) {
-//                    return p.getOptId().equals(c.getPreOptId());
-//                }
-//
-//            });
         }
+
+        for (int i = 0; i < preOpts.size(); i++) {
+            if (isNeeds[i]) {
+                opts.add(preOpts.get(i));
+            }
+        }
+        return opts;
+        // end
+    //            ListOpt.sortAsTree(opts, new ListOpt.ParentChild<OptInfo>() {
+    //                @Override
+    //                public boolean parentAndChild(OptInfo p, OptInfo c) {
+    //                    return p.getOptId().equals(c.getPreOptId());
+    //                }
+    //
+    //            });
+    }
 }

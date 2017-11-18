@@ -42,17 +42,6 @@ public interface UserInfoDao {
     //"U"+ DatabaseOptUtils.getNextKeyBySequence(this, "S_USERCODE", 7);
     String getNextKey();
 
-    //设置主键 o.setUserCode(this.getNextKey()); 和初始密码
-    void saveObject(UserInfo o);
-
-    //hql = "FROM FVUserOptList urv where urv.id.userCode=?";
-    List<FVUserOptList> getAllOptMethodByUser(String userCode);
-    /*
-     * FUserinfo loginUser(String userName, String password) { return
-     * (FUserinfo) getHibernateTemplate().find(
-     * "FROM FUserinfo WHERE username = ? AND userpin = ? ", new Object[] {
-     * userName, password }).get(0); }
-     */
     //return this.listObjectsAll(filterMap);
     List<UserInfo> listUnderUnit(Map<String, Object> filterMap);
 
@@ -79,8 +68,15 @@ public interface UserInfoDao {
     UserInfo getUserByUserWord(String userWord);
     UserInfo getUserByIdCardNo(String idCardNo);
 
+<<<<<<< HEAD
 //    List<UserInfo> listUserinfoByUsercodes(List<String> userCodes);
 
+=======
+
+//    List<UserInfo> listUserinfoByUsercodes(List<String> userCodes);
+
+
+>>>>>>> 67d46959175df85f7c02b9c76e1458ecef7a5b38
 //    List<UserInfo> listUserinfoByLoginname(List<String> loginnames);
 
     //add by zhuxw

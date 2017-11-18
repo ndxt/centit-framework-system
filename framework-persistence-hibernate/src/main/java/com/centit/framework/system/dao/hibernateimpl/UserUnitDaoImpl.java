@@ -57,19 +57,13 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         List<UserUnit> ls = listObjects(
                 "FROM UserUnit where userCode=? and unitCode=?",
                 new Object[]{userCode,unitCode});
-        /*
-         * for (FUserunit usun : ls) {
-         * usun.setUnitname(CodeRepositoryUtil.getValue
-         * ("unitCode",usun.getId().getUnitcode() )); }
-         */
         return ls;
     }
+
     @Transactional
     public String getNextKey() {
-        return "s"+ DatabaseOptUtils.getNextKeyBySequence(this, "S_USER_UNIT_ID", 9);
-/*
-        return DatabaseOptUtils.getNextKeyByHqlStrOfMax(this, CodeRepositoryUtil.USERCODE,
-                "UserInfo WHERE userCode !='U0000000'", 7);*/
+        return DatabaseOptUtils.getNextValueOfSequence(this, "S_USER_UNIT_ID");
+
     }
 
     @Transactional

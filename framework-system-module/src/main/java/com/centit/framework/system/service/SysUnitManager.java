@@ -53,4 +53,6 @@ public interface SysUnitManager{
 
     List<UnitInfo> listValidSubUnit(String unitCode);
 
+    List<UnitInfo> listAllSubUnits(String unitCode);
+
 }

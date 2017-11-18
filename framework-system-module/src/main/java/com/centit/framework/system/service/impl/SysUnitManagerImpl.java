@@ -1,5 +1,9 @@
 package com.centit.framework.system.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.centit.framework.common.SysParametersUtils;
+import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.UnitInfoDao;
@@ -102,7 +106,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
     @CacheEvict(value = "UnitInfo",allEntries = true)
     @Transactional
     public void changeStatus(String unitCode, String isValid) {
-        List<UnitInfo> allSubUnits = unitInfoDao.listAllSubUnits(unitCode);
+        List<UnitInfo> allSubUnits = listAllSubUnits(unitCode);
         for (UnitInfo subUnit : allSubUnits) {
             subUnit.setIsValid(isValid);
             unitInfoDao.mergeObject(subUnit);
@@ -133,7 +137,23 @@ public class SysUnitManagerImpl implements SysUnitManager {
     @Transactional
     public String saveNewUnitInfo(UnitInfo unitinfo){
 
-        unitinfo.setUnitCode(unitInfoDao.getNextKey());
+        String unitCode = unitInfoDao.getNextKey();
+        String userIdFormat = SysParametersUtils.getStringValue("framework.unitinfo.id.generator");
+        if(StringUtils.isBlank(userIdFormat)){
+            unitCode = StringBaseOpt.midPad(unitCode,6,"D",'0');
+        }else{
+          //{"prefix":"U","length":8,"pad":"0"}
+            JSONObject idFormat = (JSONObject) JSON.parse(userIdFormat);
+            if(idFormat!=null) {
+                unitCode = StringBaseOpt.midPad(unitCode,
+                    NumberBaseOpt.castObjectToInteger(idFormat.get("length"), 1),
+                    idFormat.getString("prefix"),
+                    idFormat.getString("pad"));
+            }
+        }
+
+
+        unitinfo.setUnitCode(unitCode);
         UnitInfo parentUnit = unitInfoDao.getObjectById(unitinfo.getParentUnit());
 
         if (parentUnit == null) {
@@ -192,13 +212,13 @@ public class SysUnitManagerImpl implements SysUnitManager {
         if(StringUtils.isBlank(primaryUnit)) {
           return null;
         }
-        return unitInfoDao.listAllSubUnits(primaryUnit);
+        return listAllSubUnits(primaryUnit);
     }
 
     @Override
     @Transactional
     public List<UnitInfo> listAllSubObjectsAsSort(String primaryUnit) {
-        List<UnitInfo> listObjects = unitInfoDao.listAllSubUnits(primaryUnit);
+        List<UnitInfo> listObjects = listAllSubUnits(primaryUnit);
         Iterator<UnitInfo> unitInfos = listObjects.iterator();
         while (unitInfos.hasNext()) {
             UnitInfo unitInfo = unitInfos.next();
@@ -274,5 +294,16 @@ public class SysUnitManagerImpl implements SysUnitManager {
         map.put("parentUnit", unitCode);
         map.put("isValid", "T");
         return unitInfoDao.listObjects(map);
+    }
+
+    @Override
+    @Transactional
+    public List<UnitInfo> listAllSubUnits(String unitCode){
+
+      UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
+      if(unitInfo != null) {
+        return unitInfoDao.listSubUnitsByUnitPaht(unitInfo.getUnitPath());
+      }
+      return null;
     }
 }

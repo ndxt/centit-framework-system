@@ -145,7 +145,8 @@ define(function (require) {
                 field: 'extraCode2',
                 title: '排序',
                 width: 150,
-                editor: 'text'
+                editor: 'text',
+                sortable:'true'
             },
             dataTag: {
             	field: 'dataTag',
@@ -167,7 +168,7 @@ define(function (require) {
             {field: 'dataCode', require: true, frozen: true},
             {field: 'dataValue', require: true, frozen: true},
             {field: 'extraCode', frozen: true},
-            {field: 'extraCode2', frozen: true},
+            {field: 'extraCode2', require: true,frozen: true},
             {field: 'dataTag', frozen: true},
             {field: 'dataDesc', require: true}];
 
@@ -176,7 +177,7 @@ define(function (require) {
             {field: 'icon', require: true, frozen: true },
             {field: 'dataCode', require: true, frozen: true},
             {field: 'dataValue', require: true, frozen: true},
-            {field: 'extraCode2', frozen: true},
+            {field: 'extraCode2', require: true,frozen: true},
             {field: 'dataTag', frozen: true},
             {field: 'dataDesc', require: true}];
 
@@ -196,7 +197,7 @@ define(function (require) {
                 var field = name.field;
                   console.log(field)
                 // 默认需要加入 或者在字段定义中选择使用
-                if ((name.require || fieldDesc[field].isUse == 'T') && fieldDesc['extraCode2'].isUse == 'F') {
+                if (name.require || fieldDesc[field].isUse == 'T') {
                 	// 覆盖默认值
                 	if (fieldDesc[field]) {
                         column = $.extend(true, {}, DefautColumns[field], {

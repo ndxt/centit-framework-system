@@ -7,6 +7,7 @@ import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.ViewDataTransform;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
+import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
@@ -43,6 +44,9 @@ public class OptInfoController extends BaseController {
   @Resource
   @NotNull
   private SysRoleManager sysRoleManager;
+
+  @Resource
+  private PlatformEnvironment platformEnvironment;
   /**
    * 系统日志中记录
    */
@@ -403,4 +407,12 @@ public class OptInfoController extends BaseController {
     List<OptMethod> optDefs = optMethodManager.listObjects();
     JsonResultUtils.writeSingleDataJson(optDefs, response);
   }
+
+  @RequestMapping(value="/userpoweropts/{userCode}", method = RequestMethod.GET)
+  public void listUserOpts(@PathVariable String userCode, HttpServletResponse response){
+    List<OptInfo> optInfos = (List<OptInfo>)platformEnvironment.listUserMenuOptInfos(userCode, false);
+    optInfos = optInfoManager.listObjectFormatTree(optInfos, true);
+    JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(optInfos), response);
+  }
+
 }

@@ -39,7 +39,7 @@ import java.util.*;
  * User: sx
  * Date: 14-10-28
  * Time: 下午1:32
- * To change this template use File | Settings | File Templates.
+ * 机构管理Controller
  */
 @Controller
 @RequestMapping("/unitinfo")

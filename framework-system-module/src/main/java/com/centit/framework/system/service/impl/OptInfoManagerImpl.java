@@ -23,35 +23,20 @@ public class OptInfoManagerImpl implements OptInfoManager {
 
     @Resource
     @NotNull
-    protected OptInfoDao optInfoDao;
+    private OptInfoDao optInfoDao;
 
     @Resource(name = "optMethodDao")
     @NotNull
-    protected OptMethodDao optMethodDao;
+    private OptMethodDao optMethodDao;
 
 
     @Resource(name = "optDataScopeDao")
     @NotNull
-    protected OptDataScopeDao dataScopeDao;
+    private OptDataScopeDao dataScopeDao;
 
     @Resource(name = "rolePowerDao")
     @NotNull
-    protected RolePowerDao rolePowerDao;
-
-
-    @Override
-    @Transactional(readOnly = true)
-    public Map<String, OptInfo> listObjectToOptRepo() {
-        Map<String, OptInfo> optRepo = new HashMap<>();
-        List<OptInfo> optList = listObjects();
-        if (optList != null) {
-            for (OptInfo optinfo : optList) {
-                optRepo.put(optinfo.getOptId(), optinfo);
-            }
-        }
-
-        return optRepo;
-    }
+    private RolePowerDao rolePowerDao;
 
     @Override
     @CacheEvict(value="OptInfo",allEntries = true)
@@ -293,7 +278,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
     public List<OptInfo> listObjectFormatTree(List<OptInfo> optInfos,boolean fillDefAndScope) {
         // 获取当前菜单的子菜单
         Iterator<OptInfo> menus = optInfos.iterator();
-        List<OptInfo> parentMenu = new ArrayList<OptInfo>();
+        List<OptInfo> parentMenu = new ArrayList<>();
         while (menus.hasNext()) {
 
             OptInfo optInfo = menus.next();

@@ -2,7 +2,6 @@ package com.centit.framework.system.dao.jdbcimpl;
 
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.CodeBook;
-import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UserInfoDao;
@@ -10,10 +9,9 @@ import com.centit.framework.system.po.FVUserOptList;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
+import com.centit.support.database.utils.PageDesc;
 import com.centit.support.database.utils.QueryUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.ConnectionCallback;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,25 +59,10 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
 
     @Transactional
     public String getNextKey() {
-        return "U"+ StringBaseOpt.fillZeroForString(
-                String.valueOf(DatabaseOptUtils.getSequenceNextValue(this, "S_USERCODE")), 7);
+        return StringBaseOpt.objectToString(
+          DatabaseOptUtils.getSequenceNextValue(this, "S_USERCODE"));
     }
 
-    @Override
-    @Transactional
-    public void saveObject(UserInfo o) {
-        if (!StringUtils.isNotBlank(o.getUserCode())) {
-            // o.setUsercode("u" + this.getNextKey());
-            o.setUserCode(this.getNextKey());
-        }
-
-        // 无密码，初始化密码
-        if (!StringUtils.isNotBlank(o.getUserPin())) {
-            o.setUserPin(new Md5PasswordEncoder().encodePassword("000000", o.getUserCode()));
-        }
-
-        super.updateObject(o);
-    }
 
     @SuppressWarnings("unchecked")
     @Transactional
@@ -141,7 +124,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
     }
 
     public void restPwd(UserInfo user){
-        saveObject(user);
+        super.updateObject(user);
     }
 
     @Override

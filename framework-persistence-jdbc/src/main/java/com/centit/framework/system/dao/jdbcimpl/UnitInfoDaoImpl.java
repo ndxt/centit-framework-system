@@ -43,8 +43,8 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
 
     @Transactional
     public String getNextKey() {
-        return StringBaseOpt.fillZeroForString(
-                String.valueOf(DatabaseOptUtils.getSequenceNextValue(this, "S_UNITCODE")), 6);
+        return StringBaseOpt.objectToString(
+          DatabaseOptUtils.getSequenceNextValue(this, "S_UNITCODE"));
     }
 
     @Transactional
@@ -118,16 +118,6 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     @Transactional
     public List<UnitInfo> listSubUnits(String unitCode){
         return super.listObjectsByProperty("parentUnit", unitCode);
-    }
-
-    @Override
-    @Transactional(propagation=Propagation.MANDATORY)
-    public List<UnitInfo> listAllSubUnits(String unitCode){
-        UnitInfo unitInfo = super.getObjectById(unitCode);
-        if(unitInfo != null) {
-            return listSubUnitsByUnitPaht(unitInfo.getUnitPath());
-        }
-        return null;
     }
 
     @Override

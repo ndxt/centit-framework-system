@@ -1,16 +1,19 @@
 package com.centit.framework.system.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.common.ObjectException;
-import com.centit.support.database.utils.PageDesc;
+import com.centit.framework.common.SysParametersUtils;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.security.model.CentitPasswordEncoder;
-import com.centit.framework.system.dao.UnitInfoDao;
 import com.centit.framework.system.dao.UserInfoDao;
 import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysUserManager;
+import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.algorithm.StringBaseOpt;
+import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,10 +40,6 @@ public class SysUserManagerImpl implements SysUserManager {
     @Resource
     @NotNull
     private UserUnitDao userUnitDao;
-
-    @Resource
-    @NotNull
-    private UnitInfoDao unitInfoDao;
 
     @Resource
     @NotNull
@@ -113,7 +112,7 @@ public class SysUserManagerImpl implements SysUserManager {
             throw new ObjectException("新密码和旧密码一致，请重新输入新密码！");
 
         user.setUserPin(passwordEncoder.encodePassword(newPassword, user.getUserCode()));
-        userInfoDao.saveObject(user);
+        userInfoDao.mergeObject(user);
     }
 
     /**
@@ -126,43 +125,13 @@ public class SysUserManagerImpl implements SysUserManager {
     public void forceSetPassword(String userCode, String newPassword){
         UserInfo user = userInfoDao.getObjectById(userCode);
         user.setUserPin(passwordEncoder.createPassword(newPassword, user.getUserCode()));
-        userInfoDao.saveObject(user);
+        userInfoDao.mergeObject(user);
     }
 
-    @CacheEvict(value = "UserInfo",allEntries = true)
-    @Transactional
-    public void saveObject(UserInfo sysuser) {
-
-        boolean hasExist = checkIfUserExists(sysuser);// 查该登录名是不是已经被其他用户使
-
-        if (StringUtils.isBlank(sysuser.getUserCode())) {// 新添
-            // sysuser.setUsercode( getNextUserCode('u'));
-            sysuser.setIsValid("T");
-            sysuser.setUserPin(getDefaultPassword(sysuser.getUserCode()));
-        }
-        if (!hasExist && StringUtils.isBlank(sysuser.getUserPin()))
-            sysuser.setUserPin(getDefaultPassword(sysuser.getUserCode()));
-        sysuser.setUserWord(StringBaseOpt.getFirstLetter(sysuser.getUserName()));
-        userInfoDao.saveObject(sysuser);
-    }
 
     @Override
     @Transactional
     public boolean checkIfUserExists(UserInfo user) {
-//        if (StringUtils.isNotBlank(user.getUserCode())) {
-//            hql = "SELECT COUNT(*) FROM UserInfo WHERE userCode = " + QueryUtils.buildStringForQuery(user.getUserCode());
-//            hasExist = userInfoDao.getSingleIntByHql(this, hql);
-//        }
-//
-//        hql = "SELECT COUNT(*) FROM UserInfo WHERE loginName = " + QueryUtils.buildStringForQuery(user.getLoginName());
-//
-//        if (StringUtils.isNotBlank(user.getUserCode())) {
-//            hql += " AND userCode <> " + QueryUtils.buildStringForQuery(user.getUserCode());
-//        }
-//        long size = DatabaseOptUtils.getSingleIntByHql(this, hql);
-//        if (size >= 1) {
-//            throw new ObjectException("登录名：" + user.getLoginName() + " 已存在!!!");
-//        }
         return isLoginNameExist(user.getUserCode(),user.getLoginName());
     }
 
@@ -200,8 +169,25 @@ public class SysUserManagerImpl implements SysUserManager {
     @CacheEvict(value ={"UserInfo","UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
     @Transactional
     public void saveNewUserInfo(UserInfo userInfo, UserUnit userUnit){
+        String userCode = userInfoDao.getNextKey();
+        String userIdFormat = SysParametersUtils.getStringValue("framework.userinfo.id.generator");
+        if(StringUtils.isBlank(userIdFormat)){
+            userCode = StringBaseOpt.midPad(userCode,8,"U",'0');
+        }else{
+            //{"prefix":"U","length":8,"pad":"0"}
+            JSONObject idFormat = (JSONObject)JSON.parse(userIdFormat);
+            if(idFormat!=null) {
+                userCode = StringBaseOpt.midPad(userCode,
+                NumberBaseOpt.castObjectToInteger(idFormat.get("length"), 1),
+                idFormat.getString("prefix"),
+                idFormat.getString("pad"));
+            }
+        }
+
+        userInfo.setUserCode(userCode);
+        userInfo.setUserPin(getDefaultPassword(userInfo.getUserCode()));
         userInfoDao.saveNewObject(userInfo);
-        resetPwd(userInfo.getUserCode());
+        //resetPwd(userInfo.getUserCode());
         userUnit.setUserUnitId(userUnitDao.getNextKey());
         userUnit.setUserCode(userInfo.getUserCode());
         userUnit.setUnitCode(userInfo.getPrimaryUnit());

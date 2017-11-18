@@ -81,27 +81,9 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
 
     @Transactional
     public String getNextKey() {
-        return "U"+ DatabaseOptUtils.getNextKeyBySequence(this, "S_USERCODE", 7);
-/*
-        return DatabaseOptUtils.getNextKeyByHqlStrOfMax(this, CodeRepositoryUtil.USERCODE,
-                "UserInfo WHERE userCode !='U0000000'", 7);*/
+        return DatabaseOptUtils.getNextValueOfSequence(this, "S_USERCODE");
     }
 
-    @Override
-    @Transactional
-    public void saveObject(UserInfo o) {
-        if (!StringUtils.isNotBlank(o.getUserCode())) {
-            // o.setUsercode("u" + this.getNextKey());
-            o.setUserCode(this.getNextKey());
-        }
-
-        // 无密码，初始化密码
-        if (!StringUtils.isNotBlank(o.getUserPin())) {
-            o.setUserPin(new Md5PasswordEncoder().encodePassword("000000", o.getUserCode()));
-        }
-
-        super.saveObject(o);
-    }
 
     @SuppressWarnings("unchecked")
     @Transactional
@@ -224,7 +206,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
     }
 
     public void restPwd(UserInfo user){
-        saveObject(user);
+        super.updateObject(user);
     }
 
     public int isLoginNameExist(String userCode, String loginName){
