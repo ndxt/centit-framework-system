@@ -85,6 +85,7 @@ public class FVUserRoles implements IUserRole, Serializable {
         id.setRoleCode(roleCode);
     }
 
+    @Override
     public String getUserCode() {
         if (null == id) {
             return null;
@@ -92,7 +93,7 @@ public class FVUserRoles implements IUserRole, Serializable {
         return id.getUserCode();
     }
 
-
+    @Override
     public String getRoleCode() {
         if (null == id) {
             return null;
@@ -105,6 +106,7 @@ public class FVUserRoles implements IUserRole, Serializable {
      * 用户获得这个角色的方式，
      * @return "D" 直接活的 ， "I" 从机构继承， "M" 从机构层级继承，至少夸一级，这个默认不打开
      */
+    @Override
     public String getObtainType() {
       return obtainType;
     }
