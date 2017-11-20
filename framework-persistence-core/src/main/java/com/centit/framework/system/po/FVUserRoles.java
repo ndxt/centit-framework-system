@@ -32,6 +32,10 @@ public class FVUserRoles implements IUserRole, Serializable {
     @Column(name = "OBTAIN_TYPE")
     private String obtainType;//
 
+    @Column(name = "INHERITED_FROM")
+    private String inheritedFrom;
+
+
     @Column(name = "IS_VALID")
     private String isValid; // 是否生效
 
@@ -113,5 +117,14 @@ public class FVUserRoles implements IUserRole, Serializable {
 
     public void setObtainType(String obtainType) {
       this.obtainType = obtainType;
+    }
+
+    @Override
+    public String getInheritedFrom() {
+        return inheritedFrom;
+    }
+
+    public void setInheritedFrom(String inheritedFrom) {
+        this.inheritedFrom = inheritedFrom;
     }
 }

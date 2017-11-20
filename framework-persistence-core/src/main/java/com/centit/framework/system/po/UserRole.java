@@ -61,41 +61,37 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
     private Date  updateDate;
     //结束
 
+    @Transient
+    private String obtainType;
 
+    @Transient
+    private String inheritedFrom;
+
+    @Override
+    public String getObtainType() {
+      return obtainType;
+    }
+
+    public void setObtainType(String obtainType) {
+      this.obtainType = obtainType;
+    }
+
+    @Override
+    public String getInheritedFrom() {
+      return inheritedFrom;
+    }
+
+    public void setInheritedFrom(String inheritedFrom) {
+      this.inheritedFrom = inheritedFrom;
+    }
     // Constructors
 
     /**
      * default constructor
      */
     public UserRole() {
+        obtainType = "D";
         this.id=new UserRoleId();
-    }
-
-    public String getLoginName() {
-        String userCode = getUserCode();
-
-        if (null != userCode) {
-            IUserInfo user = CodeRepositoryUtil.getUserInfoByCode(userCode);
-
-            if (null != user) {
-                return user.getLoginName();
-            }
-        }
-
-        return null;
-    }
-    public String getUserPrimaryUnit() {
-        String userCode = getUserCode();
-
-        if (null != userCode) {
-            IUserUnit unit = CodeRepositoryUtil.getUserPrimaryUnit(userCode);
-
-            if (null != unit) {
-                return unit.getUnitCode();
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -103,6 +99,7 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
      * @param id UserRoleId
      */
     public UserRole(UserRoleId id) {
+        obtainType = "D";
         this.id = id;
     }
 
@@ -114,9 +111,37 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
      * @param changedesc String
      */
     public UserRole(UserRoleId id, Date obtainDate, String changedesc) {
+        obtainType = "D";
         this.id = id;
         this.obtainDate = obtainDate;
         this.changeDesc = changedesc;
+    }
+
+    public String getLoginName() {
+        String userCode = getUserCode();
+
+        if (null != userCode) {
+          IUserInfo user = CodeRepositoryUtil.getUserInfoByCode(userCode);
+
+          if (null != user) {
+            return user.getLoginName();
+          }
+        }
+
+        return null;
+    }
+    public String getUserPrimaryUnit() {
+        String userCode = getUserCode();
+
+        if (null != userCode) {
+          IUserUnit unit = CodeRepositoryUtil.getUserPrimaryUnit(userCode);
+
+          if (null != unit) {
+            return unit.getUnitCode();
+          }
+        }
+
+        return null;
     }
 
     // Property accessors
