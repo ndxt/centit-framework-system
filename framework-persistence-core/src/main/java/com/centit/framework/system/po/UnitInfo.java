@@ -297,7 +297,6 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         this.addrbookId = addrbookid;
     }
 
-
     public Date getCreateDate() {
         return createDate;
     }
