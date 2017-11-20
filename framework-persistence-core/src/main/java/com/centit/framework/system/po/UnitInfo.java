@@ -229,6 +229,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
     }
 
     // Property accessors
+    @Override
     public String getUnitCode() {
         return this.unitCode;
     }
@@ -273,6 +274,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         return this.unitName;
     }
 
+    @Override
     public String toString() {
         return this.unitName;
     }
@@ -297,7 +299,6 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         this.addrbookId = addrbookid;
     }
 
-
     public Date getCreateDate() {
         return createDate;
     }
@@ -319,9 +320,11 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
 
     //Json格式化时循环引用，此方法返回值，不序列化
     @JSONField(serialize = false)
+    @Override
     public List<UserUnit> getUnitUsers() {
-        if (unitUsers == null)
-            unitUsers = new ArrayList<UserUnit>();
+        if (unitUsers == null) {
+          unitUsers = new ArrayList<UserUnit>();
+        }
         return unitUsers;
     }
 
@@ -355,44 +358,63 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
 
     public void copyNotNullProperty(UnitInfo other) {
 
-        if (other.getUnitCode() != null)
-            this.unitCode = other.getUnitCode();
-        if (other.getParentUnit() != null)
-            this.parentUnit = other.getParentUnit();
-        if (other.getUnitType() != null)
-            this.unitType = other.getUnitType();
-        if (other.getIsValid() != null)
-            this.isValid = other.getIsValid();
-        if (other.getUnitName() != null)
-            this.unitName = other.getUnitName();
-        if (other.getUnitDesc() != null)
-            this.unitDesc = other.getUnitDesc();
-        if (other.getAddrbookId() != null)
-            this.addrbookId = other.getAddrbookId();
-        if (other.getUnitShortName() != null)
-            this.unitShortName = other.getUnitShortName();
-        if (other.getUnitOrder() != null)
-            this.unitOrder = other.getUnitOrder();
-        if (other.getUnitWord() != null)
-            this.unitWord = other.getUnitWord();
-        if (other.getUnitGrade() != null)
-            this.unitGrade = other.getUnitGrade();
-        if (other.getDepNo() != null)
-            this.depNo = other.getDepNo();
-        if (other.getUnitTag() != null)
-            this.unitTag = other.getUnitTag();
-        if (other.getEnglishName() != null)
-            this.englishName =other.getEnglishName();
-        if (other.getCreator() != null)
-            this.creator =other.getCreator();
-        if (other.getUpdator() != null)
-            this.updator =other.getUpdator();
-        if (other.getUpdateDate() != null)
-            this.updateDate =other.getUpdateDate();
-        if (other.getUnitPath() != null)
-            this.unitPath =other.getUnitPath();
-        if (other.getUnitManager() != null)
-            this.unitManager = other.getUnitManager();
+        if (other.getUnitCode() != null) {
+          this.unitCode = other.getUnitCode();
+        }
+        if (other.getParentUnit() != null) {
+          this.parentUnit = other.getParentUnit();
+        }
+        if (other.getUnitType() != null) {
+          this.unitType = other.getUnitType();
+        }
+        if (other.getIsValid() != null) {
+          this.isValid = other.getIsValid();
+        }
+        if (other.getUnitName() != null) {
+          this.unitName = other.getUnitName();
+        }
+        if (other.getUnitDesc() != null) {
+          this.unitDesc = other.getUnitDesc();
+        }
+        if (other.getAddrbookId() != null) {
+          this.addrbookId = other.getAddrbookId();
+        }
+        if (other.getUnitShortName() != null) {
+          this.unitShortName = other.getUnitShortName();
+        }
+        if (other.getUnitOrder() != null) {
+          this.unitOrder = other.getUnitOrder();
+        }
+        if (other.getUnitWord() != null) {
+          this.unitWord = other.getUnitWord();
+        }
+        if (other.getUnitGrade() != null) {
+          this.unitGrade = other.getUnitGrade();
+        }
+        if (other.getDepNo() != null) {
+          this.depNo = other.getDepNo();
+        }
+        if (other.getUnitTag() != null) {
+          this.unitTag = other.getUnitTag();
+        }
+        if (other.getEnglishName() != null) {
+          this.englishName = other.getEnglishName();
+        }
+        if (other.getCreator() != null) {
+          this.creator = other.getCreator();
+        }
+        if (other.getUpdator() != null) {
+          this.updator = other.getUpdator();
+        }
+        if (other.getUpdateDate() != null) {
+          this.updateDate = other.getUpdateDate();
+        }
+        if (other.getUnitPath() != null) {
+          this.unitPath = other.getUnitPath();
+        }
+        if (other.getUnitManager() != null) {
+          this.unitManager = other.getUnitManager();
+        }
     }
 
     public static String[] field2Name(Field[] f) {
@@ -412,6 +434,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         return value;
     }
 
+    @Override
     public Long getUnitOrder() {
         return unitOrder;
     }
@@ -436,6 +459,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         this.unitGrade = unitGrade;
     }
 
+    @Override
     public String getDepNo() {
         return depNo;
     }
@@ -444,10 +468,12 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         this.depNo = depNo;
     }
 
+    @Override
     @JSONField(name="children")
     public List<UnitInfo> getSubUnits() {
-        if(subUnits==null)
-            subUnits = new ArrayList<>();
+        if(subUnits==null) {
+          subUnits = new ArrayList<>();
+        }
         return subUnits;
     }
 
@@ -481,6 +507,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         this.updateDate = updateDate;
     }
 
+    @Override
     public String getUnitPath() {
         return unitPath;
     }

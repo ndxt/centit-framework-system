@@ -16,7 +16,7 @@ create table F_UNITROLE
 );
 
 alter table F_UNITROLE
-   add primary key (USER_CODE, ROLE_CODE);
+   add primary key (UNIT_CODE, ROLE_CODE);
 
 /*==============================================================*/
 /* View: F_V_USERROLES                                          */

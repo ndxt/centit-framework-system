@@ -85,6 +85,7 @@ public class FVUserRoles implements IUserRole, Serializable {
         id.setRoleCode(roleCode);
     }
 
+    @Override
     public String getUserCode() {
         if (null == id) {
             return null;
@@ -92,7 +93,7 @@ public class FVUserRoles implements IUserRole, Serializable {
         return id.getUserCode();
     }
 
-
+    @Override
     public String getRoleCode() {
         if (null == id) {
             return null;
