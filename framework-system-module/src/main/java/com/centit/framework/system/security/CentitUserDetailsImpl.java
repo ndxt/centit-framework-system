@@ -19,6 +19,8 @@ import java.util.*;
 public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Serializable{
     private static final long serialVersionUID = 1L;
 
+
+
     public CentitUserDetailsImpl(){
         arrayAuths = null;
     }
@@ -38,7 +40,7 @@ public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Seriali
     // private Date lastUpdateRoleTime;
     @JSONField(serialize = false)
     private List<GrantedAuthority> arrayAuths;
-
+    private List<RoleInfo> userRoles;
     private Map<String, String> userSettings;
     private Map<String, String> userOptList;
 
@@ -84,18 +86,31 @@ public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Seriali
         return "T".equals(s);
     }
 
-    // Property accessors
+    public List<RoleInfo> getUserRoles() {
+      return userRoles;
+    }
+
+    public void setUserRoles(List<RoleInfo> userRoles) {
+      this.userRoles = userRoles;
+    }
+
+    private void makeUserAuthorities(){
+      arrayAuths = new ArrayList<>();
+      if (this.userRoles.size() < 1)
+        return;
+
+      for (RoleInfo role : this.userRoles) {
+          arrayAuths.add(new SimpleGrantedAuthority(CentitSecurityMetadata.ROLE_PREFIX
+              + StringUtils.trim(role.getRoleCode())));
+      }
+      //排序便于后面比较
+      Collections.sort(arrayAuths,Comparator.comparing(GrantedAuthority::getAuthority));
+      //lastUpdateRoleTime = new Date(System.currentTimeMillis());
+    }
+  // Property accessors
     public void setAuthoritiesByRoles(List<RoleInfo> roles) {
-        if (roles.size() < 1)
-            return;
-        arrayAuths = new ArrayList<>();
-        for (RoleInfo role : roles) {
-            arrayAuths.add(new SimpleGrantedAuthority(CentitSecurityMetadata.ROLE_PREFIX
-                    + StringUtils.trim(role.getRoleCode())));
-        }
-        //排序便于后面比较
-        Collections.sort(arrayAuths,Comparator.comparing(GrantedAuthority::getAuthority));
-        //lastUpdateRoleTime = new Date(System.currentTimeMillis());
+        setUserRoles(roles);
+        makeUserAuthorities();
     }
 
     @Override
@@ -105,19 +120,6 @@ public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Seriali
                 || (new Date(System.currentTimeMillis())).getTime() - lastUpdateRoleTime.getTime() > 10 * 60 * 1000)
             loadAuthoritys();*/
         return arrayAuths;
-    }
-
-    /**
-     * @return  List UserRoleCodes
-     */
-    @Override
-    public List<String> getUserRoleCodes(){
-        List<String> userRoles = new ArrayList<String>();
-        if(arrayAuths==null)
-            return userRoles;
-        for(GrantedAuthority auth:arrayAuths)
-            userRoles.add(auth.getAuthority().substring(2));
-        return userRoles;
     }
 
     @Override

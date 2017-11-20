@@ -105,7 +105,7 @@ public  class GeneralServiceImpl implements GeneralService {
         dpf.addSourceData("userUnits",
                 CodeRepositoryUtil.getUserUnits(userDetails.getUserInfo().getUserCode()));
         //当前用户的角色信息
-        dpf.addSourceData("userRoles", userDetails.getUserRoleCodes());
+        dpf.addSourceData("userRoles", userDetails.getUserRoles());
 
         return dpf;
     }
