@@ -6,7 +6,7 @@ import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ObjectException;
 import com.centit.framework.common.ResponseMapData;
-import com.centit.framework.core.controller.BaseController;
+import com.centit.framework.core.controller.*;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.model.basedata.OperationLog;
@@ -23,6 +23,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -50,13 +53,20 @@ public class DataDictionaryController extends BaseController {
 
     @Value("${sys.multi_lang}")
     private boolean multiLang;
-    
+
     @Resource
     private DataDictionaryManager dataDictionaryManager;
 
     private String optId = "DICTSET";
 
-    /**
+    @Override
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        super.initBinder(binder);
+        binder.setAutoGrowCollectionLimit(4096);
+    }
+
+  /**
      * 查询所有数据目录列表
      *
      * @param field    只需要的属性名
@@ -96,7 +106,7 @@ public class DataDictionaryController extends BaseController {
      */
     @RequestMapping(value = "/{catalogCode}", method = {RequestMethod.GET})
     public void getCatalog(@PathVariable String catalogCode, HttpServletResponse response) {
-        
+
         DataCatalog dbDataCatalog = dataDictionaryManager.getCatalogIncludeDataPiece(catalogCode);
 
         JsonResultUtils.writeSingleDataJson(dbDataCatalog, response);
@@ -248,7 +258,7 @@ public class DataDictionaryController extends BaseController {
      * @param request {@link HttpServletRequest}
      * @param response       {@link HttpServletResponse}
      */
-    @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}", 
+    @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}",
             method = {RequestMethod.POST, RequestMethod.PUT})
     public void editDictionary(@PathVariable String catalogCode, @PathVariable String dataCode,
                                @Valid DataDictionary dataDictionary,
@@ -259,9 +269,9 @@ public class DataDictionaryController extends BaseController {
 
         DataDictionary oldValue = new DataDictionary();
         oldValue.copy(dbDataDictionary);
-        
+
         DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
-        
+
         dictionaryPreHander(dbDataCatalog, dataDictionary);
 
         if (null != dbDataDictionary) { // update
@@ -443,13 +453,13 @@ public class DataDictionaryController extends BaseController {
         /*****************log************************/
     }
 
-    
+
     @RequestMapping(value = "/dictionaryPiece/{catalogCode}", method = {RequestMethod.GET})
     public void getDataDictionary(@PathVariable String catalogCode, HttpServletResponse response) {
         List<DataDictionary> datas = dataDictionaryManager.getDataDictionary(catalogCode);
         JsonResultUtils.writeSingleDataJson(datas, response);
     }
-   
+
     @RequestMapping(value = "/editDictionary/{catalogCode}", method = {RequestMethod.GET})
     public void getDataDictionaryDetail(@PathVariable String catalogCode, HttpServletResponse response) {
         List<DataDictionary> datas = dataDictionaryManager.getDataDictionary(catalogCode);
@@ -459,24 +469,24 @@ public class DataDictionaryController extends BaseController {
         resData.addResponseData("langs", CodeRepositoryUtil.getLabelValueMap("SUPPORT_LANG"));
         JsonResultUtils.writeSingleDataJson(datas, response);
     }
-    
+
     @RequestMapping(value = "/allCatalog", method = {RequestMethod.GET})
     public void getAllCatalog(HttpServletResponse response) {
         List<DataCatalog> catalogs = dataDictionaryManager.listAllDataCatalog();
         JsonResultUtils.writeSingleDataJson(catalogs, response);
     }
-    
+
     @RequestMapping(value = "/wholeDictionary", method = {RequestMethod.GET})
     public void getWholeDictionary(HttpServletResponse response) {
         List<DataCatalog> catalogs = dataDictionaryManager.listAllDataCatalog();
         List<DataDictionary> dictionarys = dataDictionaryManager.getWholeDictionary();
-        
+
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData("catalog", catalogs);
-        resData.addResponseData("dictionary", dictionarys);        
+        resData.addResponseData("dictionary", dictionarys);
         JsonResultUtils.writeResponseDataAsJson(resData,response);
     }
-    
+
     @RequestMapping("/dictionaryprop")
     public ResponseEntity<byte[]> downloadProperties() throws IOException{
         List<DataDictionary> dictionarys = dataDictionaryManager.getWholeDictionary();
@@ -491,8 +501,8 @@ public class DataDictionaryController extends BaseController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentDispositionFormData("attachment", "dictionaryprop_zh_CN.Properties");
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
- 
-        return new ResponseEntity<byte[]>(out.toByteArray(),    
+
+        return new ResponseEntity<byte[]>(out.toByteArray(),
                                           headers, HttpStatus.CREATED);
     }
 }

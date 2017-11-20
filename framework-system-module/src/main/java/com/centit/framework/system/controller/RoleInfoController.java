@@ -59,11 +59,8 @@ public class RoleInfoController extends BaseController {
     @Override
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
-        binder.setAutoGrowCollectionLimit(1024);
-        binder.registerCustomEditor(String.class, new StringPropertiesEditor(true));
-        binder.registerCustomEditor(Date.class, new DatePropertiesEditor());
-        binder.registerCustomEditor(java.sql.Date.class, new SqlDatePropertiesEditor());
-        binder.registerCustomEditor(java.sql.Timestamp.class, new SqlTimestampPropertiesEditor());
+        super.initBinder(binder);
+        binder.setAutoGrowCollectionLimit(4096);
     }
 
     /**
