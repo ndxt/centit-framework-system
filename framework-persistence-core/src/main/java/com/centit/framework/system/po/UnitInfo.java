@@ -108,6 +108,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
     @Length(max = 32, message = "字段长度不能大于{max}")
     private String unitManager; // 部门负责人
 
+    @Override
     public String getUnitManager() {
         return unitManager;
     }

@@ -25,9 +25,10 @@ import java.util.Map;
 public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements UnitInfoDao {
     public static final Logger logger = LoggerFactory.getLogger(UnitInfoDaoImpl.class);
 
+    @Override
     public Map<String, String> getFilterField() {
         if (filterField == null) {
-            filterField = new HashMap<>();
+            filterField = new HashMap<>(10);
             filterField.put("unitCode", CodeBook.EQUAL_HQL_ID);
             filterField.put("unitName", CodeBook.LIKE_HQL_ID);
             filterField.put("ISVALID", CodeBook.EQUAL_HQL_ID);
@@ -41,6 +42,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
         return filterField;
     }
 
+    @Override
     @Transactional
     public String getNextKey() {
         return StringBaseOpt.objectToString(
@@ -126,6 +128,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
         return listObjects(QueryUtils.createSqlParamsMap("unitPath", unitPath+"%" ));
     }
 
+    @Override
     public List<String> getAllParentUnit(){
         return this.getJdbcTemplate().queryForList(
           "select distinct t.parent_unit from f_unitinfo t ", String.class);
@@ -141,6 +144,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
         super.deleteObjectById(unitCode);
     }
 
+    @Override
     public int countChildrenSum(String unitCode){
         return this.getJdbcTemplate().queryForObject(
           "select count(*) as subunits from F_UNITINFO where PARENT_UNIT = ?",

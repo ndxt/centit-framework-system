@@ -18,12 +18,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +43,8 @@ public class SysUserUnitManagerImpl
     @NotNull
     protected UserUnitDao userUnitDao;
 
+    @Resource
+    private UnitInfoDao unitInfoDao;
 
     @Resource
     @NotNull
@@ -195,13 +195,13 @@ public class SysUserUnitManagerImpl
 
     @Override
     @Transactional
-    public List<UserUnit> listSubUsersByUnitCode(String unitCode, Map<String, Object> map){
-        List<UserUnit> result = new ArrayList<>();
-        List<UnitInfo> unitInfos = sysUnitManager.listAllSubUnits(unitCode);
-        for(UnitInfo u : unitInfos){
-          map.put("unitCode", u.getUnitCode());
-          result.addAll(userUnitDao.listObjects(map));
+    public List<UserUnit> listSubUsersByUnitCode(String unitCode, Map<String, Object> map, PageDesc pageDesc){
+        UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
+        if(unitInfo != null){
+            map.put("unitPath", unitInfo.getUnitPath());
+            return userUnitDao.querySubUserUnits(
+              QueryParameterPrepare.prepPageParams(map,pageDesc,userUnitDao.countSubUserUnits(map)));
         }
-        return result;
+        return null;
     }
 }

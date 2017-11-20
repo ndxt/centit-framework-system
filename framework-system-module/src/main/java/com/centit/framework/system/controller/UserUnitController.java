@@ -91,7 +91,7 @@ public class UserUnitController extends BaseController {
     }
 
     /**
-     * 通过机构代码获取机构下用户
+     * 通过机构代码获取机构及其子机构下用户组
      *
      * @param unitCode 机构代码
      *                 参数 s_isPaimary 是否为主机构，是T F否，为空不限定
@@ -103,11 +103,8 @@ public class UserUnitController extends BaseController {
     public void listUsersByUnit(@PathVariable String unitCode, PageDesc pageDesc,
                                 HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = convertSearchColumn(request);
-        filterMap.put("unitCode", unitCode);
 
-        List<UserUnit> listObjects = sysUserUnitManager.listSubUsersByUnitCode(unitCode,filterMap);
-
-//        List<UserUnit> listObjects = sysUserUnitManager.listObjects(filterMap, pageDesc);
+        List<UserUnit> listObjects = sysUserUnitManager.listSubUsersByUnitCode(unitCode,filterMap, pageDesc);
 
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));

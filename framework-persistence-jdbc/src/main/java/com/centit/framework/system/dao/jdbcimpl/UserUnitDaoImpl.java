@@ -1,13 +1,19 @@
 package com.centit.framework.system.dao.jdbcimpl;
 
 import com.centit.framework.core.dao.CodeBook;
+import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.po.UserUnit;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.StringBaseOpt;
+import com.centit.support.database.orm.OrmDaoUtils;
+import com.centit.support.database.utils.PageDesc;
+import com.centit.support.database.utils.QueryAndNamedParams;
 import com.centit.support.database.utils.QueryUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,6 +83,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         return ls;
     }
 
+    @Override
     @Transactional
     public List<UserUnit> listObjectByUserUnit(String userCode,String unitCode){
         List<UserUnit> ls = listObjectsByProperties(QueryUtils.createSqlParamsMap(
@@ -88,12 +95,15 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
          */
         return ls;
     }
+
+    @Override
     @Transactional
     public String getNextKey() {
         return "s" + StringBaseOpt.fillZeroForString(
                 String.valueOf(DatabaseOptUtils.getSequenceNextValue(this, "S_USER_UNIT_ID")),9);
     }
 
+    @Override
     @Transactional
     public void deleteOtherPrimaryUnit(UserUnit object) {
         try {
@@ -109,6 +119,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
 
     }
 
+    @Override
     @Transactional
     public void deleteUserUnitByUser(String userCode) {
         Map<String, Object> map = new HashMap<>();
@@ -116,6 +127,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         super.deleteObjectsByProperties(map);
     }
 
+    @Override
     @Transactional
     public void deleteUserUnitByUnit(String unitCode) {
         Map<String, Object> map = new HashMap<>();
@@ -123,6 +135,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         super.deleteObjectsByProperties(map);
     }
 
+    @Override
     @Transactional
     public UserUnit getPrimaryUnitByUserId(String userId) {
         List<UserUnit> list = super.listObjectsByProperties(QueryUtils.createSqlParamsMap(
@@ -134,6 +147,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         }
     }
 
+    @Override
     @Transactional
     public List<UserUnit> listUnitUsersByUnitCode(String unitCode) {
         return listObjectsByProperty("unitCode", unitCode);
@@ -153,19 +167,59 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
                                                    String roleCode, String unitCode) {
         List<UserUnit> ls = null;
         if (unitCode != null && !"".equals(unitCode)) {
-            if ("gw".equals(roleType))
-                ls =listObjectsByProperties(QueryUtils.createSqlParamsMap(
-                        "unitCode",unitCode,"userStation",roleCode));
-            else if ("xz".equals(roleType))
-                ls = listObjectsByProperties(QueryUtils.createSqlParamsMap(
-                        "unitCode",unitCode, "userRank", roleCode));
+            if ("gw".equals(roleType)) {
+              ls = listObjectsByProperties(QueryUtils.createSqlParamsMap(
+                "unitCode", unitCode, "userStation", roleCode));
+            } else if ("xz".equals(roleType)) {
+              ls = listObjectsByProperties(QueryUtils.createSqlParamsMap(
+                "unitCode", unitCode, "userRank", roleCode));
+            }
         } else {
-            if ("gw".equals(roleType))
-                ls = listObjectsByProperty("userStation", roleCode);
-            else if ("xz".equals(roleType))
-                ls = listObjectsByProperty("userRank",roleCode);
+            if ("gw".equals(roleType)) {
+              ls = listObjectsByProperty("userStation", roleCode);
+            } else if ("xz".equals(roleType)) {
+              ls = listObjectsByProperty("userRank", roleCode);
+            }
         }
         return ls;
     }
 
+    @Override
+    public int countSubUserUnits(Map<String, Object> filterDescMap){
+        String sql = "select USER_UNIT_ID, UNIT_CODE, USER_CODE, IS_PRIMARY, USER_RANK, RANK_MEMO, USER_ORDER, " +
+            "UPDATE_DATE, CREATE_DATE, CREATOR, UPDATOR " +
+            "FROM F_USERUNIT WHERE 1=1 " +
+            "[:(STARTWITH)unitPath | and UNIT_CODE IN (select UNIT_CODE from f_unitinfo where UNIT_PATH like :unitPath)]"+
+            "[:(like)userName | and USER_CODE in (select USER_CODE from f_userinfo where USER_NAME like :userName)]";
+
+        QueryAndNamedParams qap = QueryUtils.translateQuery(
+          QueryUtils.buildGetCountSQLByReplaceFields(sql), filterDescMap);
+        return jdbcTemplate.execute(
+          (ConnectionCallback<Integer>) conn ->
+            OrmDaoUtils.fetchObjectsCount(conn, qap.getQuery(), qap.getParams()));
+    }
+
+    @Override
+    public List<UserUnit> querySubUserUnits(Map<String, Object> pageQueryMap) {
+        String sql = "select USER_UNIT_ID, UNIT_CODE, USER_CODE, IS_PRIMARY, USER_RANK, RANK_MEMO, USER_ORDER, " +
+          "UPDATE_DATE, CREATE_DATE, CREATOR, UPDATOR " +
+          "FROM F_USERUNIT WHERE 1=1 " +
+          "[:(STARTWITH)unitPath | and UNIT_CODE IN (select UNIT_CODE from f_unitinfo where UNIT_PATH like :unitPath)]"+
+          "[:(like)userName | and USER_CODE in (select USER_CODE from f_userinfo where USER_NAME like :userName)]";
+        PageDesc pageDesc = QueryParameterPrepare.fetckPageDescParams(pageQueryMap);
+
+        String selfOrderBy = fetchSelfOrderSql(sql, pageQueryMap);
+        if (StringUtils.isNotBlank(selfOrderBy)) {
+          sql = QueryUtils.removeOrderBy(sql) + " order by " + selfOrderBy;
+        }
+        QueryAndNamedParams qap = QueryUtils.translateQuery(sql, pageQueryMap);
+        return jdbcTemplate.execute(
+          /** 这个地方可以用replaceField 已提高效率
+           *  pageDesc.setTotalRows(OrmDaoUtils.fetchObjectsCount(conn,
+           QueryUtils.buildGetCountSQLByReplaceFields(qap.getSql()),qap.getParams()));
+           * */
+          (ConnectionCallback<List<UserUnit>>) conn -> OrmDaoUtils
+            .queryObjectsByNamedParamsSql(conn, qap.getQuery(), qap.getParams(), (Class<UserUnit>) getPoClass(),
+              pageDesc.getRowStart(), pageDesc.getPageSize()));
+    }
 }
