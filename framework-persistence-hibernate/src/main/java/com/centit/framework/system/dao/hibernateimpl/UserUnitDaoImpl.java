@@ -1,12 +1,20 @@
 package com.centit.framework.system.dao.hibernateimpl;
 
 import com.centit.framework.core.dao.CodeBook;
+import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.hibernate.dao.BaseDaoImpl;
 import com.centit.framework.hibernate.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.po.UserUnit;
 import com.centit.support.algorithm.DatetimeOpt;
+import com.centit.support.algorithm.NumberBaseOpt;
+import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.PageDesc;
+import com.centit.support.database.utils.QueryAndNamedParams;
+import com.centit.support.database.utils.QueryUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.query.Query;
+import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +25,7 @@ import java.util.Map;
 @Repository("userUnitDao")
 public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements UserUnitDao {
 
+    @Override
     public Map<String, String> getFilterField() {
         if (filterField == null) {
             filterField = new HashMap<>();
@@ -39,6 +48,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         return filterField;
     }
 
+    @Override
     @Transactional
     public List<UserUnit> listUserUnitsByUserCode(String userId) {
         List<UserUnit> ls = listObjects(
@@ -52,6 +62,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         return ls;
     }
 
+    @Override
     @Transactional
     public List<UserUnit> listObjectByUserUnit(String userCode,String unitCode){
         List<UserUnit> ls = listObjects(
@@ -60,12 +71,14 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         return ls;
     }
 
+    @Override
     @Transactional
     public String getNextKey() {
         return DatabaseOptUtils.getNextValueOfSequence(this, "S_USER_UNIT_ID");
 
     }
 
+    @Override
     @Transactional
     public void deleteOtherPrimaryUnit(UserUnit object) {
         DatabaseOptUtils
@@ -77,6 +90,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
 
     }
 
+    @Override
     @Transactional
     public void deleteUserUnitByUser(String userCode) {
         DatabaseOptUtils
@@ -87,6 +101,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
 
     }
 
+    @Override
     @Transactional
     public void deleteUserUnitByUnit(String unitCode) {
         DatabaseOptUtils
@@ -96,6 +111,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
                         unitCode);
     }
 
+    @Override
     @Transactional
     public UserUnit getPrimaryUnitByUserId(String userId) {
         List<UserUnit> list = listObjects(
@@ -108,6 +124,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         }
     }
 
+    @Override
     @Transactional
     public List<UserUnit> listUnitUsersByUnitCode(String unitCode) {
         List<UserUnit> ls =listObjects(
@@ -130,19 +147,21 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
                                                    String roleCode, String unitCode) {
         List<UserUnit> ls = null;
         if (unitCode != null && !"".equals(unitCode)) {
-            if ("gw".equals(roleType))
-                ls =listObjects("FROM UserUnit where unitCode=? and userStation=? ",
-                               new Object[]{ unitCode, roleCode});
-            else if ("xz".equals(roleType))
-                ls = listObjects("FROM UserUnit where unitCode=? and userRank=? ",
-                        new Object[]{ unitCode, roleCode});
+            if ("gw".equals(roleType)) {
+              ls = listObjects("FROM UserUnit where unitCode=? and userStation=? ",
+                new Object[]{unitCode, roleCode});
+            }else if ("xz".equals(roleType)) {
+              ls = listObjects("FROM UserUnit where unitCode=? and userRank=? ",
+                new Object[]{unitCode, roleCode});
+            }
         } else {
-            if ("gw".equals(roleType))
-                ls = listObjects("FROM UserUnit where userStation=? ",
-                                roleCode);
-            else if ("xz".equals(roleType))
-                ls = listObjects("FROM UserUnit where userRank=? ",
-                                roleCode);
+            if ("gw".equals(roleType)) {
+              ls = listObjects("FROM UserUnit where userStation=? ",
+                roleCode);
+            }else if ("xz".equals(roleType)) {
+              ls = listObjects("FROM UserUnit where userRank=? ",
+                roleCode);
+            }
         }
         return ls;
     }
@@ -189,5 +208,38 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
                 DatabaseOptUtils.flush(this.getCurrentSession());
             }
         }
+    }
+
+    @Override
+    public int countSubUserUnits(Map<String, Object> filterDescMap){
+        String hql = "from UserUnit where 1=1 " +
+          "[:(STARTWITH)unitPath | and unitCode in (select unitCode from UnitInfo where unitPath like :unitPath)]"+
+          "[:(like)userName | and userCode in (select userCode from UserInfo where userName like :userName)]";
+        QueryAndNamedParams qap = QueryUtils.translateQuery(hql, filterDescMap);
+        Query q =  getCurrentSession().createQuery("SELECT COUNT(*) "
+          + QueryUtils.removeOrderBy(qap.getQuery()));
+
+        Map<String, Object> params = qap.getParams();
+        DatabaseOptUtils.setQueryParameters(q,params);
+        Integer total = NumberBaseOpt.castObjectToInteger(q.uniqueResult());
+        return total==null?0:total;
+    }
+
+    @Override
+    public List<UserUnit> querySubUserUnits(Map<String, Object> pageQueryMap) {
+        String hql = "from UserUnit where 1=1 " +
+          "[:(STARTWITH)unitPath | and unitCode in (select unitCode from UnitInfo where unitPath like :unitPath)]"+
+          "[:(like)userName | and userCode in (select userCode from UserInfo where userName like :userName)]";
+
+        int startPos = 0;
+      int maxSize = 0;
+      if(pageQueryMap!=null){
+        startPos = NumberBaseOpt.castObjectToInteger(pageQueryMap.get("startRow"));
+        maxSize = NumberBaseOpt.castObjectToInteger(pageQueryMap.get("maxSize"));
+      }
+      QueryAndNamedParams qap = QueryUtils.translateQuery(hql, pageQueryMap);
+
+      return listObjectsByNamedHql(qap.getQuery(), qap.getParams(),
+        startPos, maxSize);
     }
 }

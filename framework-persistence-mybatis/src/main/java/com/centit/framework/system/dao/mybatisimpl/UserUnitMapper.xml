@@ -299,4 +299,38 @@
 		</foreach>
 	  </if>
 	</select>
+  <select id="querySubUserUnits" parameterType="map" resultMap="UserUnit">
+      <include refid="com.centit.framework.mybatis.dao.BaseDao.pageBegin" />
+      <include refid="coreSql" />
+      <where>
+          <if test="unitPath != null and unitPath != ''">
+              and k.UNIT_PATH like concat(#{unitPath}, '%')
+          </if>
+          <if test="userName != null and userName != ''">
+              and u.USER_CODE in (select USER_CODE from F_USERINFO where USER_NAME like concat('%',#{userName},'%'))
+          </if>
+      </where>
+      <if test="pageDesc != null">
+          order by ${pageDesc}
+      </if>
+      <include refid="com.centit.framework.mybatis.dao.BaseDao.pageEnd" />
+  </select>
+
+  <!--分页计数 -->
+  <select id="countSubUserUnits" parameterType="map" resultType="int">
+    <![CDATA[
+	   select count(0) cnt
+	     from
+             F_USERUNIT u left join F_UNITINFO k on u.UNIT_CODE=k.UNIT_CODE
+       ]]>
+    <where>
+      <if test="unitPath != null and unitPath != ''">
+        and k.UNIT_PATH like concat(#{unitPath}, '%')
+      </if>
+      <if test="userName != null and userName != ''">
+        and u.USER_CODE in (select USER_CODE from F_USERINFO where USER_NAME like concat('%',#{userName},'%'))
+      </if>
+    </where>
+  </select>
+
 </mapper>

@@ -94,11 +94,16 @@ public interface UserUnitDao {
     void mergeObject(UserUnit userunits);
 
   /**
-   * 根据unitPath 获取机构及其子机构下用户组信息
-   * @param unitPath 机构层级
-   * @param filterMap 过滤条件
-   * @param pageDesc 分页信息
-   * @return 用户组列表
+   * 查询用户组数量 用于分页
+   * @param filterDescMap 过滤条件
+   * @return 条数
    */
-    List<UserUnit> listUserUnitByUnitPath(String unitPath, Map<String, Object> filterMap, PageDesc pageDesc);
+    int countSubUserUnits(Map<String, Object> filterDescMap);
+
+    /**
+     * 分页查询 用户组
+     * @param pageQueryMap 包含分页信息 过滤条件
+     * @return 用户组列表
+     */
+    List<UserUnit> querySubUserUnits(Map<String, Object> pageQueryMap);
 }
