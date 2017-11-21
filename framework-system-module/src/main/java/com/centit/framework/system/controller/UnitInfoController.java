@@ -10,6 +10,7 @@ import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.DictionaryMapUtils;
+import com.centit.framework.model.basedata.IUserInfo;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.model.basedata.OperationLog;
@@ -393,10 +394,10 @@ public class UnitInfoController extends BaseController {
    */
     @RequestMapping(value = "/currentusers/{state}", method = RequestMethod.GET)
     public void listAllUsersByCurrentUser(@PathVariable String state, HttpServletRequest request, HttpServletResponse response) {
-        UserInfo userInfo = (UserInfo) getLoginUser(request);
+        IUserInfo userInfo =  getLoginUser(request).getUserInfo();
         String unitCode = userInfo.getPrimaryUnit();
 
-        Map<String, Object> filterMap = new HashMap<>();
+        Map<String, Object> filterMap = new HashMap<>(4);
         filterMap.put("unitCode", unitCode);
         filterMap.put("isValid", state);
         List<UserInfo> listObjects = sysUserMag.listObjects(filterMap);

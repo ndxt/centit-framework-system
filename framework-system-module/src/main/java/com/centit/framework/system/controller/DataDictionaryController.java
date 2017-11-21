@@ -62,8 +62,8 @@ public class DataDictionaryController extends BaseController {
     @Override
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
-        super.initBinder(binder);
         binder.setAutoGrowCollectionLimit(4096);
+        super.initBinder(binder);
     }
 
   /**

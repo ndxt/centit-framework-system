@@ -32,7 +32,6 @@ public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Seriali
 
     protected UserInfo userInfo;
 
-    @Override
     public String getUserCode(){
       return getUserInfo().getUserCode();
     }
