@@ -4,22 +4,17 @@ import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.components.OperationLogCenter;
-import com.centit.framework.core.controller.*;
-import com.centit.framework.system.po.*;
-import com.centit.framework.system.service.SysUserRoleManager;
-import com.centit.support.database.utils.PageDesc;
+import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.model.basedata.IUserUnit;
 import com.centit.framework.model.basedata.OperationLog;
-import com.centit.framework.security.model.CentitUserDetails;
-import com.centit.framework.system.service.OptInfoManager;
+import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.OptMethodManager;
 import com.centit.framework.system.service.SysRoleManager;
+import com.centit.framework.system.service.SysUserRoleManager;
+import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,8 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -43,10 +36,6 @@ public class RoleInfoController extends BaseController {
 
     @Resource
     @NotNull
-    private OptInfoManager functionManager;
-
-    @Resource
-    @NotNull
     private OptMethodManager optDefManager;
 
     @Resource
@@ -55,13 +44,6 @@ public class RoleInfoController extends BaseController {
      * 系统日志中记录
      */
     private String optId = "ROLEMAG";//CodeRepositoryUtil.getCode("OPTID", "roleInfo");
-
-    @Override
-    @InitBinder
-    protected void initBinder(WebDataBinder binder) {
-        super.initBinder(binder);
-        binder.setAutoGrowCollectionLimit(4096);
-    }
 
     /**
      * 查询所有系统角色

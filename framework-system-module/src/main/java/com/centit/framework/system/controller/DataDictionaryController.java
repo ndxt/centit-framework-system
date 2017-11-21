@@ -59,14 +59,7 @@ public class DataDictionaryController extends BaseController {
 
     private String optId = "DICTSET";
 
-    @Override
-    @InitBinder
-    protected void initBinder(WebDataBinder binder) {
-        super.initBinder(binder);
-        binder.setAutoGrowCollectionLimit(4096);
-    }
-
-  /**
+    /**
      * 查询所有数据目录列表
      *
      * @param field    只需要的属性名
