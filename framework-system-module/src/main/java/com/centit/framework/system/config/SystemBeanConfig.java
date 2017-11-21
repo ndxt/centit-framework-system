@@ -5,19 +5,25 @@ import com.centit.framework.security.model.CentitPasswordEncoder;
 import com.centit.framework.security.model.CentitPasswordEncoderImpl;
 import com.centit.framework.security.model.CentitSessionRegistry;
 import com.centit.framework.security.model.MemorySessionRegistryImpl;
+import net.sf.ehcache.CacheManager;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 @PropertySource("classpath:system.properties")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
+@EnableCaching(proxyTargetClass = true)
 //@EnableAsync
 public class SystemBeanConfig implements EnvironmentAware {
 
@@ -61,6 +67,20 @@ public class SystemBeanConfig implements EnvironmentAware {
     @Bean
     public CentitSessionRegistry centitSessionRegistry(){
         return new MemorySessionRegistryImpl();
+    }
+
+    @Bean
+    public EhCacheCacheManager  cacheManager(CacheManager cacheManager) {
+      return new EhCacheCacheManager(cacheManager);
+    }
+
+    @Bean
+    public EhCacheManagerFactoryBean cacheManagerFactory() {
+
+        EhCacheManagerFactoryBean ehCacheManagerFactoryBean = new EhCacheManagerFactoryBean();
+        ehCacheManagerFactoryBean.setConfigLocation(new ClassPathResource("ehcache.xml"));
+        return ehCacheManagerFactoryBean;
+
     }
 
 }
