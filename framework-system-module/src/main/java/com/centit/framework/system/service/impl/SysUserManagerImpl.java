@@ -64,7 +64,7 @@ public class SysUserManagerImpl implements SysUserManager {
         //所有的用户 都要添加这个角色
         roles.add(new RoleInfo("G-public", "general public","G",
                 "G","T", "general public"));
-        List<FVUserRoles> ls = userRoleDao.getSysRolesByUserId(userCode);
+        List<FVUserRoles> ls = userRoleDao.listUserRolesByUserCode(userCode);
         if(ls!=null){
             for (FVUserRoles l : ls) {
                 RoleInfo roleInfo = new RoleInfo();

@@ -56,7 +56,7 @@ public class DaoUserDetailsService
         authorities.add( new SimpleGrantedAuthority(
           CentitSecurityMetadata.ROLE_PREFIX + "G-public" ));
 
-        List<FVUserRoles> userRoles = userRoleDao.getSysRolesByUserId(userinfo.getUserCode());
+        List<FVUserRoles> userRoles = userRoleDao.listUserRolesByUserCode(userinfo.getUserCode());
         if(userRoles!=null){
             for (FVUserRoles userRole : userRoles) {
                 authorities.add(new SimpleGrantedAuthority(CentitSecurityMetadata.ROLE_PREFIX

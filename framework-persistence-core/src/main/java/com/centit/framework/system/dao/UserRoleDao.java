@@ -26,51 +26,39 @@ public interface UserRoleDao {
      List<UserRole>  pageQuery(Map<String, Object> pageQureyMap);
 
     //DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.roleCode = ?", roid);
-     void deleteByRoleId(String roid);
-    
+     void deleteByRoleId(String roleCode);
+
     //DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.userCode = ?", usid);
-     void deleteByUserId(String usid);
-    
-    //DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.userCode = '"+userCode+"' and id.roleCode= '"+roleCode+"'");
-    //参数 String roleCode,String userCode
-//     void deleteByRoleCodeAndUserCode(Map map);
-    
-    /**
+     void deleteByUserId(String userCode);
+
+      /**
      * List roleInfos = new ArrayList();
         //所有的用户 都要添加这个角色
         roleInfos.add(new RoleInfo("G-", "general ","G",
                 "G","T", "general "));
         final String sSqlsen = "from FVUserRoles v where userCode = ?";
-     * @param usid usid
+     * @param userCode usid
      * @return List FVUserRoles
      */
-     List<FVUserRoles> getSysRolesByUserId(String usid);
-    
-    /**
-     *  "FROM UserRole ur where ur.id.userCode = ? and ur.id.roleCode like ?"
-                + "and ur.id.obtainDate &lt;= ? and (ur.secedeDate is null or ur.secedeDate &gt; ?) "
-                + "ORDER BY obtainDate,secedeDate";
-     * @param map map
-     * @return List UserRole
-     * 参数String usid, String rolePrefix
-     */
-//     List<UserRole> getUserRolesByUserId(Map map);
+      List<FVUserRoles> listUserRolesByUserCode(String userCode);
 
+    /**
+     * List roleInfos = new ArrayList();
+     //所有的用户 都要添加这个角色
+     roleInfos.add(new RoleInfo("G-", "general ","G",
+     "G","T", "general "));
+     final String sSqlsen = "from FVUserRoles v where v.id.roleCode = ? "
+     * @param roleCode 角色代码
+     * @return 拥有该角色的用户
+     */
+     List<FVUserRoles> listRoleUsersByRoleCode(String roleCode);
     /**
      * "FROM UserRole ur where ur.id.userCode=? and ur.id.roleCode like ? "
                 + "ORDER BY obtainDate,secedeDate";
-     * @param usid usid
+     * @param userCode usid
      * @param rolePrefix rolePrefix
      * @return List UserRole
      */
-     List<UserRole> getAllUserRolesByUserId(String usid, String rolePrefix);
-    /**
-     *  "FROM UserRole ur where ur.id.userCode=? and ur.id.roleCode = ? " +
-             "ORDER BY obtainDate,secedeDate";
+     List<UserRole> getAllUserRolesByUserId(String userCode, String rolePrefix);
 
-     * @param map map
-     * @return UserRole
-     * 参数 String userCode, String rolecode
-     */
-//     UserRole getValidUserRole(Map map);
 }

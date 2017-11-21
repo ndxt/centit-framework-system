@@ -38,7 +38,8 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
 
             filterField.put("byUnderUnit", "userCode in " +
                     "(select us.USER_CODE from f_userunit us where us.UNIT_CODE = :byUnderUnit ) ");
-
+            filterField.put("roleCode", "USER_CODE in " +
+                "(select v.USER_CODE from F_V_USERROLES v where v.ROLE_CODE = :roleCode) ");
             filterField.put("queryByUnit", "userCode in " +
                     "(select us.USER_CODE from f_userunit us where us.UNIT_CODE = :queryByUnit ) ");
             filterField.put("queryByGW", "userCode in " +
@@ -130,6 +131,11 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
     @Override
     public void deleteObjectById(String userCode) {
         super.deleteObjectById(userCode);
+    }
+
+    @Override
+    public List<UserInfo> listUsersByRoleCode(String roleCode) {
+        return super.listObjects(QueryUtils.createSqlParamsMap("roleCode", roleCode) );
     }
 
     @Override

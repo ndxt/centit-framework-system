@@ -135,7 +135,7 @@
 	<sql id="coreSql">
 		<![CDATA[
 			select
-			        u.USER_CODE,
+			    u.USER_CODE,
 					u.USER_PIN,
 					u.IS_VALID,
 					u.USER_TYPE,
@@ -187,6 +187,40 @@
 		<include refid="com.centit.framework.mybatis.dao.BaseDao.pageEnd" />
 	</select>
 	<!--分页查询结束 -->
+
+
+  <select id="listUsersByRoleCode" parameterType="String" resultMap="UserInfo">
+    <![CDATA[
+			select
+			    u.USER_CODE,
+					u.USER_PIN,
+					u.IS_VALID,
+					u.USER_TYPE,
+					u.LOGIN_NAME,
+					u.USER_NAME,
+					u.ENGLISH_NAME,
+					u.USER_DESC,
+					u.LOGIN_TIMES,
+					u.ACTIVE_TIME,
+					u.PWD_EXPIRED_TIME,
+					u.LOGIN_IP,
+					u.ADDRBOOK_ID,
+					u.REG_EMAIL,
+					u.USER_PWD,
+					u.REG_CELL_PHONE,
+					u.USER_WORD,
+					u.USER_TAG,
+					u.USER_ORDER,
+					u.PRIMARY_UNIT,
+					u.CREATE_DATE,
+					u.CREATOR,
+					u.UPDATOR,
+					u.UPDATE_DATE
+		      from F_USERINFO u join F_V_USERROLES k on u.USER_CODE = k.USER_CODE
+		      where k.ROLE_CODE=#{roleCode}
+	  ]]>
+  </select>
+
 <!--查询单条记录ById -->
 	<select id="getObjectById" parameterType="String" resultMap="UserInfo">
 		<include refid="coreSql" />

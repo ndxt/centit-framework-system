@@ -17,6 +17,13 @@ public interface UserInfoDao {
 
     List<UserInfo> listObjects(Map<String, Object> filterMap);
 
+  /**
+   * 根据角色获取 相关用户  这个需要从视图中获取，包括继承来的角色
+   * @param roleCode 角色代码
+   * @return 返回相关用户
+   */
+    List<UserInfo> listUsersByRoleCode(String roleCode);
+
     int  pageCount(Map<String, Object> filterDescMap);
 
     List<UserInfo>  pageQuery(Map<String, Object> pageQureyMap);

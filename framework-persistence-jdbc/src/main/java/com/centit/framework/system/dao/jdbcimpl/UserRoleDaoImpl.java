@@ -40,37 +40,57 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
     }
 
     @Override
+    @Transactional
     public void deleteObjectById(UserRoleId id) {
-        super.deleteObjectById(id);
-    }
+          super.deleteObjectById(id);
+      }
 
     @Override
+    @Transactional
     public UserRole getObjectById(UserRoleId id) {
         return super.getObjectById(id);
     }
 
+    @Override
     @Transactional
     public void deleteByRoleId(String roid) {
         super.deleteObjectsByProperties(QueryUtils.createSqlParamsMap("roleCode",roid));
     }
+
+    @Override
     @Transactional
     public void deleteByUserId(String usid) {
         super.deleteObjectsByProperties(QueryUtils.createSqlParamsMap("userCode",usid));
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public List<FVUserRoles> listUserRolesByUserCode(String userCode) {
+        return getJdbcTemplate().execute(
+          (ConnectionCallback<List<FVUserRoles>>) conn ->
+            OrmDaoUtils.listObjectsByProperties(conn,
+              QueryUtils.createSqlParamsMap("userCode",userCode) ,
+              FVUserRoles.class));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public List<FVUserRoles> listRoleUsersByRoleCode(String roleCode) {
+      return getJdbcTemplate().execute(
+        (ConnectionCallback<List<FVUserRoles>>) conn ->
+          OrmDaoUtils.listObjectsByProperties(conn,
+            QueryUtils.createSqlParamsMap("roleCode",roleCode) ,
+            FVUserRoles.class));
+    }
+
     @Transactional
     public void deleteByRoleCodeAndUserCode(String roleCode,String userCode) {
         super.deleteObjectsByProperties(
-                QueryUtils.createSqlParamsMap("userCode",userCode,"roleCode",roleCode));   }
-
-    @SuppressWarnings("unchecked")
-    @Transactional
-    public List<FVUserRoles> getSysRolesByUserId(String userCode) {
-        return getJdbcTemplate().execute(
-                (ConnectionCallback<List<FVUserRoles>>) conn ->
-                        OrmDaoUtils.listObjectsByProperties(conn,
-                                QueryUtils.createSqlParamsMap("userCode",userCode) ,
-                                FVUserRoles.class));
+                QueryUtils.createSqlParamsMap("userCode",userCode,"roleCode",roleCode));
     }
+
     @Transactional
     public List<UserRole> getUserRolesByUserId(String usid, String rolePrefix) {
         String sql = "select u.USER_CODE, u.ROLE_CODE, u.OBTAIN_DATE, u.CHANGE_DESC, u.CREATE_DATE, u.CREATOR, " +
@@ -82,6 +102,7 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
         return listObjectsBySql(sql, QueryUtils.createSqlParamsMap("userCode", usid, "rolePrefix", rolePrefix + "%"));
     }
 
+    @Override
     @Transactional
     public List<UserRole> getAllUserRolesByUserId(String usid, String rolePrefix) {
         String sql = "select u.USER_CODE, u.ROLE_CODE, u.OBTAIN_DATE, u.CHANGE_DESC, u.CREATE_DATE, u.CREATOR, " +

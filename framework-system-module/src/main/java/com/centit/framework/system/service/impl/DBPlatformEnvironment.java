@@ -196,6 +196,26 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
+    public List<FVUserRoles> listUserRolesByUserCode(String userCode) {
+        return userRoleDao.listUserRolesByUserCode(userCode);
+    }
+
+    @Override
+    public List<UserInfo> listRoleUserByRoleCode(String roleCode) {
+      return userInfoDao.listUsersByRoleCode(roleCode);
+    }
+
+    @Override
+    public List<FVUserRoles> listUserRoles(String userCode) {
+        return userRoleDao.listUserRolesByUserCode(userCode);
+    }
+
+    @Override
+    public List<FVUserRoles> listRoleUsers(String roleCode) {
+        return userRoleDao.listRoleUsersByRoleCode(roleCode);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public UserInfo getUserInfoByUserCode(String userCode) {
         return userInfoDao.getObjectById(userCode);
@@ -269,7 +289,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                         logger.error(e.getMessage(),e);
                         uu.setXzRank(CodeRepositoryUtil.MAXXZRANK);
                     }
-                 }
+                }
             }
         }
         return userUnits;
@@ -434,13 +454,12 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         userinfo.setUserUnits(usun);
         CentitUserDetailsImpl sysuser = new CentitUserDetailsImpl(userinfo);
 
-        //List<RoleInfo> roles = userRoleDao.getSysRolesByUserId(sysuser.getUserCode());
         //edit by zhuxw  代码从原框架迁移过来，可和其它地方合并
         List<RoleInfo> roles = new ArrayList<>();
         //所有的用户 都要添加这个角色
         roles.add(new RoleInfo("G-public", "general public","G",
                  "G","T", "general public"));
-        List<FVUserRoles> ls = userRoleDao.getSysRolesByUserId(userinfo.getUserCode());
+        List<FVUserRoles> ls = userRoleDao.listUserRolesByUserCode(userinfo.getUserCode());
         if(ls!=null) {
              for (FVUserRoles l : ls) {
                  RoleInfo roleInfo = new RoleInfo();

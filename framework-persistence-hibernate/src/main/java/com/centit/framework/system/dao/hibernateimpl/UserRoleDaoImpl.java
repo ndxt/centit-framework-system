@@ -55,24 +55,26 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
         DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.userCode = '"+userCode+"' and id.roleCode= '"+roleCode+"'");
     }
 
+
+    @Override
     @SuppressWarnings("unchecked")
     @Transactional
-    public List<FVUserRoles> getSysRolesByUserId(String userCode) {
-
-        final String sSqlsen = "from FVUserRoles v where id.userCode = ?";
-        List<FVUserRoles> ls = (List<FVUserRoles>) DatabaseOptUtils.findObjectsByHql(
-                this, sSqlsen, new Object[]{userCode});
-        return ls;
+    public List<FVUserRoles> listUserRolesByUserCode(String userCode) {
+        final String sSqlsen = "from FVUserRoles v where v.id.userCode = ?";
+        return (List<FVUserRoles>) DatabaseOptUtils.findObjectsByHql(
+          this, sSqlsen, new Object[]{userCode});
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
     @Transactional
-    public List<UserRole> getUserRolesByUserId(String usid, String rolePrefix) {
-        String hql = "FROM UserRole ur where ur.id.userCode = ? and ur.id.roleCode like ?"
-                + "and ur.id.obtainDate <= ? and (ur.secedeDate is null or ur.secedeDate > ?) "
-                + "ORDER BY obtainDate";
-
-        return listObjects(hql, new Object[]{usid, rolePrefix + "%",new Date(),new Date()});
+    public List<FVUserRoles> listRoleUsersByRoleCode(String roleCode) {
+        final String sSqlsen = "from FVUserRoles v where v.id.roleCode = ?";
+        return (List<FVUserRoles>) DatabaseOptUtils.findObjectsByHql(
+          this, sSqlsen, new Object[]{roleCode});
     }
 
+    @Override
     @Transactional
     public List<UserRole> getAllUserRolesByUserId(String usid, String rolePrefix) {
         String hql = "FROM UserRole ur where ur.id.userCode=? and ur.id.roleCode like ? "
@@ -80,15 +82,6 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
 
         return listObjects(hql, new Object[]{usid, rolePrefix + "%"});
     }
-    @Transactional
-    public UserRole getValidUserRole(String userCode, String rolecode) {
-        String hql = "FROM UserRole ur where ur.id.userCode=? and ur.id.roleCode = ? " +
-             "ORDER BY obtainDate";
 
-        List<UserRole> urlt = listObjects(hql, new Object[]{userCode, rolecode});
-        if (CollectionUtils.isEmpty(urlt)) {
-            return null;
-        }
-        return urlt.get(0);
-    }
+
 }

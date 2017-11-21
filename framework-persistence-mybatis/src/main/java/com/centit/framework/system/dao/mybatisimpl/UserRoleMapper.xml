@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.centit.framework.system.dao.mybatisimpl.UserRoleDao">
+
 	<resultMap type="com.centit.framework.system.po.UserRole" id="UserRole">
 			<result property="userCode" column="USER_CODE" />
 			<result property="roleCode" column="ROLE_CODE" />
@@ -13,6 +14,7 @@
 			<result property="updator" column="UPDATOR" />
 			<result property="updateDate" column="UPDATE_DATE" />
 	</resultMap>
+
 	<resultMap type="com.centit.framework.system.po.FVUserRoles" id="FvuserRole">
 			<result property="userCode" column="USER_CODE" />
 			<result property="roleCode" column="ROLE_CODE" />
@@ -226,9 +228,11 @@
 	<delete id="deleteByUserId" parameterType="String" timeout="2000">
 		delete from F_USERROLE WHERE USER_CODE = #{usid}
 	</delete>
+
 	<delete id="deleteByRoleCodeAndUserCode" parameterType="map"  timeout="2000">
 		delete from F_USERROLE WHERE USER_CODE = #{userCode} and ROLE_CODE= #{roleCode}
 	</delete>
+
 	<select id="getUserRolesByUserId" parameterType="map" resultMap="UserRole">
 		<include refid="coreSql" />
 		<![CDATA[
@@ -237,7 +241,8 @@
 		ORDER BY OBTAIN_DATE,SECEDEDATE
 		]]>
 	</select>
-	<select id="getAllUserRolesByUserId" parameterType="String" resultMap="UserRole">
+
+	<select id="getAllUserRolesByUserId" parameterType="map" resultMap="UserRole">
 		<include refid="coreSql" />
 		<![CDATA[
 			where USER_CODE = #{usid} and ROLE_CODE like #{rolePrefix}||'%'
@@ -251,11 +256,16 @@
 	</select>
 
 
-	<select id="getSysRolesByUserId" parameterType="String" resultMap="FvuserRole">
-		select  ROLE_CODE,ROLE_NAME,IS_VALID,ROLE_DESC from F_V_USERROLES
+	<select id="listUserRolesByUserCode" parameterType="String" resultMap="FvuserRole">
+		select USER_CODE,ROLE_CODE,ROLE_NAME,IS_VALID,ROLE_DESC,OBTAIN_TYPE,INHERITED_FROM  from F_V_USERROLES
 		where USER_CODE = #{userCode}
 	</select>
 
+
+  <select id="listRoleUsersByRoleCode" parameterType="String" resultMap="FvuserRole">
+    select USER_CODE,ROLE_CODE,ROLE_NAME,IS_VALID,ROLE_DESC,OBTAIN_TYPE,INHERITED_FROM from F_V_USERROLES
+    where ROLE_CODE = #{roleCode}
+  </select>
 
 
 </mapper>

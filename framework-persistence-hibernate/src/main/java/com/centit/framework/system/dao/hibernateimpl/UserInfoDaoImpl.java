@@ -59,14 +59,17 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
             filterField.put("USERWORD", CodeBook.EQUAL_HQL_ID);
 
             filterField.put("byUnderUnit", "userCode in " +
-                    "(select  id.userCode from UserUnit where id.unitCode = :byUnderUnit ) ");
+                    "(select  id.userCode from UserUnit where id.unitCode = :byUnderUnit) ");
 
             filterField.put("queryByUnit", "userCode in " +
-                    "(select  id.userCode from UserUnit where id.unitCode = :queryByUnit ) ");
+                    "(select  id.userCode from UserUnit where id.unitCode = :queryByUnit) ");
+            filterField.put("roleCode", "userCode in " +
+                  "(select  v.id.userCode from FVUserRoles v where v.id.roleCode = :roleCode) ");
+
             filterField.put("queryByGW", "userCode in " +
-                    "(select  id.userCode from UserUnit where id.userStation = :queryByGW )");
+                    "(select  id.userCode from UserUnit where id.userStation = :queryByGW)");
             filterField.put("queryByXZ", "userCode in " +
-                    "(select  id.userCode from UserUnit where id.userRank = :queryByXZ )");
+                    "(select  id.userCode from UserUnit where id.userRank = :queryByXZ)");
             filterField.put("queryByRole", "userCode in " +
                     "(select r.id.userCode from UserRole r, RoleInfo i " +
                     "where r.id.roleCode = :queryByRole and r.id.roleCode = i.roleCode and i.isValid = 'T')");
@@ -209,7 +212,12 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
         super.updateObject(user);
     }
 
-    public int isLoginNameExist(String userCode, String loginName){
+  @Override
+  public List<UserInfo> listUsersByRoleCode(String roleCode) {
+    return  this.listObjects(QueryUtils.createSqlParamsMap("roleCode",roleCode));
+  }
+
+  public int isLoginNameExist(String userCode, String loginName){
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.LOGINNAME = ?";
         Object obj  = DatabaseOptUtils.getSingleObjectBySql(this, sql,

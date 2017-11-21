@@ -1,16 +1,17 @@
 package com.centit.framework.system.po;
 
+import com.centit.framework.model.basedata.IRoleInfo;
 import com.centit.framework.model.basedata.IUserRole;
+import org.springframework.util.CollectionUtils;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "F_V_USERROLES")
-public class FVUserRoles implements IUserRole, Serializable {
+public class FVUserRoles implements IUserRole, IRoleInfo, Serializable {
     /**
      *
      */
@@ -41,6 +42,9 @@ public class FVUserRoles implements IUserRole, Serializable {
 
     @Column(name = "ROLE_DESC")
     private String roleDesc; // 角色描述
+
+    @Transient
+    private List<RolePower> rolePowers;
 
     public UserRoleId getId() {
         return id;
@@ -126,5 +130,26 @@ public class FVUserRoles implements IUserRole, Serializable {
 
     public void setInheritedFrom(String inheritedFrom) {
         this.inheritedFrom = inheritedFrom;
+    }
+
+    @Override
+    public List<RolePower> getRolePowers() {
+        if (null == rolePowers) {
+            rolePowers = new ArrayList<>();
+        }
+        return rolePowers;
+    }
+
+    public void setRolePowers(List<RolePower> rolePowers) {
+        this.rolePowers = rolePowers;
+    }
+
+
+    public void addAllRolePowers(List<RolePower> rolePowers) {
+        getRolePowers().clear();
+        if(CollectionUtils.isEmpty(rolePowers)) {
+            return;
+        }
+        getRolePowers().addAll(rolePowers);
     }
 }
