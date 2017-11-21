@@ -11,10 +11,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.EnvironmentAware;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
@@ -24,7 +21,6 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 @PropertySource("classpath:system.properties")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableCaching(proxyTargetClass = true)
-//@EnableAsync
 public class SystemBeanConfig implements EnvironmentAware {
 
     Environment env;
@@ -70,7 +66,7 @@ public class SystemBeanConfig implements EnvironmentAware {
     }
 
     @Bean
-    public EhCacheCacheManager  cacheManager(CacheManager cacheManager) {
+    public EhCacheCacheManager cacheManager(CacheManager cacheManager) {
       return new EhCacheCacheManager(cacheManager);
     }
 

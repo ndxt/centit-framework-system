@@ -29,40 +29,60 @@ import java.util.List;
 public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Serializable{
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 类别代码
+     */
     @Id
     @Column(name = "CATALOG_CODE")
-    //@GeneratedValue(generator = "assignedGenerator")
-    private String catalogCode; // 类别代码
+    private String catalogCode;
 
+    /**
+     * 类别名称
+     */
     @Column(name = "CATALOG_NAME")
     @Length(max = 64, message = "字段长度不能大于{max}")
-    private String catalogName;// 类别名称
+    private String catalogName;
 
+    /**
+     * 类别状态
+     */
     @Column(name = "CATALOG_STYLE")
     @NotBlank(message = "字段不能为空")
     @Length(max = 1, message = "字段长度必须为{max}")
     @Pattern(regexp = "[SUF]", message = "字段只能填写F,S,U")
-    private String catalogStyle;// 类别状态
+    private String catalogStyle;
 
+    /**
+     * 类别形式 F S U
+     */
     @Column(name = "CATALOG_TYPE")
     @NotBlank(message = "字段不能为空")
     @Length(max = 1, message = "字段长度必须为{max}")
     @Pattern(regexp = "[LT]", message = "字段只能填写L或T")
-    private String catalogType;// 类别形式
+    private String catalogType;
 
+    /**
+     * 类别描述
+     */
     @Column(name = "CATALOG_DESC")
     @Length(max = 256, message = "字段长度不能大于{max}")
-    private String catalogDesc;// 类别描述
+    private String catalogDesc;
 
+    /**
+     * 字典字段描述
+     */
     @Column(name = "FIELD_DESC")
     @Length(max = 1024, message = "字段长度不能大于{max}")
-    private String fieldDesc; // 字典字段描述
+    private String fieldDesc;
 
+    /**
+     * 是否需要缓存
+     */
     @Column(name = "NEED_CACHE")
     @NotBlank(message = "字段不能为空")
     @Length(max = 1, message = "字段长度必须为{max}")
     // 默认值为1如何设置？
-    private String needCache; // 是否需要缓存
+    private String needCache;
 
     @Column(name = "OPT_ID")
     @Length(max = 16, message = "字段长度不能大于{max}")
