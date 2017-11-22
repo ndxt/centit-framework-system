@@ -20,9 +20,10 @@
 			<result property="roleCode" column="ROLE_CODE" />
 			<result property="roleName" column="ROLE_NAME" />
 			<result property="isValid" column="IS_VALID" />
-			<result property="roleDesc" column="ROLE_DESC" />
+      <result property="roleDesc" column="ROLE_DESC" />
+      <result property="obtainType" column="OBTAIN_TYPE" />
+      <result property="inheritedFrom" column="INHERITED_FROM" />
 	</resultMap>
-
 
 	<!-- 查询条件 -->
 	<sql id="condition" databaseId="oracle">
@@ -245,7 +246,7 @@
 	<select id="getAllUserRolesByUserId" parameterType="map" resultMap="UserRole">
 		<include refid="coreSql" />
 		<![CDATA[
-			where USER_CODE = #{usid} and ROLE_CODE like #{rolePrefix}||'%'
+			where USER_CODE = #{userCode} and ROLE_CODE like #{rolePrefix}||'%'
 			ORDER BY OBTAIN_DATE,SECEDEDATE
 		]]>
 	</select>

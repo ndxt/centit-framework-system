@@ -5,6 +5,7 @@ import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.IDataDictionary;
 import com.centit.framework.model.basedata.IUnitInfo;
+import com.centit.framework.model.basedata.IUnitRole;
 import com.centit.framework.model.basedata.IUserInfo;
 import com.centit.framework.security.model.CentitPasswordEncoder;
 import com.centit.framework.security.model.CentitSecurityMetadata;
@@ -70,6 +71,10 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Resource
     @NotNull
     private UserRoleDao userRoleDao;
+
+    @Resource
+    @NotNull
+    protected UnitRoleDao unitRoleDao;
 
     @Resource
     @NotNull
@@ -196,23 +201,39 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<FVUserRoles> listUserRolesByUserCode(String userCode) {
         return userRoleDao.listUserRolesByUserCode(userCode);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserInfo> listRoleUserByRoleCode(String roleCode) {
       return userInfoDao.listUsersByRoleCode(roleCode);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<FVUserRoles> listUserRoles(String userCode) {
         return userRoleDao.listUserRolesByUserCode(userCode);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<FVUserRoles> listRoleUsers(String roleCode) {
         return userRoleDao.listRoleUsersByRoleCode(roleCode);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<? extends IUnitRole> listUnitRoles(String unitCode) {
+        return unitRoleDao.listUnitRolesByUnitCode(unitCode);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<? extends IUnitRole> listRoleUnits(String roleCode) {
+        return unitRoleDao.listUnitRolesByRoleCode(roleCode);
     }
 
     @Override

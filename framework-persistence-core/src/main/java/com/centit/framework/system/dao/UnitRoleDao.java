@@ -23,5 +23,7 @@ public interface UnitRoleDao {
 
     List<UnitRole>  pageQuery(Map<String, Object> pageQureyMap);
 
-    List<UnitRole> listUnitRolesByUnitId(String unitId);
+    List<UnitRole> listUnitRolesByUnitCode(String unitCode);
+
+    List<UnitRole> listUnitRolesByRoleCode(String roleCode);
 }

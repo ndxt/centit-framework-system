@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.centit.framework.system.dao.mybatisimpl.UnitRoleDao">
+
+	<resultMap type="com.centit.framework.system.po.UnitRole" id="UnitRole">
+			<result property="unitCode" column="UNIT_CODE" />
+			<result property="roleCode" column="ROLE_CODE" />
+			<result property="obtainDate" column="OBTAIN_DATE" />
+			<result property="changeDesc" column="CHANGE_DESC" />
+			<result property="createDate" column="CREATE_DATE" />
+			<result property="creator" column="CREATOR" />
+			<result property="updator" column="UPDATOR" />
+			<result property="updateDate" column="UPDATE_DATE" />
+	</resultMap>
+
+	<!-- 查询条件 -->
+	<sql id="condition">
+		<if test="roleCode != null  and roleCode != '' ">
+			  and u.ROLE_CODE =#{roleCode}
+		</if>
+		<if test="userCode != null  and userCode != '' ">
+			  and u.USER_CODE =#{userCode}
+		</if>
+	</sql>
+
+
+	<!-- 查询核心SQL -->
+	<sql id="coreSql">
+		<![CDATA[
+			select
+				u.UNIT_CODE,
+				u.ROLE_CODE,
+				u.OBTAIN_DATE,
+				u.CHANGE_DESC,
+				u.CREATE_DATE,
+				u.CREATOR,
+				u.UPDATOR,
+				u.UPDATE_DATE
+		    from F_UNITROLE u
+	  ]]>
+	</sql>
+
+	<!--分页计数 -->
+	<select id="pageCount" parameterType="map" resultType="int">
+ 	 <![CDATA[
+	   select count(0) cnt
+	     from F_UNITROLE u
+       ]]>
+		<where>
+			<include refid="condition" />
+		</where>
+	</select>
+	<!--分页查询 -->
+	<select id="pageQuery" parameterType="map" resultMap="UnitRole">
+	    <include refid="com.centit.framework.mybatis.dao.BaseDao.pageBegin" />
+		<include refid="coreSql" />
+		<where>
+			<include refid="condition" />
+		</where>
+		<include refid="com.centit.framework.mybatis.dao.BaseDao.pageEnd" />
+	</select>
+	<!--分页查询结束 -->
+<!--查询单条记录ById -->
+	<select id="getUnitRoleById" parameterType="com.centit.framework.system.po.UnitRoleId" resultMap="UnitRole">
+		<include refid="coreSql" />
+		<where>
+         <![CDATA[
+	                u.USER_CODE=#{unitCode} and u.ROLE_CODE=#{roleCode}
+           ]]>
+		</where>
+	</select>
+	<!--查询单条记录 结束 -->
+
+    <!--插入新单据 start -->
+    <sql id="insertSql">
+		   (
+			UNIT_CODE,
+			ROLE_CODE,
+			OBTAIN_DATE,
+			CHANGE_DESC,
+			CREATE_DATE,
+			CREATOR,
+			UPDATOR,
+			UPDATE_DATE
+			)values(
+			#{unitCode,jdbcType=VARCHAR},
+			#{roleCode,jdbcType=VARCHAR},
+			#{obtainDate,jdbcType=DATE},
+			#{changeDesc,jdbcType=VARCHAR},
+			#{createDate,jdbcType=DATE},
+			#{creator,jdbcType=VARCHAR},
+			#{updator,jdbcType=VARCHAR},
+			#{updateDate,jdbcType=DATE}
+			)
+	</sql>
+
+	<!--更新单据 start -->
+   <sql id="updSql">
+      <set>
+<!-- 			<if test="unitCode !=null ">  -->
+<!-- 					UNIT_CODE  =  #{unitCode},  -->
+<!-- 			</if>  -->
+<!-- 			<if test="roleCode !=null ">  -->
+<!-- 					ROLE_CODE  =  #{roleCode},  -->
+<!-- 			</if>  -->
+			<if test="obtainDate !=null ">
+					OBTAIN_DATE  =  #{obtainDate},
+			</if>
+			<if test="changeDesc !=null ">
+					CHANGE_DESC  =  #{changeDesc},
+			</if>
+			<if test="createDate !=null ">
+					CREATE_DATE  =  #{createDate},
+			</if>
+			<if test="creator !=null ">
+					CREATOR  =  #{creator},
+			</if>
+			<if test="updator !=null ">
+					UPDATOR  =  #{updator},
+			</if>
+			<if test="updateDate !=null ">
+					UPDATE_DATE  =  #{updateDate},
+			</if>
+		</set>
+	</sql>
+	<update id="updateUnitRole" parameterType="com.centit.framework.system.po.UnitRole" timeout="2000">
+	     update F_UNITROLE
+	     <include refid="updSql" />
+	     where   USER_CODE=#{userCode}  and ROLE_CODE=#{roleCode}
+	</update>
+	<!--更新单据 end -->
+
+  <insert id="saveNewObject" parameterType="com.centit.framework.system.po.UserRole">
+    insert into F_UNITROLE
+    <include refid="insertSql" />
+  </insert>
+
+	<!--删除记录  -->
+	<delete id="deleteUnitRole" parameterType="com.centit.framework.system.po.UnitRole" timeout="2000">
+    <![CDATA[
+       delete from F_USERROLE where USER_CODE=#{userCode}  and ROLE_CODE=#{roleCode}
+     ]]>
+	</delete>
+	<delete id="deleteUnitRoleById" parameterType="com.centit.framework.system.po.UnitRoleId" timeout="2000">
+    <![CDATA[
+       delete from F_USERROLE where USER_CODE=#{userCode}  and ROLE_CODE=#{roleCode}
+     ]]>
+	</delete>
+	<!--删除记录 结束 -->
+
+
+	<select id="listUnitRolesByUnitCode" parameterType="String" resultMap="UnitRole">
+		<include refid="coreSql" />
+		<![CDATA[
+			where UNIT_CODE = #{unitCode}
+		]]>
+	</select>
+
+  <select id="listUnitRolesByRoleCode" parameterType="String" resultMap="UnitRole">
+    <include refid="coreSql" />
+    <![CDATA[
+			where ROLE_CODE = #{roleCode}
+		]]>
+  </select>
+
+
+</mapper>

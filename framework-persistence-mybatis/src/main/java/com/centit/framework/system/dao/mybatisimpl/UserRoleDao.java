@@ -10,5 +10,5 @@ import java.util.List;
 public interface UserRoleDao
     extends com.centit.framework.system.dao.UserRoleDao {
 
-    List<UserRole> getAllUserRolesByUserId(@Param("userCode") String userCode,@Param("userCode") String rolePrefix);
+    List<UserRole> getAllUserRolesByUserId(@Param("userCode") String userCode,@Param("rolePrefix") String rolePrefix);
 }
