@@ -60,10 +60,10 @@
       and (u.ROLE_CODE like #{publicUnitRole} or u.ROLE_CODE like 'P-%' )
     </if>
     <if test="createDateBeg != null and createDateBeg != ''   ">
-        <![CDATA[ and to_char(u.CREATE_DATE, 'yyyy-mm-dd') >= to_char(#{createDateBeg}, 'yyyy-mm-dd') ]]>
+        <![CDATA[ and u.CREATE_DATE >= to_date(#{createDateBeg}, 'yyyy-mm-dd') ]]>
     </if>
     <if test="createDateEnd != null and createDateEnd != ''   ">
-      <![CDATA[ and to_char(u.CREATE_DATE, 'yyyy-mm-dd') <= to_char(#{createDateEnd}, 'yyyy-mm-dd') ]]>
+      <![CDATA[ and u.CREATE_DATE <= to_date(#{createDateEnd}, 'yyyy-mm-dd') ]]>
     </if>
 	</sql>
 
