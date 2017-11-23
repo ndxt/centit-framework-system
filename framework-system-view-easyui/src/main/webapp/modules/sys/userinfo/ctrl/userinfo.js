@@ -7,6 +7,7 @@ define(function(require) {
 	var UserInfoEdit = require('../ctrl/userinfo.edit');
 	var UserInfoDelete = require('../ctrl/userinfo.delete');
 
+  var DeptUserInfoPowerView = require('../ctrl/userinfo.power.view');//新增查看权限按钮
 	var UserInfoAll = require('../ctrl/userinfo.all');
 	UserInfoAll = new UserInfoAll('userinfo_all');
 
@@ -24,7 +25,9 @@ define(function(require) {
 	        UserInfoAll,
 	        new UserInfoUnit('userinfo_unit'),
 	        new UserInfoRole('userinfo_role'),
-	        new UserInfoResetPassword('userinfo_resetpassword')
+	        new UserInfoResetPassword('userinfo_resetpassword'),
+          new DeptUserInfoPowerView('userinfo_power_view')
+
 	    ]);
 
 		// @override
@@ -43,7 +46,8 @@ define(function(require) {
 						return {'class': 'ban'};
 					}
 				},
-				onCheck: function(index, row) {
+        //给table增加单行点击事件
+        onClickRow: function(index, row) {
 					if (index == selectIndex) {
 						return
 					}else{
