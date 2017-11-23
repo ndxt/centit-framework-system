@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Repository("userRoleDao")
+@Repository("unitRoleDao")
 public class UnitRoleDaoImpl extends BaseDaoImpl<UnitRole, UnitRoleId> implements UnitRoleDao {
 
     public Map<String, String> getFilterField() {
