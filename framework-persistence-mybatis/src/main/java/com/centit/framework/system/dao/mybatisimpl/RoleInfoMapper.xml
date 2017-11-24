@@ -39,7 +39,7 @@
       and u.ROLE_NAME like '%'|| #{roleName}||'%'
     </if>
     <if test="roleNameEq != null  and roleNameEq != ''   ">
-      and u.ROLE_NAME = #{roleName}
+      and u.ROLE_NAME = #{roleName,jdbcType=VARCHAR}
     </if>
 		<if test="roleDesc != null  and roleDesc != ''  ">
 			  and u.ROLE_DESC like '%'|| #{roleDesc}||'%'
