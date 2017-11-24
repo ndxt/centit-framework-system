@@ -185,7 +185,12 @@
 			select sequence_nextval('S_OPTDEFCODE')
 	</select>
 
-	<select id="listDataFiltersByIds" parameterType="map"  resultType="String" >
+  <select id="getNextOptCode" databaseId="h2" resultType="String">
+    select NEXT VALUE FOR S_OPTDEFCODE
+  </select>
+
+
+  <select id="listDataFiltersByIds" parameterType="map"  resultType="String" >
 		 select
 			       u.FILTER_CONDITION
 		      from F_OPTDATASCOPE u

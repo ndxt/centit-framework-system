@@ -431,6 +431,10 @@
 	<select id="getNextKey" databaseId="mysql" resultType="String">
 		SELECT sequence_nextval('S_USERCODE')
 	</select>
+  <select id="getNextKey" databaseId="h2" resultType="String">
+    select NEXT VALUE FOR S_USERCODE
+  </select>
+
 	<select id="getAllOptMethodByUser" parameterType="String" resultMap="FvuserOpt">
 			select USER_CODE,OPT_CODE,OPT_NAME,OPT_ID,OPT_METHOD from F_V_USEROPTLIST  urv where urv.USER_CODE=#{userCode}
 	</select>

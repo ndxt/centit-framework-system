@@ -75,14 +75,15 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     @SuppressWarnings("unchecked")
     @Transactional(propagation=Propagation.MANDATORY)
     public List<UserInfo> listRelationUsers(String unitCode) {
-        String sql = "select * FROM F_USERINFO ui where ui.USERCODE in " +
-                "(select USERCODE from F_USERUNIT where UNITCODE= ? ) or " +
-                "ui.USERCODE in (select USERCODE from F_USERROLE where ROLECODE like ? ";
-
+      String sSqlsen = "select ui.* FROM F_USERINFO ui " +
+              "where exists (select uu.* from F_USERUNIT where uu.USER_CODE=ui.USER_CODE and uu.UNIT_CODE= ?) " +
+              " or exists(select ur.* from F_V_USERROLES ur " +
+              "where ur.USER_CODE=ui.USER_CODE and ur.ROLE_TYPE='D' " +
+              "and ur.UNIT_CODE= ? )";
         return getJdbcTemplate().execute(
                 (ConnectionCallback<List<UserInfo>>) conn ->
-                        OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
-                                new Object[]{unitCode, unitCode+ "-%"}, UserInfo.class));
+                        OrmDaoUtils.queryObjectsByParamsSql(conn, sSqlsen ,
+                                new Object[]{unitCode, unitCode}, UserInfo.class));
     }
 
     @Transactional

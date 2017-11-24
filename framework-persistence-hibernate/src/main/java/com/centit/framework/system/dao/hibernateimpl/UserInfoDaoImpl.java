@@ -192,22 +192,6 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
         }
     }
 
-    @Transactional
-    public List<UserInfo> search(String key, String[] field) {
-        StringBuilder hql = new StringBuilder("from UserInfo u where ");
-        String params[] = new String[field.length];
-        String sMatch = QueryUtils.getMatchString(key);
-        for (int i = 0; i < field.length; i++) {
-            hql.append("u." + field[i] + " like ? ");//'%" +  key + "%' ");
-            if (i != field.length - 1) {
-                hql.append(" or ");
-            }
-            params[i] = sMatch;
-        }
-
-        return listObjects( hql.toString(),params);
-    }
-
     public void restPwd(UserInfo user){
         super.updateObject(user);
     }

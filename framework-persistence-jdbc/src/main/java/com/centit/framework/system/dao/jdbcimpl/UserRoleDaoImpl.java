@@ -92,28 +92,6 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
     }
 
     @Transactional
-    public List<UserRole> getUserRolesByUserId(String usid, String rolePrefix) {
-        String sql = "select u.USER_CODE, u.ROLE_CODE, u.OBTAIN_DATE, u.CHANGE_DESC, u.CREATE_DATE, u.CREATOR, " +
-                "u.UPDATOR, u.UPDATE_DATE from F_USERROLE u " +
-                "where USER_CODE = :userCode and ROLE_CODE like :rolePrefix" +
-                "and OBTAIN_DATE <= sysdate and (SECEDE_DATE is null or SECEDE_DATE >sysdate)" +
-                "ORDER BY OBTAIN_DATE,SECEDEDATE";
-
-        return listObjectsBySql(sql, QueryUtils.createSqlParamsMap("userCode", usid, "rolePrefix", rolePrefix + "%"));
-    }
-
-    @Override
-    @Transactional
-    public List<UserRole> getAllUserRolesByUserId(String usid, String rolePrefix) {
-        String sql = "select u.USER_CODE, u.ROLE_CODE, u.OBTAIN_DATE, u.CHANGE_DESC, u.CREATE_DATE, u.CREATOR, " +
-                "u.UPDATOR, u.UPDATE_DATE from F_USERROLE u " +
-                "where u.id.userCode=:userCode and u.id.roleCode like :rolePrefix "
-                + "ORDER BY obtainDate";
-
-        return listObjectsBySql(sql, QueryUtils.createSqlParamsMap("userCode", usid, "rolePrefix", rolePrefix + "%"));
-    }
-
-    @Transactional
     public UserRole getValidUserRole(String userCode, String rolecode) {
         String sql = "select u.USER_CODE, u.ROLE_CODE, u.OBTAIN_DATE, u.CHANGE_DESC, u.CREATE_DATE, u.CREATOR, " +
                 "u.UPDATOR, u.UPDATE_DATE from F_USERROLE u " +

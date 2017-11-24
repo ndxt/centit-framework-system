@@ -2,6 +2,7 @@ package com.centit.framework.system.po;
 
 import com.centit.framework.model.basedata.IRoleInfo;
 import com.centit.framework.model.basedata.IUserRole;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
@@ -24,7 +25,6 @@ public class FVUserRoles implements IUserRole, IRoleInfo, Serializable {
     @Column(name = "ROLE_NAME")
     private String roleName; // 角色名称
 
-
   /**
    * 这个是新版本的一个新的性所有 添加了这个 默认实现
    * 用户获得这个角色的方式，
@@ -42,6 +42,21 @@ public class FVUserRoles implements IUserRole, IRoleInfo, Serializable {
 
     @Column(name = "ROLE_DESC")
     private String roleDesc; // 角色描述
+
+    /**
+     * 角色的类别 F （Fixe）系统内置的，固有的， G （global） 全局的
+     *          P （public） 公用的，指 系统全局 和 部门之间公用的
+     *          D （department）部门（机构）特有的角色
+     *          I ( Item )为项目角色 W (workflow)工作流角色 ，这两个为保留类别，暂时没有使用
+     *  角色的类别 F/G/P/D/I/W
+     */
+    @Column(name = "ROLE_TYPE")
+    @Length(max = 1, message = "字段长度必须为{max}")
+    private String roleType; // 角色类别
+
+    @Column(name = "UNIT_CODE")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    private String unitCode; // 角色所属机构
 
     @Transient
     private List<RolePower> rolePowers;
@@ -130,6 +145,42 @@ public class FVUserRoles implements IUserRole, IRoleInfo, Serializable {
 
     public void setInheritedFrom(String inheritedFrom) {
         this.inheritedFrom = inheritedFrom;
+    }
+
+    /**
+     * 角色的类别 F （Fixe）系统内置的，固有的， G （global） 全局的
+     *          P （public） 公用的，指 系统全局 和 部门之间公用的
+     *          D （department）部门（机构）特有的角色
+     *          I ( Item )为项目角色 W (workflow)工作流角色 ，这两个为保留类别，暂时没有使用
+     *  角色的类别 F/G/P/D/I/W
+     * @return 角色的类别 F/G/P/D/I/W
+     */
+    @Override
+    public String getRoleType() {
+      return roleType;
+    }
+
+    /**
+     * 角色的类别 F （Fixe）系统内置的，固有的， G （global） 全局的
+     *          P （public） 公用的，指 系统全局 和 部门之间公用的
+     *          D （department）部门（机构）特有的角色
+     *          I ( Item )为项目角色 W (workflow)工作流角色 ，这两个为保留类别，暂时没有使用
+     * @param roleType 角色的类别 F/G/P/D/I/W
+     */
+    public void setRoleType(String roleType) {
+      this.roleType = roleType;
+    }
+
+    public String getUnitCode() {
+      return unitCode;
+    }
+    @Override
+    public String getRoleOwner() {
+      return unitCode;
+    }
+
+    public void setUnitCode(String unitCode) {
+      this.unitCode = unitCode;
     }
 
     @Override

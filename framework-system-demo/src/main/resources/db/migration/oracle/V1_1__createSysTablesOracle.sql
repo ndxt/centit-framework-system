@@ -10,7 +10,7 @@ create sequence S_RECIPIENT ;
 create sequence S_ADDRESSID ;
 
 create table F_ADDRESS_BOOK
-( 
+(
    ADDRBOOKID           number(10,0) not null,
    BodyType             varchar2(2) not null ,
    BodyCode             varchar2(16) not null ,
@@ -63,11 +63,11 @@ create table F_ADDRESS_BOOK
    LastModifyDate       date,
    CreateDate           date
 );
-comment on column F_ADDRESS_BOOK.BodyType is 'ÓÃ»§/¸öÈË/µ¥Î»';
-comment on column F_ADDRESS_BOOK.BodyCode is ' ÓÃ»§/¸öÈË/µ¥Î» ±àºÅ';
-comment on column F_ADDRESS_BOOK.inuseAddress is 'µ¥Î»/×¡Õ¬/×¡Õ¬2';
-comment on column F_ADDRESS_BOOK.SearchString is 'Ç°Ãæ¸÷¸ö×Ö¶ÎµÄÖĞÎÄÊ××ÖÄ¸£¬Êı×Ö Á¬½ÓµÄ´®';
-comment on  table F_ADDRESS_BOOK is 'ÏµÍ³ÖĞÎ¬³ÖÒ»¸öÍ³Ò»µÄÍ¨Ñ¶Â¼ Ä£¿é£¬Ö÷ÒªÄ¿µÄÊÇÎªÁËÒÔºó×ö Í³Ò»µÄ½Ó¿Ú£¬±ÈÈç£º';
+comment on column F_ADDRESS_BOOK.BodyType is 'ç”¨æˆ·/ä¸ªäºº/å•ä½';
+comment on column F_ADDRESS_BOOK.BodyCode is ' ç”¨æˆ·/ä¸ªäºº/å•ä½ ç¼–å·';
+comment on column F_ADDRESS_BOOK.inuseAddress is 'å•ä½/ä½å®…/ä½å®…2';
+comment on column F_ADDRESS_BOOK.SearchString is 'å‰é¢å„ä¸ªå­—æ®µçš„ä¸­æ–‡é¦–å­—æ¯ï¼Œæ•°å­— è¿æ¥çš„ä¸²';
+comment on  table F_ADDRESS_BOOK is 'ç³»ç»Ÿä¸­ç»´æŒä¸€ä¸ªç»Ÿä¸€çš„é€šè®¯å½• æ¨¡å—ï¼Œä¸»è¦ç›®çš„æ˜¯ä¸ºäº†ä»¥ååš ç»Ÿä¸€çš„æ¥å£ï¼Œæ¯”å¦‚ï¼š';
 
 alter table F_ADDRESS_BOOK add primary key (ADDRBOOKID);
 
@@ -86,11 +86,11 @@ create table F_DATACATALOG
    creator              varchar2(32),
    updator              varchar2(32)
 );
-comment on  table  F_DATACATALOG is 'Àà±ğ×´Ì¬   U:ÓÃ»§ S£ºÏµÍ³£¬G¹ú±êÀà±ğĞÎÊ½  T£ºÊ÷×´±í¸ñ L:ÁĞ±í';
-comment on column F_DATACATALOG.CATALOG_STYLE is  'F : ¿ò¼Ü¹ÌÓĞµÄ U:ÓÃ»§ S£ºÏµÍ³  G¹ú±ê';
-comment on column F_DATACATALOG.CATALOG_TYPE is 'T£ºÊ÷×´±í¸ñ L:ÁĞ±í';
-comment on column F_DATACATALOG.Field_Desc is  '×Ö¶ÎÃèÊö£¬²»Í¬×Ö¶ÎÓÃ·ÖºÅ¸ô¿ª';
-comment on column F_DATACATALOG.opt_ID is  'ÒµÎñ·ÖÀà£¬Ê¹ÓÃÊı¾İ×ÖµäDICTIONARYTYPEÖĞÊı¾İ';
+comment on  table  F_DATACATALOG is 'ç±»åˆ«çŠ¶æ€   U:ç”¨æˆ· Sï¼šç³»ç»Ÿï¼ŒGå›½æ ‡ç±»åˆ«å½¢å¼  Tï¼šæ ‘çŠ¶è¡¨æ ¼ L:åˆ—è¡¨';
+comment on column F_DATACATALOG.CATALOG_STYLE is  'F : æ¡†æ¶å›ºæœ‰çš„ U:ç”¨æˆ· Sï¼šç³»ç»Ÿ  Gå›½æ ‡';
+comment on column F_DATACATALOG.CATALOG_TYPE is 'Tï¼šæ ‘çŠ¶è¡¨æ ¼ L:åˆ—è¡¨';
+comment on column F_DATACATALOG.Field_Desc is  'å­—æ®µæè¿°ï¼Œä¸åŒå­—æ®µç”¨åˆ†å·éš”å¼€';
+comment on column F_DATACATALOG.opt_ID is  'ä¸šåŠ¡åˆ†ç±»ï¼Œä½¿ç”¨æ•°æ®å­—å…¸DICTIONARYTYPEä¸­æ•°æ®';
 alter table F_DATACATALOG add primary key (CATALOG_CODE);
 
 create table F_DATADICTIONARY
@@ -105,12 +105,12 @@ create table F_DATADICTIONARY
    DATA_DESC            varchar2(256),
    Last_Modify_Date     date,
    Create_Date          date,
-   DATA_ORDER           number(6,0) 
+   DATA_ORDER           number(6,0)
 );
-comment on column F_DATADICTIONARY.EXTRA_CODE is  'Ê÷ĞÍ×ÖµäµÄ¸¸Àà´úÂë' ;
-comment on column F_DATADICTIONARY.DATA_TAG is    'NÕı³££¬DÒÑÍ£ÓÃ£¬ÓÃ»§¿ÉÒÔ×Ô½âÊÍÕâ¸ö×Ö¶Î';
-comment on column F_DATADICTIONARY.DATA_STYLE is   'F : ¿ò¼Ü¹ÌÓĞµÄ U:ÓÃ»§ S£ºÏµÍ³  G¹ú±ê' ;
-  comment on table F_DATADICTIONARY is'Êı¾İ×Öµä£º´æ·ÅÒ»Ğ©³£Á¿Êı¾İ ±ÈÈç³öÎïÌáÊ¾ĞÅÏ¢£¬»¹ÓĞÒ»Ğ© ´úÂëÓëÃû³ÆµÄ¶ÔÓ¦±í£¬±ÈÈç ×´Ì¬£¬½ÇÉ«Ãû£¬Í·ÏÎ µÈµÈ';
+comment on column F_DATADICTIONARY.EXTRA_CODE is  'æ ‘å‹å­—å…¸çš„çˆ¶ç±»ä»£ç ' ;
+comment on column F_DATADICTIONARY.DATA_TAG is    'Næ­£å¸¸ï¼ŒDå·²åœç”¨ï¼Œç”¨æˆ·å¯ä»¥è‡ªè§£é‡Šè¿™ä¸ªå­—æ®µ';
+comment on column F_DATADICTIONARY.DATA_STYLE is   'F : æ¡†æ¶å›ºæœ‰çš„ U:ç”¨æˆ· Sï¼šç³»ç»Ÿ  Gå›½æ ‡' ;
+  comment on table F_DATADICTIONARY is'æ•°æ®å­—å…¸ï¼šå­˜æ”¾ä¸€äº›å¸¸é‡æ•°æ® æ¯”å¦‚å‡ºç‰©æç¤ºä¿¡æ¯ï¼Œè¿˜æœ‰ä¸€äº› ä»£ç ä¸åç§°çš„å¯¹åº”è¡¨ï¼Œæ¯”å¦‚ çŠ¶æ€ï¼Œè§’è‰²åï¼Œå¤´è¡” ç­‰ç­‰';
 
 alter table F_DATADICTIONARY add primary key (CATALOG_CODE, DATA_CODE);
 
@@ -123,8 +123,8 @@ create table F_OPTDATASCOPE
    scope_Memo           varchar2(1024)  ,
    Filter_Group         varchar2(16) default 'G'
 );
-comment on column F_OPTDATASCOPE.Filter_Condition is 'Ìõ¼şÓï¾ä£¬¿ÉÒÔÓĞµÄ²ÎÊı [mt] ÒµÎñ±í [uc] ÓÃ»§´úÂë [uu] ÓÃ»§»ú¹¹´úÂë';
-comment on column F_OPTDATASCOPE.scope_Memo is 'Êı¾İÈ¨ÏŞËµÃ÷';
+comment on column F_OPTDATASCOPE.Filter_Condition is 'æ¡ä»¶è¯­å¥ï¼Œå¯ä»¥æœ‰çš„å‚æ•° [mt] ä¸šåŠ¡è¡¨ [uc] ç”¨æˆ·ä»£ç  [uu] ç”¨æˆ·æœºæ„ä»£ç ';
+comment on column F_OPTDATASCOPE.scope_Memo is 'æ•°æ®æƒé™è¯´æ˜';
 alter table F_OPTDATASCOPE add primary key (opt_Scope_Code);
 
 create table F_OPTDEF
@@ -143,8 +143,8 @@ create table F_OPTDEF
    creator              varchar2(32),
    updator              varchar2(32)
 );
-comment on column F_OPTDEF.OPT_METHOD is '²Ù×÷²ÎÊı ·½·¨'  ;
-comment on column F_OPTDEF.Is_In_Workflow is 'ÊÇ·ñÎªÁ÷³Ì²Ù×÷·½·¨ F£º²»ÊÇ  T £º ÊÇ'  ;
+comment on column F_OPTDEF.OPT_METHOD is 'æ“ä½œå‚æ•° æ–¹æ³•'  ;
+comment on column F_OPTDEF.Is_In_Workflow is 'æ˜¯å¦ä¸ºæµç¨‹æ“ä½œæ–¹æ³• Fï¼šä¸æ˜¯  T ï¼š æ˜¯'  ;
 alter table F_OPTDEF add primary key (OPT_CODE);
 
 
@@ -159,11 +159,11 @@ create table F_OPT_LOG
    Old_Value            clob ,
    Opt_ID               varchar2(64) not null  ,
    OPT_Method           varchar2(64)  ,
-   opt_Tag              varchar2(200)  
+   opt_Tag              varchar2(200)
 );
-comment on column F_OPT_LOG.Opt_ID is  'Ä£¿é£¬»òÕß±í';
-comment on column F_OPT_LOG.Opt_ID is  '·½·¨£¬»òÕß×Ö¶Î';
-comment on column F_OPT_LOG.Opt_ID is  'Ò»°ãÓÃÓÚ¹ØÁªµ½ÒµÎñÖ÷ÌåµÄ±êÊ¶¡¢±íµÄÖ÷¼üµÈµÈ';
+comment on column F_OPT_LOG.Opt_ID is  'æ¨¡å—ï¼Œæˆ–è€…è¡¨';
+comment on column F_OPT_LOG.Opt_ID is  'æ–¹æ³•ï¼Œæˆ–è€…å­—æ®µ';
+comment on column F_OPT_LOG.Opt_ID is  'ä¸€èˆ¬ç”¨äºå…³è”åˆ°ä¸šåŠ¡ä¸»ä½“çš„æ ‡è¯†ã€è¡¨çš„ä¸»é”®ç­‰ç­‰';
 alter table F_OPT_LOG  add primary key (log_Id);
 
 create table F_OptFlowNoInfo
@@ -213,9 +213,9 @@ create table F_OptInfo
    creator              varchar2(32),
    updator              varchar2(32)
 );
-comment on column F_OptInfo.opt_Route is    'ÓëangularjsÂ·ÓÉÆ¥Åä'  ;
-comment on column F_OptInfo.Opt_Type is    ' S:ÊµÊ©ÒµÎñ, O:ÆÕÍ¨ÒµÎñ, W:Á÷³ÌÒµÎñ, I :ÏîÄ¿ÒµÎñ'  ;
-comment on column F_OptInfo.Order_Ind is     'Õâ¸öË³ĞòÖ»ĞèÔÚÍ¬Ò»¸ö¸¸ÒµÎñÏÂÅÅĞò'  ;
+comment on column F_OptInfo.opt_Route is    'ä¸angularjsè·¯ç”±åŒ¹é…'  ;
+comment on column F_OptInfo.Opt_Type is    ' S:å®æ–½ä¸šåŠ¡, O:æ™®é€šä¸šåŠ¡, W:æµç¨‹ä¸šåŠ¡, I :é¡¹ç›®ä¸šåŠ¡'  ;
+comment on column F_OptInfo.Order_Ind is     'è¿™ä¸ªé¡ºåºåªéœ€åœ¨åŒä¸€ä¸ªçˆ¶ä¸šåŠ¡ä¸‹æ’åº'  ;
 comment on column F_OptInfo.Page_Type is    'D : DIV I:iFrame'   ;
 alter table F_OptInfo add primary key (Opt_ID);
 
@@ -227,7 +227,7 @@ create table F_OptInfoData
    CreateDate           date
 );
 
-comment on table F_OptInfoData is 'ÒµÎñÄ£¿éºÍ±íÊÇ¶à¶Ô¶àµÄ¹ØÏµ,Õâ¸ö±í½ö½öÊÇ×÷ÎªÊı¾İÈ¨ÏŞÉèÖÃÊ±µÄÒ»¸ö¸¨Öú±íµÄ';
+comment on table F_OptInfoData is 'ä¸šåŠ¡æ¨¡å—å’Œè¡¨æ˜¯å¤šå¯¹å¤šçš„å…³ç³»,è¿™ä¸ªè¡¨ä»…ä»…æ˜¯ä½œä¸ºæ•°æ®æƒé™è®¾ç½®æ—¶çš„ä¸€ä¸ªè¾…åŠ©è¡¨çš„';
 alter table F_OptInfoData  add primary key (TBCODE, OptID);
 
 create table F_QUERY_FILTER_CONDITION
@@ -242,14 +242,14 @@ create table F_QUERY_FILTER_CONDITION
    Select_Data_type     char(1)  default 'N' not null ,
    Select_Data_Catalog  varchar2(64) ,
    Select_SQL           varchar2(1000)  ,
-   Select_JSON          varchar2(2000)  
+   Select_JSON          varchar2(2000)
 );
-comment on column F_QUERY_FILTER_CONDITION.Table_Class_Name is  'Êı¾İ¿â±í´úÂë»òÕßpoµÄÀàÃû'     ;
-comment on column F_QUERY_FILTER_CONDITION.Param_Type is    '²ÎÊıÀàĞÍ£ºS ×Ö·û´®£¬L Êı×Ö£¬ N ÓĞĞ¡ÊıµãÊı¾İ£¬ D ÈÕÆÚ£¬ T Ê±¼ä´Á£¬ Y Äê£¬ M ÔÂ'    ;
-comment on column F_QUERY_FILTER_CONDITION.Filter_Sql is    '¹ıÂËÓï¾ä£¬½«»áÆ´×°µ½sqlÓï¾äÖĞ'    ;
-comment on column F_QUERY_FILTER_CONDITION.Select_Data_type is  'Êı¾İÏÂÀ­¿òÄÚÈİ£» N £ºÃ»ÓĞ£¬ D Êı¾İ×Öµä, S Í¨¹ısqlÓï¾ä»ñµÃ£¬ J jsonÊı¾İÖ±½Ó»ñÈ¡ '      ;
-comment on column F_QUERY_FILTER_CONDITION.Select_SQL is     'ÓĞÁ½¸ö·µ»Ø×Ö¶ÎµÄsqlÓï¾ä'  ;
-comment on column F_QUERY_FILTER_CONDITION.Select_JSON is   'KEY,ValueÊıÖµ¶Ô£¬JSON¸ñÊ½'    ;
+comment on column F_QUERY_FILTER_CONDITION.Table_Class_Name is  'æ•°æ®åº“è¡¨ä»£ç æˆ–è€…poçš„ç±»å'     ;
+comment on column F_QUERY_FILTER_CONDITION.Param_Type is    'å‚æ•°ç±»å‹ï¼šS å­—ç¬¦ä¸²ï¼ŒL æ•°å­—ï¼Œ N æœ‰å°æ•°ç‚¹æ•°æ®ï¼Œ D æ—¥æœŸï¼Œ T æ—¶é—´æˆ³ï¼Œ Y å¹´ï¼Œ M æœˆ'    ;
+comment on column F_QUERY_FILTER_CONDITION.Filter_Sql is    'è¿‡æ»¤è¯­å¥ï¼Œå°†ä¼šæ‹¼è£…åˆ°sqlè¯­å¥ä¸­'    ;
+comment on column F_QUERY_FILTER_CONDITION.Select_Data_type is  'æ•°æ®ä¸‹æ‹‰æ¡†å†…å®¹ï¼› N ï¼šæ²¡æœ‰ï¼Œ D æ•°æ®å­—å…¸, S é€šè¿‡sqlè¯­å¥è·å¾—ï¼Œ J jsonæ•°æ®ç›´æ¥è·å– '      ;
+comment on column F_QUERY_FILTER_CONDITION.Select_SQL is     'æœ‰ä¸¤ä¸ªè¿”å›å­—æ®µçš„sqlè¯­å¥'  ;
+comment on column F_QUERY_FILTER_CONDITION.Select_JSON is   'KEY,Valueæ•°å€¼å¯¹ï¼ŒJSONæ ¼å¼'    ;
 alter table F_QUERY_FILTER_CONDITION add primary key (CONDITION_NO);
 
 create table F_RANKGRANT
@@ -266,7 +266,7 @@ create table F_RANKGRANT
    LastModifyDate       date,
    CreateDate           date
 );
-comment on column F_RANKGRANT.UserRank is  'RANK ´úÂë²»ÊÇ 0¿ªÍ·µÄ¿ÉÒÔ½øĞĞÊÚÓè';
+comment on column F_RANKGRANT.UserRank is  'RANK ä»£ç ä¸æ˜¯ 0å¼€å¤´çš„å¯ä»¥è¿›è¡Œæˆäºˆ';
 alter table F_RANKGRANT add primary key (RANK_grant_ID, UserRank);
 
 create table F_ROLEINFO
@@ -282,7 +282,7 @@ create table F_ROLEINFO
    creator              varchar2(32),
    updator              varchar2(32)
 );
-comment on column F_ROLEINFO.ROLE_TYPE is  'SÎªÏµÍ³¹¦ÄÜ½ÇÉ« I ÎªÏîÄ¿½ÇÉ« W¹¤×÷Á¿½ÇÉ«';
+comment on column F_ROLEINFO.ROLE_TYPE is  'F ä¸ºç³»ç»Ÿ å›ºæœ‰çš„ G å…¨å±€çš„ P å…¬ç”¨çš„ D éƒ¨é—¨çš„ I ä¸ºé¡¹ç›®è§’è‰² Wå·¥ä½œé‡è§’è‰²';
 alter table F_ROLEINFO add primary key (ROLE_CODE);
 
 create table F_ROLEPOWER
@@ -295,7 +295,7 @@ create table F_ROLEPOWER
    creator              varchar2(32),
    updator              varchar2(32)
 );
-comment on column F_ROLEPOWER.opt_Scope_Codes is  'ÓÃ¶ººÅ¸ô¿ªµÄÊı¾İ·¶Î§½áºÏ£¨¿Õ\all ±íÊ¾È«²¿£©';
+comment on column F_ROLEPOWER.opt_Scope_Codes is  'ç”¨é€—å·éš”å¼€çš„æ•°æ®èŒƒå›´ç»“åˆï¼ˆç©º\all è¡¨ç¤ºå…¨éƒ¨ï¼‰';
 alter table F_ROLEPOWER add primary key (ROLE_CODE, OPT_CODE);
 
 create table F_STAT_MONTH
@@ -304,9 +304,9 @@ create table F_STAT_MONTH
    BeginDay             date not null,
    EendDay              date not null,
    EndSchedule          char(1) ,
-   BeginSchedule        char(1) 
+   BeginSchedule        char(1)
 );
-comment on table F_STAT_MONTH  is'OAÒµÎñÍ³¼ÆÔÂ£¬¿ÉÒÔ×Ô¶¨ÒåÍ³¼ÆÔÂµÄÆğÖ¹ÈÕÆÚ';
+comment on table F_STAT_MONTH  is'OAä¸šåŠ¡ç»Ÿè®¡æœˆï¼Œå¯ä»¥è‡ªå®šä¹‰ç»Ÿè®¡æœˆçš„èµ·æ­¢æ—¥æœŸ';
 alter table F_STAT_MONTH add primary key (YEARMONTH);
 
 create table F_SYS_NOTIFY
@@ -322,12 +322,12 @@ create table F_SYS_NOTIFY
    Notify_Time          date,
    opt_Tag              varchar2(200)  ,
    OPT_Method           varchar2(64)  ,
-   Opt_ID               varchar2(64) not null  
+   Opt_ID               varchar2(64) not null
 );
-comment on column F_SYS_NOTIFY.Notify_State is '0 ³É¹¦£¬ 1 Ê§°Ü 2 ²¿·Ö³É¹¦'  ;
-comment on column F_SYS_NOTIFY.opt_Tag is  'Ò»°ãÓÃÓÚ¹ØÁªµ½ÒµÎñÖ÷Ìå' ;
-comment on column F_SYS_NOTIFY.OPT_Method is '·½·¨£¬»òÕß×Ö¶Î'  ;
-comment on column F_SYS_NOTIFY.Opt_ID is  'Ä£¿é£¬»òÕß±í' ;
+comment on column F_SYS_NOTIFY.Notify_State is '0 æˆåŠŸï¼Œ 1 å¤±è´¥ 2 éƒ¨åˆ†æˆåŠŸ'  ;
+comment on column F_SYS_NOTIFY.opt_Tag is  'ä¸€èˆ¬ç”¨äºå…³è”åˆ°ä¸šåŠ¡ä¸»ä½“' ;
+comment on column F_SYS_NOTIFY.OPT_Method is 'æ–¹æ³•ï¼Œæˆ–è€…å­—æ®µ'  ;
+comment on column F_SYS_NOTIFY.Opt_ID is  'æ¨¡å—ï¼Œæˆ–è€…è¡¨' ;
 alter table F_SYS_NOTIFY add primary key (Notify_ID);
 
 create table F_UNITINFO
@@ -354,9 +354,9 @@ create table F_UNITINFO
    UNIT_PATH            varchar2(1000),
    UNIT_MANAGER         varchar2(32)
 );
-comment on column F_UNITINFO.UNIT_TYPE   is     '·¢²¼ÈÎÎñ/ ÓÊµç¹æ»®/×é¶Ó/½ÓÊÕÈÎÎñ'        ;
-comment on column F_UNITINFO.  UNIT_TAG is        'ÓÃ»§µÚÈı·½ÏµÍ³¹ÜÀí'    ;
-comment on column F_UNITINFO. dep_no  is      '×éÖ¯»ú¹¹´úÂë£º'      ;
+comment on column F_UNITINFO.UNIT_TYPE   is     'å‘å¸ƒä»»åŠ¡/ é‚®ç”µè§„åˆ’/ç»„é˜Ÿ/æ¥æ”¶ä»»åŠ¡'        ;
+comment on column F_UNITINFO.  UNIT_TAG is        'ç”¨æˆ·ç¬¬ä¸‰æ–¹ç³»ç»Ÿç®¡ç†'    ;
+comment on column F_UNITINFO. dep_no  is      'ç»„ç»‡æœºæ„ä»£ç ï¼š'      ;
 alter table F_UNITINFO add primary key (UNIT_CODE);
 
 create table F_USERINFO
@@ -388,9 +388,9 @@ create table F_USERINFO
    creator              varchar2(32),
    updator              varchar2(32)
 );
-comment on column F_USERINFO.    USER_TYPE   is     '·¢²¼ÈÎÎñ/½ÓÊÕÈÎÎñ/ÏµÍ³¹ÜÀí'    ;
-comment on column F_USERINFO.   Reg_Email    is       '×¢²áÓÃEmail£¬²»ÄÜÖØ¸´'   ;
-comment on column F_USERINFO.   user_Word    is    'Î¢ĞÅºÅ'     ;
+comment on column F_USERINFO.    USER_TYPE   is     'å‘å¸ƒä»»åŠ¡/æ¥æ”¶ä»»åŠ¡/ç³»ç»Ÿç®¡ç†'    ;
+comment on column F_USERINFO.   Reg_Email    is       'æ³¨å†Œç”¨Emailï¼Œä¸èƒ½é‡å¤'   ;
+comment on column F_USERINFO.   user_Word    is    'å¾®ä¿¡å·'     ;
 alter table F_USERINFO add primary key (USER_CODE);
 
 create table F_USERROLE
@@ -416,9 +416,9 @@ create table F_USERSETTING
    Param_Name           varchar2(200),
    Create_Date          date
 );
-comment on column F_USERSETTING.USER_CODE is  'DEFAULT:ÎªÄ¬ÈÏÉèÖÃ
-            SYS001~SYS999: ÎªÏµÍ³ÉèÖÃ·½°¸
-            ÊÇÒ»¸öÓÃ»§ºÅ,»òÕßÊÇÏµÍ³µÄÒ»¸öÉèÖÃ·½°¸';
+comment on column F_USERSETTING.USER_CODE is  'DEFAULT:ä¸ºé»˜è®¤è®¾ç½®
+            SYS001~SYS999: ä¸ºç³»ç»Ÿè®¾ç½®æ–¹æ¡ˆ
+            æ˜¯ä¸€ä¸ªç”¨æˆ·å·,æˆ–è€…æ˜¯ç³»ç»Ÿçš„ä¸€ä¸ªè®¾ç½®æ–¹æ¡ˆ';
 alter table F_USERSETTING add primary key (USER_CODE, Param_Code);
 
 create table F_USERUNIT
@@ -436,10 +436,10 @@ create table F_USERUNIT
    creator              varchar2(32),
    updator              varchar2(32)
 );
-comment on column F_USERUNIT. Is_Primary  is  'T£ºÎªÖ÷£¬ F£º¼æÖ°' ;
-comment on column F_USERUNIT. User_Rank  is  'RANK ´úÂë²»ÊÇ 0¿ªÍ·µÄ¿ÉÒÔ½øĞĞÊÚÓè';
-comment on column F_USERUNIT.  Rank_Memo is 'ÈÎÖ°±¸×¢' ;
-comment on table F_USERUNIT is 'Í¬Ò»¸öÈË¿ÉÄÜÔÚ¶à¸ö²¿ÃÅµ£ÈÎ²»Í¬µÄÖ°Î»';
+comment on column F_USERUNIT. Is_Primary  is  'Tï¼šä¸ºä¸»ï¼Œ Fï¼šå…¼èŒ' ;
+comment on column F_USERUNIT. User_Rank  is  'RANK ä»£ç ä¸æ˜¯ 0å¼€å¤´çš„å¯ä»¥è¿›è¡Œæˆäºˆ';
+comment on column F_USERUNIT.  Rank_Memo is 'ä»»èŒå¤‡æ³¨' ;
+comment on table F_USERUNIT is 'åŒä¸€ä¸ªäººå¯èƒ½åœ¨å¤šä¸ªéƒ¨é—¨æ‹…ä»»ä¸åŒçš„èŒä½';
 alter table F_USERUNIT add primary key (USER_UNIT_ID);
 
 create table F_USER_FAVORITE
@@ -457,11 +457,11 @@ create table F_USER_QUERY_FILTER
    user_Code            varchar2(8) not null,
    modle_code           varchar2(64) not null  ,
    filter_name          varchar2(200) not null ,
-   filter_value         varchar2(3200) not null  
+   filter_value         varchar2(3200) not null
 );
-comment on column F_USER_QUERY_FILTER. modle_code is '¿ª·¢ÈËÔ±×ÔĞĞ¶¨Òå£¬µ¥²»ÄÜÖØ¸´£¬½¨ÒéÓÃÏµÍ³µÄÄ£¿éÃû¼ÓÉÏµ±Ç°µÄ²Ù×÷·½·¨'  ;
-comment on column F_USER_QUERY_FILTER.  filter_name is   'ÓÃ»§×ÔĞĞ¶¨ÒåµÄÃû³Æ' ;
-comment on column F_USER_QUERY_FILTER. filter_value is  '±äÁ¿Öµ£¬json¸ñÊ½£¬¶ÔÓ¦Ò»¸ömap' ;
+comment on column F_USER_QUERY_FILTER. modle_code is 'å¼€å‘äººå‘˜è‡ªè¡Œå®šä¹‰ï¼Œå•ä¸èƒ½é‡å¤ï¼Œå»ºè®®ç”¨ç³»ç»Ÿçš„æ¨¡å—ååŠ ä¸Šå½“å‰çš„æ“ä½œæ–¹æ³•'  ;
+comment on column F_USER_QUERY_FILTER.  filter_name is   'ç”¨æˆ·è‡ªè¡Œå®šä¹‰çš„åç§°' ;
+comment on column F_USER_QUERY_FILTER. filter_value is  'å˜é‡å€¼ï¼Œjsonæ ¼å¼ï¼Œå¯¹åº”ä¸€ä¸ªmap' ;
 alter table F_USER_QUERY_FILTER add primary key (FILTER_NO);
 
 create table F_WORK_CLASS
@@ -478,11 +478,11 @@ create table F_WORK_CLASS
    record_date          date,
    recorder             varchar2(8)
 );
-comment on column F_WORK_CLASS. begin_time   is   '9:00'   ;       
-comment on column F_WORK_CLASS.   end_time is  '+4:00 ''+''±íÊ¾µÚ¶şÌì'    ;         
+comment on column F_WORK_CLASS. begin_time   is   '9:00'   ;
+comment on column F_WORK_CLASS.   end_time is  '+4:00 ''+''è¡¨ç¤ºç¬¬äºŒå¤©'    ;
 comment on table  F_WORK_CLASS is 'CLASS_ID
- Îª 0 µÄ±íÊ¾ĞİÏ¢£¬¿ÉÒÔ²»ÔÚÕâ¸ö±íÖĞ³öÏÖ
- Îª 1 µÄÎªÄ¬ÈÏ°à´ÎĞÅÏ¢';
+ ä¸º 0 çš„è¡¨ç¤ºä¼‘æ¯ï¼Œå¯ä»¥ä¸åœ¨è¿™ä¸ªè¡¨ä¸­å‡ºç°
+ ä¸º 1 çš„ä¸ºé»˜è®¤ç­æ¬¡ä¿¡æ¯';
 alter table F_WORK_CLASS  add primary key (CLASS_ID);
 
 create table F_WORK_DAY
@@ -492,8 +492,8 @@ create table F_WORK_DAY
    WorkTimeType         varchar2(20),
    WorkDayDesc          varchar2(255)
 );
-comment on column F_WORK_DAY.DayType is '·ÇÕı³£×÷ÒµÊ±¼äÈÕ
-A:¹¤×÷ÈÕ·Å¼Ù B:ÖÜÄ©µ÷Ğİ³É¹¤×÷Ê±¼ä  C: Õı³£ÉÏ°à  D:Õı³£Ğİ¼Ù  
+comment on column F_WORK_DAY.DayType is 'éæ­£å¸¸ä½œä¸šæ—¶é—´æ—¥
+A:å·¥ä½œæ—¥æ”¾å‡ B:å‘¨æœ«è°ƒä¼‘æˆå·¥ä½œæ—¶é—´  C: æ­£å¸¸ä¸Šç­  D:æ­£å¸¸ä¼‘å‡
 ';
 alter table F_WORK_DAY add primary key (WorkDay);
 
@@ -513,22 +513,22 @@ create table M_InnerMsg
    Email_Id             varchar2(8)  ,
    Opt_ID               varchar2(64) not null  ,
    OPT_Method           varchar2(64) ,
-   opt_Tag              varchar2(200)  
+   opt_Tag              varchar2(200)
 );
-comment on column M_InnerMsg.     Msg_Code    is     'ÏûÏ¢Ö÷¼ü×Ô¶¨Òå£¬Í¨¹ıS_M_INNERMSGĞòÁĞÉú³É'      ;
-comment on column M_InnerMsg.    Msg_Type    is       'P= ¸öÈËÎªÏûÏ¢  A= »ú¹¹Îª¹«¸æ£¨Í¨Öª£© M=ÓÊ¼ş'    ;
-comment on column M_InnerMsg.      Mail_Type   is         'I=ÊÕ¼şÏä
-            O=·¢¼şÏä
-            D=²İ¸åÏä
-            T=·Ï¼şÏä '  ;
-comment on column M_InnerMsg.     Receive_Name    is    'Ê¹ÓÃ²¿ÃÅ£¬¸öÈËÖĞÎÄÃû£¬ÖĞ¼äÊ¹ÓÃÓ¢ÎÄ·ÖºÅ·Ö¸î'       ;
-comment on column M_InnerMsg.  Hold_Users       is        '×ÜÊıÎª·¢ËÍÈËºÍ½ÓÊÕÈËÊıÁ¿Ïà¼Ó£¬·¢ËÍºÍ½ÓÊÕÈËÉ¾³ıÏûÏ¢Ê±-1£¬µ±ÊıÁ¿Îª0Ê±ÕæÕıÉ¾³ı´ËÌõ¼ÇÂ¼ ÏûÏ¢ÀàĞÍÎªÓÊ¼şÊ±²»ĞèÒªÉèÖÃ'  ;
-comment on column M_InnerMsg.     msg_State    is     'Î´¶Á/ÒÑ¶Á/É¾³ı'     ;
-comment on column M_InnerMsg.    Email_Id     is       'ÓÃ»§ÅäÖÃ¶àÓÊÏäÊ±Ê¹ÓÃ'   ;
-comment on column M_InnerMsg.       Opt_ID  is       'Ä£¿é£¬»òÕß±í'   ;
-comment on column M_InnerMsg.       OPT_Method  is   '·½·¨£¬»òÕß×Ö¶Î'        ;
-comment on column M_InnerMsg.     opt_Tag    is     'Ò»°ãÓÃÓÚ¹ØÁªµ½ÒµÎñÖ÷Ìå'     ;
-comment on table M_InnerMsg is  'ÄÚ²¿ÏûÏ¢Óë¹«¸æ½ÓÊÜ´úÂë,  ÆäÊµ¿ÉÒÔ¶ÀÁ¢³öÀ´, ÒòÎªËû ºÍ·¢ËÍÈË ÊÇ Ò»¶Ô¶àµÄ¹ØÏµ ';
+comment on column M_InnerMsg.     Msg_Code    is     'æ¶ˆæ¯ä¸»é”®è‡ªå®šä¹‰ï¼Œé€šè¿‡S_M_INNERMSGåºåˆ—ç”Ÿæˆ'      ;
+comment on column M_InnerMsg.    Msg_Type    is       'P= ä¸ªäººä¸ºæ¶ˆæ¯  A= æœºæ„ä¸ºå…¬å‘Šï¼ˆé€šçŸ¥ï¼‰ M=é‚®ä»¶'    ;
+comment on column M_InnerMsg.      Mail_Type   is         'I=æ”¶ä»¶ç®±
+            O=å‘ä»¶ç®±
+            D=è‰ç¨¿ç®±
+            T=åºŸä»¶ç®± '  ;
+comment on column M_InnerMsg.     Receive_Name    is    'ä½¿ç”¨éƒ¨é—¨ï¼Œä¸ªäººä¸­æ–‡åï¼Œä¸­é—´ä½¿ç”¨è‹±æ–‡åˆ†å·åˆ†å‰²'       ;
+comment on column M_InnerMsg.  Hold_Users       is        'æ€»æ•°ä¸ºå‘é€äººå’Œæ¥æ”¶äººæ•°é‡ç›¸åŠ ï¼Œå‘é€å’Œæ¥æ”¶äººåˆ é™¤æ¶ˆæ¯æ—¶-1ï¼Œå½“æ•°é‡ä¸º0æ—¶çœŸæ­£åˆ é™¤æ­¤æ¡è®°å½• æ¶ˆæ¯ç±»å‹ä¸ºé‚®ä»¶æ—¶ä¸éœ€è¦è®¾ç½®'  ;
+comment on column M_InnerMsg.     msg_State    is     'æœªè¯»/å·²è¯»/åˆ é™¤'     ;
+comment on column M_InnerMsg.    Email_Id     is       'ç”¨æˆ·é…ç½®å¤šé‚®ç®±æ—¶ä½¿ç”¨'   ;
+comment on column M_InnerMsg.       Opt_ID  is       'æ¨¡å—ï¼Œæˆ–è€…è¡¨'   ;
+comment on column M_InnerMsg.       OPT_Method  is   'æ–¹æ³•ï¼Œæˆ–è€…å­—æ®µ'        ;
+comment on column M_InnerMsg.     opt_Tag    is     'ä¸€èˆ¬ç”¨äºå…³è”åˆ°ä¸šåŠ¡ä¸»ä½“'     ;
+comment on table M_InnerMsg is  'å†…éƒ¨æ¶ˆæ¯ä¸å…¬å‘Šæ¥å—ä»£ç ,  å…¶å®å¯ä»¥ç‹¬ç«‹å‡ºæ¥, å› ä¸ºä»– å’Œå‘é€äºº æ˜¯ ä¸€å¯¹å¤šçš„å…³ç³» ';
 alter table M_InnerMsg add primary key (Msg_Code);
 
 create table M_InnerMsg_Recipient
@@ -541,18 +541,18 @@ create table M_InnerMsg_Recipient
    msg_State            char(1)  ,
    ID                   varchar2(16) not null
 );
-comment on column M_InnerMsg_Recipient.   Receive_Type     is   'P=¸öÈËÎªÏûÏ¢
-            A=»ú¹¹Îª¹«¸æ
-            M=ÓÊ¼ş' ;
-comment on column M_InnerMsg_Recipient. Mail_Type       is  'T=ÊÕ¼şÈË
-            C=³­ËÍ
-            B=ÃÜËÍ'  ;
-comment on column M_InnerMsg_Recipient.    msg_State    is  'Î´¶Á/ÒÑ¶Á/É¾³ı£¬ÊÕ¼şÈËÔÚÏßÊ±µ¯³öÌáÊ¾
-            
-            U=Î´¶Á
-            R=ÒÑ¶Á
-            D=É¾³ı'  ;
-comment on table M_InnerMsg_Recipient is 'ÄÚ²¿ÏûÏ¢£¨ÓÊ¼ş£©Óë¹«¸æÊÕ¼şÈË¼°ÏûÏ¢ĞÅÏ¢';
+comment on column M_InnerMsg_Recipient.   Receive_Type     is   'P=ä¸ªäººä¸ºæ¶ˆæ¯
+            A=æœºæ„ä¸ºå…¬å‘Š
+            M=é‚®ä»¶' ;
+comment on column M_InnerMsg_Recipient. Mail_Type       is  'T=æ”¶ä»¶äºº
+            C=æŠ„é€
+            B=å¯†é€'  ;
+comment on column M_InnerMsg_Recipient.    msg_State    is  'æœªè¯»/å·²è¯»/åˆ é™¤ï¼Œæ”¶ä»¶äººåœ¨çº¿æ—¶å¼¹å‡ºæç¤º
+
+            U=æœªè¯»
+            R=å·²è¯»
+            D=åˆ é™¤'  ;
+comment on table M_InnerMsg_Recipient is 'å†…éƒ¨æ¶ˆæ¯ï¼ˆé‚®ä»¶ï¼‰ä¸å…¬å‘Šæ”¶ä»¶äººåŠæ¶ˆæ¯ä¿¡æ¯';
 alter table M_InnerMsg_Recipient add primary key (ID);
 
 create table M_MsgAnnex
@@ -586,20 +586,20 @@ create table P_TASK_LIST
    noticeSign           varchar2(1) ,
    lastNoticeTime       date  ,
    taskdeadline         date,
-   taskvalue            varchar2(2048) 
+   taskvalue            varchar2(2048)
 );
-comment on column P_TASK_LIST. tasktag    is   'ÀàËÆÓëoutlookÖĞµÄÓÊ¼ş±ê¼Ç£¬¿ÉÒÔÓÃ²»Í¬µÄÑÕÉ«µÄÆì×ÓÍ¼±í±êÊ¶' ;
-comment on column P_TASK_LIST.  taskrank   is   'ÈÎÎñµÄÓÅÏÈ¼¶' ;
-comment on column P_TASK_LIST.  taskstatus   is  '´¦ÀíÖĞ¡¢Íê³É¡¢È¡Ïû¡¢ÖÕÖ¹'  ;
-comment on column P_TASK_LIST. tasktype    is   '¸öÈË¡¢×éÖ¯»î¶¯¡¢Áìµ¼Î¯ÅÉ µÈµÈ' ;
-comment on column P_TASK_LIST.  OptID   is   'Ä£¿é£¬»òÕß±í' ;
-comment on column P_TASK_LIST.   OPTMethod  is   '·½·¨£¬»òÕß×Ö¶Î' ;
-comment on column P_TASK_LIST.optTag     is  'Ò»°ãÓÃÓÚ¹ØÁªµ½ÒµÎñÖ÷Ìå'  ;
-comment on column P_TASK_LIST.   finishmemo  is  '¼òÒª¼ÇÂ¼ÈÎÎñµÄÖ´ĞĞ¹ı³ÌºÍ½á¹û'  ;
-comment on column P_TASK_LIST.  noticeSign   is    'ÌáĞÑ±êÖ¾Îª£º½ûÖ¹ÌáĞÑ¡¢Î´ÌáĞÑ¡¢ÒÑÌáĞÑ' ;
-comment on column P_TASK_LIST. lastNoticeTime    is  '×îºóÒ»´ÎÌáĞÑÊ±¼ä£¬¸ù¾İÌáĞÑ²ßÂÔ¿ÉÒÔÌáĞÑ¶à´Î'  ;
+comment on column P_TASK_LIST. tasktag    is   'ç±»ä¼¼ä¸outlookä¸­çš„é‚®ä»¶æ ‡è®°ï¼Œå¯ä»¥ç”¨ä¸åŒçš„é¢œè‰²çš„æ——å­å›¾è¡¨æ ‡è¯†' ;
+comment on column P_TASK_LIST.  taskrank   is   'ä»»åŠ¡çš„ä¼˜å…ˆçº§' ;
+comment on column P_TASK_LIST.  taskstatus   is  'å¤„ç†ä¸­ã€å®Œæˆã€å–æ¶ˆã€ç»ˆæ­¢'  ;
+comment on column P_TASK_LIST. tasktype    is   'ä¸ªäººã€ç»„ç»‡æ´»åŠ¨ã€é¢†å¯¼å§”æ´¾ ç­‰ç­‰' ;
+comment on column P_TASK_LIST.  OptID   is   'æ¨¡å—ï¼Œæˆ–è€…è¡¨' ;
+comment on column P_TASK_LIST.   OPTMethod  is   'æ–¹æ³•ï¼Œæˆ–è€…å­—æ®µ' ;
+comment on column P_TASK_LIST.optTag     is  'ä¸€èˆ¬ç”¨äºå…³è”åˆ°ä¸šåŠ¡ä¸»ä½“'  ;
+comment on column P_TASK_LIST.   finishmemo  is  'ç®€è¦è®°å½•ä»»åŠ¡çš„æ‰§è¡Œè¿‡ç¨‹å’Œç»“æœ'  ;
+comment on column P_TASK_LIST.  noticeSign   is    'æé†’æ ‡å¿—ä¸ºï¼šç¦æ­¢æé†’ã€æœªæé†’ã€å·²æé†’' ;
+comment on column P_TASK_LIST. lastNoticeTime    is  'æœ€åä¸€æ¬¡æé†’æ—¶é—´ï¼Œæ ¹æ®æé†’ç­–ç•¥å¯ä»¥æé†’å¤šæ¬¡'  ;
 alter table P_TASK_LIST  add primary key (taskid);
- 
+
 CREATE OR REPLACE VIEW v_hi_unitinfo AS
 SELECT a.unit_code AS top_unit_code,  b.unit_code,b.unit_type, b.parent_unit, b.is_valid,     b.unit_name,b.unit_desc,b.unit_short_name,b.addrbook_id,b.unit_order,b.dep_no,
        b.unit_word,b.unit_grade,
@@ -608,7 +608,7 @@ SELECT a.unit_code AS top_unit_code,  b.unit_code,b.unit_type, b.parent_unit, b.
   FROM F_UNITINFO a , F_UNITINFO b
  WHERE b.Unit_Path LIKE CONCAT(a.Unit_Path,'%' );
 
- 
+
  create or replace view F_V_Opt_Role_Map as
 select c.opt_url||b.OPT_URL as opt_url, b.opt_req, a.role_code, c.opt_id, b.opt_code
   from F_ROLEPOWER a
@@ -619,7 +619,7 @@ select c.opt_url||b.OPT_URL as opt_url, b.opt_req, a.role_code, c.opt_id, b.opt_
  where c.Opt_Type <> 'W'
    and c.opt_url <> '...'
  order by c.opt_url, b.opt_req, a.role_code;
- 
+
 create or replace view F_V_USERROLES as
 select distinct b.ROLE_CODE,b.ROLE_NAME,b.IS_VALID,b.ROLE_DESC,b.CREATE_DATE,b.UPDATE_DATE ,a.user_code
     from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE)
@@ -633,7 +633,7 @@ create or replace view F_V_UserOptDataScopes as
 select  distinct a.User_Code, c. OPT_ID ,  c.OPT_METHOD , b.opt_Scope_Codes
 from F_V_USERROLES a  join F_ROLEPOWER   b on (a.Role_Code=b.Role_Code)
          join F_OPTDEF  c on(b.OPT_CODE=c.OPT_CODE);
-         
+
 create or replace view F_V_UserOptList as
 select  distinct a.User_Code,  c.OPT_CODE,  c.OPT_NAME  ,  c. OPT_ID ,  c.OPT_METHOD
 from F_V_USERROLES a  join F_ROLEPOWER   b on (a.Role_Code=b.Role_Code)
@@ -657,10 +657,10 @@ from F_OPTDEF b join F_OptInfo c
    and c.opt_url <> '...' and b.opt_req is not null;
 
 create or replace view v_opt_tree as
-   select i.opt_id as MENU_ID,i.pre_opt_id as PARENT_ID,i.opt_name as MENU_NAME,i.order_ind 
+   select i.opt_id as MENU_ID,i.pre_opt_id as PARENT_ID,i.opt_name as MENU_NAME,i.order_ind
    from F_OptInfo i where i.is_in_toolbar ='Y'
-   union all 
-   select d.opt_code as MENU_ID,d.opt_id as PARENT_ID,d.opt_name as MENU_NAME,0 as order_ind 
+   union all
+   select d.opt_code as MENU_ID,d.opt_id as PARENT_ID,d.opt_name as MENU_NAME,0 as order_ind
    from F_OPTDEF d
 ;
 

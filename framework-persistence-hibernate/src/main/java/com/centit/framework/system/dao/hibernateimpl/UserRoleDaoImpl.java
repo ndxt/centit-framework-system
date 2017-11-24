@@ -74,14 +74,4 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
           this, sSqlsen, new Object[]{roleCode});
     }
 
-    @Override
-    @Transactional
-    public List<UserRole> getAllUserRolesByUserId(String usid, String rolePrefix) {
-        String hql = "FROM UserRole ur where ur.id.userCode=? and ur.id.roleCode like ? "
-                + "ORDER BY obtainDate";
-
-        return listObjects(hql, new Object[]{usid, rolePrefix + "%"});
-    }
-
-
 }

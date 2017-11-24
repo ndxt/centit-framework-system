@@ -21,13 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
 @Service("dataDictionaryManager")
 public class DataDictionaryManagerImpl implements
         DataDictionaryManager {
- 
+
     protected Logger logger = LoggerFactory.getLogger(DataDictionaryManagerImpl.class);
 
     @Resource
@@ -37,17 +38,17 @@ public class DataDictionaryManagerImpl implements
     @Resource
     @NotNull
     protected DataCatalogDao dataCatalogDao;
-    
-    
-    @Override    
+
+
+    @Override
     @Transactional
     public List<DataDictionary> getDataDictionary(String catalogCode) {
         logger.info("缓存数据字典  DataDictionary ：" + catalogCode+" ......");
-        return dictionaryDao.listDataDictionary(catalogCode);  
+        return dictionaryDao.listDataDictionary(catalogCode);
         //logger.info("loading DataDictionary end");
     }
 
-   
+
     @Override
     @Transactional
     public DataCatalog getCatalogIncludeDataPiece(String catalogCode){
@@ -55,20 +56,20 @@ public class DataDictionaryManagerImpl implements
         dc.addAllDataPiece(dictionaryDao.listDataDictionary(catalogCode));
         return dc;
     }
-    
+
     @Override
     @Transactional
     @CacheEvict(value = "DataDictionary",key="#dataCatalog.catalogCode")
     public List<DataDictionary> saveCatalogIncludeDataPiece(DataCatalog dataCatalog,boolean isAdmin){
-       
+
 //        dataCatalogDao.mergeObject(dataCatalog);
-        
+
         List<DataDictionary> oldData = dictionaryDao.listDataDictionary(dataCatalog.getCatalogCode());
         List<DataDictionary> newData = dataCatalog.getDataDictionaries();
-        Triple<List<DataDictionary>, List<Pair<DataDictionary,DataDictionary>>, List<DataDictionary>> 
-            dbOptList = ListOpt.compareTwoList(oldData, newData, (o1,o2) ->
-                         o1.getDataCode().compareTo(o2.getDataCode()));
-        
+        Triple<List<DataDictionary>, List<Pair<DataDictionary,DataDictionary>>, List<DataDictionary>>
+            dbOptList = ListOpt.compareTwoList(oldData, newData,
+                  Comparator.comparing(DataDictionary::getDataCode));
+
          if(dbOptList.getRight()!=null){
             for(DataDictionary dp: dbOptList.getRight() ){
                 if("U".equals(dp.getDataStyle()) || (isAdmin && "S".equals(dp.getDataStyle()) ) ){
@@ -82,7 +83,7 @@ public class DataDictionaryManagerImpl implements
                  dictionaryDao.saveNewObject(dp);
              }
         }
-        
+
         if(null != dbOptList.getMiddle()){
             for(Pair<DataDictionary,DataDictionary> updateDp: dbOptList.getMiddle()){
                 DataDictionary oldD = updateDp.getLeft();
@@ -95,10 +96,10 @@ public class DataDictionaryManagerImpl implements
                     dictionaryDao.mergeObject(newD);
                 }
             }
-        }       
+        }
         return oldData;
     }
-    
+
     @Override
     @Transactional
     @CacheEvict(value = "DataDictionary",key="#catalogCode")
@@ -106,8 +107,8 @@ public class DataDictionaryManagerImpl implements
         dictionaryDao.deleteDictionary(catalogCode);
         dataCatalogDao.deleteObjectById(catalogCode);
     }
-    
-    
+
+
     @Override
     @Transactional(propagation=Propagation.REQUIRED)
     @CacheEvict(value = "DataDictionary",key="#dd.catalogCode")
@@ -161,6 +162,7 @@ public class DataDictionaryManagerImpl implements
     }
 
     @Transactional
+    @Deprecated
     public List<DataCatalog> listSysDataCatalog() {
         return dataCatalogDao.listSysCatalog();
     }
@@ -174,7 +176,7 @@ public class DataDictionaryManagerImpl implements
     public List<DataCatalog> listAllDataCatalog(){
         return dataCatalogDao.listObjects();
     }
-    
+
     @Transactional
     public List<DataDictionary> listDataDictionarys(Map<String, Object> filterDescMap) {
         return dictionaryDao.listObjects(filterDescMap);

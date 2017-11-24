@@ -299,6 +299,10 @@
 	<select id="getNextKey" databaseId="mysql" resultType="String">
     SELECT sequence_nextval('S_UNITCODE')
 	</select>
+  <select id="getNextKey" databaseId="h2" resultType="String">
+    select NEXT VALUE FOR S_UNITCODE
+  </select>
+
 	<select id="getUnitCode" resultType="String" parameterType="String">
 		<include refid="coreSql" />
 		 where DEP_NO=#{depno}
@@ -309,9 +313,11 @@
 		where b.unit_code =#{unitCode}
 	</select>
 	<select id="listRelationUsers" resultMap="UnitInfo" parameterType="String">
-			select * FROM F_Userinfo ui where ui.user_Code in
-			(select user_Code from f_userunit where unit_code=#{unitCode}) or
-			ui.user_Code in (select user_Code from f_userrole where role_code like #{unitCode}||'-%'
+        select ui.* FROM F_USERINFO ui
+              where exists (select uu.* from F_USERUNIT where uu.USER_CODE=ui.USER_CODE and uu.UNIT_CODE= #{unitCode})
+               or exists(select ur.* from F_V_USERROLES ur
+              where ur.USER_CODE=ui.USER_CODE and ur.ROLE_TYPE='D'
+              and ur.UNIT_CODE= #{unitCode} )
 	</select>
 	<select id="getUnitNameOfCode" parameterType="String" resultType="String">
 		select unitname from f_unitinfo where unit_code=#{unitcode}

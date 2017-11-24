@@ -8,26 +8,30 @@ import java.util.Map;
 
 public interface RoleInfoDao {
 
-     List<RoleInfo> listObjects(Map<String, Object> filterMap);
+    List<RoleInfo> listObjects(Map<String, Object> filterMap);
 
 
-     int  pageCount(Map<String, Object> filterDescMap);
-     List<RoleInfo>  pageQuery(Map<String, Object> pageQureyMap);
+    int  pageCount(Map<String, Object> filterDescMap);
+    List<RoleInfo>  pageQuery(Map<String, Object> pageQureyMap);
 
-     List<RoleInfo> listObjectsAll();
+    List<RoleInfo> listObjectsAll();
 
     void saveNewObject(RoleInfo o);
 
-     void deleteObjectById(String roleCode);
+    void deleteObjectById(String roleCode);
 
     void mergeObject(RoleInfo o);
 
+    /**获取主键 S_ROLECODE
+     * @return S_ROLECODE.nextValue
+     */
+    String getNextKey();
 
-     RoleInfo getObjectById(String roleCode);
+    RoleInfo getObjectById(String roleCode);
 
     //DatabaseOptUtils.findObjectsByHql(this,"FROM VOptTree");
-     List<VOptTree> getVOptTreeList();
-    
+    List<VOptTree> getVOptTreeList();
+
     /**
      *         String hql = "select new map(def.optName as def_optname, def.optCode as def_optcode) "
                 + "from OptMethod def, RolePower pow where def.optCode = pow.id.optCode and pow.id.roleCode = ?";
@@ -35,14 +39,14 @@ public interface RoleInfoDao {
      * @param rolecode rolecode
      * @return List
      */
-     List<Object> listRoleOptMethods(String rolecode);
+    List<Object> listRoleOptMethods(String rolecode);
 
     /**
      * select count(1) from f_userrole where rolecode=?
      * @param roleCode roleCode
      * @return int
      */
-     int countRoleUserSum(String roleCode);
+    int countRoleUserSum(String roleCode);
 
     RoleInfo getObjectByProperty(String propertyName, Object propertyValue);
 }

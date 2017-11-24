@@ -14,6 +14,7 @@ import com.centit.framework.system.service.SysUserRoleManager;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -82,7 +83,7 @@ public class RoleInfoController extends BaseController {
     public void listUnitAndPublicRole(String[] field,@PathVariable String unitCode,PageDesc pageDesc,
                                       HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = convertSearchColumn(request);
-        filterMap.put("publicUnitRole", unitCode + "-%");
+        filterMap.put("publicUnitRole", unitCode);
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
 
         ResponseMapData respData = new ResponseMapData();
@@ -106,7 +107,7 @@ public class RoleInfoController extends BaseController {
     @RequestMapping(value = "/item", method = RequestMethod.GET)
     public void listItemRole(String[] field,PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = convertSearchColumn(request);
-        filterMap.put("ROLECODE",  "I-%");
+        filterMap.put("ROLETYPE",  "I");
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
 
         ResponseMapData respData = new ResponseMapData();
@@ -184,13 +185,20 @@ public class RoleInfoController extends BaseController {
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
-    @RequestMapping(value = "/global", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     public void createGlobalRole(@Valid RoleInfo roleInfo,HttpServletRequest request, HttpServletResponse response) {
 
-        if(! roleInfo.getRoleCode().startsWith("G-")){
-            roleInfo.setRoleCode("G-"+ roleInfo.getRoleCode());
+        String roleType = roleInfo.getRoleType();
+        if(StringUtils.isBlank(roleType)){
+            JsonResultUtils.writeErrorMessageJson("新建角色必须指定角色类别。",response);
+            return;
         }
-        roleInfo.setRoleType("S");
+        if("D".equals(roleType)){
+            if(StringUtils.isBlank(roleInfo.getUnitCode())){
+                JsonResultUtils.writeErrorMessageJson("机构角色必须指定所属机构。",response);
+                return;
+            }
+        }
         //roleInfo.setUnitCode("G");
         roleInfo.setCreateDate(new Date());
         sysRoleManager.saveNewRoleInfo(roleInfo);
@@ -204,67 +212,6 @@ public class RoleInfoController extends BaseController {
         /*********log*********/
     }
 
-    @RequestMapping(value = "/public",method = RequestMethod.POST)
-    public void createPublicRole(@Valid RoleInfo roleInfo,HttpServletRequest request, HttpServletResponse response) {
-
-        if(! roleInfo.getRoleCode().startsWith("P-")){
-            roleInfo.setRoleCode("P-"+ roleInfo.getRoleCode());
-        }
-        //roleInfo.setUnitCode("P");
-        roleInfo.setRoleType("S");
-        roleInfo.setCreateDate(new Date());
-        sysRoleManager.saveNewRoleInfo(roleInfo);
-      //刷新缓存
-        sysRoleManager.loadRoleSecurityMetadata();
-        JsonResultUtils.writeBlankJson(response);
-
-        /*********log*********/
-        OperationLogCenter.logNewObject(request, optId,roleInfo.getRoleCode(),
-                OperationLog.P_OPT_LOG_METHOD_C, "新增角色" , roleInfo);
-        /*********log*********/
-    }
-
-    @RequestMapping(value = "/item",method = RequestMethod.POST)
-    public void createItemRole(@Valid RoleInfo roleInfo,HttpServletRequest request, HttpServletResponse response) {
-
-        if(! roleInfo.getRoleCode().startsWith("I-")){
-            roleInfo.setRoleCode("I-"+ roleInfo.getRoleCode());
-        }
-        roleInfo.setRoleType("I");
-        //roleInfo.setUnitCode("I");
-
-        roleInfo.setCreateDate(new Date());
-        sysRoleManager.saveNewRoleInfo(roleInfo);
-      //刷新缓存
-        sysRoleManager.loadRoleSecurityMetadata();
-        JsonResultUtils.writeBlankJson(response);
-
-        /*********log*********/
-        OperationLogCenter.logNewObject(request, optId,roleInfo.getRoleCode(),
-                OperationLog.P_OPT_LOG_METHOD_C, "新增角色" , roleInfo);
-        /*********log*********/
-    }
-
-    @RequestMapping(value = "/dept/{unitcode}",method = RequestMethod.POST)
-    public void createDeptRole(@PathVariable String unitcode,@Valid RoleInfo roleInfo,
-            HttpServletRequest request,HttpServletResponse response) {
-
-        if(! roleInfo.getRoleCode().startsWith(unitcode+"-")){
-            roleInfo.setRoleCode(unitcode+"-"+ roleInfo.getRoleCode());
-        }
-        roleInfo.setRoleType("S");
-        roleInfo.setUnitCode(unitcode);
-        roleInfo.setCreateDate(new Date());
-        sysRoleManager.saveNewRoleInfo(roleInfo);
-        //刷新缓存
-        sysRoleManager.loadRoleSecurityMetadata();
-        JsonResultUtils.writeBlankJson(response);
-
-        //*********log*********//*
-        OperationLogCenter.logNewObject(request,optId,roleInfo.getRoleCode(),
-                OperationLog.P_OPT_LOG_METHOD_C,  "新增角色" , roleInfo);
-        //*********log*********//*
-    }
 
     /**
      * 从操作定义反向添加角色代码
@@ -466,9 +413,8 @@ public class RoleInfoController extends BaseController {
      */
     @RequestMapping(value = "/{roleCode}", method = RequestMethod.DELETE)
     public void deleteRole(@PathVariable String roleCode, HttpServletRequest request, HttpServletResponse response) {
-        if("G-SYSADMIN".equalsIgnoreCase(roleCode)||
-                "G-anonymous".equalsIgnoreCase(roleCode)||
-                "G-DEPLOY".equalsIgnoreCase(roleCode)){
+        if(StringUtils.equalsAny(roleCode,
+          "public", "anonymous", "forbidden")){
             JsonResultUtils.writeErrorMessageJson("系统内置角色不能删除。", response);
             return;
         }
@@ -575,7 +521,7 @@ public class RoleInfoController extends BaseController {
         }else if("D".equals(type)){
             IUserUnit unit = CodeRepositoryUtil.getUserPrimaryUnit(super.getLoginUserCode(request));
             if(unit!=null) {
-                filterMap.put("publicUnitRole", unit.getUnitCode()+"-%");
+                filterMap.put("publicUnitRole", unit.getUnitCode());
             }else return;
         }
         List<RoleInfo> listObjects = sysRoleManager.listObjects(filterMap);

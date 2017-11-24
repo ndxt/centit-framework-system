@@ -1,6 +1,11 @@
 package com.centit.framework.system.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.centit.framework.common.SysParametersUtils;
 import com.centit.framework.system.dao.*;
+import com.centit.support.algorithm.NumberBaseOpt;
+import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.security.model.CentitSecurityMetadata;
@@ -102,6 +107,19 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @CacheEvict(value="RoleInfo",key="'roleCodeMap'")
     @Transactional
     public Serializable saveNewRoleInfo(RoleInfo o){
+        String roleCode = roleInfoDao.getNextKey();
+        String roleIdFormat = SysParametersUtils.getStringValue("framework.roleinfo.id.generator");
+        if(StringUtils.isNotBlank(roleIdFormat)){
+            //{"prefix":"U","length":8,"pad":"0"}
+            JSONObject idFormat = (JSONObject) JSON.parse(roleIdFormat);
+            if(idFormat!=null) {
+                roleCode = StringBaseOpt.midPad(roleCode,
+                NumberBaseOpt.castObjectToInteger(idFormat.get("length"), 1),
+                idFormat.getString("prefix"),
+                idFormat.getString("pad"));
+            }
+        }
+        o.setRoleCode(roleCode);
         roleInfoDao.saveNewObject(o);
         return o.getRoleCode();
     }
@@ -214,7 +232,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
     public boolean isRoleNameNotExist(String unitCode, String roleName, String roleCode){
 
         Map<String, Object> filterMap = new HashMap<>();
-        filterMap.put("publicUnitRole",unitCode+"-%");
+        filterMap.put("publicUnitRole",unitCode);
         filterMap.put("roleNameEq",roleName);
 
         List<RoleInfo> roleInfos = roleInfoDao.listObjects(filterMap);

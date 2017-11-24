@@ -6,6 +6,7 @@ import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.RoleInfoDao;
 import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.VOptTree;
+import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.QueryUtils;
 import org.springframework.jdbc.core.ConnectionCallback;
@@ -24,9 +25,9 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
         if (filterField == null) {
             filterField = new HashMap<>();
             filterField.put("roleCode", CodeBook.LIKE_HQL_ID);
-            filterField.put("(like)publicUnitRole", "(ROLE_CODE like :publicUnitRole or ROLE_CODE like 'P-%')");
-            filterField.put("(startwith)UNITROLE", "(ROLE_CODE like :UNITROLE)");
-            filterField.put("NP_GLOBAL", "(ROLE_CODE like 'G-%' or roleCode like 'P-%')");
+            filterField.put("publicUnitRole", "(ROLE_TYPE='P' or (ROLE_TYPE='D' and UNIT_CODE = :publicUnitRole))");
+            filterField.put("UNITROLE", "(ROLE_TYPE='P' or (ROLE_TYPE='D' and UNIT_CODE = :UNITROLE))");
+            filterField.put("NP_GLOBAL", "(ROLE_TYPE='G' or ROLE_TYPE='P')");
             filterField.put("roleName", CodeBook.LIKE_HQL_ID);
             filterField.put("ROLEDESC", CodeBook.LIKE_HQL_ID);
             filterField.put("isValid", CodeBook.EQUAL_HQL_ID);
@@ -38,6 +39,13 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
             filterField.put("(nextday)createDateEnd", "CREATE_DATE< :createDateEnd");
         }
         return filterField;
+    }
+
+    @Override
+    public String getNextKey() {
+        return StringBaseOpt.objectToString(
+            DatabaseOptUtils.getSequenceNextValue(
+                this, "S_ROLECODE"));
     }
 
     @Override

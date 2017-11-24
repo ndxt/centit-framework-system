@@ -234,4 +234,9 @@
 	<select id="getNextOptCode" databaseId="mysql" resultType="String">
 		SELECT sequence_nextval('S_OPTDEFCODE')
 	</select>
+
+  <select id="getNextOptCode" databaseId="h2" resultType="String">
+    select NEXT VALUE FOR S_OPTDEFCODE
+  </select>
+
 </mapper>

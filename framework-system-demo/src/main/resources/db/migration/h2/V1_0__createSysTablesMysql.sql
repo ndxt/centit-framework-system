@@ -1,36 +1,3 @@
-DROP TABLE IF EXISTS f_mysql_sequence;  
-
-CREATE TABLE  f_mysql_sequence (
-  name varchar(50) NOT NULL,  
-  currvalue int(11) NOT NULL,  
-  increment int(11) NOT NULL DEFAULT '1',  
-   primary key (name)
-) ;
-
-INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES    
-('S_MSGCODE', 0, 1);
-
-INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES    
-('S_RECIPIENT', 0, 1);
-
-INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES    
-('S_UNITCODE', 0, 1);
-
-INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES    
-('S_USERCODE', 0, 1);
-
-INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES    
-('S_USER_UNIT_ID', 0, 1);
-
-INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES    
-('S_ADDRESSID', 0, 1);
-
-INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES    
-('S_OPTDEFCODE', 0, 1);
-
-INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES    
-('S_SYS_LOG', 0, 1);
-
 
 drop table if exists F_ADDRESS_BOOK;
 
@@ -385,7 +352,7 @@ create table F_ROLEINFO
 (
    ROLE_CODE            varchar(32) not null,
    ROLE_NAME            varchar(64),
-   ROLE_TYPE            char(1) not null comment 'S为系统功能角色 I 为项目角色 W工作量角色',
+   ROLE_TYPE            char(1) not null comment 'F 为系统 固有的 G 全局的 P 公用的 D 部门的 I 为项目角色 W工作量角色',
    UNIT_CODE            varchar(32),
    IS_VALID             char(1) not null,
    ROLE_DESC            varchar(256),
@@ -658,13 +625,13 @@ create table M_InnerMsg
             O=发件箱
             D=草稿箱
             T=废件箱
-            
-            
+
+
             ',
    Mail_UnDel_Type      char(1),
    Receive_Name         varchar(2048) comment '使用部门，个人中文名，中间使用英文分号分割',
    Hold_Users           numeric(8,0) comment '总数为发送人和接收人数量相加，发送和接收人删除消息时-1，当数量为0时真正删除此条记录
-            
+
             消息类型为邮件时不需要设置',
    msg_State            char(1) comment '未读/已读/删除',
    msg_Content          longblob,
@@ -692,7 +659,7 @@ create table M_InnerMsg_Recipient
             C=抄送
             B=密送',
    msg_State            char(1) comment '未读/已读/删除，收件人在线时弹出提示
-            
+
             U=未读
             R=已读
             D=删除',
@@ -751,7 +718,7 @@ alter table P_TASK_LIST
 create table simulate_sequence (
 seqname varchar(100) not null primary key,
       currvalue numeric(12,0), increment numeric(4,0));
-   
+
 -- v_hi_unitinfo视图脚本
 
 CREATE OR REPLACE VIEW v_hi_unitinfo AS
@@ -762,7 +729,7 @@ SELECT a.unit_code AS top_unit_code,  b.unit_code,b.unit_type, b.parent_unit, b.
   FROM F_UNITINFO a , F_UNITINFO b
  WHERE b.Unit_Path LIKE CONCAT(a.Unit_Path,'%' );
 
- 
+
  create or replace view F_V_Opt_Role_Map as
 select concat(`c`.`opt_url`,`b`.`OPT_URL`) as opt_url, b.opt_req, a.role_code, c.opt_id, b.opt_code
   from F_ROLEPOWER a
@@ -827,27 +794,29 @@ from F_OPTDEF b join F_OptInfo c
 /* View: v_opt_tree                                             */
 /*==============================================================*/
 create or replace view v_opt_tree as
-   select i.opt_id as MENU_ID,i.pre_opt_id as PARENT_ID,i.opt_name as MENU_NAME,i.order_ind 
+   select i.opt_id as MENU_ID,i.pre_opt_id as PARENT_ID,i.opt_name as MENU_NAME,i.order_ind
    from F_OptInfo i where i.is_in_toolbar ='Y'
-   union all 
-   select d.opt_code as MENU_ID,d.opt_id as PARENT_ID,d.opt_name as MENU_NAME,0 as order_ind 
+   union all
+   select d.opt_code as MENU_ID,d.opt_id as PARENT_ID,d.opt_name as MENU_NAME,0 as order_ind
    from F_OPTDEF d
 ;
 
 
 
 
-create sequence S_Filter_No;
+create sequence S_FILTER_NO;
 
-create sequence s_notify_id;
+create sequence S_NOTIFY_ID;
 
-create sequence s_optdefcode start with 1100000 INCREMENT BY 1;
+create sequence S_OPTDEFCODE start with 1100000 INCREMENT BY 1;
 
-create sequence s_sys_log;
+create sequence S_SYS_LOG;
 
-create sequence s_unitcode;
+create sequence S_UNITCODE;
 
-create sequence s_user_unit_id;
+create sequence S_USER_UNIT_ID;
 
-create sequence s_usercode;
+create sequence S_USERCODE;
+
+create sequence S_ROLECODE;
 

@@ -232,6 +232,10 @@
 		SELECT sequence_nextval('S_SYS_LOG')
 	</select>
 
+  <select id="createNewLogId" databaseId="h2" resultType="Long">
+    select NEXT VALUE FOR S_SYS_LOG
+  </select>
+
 	<select id="listOptIds" resultType="String">
 		select DISTINCT f.OPT_ID from F_OPT_LOG f
 	</select>

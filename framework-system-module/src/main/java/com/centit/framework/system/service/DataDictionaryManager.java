@@ -17,7 +17,7 @@ public interface DataDictionaryManager {
     void mergeObject(DataCatalog dataCatalog);
 
 
-  @Deprecated
+    @Deprecated
     List<DataCatalog> listSysDataCatalog();
 
     List<DataCatalog> listUserDataCatalog();

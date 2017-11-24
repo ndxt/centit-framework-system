@@ -23,17 +23,28 @@
 		<result property="orderInd" column="ORDER_IND" />
 	</resultMap>
 
+  <select id="getNextKey" databaseId="oracle" resultType="String">
+    SELECT to_char(S_ROLECODE.nextval) from dual
+  </select>
+  <select id="getNextKey" databaseId="mysql" resultType="String">
+    SELECT sequence_nextval('S_ROLECODE')
+  </select>
+  <select id="getNextKey" databaseId="h2" resultType="String">
+    select NEXT VALUE FOR S_ROLECODE
+  </select>
 
 	<!-- 查询条件 -->
-	<sql id="condition" databaseId="oracle">
+
+
+  <sql id="condition" databaseId="oracle">
     <if test="roleCode != null  and roleCode != ''  ">
-      and u.ROLE_CODE like '%'|| #{roleCode}||'%'
+      and u.ROLE_CODE == #{roleCode}
     </if>
     <if test="unitRole != null  and unitRole != ''  ">
-      and (u.ROLE_CODE like #{unitRole} or u.ROLE_CODE like 'P-%' )
+      and (u.ROLE_TYPE == 'P' or ( u.ROLE_TYPE == 'D' and u.UNIT_CODE =  #{unitRole} ))
     </if>
     <if test="NP_GLOBAL != null   and NP_GLOBAL != ''  ">
-      and (u.ROLE_CODE like 'G-%' or u.ROLE_CODE like 'P-%')
+      and (u.ROLE_TYPE == 'G' or u.ROLE_TYPE == 'P')
     </if>
     <if test="roleName != null  and roleName != ''   ">
       and u.ROLE_NAME like '%'|| #{roleName}||'%'
@@ -41,41 +52,41 @@
     <if test="roleNameEq != null  and roleNameEq != ''   ">
       and u.ROLE_NAME = #{roleName}
     </if>
-		<if test="roleDesc != null  and roleDesc != ''  ">
-			  and u.ROLE_DESC like '%'|| #{roleDesc}||'%'
-		</if>
-		<if test="isValid != null  and isValid != ''  ">
-			  and u.IS_VALID = #{isValid}
-		</if>
-		<if test="roleType != null  and roleType != ''  ">
-			  and u.ROLE_TYPE = #{roleType}
-		</if>
-		<if test="unitCode != null  and unitCode != ''  ">
-			  and u.UNIT_CODE=#{unitCode}
-		</if>
-		<if test="NP_unitCode != null  and NP_unitCode != ''   ">
-			  and u.UNIT_CODE is null
-		</if>
-    <if test="publicUnitRole != null  and publicUnitRole != ''  ">
-      and (u.ROLE_CODE like #{publicUnitRole} or u.ROLE_CODE like 'P-%' )
+    <if test="roleDesc != null  and roleDesc != ''  ">
+      and u.ROLE_DESC like '%'|| #{roleDesc}||'%'
+    </if>
+    <if test="isValid != null  and isValid != ''  ">
+      and u.IS_VALID = #{isValid}
+    </if>
+    <if test="roleType != null  and roleType != ''  ">
+      and u.ROLE_TYPE = #{roleType}
+    </if>
+    <if test="unitCode != null  and unitCode != ''  ">
+      and u.UNIT_CODE=#{unitCode}
+    </if>
+    <if test="NP_unitCode != null  and NP_unitCode != ''   ">
+      and u.UNIT_CODE is null
+    </if>
+    <if test="publicUnitRole != null  and publicUnitRole != '' ">
+      and (u.ROLE_TYPE == 'P' or ( u.ROLE_TYPE == 'D' and u.UNIT_CODE = #{publicUnitRole}))
     </if>
     <if test="createDateBeg != null and createDateBeg != ''   ">
-        <![CDATA[ and to_char(u.CREATE_DATE, 'yyyy-mm-dd') >= to_char(#{createDateBeg}, 'yyyy-mm-dd') ]]>
+      <![CDATA[ and u.CREATE_DATE >= #{createDateBeg} ]]>
     </if>
     <if test="createDateEnd != null and createDateEnd != ''   ">
-      <![CDATA[ and to_char(u.CREATE_DATE, 'yyyy-mm-dd') <= to_char(#{createDateEnd}, 'yyyy-mm-dd') ]]>
+      <![CDATA[ and u.CREATE_DATE <= #{createDateEnd} ]]>
     </if>
-	</sql>
+  </sql>
 
   <sql id="condition" databaseId="mysql">
     <if test="roleCode != null  and roleCode != ''  ">
-      and u.ROLE_CODE like concat('%', #{roleCode}, '%')
+      and u.ROLE_CODE == #{roleCode}
     </if>
     <if test="unitRole != null  and unitRole != ''  ">
-      and (u.ROLE_CODE like #{unitRole} or u.ROLE_CODE like 'P-%' )
+      and (u.ROLE_TYPE == 'P' or ( u.ROLE_TYPE == 'D' and u.UNIT_CODE = #{unitRole}))
     </if>
     <if test="NP_GLOBAL != null   and NP_GLOBAL != ''  ">
-      and (u.ROLE_CODE like 'G-%' or u.ROLE_CODE like 'P-%')
+      and (u.ROLE_TYPE == 'G' or u.ROLE_TYPE == 'P')
     </if>
     <if test="roleName != null  and roleName != ''   ">
       and u.ROLE_NAME like concat('%', #{roleName}, '%')
@@ -99,13 +110,13 @@
       and u.UNIT_CODE is null
     </if>
     <if test="publicUnitRole != null  and publicUnitRole != ''  ">
-      and (u.ROLE_CODE like #{publicUnitRole} or u.ROLE_CODE like 'P-%' )
+      and (u.ROLE_TYPE == 'P' or ( u.ROLE_TYPE == 'D' and u.UNIT_CODE = #{publicUnitRole}))
     </if>
     <if test="createDateBeg != null and createDateBeg != ''   ">
-      <![CDATA[ and DATE_FORMAT(u.CREATE_DATE, '%Y-%m-%d') >= DATE_FORMAT(#{createDateBeg}, '%Y-%m-%d') ]]>
+      <![CDATA[ and u.CREATE_DATE >= #{createDateBeg} ]]>
     </if>
     <if test="createDateEnd != null and createDateEnd != ''   ">
-      <![CDATA[ and DATE_FORMAT(u.CREATE_DATE, '%Y-%m-%d') <= DATE_FORMAT(#{createDateEnd}, '%Y-%m-%d') ]]>
+      <![CDATA[ and u.CREATE_DATE <= #{createDateEnd} ]]>
     </if>
   </sql>
 
@@ -259,15 +270,6 @@
      ]]>
 	</delete>
 	<!--删除记录 结束 -->
-
-	<select id="getNextKey" databaseId="oracle" resultType="Long">
-		SELECT S_FILTER_NO.nextval from dual
-	</select>
-
-	<select id="getNextKey" databaseId="mysql" resultType="Long">
-		SELECT sequence_nextval('S_FILTER_NO')
-	</select>
-
 	<select id="listObjects" parameterType="map" resultMap="RoleInfo">
 		 <include refid="coreSql" />
 		 <where>

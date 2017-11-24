@@ -1,34 +1,34 @@
-DROP TABLE IF EXISTS f_mysql_sequence;  
+DROP TABLE IF EXISTS f_mysql_sequence;
 
 CREATE TABLE  f_mysql_sequence (
-  name varchar(50) NOT NULL,  
-  currvalue int(11) NOT NULL,  
-  increment int(11) NOT NULL DEFAULT '1',  
+  name varchar(50) NOT NULL,
+  currvalue int(11) NOT NULL,
+  increment int(11) NOT NULL DEFAULT '1',
    primary key (name)
 ) ;
 
-INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES    
+INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
 ('S_MSGCODE', 0, 1);
 
-INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES    
+INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
 ('S_RECIPIENT', 0, 1);
 
-INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES    
+INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
 ('S_UNITCODE', 0, 1);
 
-INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES    
+INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
 ('S_USERCODE', 0, 1);
 
-INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES    
+INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
 ('S_USER_UNIT_ID', 0, 1);
 
-INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES    
+INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
 ('S_ADDRESSID', 0, 1);
 
-INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES    
+INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
 ('S_OPTDEFCODE', 0, 1);
 
-INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES    
+INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
 ('S_SYS_LOG', 0, 1);
 
 
@@ -393,7 +393,7 @@ create table F_ROLEINFO
 (
    ROLE_CODE            varchar(32) not null,
    ROLE_NAME            varchar(64),
-   ROLE_TYPE            char(1) not null comment 'S为系统功能角色 I 为项目角色 W工作量角色',
+   ROLE_TYPE            char(1) not null comment 'F 为系统 固有的 G 全局的 P 公用的 D 部门的 I 为项目角色 W工作量角色',
    UNIT_CODE            varchar(32),
    IS_VALID             char(1) not null,
    ROLE_DESC            varchar(256),
@@ -658,7 +658,7 @@ create table F_WORK_DAY
 );
 
 alter table F_WORK_DAY comment '非正常作业时间日
-A:工作日放假 B:周末调休成工作时间  C: 正常上班  D:正常休假  
+A:工作日放假 B:周末调休成工作时间  C: 正常上班  D:正常休假
 ';
 
 alter table F_WORK_DAY
@@ -679,13 +679,13 @@ create table M_InnerMsg
             O=发件箱
             D=草稿箱
             T=废件箱
-            
-            
+
+
             ',
    Mail_UnDel_Type      char(1),
    Receive_Name         varchar(2048) comment '使用部门，个人中文名，中间使用英文分号分割',
    Hold_Users           numeric(8,0) comment '总数为发送人和接收人数量相加，发送和接收人删除消息时-1，当数量为0时真正删除此条记录
-            
+
             消息类型为邮件时不需要设置',
    msg_State            char(1) comment '未读/已读/删除',
    msg_Content          longblob,
@@ -718,7 +718,7 @@ create table M_InnerMsg_Recipient
             C=抄送
             B=密送',
    msg_State            char(1) comment '未读/已读/删除，收件人在线时弹出提示
-            
+
             U=未读
             R=已读
             D=删除',
@@ -774,104 +774,104 @@ create table P_TASK_LIST
 
 alter table P_TASK_LIST
    add primary key (taskid);
-   
-   
-   
-   
+
+
+
+
 --  函数
 
 
 
-DROP FUNCTION IF EXISTS sequence_currval;  
+DROP FUNCTION IF EXISTS sequence_currval;
 
-DELIMITER //  
-  
-CREATE  FUNCTION sequence_currval(seq_name VARCHAR(50)) RETURNS int(11)  
-  
-    READS SQL DATA  
-  
-    DETERMINISTIC  
-  
-BEGIN  
-  
-DECLARE cur_value INTEGER;  
-  
-SET cur_value = 0;  
-  
-SELECT currvalue INTO cur_value FROM f_mysql_sequence WHERE NAME = seq_name;  
-  
-RETURN cur_value;  
-  
-END//  
-  
+DELIMITER //
+
+CREATE  FUNCTION sequence_currval(seq_name VARCHAR(50)) RETURNS int(11)
+
+    READS SQL DATA
+
+    DETERMINISTIC
+
+BEGIN
+
+DECLARE cur_value INTEGER;
+
+SET cur_value = 0;
+
+SELECT currvalue INTO cur_value FROM f_mysql_sequence WHERE NAME = seq_name;
+
+RETURN cur_value;
+
+END//
+
 DELIMITER ;
 
 
-DROP FUNCTION IF EXISTS sequence_nextval;  
-  
-DELIMITER //  
-  
-CREATE  FUNCTION sequence_nextval(seq_name VARCHAR(50)) RETURNS int(11)  
-  
-    DETERMINISTIC  
-  
-BEGIN  
-DECLARE cur_value INTEGER;  
+DROP FUNCTION IF EXISTS sequence_nextval;
 
-UPDATE f_mysql_sequence SET currvalue = currvalue + increment WHERE NAME = seq_name;  
-  
-SELECT currvalue INTO cur_value FROM f_mysql_sequence WHERE NAME = seq_name;  
-  
-RETURN cur_value;  
-  
-END//  
-  
+DELIMITER //
+
+CREATE  FUNCTION sequence_nextval(seq_name VARCHAR(50)) RETURNS int(11)
+
+    DETERMINISTIC
+
+BEGIN
+DECLARE cur_value INTEGER;
+
+UPDATE f_mysql_sequence SET currvalue = currvalue + increment WHERE NAME = seq_name;
+
+SELECT currvalue INTO cur_value FROM f_mysql_sequence WHERE NAME = seq_name;
+
+RETURN cur_value;
+
+END//
+
 DELIMITER ;
 
 
-DROP FUNCTION IF EXISTS sequence_setval;  
-  
-DELIMITER //  
-  
-CREATE  FUNCTION sequence_setval(seq_name VARCHAR(50),seq_value int(11)) RETURNS int(11)  
-  
-    DETERMINISTIC  
-  
-BEGIN 
+DROP FUNCTION IF EXISTS sequence_setval;
 
-UPDATE f_mysql_sequence SET currvalue = seq_value WHERE NAME = seq_name;  
+DELIMITER //
+
+CREATE  FUNCTION sequence_setval(seq_name VARCHAR(50),seq_value int(11)) RETURNS int(11)
+
+    DETERMINISTIC
+
+BEGIN
+
+UPDATE f_mysql_sequence SET currvalue = seq_value WHERE NAME = seq_name;
 RETURN seq_value;
-END//  
-DELIMITER ;  
-DROP FUNCTION IF EXISTS calcUnitPath;  
+END//
+DELIMITER ;
+DROP FUNCTION IF EXISTS calcUnitPath;
 DELIMITER $$
 
 
-CREATE FUNCTION calcUnitPath (chrId varchar(32)) 
-	RETURNS varchar(1000) 
+CREATE FUNCTION calcUnitPath (chrId varchar(32))
+	RETURNS varchar(1000)
 BEGIN
    DECLARE sTemp VARCHAR(32);
    DECLARE sPreTemp VARCHAR(32);
    DECLARE path VARCHAR(1000);
-   DECLARE rs VARCHAR(1000);   
+   DECLARE rs VARCHAR(1000);
    SET  sTemp = trim(chrId);
    SET  path = '';
    REPEAT
    	  SET  path = concat('/',sTemp, path);
    	  set sPreTemp = sTemp;
-      SELECT unit_code INTO sTemp 
-         FROM f_unitinfo  
-         where unit_code = 
+      SELECT unit_code INTO sTemp
+         FROM f_unitinfo
+         where unit_code =
          		(select parent_unit FROM f_unitinfo where unit_code = sTemp);
       until sTemp is null or sTemp='' or sPreTemp = sTemp
    END REPEAT;
-  
+
    RETURN path;
 END$$
 
 DELIMITER ;
-   
-   
+
+
 -- v_hi_unitinfo视图脚本
 
 CREATE OR REPLACE VIEW v_hi_unitinfo AS
@@ -882,7 +882,7 @@ SELECT a.unit_code AS top_unit_code,  b.unit_code,b.unit_type, b.parent_unit, b.
   FROM F_UNITINFO a , F_UNITINFO b
  WHERE b.Unit_Path LIKE CONCAT(a.Unit_Path,'%' );
 
- 
+
  create or replace view F_V_Opt_Role_Map as
 select concat(`c`.`opt_url`,`b`.`OPT_URL`) as opt_url, b.opt_req, a.role_code, c.opt_id, b.opt_code
   from F_ROLEPOWER a
@@ -947,10 +947,10 @@ from F_OPTDEF b join F_OptInfo c
 /* View: v_opt_tree                                             */
 /*==============================================================*/
 create or replace view v_opt_tree as
-   select i.opt_id as MENU_ID,i.pre_opt_id as PARENT_ID,i.opt_name as MENU_NAME,i.order_ind 
+   select i.opt_id as MENU_ID,i.pre_opt_id as PARENT_ID,i.opt_name as MENU_NAME,i.order_ind
    from F_OptInfo i where i.is_in_toolbar ='Y'
-   union all 
-   select d.opt_code as MENU_ID,d.opt_id as PARENT_ID,d.opt_name as MENU_NAME,0 as order_ind 
+   union all
+   select d.opt_code as MENU_ID,d.opt_id as PARENT_ID,d.opt_name as MENU_NAME,0 as order_ind
    from F_OPTDEF d
 ;
 

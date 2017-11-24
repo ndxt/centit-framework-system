@@ -17,6 +17,12 @@ import java.util.Map;
 @Repository("roleInfoDao")
 public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements RoleInfoDao {
 
+    @Override
+    public String getNextKey() {
+        return DatabaseOptUtils.getNextValueOfSequence(
+          this, "S_ROLECODE");
+    }
+
     @SuppressWarnings("unchecked")
     @Transactional
     public List<VOptTree> getVOptTreeList() {
@@ -27,10 +33,10 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
     public Map<String, String> getFilterField() {
         if (filterField == null) {
             filterField = new HashMap<>();
-            filterField.put("ROLECODE", CodeBook.LIKE_HQL_ID);
-            filterField.put("publicUnitRole", "(roleCode like :publicUnitRole or roleCode like 'P-%')");
-            filterField.put("UNITROLE", "(roleCode like :UNITROLE)");
-            filterField.put("NP_GLOBAL", "(roleCode like 'G-%' or roleCode like 'P-%')");
+            filterField.put("ROLECODE", CodeBook.EQUAL_HQL_ID);
+            filterField.put("publicUnitRole", "(roleType='P' or (roleType='D' and unitCode = :publicUnitRole))");
+            filterField.put("UNITROLE", "(roleType='P' or (roleType='D' and unitCode = :UNITROLE))");
+            filterField.put("NP_GLOBAL", "(roleType='G' or roleType='P')");
             filterField.put("ROLENAME", CodeBook.LIKE_HQL_ID);
             filterField.put("ROLEDESC", CodeBook.LIKE_HQL_ID);
             filterField.put("isValid", CodeBook.EQUAL_HQL_ID);
@@ -55,28 +61,6 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
                 (this,hql,  new Object[]{rolecode});
     }
 
-
-    /**
-     * 对角色信息进行模糊搜索，适用于带搜索条件的下拉框。
-     *
-     * @param key      搜索条件
-     * @param field    需要搜索的字段，如为空，默认，roleCode,roleName
-     * @return List
-     */
-    @Transactional
-    public List<RoleInfo> search(String key, String[] field) {
-        StringBuilder hql = new StringBuilder("from RoleInfo u where ");
-        String params[] = new String[field.length];
-        String sMatch = QueryUtils.getMatchString(key);
-        for (int i = 0; i < field.length; i++) {
-            hql.append("u." + field[i] + " like ? ");//'%" +  key + "%' ");
-            if (i != field.length - 1) {
-                hql.append(" or ");
-            }
-            params[i] = sMatch;
-        }
-        return listObjects( hql.toString(),params);
-    }
 
     public int countRoleUserSum(String roleCode){
         Long l = DatabaseOptUtils.getSingleIntByHql(this,

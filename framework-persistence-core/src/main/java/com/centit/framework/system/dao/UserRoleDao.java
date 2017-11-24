@@ -52,13 +52,6 @@ public interface UserRoleDao {
      * @return 拥有该角色的用户
      */
      List<FVUserRoles> listRoleUsersByRoleCode(String roleCode);
-    /**
-     * "FROM UserRole ur where ur.id.userCode=? and ur.id.roleCode like ? "
-                + "ORDER BY obtainDate,secedeDate";
-     * @param userCode usid
-     * @param rolePrefix rolePrefix
-     * @return List UserRole
-     */
-     List<UserRole> getAllUserRolesByUserId(String userCode, String rolePrefix);
+
 
 }
