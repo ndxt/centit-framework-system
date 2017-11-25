@@ -185,9 +185,8 @@ public class RoleInfoController extends BaseController {
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public void createGlobalRole(@Valid RoleInfo roleInfo,HttpServletRequest request, HttpServletResponse response) {
-
         String roleType = roleInfo.getRoleType();
         if(StringUtils.isBlank(roleType)){
             JsonResultUtils.writeErrorMessageJson("新建角色必须指定角色类别。",response);
@@ -195,8 +194,9 @@ public class RoleInfoController extends BaseController {
         }
         if("D".equals(roleType)){
             if(StringUtils.isBlank(roleInfo.getUnitCode())){
-                JsonResultUtils.writeErrorMessageJson("机构角色必须指定所属机构。",response);
-                return;
+                //JsonResultUtils.writeErrorMessageJson("机构角色必须指定所属机构。",response);
+                //return;
+                roleInfo.setUnitCode( super.getLoginUser(request).getUserInfo().getPrimaryUnit());
             }
         }
         //roleInfo.setUnitCode("G");

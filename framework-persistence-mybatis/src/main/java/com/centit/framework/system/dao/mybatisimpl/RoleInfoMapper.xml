@@ -38,13 +38,13 @@
 
   <sql id="condition" databaseId="oracle">
     <if test="roleCode != null  and roleCode != ''  ">
-      and u.ROLE_CODE == #{roleCode}
+      and u.ROLE_CODE = #{roleCode}
     </if>
     <if test="unitRole != null  and unitRole != ''  ">
-      and (u.ROLE_TYPE == 'P' or ( u.ROLE_TYPE == 'D' and u.UNIT_CODE =  #{unitRole} ))
+      and (u.ROLE_TYPE = 'P' or ( u.ROLE_TYPE = 'D' and u.UNIT_CODE =  #{unitRole} ))
     </if>
     <if test="NP_GLOBAL != null   and NP_GLOBAL != ''  ">
-      and (u.ROLE_TYPE == 'G' or u.ROLE_TYPE == 'P')
+      and (u.ROLE_TYPE = 'G' or u.ROLE_TYPE = 'P')
     </if>
     <if test="roleName != null  and roleName != ''   ">
       and u.ROLE_NAME like '%'|| #{roleName}||'%'
@@ -68,7 +68,7 @@
       and u.UNIT_CODE is null
     </if>
     <if test="publicUnitRole != null  and publicUnitRole != '' ">
-      and (u.ROLE_TYPE == 'P' or ( u.ROLE_TYPE == 'D' and u.UNIT_CODE = #{publicUnitRole}))
+      and (u.ROLE_TYPE = 'P' or ( u.ROLE_TYPE = 'D' and u.UNIT_CODE = #{publicUnitRole}))
     </if>
     <if test="createDateBeg != null and createDateBeg != ''   ">
       <![CDATA[ and u.CREATE_DATE >= #{createDateBeg} ]]>
@@ -80,13 +80,13 @@
 
   <sql id="condition" databaseId="mysql">
     <if test="roleCode != null  and roleCode != ''  ">
-      and u.ROLE_CODE == #{roleCode}
+      and u.ROLE_CODE = #{roleCode}
     </if>
     <if test="unitRole != null  and unitRole != ''  ">
-      and (u.ROLE_TYPE == 'P' or ( u.ROLE_TYPE == 'D' and u.UNIT_CODE = #{unitRole}))
+      and (u.ROLE_TYPE = 'P' or ( u.ROLE_TYPE = 'D' and u.UNIT_CODE = #{unitRole}))
     </if>
     <if test="NP_GLOBAL != null   and NP_GLOBAL != ''  ">
-      and (u.ROLE_TYPE == 'G' or u.ROLE_TYPE == 'P')
+      and (u.ROLE_TYPE = 'G' or u.ROLE_TYPE = 'P')
     </if>
     <if test="roleName != null  and roleName != ''   ">
       and u.ROLE_NAME like concat('%', #{roleName}, '%')
@@ -110,7 +110,7 @@
       and u.UNIT_CODE is null
     </if>
     <if test="publicUnitRole != null  and publicUnitRole != ''  ">
-      and (u.ROLE_TYPE == 'P' or ( u.ROLE_TYPE == 'D' and u.UNIT_CODE = #{publicUnitRole}))
+      and (u.ROLE_TYPE = 'P' or ( u.ROLE_TYPE = 'D' and u.UNIT_CODE = #{publicUnitRole}))
     </if>
     <if test="createDateBeg != null and createDateBeg != ''   ">
       <![CDATA[ and u.CREATE_DATE >= #{createDateBeg} ]]>

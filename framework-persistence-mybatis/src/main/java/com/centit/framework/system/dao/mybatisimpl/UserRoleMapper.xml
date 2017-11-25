@@ -252,16 +252,15 @@
 		ORDER BY OBTAIN_DATE,SECEDEDATE
 	</select>
 
-
 	<select id="listUserRolesByUserCode" parameterType="String" resultMap="FvuserRole">
-		select USER_CODE,ROLE_CODE,ROLE_NAME,IS_VALID,ROLE_DESC,ROLE_TYPE,UNTI_CODE,OBTAIN_TYPE,INHERITED_FROM
+		select USER_CODE,ROLE_CODE,ROLE_NAME,IS_VALID,ROLE_DESC,ROLE_TYPE,UNIT_CODE,OBTAIN_TYPE,INHERITED_FROM
 		 from F_V_USERROLES
 		where USER_CODE = #{userCode}
 	</select>
 
 
   <select id="listRoleUsersByRoleCode" parameterType="String" resultMap="FvuserRole">
-    select USER_CODE,ROLE_CODE,ROLE_NAME,IS_VALID,ROLE_DESC,ROLE_TYPE,UNTI_CODE,OBTAIN_TYPE,INHERITED_FROM
+    select USER_CODE,ROLE_CODE,ROLE_NAME,IS_VALID,ROLE_DESC,ROLE_TYPE,UNIT_CODE,OBTAIN_TYPE,INHERITED_FROM
     from F_V_USERROLES
     where ROLE_CODE = #{roleCode}
   </select>
