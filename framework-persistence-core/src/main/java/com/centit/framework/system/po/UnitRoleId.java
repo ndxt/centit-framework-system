@@ -21,6 +21,7 @@ public class UnitRoleId implements java.io.Serializable {
 
     @Column(name = "UNIT_CODE")
     @NotBlank(message = "字段不能为空")
+    @DictionaryMap(value="unitCode", fieldName = "unitName")
     private String unitCode;// 用户代码
 
     @Column(name = "ROLE_CODE")
@@ -38,11 +39,11 @@ public class UnitRoleId implements java.io.Serializable {
 
     /**
      * full constructor
-     * @param userCode String
+     * @param unitCode String
      * @param rolecode String
      */
-    public UnitRoleId(String userCode, String rolecode) {
-        this.unitCode = userCode;
+    public UnitRoleId(String unitCode, String rolecode) {
+        this.unitCode = unitCode;
         this.roleCode = rolecode;
     }
 

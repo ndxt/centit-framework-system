@@ -21,6 +21,7 @@ public class UserRoleId implements java.io.Serializable {
 
     @Column(name = "USER_CODE")
     @NotBlank(message = "字段不能为空")
+    @DictionaryMap(value="userCode", fieldName = "userName")
     private String userCode;// 用户代码
 
     @Column(name = "ROLE_CODE")

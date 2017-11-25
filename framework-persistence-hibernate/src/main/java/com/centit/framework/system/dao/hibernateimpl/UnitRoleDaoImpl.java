@@ -35,6 +35,12 @@ public class UnitRoleDaoImpl extends BaseDaoImpl<UnitRole, UnitRoleId> implement
 
     @Override
     @Transactional
+    public void mergeUnitRole(UnitRole dbUnitRole) {
+        super.mergeObject(dbUnitRole);
+    }
+
+  @Override
+    @Transactional
     public void deleteUnitRole(UnitRole dbUnitRole){
         super.deleteObject(dbUnitRole);
     }

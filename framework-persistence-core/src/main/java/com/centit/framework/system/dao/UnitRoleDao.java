@@ -13,6 +13,8 @@ public interface UnitRoleDao {
 
     void updateUnitRole(UnitRole dbUnitRole);
 
+    void mergeUnitRole(UnitRole dbUnitRole);
+
     void deleteUnitRole(UnitRole dbUnitRole);
 
     void deleteUnitRoleById(UnitRoleId id);

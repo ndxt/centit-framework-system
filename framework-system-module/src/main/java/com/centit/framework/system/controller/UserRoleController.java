@@ -116,20 +116,14 @@ public class UserRoleController extends BaseController {
     public void getUserRole(@PathVariable String roleCode, @PathVariable String userCode, HttpServletResponse response) {
 
         UserRole userRole = sysUserRoleManager.getObjectById(new UserRoleId(userCode,roleCode));
-
         if (null == userRole) {
-
             JsonResultUtils.writeErrorMessageJson("当前角色中无此用户", response);
             return;
         }
         Map<Class<?>, String[]> excludes = new HashMap<>();
         excludes.put(RoleInfo.class, new String[]{"rolePowers"});
-
-
         JsonResultUtils.writeSingleDataJson(userRole, response, JsonPropertyUtils.getExcludePropPreFilter(excludes));
     }
-
-
 
     /**
      * 创建用户角色关联信息
@@ -142,13 +136,14 @@ public class UserRoleController extends BaseController {
     public void create(@Valid UserRole userRole,@Valid String[] userCode, HttpServletRequest request, HttpServletResponse response) {
         userRole.setCreateDate(new Date());
         if(userCode!=null && userCode.length>0){
-            UserRole ur=null;
             for(String u: userCode){
-                ur = new UserRole();
+                UserRole ur = new UserRole();
                 ur.copy(userRole);
                 ur.setUserCode(u);
                 sysUserRoleManager.mergeObject(ur);
             }
+        }else{
+          sysUserRoleManager.mergeObject(userRole);
         }
 
         JsonResultUtils.writeBlankJson(response);
