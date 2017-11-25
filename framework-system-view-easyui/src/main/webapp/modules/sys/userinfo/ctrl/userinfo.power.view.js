@@ -11,7 +11,7 @@ define(function(require) {
     // @override
     this.load = function(panel, data) {
       var tree = panel.find('ul');
-      Core.ajax(Config.ContextPath + 'system/roleinfo/' + data.userCode, {
+      /*Core.ajax(Config.ContextPath + 'system/roleinfo/' + data.userCode, {
         method: 'get'
       }).then(function(data) {
         _self.data = data;
@@ -20,15 +20,16 @@ define(function(require) {
         });
 
         _createOptInfoTree(tree, powers,data.rolePowers);
-      });
+      });*/
+      _createOptInfoTree(tree);
     };
     // 创建选择操作权限树
-    var _createOptInfoTree = function(tree, powers,rolePower) {
-      Core.ajax(Config.ContextPath + 'system/optinfo/poweropts?field=id&field=iconCls&field=text&field=optMethods&field=children', {
+    var _createOptInfoTree = function(tree) {
+      Core.ajax(Config.ContextPath + 'system/optinfo/userpoweropts/'+_self.data.userCode, {
         method: 'get'}).then(function(data) {
-        var dataMap=new Map();
+        /*var dataMap=new Map();
         Utils.walkTree(data, function(obj) {
-          /*var a = new Map();
+          /!*var a = new Map();
                     for (var i=0;i<obj.optMethods.length;i++){
                         for(var t=0;t<rolePower.length;t++){
                             if(obj.optMethods[i].optCode==rolePower[t].optCode){
@@ -36,7 +37,7 @@ define(function(require) {
                                 break;
                             }
                         }
-                    }*/
+                    }*!/
           for(var i=0;i<rolePower.length;i++){
             dataMap.put(rolePower[i].optCode,rolePower[i].optScopeCodeSet);
           }
@@ -67,7 +68,7 @@ define(function(require) {
           }
         });
 
-        _self.dataMap = dataMap;
+        _self.dataMap = dataMap;*/
 
         tree.tree({
           data: data
