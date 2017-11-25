@@ -15,6 +15,7 @@
 		</div>
 		<table id="tg" class="easyui-treegrid" width="100%"
 			url="system/unitinfo?struct=true" layoutH="65" search=".search"
+            sortName="unitOrder" sortOrder="asc" remoteSort="false"
 			data-options="method: 'get',idField: 'unitCode',treeField: 'unitName',
 							showFooter: true,toolbar:'.temp-toolbar'" >
 			<thead>
@@ -25,7 +26,7 @@
 					<th id="f@classes"	data-options="field:'unitTypeText',editor:{type:'combobox',
 						options:{method:'get',url:'system/cp/dictionary/UnitType?',textField:'dataValue'}}"
 						width="150" align="center">类别</th>
-					<th id="" data-options="field:'unitOrder',editor:'text'" width="50"	align="center">排序</th>
+					<th id="" data-options="field:'unitOrder',editor:'text'" width="50"	align="center" sortable="true">排序</th>
 					<th id="f@describe" data-options="field:'unitDesc',editor:'text'"	width="330"  >描述</th>
 				</tr>
 			</thead>

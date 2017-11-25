@@ -259,7 +259,7 @@
 	</select>
 	<select id="listObjectByUserUnit" parameterType="map"  resultMap="UserUnit">
 		 <include refid="coreSql" />
-		 where USER_CODE=#{userCode}  and UNIT_CODE=#{unitCode}
+		 where u.USER_CODE=#{userCode}  and u.UNIT_CODE=#{unitCode}
 	</select>
 	<select id="getNextKey" databaseId="oracle" resultType="String">
 		SELECT S_USER_UNIT_ID.nextval from dual
