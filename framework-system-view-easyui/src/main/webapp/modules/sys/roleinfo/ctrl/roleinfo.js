@@ -28,6 +28,7 @@ define(function (require) {
 
     // @override
     this.load = function (panel) {
+      var selectIndex = -1
       var vm = this;
       var RoleUserPanel = $('#roleinfo_layout', panel).layout('panel', 'east');
 
@@ -56,7 +57,10 @@ define(function (require) {
         },
 
         onSelect: function (index, row) {
-          vm.selectRole(RoleUserPanel, row, RoleAside);
+          if (index !== selectIndex || selectIndex === 0) {
+            selectIndex = index;
+            vm.selectRole(RoleUserPanel, row, RoleAside);
+          }
         },
 
         onLoadSuccess: function () {

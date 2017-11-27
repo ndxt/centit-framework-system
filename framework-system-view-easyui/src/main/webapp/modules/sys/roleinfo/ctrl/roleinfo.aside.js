@@ -6,7 +6,7 @@ define(function (require) {
   var $ = require('jquery');
 
   var RoleInfoAside = Page.extend(function () {
-    var vm = this;
+    var tabSelectedIndex = 0;
 
     var controllers = [
       new RoleUser('role_user')
@@ -15,12 +15,15 @@ define(function (require) {
     this.injecte(controllers);
 
     this.load = function (panel, data) {
-      this.roleInfo = data;
 
       $('.role-info-aside', panel).tabs({
+        selected: tabSelectedIndex,
         onLoad: function(tab) {
-          var index = $(this).tabs('getTabIndex', tab);
-          controllers[index].init(tab, data);
+          tabSelectedIndex = $(this).tabs('getTabIndex', tab);
+          controllers[tabSelectedIndex].init(tab, data);
+        },
+        onSelect: function(title, index) {
+          tabSelectedIndex = index;
         }
       })
     };
