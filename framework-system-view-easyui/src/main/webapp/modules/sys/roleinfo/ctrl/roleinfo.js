@@ -35,8 +35,7 @@ define(function(require) {
 
 		  this.$autoHeight('north', $('.role-info-main', panel));
 
-			panel.find('table').cdatagrid({
-				// 必须要加此项!!
+			this.table = panel.find('table').cdatagrid({
 				controller: this,
 
 				queryParams: {

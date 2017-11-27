@@ -1,63 +1,61 @@
-define(function(require) {
-	var Config = require('config');
-	var Core = require('core/core');
-	var Page = require('core/page');
+define(function (require) {
+  var Config = require('config');
+  var Core = require('core/core');
+  var Page = require('core/page');
 
-	// 新增角色信息
-	var RoleInfoAdd = Page.extend(function() {
+  // 新增角色信息
+  var RoleInfoAdd = Page.extend(function () {
+    var vm = this;
 
-		// @override
-		this.object = {
-			isValid: 'T'
-		}
+    // @override
+    this.object = {
+      isValid: 'T'
+    }
 
-		// @override
-		this.load = function(panel) {
-			form = panel.find('form');
+    // @override
+    this.load = function (panel) {
+      form = panel.find('form');
 
-			form.form('disableValidation')
-				.form('load', this.object)
-				.form('addValidation', {
-					/*roleCode: {
-						required: true,
-					    validType: {
-					    	remote: [Config.ContextPath+'system/roleinfo/notexists/{{roleCode}}', 'roleCode']
-					    }
-					},*/
-					roleName: {
-						required:true,
-						validType:{
-							remote:[Config.ContextPath+'system/roleinfo/nameexists/{{roleName}}/G', 'roleName']
-						}
-					}
-				})
-				.form('focus');
-		}
-		// @override
-		this.submit = function(panel, data, closeCallback) {
-			var form = panel.find('form');
+      form.form('disableValidation')
+        .form('load', this.object)
+        .form('addValidation', {
+          roleName: {
+            required: true,
+            validType: {
+              remote: [Config.ContextPath + 'system/roleinfo/nameexists/{{roleName}}/G', 'roleName']
+            }
+          }
+        })
+        .form('focus');
+    };
 
-			//var value = form.form('value').isGlobal;
+    // @override
+    this.submit = function (panel, data, closeCallback) {
+      var form = panel.find('form');
 
-			var isValid = form.form('enableValidation').form('validate');
+      //var value = form.form('value').isGlobal;
 
-			if (isValid) {
-				form.form('ajax', {
-					url: Config.ContextPath + 'system/roleinfo',
-					method: 'post'
-				}).then(function(){
-					return require('loaders/cache/loader.system').loadAll()
-				}).then(closeCallback);
-			}
+      var isValid = form.form('enableValidation').form('validate');
 
-			return false;
-		};
+      if (isValid) {
+        form.form('ajax', {
+          url: Config.ContextPath + 'system/roleinfo',
+          method: 'post'
+        }).then(function () {
+          return require('loaders/cache/loader.system').loadAll()
+        }).then(function () {
+          vm.parent.table.datagrid('reload');
+          closeCallback();
+        });
+      }
 
-		// @override
-		this.onClose = function(table, data) {
-			table.datagrid('reload');
-		};
-	});
+      return false;
+    };
 
-	return RoleInfoAdd;
+    // @override
+    this.onClose = function (table, data) {
+    };
+  });
+
+  return RoleInfoAdd;
 });
