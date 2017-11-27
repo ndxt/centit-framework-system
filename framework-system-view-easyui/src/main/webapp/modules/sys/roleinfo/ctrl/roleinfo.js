@@ -1,55 +1,53 @@
+define(function (require) {
+  var Config = require('config');
+  var Core = require('core/core');
+  var Page = require('core/page');
 
-define(function(require) {
-	var Config = require('config');
-	var Core = require('core/core');
-	var Page = require('core/page');
+  var RoleInfoAdd = require('../ctrl/roleinfo.add');
+  var RoleInfoEdit = require('../ctrl/roleinfo.edit');
+  var RoleInfoRemove = require('../ctrl/roleinfo.remove');
+  var RoleInfoOperate = require('../ctrl/roleinfo.operate');
 
-	var RoleInfoAdd = require('../ctrl/roleinfo.add');
-	var RoleInfoEdit = require('../ctrl/roleinfo.edit');
-	var RoleInfoRemove = require('../ctrl/roleinfo.remove');
-	var RoleInfoOperate = require('../ctrl/roleinfo.operate');
-	var RoleUser = require('../ctrl/roleinfo.user');
+  var RoleAside = require('./roleinfo.aside');
 
-	RoleInfoEdit = new RoleInfoEdit('roleinfo_edit');
-	RoleInfoOperate = new RoleInfoOperate('roleinfo_operate');
-	RoleUser = new RoleUser('roleinfo_user');
-
-
-
-	// 角色信息列表
-	var RoleInfo = Page.extend(function() {
-		//var RoleUserPanel = $('#roleinfo_sub_layout').layout('panel', 'east');
+  RoleInfoEdit = new RoleInfoEdit('roleinfo_edit');
+  RoleInfoOperate = new RoleInfoOperate('roleinfo_operate');
+  RoleAside = new RoleAside('roleinfo_aside');
 
 
-		this.injecte([
-	        new RoleInfoAdd('roleinfo_add'),
-	        new RoleInfoRemove('roleinfo_remove'),
-	        RoleInfoEdit,
-	        RoleInfoOperate,
-	        RoleUser
-	    ]);
+  // 角色信息列表
+  var RoleInfo = Page.extend(function () {
 
-		// @override
-		this.load = function(panel) {
-		  var vm = this;
+    this.injecte([
+      new RoleInfoAdd('roleinfo_add'),
+      new RoleInfoRemove('roleinfo_remove'),
+      RoleInfoEdit,
+      RoleInfoOperate,
+      RoleAside
+    ]);
 
-		  this.$autoHeight('north', $('.role-info-main', panel));
+    // @override
+    this.load = function (panel) {
+      var vm = this;
+      var RoleUserPanel = $('#roleinfo_layout', panel).layout('panel', 'east');
 
-			this.table = panel.find('table').cdatagrid({
-				controller: this,
+      this.$autoHeight('north', $('.role-info-main', panel));
 
-				queryParams: {
-					s_isValid: 'T'
-				},
+      this.table = panel.find('table').cdatagrid({
+        controller: this,
 
-				rowStyler: function(index, row) {
-					if (row.isValid === 'F') {
-						return {'class': 'ban'};
-					}
-					if (row.roleType === 'F') {
-					  return {'class': 'fix'}
+        queryParams: {
+          s_isValid: 'T'
+        },
+
+        rowStyler: function (index, row) {
+          if (row.isValid === 'F') {
+            return {'class': 'ban'};
           }
- 				},
+          if (row.roleType === 'F') {
+            return {'class': 'fix'}
+          }
+        },
 
         columns: {
           roleType: {
@@ -57,40 +55,36 @@ define(function(require) {
           }
         },
 
-				onSelect: function(index, row) {
-          vm.selectRole(panel, row);
-				},
+        onSelect: function (index, row) {
+          vm.selectRole(RoleUserPanel, row, RoleAside);
+        },
 
-        onLoadSuccess: function() {
-
-				  var index = $(this).datagrid('getSelectedRowIndex');
+        onLoadSuccess: function () {
+          var index = $(this).datagrid('getSelectedRowIndex');
 
           var rows = $(this).datagrid('getRows');
           if (rows.length) {
             $(this).datagrid('selectRow', index === -1 ? 0 : index)
           } else {
-            vm.clearRole(panel)
+            vm.clearRole(RoleUserPanel)
           }
         }
-			})
-		};
+      })
+    };
 
-		this.selectRole = function(panel, row) {
-      var RoleUserPanel = $('#roleinfo_layout', panel).layout('panel', 'east');
-      RoleUserPanel.data('panel').options.onLoad = function() {
-        RoleUser.init(RoleUserPanel, row);
+    this.selectRole = function (panel, row, controller) {
+      panel.data('panel').options.onLoad = function () {
+        controller.init(panel, row);
       };
-      RoleUserPanel.panel('setTitle', row.roleName + ' 角色用户');
-      RoleUserPanel.panel('refresh', Config.ViewContextPath + 'modules/sys/roleinfo/roleinfo-user.html');
+      panel.panel('refresh', Config.ViewContextPath + 'modules/sys/roleinfo/roleinfo-aside.html');
     };
 
-    this.clearRole = function(panel) {
-      var RoleUserPanel = $('#roleinfo_layout', panel).layout('panel', 'east');
-      RoleUserPanel.data('panel').options.onLoad = $.noop;
-      RoleUserPanel.panel('clear');
+    this.clearRole = function (panel) {
+      panel.data('panel').options.onLoad = $.noop;
+      panel.panel('clear');
     };
 
-    this.roleTypeFormatter = function(value) {
+    this.roleTypeFormatter = function (value) {
       var types = {
         G: '全局角色',
         P: '公共角色',
@@ -99,7 +93,7 @@ define(function(require) {
 
       return types[value] ? types[value] : value;
     };
-	});
+  });
 
-	return RoleInfo;
+  return RoleInfo;
 });

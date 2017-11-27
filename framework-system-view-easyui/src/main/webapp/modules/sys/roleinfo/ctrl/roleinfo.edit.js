@@ -7,6 +7,10 @@ define(function (require) {
   var RoleInfoEdit = RoleInfoAdd.extend(function () {
     var _self = this;
 
+    this.renderButton = function(btn, row) {
+      return 'F' !== row.roleType;
+    };
+
     // @override
     this.load = function (panel, data) {
       var form = panel.find('form');

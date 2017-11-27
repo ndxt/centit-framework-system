@@ -1,22 +1,26 @@
 define(function(require) {
 	var Config = require('config');
 	var Core = require('core/core');
-	
+
 	var Page = require('core/page');
-	
+
 	// 删除用户角色
 	var UserInfoRoleRemove = Page.extend(function() {
-		
+
+    this.renderButton = function() {
+      return 'F' !== this.parent.data.roleType;
+    };
+
 		// @override
-		this.submit = function(table, data) {		
-			
+		this.submit = function(table, data) {
+
 			var  selRow = table.datagrid("getSelections");//获取取中元素
 			var ids=[];//选 中的djID
 			for(var i=0;i<selRow.length;i++){
 				var id=selRow[i].userCode;
 				ids.push(id);
 			}
-			
+
 			Core.ajax(Config.ContextPath+'system/userrole/'+this.parent.data.roleCode+'/'+ids, {
 				method: 'DELETE',
 				data: {
@@ -28,9 +32,9 @@ define(function(require) {
 			}).then(function() {
 				table.datagrid('reload');
 			});
-		};		
+		};
 
 	});
-	
+
 	return UserInfoRoleRemove;
 });

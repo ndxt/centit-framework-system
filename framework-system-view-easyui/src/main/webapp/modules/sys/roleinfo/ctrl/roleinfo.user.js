@@ -18,21 +18,14 @@ define(function (require) {
 
     // @override
     this.load = function (panel, data) {
+      this.$autoHeight();
       this.data = data;
-      var form = panel.find('form').form('load', data);
+      panel.find('form').form('load', data);
       var table = panel.find('table');
       table.cdatagrid({
         controller: _self,
         url: Config.ContextPath + 'system/userrole/roleusers/' + data.roleCode + '?s_userCode_isValid=T',
-        columns: {
-          changeDesc: {
-            formatter: function (value, row, index) {
-              return '<a title="' + value + '">' + value + '</a>';
-            }
-          }
-        }
       })
-
     };
   });
 
