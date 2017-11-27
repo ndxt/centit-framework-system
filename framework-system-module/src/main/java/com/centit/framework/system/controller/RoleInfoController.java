@@ -1,5 +1,6 @@
 package com.centit.framework.system.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.components.CodeRepositoryUtil;
@@ -46,6 +47,36 @@ public class RoleInfoController extends BaseController {
      */
     private String optId = "ROLEMAG";//CodeRepositoryUtil.getCode("OPTID", "roleInfo");
 
+
+    private void writeRoleListToResponse(List<RoleInfo> roleInfos,String[] field,PageDesc pageDesc,HttpServletResponse response) {
+
+        ResponseMapData respData = new ResponseMapData();
+        respData.addResponseData(OBJLIST, roleInfos);
+        respData.addResponseData(PAGE_DESC, pageDesc);
+
+        if (ArrayUtils.isNotEmpty(field)) {
+            JsonResultUtils.writeResponseDataAsJson(respData, response,
+                JsonPropertyUtils.getIncludePropPreFilter(RoleInfo.class,field));
+        }else{
+            JsonResultUtils.writeResponseDataAsJson(respData, response,
+                JsonPropertyUtils.getExcludePropPreFilter(RoleInfo.class, "rolePowers","userRoles"));
+        }
+    }
+    /**
+     * 查询所有系统角色
+     * @param field field[]
+     * @param pageDesc PageDesc
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
+     */
+    @RequestMapping(value = "/all",method = RequestMethod.GET)
+    public void listAllRole(String[] field,PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> filterMap = convertSearchColumn(request);
+        filterMap.put("NP_ALL", "true");
+        List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
+        writeRoleListToResponse(roleInfos,field,pageDesc,response );
+    }
+
     /**
      * 查询所有系统角色
      * @param field field[]
@@ -55,20 +86,11 @@ public class RoleInfoController extends BaseController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public void listGlobalAndPublicRole(String[] field,PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+
         Map<String, Object> filterMap = convertSearchColumn(request);
         filterMap.put("NP_GLOBAL", "true");
-
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
-
-        ResponseMapData respData = new ResponseMapData();
-        respData.addResponseData(OBJLIST, roleInfos);
-        respData.addResponseData(PAGE_DESC, pageDesc);
-
-        if (ArrayUtils.isNotEmpty(field)) {
-            JsonResultUtils.writeResponseDataAsJson(respData, response, JsonPropertyUtils.getIncludePropPreFilter(RoleInfo.class,field));
-        }
-        else{
-        JsonResultUtils.writeResponseDataAsJson(respData, response, JsonPropertyUtils.getExcludePropPreFilter(RoleInfo.class, "rolePowers","userRoles"));}
+        writeRoleListToResponse(roleInfos,field,pageDesc,response );
     }
 
     /**
@@ -85,16 +107,8 @@ public class RoleInfoController extends BaseController {
         Map<String, Object> filterMap = convertSearchColumn(request);
         filterMap.put("publicUnitRole", unitCode);
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
+        writeRoleListToResponse(roleInfos,field,pageDesc,response );
 
-        ResponseMapData respData = new ResponseMapData();
-        respData.addResponseData(OBJLIST, roleInfos);
-        respData.addResponseData(PAGE_DESC, pageDesc);
-
-        if (ArrayUtils.isNotEmpty(field)) {
-            JsonResultUtils.writeResponseDataAsJson(respData, response, JsonPropertyUtils.getIncludePropPreFilter(RoleInfo.class,field));
-        }
-        else{
-        JsonResultUtils.writeResponseDataAsJson(respData, response, JsonPropertyUtils.getExcludePropPreFilter(RoleInfo.class, "rolePowers","userRoles"));}
     }
 
     /**
@@ -115,10 +129,12 @@ public class RoleInfoController extends BaseController {
         respData.addResponseData(PAGE_DESC, pageDesc);
 
         if (ArrayUtils.isNotEmpty(field)) {
-            JsonResultUtils.writeResponseDataAsJson(respData, response, JsonPropertyUtils.getIncludePropPreFilter(RoleInfo.class,field));
+            JsonResultUtils.writeResponseDataAsJson(respData, response,
+              JsonPropertyUtils.getIncludePropPreFilter(RoleInfo.class,field));
+        } else {
+          JsonResultUtils.writeResponseDataAsJson(respData, response,
+            JsonPropertyUtils.getExcludePropPreFilter(RoleInfo.class, "rolePowers","userRoles"));
         }
-        else{
-        JsonResultUtils.writeResponseDataAsJson(respData, response, JsonPropertyUtils.getExcludePropPreFilter(RoleInfo.class, "rolePowers","userRoles"));}
     }
 
     /**

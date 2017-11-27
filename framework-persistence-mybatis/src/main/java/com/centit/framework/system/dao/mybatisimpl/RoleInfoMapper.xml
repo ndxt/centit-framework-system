@@ -62,8 +62,8 @@
     <if test="unitCode != null  and unitCode != ''  ">
       and u.UNIT_CODE=#{unitCode}
     </if>
-    <if test="NP_unitCode != null  and NP_unitCode != ''   ">
-      and u.UNIT_CODE is null
+    <if test="NP_ALL != null  and NP_unitCode != ''   ">
+      and (u.ROLE_TYPE='F' or u.ROLE_TYPE='G' or u.ROLE_TYPE='P')
     </if>
     <if test="publicUnitRole != null  and publicUnitRole != '' ">
       and (u.ROLE_TYPE = 'P' or ( u.ROLE_TYPE = 'D' and u.UNIT_CODE = #{publicUnitRole}))
@@ -104,8 +104,8 @@
     <if test="unitCode != null  and unitCode != ''  ">
       and u.UNIT_CODE=#{unitCode}
     </if>
-    <if test="NP_unitCode != null  and NP_unitCode != ''   ">
-      and u.UNIT_CODE is null
+    <if test="NP_ALL != null  and NP_unitCode != ''   ">
+      and (u.ROLE_TYPE='F' or u.ROLE_TYPE='G' or u.ROLE_TYPE='P')
     </if>
     <if test="publicUnitRole != null  and publicUnitRole != ''  ">
       and (u.ROLE_TYPE = 'P' or ( u.ROLE_TYPE = 'D' and u.UNIT_CODE = #{publicUnitRole}))

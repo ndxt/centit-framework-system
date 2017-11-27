@@ -33,7 +33,7 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
             filterField.put("isValid", CodeBook.EQUAL_HQL_ID);
             filterField.put("roleType", CodeBook.EQUAL_HQL_ID);
             filterField.put("unitCode", CodeBook.EQUAL_HQL_ID);
-            filterField.put("NP_unitCode", "UNIT_CODE is null");
+            filterField.put("NP_ALL", "(ROLE_TYPE='F' or ROLE_TYPE='G' or ROLE_TYPE='P')");
             filterField.put("roleNameEq", "ROLE_NAME = :roleNameEq");
             filterField.put("(date)createDateBeg", "CREATE_DATE>= :createDateBeg");
             filterField.put("(nextday)createDateEnd", "CREATE_DATE< :createDateEnd");
