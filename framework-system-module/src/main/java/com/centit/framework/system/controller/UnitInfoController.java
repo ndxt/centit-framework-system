@@ -443,7 +443,7 @@ public class UnitInfoController extends BaseController {
             roleInfo.setRoleCode("G$"+ unitcode);
             roleInfo.setRoleName("赋给部门"+unitcode+"的权限");
             roleInfo.setRoleDesc(roleInfo.getRoleName());
-            roleInfo.setRoleType("D");
+            roleInfo.setRoleType("H");
             roleInfo.setCreateDate(new Date());
             sysRoleManager.saveNewRoleInfo(roleInfo);
             //刷新缓存
