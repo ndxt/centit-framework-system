@@ -411,17 +411,20 @@ values ('1000080', 'LOGINCAS', 'CAS登录入口', null, null, null, null, null, 
 
 -- 初始化角色信息
 insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
-values ('DEPLOY', '实施人员','S','T', '实施人员角色', parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), today(),'u0000000','u0000000');
+values ('DEPLOY', '实施人员','G','T', '实施人员角色', parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), today(),'u0000000','u0000000');
 
 insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
-values ('SYSADMIN', '系统管理员','S', 'T', '所有系统配置功能', parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), today(),'u0000000','u0000000');
+values ('SYSADMIN', '系统管理员','G', 'T', '所有系统配置功能', parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), today(),'u0000000','u0000000');
 
 insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
-values ('anonymous', '匿名角色','S', 'T', '匿名用户角色', parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), today(),'u0000000','u0000000');
+values ('anonymous', '匿名角色','F', 'T', '匿名用户角色', parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), today(),'u0000000','u0000000');
 
 insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
-values ('public', '公共角色','S', 'F', '公共角色权限会默认给不包括匿名用户的所有人', parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), today(),'u0000000','u0000000');
+values ('public', '公共角色','F', 'T', '公共角色权限会默认给不包括匿名用户的所有人', parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), today(),'u0000000','u0000000');
 
+
+insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
+values ('forbidden', '禁用的功能','F', 'T', '这个角色不能赋给任何人，这个角色中的操作任何人都不可以调用。',  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), today(),'u0000000','u0000000');
 
 
 insert into F_ROLEPOWER (ROLE_CODE, OPT_CODE, UPDATE_DATE, CREATE_DATE, OPT_SCOPE_CODES,CREATOR,UPDATOR)
@@ -435,12 +438,12 @@ insert into F_OPTDEF(opt_code,opt_id,opt_name,opt_method,opt_desc,
 			is_in_workflow,UPDATE_DATE,create_date,opt_url,opt_req,CREATOR,UPDATOR)
 select NEXT VALUE FOR s_optdefcode ,opt_id , '查看', 'list',  '查看',
 		'F',today(),today(),'/*','R' ,CREATOR,UPDATOR
-		from F_OptInfo where opt_id not in (select opt_id from F_OPTDEF);  
+		from F_OptInfo where opt_id not in (select opt_id from F_OPTDEF);
 
 insert into F_ROLEPOWER(role_code,opt_code,update_Date,create_date,opt_scope_codes,CREATOR,UPDATOR)
 	select 'SYSADMIN',opt_code,today(),today(),'',CREATOR,UPDATOR from F_OPTDEF;
 
-insert into F_USERROLE (USER_CODE, ROLE_CODE, OBTAIN_DATE, 
+insert into F_USERROLE (USER_CODE, ROLE_CODE, OBTAIN_DATE,
 			SECEDE_DATE, CHANGE_DESC, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
 values ('u0000000', 'SYSADMIN', parsedatetime('23-05-2012','dd-MM-yyyy','en'),
 	parsedatetime('01-10-2020', 'dd-MM-yyyy','en'),'' ,today(), today(),'u0000000','u0000000');

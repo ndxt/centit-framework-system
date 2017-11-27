@@ -506,6 +506,23 @@ create table F_USERROLE
 alter table F_USERROLE
    add primary key (USER_CODE, ROLE_CODE);
 
+
+create table F_UNITROLE
+(
+   UNIT_CODE            varchar(32) not null,
+   ROLE_CODE            varchar(32) not null,
+   OBTAIN_DATE          datetime not null,
+   SECEDE_DATE          datetime,
+   CHANGE_DESC          varchar(256),
+   update_Date          datetime,
+   Create_Date          datetime,
+   creator              varchar(32),
+   updator              varchar(32)
+);
+
+alter table F_UNITROLE
+   add primary key (UNIT_CODE, ROLE_CODE);
+
 /*==============================================================*/
 /* Table: F_USERSETTING                                         */
 /*==============================================================*/
@@ -743,14 +760,19 @@ select concat(`c`.`opt_url`,`b`.`OPT_URL`) as opt_url, b.opt_req, a.role_code, c
 /*==============================================================*/
 /* View: F_V_USERROLES                                          */
 /*==============================================================*/
+
 create or replace view F_V_USERROLES as
-select distinct b.ROLE_CODE,b.ROLE_NAME,b.IS_VALID,b.ROLE_DESC,b.CREATE_DATE,b.UPDATE_DATE ,a.user_code
+select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'D' as OBTAIN_TYPE, b.ROLE_TYPE, b.UNIT_CODE,
+      b.ROLE_DESC, b.CREATE_DATE, b.UPDATE_DATE ,a.USER_CODE, NULL as INHERITED_FROM
     from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE)
     where a.OBTAIN_DATE <=  now() and (a.SECEDE_DATE is null or a.SECEDE_DATE > now()) and b.IS_VALID='T'
-union all
-  select d.ROLE_CODE,d.ROLE_NAME,d.IS_VALID,d.ROLE_DESC,d.CREATE_DATE,d.UPDATE_DATE , c.user_code
-   from F_USERINFO c , F_ROLEINFO d
-   where d.role_code = 'G-public';
+union
+  select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'I' as OBTAIN_TYPE, b.ROLE_TYPE, b.UNIT_CODE,
+        b.ROLE_DESC, b.CREATE_DATE, b.UPDATE_DATE ,c.USER_CODE, a.UNIT_CODE as INHERITED_FROM
+    from F_UNITROLE a join F_ROLEINFO b on (a.ROLE_CODE = b.ROLE_CODE) JOIN F_USERUNIT c on( a.UNIT_CODE = c.UNIT_CODE)
+    where a.OBTAIN_DATE <=  now() and (a.SECEDE_DATE is null or a.SECEDE_DATE > now()) and b.IS_VALID='T';
+
+
 
 /*==============================================================*/
 /* View: F_V_UserOptDataScopes                                  */
@@ -800,8 +822,6 @@ create or replace view v_opt_tree as
    select d.opt_code as MENU_ID,d.opt_id as PARENT_ID,d.opt_name as MENU_NAME,0 as order_ind
    from F_OPTDEF d
 ;
-
-
 
 
 create sequence S_FILTER_NO;

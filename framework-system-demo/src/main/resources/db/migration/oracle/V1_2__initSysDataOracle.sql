@@ -405,16 +405,16 @@ values ('1000080', 'LOGINCAS', 'CAS登录入口', null, null, null, null, null, 
 
 -- 初始化角色信息
 insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
-values ('DEPLOY', '实施人员','S','T', '实施人员角色', sysdate, sysdate,'u0000000','u0000000');
+values ('DEPLOY', '实施人员','G','T', '实施人员角色', sysdate, sysdate,'u0000000','u0000000');
 
 insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
-values ('SYSADMIN', '系统管理员','S', 'T', '所有系统配置功能', sysdate, sysdate,'u0000000','u0000000');
+values ('SYSADMIN', '系统管理员','G', 'T', '所有系统配置功能', sysdate, sysdate,'u0000000','u0000000');
 
 insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
-values ('anonymous', '匿名角色','S', 'T', '匿名用户角色', sysdate, sysdate,'u0000000','u0000000');
+values ('anonymous', '匿名角色','F', 'T', '匿名用户角色', sysdate, sysdate,'u0000000','u0000000');
 
 insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
-values ('public', '公共角色','S', 'F', '公共角色权限会默认给不包括匿名用户的所有人', sysdate, sysdate,'u0000000','u0000000');
+values ('public', '公共角色','F', 'T', '公共角色权限会默认给不包括匿名用户的所有人', sysdate, sysdate,'u0000000','u0000000');
 
 
 
