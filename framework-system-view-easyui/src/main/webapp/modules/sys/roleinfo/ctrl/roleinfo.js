@@ -32,6 +32,8 @@ define(function(require) {
 		// @override
 		this.load = function(panel) {
 
+		  this.$autoHeight('north', $('.role-info-main', panel));
+
 			var selectedIndex;
 
 			panel.find('table').cdatagrid({
@@ -43,19 +45,16 @@ define(function(require) {
 				},
 
 				rowStyler: function(index, row) {
-					if (row.isValid == 'F') {
+					if (row.isValid === 'F') {
 						return {'class': 'ban'};
 					}
 				},
-        columns: {
-          roleDesc: {
-            formatter: function (value, row, index) {
 
-              return '<a title="' + value + '">' + value + '</a>';
-            }
-          }
+        columns: {
+
         },
-				onClickRow: function(index, row) {
+
+				onSelect: function(index, row) {
 					if (selectedIndex == index) return;
 					selectedIndex = index;
 					var RoleUserPanel = $('#roleinfo_layout').layout('panel', 'east');
