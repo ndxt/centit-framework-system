@@ -32,11 +32,11 @@ public interface SysUnitManager{
      */
     void changeStatus(String unitCode, String isValid);
 
-  /**
-   * 删除机构
-   * @param unitinfo 机构对象
-   */
-  void deleteUnitInfo(UnitInfo unitinfo);
+    /**
+     * 删除机构
+     * @param unitinfo 机构对象
+     */
+    void deleteUnitInfo(UnitInfo unitinfo);
 
     String saveNewUnitInfo(UnitInfo unitinfo);
 
@@ -45,7 +45,6 @@ public interface SysUnitManager{
     boolean isUniqueOrder(UnitInfo unitInfo);
 
     void updateUnitInfo(UnitInfo unitinfo);
-    List<UnitInfo> listAllSubObjects(String primaryUnit);
     List<UnitInfo> listAllSubObjectsAsSort(String primaryUnit);
 
     boolean hasChildren(String unitCode);

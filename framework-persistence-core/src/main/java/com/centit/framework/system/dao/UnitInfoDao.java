@@ -6,8 +6,17 @@ import com.centit.framework.system.po.UserInfo;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 机构信息Dao
+ * @author zou_wy@centit.com
+ */
 public interface UnitInfoDao {
 
+    /**
+     * 根据Id获取机构信息
+     * @param unitCode 机构ID
+     * @return UnitInfo
+     */
     UnitInfo getObjectById(String unitCode);
 
     /**
@@ -22,18 +31,41 @@ public interface UnitInfoDao {
      */
     void updateUnit(UnitInfo unitInfo);
 
-     void deleteObjectById(String unitCode);
+    /**
+     * 根据Id删除机构
+     * @param unitCode 机构Id
+     */
+    void deleteObjectById(String unitCode);
 
-     List<UnitInfo> listObjects(Map<String, Object> filterMap);
+    /**
+     * 查询所有机构列表
+     * @return List<UserInfo>
+     */
+    List<UnitInfo> listObjects();
 
-     int  pageCount(Map<String, Object> filterDescMap);
+    /**
+     * 根据条件查询机构列表
+     * @param filterMap 过滤条件Map
+     * @return List<UserInfo>
+     */
+    List<UnitInfo> listObjects(Map<String, Object> filterMap);
 
-     List<UnitInfo>  pageQuery(Map<String, Object> pageQureyMap);
 
+    /**
+     * 根据过滤条件查询总行数
+     * @param filterDescMap 过滤条件Map
+     * @return 总行数
+     */
+    int pageCount(Map<String, Object> filterDescMap);
+
+    /**
+     * 分页查询
+     * @param pageQueryMap 过滤条件Map
+     * @return List<UserInfo>
+     */
+    List<UnitInfo> pageQuery(Map<String, Object> pageQueryMap);
 
      int countChildrenSum(String unitCode);
-
-     List<UnitInfo> listObjects();
 
     // DatabaseOptUtils.getNextKeyBySequence(this, "S_UNITCODE", 6);
      String getNextKey();
@@ -62,9 +94,6 @@ public interface UnitInfoDao {
     // "select unitname from f_unitinfo where unitcode=?", unitcode ));
      String getUnitNameOfCode(String unitcode);
 
-
-//     List<UnitInfo> listUnitinfoByUnitcodes(List<String> unitcodes);
-
     /**
      * "from UnitInfo where unitName = ? or unitShortName = ?"
                         + " order by unitOrder asc";
@@ -78,9 +107,6 @@ public interface UnitInfoDao {
 
     //return super.getObjectByProperty("unitWord", unitWord);
     UnitInfo getUnitByWord(String unitWord);
-
-    //return super.listObjectByProperty("parentUnit", unitCode);
-//     List<UnitInfo> listSubUnits(String unitCode);
 
     //String hql = "from UnitInfo where unitPath like ?";{unitPath+"/%"});
     List<UnitInfo> listSubUnitsByUnitPaht(String unitPath);

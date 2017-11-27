@@ -17,7 +17,7 @@ define(function(require) {
 				_self.data = data;
 
         $('#primaryUnit').combotree({
-          url: Config.ContextPath + 'system/unitinfo/underunits/',
+          url: Config.ContextPath + 'system/unitinfo/subunits',
           required: true
         });
 				form.form('disableValidation')

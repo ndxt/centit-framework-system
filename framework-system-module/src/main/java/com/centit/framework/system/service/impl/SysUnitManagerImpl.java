@@ -122,13 +122,13 @@ public class SysUnitManagerImpl implements SysUnitManager {
          List<UnitInfo> subUnits = unitInfoDao.listSubUnitsByUnitPaht(oldUnitPath);
         int noupl = oldUnitPath.length();
         for(UnitInfo ui : subUnits){
-            if(unitinfo.getUnitCode().equals(ui.getParentUnit()))
-                ui.setParentUnit("0");
+            if(unitinfo.getUnitCode().equals(ui.getParentUnit())) {
+              ui.setParentUnit("0");
+            }
             ui.setParentUnit(ui.getUnitPath().substring(noupl));
             unitInfoDao.updateUnit(ui);
         }
 
-//        userUnitDao.deleteUserUnitByUnit(unitinfo.getUnitCode());
         unitInfoDao.deleteObjectById(unitinfo.getUnitCode());
     }
 
@@ -208,15 +208,6 @@ public class SysUnitManagerImpl implements SysUnitManager {
 
     @Override
     @Transactional
-    public List<UnitInfo> listAllSubObjects(String primaryUnit) {
-        if(StringUtils.isBlank(primaryUnit)) {
-          return null;
-        }
-        return listAllSubUnits(primaryUnit);
-    }
-
-    @Override
-    @Transactional
     public List<UnitInfo> listAllSubObjectsAsSort(String primaryUnit) {
         List<UnitInfo> listObjects = listAllSubUnits(primaryUnit);
         Iterator<UnitInfo> unitInfos = listObjects.iterator();
@@ -275,10 +266,11 @@ public class SysUnitManagerImpl implements SysUnitManager {
         List<String> objs = unitInfoDao.getAllParentUnit();
         if(objs!=null && objs.size()>0){
             for (UnitInfo u : listObjects){
-                if(objs.contains(u.getUnitCode()))
-                    u.setState("closed");
-                else
-                    u.setState("open");
+                if(objs.contains(u.getUnitCode())) {
+                  u.setState("closed");
+                } else {
+                  u.setState("open");
+                }
             }
         }else{
             for (UnitInfo u : listObjects){
