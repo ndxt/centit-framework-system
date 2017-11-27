@@ -45,6 +45,7 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
      *          P （public） 公用的，指 系统全局 和 部门之间公用的
      *          D （department）部门（机构）特有的角色
      *          I ( Item )为项目角色 W (workflow)工作流角色 ，这两个为保留类别，暂时没有使用
+     *          H (HIDE)系统内置的不要显示的，是部门可以自己支配的操作权限集合
      *  角色的类别 F/G/P/D/I/W
      */
     @Column(name = "ROLE_TYPE")
@@ -163,6 +164,7 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
      *          P （public） 公用的，指 系统全局 和 部门之间公用的
      *          D （department）部门（机构）特有的角色
      *          I ( Item )为项目角色 W (workflow)工作流角色 ，这两个为保留类别，暂时没有使用
+     *          H (HIDE)系统内置的不要显示的，是部门可以自己支配的操作权限集合
      *  角色的类别 F/G/P/D/I/W
      * @return 角色的类别 F/G/P/D/I/W
      */
@@ -171,11 +173,12 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
     }
 
     /**
-     * 角色的类别 F （Fixe）系统内置的，固有的， G （global） 全局的
+     * 角色的类别 F （Fixed）系统内置的，固有的， G （global） 全局的
      *          P （public） 公用的，指 系统全局 和 部门之间公用的
      *          D （department）部门（机构）特有的角色
      *          I ( Item )为项目角色 W (workflow)工作流角色 ，这两个为保留类别，暂时没有使用
-     * @param roleType 角色的类别 F/G/P/D/I/W
+     *          H (HIDE)系统内置的不要显示的，是部门可以自己支配的操作权限集合
+     * @param roleType 角色的类别 F/G/P/D/I/W/H
      */
     public void setRoleType(String roleType) {
         this.roleType = roleType;

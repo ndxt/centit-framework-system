@@ -24,7 +24,7 @@ import java.util.Map;
 public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements UserInfoDao {
     @Transactional
     public int checkIfUserExists(String userCode, String loginName) {
-        long hasExist = 0l;
+        long hasExist = 0L;
         String hql;
 
         if (StringUtils.isNotBlank(userCode)) {

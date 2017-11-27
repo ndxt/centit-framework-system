@@ -10,9 +10,17 @@ public interface UnitInfoDao {
 
     UnitInfo getObjectById(String unitCode);
 
+    /**
+     * 新增机构信息
+     * @param unitInfo 机构对象信息
+     */
     void saveNewObject(UnitInfo unitInfo);
 
-    void mergeObject(UnitInfo unitInfo);
+    /**
+     * 更新机构信息
+     * @param unitInfo 机构对象信息
+     */
+    void updateUnit(UnitInfo unitInfo);
 
      void deleteObjectById(String unitCode);
 
