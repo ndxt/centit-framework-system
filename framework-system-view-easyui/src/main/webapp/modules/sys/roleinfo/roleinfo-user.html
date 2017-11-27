@@ -6,10 +6,8 @@
       <input type="text" class="easyui-textbox" name="s_userName"/>
     </div>
     <a class="easyui-linkbutton btn-search" iconCls="icon-search"><p id="e@btn.search">搜索</p></a>
-    <a class="easyui-linkbutton" style="margin-top:8px;" iconcls="icon-reload"
-       onclick="javascript:$(this).parent('.clearFromValue').form('clear');$('.defaultChecked').prop('checked','true');"
-       group="" id="">
-      <p>重置</p>
+    <a class="easyui-linkbutton btn-reset" style="margin-top:8px;" iconcls="icon-reload">
+      重置
     </a>
   </form>
 </div>
@@ -19,7 +17,8 @@
   layoutH="63"
   pagination="true"
   toolbar=".role-toolbar"
-  style="width: 100%; margin: 0 auto;"
+  style="width: 100%;"
+  emptyMsg="该角色下没有用户"
   search=".search"
   singleSelect="false" selectOnCheck="true" checkOnSelect="true" method="post"
 >

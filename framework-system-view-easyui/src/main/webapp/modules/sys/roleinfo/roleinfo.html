@@ -46,20 +46,23 @@
         <table
           fit="true"
           url="system/roleinfo/all"
+          fitColumns="true"
           idField="roleCode"
           sortName="createDate" sortOrder="desc"
           search=".search"
           toolbar=".temp-toolbar"
         >
-          <thead>
+          <thead frozen="true">
           <tr>
-            <th id="d1@encoding" data-options="field:'roleCode'" width="100" sortable="true">编码</th>
-            <th id="d1@name" data-options="field:'roleName'" width="125" sortable="true">名称</th>
-            <th id="d1@createTime" data-options="field:'createDate'" width="125" sortable="true" align="center"
+            <th id="d1@encoding" data-options="field:'roleCode'" width="80" sortable="true">编码</th>
+            <th id="d1@name" data-options="field:'roleName'"  sortable="true">名称</th>
+            <th id="d1@createTime" data-options="field:'createDate'" width="100" sortable="true" align="center"
                 format="Date:yyyy-MM-dd">创建时间
             </th>
-            <th maxlinid="d1@describe" data-options="field:'roleDesc'" width="355">描述</th>
           </tr>
+          </thead>
+          <thead>
+            <th maxlinid="d1@describe" data-options="field:'roleDesc'" width="300">描述</th>
           </thead>
         </table>
 
@@ -84,7 +87,7 @@
     </div>
   </div>
 
-  <div data-options="region:'east'" style="width: 500px; padding: 4px;" border="false">
+  <div data-options="region:'east'" style="width: 400px; padding: 4px;" border="false">
 
   </div>
 </div>

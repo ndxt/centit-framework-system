@@ -31,10 +31,9 @@ define(function(require) {
 
 		// @override
 		this.load = function(panel) {
+		  var vm = this;
 
 		  this.$autoHeight('north', $('.role-info-main', panel));
-
-			var selectedIndex;
 
 			panel.find('table').cdatagrid({
 				// 必须要加此项!!
@@ -55,19 +54,34 @@ define(function(require) {
         },
 
 				onSelect: function(index, row) {
-					if (selectedIndex == index) return;
-					selectedIndex = index;
-					var RoleUserPanel = $('#roleinfo_layout').layout('panel', 'east');
+          vm.selectRole(panel, row);
+				},
 
-					RoleUserPanel.data('panel').options.onLoad = function() {
-						RoleUser.init(RoleUserPanel, row);
-					};
-					RoleUserPanel.panel('setTitle', row.roleName + ' 角色用户');
-					RoleUserPanel.panel('refresh', Config.ViewContextPath + 'modules/sys/roleinfo/roleinfo-user.html');
-
-				}
-			});
+        onLoadSuccess: function() {
+          var rows = $(this).datagrid('getRows');
+          if (rows.length) {
+            $(this).datagrid('selectRow', 0)
+          } else {
+            vm.clearRole(panel)
+          }
+        }
+			})
 		};
+
+		this.selectRole = function(panel, row) {
+      var RoleUserPanel = $('#roleinfo_layout', panel).layout('panel', 'east');
+      RoleUserPanel.data('panel').options.onLoad = function() {
+        RoleUser.init(RoleUserPanel, row);
+      };
+      RoleUserPanel.panel('setTitle', row.roleName + ' 角色用户');
+      RoleUserPanel.panel('refresh', Config.ViewContextPath + 'modules/sys/roleinfo/roleinfo-user.html');
+    };
+
+    this.clearRole = function(panel) {
+      var RoleUserPanel = $('#roleinfo_layout', panel).layout('panel', 'east');
+      RoleUserPanel.data('panel').options.onLoad = $.noop;
+      RoleUserPanel.panel('clear');
+    }
 	});
 
 	return RoleInfo;
