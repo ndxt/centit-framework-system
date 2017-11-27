@@ -124,10 +124,6 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
         return super.getObjectByProperties(QueryUtils.createSqlParamsMap("idCardNo", idCardNo));
     }
 
-    public void restPwd(UserInfo user){
-        super.updateObject(user);
-    }
-
     @Override
     public void deleteObjectById(String userCode) {
         super.deleteObjectById(userCode);
@@ -136,11 +132,6 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
     @Override
     public List<UserInfo> listUsersByRoleCode(String roleCode) {
         return super.listObjects(QueryUtils.createSqlParamsMap("roleCode", roleCode) );
-    }
-
-    @Override
-    public UserInfo getObjectById(String userCode) {
-        return super.getObjectById(userCode);
     }
 
     public int isLoginNameExist(String userCode, String loginName){

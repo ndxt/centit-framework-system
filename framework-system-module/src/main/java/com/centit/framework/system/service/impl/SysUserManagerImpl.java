@@ -82,9 +82,9 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @Transactional
     public void resetPwd(String userCode) {
-        UserInfo user = userInfoDao.getObjectById(userCode);
+        UserInfo user = userInfoDao.getUserByCode(userCode);
         user.setUserPin(getDefaultPassword(user.getUserCode()));
-        userInfoDao.restPwd(user);
+        userInfoDao.updateUser(user);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @Transactional
     public void setNewPassword(String userCode, String oldPassword, String newPassword) {
-        UserInfo user = userInfoDao.getObjectById(userCode);
+        UserInfo user = userInfoDao.getUserByCode(userCode);
         if (!passwordEncoder.isPasswordValid(user.getUserPin(),oldPassword,user.getUserCode() ))
             throw new ObjectException("旧密码不正确！");
 
@@ -123,7 +123,7 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @Transactional
     public void forceSetPassword(String userCode, String newPassword){
-        UserInfo user = userInfoDao.getObjectById(userCode);
+        UserInfo user = userInfoDao.getUserByCode(userCode);
         user.setUserPin(passwordEncoder.createPassword(newPassword, user.getUserCode()));
         userInfoDao.updateUser(user);
     }
@@ -250,12 +250,6 @@ public class SysUserManagerImpl implements SysUserManager {
 
     @Override
     @Transactional
-    public String getNextUserCode() {
-        return userInfoDao.getNextKey();
-    }
-
-    @Override
-    @Transactional
     public UserInfo loadUserByLoginname(String userCode){
         return userInfoDao.getUserByLoginName(userCode);
     }
@@ -269,7 +263,7 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @Transactional
     public boolean checkUserPassword(String userCode, String oldPassword) {
-        UserInfo user = userInfoDao.getObjectById(userCode);
+        UserInfo user = userInfoDao.getUserByCode(userCode);
         return passwordEncoder.isPasswordValid(
                 user.getUserPin(),oldPassword, user.getUserCode());
     }
@@ -291,7 +285,7 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @Transactional
     public UserInfo getObjectById(String userCode) {
-        return userInfoDao.getObjectById(userCode);
+        return userInfoDao.getUserByCode(userCode);
     }
 
     @Override

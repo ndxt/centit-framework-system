@@ -87,7 +87,6 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
         return DatabaseOptUtils.getNextValueOfSequence(this, "S_USERCODE");
     }
 
-
     @SuppressWarnings("unchecked")
     @Transactional
     public List<FVUserOptList> getAllOptMethodByUser(String userCode) {
@@ -190,10 +189,6 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
                 DatabaseOptUtils.flush(this.getCurrentSession());
             }
         }
-    }
-
-    public void restPwd(UserInfo user){
-        super.updateObject(user);
     }
 
   @Override

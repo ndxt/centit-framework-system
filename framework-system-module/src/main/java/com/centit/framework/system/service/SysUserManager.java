@@ -23,14 +23,14 @@ public interface SysUserManager{
      * @return UserInfo
      */
      UserInfo loadUserByLoginname(String userCode);
-    
+
     // return super.getObjectByProperty("regEmail", regEmail);
      UserInfo getUserByRegEmail(String regEmail);
-    
+
     //return super.getObjectByProperty("regCellPhone", regCellPhone);
      UserInfo getUserByRegCellPhone(String regCellPhone);
-    
-    
+
+
     //  Collection<GrantedAuthority> loadUserAuthorities(String username);
 
      void resetPwd(String userCode);
@@ -46,20 +46,16 @@ public interface SysUserManager{
       * @param userUnit 用户机构
      */
      void saveNewUserInfo(UserInfo userinfo, UserUnit userUnit);
-    
+
      void updateUserInfo(UserInfo userinfo);
-    
+
      void updateUserProperities(UserInfo userinfo);
-    
-    
+
+
      void deleteUserInfo(String userCode);
-      
- 
-     String getNextUserCode();
 
      List<RoleInfo> listUserValidRoles(String userCode);
-   
-    
+
      List<FVUserOptList> getAllOptMethodByUser(String userCode);
      boolean checkIfUserExists(UserInfo user);
 

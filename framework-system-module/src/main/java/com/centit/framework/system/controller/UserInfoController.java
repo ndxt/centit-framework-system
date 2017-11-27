@@ -111,8 +111,6 @@ public class UserInfoController extends BaseController {
                      "登录名"+userInfo.getLoginName()+"已存在，请更换！", response);
              return;
         }
-        userInfo.setUserCode(sysUserManager.getNextUserCode());
-
         if(null!=userInfo.getUserUnits()){
             for(UserUnit uu:userInfo.getUserUnits()){
                 uu.setUserCode(userInfo.getUserCode());

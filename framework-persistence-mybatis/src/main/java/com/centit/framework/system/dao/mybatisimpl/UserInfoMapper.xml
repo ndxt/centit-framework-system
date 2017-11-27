@@ -382,11 +382,6 @@
 	     where USER_CODE=#{userCode}
 	</update>
 
-	<update id="restPwd" parameterType="com.centit.framework.system.po.UserInfo" timeout="2000">
-	     update F_USERINFO  set  USER_PIN  =  #{userPin}
-	     where USER_CODE=#{userCode}
-	</update>
-
 	<!--更新单据 end -->
 
    <!--Merge单据 start -->

@@ -239,7 +239,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(readOnly = true)
     public UserInfo getUserInfoByUserCode(String userCode) {
-        return userInfoDao.getObjectById(userCode);
+        return userInfoDao.getUserByCode(userCode);
     }
 
     @Override
@@ -257,7 +257,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional
     public void changeUserPassword(String userCode, String userPassword) {
-        UserInfo user = userInfoDao.getObjectById(userCode);
+        UserInfo user = userInfoDao.getUserByCode(userCode);
         user.setUserPin(passwordEncoder.encodePassword(userPassword, user.getUserCode()));
         userInfoDao.updateUser(user);
     }
@@ -265,7 +265,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(readOnly = true)
     public boolean checkUserPassword(String userCode, String userPassword) {
-        UserInfo user = userInfoDao.getObjectById(userCode);
+        UserInfo user = userInfoDao.getUserByCode(userCode);
         return passwordEncoder.isPasswordValid(user.getUserPin(),
                     userPassword, user.getUserCode());
     }
