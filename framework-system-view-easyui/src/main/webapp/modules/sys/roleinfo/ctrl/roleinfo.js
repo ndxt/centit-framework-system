@@ -63,9 +63,12 @@ define(function(require) {
 				},
 
         onLoadSuccess: function() {
+
+				  var index = $(this).datagrid('getSelectedRowIndex');
+
           var rows = $(this).datagrid('getRows');
           if (rows.length) {
-            $(this).datagrid('selectRow', 0)
+            $(this).datagrid('selectRow', index === -1 ? 0 : index)
           } else {
             vm.clearRole(panel)
           }
