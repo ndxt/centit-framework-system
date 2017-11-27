@@ -193,4 +193,9 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
 
       return NumberBaseOpt.castObjectToInteger(object);
     }
+
+    @Override
+    public void updateUnit(UnitInfo unitInfo){
+        super.updateObject(unitInfo);
+    }
 }

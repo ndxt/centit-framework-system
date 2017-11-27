@@ -109,7 +109,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
         List<UnitInfo> allSubUnits = listAllSubUnits(unitCode);
         for (UnitInfo subUnit : allSubUnits) {
             subUnit.setIsValid(isValid);
-            unitInfoDao.mergeObject(subUnit);
+            unitInfoDao.updateUnit(subUnit);
         }
     }
 
@@ -125,7 +125,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
             if(unitinfo.getUnitCode().equals(ui.getParentUnit()))
                 ui.setParentUnit("0");
             ui.setParentUnit(ui.getUnitPath().substring(noupl));
-            unitInfoDao.mergeObject(ui);
+            unitInfoDao.updateUnit(ui);
         }
 
 //        userUnitDao.deleteUserUnitByUnit(unitinfo.getUnitCode());
@@ -200,10 +200,10 @@ public class SysUnitManagerImpl implements SysUnitManager {
             int noupl = oldUnitPath.length();
             for(UnitInfo ui : subUnits){
                 ui.setParentUnit(unitinfo.getUnitPath()+ ui.getUnitPath().substring(noupl));
-                unitInfoDao.mergeObject(ui);
+                unitInfoDao.updateUnit(ui);
             }
         }
-        unitInfoDao.mergeObject(dbUnitInfo);
+        unitInfoDao.updateUnit(dbUnitInfo);
     }
 
     @Override

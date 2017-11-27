@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * @author codefan
  */
-@Service("sysUnitManager")
+@Service("sysUnitRoleManager")
 public class SysUnitRoleManagerImpl implements SysUnitRoleManager {
     @Resource
     @NotNull

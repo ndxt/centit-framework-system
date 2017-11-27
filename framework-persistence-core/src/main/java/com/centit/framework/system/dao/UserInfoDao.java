@@ -2,24 +2,26 @@ package com.centit.framework.system.dao;
 
 import com.centit.framework.system.po.FVUserOptList;
 import com.centit.framework.system.po.UserInfo;
+
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 用户信息DAO
+ */
 public interface UserInfoDao {
-
-    void mergeObject(UserInfo userInfo);
-
-    /**
-     * 更新用户信息
-     * @param userInfo 用户对象信息
-     */
-    void updateUser(UserInfo userInfo);
 
     /**
      * 新增用户
      * @param userInfo 用户对象信息
      */
     void saveNewObject(UserInfo userInfo);
+
+    /**
+     * 更新用户信息
+     * @param userInfo 用户对象信息
+     */
+    void updateUser(UserInfo userInfo);
 
     /**
      * 根据ID删除用户
