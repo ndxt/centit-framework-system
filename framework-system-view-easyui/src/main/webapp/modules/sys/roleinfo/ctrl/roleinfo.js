@@ -47,10 +47,15 @@ define(function(require) {
 					if (row.isValid === 'F') {
 						return {'class': 'ban'};
 					}
-				},
+					if (row.roleType === 'F') {
+					  return {'class': 'fix'}
+          }
+ 				},
 
         columns: {
-
+          roleType: {
+            formatter: this.roleTypeFormatter
+          }
         },
 
 				onSelect: function(index, row) {
@@ -81,7 +86,17 @@ define(function(require) {
       var RoleUserPanel = $('#roleinfo_layout', panel).layout('panel', 'east');
       RoleUserPanel.data('panel').options.onLoad = $.noop;
       RoleUserPanel.panel('clear');
-    }
+    };
+
+    this.roleTypeFormatter = function(value) {
+      var types = {
+        G: '全局角色',
+        P: '公共角色',
+        F: '固定角色'
+      };
+
+      return types[value] ? types[value] : value;
+    };
 	});
 
 	return RoleInfo;
