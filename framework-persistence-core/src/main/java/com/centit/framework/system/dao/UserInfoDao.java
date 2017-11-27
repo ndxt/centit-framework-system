@@ -9,8 +9,22 @@ public interface UserInfoDao {
 
     void mergeObject(UserInfo userInfo);
 
+    /**
+     * 更新用户信息
+     * @param userInfo 用户对象信息
+     */
+    void updateUser(UserInfo userInfo);
+
+    /**
+     * 新增用户
+     * @param userInfo 用户对象信息
+     */
     void saveNewObject(UserInfo userInfo);
 
+    /**
+     * 根据ID删除用户
+     * @param userCode 用户ID
+     */
     void deleteObjectById(String userCode);
 
     List<UserInfo> listObjects();

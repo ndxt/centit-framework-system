@@ -112,7 +112,7 @@ public class SysUserManagerImpl implements SysUserManager {
             throw new ObjectException("新密码和旧密码一致，请重新输入新密码！");
 
         user.setUserPin(passwordEncoder.encodePassword(newPassword, user.getUserCode()));
-        userInfoDao.mergeObject(user);
+        userInfoDao.updateUser(user);
     }
 
     /**
@@ -125,7 +125,7 @@ public class SysUserManagerImpl implements SysUserManager {
     public void forceSetPassword(String userCode, String newPassword){
         UserInfo user = userInfoDao.getObjectById(userCode);
         user.setUserPin(passwordEncoder.createPassword(newPassword, user.getUserCode()));
-        userInfoDao.mergeObject(user);
+        userInfoDao.updateUser(user);
     }
 
 
@@ -211,7 +211,7 @@ public class SysUserManagerImpl implements SysUserManager {
     @Transactional
     public void updateUserInfo(UserInfo userinfo){
 
-        userInfoDao.mergeObject(userinfo);
+        userInfoDao.updateUser(userinfo);
 
         /*List<UserUnit> oldUserUnits = userUnitDao.listUserUnitsByUserCode(userinfo.getUserCode());
          if(oldUserUnits!=null){
@@ -236,7 +236,7 @@ public class SysUserManagerImpl implements SysUserManager {
     @CacheEvict(value ="UserInfo",allEntries = true)
     @Transactional
     public void updateUserProperities(UserInfo userinfo){
-        userInfoDao.mergeObject(userinfo);
+        userInfoDao.updateUser(userinfo);
     }
 
     @Override
