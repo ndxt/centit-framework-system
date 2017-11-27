@@ -259,7 +259,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     public void changeUserPassword(String userCode, String userPassword) {
         UserInfo user = userInfoDao.getObjectById(userCode);
         user.setUserPin(passwordEncoder.encodePassword(userPassword, user.getUserCode()));
-        userInfoDao.mergeObject(user);
+        userInfoDao.updateUser(user);
     }
 
     @Override

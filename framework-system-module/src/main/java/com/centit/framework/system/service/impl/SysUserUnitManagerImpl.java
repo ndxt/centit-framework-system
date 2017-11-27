@@ -115,7 +115,7 @@ public class SysUserUnitManagerImpl
             UserInfo user=userInfoDao.getObjectById(userunit.getUserCode());
             if(user != null) {
                 user.setPrimaryUnit(userunit.getUnitCode());
-                userInfoDao.mergeObject(user);
+                userInfoDao.updateUser(user);
             }
         }
         // userunit.setIsprimary("T");//modify by hx bug：会默认都是主机构
@@ -157,7 +157,7 @@ public class SysUserUnitManagerImpl
             UserInfo user=userInfoDao.getObjectById(userunit.getUserCode());
             if(user != null) {
                 user.setPrimaryUnit(userunit.getUnitCode());
-                userInfoDao.mergeObject(user);
+                userInfoDao.updateUser(user);
             }
         }
        userUnitDao.mergeObject(userunit);

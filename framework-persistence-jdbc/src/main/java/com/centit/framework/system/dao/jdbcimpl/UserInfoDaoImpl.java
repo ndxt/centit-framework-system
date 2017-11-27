@@ -189,4 +189,9 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
         }
         return -1;
     }
+
+    @Override
+    public void updateUser(UserInfo userInfo){
+        super.updateObject(userInfo);
+    }
 }

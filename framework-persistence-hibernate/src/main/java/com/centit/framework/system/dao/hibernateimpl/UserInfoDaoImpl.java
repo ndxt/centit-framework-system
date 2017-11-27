@@ -237,4 +237,9 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
                         StringUtils.isBlank(regEmail) ? "null" : regEmail});
         return NumberBaseOpt.castObjectToInteger(obj);
     }
+
+    @Override
+    public void updateUser(UserInfo userInfo){
+      super.updateObject(userInfo);
+    }
 }
