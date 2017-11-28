@@ -17,6 +17,19 @@ define(function (require) {
       }
     };
 
+    // @override
+    this.onClose = function (table, data) {
+      if (!data) {
+        return;
+      }
+
+      this.parent.currentUnit = data.unitCode;
+
+      table.treegrid('reload');
+
+      require('loaders/cache/loader.system').loadAll();
+    };
+
   });
 
   return UnitInfoAdd;
