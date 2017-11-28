@@ -105,16 +105,16 @@ public class UnitRoleController extends BaseController {
     /**
      * 创建用户角色关联信息
      * @param unitRole unitRole
-     * @param unitCodes  批量赋权
+     * @param unitCode  批量赋权
      *  param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(method = RequestMethod.POST)
     @RecordOperationLog(content="用户{userInfo.userCode}给机构{arg1}赋予权限{arg0.roleCode}")
-    public void create(@Valid UnitRole unitRole,@Valid String[] unitCodes, HttpServletResponse response) {
+    public void create(@Valid UnitRole unitRole,@Valid String[] unitCode, HttpServletResponse response) {
         unitRole.setCreateDate(new Date());
-        if(unitCodes!=null && unitCodes.length>0){
-            for(String u: unitCodes){
+        if(unitCode!=null && unitCode.length>0){
+            for(String u: unitCode){
                 UnitRole ur = new UnitRole();
                 ur.copy(unitRole);
                 ur.setUnitCode(u);

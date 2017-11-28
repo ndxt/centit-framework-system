@@ -1,15 +1,15 @@
 define(function (require) {
-  var Config = require('config');
-  var Core = require('core/core');
   var Page = require('core/page');
-  var RoleUser = require('../ctrl/roleinfo.user');
+  var RoleUser = require('./roleinfo.user');
+  var RoleUnit = require('./roleinfo.unit');
   var $ = require('jquery');
 
   var RoleInfoAside = Page.extend(function () {
     var tabSelectedIndex = 0;
 
     var controllers = [
-      new RoleUser('role_user')
+      new RoleUser('role_user'),
+      new RoleUnit('role_unit')
     ];
 
     this.injecte(controllers);

@@ -22,10 +22,13 @@
       pagination="true"
       toolbar=".role-toolbar"
       search=".search"
+      sigleSelect="false"
+      checkOnSelect="false"
+      selectOnCheck="false"
     >
       <thead frozen="true">
       <tr>
-        <th data-options="field:'ck',checkbox:true"></th>
+        <th field="checkbox" width="20%" checkbox="true"></th>
         <th id="c@username" field="userCode" format="AllUser" width="20%">用户名</th>
         <th field="loginName" width="20%">登陆名</th>
         <th field="userPrimaryUnit" format="Unit" width="20%">主机构</th>
