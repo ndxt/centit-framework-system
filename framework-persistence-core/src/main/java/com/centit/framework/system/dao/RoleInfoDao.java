@@ -1,7 +1,6 @@
 package com.centit.framework.system.dao;
 
 import com.centit.framework.system.po.RoleInfo;
-import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.VOptTree;
 
 import java.util.List;

@@ -7,51 +7,69 @@ import com.centit.framework.system.po.OptMethodUrlMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 菜单信息Dao
+ * @author zou_wy@centit.com
+ */
 public interface OptInfoDao {
 
-     List<OptInfo> listObjects(Map<String, Object> filterMap);
+    /**
+     * 查询所有机构列表
+     * @return List<UserInfo>
+     */
+    List<OptInfo> listObjectsAll();
 
-//     List<OptInfo> listObjectsByRoleCode(String roleCode);
+    /**
+     * 根据条件查询机构列表
+     * @param filterMap 过滤条件Map
+     * @return List<UserInfo>
+     */
+    List<OptInfo> listObjects(Map<String, Object> filterMap);
 
-//     List<OptInfo> listObjectsByCon(String condition);
+    /**
+     * 新增菜单
+     * @param optInfo 菜单对象
+     */
+    void saveNewObject(OptInfo optInfo);
 
-     List<OptInfo> listObjectsAll();
+    /**
+     * 删除菜单
+     * @param optInfo 菜单对象
+     */
+     void deleteObject(OptInfo optInfo);
 
+    /**
+     * 根据Id删除菜单
+     * @param optId 菜单Id
+     */
+    void deleteObjectById(String optId);
 
+    /**
+     * 更新菜单
+     * @param optInfo 菜单对象
+     */
+    void updateOptInfo(OptInfo optInfo);
 
-     void deleteObject(OptInfo optMethod);
-
-    void mergeObject(OptInfo optMethod);
-
-     void deleteObjectById(String optId);
-
-    void saveNewObject(OptInfo optMethod);
-
-    //"select count(1) as hasChildren from OptInfo where preOptId = ?",optId
+    /**
+     * 查询下级菜单数量
+     * @param optId 菜单ID
+     * @return 菜单数量
+     */
      int countChildrenSum(String optId);
 
-
+    /**
+     * 根据Id查询菜单
+     * @param optId 菜单对象
+     * @return OptInfo
+     */
      OptInfo getObjectById(String optId);
 
-    //"from OptInfo opt where opt.isInToolbar = 'T'";
-     List<OptInfo> listValidObjects();
-
-    // String hql = "FROM FVUserOptMoudleList where userCode=?";
-//     List<OptInfo> getFunctionsByUserID(String userID);
-
-
-
-    //"FROM OptInfo where optUrl='...' order by orderInd ";
-    //"FROM FVUserOptMoudleList where isintoolbar='Y' and userCode=? and optType = " +
-    //(isAdmin ? "'S'" : "'O'") + " ORDER BY orderind";
-    //return getMenuFuncs(preOpts, ls);
-
-  /**
-   * 查询用户拥有的叶子菜单
-    * @param userCode 用户ID
-   * @param optType 菜单类型
-   * @return List<FVUserOptMoudleList>
-   */
+    /**
+     * 查询用户拥有的叶子菜单
+      * @param userCode 用户ID
+     * @param optType 菜单类型
+     * @return List<FVUserOptMoudleList>
+     */
      List<FVUserOptMoudleList> getMenuFuncByUserID(String userCode, String optType);
 
     /**
@@ -60,22 +78,26 @@ public interface OptInfoDao {
      */
     List<OptInfo> getMenuFuncByOptUrl();
 
-//     List<FVUserOptMoudleList> getMenuFuncByUserID(Map map);
+  /**
+   * 查询用户数据范围
+   * @param userCode 用户Id
+   * @param optId 菜单Id
+   * @param optMethod 操作定义
+   * @return List<String>
+   */
+     List<String> listUserDataPowerByOptMethod(String userCode, String optId, String optMethod);
 
+    /**
+     * 查询全部OptMethodUrlMap
+     * @return List<OptMethodUrlMap>
+     */
+    List<OptMethodUrlMap> listAllOptMethodUrlMap();
 
-     List<String> listUserDataPowerByOptMethod(String userCode, String optid, String optMethod);//zou_wy
-
-    //"FROM FVUserOptMoudleList  where userCode=? and topoptid=?" + " ORDER BY preoptid, orderind";
-    //参数  String userID, String superFunctionId
-//     List<OptInfo> getFunctionsByUserAndSuperFunctionId(Map map);
-
-    // String hql = "FROM FVUserOptList urv where urv.id.userCode=? and optid= ?";
-    //参数String userCode, String optid
-//     List<OptMethod> getMethodByUserAndOptid(Map map);
-
-    // DatabaseOptUtils.findObjectsByHql(this, "from OptMethodUrlMap");
-     List<OptMethodUrlMap> listAllOptMethodUrlMap();
-
+    /**
+     * 根据父Id查询下级菜单
+     * @param optId 父Id
+     * @return List<OptInfo>
+     */
     List<OptInfo> listObjectByParentOptid(String optId);
 
     /**
