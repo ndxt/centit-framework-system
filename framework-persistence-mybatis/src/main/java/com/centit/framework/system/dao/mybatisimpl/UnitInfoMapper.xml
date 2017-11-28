@@ -303,25 +303,12 @@
     select NEXT VALUE FOR S_UNITCODE
   </select>
 
-	<select id="getUnitCode" resultType="String" parameterType="String">
-		<include refid="coreSql" />
-		 where DEP_NO=#{depno}
-	</select>
 	<select id="listUnitUsers" resultMap="UnitInfo" parameterType="String">
 		select a.*
 		from f_Userinfo a join f_userunit b on(a.user_Code=b.user_Code)
 		where b.unit_code =#{unitCode}
 	</select>
-	<select id="listRelationUsers" resultMap="UnitInfo" parameterType="String">
-        select ui.* FROM F_USERINFO ui
-              where exists (select uu.* from F_USERUNIT where uu.USER_CODE=ui.USER_CODE and uu.UNIT_CODE= #{unitCode})
-               or exists(select ur.* from F_V_USERROLES ur
-              where ur.USER_CODE=ui.USER_CODE and ur.ROLE_TYPE='D'
-              and ur.UNIT_CODE= #{unitCode} )
-	</select>
-	<select id="getUnitNameOfCode" parameterType="String" resultType="String">
-		select unitname from f_unitinfo where unit_code=#{unitcode}
-	</select>
+
 	<select id="getUnitByName" parameterType="String" resultMap="UnitInfo">
 		<include refid="coreSql" />
 		where unit_Name = #{name} or unit_Short_Name =#{name}
@@ -366,10 +353,6 @@
 			#{unitCode, jdbcType=String}
 		</foreach>
 	  </if>
-	</select>
-
-	<select id="countChildrenSum" parameterType="String" resultType="int">
-			select count(1) from f_unitinfo where parent_unit =#{unitCode}
 	</select>
 
 	<select id="getAllParentUnit"  resultType="String">

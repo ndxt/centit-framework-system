@@ -88,16 +88,6 @@ public class SysUnitManagerImpl implements SysUnitManager {
     }
 
     @Override
-    public List<UserInfo> getRelationUsers(String unitCode) {
-        return unitInfoDao.listRelationUsers(unitCode);
-    }
-
-    @Override
-    public String getUnitCode(String depno) {
-        return unitInfoDao.getUnitCode(depno);
-    }
-
-    @Override
     public UnitInfo getUnitByName(String name) {
         return unitInfoDao.getUnitByName(name);
     }
@@ -232,12 +222,6 @@ public class SysUnitManagerImpl implements SysUnitManager {
             }
         }
         return parentUnit;
-    }
-
-    @Override
-    @Transactional
-    public boolean hasChildren(String unitCode) {
-        return unitInfoDao.countChildrenSum(unitCode)>0;
     }
 
     @Override

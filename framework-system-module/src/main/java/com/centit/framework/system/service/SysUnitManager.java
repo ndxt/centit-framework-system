@@ -17,10 +17,6 @@ public interface SysUnitManager{
 
     List<UserInfo> getUnitUsers(String unitCode);
 
-    List<UserInfo> getRelationUsers(String unitCode);
-
-    String getUnitCode(String depno);
-
     UnitInfo getUnitByName(String name);
 
     List<UnitInfo> listObjectsAsSort(Map<String, Object> searchColumn);
@@ -47,7 +43,6 @@ public interface SysUnitManager{
     void updateUnitInfo(UnitInfo unitinfo);
     List<UnitInfo> listAllSubObjectsAsSort(String primaryUnit);
 
-    boolean hasChildren(String unitCode);
     void checkState(List<UnitInfo> objs);
 
     List<UnitInfo> listValidSubUnit(String unitCode);
