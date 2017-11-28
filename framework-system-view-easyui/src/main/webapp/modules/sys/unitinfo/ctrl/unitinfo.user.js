@@ -19,6 +19,7 @@ define(function(require) {
 		// @override
 		this.load = function(panel, data) {
 			this.data = data;
+			this.$autoHeight();
 
 			var form = panel.find('form').form('load', data);
 			var table = panel.find('table');

@@ -1,74 +1,95 @@
-<div class="easyui-layout" style="width: 100%;"	id="unitinfo_panel" data-options="fit:true" >
-	<div data-options="region:'center'" style="width: 50%">
-		<div class="easyui-panel search-body" cls="search" style="width: 100%">
-			<form class="clearFromValue">
-				<div class="search-item">
-					<label id="d@organizationName">机构名称</label> <input
-						class="easyui-textbox" name="s_unitName" id="s_unitName" />
-				</div>
-				<a class="easyui-linkbutton btn-search" iconCls="icon-search"><p id="e@btn.search">搜索</p></a>
-				<a class="easyui-linkbutton" style="margin-top: 8px;" iconcls="icon-reload" group="" id=""
-					onclick="javascript:$(this).parent('.clearFromValue').form('clear');$('.defaultChecked').prop('checked','true');">
-					<p>重置</p>
-				</a>
-			</form>
-		</div>
-		<table id="tg" class="easyui-treegrid" width="100%"
-			url="system/unitinfo?struct=true" layoutH="65" search=".search"
-            sortName="unitOrder" sortOrder="asc" remoteSort="false"
-			data-options="method: 'get',idField: 'unitCode',treeField: 'unitName',
-							showFooter: true,toolbar:'.temp-toolbar'" >
-			<thead>
-				<tr>
-					<th id="f@number" data-options="field:'unitCode',editor:'text'"	hidden="true">编号</th>
-					<th id="f@name" data-options="field:'unitName',editor:'text'" width="150">名称</th>
-					<th id="f@encoding" data-options="field:'unitWord',editor:'text'" width="80" align="center">编码</th>
-					<th id="f@classes"	data-options="field:'unitTypeText',editor:{type:'combobox',
-						options:{method:'get',url:'system/cp/dictionary/UnitType?',textField:'dataValue'}}"
-						width="150" align="center">类别</th>
-					<th id="" data-options="field:'unitOrder',editor:'text'" width="50"	align="center" sortable="true">排序</th>
-					<th id="f@describe" data-options="field:'unitDesc',editor:'text'"	width="330"  >描述</th>
-				</tr>
-			</thead>
-		</table>
-		<div class="temp-toolbar">
-			<a iconCls="icon-add" href="modules/sys/unitinfo/unitinfo-info-top.html" trigger="none" maximizable="true" target="dialog"
-				rel="unitinfo_add_top" title="新增顶级机构" width="640" height="500" btnValue="添加"><p id="f@link.topOrganization">顶级机构</p></a>
-			<hr>
-			<a iconCls="icon-add" href="modules/sys/unitinfo/unitinfo-info.html" trigger="single" target="dialog" rel="unitinfo_add"
-				title="新增 {{unitName}} 下级机构" width="640" height="500" btnValue="添加"><p id="f@link.subOrganization">下级机构</p></a>
-			<hr>
-			<a iconCls="icon-edit"	href="modules/sys/unitinfo/unitinfo-edit.html" trigger="single"
-				target="dialog" rel="unitinfo_edit" title="编辑 {{unitName}}"	width="640" height="500" btnValue="更新"><p id="f@link.edit">编辑</p></a>
-			<!-- <hr>
-					<a iconCls="icon-base icon-base-user" href="modules/sys/unitinfo/unitinfo-user.html" trigger="single"
-						target="dialog" rel="unitinfo_user" title="编辑 {{unitName}} 机构人员" width="640" height="560" btnValue="更新">机构人员</a> -->
-			<hr>
-			<a iconCls="icon-base icon-base-gear" href="modules/sys/unitinfo/unitinfo-power.html" trigger="single"
-				target="dialog" rel="unitinfo_operate" title="编辑 {{roleName}} 操作权限" width="720" height="600" btnValue="更新">
-				<p id="b@link.authorityManage">机构权限</p></a>
-			<hr>
-			<a iconCls="icon-base icon-base-ban" trigger="single" target="confirm" rel="unitinfo_remove" title="是否确定删除 {{unitName}}？">
-				<p id="f@btn.delete">删除</p></a>
-		</div>
-	</div>
-	<div data-options="region:'east',split:true,collapsible:false" title="机构用户" style="width: 50%; height: 100%"></div>
+<div class="easyui-layout" id="unitinfo_panel" data-options="fit:true">
+  <div region="center" border="false">
+    <div class="easyui-layout unit-info-main" fit="true">
+      <div region="north" border="false" style="padding: 4px;">
+        <div class="easyui-panel search-body" cls="search" style="width: 100%; height: auto; margin-bottom: 0;">
+          <form class="clearFromValue">
+            <div class="search-item">
+              <label id="d@organizationName">机构名称</label>
+              <input class="easyui-textbox" name="s_unitName" id="s_unitName" />
+            </div>
+            <a class="easyui-linkbutton btn-search" iconCls="icon-search"><p id="e@btn.search">搜索</p></a>
+            <a class="easyui-linkbutton btn-reset" iconcls="icon-reload">重置</a>
+          </form>
+        </div>
+      </div>
+
+      <div data-options="region:'center'" border="false" style="padding: 4px;">
+        <table
+          fitColumns="true"
+          fit="true"
+          id="tg" class="easyui-treegrid"
+          url="system/unitinfo?struct=true"
+          search=".search"
+          sortName="unitOrder"
+          sortOrder="asc"
+          remoteSort="false"
+          data-options="method: 'get',idField: 'unitCode',treeField: 'unitName', showFooter: true,toolbar:'.temp-toolbar'">
+          <thead frozen="true">
+          <tr>
+            <th id="f@number" data-options="field:'unitCode',editor:'text'" hidden="true">编号</th>
+            <th id="f@name" data-options="field:'unitName',editor:'text'" width="150">名称</th>
+          </tr>
+          </thead>
+          <thead>
+          <tr>
+            <th id="f@encoding" data-options="field:'unitWord',editor:'text'" width="80" align="center">编码</th>
+            <th id="f@classes" data-options="field:'unitTypeText'" width="50" align="center">类别
+            </th>
+            <th id="" data-options="field:'unitOrder',editor:'text'" width="50" align="center" sortable="true">排序</th>
+            <th id="f@describe" data-options="field:'unitDesc',editor:'text'" width="330">描述</th>
+          </tr>
+          </thead>
+        </table>
+        <div class="temp-toolbar">
+          <a iconCls="icon-add" href="modules/sys/unitinfo/unitinfo-info-top.html" trigger="none" maximizable="true"
+             target="dialog"
+             rel="unitinfo_add_top" title="新增顶级机构" width="640" height="500" btnValue="添加"><p
+            id="f@link.topOrganization">
+            顶级机构</p></a>
+          <hr>
+          <a iconCls="icon-add" href="modules/sys/unitinfo/unitinfo-info.html" trigger="single" target="dialog"
+             rel="unitinfo_add"
+             title="新增 {{unitName}} 下级机构" width="640" height="500" btnValue="添加"><p id="f@link.subOrganization">下级机构</p>
+          </a>
+          <hr>
+          <a iconCls="icon-edit" href="modules/sys/unitinfo/unitinfo-edit.html" trigger="single"
+             target="dialog" rel="unitinfo_edit" title="编辑 {{unitName}}" width="640" height="500" btnValue="更新"><p
+            id="f@link.edit">编辑</p></a>
+          <!-- <hr>
+                        <a iconCls="icon-base icon-base-user" href="modules/sys/unitinfo/unitinfo-user.html" trigger="single"
+                            target="dialog" rel="unitinfo_user" title="编辑 {{unitName}} 机构人员" width="640" height="560" btnValue="更新">机构人员</a> -->
+          <hr>
+          <a iconCls="icon-base icon-base-gear" href="modules/sys/unitinfo/unitinfo-power.html" trigger="single"
+             target="dialog" rel="unitinfo_operate" title="编辑 {{roleName}} 操作权限" width="720" height="600" btnValue="更新">
+            <p id="b@link.authorityManage">机构权限</p></a>
+          <hr>
+          <a iconCls="icon-base icon-base-ban" trigger="single" target="confirm" rel="unitinfo_remove"
+             title="是否确定删除 {{unitName}}？">
+            <p id="f@btn.delete">删除</p></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div data-options="region:'east'" style="width: 440px; padding: 4px;" border="false">
+
+  </div>
 </div>
 
 <script type="text/javascript">
-	$.parser.onComplete = function(panel) {
-		$.parser.onComplete = $.noop;
+  $.parser.onComplete = function (panel) {
+    $.parser.onComplete = $.noop;
 
-		requirejs([ 'core/filter/filter.dictionary',
-				'modules/sys/unitinfo/ctrl/unitinfo' ], function(
-				FilterDictionary, UnitInfo) {
+    requirejs(['core/filter/filter.dictionary',
+      'modules/sys/unitinfo/ctrl/unitinfo'], function (FilterDictionary, UnitInfo) {
 
-			FilterDictionary.add(
-					[ 'YesOrNo', 'UnitType', 'StationType', 'RankType' ]).then(
-					function() {
-						new UnitInfo('unitinfo', panel).load(panel);
-					});
-		});
-	};
+      FilterDictionary.add(
+        ['YesOrNo', 'UnitType', 'StationType', 'RankType']).then(
+        function () {
+          new UnitInfo('unitinfo', panel).load(panel);
+        });
+    });
+  };
 
 </script>
