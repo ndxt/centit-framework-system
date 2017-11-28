@@ -1,75 +1,103 @@
+define(function (require) {
+  var Config = require('config');
+  var Core = require('core/core');
+  var Page = require('core/page');
 
-define(function(require) {
-	var Config = require('config');
-	var Core = require('core/core');
-	var Page = require('core/page');
+  var RoleInfoAdd = require('../ctrl/roleinfo.add');
+  var RoleInfoEdit = require('../ctrl/roleinfo.edit');
+  var RoleInfoRemove = require('../ctrl/roleinfo.remove');
+  var RoleInfoOperate = require('../ctrl/roleinfo.operate');
 
-	var RoleInfoAdd = require('../ctrl/roleinfo.add');
-	var RoleInfoEdit = require('../ctrl/roleinfo.edit');
-	var RoleInfoRemove = require('../ctrl/roleinfo.remove');
-	var RoleInfoOperate = require('../ctrl/roleinfo.operate');
-	var RoleUser = require('../ctrl/roleinfo.user');
+  var RoleAside = require('./roleinfo.aside');
 
-	RoleInfoEdit = new RoleInfoEdit('roleinfo_edit');
-	RoleInfoOperate = new RoleInfoOperate('roleinfo_operate');
-	RoleUser = new RoleUser('roleinfo_user');
-
-
-
-	// 角色信息列表
-	var RoleInfo = Page.extend(function() {
-		//var RoleUserPanel = $('#roleinfo_sub_layout').layout('panel', 'east');
+  RoleInfoEdit = new RoleInfoEdit('roleinfo_edit');
+  RoleInfoOperate = new RoleInfoOperate('roleinfo_operate');
+  RoleAside = new RoleAside('roleinfo_aside');
 
 
-		this.injecte([
-	        new RoleInfoAdd('roleinfo_add'),
-	        new RoleInfoRemove('roleinfo_remove'),
-	        RoleInfoEdit,
-	        RoleInfoOperate,
-	        RoleUser
-	    ]);
+  // 角色信息列表
+  var RoleInfo = Page.extend(function () {
 
-		// @override
-		this.load = function(panel) {
+    this.injecte([
+      new RoleInfoAdd('roleinfo_add'),
+      new RoleInfoRemove('roleinfo_remove'),
+      RoleInfoEdit,
+      RoleInfoOperate,
+      RoleAside
+    ]);
 
-			var selectedIndex;
+    // @override
+    this.load = function (panel) {
+      var selectIndex = -1
+      var vm = this;
+      var RoleUserPanel = $('#roleinfo_layout', panel).layout('panel', 'east');
 
-			panel.find('table').cdatagrid({
-				// 必须要加此项!!
-				controller: this,
+      this.$autoHeight('north', $('.role-info-main', panel));
 
-				queryParams: {
-					s_isValid: 'T'
-				},
+      this.table = panel.find('table').cdatagrid({
+        controller: this,
 
-				rowStyler: function(index, row) {
-					if (row.isValid == 'F') {
-						return {'class': 'ban'};
-					}
-				},
-        columns: {
-          roleDesc: {
-            formatter: function (value, row, index) {
+        queryParams: {
+          s_isValid: 'T'
+        },
 
-              return '<a title="' + value + '">' + value + '</a>';
-            }
+        rowStyler: function (index, row) {
+          if (row.isValid === 'F') {
+            return {'class': 'ban'};
+          }
+          if (row.roleType === 'F') {
+            return {'class': 'fix'}
           }
         },
-				onClickRow: function(index, row) {
-					if (selectedIndex == index) return;
-					selectedIndex = index;
-					var RoleUserPanel = $('#roleinfo_layout').layout('panel', 'east');
 
-					RoleUserPanel.data('panel').options.onLoad = function() {
-						RoleUser.init(RoleUserPanel, row);
-					};
-					RoleUserPanel.panel('setTitle', row.roleName + ' 角色用户');
-					RoleUserPanel.panel('refresh', Config.ViewContextPath + 'modules/sys/roleinfo/roleinfo-user.html');
+        columns: {
+          roleType: {
+            formatter: this.roleTypeFormatter
+          }
+        },
 
-				}
-			});
-		};
-	});
+        onSelect: function (index, row) {
+          if (index !== selectIndex || selectIndex === 0) {
+            selectIndex = index;
+            vm.selectRole(RoleUserPanel, row, RoleAside);
+          }
+        },
 
-	return RoleInfo;
+        onLoadSuccess: function () {
+          var index = $(this).datagrid('getSelectedRowIndex');
+
+          var rows = $(this).datagrid('getRows');
+          if (rows.length) {
+            $(this).datagrid('selectRow', index === -1 ? 0 : index)
+          } else {
+            vm.clearRole(RoleUserPanel)
+          }
+        }
+      })
+    };
+
+    this.selectRole = function (panel, row, controller) {
+      panel.data('panel').options.onLoad = function () {
+        controller.init(panel, row);
+      };
+      panel.panel('refresh', Config.ViewContextPath + 'modules/sys/roleinfo/roleinfo-aside.html');
+    };
+
+    this.clearRole = function (panel) {
+      panel.data('panel').options.onLoad = $.noop;
+      panel.panel('clear');
+    };
+
+    this.roleTypeFormatter = function (value) {
+      var types = {
+        G: '全局角色',
+        P: '公共角色',
+        F: '固定角色'
+      };
+
+      return types[value] ? types[value] : value;
+    };
+  });
+
+  return RoleInfo;
 });

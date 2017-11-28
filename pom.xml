@@ -90,6 +90,7 @@
 
     <modules>
         <module>framework-persistence-core</module>
+        <module>framework-system-demo</module>
         <module>framework-persistence-mybatis</module>
         <module>framework-persistence-hibernate</module>
         <module>framework-persistence-jdbc</module>
