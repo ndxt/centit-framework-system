@@ -21,37 +21,66 @@ define(function (require) {
       UnitInfoAsideImpl
     ]);
 
+    this.beforeSearch = function() {
+      this.currentUnit = null;
+    };
+
     // @override
     this.load = function (panel) {
       this.$autoHeight('north', $('.unit-info-main', panel));
 
+      var UnitUserPanel = this.UnitUserPanel = $('#unitinfo_panel', panel).layout('panel', 'east');
       var table = this.table = panel.find('table');
-      var currentUnit = null;
+
+      var vm = this;
 
       table.ctreegrid({
         controller: this,
 
         rowStyler: function (row) {
-          if (row && row.isValid == 'F') {
+          if (row && row.isValid === 'F') {
             return {
               'class': 'ban'
             };
           }
         },
 
-        onClickRow: function (row) {
-          if (row.unitCode === currentUnit) return;
+        onSelect: function (row) {
+          if (row.unitCode !== vm.currentUnit) {
+            vm.currentUnit = row.unitCode;
+            vm.selectUnit(UnitUserPanel, row, UnitInfoAsideImpl);
+          }
+        },
 
-          currentUnit = row.unitCode;
-          var panel = $('#unitinfo_panel', panel).layout('panel', 'east');
+        onLoadSuccess: function () {
+          if (vm.currentUnit) {
+            var unitCode = vm.currentUnit;
+            // 确保刷新时一定重新加载子页面
+            vm.currentUnit = null;
+            return $(this).treegrid('select', unitCode);
+          }
 
-          panel.data('panel').options.onLoad = function () {
-            UnitInfoAsideImpl.init(panel, row);
-          };
-          panel.panel('setTitle', row.unitName + ' 机构用户');
-          panel.panel('refresh', Config.ViewContextPath + 'modules/sys/unitinfo/unitinfo-aside.html');
+          var root = $(this).treegrid('getRoot');
+          if (root) {
+            $(this).treegrid('select', root.unitCode);
+          } else {
+            vm.clearUnit()
+          }
         }
       });
+    };
+
+    this.selectUnit = function (panel, row, controller) {
+      panel.data('panel').options.onLoad = function () {
+        controller.init(panel, row);
+      };
+      panel.panel('refresh', Config.ViewContextPath + 'modules/sys/unitinfo/unitinfo-aside.html');
+    };
+
+    this.clearUnit = function () {
+      var panel = this.UnitUserPanel;
+      panel.data('panel').options.onLoad = $.noop;
+      panel.panel('clear');
     };
 
   });
