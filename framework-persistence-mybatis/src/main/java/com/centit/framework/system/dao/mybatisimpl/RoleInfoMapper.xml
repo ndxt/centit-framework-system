@@ -282,7 +282,4 @@
 		select def.OPT_NAME as def_optname, def.OPT_CODE as def_optcode
 		from F_OPTDEF def, F_ROLEPOWER pow where def.OPT_CODE = pow.OPT_CODE and pow.ROLE_CODE = #{roleCode}
 	</select>
-	<select id="countRoleUserSum" parameterType="String"  resultType="int">
-		select count(1) from f_userrole where role_code=#{roleCode}
-	</select>
 </mapper>
