@@ -21,8 +21,8 @@ public class OptMethodManagerImpl implements OptMethodManager {
 
     @Override
     @CacheEvict(value="OptInfo",allEntries = true)
-    public void mergeObject(OptMethod o) {
-        optMethodDao.mergeObject(o);
+    public void updateOptMethod(OptMethod o) {
+        optMethodDao.updateOptMethod(o);
     }
 
     /*private OptMethod getObject(OptMethod object) {
@@ -36,7 +36,7 @@ public class OptMethodManagerImpl implements OptMethodManager {
         return newObj;
     }
     */
-    
+
     @Override
     public List<OptMethod> listOptMethodByOptID(String sOptID) {
         return optMethodDao.listOptMethodByOptID(sOptID);

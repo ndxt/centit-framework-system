@@ -35,42 +35,6 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
 
     @Override
     @Transactional
-    public List<OptInfo> listValidObjects() {
-        String hql = "from OptInfo opt where opt.isInToolbar = 'T'";
-
-        return listObjects(hql);
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<OptInfo> getFunctionsByUserID(String userID) {
-        String[] params = null;
-        String hql = "FROM FVUserOptMoudleList where userCode=?";
-        // + " ORDER BY preoptid, formcode";
-
-        params = new String[]{userID};
-
-        List<FVUserOptMoudleList> ls = (List<FVUserOptMoudleList>)
-                DatabaseOptUtils.findObjectsByHql(this,hql, (Object[]) params);
-        List<OptInfo> opts = new ArrayList<OptInfo>();
-        for (FVUserOptMoudleList opm : ls) {
-            OptInfo opt = new OptInfo();
-            opt.setFormCode(opm.getFormcode());
-            opt.setImgIndex(opm.getImgindex());
-            opt.setIsInToolbar(opm.getIsintoolbar());
-            opt.setMsgNo(opm.getMsgno());
-            opt.setMsgPrm(opm.getMsgprm());
-            opt.setOptId(opm.getOptid());
-            opt.setOptName(opm.getOptname());
-            opt.setOptUrl(opm.getOpturl());
-            opt.setPreOptId(opm.getPreoptid());
-            opt.setTopOptId(opm.getTopoptid());
-            opts.add(opt);
-        }
-        return opts;
-    }
-
-    @Override
-    @Transactional
     public List<OptInfo> getMenuFuncByOptUrl(){
         String hql1 = "FROM OptInfo where optUrl='...' order by orderInd ";
         List<OptInfo> preOpts = listObjects(hql1);
@@ -90,14 +54,14 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
 
     @SuppressWarnings("unchecked")
     @Transactional
-    public List<String> listUserDataPowerByOptMethod(String userCode,String optid,String optMethod) {
+    public List<String> listUserDataPowerByOptMethod(String userCode,String optId,String optMethod) {
 
         String sSqlsen = "select OPTSCOPECODES " +
                  "from F_V_USEROPTDATASCOPES " +
                  "where USERCODE = ? and OPTID = ? and OPTMETHOD = ?";
 
         List<Object[]> l = (List<Object[]>) DatabaseOptUtils.findObjectsBySql
-                 (this, sSqlsen,new Object[]{userCode, optid, optMethod});
+                 (this, sSqlsen,new Object[]{userCode, optId, optMethod});
 
         if(l==null)
              return null;
@@ -190,6 +154,11 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
         map.put("optTypes", types);
       }
       return listObjects(map);
+    }
+
+    @Override
+    public void updateOptInfo(OptInfo optInfo){
+        super.updateObject(optInfo);
     }
 
 }

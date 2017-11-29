@@ -52,5 +52,9 @@ public class DataCatalogDaoImpl extends BaseDaoImpl<DataCatalog, String> impleme
         return listObjectsByProperty("catalogStyle","S");
     }
 
+    @Override
+    public void updateCatalog(DataCatalog dataCatalog){
+        super.updateObject(dataCatalog);
+    }
 
 }

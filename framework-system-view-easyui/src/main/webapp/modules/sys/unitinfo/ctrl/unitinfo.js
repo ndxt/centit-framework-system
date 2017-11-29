@@ -1,91 +1,89 @@
-define(function(require) {
-	var Config = require('config');
-	var Core = require('core/core');
-	var Page = require('core/page');
+define(function (require) {
+  var Config = require('config');
+  var Page = require('core/page');
 
-	var UnitInfoAdd = require('../ctrl/unitinfo.add');
-	var UnitInfoAddTop = require('../ctrl/unitinfo.add.top');
-	var UnitInfoEdit = require('../ctrl/unitinfo.edit');
-	var UnitInfoRemove = require('../ctrl/unitinfo.remove');
-	var UnitInfoUser = require('../ctrl/unitinfo.user');
-	var UnitOperate=require('../ctrl/unitinfo.operate');
-	var UnitInfo = Page.extend(function() {
+  var UnitInfoAdd = require('../ctrl/unitinfo.add');
+  var UnitInfoAddTop = require('../ctrl/unitinfo.add.top');
+  var UnitInfoEdit = require('../ctrl/unitinfo.edit');
+  var UnitInfoRemove = require('../ctrl/unitinfo.remove');
+  var UnitInfoAside = require('./unitinfo.aside');
+  var UnitOperate = require('../ctrl/unitinfo.operate');
+  var UnitInfo = Page.extend(function () {
 
-		var UnitInfoEditObj = new UnitInfoEdit('unitinfo_edit');
-		var UnitInfoUserObj = new UnitInfoUser('unitinfo_user');
+    var UnitInfoAsideImpl = new UnitInfoAside('unitinfo_aside');
 
-		this.injecte([
-		  new UnitInfoAddTop('unitinfo_add_top'),
-		  new UnitInfoAdd('unitinfo_add'),
-		  UnitInfoEditObj,
-		  new UnitInfoRemove('unitinfo_remove'),
-		  new UnitOperate('unitinfo_operate'),
-		  UnitInfoUserObj
-		]);
+    this.injecte([
+      new UnitInfoAddTop('unitinfo_add_top'),
+      new UnitInfoAdd('unitinfo_add'),
+      new UnitInfoEdit('unitinfo_edit'),
+      new UnitInfoRemove('unitinfo_remove'),
+      new UnitOperate('unitinfo_operate'),
+      UnitInfoAsideImpl
+    ]);
 
+    this.beforeSearch = function() {
+      this.currentUnit = null;
+    };
 
-		// @override
-		this.load = function(panel) {
-			var table = this.table = panel.find('table');
-			var currentUnit=null;
+    // @override
+    this.load = function (panel) {
+      this.$autoHeight('north', $('.unit-info-main', panel));
 
-			table.ctreegrid({
-				controller: this,
+      var UnitUserPanel = this.UnitUserPanel = $('#unitinfo_panel', panel).layout('panel', 'east');
+      var table = this.table = panel.find('table');
 
-				rowStyler: function(row) {
-					if (row && row.isValid == 'F') {
-						return {
-							'class': 'ban'
-						};
-					}
-				},
+      var vm = this;
 
-				//给table增加单行点击事件
-				onClickRow: function(row) {
-					// 点击当前节点不响应
-					if (row.unitCode == currentUnit) return;
+      table.ctreegrid({
+        controller: this,
 
-					currentUnit = row.unitCode;
-					var panel = $('#unitinfo_panel').layout('panel', 'east');
+        rowStyler: function (row) {
+          if (row && row.isValid === 'F') {
+            return {
+              'class': 'ban'
+            };
+          }
+        },
 
-//					panel.panel(options);
-					panel.data('panel').options.onLoad = function() {
-						UnitInfoUserObj.init(panel, row);
-					};
-					panel.panel('setTitle', row.unitName + ' 机构用户');
-					panel.panel('refresh', Config.ViewContextPath + 'modules/sys/unitinfo/unitinfo-user-default.html');
-				}
-			});
-		};
+        onSelect: function (row) {
+          if (row.unitCode !== vm.currentUnit) {
+            vm.currentUnit = row.unitCode;
+            vm.selectUnit(UnitUserPanel, row, UnitInfoAsideImpl);
+          }
+        },
 
-	});
+        onLoadSuccess: function () {
+          if (vm.currentUnit) {
+            var unitCode = vm.currentUnit;
+            // 确保刷新时一定重新加载子页面
+            vm.currentUnit = null;
+            return $(this).treegrid('select', unitCode);
+          }
 
-	return UnitInfo;
+          var root = $(this).treegrid('getRoot');
+          if (root) {
+            $(this).treegrid('select', root.unitCode);
+          } else {
+            vm.clearUnit()
+          }
+        }
+      });
+    };
+
+    this.selectUnit = function (panel, row, controller) {
+      panel.data('panel').options.onLoad = function () {
+        controller.init(panel, row);
+      };
+      panel.panel('refresh', Config.ViewContextPath + 'modules/sys/unitinfo/unitinfo-aside.html');
+    };
+
+    this.clearUnit = function () {
+      var panel = this.UnitUserPanel;
+      panel.data('panel').options.onLoad = $.noop;
+      panel.panel('clear');
+    };
+
+  });
+
+  return UnitInfo;
 });
-
-function filterData(datas, callback, childField, level, filter) {
-	callback = callback || $.noop;
-	childField = childField || "children";
-	level = level || 0;
-	var recursion = function(data, callback, parent, level) {
-//		data.forEach(function(obj, index) {
-		for (var i = 0; i < data.length; i++) {
-			var obj = data[i];
-			if (filter && obj.unitCode == filter) {
-				parent.children.splice(i, 1);
-				i--;
-			} else {
-				obj["id"] = obj.unitCode;
-				obj["text"] = obj.unitName;
-				var children = obj[childField];
-				if (children && children.length)
-					recursion(children, callback, obj, level + 1);
-				// 当前对象、父级对象、层级、当前对象的index
-				callback.call(obj, obj, parent, level, i);
-			}
-		}
-//		});
-	};
-	datas.length ? recursion(datas, callback, null, 0) : recursion([datas], callback, null, 0);
-	return datas;
-}

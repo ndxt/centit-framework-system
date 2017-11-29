@@ -28,12 +28,6 @@ public class OptMethodDaoImpl extends BaseDaoImpl<OptMethod, String> implements 
     }
 
     @Transactional
-    public int getOptMethodSumByOptID(String sOptID) {
-        return Integer.valueOf(String.valueOf(DatabaseOptUtils.getSingleObjectByHql(this,
-                "SELECT count(optcode) FROM OptMethod WHERE optId = ?", sOptID)));
-    }
-
-    @Transactional
     public void deleteOptMethodsByOptID(String sOptID) {
         DatabaseOptUtils.doExecuteHql(this, "DELETE FROM OptMethod WHERE optId = ?", sOptID);
     }
@@ -57,4 +51,8 @@ public class OptMethodDaoImpl extends BaseDaoImpl<OptMethod, String> implements 
         return DatabaseOptUtils.getNextValueOfSequence(this, "S_OPTDEFCODE");
     }
 
+    @Override
+    public void updateOptMethod(OptMethod optMethod){
+      super.updateObject(optMethod);
+    }
 }

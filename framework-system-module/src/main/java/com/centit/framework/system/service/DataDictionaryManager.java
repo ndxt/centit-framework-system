@@ -14,7 +14,7 @@ public interface DataDictionaryManager {
 
     void saveNewObject(DataCatalog dataCatalog);
 
-    void mergeObject(DataCatalog dataCatalog);
+    void updateCatalog(DataCatalog dataCatalog);
 
 
     @Deprecated

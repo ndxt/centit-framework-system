@@ -7,19 +7,15 @@ define(function(require) {
 	// 机构添加用户
 	var UnitInfoUserAdd = Page.extend(function() {
 
-		// @override
-		this.object = {
-			isPrimary: 'T'
-		};
 
 		// @override
 		this.load = function(panel) {
 			// 获取父窗口的机构信息
-			var unitinfo = this.parent.data;
+			var unitInfo = this.parent.data;
 
-			var data = this.data = $.extend({}, this.object, {
-				unitCode: unitinfo.unitCode,
-				unitName: unitinfo.unitName
+			var data = this.data = $.extend({}, {
+				unitCode: unitInfo.unitCode,
+				unitName: unitInfo.unitName
 			});
 
 			panel.find('form')
@@ -36,7 +32,7 @@ define(function(require) {
 
 			if (isValid) {
 				form.form('ajax', {
-					url: Config.ContextPath+'system/userunit',
+					url: Config.ContextPath+'system/unitrole',
 					data: data
 				}).then(function(){
           closeCallback(true)

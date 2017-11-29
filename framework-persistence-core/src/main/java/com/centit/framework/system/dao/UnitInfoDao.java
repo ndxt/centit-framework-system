@@ -6,8 +6,17 @@ import com.centit.framework.system.po.UserInfo;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 机构信息Dao
+ * @author zou_wy@centit.com
+ */
 public interface UnitInfoDao {
 
+    /**
+     * 根据Id获取机构信息
+     * @param unitCode 机构ID
+     * @return UnitInfo
+     */
     UnitInfo getObjectById(String unitCode);
 
     /**
@@ -22,72 +31,101 @@ public interface UnitInfoDao {
      */
     void updateUnit(UnitInfo unitInfo);
 
-     void deleteObjectById(String unitCode);
-
-     List<UnitInfo> listObjects(Map<String, Object> filterMap);
-
-     int  pageCount(Map<String, Object> filterDescMap);
-
-     List<UnitInfo>  pageQuery(Map<String, Object> pageQureyMap);
-
-
-     int countChildrenSum(String unitCode);
-
-     List<UnitInfo> listObjects();
-
-    // DatabaseOptUtils.getNextKeyBySequence(this, "S_UNITCODE", 6);
-     String getNextKey();
-
-    //listObjectsAll("FROM UnitInfo where depNo=?", depno);
-     String getUnitCode(String depno);
-
     /**
-     * "select a.* " +
-                "from f_Userinfo a join f_userunit b on(a.userCode=b.userCode) " +
-                "where b.unitcode =?"
-     * @param unitCode unitCode
-     * @return List UserInfo
+     * 根据Id删除机构
+     * @param unitCode 机构Id
      */
-     List<UserInfo> listUnitUsers(String unitCode);
+    void deleteObjectById(String unitCode);
 
     /**
-     * "select * FROM F_Userinfo ui where ui.userCode in " +
-                "(select userCode from f_userunit where unitcode='" + unitCode + "') or " +
-                "ui.userCode in (select userCode from f_userrole where rolecode like ? "
-     * @param unitCode unitCode
-     * @return List UserInfo
+     * 查询所有机构列表
+     * @return List<UserInfo>
      */
-     List<UserInfo> listRelationUsers(String unitCode);
-
-    // "select unitname from f_unitinfo where unitcode=?", unitcode ));
-     String getUnitNameOfCode(String unitcode);
-
-
-//     List<UnitInfo> listUnitinfoByUnitcodes(List<String> unitcodes);
+    List<UnitInfo> listObjects();
 
     /**
-     * "from UnitInfo where unitName = ? or unitShortName = ?"
-                        + " order by unitOrder asc";
-     * @param name name
+     * 根据条件查询机构列表
+     * @param filterMap 过滤条件Map
+     * @return List<UserInfo>
+     */
+    List<UnitInfo> listObjects(Map<String, Object> filterMap);
+
+
+    /**
+     * 根据过滤条件查询总行数
+     * @param filterDescMap 过滤条件Map
+     * @return 总行数
+     */
+    int pageCount(Map<String, Object> filterDescMap);
+
+    /**
+     * 分页查询
+     * @param pageQueryMap 过滤条件Map
+     * @return List<UserInfo>
+     */
+    List<UnitInfo> pageQuery(Map<String, Object> pageQueryMap);
+
+    /**
+     * 获取下一个序列值
+     * @return
+     */
+    String getNextKey();
+
+    /**
+     * 根据机构Id获取用户列表
+     * @param unitCode unitCode
+     * @return List<UserInfo>
+     */
+    List<UserInfo> listUnitUsers(String unitCode);
+
+    /**
+     * 根据名称查新机构
+     * @param name 机构名称
      * @return UnitInfo
      */
     UnitInfo getUnitByName(String name);
 
-    //return super.getObjectByProperty("unitTag", unitTag);
+    /**
+     * 根据Tag查新机构
+     * @param unitTag Tag
+     * @return UnitInfo
+     */
     UnitInfo getUnitByTag(String unitTag);
 
-    //return super.getObjectByProperty("unitWord", unitWord);
+    /**
+     * 根据unitWord查新机构
+     * @param unitWord unitWord
+     * @return UnitInfo
+     */
     UnitInfo getUnitByWord(String unitWord);
 
-    //return super.listObjectByProperty("parentUnit", unitCode);
-//     List<UnitInfo> listSubUnits(String unitCode);
-
-    //String hql = "from UnitInfo where unitPath like ?";{unitPath+"/%"});
+    /**
+     * 根据UnitPath查询子机构
+     * @param unitPath 机构层级
+     * @return List<UnitInfo>
+     */
     List<UnitInfo> listSubUnitsByUnitPaht(String unitPath);
 
+    /**
+     * 查询所有非叶子机构的Id
+     * @return ID列表
+     */
     List<String> getAllParentUnit();
 
+    /**
+     * 根据名称获取同级机构
+     * @param unitName 机构名称
+     * @param parentCode 父机构ID
+     * @param unitCode 机构ID
+     * @return UnitInfo
+     */
     UnitInfo getPeerUnitByName(String unitName, String parentCode, String unitCode);
 
+    /**
+     * 根据UNIT_ORDER获取同级机构 数量
+     * @param parentUnit 父机构ID
+     * @param unitOrder 排序号
+     * @return 数量
+     */
     Integer isExistsUnitByParentAndOrder(String parentUnit, long unitOrder);
 }

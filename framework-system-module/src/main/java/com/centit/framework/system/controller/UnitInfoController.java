@@ -134,49 +134,21 @@ public class UnitInfoController extends BaseController {
             }else{
               filterMap.put("parentUnit", StringUtils.isNotBlank(id) ? id : user.getPrimaryUnit());
             }
-            List<UnitInfo>  listObjects= sysUnitManager.listObjects(filterMap);
-            sysUnitManager.checkState(listObjects);
-//                 for (UnitInfo unit : listObjects) {
-//                     unit.setState(sysUnitManager.hasChildren(unit.getUnitCode())?
-//                       "closed":"open");
-//                }
-            JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
-            JsonResultUtils.writeSingleDataJson(ja, response, null);
+            List<UnitInfo>  listObjects= sysUnitManager.listAllSubUnits(user.getPrimaryUnit());
+
+          JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
+          for(Object o : ja){
+            ((JSONObject)o).put("state", "open");
+            ((JSONObject)o).put("id", ((JSONObject) o).getString("unitCode"));
+            ((JSONObject)o).put("text", ((JSONObject) o).getString("unitName"));
+          }
+          ja = ListOpt.srotAsTreeAndToJSON(ja, (p, c) ->
+            StringUtils.equals(
+              ((JSONObject)p).getString("unitCode"),
+              ((JSONObject)c).getString("parentUnit")), "children");
+          JsonResultUtils.writeSingleDataJson(ja, response, null);
         }
       }
-
-    /**
-     * 获取当前机构及其下属机构
-     * @param id    String parentUnit 父类机构
-     * @param request  HttpServletRequest
-     * @param response HttpServletResponse
-     */
-    @RequestMapping(value = "/underunits", method = RequestMethod.GET)
-    public void allunits(String id, HttpServletRequest request, HttpServletResponse response) {
-        UserInfo user=sysUserMag.getObjectById(super.getLoginUserCode(request));
-        Map<String,Object> filterMap = new HashMap<>();
-        if (StringUtils.isNotBlank(id)) {
-            filterMap.put("parentUnit", id);
-        }else{
-            filterMap.put("unitCode", user.getPrimaryUnit());
-        }
-        List<UnitInfo> listObjects = sysUnitManager.listObjects(filterMap);
-        if(listObjects == null){
-            JsonResultUtils.writeSuccessJson(response);
-            return;
-        }
-        sysUnitManager.checkState(listObjects);
-        JSONArray ja = new JSONArray();
-        for(UnitInfo u : listObjects){
-            JSONObject json = (JSONObject)JSON.toJSON(u);
-            json.put("id", u.getUnitCode());
-            json.put("text",u.getUnitName());
-            ja.add(json);
-        }
-//        JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
-        JsonResultUtils.writeSingleDataJson(ja, response);
-    }
-
 
     /**
      * 查询单个机构信息
@@ -291,7 +263,7 @@ public class UnitInfoController extends BaseController {
 
         sysUnitManager.updateUnitInfo(unitInfo);
 
-        JsonResultUtils.writeBlankJson(response);
+      JsonResultUtils.writeSingleDataJson(unitInfo, response);
 
         /*********log*********/
         OperationLogCenter.logUpdateObject(request, optId, unitCode, OperationLog.P_OPT_LOG_METHOD_U,

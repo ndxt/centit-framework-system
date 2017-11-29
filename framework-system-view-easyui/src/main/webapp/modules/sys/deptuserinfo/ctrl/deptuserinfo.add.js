@@ -19,7 +19,7 @@ define(function(require) {
             var loginuser=Cache.get('loginuser');
             var primaryUnit=loginuser.primaryUnit;
             $('#primaryUnit').combotree({
-                url: Config.ContextPath + 'system/unitinfo/underunits/',
+                url: Config.ContextPath + 'system/unitinfo/subunits',
                 required: true
             });
             var newData={};

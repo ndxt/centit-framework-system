@@ -42,7 +42,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @CacheEvict(value="OptInfo",allEntries = true)
     @Transactional
     public void updateOptInfoProperties(OptInfo optinfo){
-        optInfoDao.mergeObject(optinfo);
+        optInfoDao.updateOptInfo(optinfo);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
             if(!"...".equals(parentOpt.getOptRoute()) || !"...".equals(parentOpt.getOptUrl())){
                 parentOpt.setOptRoute("...");
                 parentOpt.setOptUrl("...");
-                optInfoDao.mergeObject(parentOpt);
+                optInfoDao.updateOptInfo(parentOpt);
             }
         }else{
             optInfo.setPreOptId("0");
@@ -116,7 +116,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
 
         syncState(optInfo);
 
-        optInfoDao.mergeObject(optInfo);
+        optInfoDao.updateOptInfo(optInfo);
 
     }
 
@@ -125,7 +125,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Transactional
     public Map<String, List> updateOperationPower(OptInfo optInfo) {
 
-        optInfoDao.mergeObject(optInfo);
+        optInfoDao.updateOptInfo(optInfo);
 
         Map<String, List> result = new HashMap<>();
 
@@ -160,7 +160,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
         }
 
         for(OptMethod o : newOpts){
-            optMethodDao.mergeObject(o);
+            optMethodDao.updateOptMethod(o);
         }
 
         List<OptDataScope>  newDataScopes = optInfo.getDataScopes();
@@ -402,20 +402,20 @@ public class OptInfoManagerImpl implements OptInfoManager {
             List<OptInfo> optInfos = findSubOptInfo(optInfo.getOptId());
             for(OptInfo o : optInfos){
                 o.setIsInToolbar("N");
-                optInfoDao.mergeObject(o);
+                optInfoDao.updateOptInfo(o);
             }
         }else{
             List<OptInfo> optInfos = findPreOptInfo(optInfo.getPreOptId());
             for(OptInfo o : optInfos){
                 o.setIsInToolbar("Y");
-                optInfoDao.mergeObject(o);
+                optInfoDao.updateOptInfo(o);
             }
         }
         List<OptInfo> optInfos = findSubOptInfo(optInfo.getOptId());
         optInfos.addAll(findPreOptInfo(optInfo.getPreOptId()));
         for(OptInfo o : optInfos) {
           o.setOptType(optInfo.getOptType());
-          optInfoDao.mergeObject(o);
+          optInfoDao.updateOptInfo(o);
         }
       }
 

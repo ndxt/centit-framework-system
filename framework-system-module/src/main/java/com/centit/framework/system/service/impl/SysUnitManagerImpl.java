@@ -88,16 +88,6 @@ public class SysUnitManagerImpl implements SysUnitManager {
     }
 
     @Override
-    public List<UserInfo> getRelationUsers(String unitCode) {
-        return unitInfoDao.listRelationUsers(unitCode);
-    }
-
-    @Override
-    public String getUnitCode(String depno) {
-        return unitInfoDao.getUnitCode(depno);
-    }
-
-    @Override
     public UnitInfo getUnitByName(String name) {
         return unitInfoDao.getUnitByName(name);
     }
@@ -122,13 +112,13 @@ public class SysUnitManagerImpl implements SysUnitManager {
          List<UnitInfo> subUnits = unitInfoDao.listSubUnitsByUnitPaht(oldUnitPath);
         int noupl = oldUnitPath.length();
         for(UnitInfo ui : subUnits){
-            if(unitinfo.getUnitCode().equals(ui.getParentUnit()))
-                ui.setParentUnit("0");
+            if(unitinfo.getUnitCode().equals(ui.getParentUnit())) {
+              ui.setParentUnit("0");
+            }
             ui.setParentUnit(ui.getUnitPath().substring(noupl));
             unitInfoDao.updateUnit(ui);
         }
 
-//        userUnitDao.deleteUserUnitByUnit(unitinfo.getUnitCode());
         unitInfoDao.deleteObjectById(unitinfo.getUnitCode());
     }
 
@@ -208,15 +198,6 @@ public class SysUnitManagerImpl implements SysUnitManager {
 
     @Override
     @Transactional
-    public List<UnitInfo> listAllSubObjects(String primaryUnit) {
-        if(StringUtils.isBlank(primaryUnit)) {
-          return null;
-        }
-        return listAllSubUnits(primaryUnit);
-    }
-
-    @Override
-    @Transactional
     public List<UnitInfo> listAllSubObjectsAsSort(String primaryUnit) {
         List<UnitInfo> listObjects = listAllSubUnits(primaryUnit);
         Iterator<UnitInfo> unitInfos = listObjects.iterator();
@@ -245,12 +226,6 @@ public class SysUnitManagerImpl implements SysUnitManager {
 
     @Override
     @Transactional
-    public boolean hasChildren(String unitCode) {
-        return unitInfoDao.countChildrenSum(unitCode)>0;
-    }
-
-    @Override
-    @Transactional
     public List<UnitInfo> listObjects(Map<String, Object> filterMap) {
         return unitInfoDao.listObjects(filterMap);
     }
@@ -275,10 +250,11 @@ public class SysUnitManagerImpl implements SysUnitManager {
         List<String> objs = unitInfoDao.getAllParentUnit();
         if(objs!=null && objs.size()>0){
             for (UnitInfo u : listObjects){
-                if(objs.contains(u.getUnitCode()))
-                    u.setState("closed");
-                else
-                    u.setState("open");
+                if(objs.contains(u.getUnitCode())) {
+                  u.setState("closed");
+                } else {
+                  u.setState("open");
+                }
             }
         }else{
             for (UnitInfo u : listObjects){

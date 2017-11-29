@@ -61,12 +61,9 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
                 (this,hql,  new Object[]{rolecode});
     }
 
+    @Override
+    public void updateRole(RoleInfo roleInfo){
+        super.updateObject(roleInfo);
+  }
 
-    public int countRoleUserSum(String roleCode){
-        Long l = DatabaseOptUtils.getSingleIntByHql(this,
-                "select count(1) as roleUserSum from UserRole where id.roleCode=?",
-                roleCode
-        );
-        return l.intValue();
-    }
 }

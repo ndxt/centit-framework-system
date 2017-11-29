@@ -99,12 +99,13 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
         return listObjectsByProperties(filter);
     }
 
-    public int countRoleUserSum(String roleCode){
-        return pageCount(QueryUtils.createSqlParamsMap("roleCode",roleCode ));
-    }
-
     @Override
     public RoleInfo getObjectByProperty(String propertyName, Object propertyValue) {
         return super.getObjectByProperties(QueryUtils.createSqlParamsMap(propertyName, propertyValue));
+    }
+
+    @Override
+    public void updateRole(RoleInfo roleInfo){
+        super.updateObject(roleInfo);
     }
 }

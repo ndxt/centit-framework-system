@@ -49,16 +49,6 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
           DatabaseOptUtils.getSequenceNextValue(this, "S_UNITCODE"));
     }
 
-    @Transactional
-    public String getUnitCode(String depno) {
-        String sSqlsen = "select UNIT_CODE " +
-                "from f_unitinfo " +
-                "where dep_no = ?";
-        return this.getJdbcTemplate().queryForList(sSqlsen,
-                new Object[]{depno} ,String.class).get(0);
-
-    }
-
     @SuppressWarnings("unchecked")
     @Transactional(propagation=Propagation.MANDATORY)
     public List<UserInfo> listUnitUsers(String unitCode) {
@@ -70,27 +60,6 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
                 (ConnectionCallback<List<UserInfo>>) conn ->
                         OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
                                 new Object[]{unitCode}, UserInfo.class));
-    }
-
-    @SuppressWarnings("unchecked")
-    @Transactional(propagation=Propagation.MANDATORY)
-    public List<UserInfo> listRelationUsers(String unitCode) {
-      String sSqlsen = "select ui.* FROM F_USERINFO ui " +
-              "where exists (select uu.* from F_USERUNIT where uu.USER_CODE=ui.USER_CODE and uu.UNIT_CODE= ?) " +
-              " or exists(select ur.* from F_V_USERROLES ur " +
-              "where ur.USER_CODE=ui.USER_CODE and ur.ROLE_TYPE='D' " +
-              "and ur.UNIT_CODE= ? )";
-        return getJdbcTemplate().execute(
-                (ConnectionCallback<List<UserInfo>>) conn ->
-                        OrmDaoUtils.queryObjectsByParamsSql(conn, sSqlsen ,
-                                new Object[]{unitCode, unitCode}, UserInfo.class));
-    }
-
-    @Transactional
-    public String getUnitNameOfCode(String unitcode) {
-        String sql = "select UNITNAME from F_UNITINFO where UNITCODE=?";
-        return this.getJdbcTemplate().queryForList(sql,
-               new Object[]{unitcode} ,String.class).get(0);
     }
 
     @Transactional
@@ -143,13 +112,6 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     @Override
     public void deleteObjectById(String unitCode) {
         super.deleteObjectById(unitCode);
-    }
-
-    @Override
-    public int countChildrenSum(String unitCode){
-        return this.getJdbcTemplate().queryForObject(
-          "select count(*) as subunits from F_UNITINFO where PARENT_UNIT = ?",
-          Integer.class, unitCode);
     }
 
     /**

@@ -38,22 +38,6 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
 
     @Override
     @Transactional
-    public List<OptInfo> listValidObjects() {
-        return listObjectsByProperty("isInToolbar","T");
-    }
-
-    @SuppressWarnings("unchecked")
-    public List<OptInfo> getFunctionsByUserID(String userID) {
-        String sql = "select OPT_ID, PRE_OPT_ID, OPT_NAME, OPT_TYPE, FORM_CODE, " +
-                "OPT_ROUTE, OPT_URL, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, " +
-                "TOP_OPT_ID, PAGE_TYPE,ORDER_IND " +
-                "from F_V_USEROPTMOUDLELIST " +
-                "where USERCODE= :userId";
-        return super.listObjectsBySql(sql, QueryUtils.createSqlParamsMap("userId",userID));
-    }
-
-    @Override
-    @Transactional
     public List<OptInfo> getMenuFuncByOptUrl(){
         String hql1 = "where OPT_URL='...' order by ORDER_IND ";
         return super.listObjectsByFilter(hql1,(Object[]) null);
@@ -82,13 +66,13 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
 
     @SuppressWarnings("unchecked")
     @Transactional
-    public List<String> listUserDataPowerByOptMethod(String userCode,String optid,String optMethod) {
+    public List<String> listUserDataPowerByOptMethod(String userCode,String optId,String optMethod) {
 
         String sql = "select OPT_SCOPE_CODES " +
             "from F_V_USEROPTDATASCOPES " +
             "where USER_CODE = ? and OPT_ID = ? and OPT_METHOD = ?";
         return this.getJdbcTemplate().queryForList(sql,
-                new Object[]{userCode, optid, optMethod} ,String.class);
+                new Object[]{userCode, optId, optMethod} ,String.class);
     }
 
     @SuppressWarnings("unchecked")
@@ -165,6 +149,11 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
             map.put("optTypes", types);
         }
         return listObjects(map);
+    }
+
+    @Override
+    public void updateOptInfo(OptInfo optInfo){
+        super.updateObject(optInfo);
     }
 
 }

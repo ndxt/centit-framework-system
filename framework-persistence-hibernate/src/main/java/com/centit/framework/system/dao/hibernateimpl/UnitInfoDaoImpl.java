@@ -43,16 +43,6 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
         return DatabaseOptUtils.getNextValueOfSequence(this, "S_UNITCODE");
     }
 
-    @Transactional
-    public String getUnitCode(String depno) {
-        List<UnitInfo> ls = listObjects("FROM UnitInfo where depNo=?", depno);
-        if (ls != null) {
-            return ls.get(0).getUnitCode();
-        } else {
-            return null;
-        }
-    }
-
     @SuppressWarnings("unchecked")
     @Transactional(propagation=Propagation.MANDATORY)
     public List<UserInfo> listUnitUsers(String unitCode) {
@@ -62,24 +52,6 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
 
         return DatabaseOptUtils.findObjectsBySql(
                 this, sSqlsen, new Object[]{unitCode} ,UserInfo.class);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Transactional(propagation=Propagation.MANDATORY)
-    public List<UserInfo> listRelationUsers(String unitCode) {
-        String sSqlsen = "select ui.* FROM F_USERINFO ui " +
-                              "where exists (select uu.* from F_USERUNIT where uu.USER_CODE=ui.USER_CODE and uu.UNIT_CODE= ?) " +
-                                    " or exists(select ur.* from F_V_USERROLES ur " +
-                                              "where ur.USER_CODE=ui.USER_CODE and ur.ROLE_TYPE='D' " +
-                                                    "and ur.UNIT_CODE=?)";
-        return DatabaseOptUtils.findObjectsBySql(
-                this, sSqlsen,new Object[]{unitCode,unitCode}, UserInfo.class);
-    }
-
-    @Transactional
-    public String getUnitNameOfCode(String unitcode) {
-       return String.valueOf( DatabaseOptUtils.getSingleObjectBySql(this,
-                "select UNITNAME from F_UNITINFO where UNITCODE=?", unitcode ));
     }
 
     /**
@@ -148,11 +120,6 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     public List<String> getAllParentUnit(){
         return (List<String>)DatabaseOptUtils.findObjectsBySql(this,
                 "select distinct t.parent_unit from f_unitinfo t ");
-    }
-
-    public int countChildrenSum(String unitCode){
-        return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getSingleObjectBySql(this,
-          "select count(1) as subunits from F_UNITINFO where PARENT_UNIT = ?",  unitCode));
     }
 
     /**

@@ -62,7 +62,7 @@ public class DataDictionaryManagerImpl implements
     @CacheEvict(value = "DataDictionary",key="#dataCatalog.catalogCode")
     public List<DataDictionary> saveCatalogIncludeDataPiece(DataCatalog dataCatalog,boolean isAdmin){
 
-//        dataCatalogDao.mergeObject(dataCatalog);
+//        dataCatalogDao.updateOptMethod(dataCatalog);
 
         List<DataDictionary> oldData = dictionaryDao.listDataDictionary(dataCatalog.getCatalogCode());
         List<DataDictionary> newData = dataCatalog.getDataDictionaries();
@@ -197,8 +197,8 @@ public class DataDictionaryManagerImpl implements
 
     @Override
     @Transactional
-    public void mergeObject(DataCatalog dataCatalog) {
-        dataCatalogDao.mergeObject(dataCatalog);
+    public void updateCatalog(DataCatalog dataCatalog) {
+        dataCatalogDao.updateCatalog(dataCatalog);
     }
 
     @Override

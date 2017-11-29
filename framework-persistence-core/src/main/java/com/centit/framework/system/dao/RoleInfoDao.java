@@ -6,47 +6,89 @@ import com.centit.framework.system.po.VOptTree;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 角色信息Dao
+ * @author zou_wy@centit.com
+ */
 public interface RoleInfoDao {
 
+    /**
+     * 查询所有机构列表
+     * @return List<UserInfo>
+     */
+    List<RoleInfo> listObjectsAll();
+
+    /**
+     * 根据条件查询机构列表
+     * @param filterMap 过滤条件Map
+     * @return List<UserInfo>
+     */
     List<RoleInfo> listObjects(Map<String, Object> filterMap);
 
 
-    int  pageCount(Map<String, Object> filterDescMap);
-    List<RoleInfo>  pageQuery(Map<String, Object> pageQureyMap);
+    /**
+     * 根据过滤条件查询总行数
+     * @param filterDescMap 过滤条件Map
+     * @return 总行数
+     */
+    int pageCount(Map<String, Object> filterDescMap);
 
-    List<RoleInfo> listObjectsAll();
+    /**
+     * 分页查询
+     * @param pageQueryMap 过滤条件Map
+     * @return List<UserInfo>
+     */
+    List<RoleInfo> pageQuery(Map<String, Object> pageQueryMap);
 
-    void saveNewObject(RoleInfo o);
+    /**
+     * 新增角色
+     * @param roleInfo 角色对象
+     */
+    void saveNewObject(RoleInfo roleInfo);
 
+    /**
+     * 根据Id删除角色
+     * @param roleCode 角色ID
+     */
     void deleteObjectById(String roleCode);
 
-    void mergeObject(RoleInfo o);
+    /**
+     * 更新角色
+     * @param roleInfo 角色对象
+     */
+    void updateRole(RoleInfo roleInfo);
 
-    /**获取主键 S_ROLECODE
-     * @return S_ROLECODE.nextValue
+    /**
+     * 获取下一个序列值
+     * @return String
      */
     String getNextKey();
 
+    /**
+     * 根据Id查询角色
+     * @param roleCode 角色Id
+     * @return RoleInfo
+     */
     RoleInfo getObjectById(String roleCode);
 
-    //DatabaseOptUtils.findObjectsByHql(this,"FROM VOptTree");
+    /**
+     * 查询菜单树
+     * @return List<VOptTree>
+     */
     List<VOptTree> getVOptTreeList();
 
     /**
-     *         String hql = "select new map(def.optName as def_optname, def.optCode as def_optcode) "
-                + "from OptMethod def, RolePower pow where def.optCode = pow.id.optCode and pow.id.roleCode = ?";
-
-     * @param rolecode rolecode
+     * 根据角色Id查询操作定义
+     * @param roleCode 角色ID
      * @return List
      */
-    List<Object> listRoleOptMethods(String rolecode);
+    List<Object> listRoleOptMethods(String roleCode);
 
     /**
-     * select count(1) from f_userrole where rolecode=?
-     * @param roleCode roleCode
-     * @return int
+     * 根据属性查询角色
+     * @param propertyName 属性名称
+     * @param propertyValue 属性值
+     * @return RoleInfo
      */
-    int countRoleUserSum(String roleCode);
-
     RoleInfo getObjectByProperty(String propertyName, Object propertyValue);
 }
