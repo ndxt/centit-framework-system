@@ -28,7 +28,7 @@ define(function (require) {
 
     // @override
     this.load = function (panel) {
-      var selectIndex = -1
+      var selectIndex = -1;
       var vm = this;
       var RoleUserPanel = $('#roleinfo_layout', panel).layout('panel', 'east');
 
