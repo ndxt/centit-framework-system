@@ -4,40 +4,75 @@ import com.centit.framework.system.po.OptMethod;
 
 import java.util.List;
 
+/**
+ * 用户操作Dao
+ * @author god
+ * update by zou_wy@centit.com
+ * @date 2017-11-29
+ */
 public interface OptMethodDao {
 
-     List<OptMethod> listObjects();
-
-     OptMethod getObjectById(String optCode);
-
-    void mergeObject(OptMethod optMethod);
-
-     void deleteObject(OptMethod optMethod);
-
-     void deleteObjectById(String optCode);
-
-    void saveNewObject(OptMethod optMethod);
-
-
-    //return listObjectsAll("FROM OptMethod WHERE optId =?", sOptID);
-     List<OptMethod> listOptMethodByOptID(String sOptID);
+    /**
+     * 查询全部操作
+     * @return List<OptMethod>
+     */
+    List<OptMethod> listObjects();
 
     /**
-     *  listObjectsAll("FROM OptMethod WHERE optCode in "
-                + "(select id.optCode from RolePower where id.roleCode = ?)"
-                + " order by optId", roleCode);
-     * @param roleCode roleCode
-     * @return List OptMethod
+     * 根据Id查询操作
+     * @param optCode 操作Id
+     * @return OptMethod
      */
-     List<OptMethod> listOptMethodByRoleCode(String roleCode);
-    
-    // "SELECT count(optcode) FROM OptMethod WHERE optId = ?", sOptID)));
-     int getOptMethodSumByOptID(String sOptID);
+    OptMethod getObjectById(String optCode);
 
-    //DatabaseOptUtils.doExecuteHql(this, "DELETE FROM OptMethod WHERE optId = ?", sOptID);
-     void deleteOptMethodsByOptID(String sOptID);  
-   
-    //return DatabaseOptUtils.getNextValueOfSequence(this, "S_OPTDEFCODE");
-     String getNextOptCode();
+    /**
+     * 更新操作定义
+     * @param optMethod 操作对象
+     */
+    void updateOptMethod(OptMethod optMethod);
+
+    /**
+     * 删除操作
+     * @param optMethod 操作对象
+     */
+    void deleteObject(OptMethod optMethod);
+
+    /**
+     * 根据Id删除操作
+     * @param optCode 操作Id
+     */
+    void deleteObjectById(String optCode);
+
+    /**
+     * 新增操作
+     * @param optMethod 操作对象
+     */
+    void saveNewObject(OptMethod optMethod);
+
+    /**
+     * 根据菜单Id查询操作
+     * @param sOptID 菜单Id
+     * @return List<OptMethod>
+     */
+    List<OptMethod> listOptMethodByOptID(String sOptID);
+
+    /**
+     *  根据角色Id查询操作
+     * @param roleCode 角色Id
+     * @return List<OptMethod>
+     */
+    List<OptMethod> listOptMethodByRoleCode(String roleCode);
+
+    /**
+    * 根据菜单Id删除操作
+    * @param sOptID 菜单Id
+    */
+    void deleteOptMethodsByOptID(String sOptID);
+
+    /**
+     * 查询下一个序列值
+     * @return String
+     */
+    String getNextOptCode();
 
 }

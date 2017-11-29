@@ -9,12 +9,12 @@ public interface OptMethodManager{
     public List<OptMethod> listOptMethodByOptID(String sOptID);
 
     String getNextOptCode();
-    
+
     public List<OptMethod> listObjects();
 
     public OptMethod getObjectById(String optCode);
 
-    public void mergeObject(OptMethod optMethod);
+    public void updateOptMethod(OptMethod optMethod);
 
     public void deleteObjectById(String optCode);
 

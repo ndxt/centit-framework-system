@@ -172,7 +172,7 @@
 			</if>
 		</set>
 	</sql>
-	<update id="update" parameterType="com.centit.framework.system.po.OptMethod" timeout="2000">
+	<update id="updateOptMethod" parameterType="com.centit.framework.system.po.OptMethod" timeout="2000">
 	     update F_OPTDEF
 	     <include refid="updSql" />
 	     where OPT_CODE=#{optCode}
@@ -220,9 +220,6 @@
 	<select id="listOptMethodByRoleCode" parameterType="String" resultMap="OptMethod">
 		<include refid="coreSql" />
 		where OPT_CODE in (select id.OPT_CODE from F_ROLEPOWER id where id.ROLE_CODE = #{roleCode}) order by OPT_ID
-	</select>
-	<select id="getOptMethodSumByOptID" parameterType="String" resultType="int">
-			SELECT count(OPT_CODE) from F_OPTDEF WHERE OPT_ID = #{sOptID}
 	</select>
 	<delete id="deleteOptMethodsByOptID" parameterType="String">
 		delete from F_OPTDEF WHERE OPT_ID =#{sOptID}

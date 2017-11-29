@@ -39,11 +39,6 @@ public class OptMethodDaoImpl extends BaseDaoImpl<OptMethod, String> implements 
     }
 
     @Transactional
-    public int getOptMethodSumByOptID(String sOptID) {
-        return pageCount(QueryUtils.createSqlParamsMap("optId", sOptID));
-    }
-
-    @Transactional
     public void deleteOptMethodsByOptID(String sOptID) {
         deleteObjectsByProperties(QueryUtils.createSqlParamsMap("optId", sOptID));
     }
@@ -65,6 +60,11 @@ public class OptMethodDaoImpl extends BaseDaoImpl<OptMethod, String> implements 
     @Transactional
     public String getNextOptCode() {
         return String.valueOf(DatabaseOptUtils.getSequenceNextValue(this, "S_OPTDEFCODE"));
+    }
+
+    @Override
+    public void updateOptMethod(OptMethod optMethod){
+        super.updateObject(optMethod);
     }
 
 }
