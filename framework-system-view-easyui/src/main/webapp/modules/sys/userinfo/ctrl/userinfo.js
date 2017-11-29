@@ -8,8 +8,8 @@ define(function (require) {
   var UserInfoDelete = require('../ctrl/userinfo.delete');
 
   var DeptUserInfoPowerView = require('../ctrl/userinfo.power.view');//新增查看权限按钮
-  var UserInfoAll = require('../ctrl/userinfo.all');
-  UserInfoAll = new UserInfoAll('userinfo_all');
+  var UserInfoAside = require('../ctrl/userinfo.aside');
+  UserInfoAside = new UserInfoAside('UserInfoAside');
 
   var UserInfoUnit = require('../ctrl/userinfo.unit');
   var UserInfoRole = require('../ctrl/userinfo.role');
@@ -25,7 +25,7 @@ define(function (require) {
       new UserInfoAdd('userinfo_add'),
       new UserInfoEdit('userinfo_edit'),
       new UserInfoDelete('userinfo_delete'),
-      UserInfoAll,
+      UserInfoAside,
       new UserInfoUnit('userinfo_unit'),
       new UserInfoRole('userinfo_role'),
       new UserInfoResetPassword('userinfo_resetpassword'),
@@ -40,7 +40,7 @@ define(function (require) {
     this.load = function (panel) {
       this.$autoHeight('north', $('#user-info-main', panel));
       this.AsidePanel = $('#userinfo_panel', panel).layout('panel', 'east');
-      this.AsideController = UserInfoAll;
+      this.AsideController = UserInfoAside;
 
       panel.find('table').cdatagrid({
         controller: this,
@@ -82,7 +82,7 @@ define(function (require) {
       this.AsidePanel.data('panel').options.onLoad = function () {
         vm.AsideController.init($(this), user);
       };
-      this.AsidePanel.panel('refresh', Config.ViewContextPath + 'modules/sys/userinfo/userinfo-all.html');
+      this.AsidePanel.panel('refresh', Config.ViewContextPath + 'modules/sys/userinfo/userinfo-aside.html');
     };
 
     this.clearPanel = function () {
