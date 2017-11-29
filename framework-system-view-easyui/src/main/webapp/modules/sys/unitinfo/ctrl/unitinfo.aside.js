@@ -2,10 +2,12 @@ define(function(require) {
   var $ = require('jquery');
   var Page = require('core/page');
   var UnitInfoUser = require('../ctrl/unitinfo.user');
+  var UnitInfoRole = require('../ctrl/unitinfo.role');
 
   return Page.extend(function() {
     var controllers = [
-      new UnitInfoUser('UnitInfoUser')
+      new UnitInfoUser('UnitInfoUser'),
+      new UnitInfoRole('UnitInfoRole')
     ];
 
     var tabSelectedIndex = 0;
