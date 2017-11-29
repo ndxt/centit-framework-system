@@ -93,7 +93,7 @@ public class DataDictionaryManagerImpl implements
                 if(isAdmin || "U".equals(oldD.getDataStyle())){
                     /*BeanUtils.copyProperties(newD, oldD, new String[]{"id","dataStyle"});
                     dictionaryDao.updateObject(oldD);*/
-                    dictionaryDao.mergeObject(newD);
+                    dictionaryDao.updateDictionary(newD);
                 }
             }
         }
@@ -127,7 +127,7 @@ public class DataDictionaryManagerImpl implements
         // datacatalog.setIsUpload("0");
         //datacatalog.setLastModifyDate(lastModifyDate);
         //baseDao.saveObject(datacatalog);
-        dictionaryDao.mergeObject(dd);
+        dictionaryDao.updateDictionary(dd);
     }
 
     public String[] getFieldsDesc(String sDesc, String sType) {

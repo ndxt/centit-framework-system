@@ -59,24 +59,15 @@ public class DataDictionaryDaoImpl extends BaseDaoImpl<DataDictionary, DataDicti
         return listObjectsByProperty("catalogCode", catalogCode);
     }
 
-
-    @Transactional
-    public String getNextPrimarykey() {
-        try {
-            Object obj = DatabaseAccess.getScalarObjectQuery(this.getConnection(),
-                    "select max(DATA_CODE) from F_DATADICTIONARY where length(DATA_CODE)=12 ");
-            return StringBaseOpt.objectToString(StringBaseOpt.objectToString(obj));
-        } catch (IOException e){
-            throw  new PersistenceException(PersistenceException.DATABASE_IO_EXCEPTION,e);
-        }catch (SQLException e){
-            throw  new PersistenceException(PersistenceException.DATABASE_SQL_EXCEPTION,e);
-        }
-    }
-
     @Transactional
     public void deleteDictionary(String catalog) {
         deleteObjectsByProperties(
                 QueryUtils.createSqlParamsMap( "catalogCode", catalog));
+    }
+
+    @Override
+    public void updateDictionary(DataDictionary dataDictionary){
+        super.updateObject(dataDictionary);
     }
 
 }

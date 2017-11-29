@@ -9,7 +9,6 @@ import java.util.Map;
  * 字典类别Dao
  * @author god
  * update by zou_wy@centit.com
- * @date 2017-11-29
  */
 public interface DataCatalogDao{
 
