@@ -3,240 +3,249 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.centit.framework.system.dao.mybatisimpl.OptMethodDao">
-	<resultMap type="com.centit.framework.system.po.OptMethod" id="OptMethod">
-       <result property="optCode" column="OPT_CODE" />
-       <result property="optName" column="OPT_NAME" />
-       <result property="optId" column="OPT_ID" />
-		<result property="optMethod" column="OPT_METHOD" />
-		<result property="optDesc" column="OPT_DESC" />
-		<result property="isInWorkflow" column="IS_IN_WORKFLOW" />
-		<result property="optUrl" column="OPT_URL" />
-		<result property="optReq" column="OPT_REQ" />
-		<result property="createDate" column="CREATE_DATE" />
-		<result property="creator" column="CREATOR" />
-		<result property="updator" column="UPDATOR" />
-		<result property="updateDate" column="UPDATE_DATE" />
-		<result property="optOrder" column="OPT_ORDER" />
-	</resultMap>
+    <resultMap type="com.centit.framework.system.po.OptMethod" id="OptMethod">
+        <result property="optCode" column="OPT_CODE" />
+        <result property="optName" column="OPT_NAME" />
+        <result property="optId" column="OPT_ID" />
+        <result property="optMethod" column="OPT_METHOD" />
+        <result property="optDesc" column="OPT_DESC" />
+        <result property="isInWorkflow" column="IS_IN_WORKFLOW" />
+        <result property="optUrl" column="OPT_URL" />
+        <result property="optReq" column="OPT_REQ" />
+        <result property="createDate" column="CREATE_DATE" />
+        <result property="creator" column="CREATOR" />
+        <result property="updator" column="UPDATOR" />
+        <result property="updateDate" column="UPDATE_DATE" />
+        <result property="optOrder" column="OPT_ORDER" />
+    </resultMap>
 
-	<!-- 查询条件 -->
-	<sql id="condition">
-		<if test="OPTID != null  and OPTID != ''  ">
-			  and u.OPT_ID = #{OPTID}
-		</if>
-		<if test="PREOPTID != null   and PREOPTID != ''   ">
-			  and u.PRE_OPT_ID like '%'|| #{PREOPTID}||'%'
-		</if>
-		 <if test="ISINTOOLBAR != null  and ISINTOOLBAR != ''  ">
-			  and u.IS_IN_TOOLBAR =#{ISINTOOLBAR}
-	   </if>
-		<if test="TOPOPTID != null  and TOPOPTID != ''  ">
-			  and u.TOP_OPT_ID = #{TOPOPTID}
-		</if>
-		<if test="OPTTYPE != null  and OPTTYPE != ''   ">
-			  and u.OPT_TYPE = #{OPTTYPE}
-		</if>
-		<if test="OPTNAME != null  and OPTNAME != ''  ">
-			  and u.OPT_NAME like '%'|| #{OPTNAME}||'%'
-		</if>
-	</sql>
+    <!-- 查询条件 -->
+    <sql id="condition">
+        <if test="OPTID != null  and OPTID != ''  ">
+            and u.OPT_ID = #{OPTID}
+        </if>
+        <if test="PREOPTID != null  and PREOPTID != ''  ">
+            and u.PRE_OPT_ID like '%'|| #{PREOPTID}||'%'
+        </if>
+        <if test="ISINTOOLBAR != null  and ISINTOOLBAR != ''  ">
+            and u.IS_IN_TOOLBAR = #{ISINTOOLBAR}
+        </if>
+        <if test="TOPOPTID != null  and TOPOPTID != ''  ">
+            and u.TOP_OPT_ID = #{TOPOPTID}
+        </if>
+        <if test="OPTTYPE != null  and OPTTYPE != ''  ">
+            and u.OPT_TYPE = #{OPTTYPE}
+        </if>
+        <if test="OPTNAME != null  and OPTNAME != ''  ">
+            and u.OPT_NAME like '%'|| #{OPTNAME}||'%'
+        </if>
+    </sql>
 
-	<!-- 查询核心SQL -->
-	<sql id="coreSql">
-		<![CDATA[
-			select
-			        u.OPT_CODE,
-					u.OPT_NAME,
-					u.OPT_ID,
-					u.OPT_METHOD,
-					u.OPT_DESC,
-					u.IS_IN_WORKFLOW,
-					u.OPT_URL,
-					u.OPT_REQ,
-					u.CREATE_DATE,
-					u.CREATOR,
-					u.UPDATOR,
-					u.UPDATE_DATE,
-					u.OPT_ORDER
-		      from F_OPTDEF u
-	  ]]>
-	</sql>
+    <!-- 查询核心SQL -->
+    <sql id="coreSql">
+        <![CDATA[
+            select u.OPT_CODE,
+                   u.OPT_NAME,
+                   u.OPT_ID,
+                   u.OPT_METHOD,
+                   u.OPT_DESC,
+                   u.IS_IN_WORKFLOW,
+                   u.OPT_URL,
+                   u.OPT_REQ,
+                   u.CREATE_DATE,
+                   u.CREATOR,
+                   u.UPDATOR,
+                   u.UPDATE_DATE,
+                   u.OPT_ORDER
+            from F_OPTDEF u
+        ]]>
+    </sql>
 
-	<!--分页计数 -->
-	<select id="pageCount" parameterType="map" resultType="int">
- 	 <![CDATA[
-	   select count(0) cnt
-	     from
-             F_OPTDEF u
-       ]]>
-		<where>
-			<include refid="condition" />
-		</where>
-	</select>
-	<!--分页查询 -->
-	<select id="pageQuery" parameterType="map" resultMap="OptMethod">
-	    <include refid="com.centit.framework.mybatis.dao.BaseDao.pageBegin" />
-		<include refid="coreSql" />
-		<where>
-			<include refid="condition" />
-		</where>
-		<if test="pageDesc != null ">
-			order by ${pageDesc}
-		</if>
-		<include refid="com.centit.framework.mybatis.dao.BaseDao.pageEnd" />
-	</select>
-	<!--分页查询结束 -->
+    <!--分页计数 -->
+    <select id="pageCount" parameterType="map" resultType="int">
+        <![CDATA[
+            select count(0) cnt
+            from  F_OPTDEF u
+        ]]>
+        <where>
+            <include refid="condition" />
+        </where>
+    </select>
 
+    <!--分页查询 -->
+    <select id="pageQuery" parameterType="map" resultMap="OptMethod">
+        <include refid="com.centit.framework.mybatis.dao.BaseDao.pageBegin" />
+        <include refid="coreSql" />
+        <where>
+            <include refid="condition" />
+        </where>
+        <if test="pageDesc != null ">
+            order by ${pageDesc}
+        </if>
+        <include refid="com.centit.framework.mybatis.dao.BaseDao.pageEnd" />
+    </select>
+    <!--分页查询结束 -->
 
-   <!--查询单条记录ById -->
-	<select id="getObjectById" parameterType="String" resultMap="OptMethod">
-		<include refid="coreSql" />
-		<where>
-         <![CDATA[
-	                u.OPT_CODE=#{optCode}
-           ]]>
-		</where>
-	</select>
-	<!--查询单条记录 结束 -->
-
+    <!--查询单条记录ById -->
+    <select id="getObjectById" parameterType="String" resultMap="OptMethod">
+        <include refid="coreSql" />
+        <where>
+            <![CDATA[
+                u.OPT_CODE=#{optCode}
+            ]]>
+        </where>
+    </select>
+    <!--查询单条记录 结束 -->
 
     <!--插入新单据 start -->
     <sql id="insertSql">
-		   (
-		    OPT_CODE,
-			OPT_NAME,
-			OPT_ID,
-			OPT_METHOD,
-			OPT_DESC,
-			IS_IN_WORKFLOW,
-			OPT_URL,
-			OPT_REQ,
-			CREATE_DATE,
-			CREATOR,
-			UPDATOR,
-			UPDATE_DATE,
-			OPT_ORDER
-			)values(
-			#{optCode,jdbcType=VARCHAR},
-			#{optName,jdbcType=VARCHAR},
-			#{optId,jdbcType=VARCHAR},
-			#{optMethod,jdbcType=VARCHAR},
-			#{optDesc,jdbcType=VARCHAR},
-			#{isInWorkflow,jdbcType=VARCHAR},
-			#{optUrl,jdbcType=VARCHAR},
-			#{optReq,jdbcType=VARCHAR},
-			#{createDate,jdbcType=DATE},
-			#{creator,jdbcType=VARCHAR},
-			#{updator,jdbcType=VARCHAR},
-			#{updateDate,jdbcType=DATE},
-			#{optOrder,jdbcType=BIGINT}
-			)
-	</sql>
-
+        (
+            OPT_CODE,
+            OPT_NAME,
+            OPT_ID,
+            OPT_METHOD,
+            OPT_DESC,
+            IS_IN_WORKFLOW,
+            OPT_URL,
+            OPT_REQ,
+            CREATE_DATE,
+            CREATOR,
+            UPDATOR,
+            UPDATE_DATE,
+            OPT_ORDER
+        )values(
+            #{optCode,jdbcType=VARCHAR},
+            #{optName,jdbcType=VARCHAR},
+            #{optId,jdbcType=VARCHAR},
+            #{optMethod,jdbcType=VARCHAR},
+            #{optDesc,jdbcType=VARCHAR},
+            #{isInWorkflow,jdbcType=VARCHAR},
+            #{optUrl,jdbcType=VARCHAR},
+            #{optReq,jdbcType=VARCHAR},
+            #{createDate,jdbcType=DATE},
+            #{creator,jdbcType=VARCHAR},
+            #{updator,jdbcType=VARCHAR},
+            #{updateDate,jdbcType=DATE},
+            #{optOrder,jdbcType=BIGINT}
+        )
+    </sql>
     <insert id="saveNewObject" parameterType="com.centit.framework.system.po.OptMethod">
         insert into F_OPTDEF
-       <include refid="insertSql" />
-	</insert>
-	<!--更新单据 start -->
-   <sql id="updSql">
-      <set>
-			<if test="optName !=null ">
-				OPT_NAME = #{optName},
-			</if>
-			<if test="optId !=null ">
-				OPT_ID = #{optId},
-			</if>
-			<if test="optMethod !=null ">
-				OPT_METHOD = #{optMethod},
-			</if>
-			<if test="optDesc !=null ">
-				OPT_DESC = #{optDesc},
-			</if>
-			<if test="isInWorkflow !=null ">
-				IS_IN_WORKFLOW = #{isInWorkflow},
-			</if>
-			<if test="optUrl !=null ">
-				OPT_URL = #{optUrl},
-			</if>
-			<if test="optReq !=null ">
-				OPT_REQ = #{optReq},
-			</if>
-			<if test="updator !=null ">
-				UPDATOR = #{updator},
-			</if>
-			<if test="updateDate !=null ">
-				UPDATE_DATE = #{updateDate},
-			</if>
-			<if test="optOrder !=null ">
-				OPT_ORDER = #{optOrder},
-			</if>
-		</set>
-	</sql>
-	<update id="update" parameterType="com.centit.framework.system.po.OptMethod" timeout="2000">
-	     update F_OPTDEF
-	     <include refid="updSql" />
-	     where OPT_CODE=#{optCode}
-	</update>
-	<!--更新单据 end -->
+        <include refid="insertSql" />
+    </insert>
+    <!--插入新单据 end -->
 
-   <!--Merge单据 start -->
-	<update id="mergeObject" databaseId="oracle" parameterType="com.centit.framework.system.po.OptMethod" timeout="2000">
-	      merge into F_OPTDEF t
-		    using ( select #{optCode} as OPT_CODE  from dual) t1
-		    on(t.OPT_CODE = t1.OPT_CODE)
-		 when not matched then
-		   insert
-		   <include refid="insertSql" />
-		 when matched then
-		 update
-		   <include refid="updSql" />
-		    where OPT_CODE=#{optCode}
-	</update>
-  <update id="mergeObject" databaseId="mysql" parameterType="com.centit.framework.system.po.OptMethod" timeout="2000">
-    replace into F_OPTDEF
-    <include refid="insertSql" />
-  </update>
-	<!--Merge单据 end -->
-   <!--插入新单据 end -->
+    <!--更新单据 start -->
+    <sql id="updSql">
+        <set>
+            <if test="optName !=null ">
+                OPT_NAME = #{optName},
+            </if>
+            <if test="optId !=null ">
+                OPT_ID = #{optId},
+            </if>
+            <if test="optMethod !=null ">
+                OPT_METHOD = #{optMethod},
+            </if>
+            <if test="optDesc !=null ">
+                OPT_DESC = #{optDesc},
+            </if>
+            <if test="isInWorkflow !=null ">
+                IS_IN_WORKFLOW = #{isInWorkflow},
+            </if>
+            <if test="optUrl !=null ">
+                OPT_URL = #{optUrl},
+            </if>
+            <if test="optReq !=null ">
+                OPT_REQ = #{optReq},
+            </if>
+            <if test="updator !=null ">
+                UPDATOR = #{updator},
+            </if>
+            <if test="updateDate !=null ">
+                UPDATE_DATE = #{updateDate},
+            </if>
+            <if test="optOrder !=null ">
+                OPT_ORDER = #{optOrder},
+            </if>
+        </set>
+    </sql>
+    <update id="update" parameterType="com.centit.framework.system.po.OptMethod" timeout="2000">
+        update F_OPTDEF
+        <include refid="updSql" />
+        where OPT_CODE=#{optCode}
+    </update>
+    <!--更新单据 end -->
 
-	<!--删除记录  -->
-	<delete id="deleteObjectById" parameterType="String" timeout="2000">
-    <![CDATA[
-       delete from F_OPTDEF where OPT_CODE=#{optCode}
-     ]]>
-	</delete>
-	<delete id="deleteObject" parameterType="com.centit.framework.system.po.OptMethod" timeout="2000">
-			  delete from F_OPTDEF where OPT_CODE=#{optCode}
-	</delete>
-	<!--删除记录 结束 -->
+    <!--Merge单据 start -->
+    <update id="mergeObject" databaseId="oracle" parameterType="com.centit.framework.system.po.OptMethod" timeout="2000">
+        merge into F_OPTDEF t
+        using ( select #{optCode} as OPT_CODE  from dual) t1
+        on(t.OPT_CODE = t1.OPT_CODE)
+        when not matched then
+        insert
+        <include refid="insertSql" />
+        when matched then
+        update
+        <include refid="updSql" />
+        where OPT_CODE=#{optCode}
+    </update>
 
-	<select id="listObjects" parameterType="map"  resultMap="OptMethod">
-		 <include refid="coreSql" />
-	</select>
-	<select id="listOptMethodByOptID" parameterType="String" resultMap="OptMethod">
-		<include refid="coreSql" />
-		where OPT_ID=#{sOptID}
-	</select>
-	<select id="listOptMethodByRoleCode" parameterType="String" resultMap="OptMethod">
-		<include refid="coreSql" />
-		where OPT_CODE in (select id.OPT_CODE from F_ROLEPOWER id where id.ROLE_CODE = #{roleCode}) order by OPT_ID
-	</select>
-	<select id="getOptMethodSumByOptID" parameterType="String" resultType="int">
-			SELECT count(OPT_CODE) from F_OPTDEF WHERE OPT_ID = #{sOptID}
-	</select>
-	<delete id="deleteOptMethodsByOptID" parameterType="String">
-		delete from F_OPTDEF WHERE OPT_ID =#{sOptID}
-	</delete>
-	<select id="getNextOptCode" databaseId="oracle" resultType="String">
-		SELECT S_OPTDEFCODE.nextval from dual
-	</select>
+    <update id="mergeObject" databaseId="mysql" parameterType="com.centit.framework.system.po.OptMethod" timeout="2000">
+        replace into F_OPTDEF
+        <include refid="insertSql" />
+    </update>
 
-	<select id="getNextOptCode" databaseId="mysql" resultType="String">
-		SELECT sequence_nextval('S_OPTDEFCODE')
-	</select>
+    <update id="mergeObject" databaseId="h2" parameterType="com.centit.framework.system.po.OptMethod" timeout="2000">
+        replace into F_OPTDEF
+        <include refid="insertSql" />
+    </update>
+    <!--Merge单据 end -->
 
-  <select id="getNextOptCode" databaseId="h2" resultType="String">
-    select NEXT VALUE FOR S_OPTDEFCODE
-  </select>
+    <!--删除记录  -->
+    <delete id="deleteObjectById" parameterType="String" timeout="2000">
+        <![CDATA[
+            delete from F_OPTDEF where OPT_CODE=#{optCode}
+        ]]>
+    </delete>
+
+    <delete id="deleteObject" parameterType="com.centit.framework.system.po.OptMethod" timeout="2000">
+        delete from F_OPTDEF where OPT_CODE=#{optCode}
+    </delete>
+    <!--删除记录 结束 -->
+
+    <select id="listObjects" parameterType="map" resultMap="OptMethod">
+        <include refid="coreSql" />
+    </select>
+
+    <select id="listOptMethodByOptID" parameterType="String" resultMap="OptMethod">
+        <include refid="coreSql" />
+        where OPT_ID=#{sOptID}
+    </select>
+
+    <select id="listOptMethodByRoleCode" parameterType="String" resultMap="OptMethod">
+        <include refid="coreSql" />
+        where OPT_CODE in (select id.OPT_CODE from F_ROLEPOWER id where id.ROLE_CODE = #{roleCode}) order by OPT_ID
+    </select>
+
+    <select id="getOptMethodSumByOptID" parameterType="String" resultType="int">
+        select count(OPT_CODE) from F_OPTDEF where OPT_ID = #{sOptID}
+    </select>
+
+    <delete id="deleteOptMethodsByOptID" parameterType="String">
+        delete from F_OPTDEF WHERE OPT_ID =#{sOptID}
+    </delete>
+
+    <select id="getNextOptCode" databaseId="oracle" resultType="String">
+        select S_OPTDEFCODE.nextval from dual
+    </select>
+
+    <select id="getNextOptCode" databaseId="mysql" resultType="String">
+        select sequence_nextval('S_OPTDEFCODE')
+    </select>
+
+    <select id="getNextOptCode" databaseId="h2" resultType="String">
+        select NEXT VALUE FOR S_OPTDEFCODE
+    </select>
 
 </mapper>

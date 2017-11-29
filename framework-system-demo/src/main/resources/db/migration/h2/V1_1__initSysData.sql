@@ -23,13 +23,13 @@ update_Date, Create_Date) VALUES ('s000000000','U00001','u0000000','T','pf','CZ'
 
 
 insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
-values ('MsgType', '消息类型', 'U', 'L', '测试测试', null, str_to_date('25-02-2016 17:55:21', '%d-%m-%Y %H:%i:%s'), null, 'DICTSET_M', '1','u0000000','u0000000');
+values ('MsgType', '消息类型', 'U', 'L', '测试测试', null, parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, 'DICTSET_M', '1','u0000000','u0000000');
 
 insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
 values ('CatalogStyle', '字典类型', 'S', 'L', 'F : 框架固有的 U:用户 S：系统', null, null, null, 'DICTSET_M', '1','u0000000','u0000000');
 
 insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
-values ('CatalogType', '字典结构', 'S', 'L', 'L:列表T:树形 测试修改', null, str_to_date('01-12-2015 11:41:23', '%d-%m-%Y %H:%i:%s'), null, 'DICTSET_M', '1','u0000000','u0000000');
+values ('CatalogType', '字典结构', 'S', 'L', 'L:列表T:树形 测试修改', null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'DICTSET_M', '1','u0000000','u0000000');
 
 insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
 values ('UnitType', '单位类型', 'U', 'L', '单位类型', null, null, null, 'DICTSET_M', '1','u0000000','u0000000');
@@ -44,10 +44,10 @@ insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TY
 values ('RankType', '行政职务类别', 'U', 'L', '业务职务类别，类别代码长度为2。数值越低等级越高', '职位代码;等级;未用;职位名称', null, null, 'DICTSET_M', '0','u0000000','u0000000');
 
 insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
-values ('SUPPORT_LANG', '系统支持的语言', 'U', 'L', '系统支持的语言,需要在system.properties中把参数sys.multi_lang设置为true才会生效', null, str_to_date('28-01-2016 20:33:23', '%d-%m-%Y %H:%i:%s'), null, 'DICTSET_M', '1','u0000000','u0000000');
+values ('SUPPORT_LANG', '系统支持的语言', 'U', 'L', '系统支持的语言,需要在system.properties中把参数sys.multi_lang设置为true才会生效', null, parsedatetime('28-01-2016', 'dd-MM-yyyy','en'), null, 'DICTSET_M', '1','u0000000','u0000000');
 
 insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
-values ('LogLevel', '日志类型', 'F', 'L', '日志类型', '日志类型', str_to_date('07-04-2016', '%d-%m-%Y'), str_to_date('07-04-2016', '%d-%m-%Y'), 'OptLog', '1','u0000000','u0000000');
+values ('LogLevel', '日志类型', 'F', 'L', '日志类型', '日志类型', parsedatetime('07-04-2016', 'dd-MM-yyyy','en'), parsedatetime('07-04-2016', 'dd-MM-yyyy','en'), 'OptLog', '1','u0000000','u0000000');
 INSERT INTO f_datacatalog VALUES ('YesOrNo', '是否', 'S', 'L', null, null, null, null, null, '1', null, null);
 
 insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
