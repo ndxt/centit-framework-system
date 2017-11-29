@@ -58,4 +58,9 @@ public class OptDataScopeDaoImpl extends BaseDaoImpl<OptDataScope, String> imple
         return filters;
     }
 
+    @Override
+    public void updateOptDataScope(OptDataScope optDataScope){
+      super.updateObject(optDataScope);
+    }
+
 }
