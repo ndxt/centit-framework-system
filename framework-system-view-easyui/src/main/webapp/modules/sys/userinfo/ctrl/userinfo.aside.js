@@ -4,6 +4,7 @@ define(function(require) {
 
 	var UserInfoBaseInfo = require('./userinfo.baseinfo');
 	var UserInfoRoleInfo = require('./userinfo.role');
+	var UserInfoUnitInfo = require('./userinfo.unit');
 
 
 	var UserAll = Page.extend(function() {
@@ -11,6 +12,7 @@ define(function(require) {
 		var controllers = [
 		  new UserInfoBaseInfo('UserInfoBaseInfo'),
       new UserInfoRoleInfo('UserInfoRoleInfo'),
+      new UserInfoUnitInfo('UserInfoUnitInfo'),
     ];
 
 		this.injecte(controllers);
