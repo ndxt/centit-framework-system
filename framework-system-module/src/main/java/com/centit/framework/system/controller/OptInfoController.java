@@ -5,10 +5,9 @@ import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.ViewDataTransform;
-import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.model.adapter.PlatformEnvironment;
-import com.centit.framework.model.basedata.OperationLog;
+import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.service.OptInfoManager;
@@ -168,13 +167,14 @@ public class OptInfoController extends BaseController {
   }
 
   /**
-   * 新增业务
+   * 新增菜单
    *
    * @param optInfo  OptInfo
    * @param request  HttpServletRequest
    * @param response HttpServletResponse
    */
   @RequestMapping(method = {RequestMethod.POST})
+  @RecordOperationLog(content = "新增菜单")
   public void createOptInfo(@Valid OptInfo optInfo, HttpServletRequest request, HttpServletResponse response) {
 
     if (StringUtils.isBlank(optInfo.getOptRoute())) {
@@ -194,8 +194,8 @@ public class OptInfoController extends BaseController {
 
     JsonResultUtils.writeBlankJson(response);
     /*********log*********/
-    OperationLogCenter.logNewObject(request, optId, optInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_C,
-      "新增业务菜单", optInfo);
+//    OperationLogCenter.logNewObject(request, optId, optInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_C,
+//      "新增业务菜单", optInfo);
     /*********log*********/
   }
 
@@ -213,57 +213,50 @@ public class OptInfoController extends BaseController {
   }
 
   /**
-   * 更新
-   *
+   * 更新菜单
    * @param optId    主键
    * @param optInfo  OptInfo
    * @param request  HttpServletRequest
    * @param response HttpServletResponse
    */
   @RequestMapping(value = "/{optId}", method = {RequestMethod.PUT})
+  @RecordOperationLog(content = "更新菜单")
   public void edit(@PathVariable String optId, @Valid OptInfo optInfo,
                    HttpServletRequest request, HttpServletResponse response) {
 
-    OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
-    if (null == dbOptInfo) {
-      JsonResultUtils.writeErrorMessageJson("当前对象不存在", response);
-      return;
-    }
+      OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
+      if (null == dbOptInfo) {
+        JsonResultUtils.writeErrorMessageJson("当前对象不存在", response);
+        return;
+      }
 
-    if (!StringUtils.equals(dbOptInfo.getPreOptId(), optInfo.getPreOptId())) {
-      OptInfo parentOpt = optInfoManager.getOptInfoById(optInfo.getPreOptId());
-      if (parentOpt == null)
-        optInfo.setPreOptId(dbOptInfo.getPreOptId());
-    }
+      if (!StringUtils.equals(dbOptInfo.getPreOptId(), optInfo.getPreOptId())) {
+          OptInfo parentOpt = optInfoManager.getOptInfoById(optInfo.getPreOptId());
+          if (parentOpt == null) {
+              optInfo.setPreOptId(dbOptInfo.getPreOptId());
+          }
+      }
 
-    if (!optInfoManager.hasChildren(optId)) {
-      if (StringUtils.isBlank(optInfo.getOptUrl()) || "...".equals(optInfo.getOptUrl()))
-        optInfo.setOptUrl(optInfo.getOptRoute());
-    }
+      if (!optInfoManager.hasChildren(optId)) {
+          if (StringUtils.isBlank(optInfo.getOptUrl()) || "...".equals(optInfo.getOptUrl())) {
+              optInfo.setOptUrl(optInfo.getOptRoute());
+          }
+      }
 
-    /*********log*********/
-    OptInfo oldValue = new OptInfo();
-    BeanUtils.copyProperties(dbOptInfo, oldValue);
-    /*********log*********/
+      /*********log*********/
+//      OptInfo oldValue = new OptInfo();
+//      BeanUtils.copyProperties(dbOptInfo, oldValue);
+      /*********log*********/
 
-//        for (OptMethod optDef : optInfo.getOptMethods()) {
-//            if (StringUtils.isBlank(optDef.getOptCode())) {
-//                optDef.setOptCode(optMethodManager.getNextOptCode());
-//            }
-//         }
-    BeanUtils.copyProperties(optInfo, dbOptInfo, "optMethods", "dataScopes");
+      BeanUtils.copyProperties(optInfo, dbOptInfo, "optMethods", "dataScopes");
 
-//        dbOptInfo.addAllOptMethods(optInfo.getOptMethods());
-//        dbOptInfo.addAllDataScopes(optInfo.getDataScopes());
-    optInfoManager.updateOptInfo(dbOptInfo);
-    //刷新缓存
-//        sysRoleManager.loadRoleSecurityMetadata();
-    /*********log*********/
-    OperationLogCenter.logUpdateObject(request, this.optId, dbOptInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_U,
-      "更新业务菜单" + dbOptInfo.getOptId(), dbOptInfo, oldValue);
-    /*********log*********/
+      optInfoManager.updateOptInfo(dbOptInfo);
+      /*********log*********/
+//      OperationLogCenter.logUpdateObject(request, this.optId, dbOptInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_U,
+//        "更新业务菜单" + dbOptInfo.getOptId(), dbOptInfo, oldValue);
+      /*********log*********/
 
-    JsonResultUtils.writeSuccessJson(response);
+      JsonResultUtils.writeSuccessJson(response);
   }
 
   /**
@@ -275,6 +268,7 @@ public class OptInfoController extends BaseController {
    * @param response HttpServletResponse
    */
   @RequestMapping(value = "/editpower{optId}", method = {RequestMethod.PUT})
+  @RecordOperationLog(content = "更新操作权限")
   public void editPower(@PathVariable String optId, @Valid OptInfo optInfo,
                         HttpServletRequest request, HttpServletResponse response) {
 
@@ -286,12 +280,13 @@ public class OptInfoController extends BaseController {
 
     if (!StringUtils.equals(dbOptInfo.getPreOptId(), optInfo.getPreOptId())) {
       OptInfo parentOpt = optInfoManager.getOptInfoById(optInfo.getPreOptId());
-      if (parentOpt == null)
-        optInfo.setPreOptId(dbOptInfo.getPreOptId());
+      if (parentOpt == null) {
+          optInfo.setPreOptId(dbOptInfo.getPreOptId());
+      }
     }
     /*********log*********/
-    OptInfo oldValue = new OptInfo();
-    BeanUtils.copyProperties(dbOptInfo, oldValue);
+//    OptInfo oldValue = new OptInfo();
+//    BeanUtils.copyProperties(dbOptInfo, oldValue);
     /*********log*********/
 
     for (OptMethod optDef : optInfo.getOptMethods()) {
@@ -304,26 +299,27 @@ public class OptInfoController extends BaseController {
     dbOptInfo.addAllOptMethods(optInfo.getOptMethods());
     dbOptInfo.addAllDataScopes(optInfo.getDataScopes());
     Map<String, List> old = optInfoManager.updateOperationPower(dbOptInfo);
-    oldValue.setOptMethods(old.get("methods"));
-    oldValue.setDataScopes(old.get("scopes"));
+//    oldValue.setOptMethods(old.get("methods"));
+//    oldValue.setDataScopes(old.get("scopes"));
     //刷新缓存
     sysRoleManager.loadRoleSecurityMetadata();
     /*********log*********/
-    OperationLogCenter.logUpdateObject(request, this.optId, dbOptInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_U,
-      "更新操作权限" + dbOptInfo.getOptId(), dbOptInfo, oldValue);
+//    OperationLogCenter.logUpdateObject(request, this.optId, dbOptInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_U,
+//      "更新操作权限" + dbOptInfo.getOptId(), dbOptInfo, oldValue);
     /*********log*********/
 
     JsonResultUtils.writeSuccessJson(response);
   }
 
   /**
-   * 删除系统业务
+   * 删除菜单
    *
    * @param optId    主键
    * @param request  HttpServletRequest
    * @param response HttpServletResponse
    */
   @RequestMapping(value = "/{optId}", method = {RequestMethod.DELETE})
+  @RecordOperationLog(content = "删除菜单")
   public void delete(@PathVariable String optId, HttpServletRequest request, HttpServletResponse response) {
     OptInfo dboptInfo = optInfoManager.getObjectById(optId);
 
@@ -332,8 +328,8 @@ public class OptInfoController extends BaseController {
     sysRoleManager.loadRoleSecurityMetadata();
     JsonResultUtils.writeBlankJson(response);
     /*********log*********/
-    OperationLogCenter.logDeleteObject(request, this.optId, dboptInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_D,
-      "删除业务菜单", dboptInfo);
+//    OperationLogCenter.logDeleteObject(request, this.optId, dboptInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_D,
+//      "删除业务菜单", dboptInfo);
     /*********log*********/
   }
 

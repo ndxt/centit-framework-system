@@ -7,6 +7,7 @@ import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.model.basedata.OperationLog;
+import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
@@ -179,6 +180,7 @@ public class UserRoleController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(method = RequestMethod.POST)
+    @RecordOperationLog(content = "新增用户角色关联信息")
     public void create(@Valid UserRole userRole,@Valid String[] userCode, HttpServletRequest request, HttpServletResponse response) {
         userRole.setCreateDate(new Date());
         if(userCode!=null && userCode.length>0){
@@ -195,8 +197,8 @@ public class UserRoleController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
 
         /*********log*********/
-        OperationLogCenter.logNewObject(request,optId, userRole.getUserCode()+"-"+ userRole.getRoleCode(),
-                OperationLog.P_OPT_LOG_METHOD_C, "新增用户角色关联" , userRole);
+//        OperationLogCenter.logNewObject(request,optId, userRole.getUserCode()+"-"+ userRole.getRoleCode(),
+//                OperationLog.P_OPT_LOG_METHOD_C, "新增用户角色关联" , userRole);
         /*********log*********/
     }
 
@@ -210,6 +212,7 @@ public class UserRoleController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{roleCode}/{userCode}", method = RequestMethod.PUT)
+    @RecordOperationLog(content = "更新用户角色信息")
     public void edit(@PathVariable String roleCode, @PathVariable String userCode, @Valid UserRole userRole,
                      HttpServletRequest request, HttpServletResponse response) {
         UserRole dbUserRole = sysUserRoleManager.getObjectById(new UserRoleId(userCode,roleCode));
@@ -224,8 +227,8 @@ public class UserRoleController extends BaseController {
         JsonResultUtils.writeSingleDataJson(userRole, response);
 
         /*********log*********/
-        OperationLogCenter.logUpdateObject(request,optId,dbUserRole.getUserCode(),
-                OperationLog.P_OPT_LOG_METHOD_U,"更改用户角色信息:" + JSON.toJSONString(userRole.getId()) ,userRole,dbUserRole);
+//        OperationLogCenter.logUpdateObject(request,optId,dbUserRole.getUserCode(),
+//                OperationLog.P_OPT_LOG_METHOD_U,"更改用户角色信息:" + JSON.toJSONString(userRole.getId()) ,userRole,dbUserRole);
         /*********log*********/
     }
 
@@ -237,6 +240,7 @@ public class UserRoleController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{roleCode}/{userCodes}", method = RequestMethod.DELETE)
+    @RecordOperationLog(content = "删除用户角色关联信息")
     public void delete(@PathVariable String roleCode, @PathVariable String userCodes,
                        HttpServletRequest request, HttpServletResponse response) {
 
@@ -246,8 +250,8 @@ public class UserRoleController extends BaseController {
             UserRole userRole = sysUserRoleManager.getObjectById(userRoleId);
             sysUserRoleManager.deleteObjectById(userRoleId);
             /*********log*********/
-            OperationLogCenter.logDeleteObject(request,optId,userCode+"-"+roleCode, OperationLog.P_OPT_LOG_METHOD_D,
-                    "删除用户角色关联信息", userRole);
+//            OperationLogCenter.logDeleteObject(request,optId,userCode+"-"+roleCode, OperationLog.P_OPT_LOG_METHOD_D,
+//                    "删除用户角色关联信息", userRole);
             /*********log*********/
         }
         JsonResultUtils.writeBlankJson(response);
@@ -261,6 +265,7 @@ public class UserRoleController extends BaseController {
      * @param request  HttpServletRequest
      */
     @RequestMapping(value = "/ban/{roleCode}/{userCode}", method = RequestMethod.PUT)
+    @RecordOperationLog(content = "删除用户角色关联信息")
     public void ban(@PathVariable String roleCode, @PathVariable String userCode,
                         HttpServletRequest request, HttpServletResponse response) {
         UserRoleId a=new UserRoleId(userCode,roleCode);
@@ -269,8 +274,8 @@ public class UserRoleController extends BaseController {
         JsonResultUtils.writeSuccessJson(response);
 
         /*********log*********/
-        OperationLogCenter.logDeleteObject(request, optId, userCode+"-"+roleCode,
-                OperationLog.P_OPT_LOG_METHOD_D, "删除用户角色关联信息", userRole);
+//        OperationLogCenter.logDeleteObject(request, optId, userCode+"-"+roleCode,
+//                OperationLog.P_OPT_LOG_METHOD_D, "删除用户角色关联信息", userRole);
         /*********log*********/
     }
 }

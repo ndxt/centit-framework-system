@@ -5,10 +5,9 @@ import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ObjectException;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.components.CodeRepositoryUtil;
-import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.DictionaryMapUtils;
-import com.centit.framework.model.basedata.OperationLog;
+import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.DataCatalog;
 import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.DataDictionaryId;
@@ -38,6 +37,7 @@ import java.util.Map;
 
 /**
  * 数据字典
+ * @author god
  */
 @Controller
 @RequestMapping("/dictionary")
@@ -57,7 +57,7 @@ public class DataDictionaryController extends BaseController {
     private String optId = "DICTSET";
 
     /**
-     * 查询所有数据目录列表
+     * 查询所有字典目录列表
      *
      * @param field    只需要的属性名
      * @param pageDesc 分页信息
@@ -75,12 +75,6 @@ public class DataDictionaryController extends BaseController {
             simplePropertyPreFilter = new SimplePropertyPreFilter(DataCatalog.class, field);
         }
 
-        if (null == pageDesc) {
-            JsonResultUtils.writeSingleDataJson(listObjects, response, simplePropertyPreFilter);
-
-            return;
-        }
-
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
         resData.addResponseData(PAGE_DESC, pageDesc);
@@ -89,7 +83,7 @@ public class DataDictionaryController extends BaseController {
     }
 
     /**
-     * 查询单个数据目录
+     * 查询单个字典目录
      *
      * @param catalogCode DataCatalog主键
      * @param response    {@link HttpServletResponse}
@@ -131,13 +125,14 @@ public class DataDictionaryController extends BaseController {
     }
 
     /**
-     * 新增数据目录
+     * 新增字典类别
      *
      * @param dataCatalog {@link DataCatalog}
      * @param request {@link HttpServletRequest}
      * @param response {@link HttpServletResponse}
      */
     @RequestMapping(method = {RequestMethod.POST})
+    @RecordOperationLog(content = "新增字典类别")
     public void createCatalog(@Valid DataCatalog dataCatalog, HttpServletRequest request,HttpServletResponse response) {
         if(isLoginAsAdmin(request)){
             dataCatalog.setCatalogStyle("S");
@@ -148,13 +143,13 @@ public class DataDictionaryController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
 
         /*******************log****************************/
-        OperationLogCenter.logNewObject(request, optId, dataCatalog.getCatalogCode(), OperationLog.P_OPT_LOG_METHOD_C,
-                "新增数据字典目录", dataCatalog);
+//        OperationLogCenter.logNewObject(request, optId, dataCatalog.getCatalogCode(), OperationLog.P_OPT_LOG_METHOD_C,
+//                "新增数据字典目录", dataCatalog);
         /*******************log****************************/
     }
 
     /**
-     * 更新数据目录
+     * 更新字典类别
      *
      * @param catalogCode DataCatalog主键
      * @param dataCatalog {@link DataCatalog}
@@ -162,6 +157,7 @@ public class DataDictionaryController extends BaseController {
      * @param response    {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{catalogCode}", method = {RequestMethod.PUT})
+    @RecordOperationLog(content = "更新字典类别")
     public void updateCatalog(@PathVariable String catalogCode, @Valid DataCatalog dataCatalog,
                               HttpServletRequest request,HttpServletResponse response) {
 
@@ -189,8 +185,8 @@ public class DataDictionaryController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
 
         /***********************log*****************************/
-        OperationLogCenter.logUpdateObject(request, optId, catalogCode, OperationLog.P_OPT_LOG_METHOD_U,
-                "更新数据字典目录", dbDataCatalog, oldValue);
+//        OperationLogCenter.logUpdateObject(request, optId, catalogCode, OperationLog.P_OPT_LOG_METHOD_U,
+//                "更新数据字典目录", dbDataCatalog, oldValue);
         /***********************log*****************************/
     }
 
@@ -200,7 +196,7 @@ public class DataDictionaryController extends BaseController {
     }
 
     /**
-     * 更新数据目录明细
+     * 更新字典目录明细
      *
      * @param catalogCode DataCatalog主键
      * @param dataCatalog {@link DataCatalog}
@@ -208,6 +204,7 @@ public class DataDictionaryController extends BaseController {
      * @param response    {@link HttpServletResponse}
      */
     @RequestMapping(value = "update/{catalogCode}", method = {RequestMethod.PUT})
+    @RecordOperationLog(content = "更新字典目录明细")
     public void updateDictionary(@PathVariable String catalogCode, @Valid DataCatalog dataCatalog,
                               HttpServletRequest request,HttpServletResponse response) {
 
@@ -234,13 +231,13 @@ public class DataDictionaryController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
 
         /***********************log*****************************/
-        OperationLogCenter.logUpdateObject(request, optId, catalogCode, OperationLog.P_OPT_LOG_METHOD_U,
-                "更新数据字典明细", dbDataCatalog, oldValue);
+//        OperationLogCenter.logUpdateObject(request, optId, catalogCode, OperationLog.P_OPT_LOG_METHOD_U,
+//                "更新数据字典明细", dbDataCatalog, oldValue);
         /***********************log*****************************/
     }
 
     /**
-     * 新增或保存数据字典
+     * 新增数据字典
      *
      * @param catalogCode    DataCatalog主键
      * @param dataCode       DataDictionary主键
@@ -248,8 +245,42 @@ public class DataDictionaryController extends BaseController {
      * @param request {@link HttpServletRequest}
      * @param response       {@link HttpServletResponse}
      */
-    @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}",
-            method = {RequestMethod.POST, RequestMethod.PUT})
+    @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}", method = {RequestMethod.PUT})
+    @RecordOperationLog(content = "新增数据字典")
+    public void createDictionary(@PathVariable String catalogCode, @PathVariable String dataCode,
+                               @Valid DataDictionary dataDictionary,
+                               HttpServletRequest request,HttpServletResponse response) {
+
+        DataDictionary dbDataDictionary = dataDictionaryManager.getDataDictionaryPiece(new DataDictionaryId(catalogCode,
+                dataCode));
+
+        DataDictionary oldValue = new DataDictionary();
+        oldValue.copy(dbDataDictionary);
+
+        DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
+
+        dictionaryPreHandler(dbDataCatalog, dataDictionary);
+
+        dictionaryPreInsertHandler(dbDataCatalog, dataDictionary,request);
+        dataDictionaryManager.saveDataDictionaryPiece(dataDictionary);
+        /**************************log***************************/
+//            OperationLogCenter.logNewObject(request, optId, catalogCode+"-"+dataCode, OperationLog.P_OPT_LOG_METHOD_C,
+//                    "新增数据字典明细", dataDictionary);
+        /**************************log***************************/
+
+        JsonResultUtils.writeBlankJson(response);
+    }
+    /**
+     * 更新数据字典
+     *
+     * @param catalogCode    DataCatalog主键
+     * @param dataCode       DataDictionary主键
+     * @param dataDictionary {@link DataDictionary}
+     * @param request {@link HttpServletRequest}
+     * @param response       {@link HttpServletResponse}
+     */
+    @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}", method = {RequestMethod.POST})
+    @RecordOperationLog(content = "更新数据字典")
     public void editDictionary(@PathVariable String catalogCode, @PathVariable String dataCode,
                                @Valid DataDictionary dataDictionary,
                                HttpServletRequest request,HttpServletResponse response) {
@@ -262,25 +293,16 @@ public class DataDictionaryController extends BaseController {
 
         DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
 
-        dictionaryPreHander(dbDataCatalog, dataDictionary);
+        dictionaryPreHandler(dbDataCatalog, dataDictionary);
 
-        if (null != dbDataDictionary) { // update
-            dictionaryPreUpdateHander(dbDataCatalog, dbDataDictionary,request);
-            BeanUtils.copyProperties(dataDictionary, dbDataDictionary, "id","dataStyle");
-            dictionaryPreUpdateHander(dbDataCatalog, dbDataDictionary,request);
-            dataDictionaryManager.saveDataDictionaryPiece(dbDataDictionary);
-            /**************************log***************************/
-            OperationLogCenter.logUpdateObject(request, optId, catalogCode+"-"+dataCode, OperationLog.P_OPT_LOG_METHOD_U,
-                    "更新数据字典明细", dbDataDictionary, oldValue);
-            /**************************log***************************/
-        } else { // insert
-            dictionaryPreInsertHander(dbDataCatalog, dataDictionary,request);
-            dataDictionaryManager.saveDataDictionaryPiece(dataDictionary);
-            /**************************log***************************/
-            OperationLogCenter.logNewObject(request, optId, catalogCode+"-"+dataCode, OperationLog.P_OPT_LOG_METHOD_C,
-                    "新增数据字典明细", dataDictionary);
-            /**************************log***************************/
-        }
+        dictionaryPreUpdateHandler(dbDataCatalog, dbDataDictionary,request);
+        BeanUtils.copyProperties(dataDictionary, dbDataDictionary, "id","dataStyle");
+        dictionaryPreUpdateHandler(dbDataCatalog, dbDataDictionary,request);
+        dataDictionaryManager.saveDataDictionaryPiece(dbDataDictionary);
+        /**************************log***************************/
+//        OperationLogCenter.logUpdateObject(request, optId, catalogCode+"-"+dataCode, OperationLog.P_OPT_LOG_METHOD_U,
+//                "更新数据字典明细", dbDataDictionary, oldValue);
+        /**************************log***************************/
 
         JsonResultUtils.writeBlankJson(response);
     }
@@ -290,7 +312,7 @@ public class DataDictionaryController extends BaseController {
      * @param dataCatalog DataCatalog
      * @param dataDictionary DataDictionary
      */
-    protected void dictionaryPreHander(DataCatalog dataCatalog, DataDictionary dataDictionary) {
+    protected void dictionaryPreHandler(DataCatalog dataCatalog, DataDictionary dataDictionary) {
         //附加代码 EXTRACODE  字段
         //这是一个自解释字段，业务系统可以自行解释这个字段的意义，单作为树形结构的数据字典时，这个字段必需为上级字典的代码。
 
@@ -318,8 +340,8 @@ public class DataDictionaryController extends BaseController {
      * @param dataDictionary DataDictionary
      * @param request HttpServletRequest
      */
-    protected void dictionaryPreInsertHander(DataCatalog dataCatalog, DataDictionary dataDictionary,
-            HttpServletRequest request) {
+    protected void dictionaryPreInsertHandler(DataCatalog dataCatalog, DataDictionary dataDictionary,
+                                              HttpServletRequest request) {
         if(isLoginAsAdmin(request)){
             dataDictionary.setDataStyle(S);
         }else{
@@ -339,11 +361,11 @@ public class DataDictionaryController extends BaseController {
      * @param dataCatalog    DataCatalog
      * @param dataDictionary DataDictionary
      */
-    protected void dictionaryPreDeleteHander(DataCatalog dataCatalog, DataDictionary dataDictionary,
-            HttpServletRequest request) {
+    protected void dictionaryPreDeleteHandler(DataCatalog dataCatalog, DataDictionary dataDictionary,
+                                              HttpServletRequest request) {
         if(isLoginAsAdmin(request)){
           if (!S.equalsIgnoreCase(dataDictionary.getDataStyle()) && !U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
-                throw new ObjectException("只能删除 catalogStyle为 S 或 U 的数据目录");
+                throw new ObjectException("只能删除 catalogStyle为 S 或 U 的字典目录");
             }
         }else{
             if (!U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
@@ -359,8 +381,8 @@ public class DataDictionaryController extends BaseController {
      * @param dataDictionary DataDictionary
      * @param request HttpServletRequest
      */
-    protected void dictionaryPreUpdateHander(DataCatalog dataCatalog, DataDictionary dataDictionary,
-            HttpServletRequest request) {
+    protected void dictionaryPreUpdateHandler(DataCatalog dataCatalog, DataDictionary dataDictionary,
+                                              HttpServletRequest request) {
         if(isLoginAsAdmin(request)){
 
             if (F.equalsIgnoreCase(dataDictionary.getDataStyle())) {
@@ -383,37 +405,38 @@ public class DataDictionaryController extends BaseController {
         }
     }
 
-    protected void catalogPrDeleteHander(DataCatalog dataCatalog,HttpServletRequest request) {
+    protected void catalogPrDeleteHandler(DataCatalog dataCatalog, HttpServletRequest request) {
         if(isLoginAsAdmin(request)){
             if (!S.equalsIgnoreCase(dataCatalog.getCatalogStyle()) && !U.equalsIgnoreCase(dataCatalog.getCatalogStyle())) {
-                throw new ObjectException("只能删除 catalogStyle为 S 或 U 的数据目录");
+                throw new ObjectException("只能删除 catalogStyle为 S 或 U 的字典目录");
             }
         }else{
               if (!U.equalsIgnoreCase(dataCatalog.getCatalogStyle())) {
-                throw new ObjectException("只可删除 catalogStyle 为 U 的数据目录");
+                throw new ObjectException("只可删除 catalogStyle 为 U 的字典目录");
               }
         }
     }
 
     /**
-     * 删除数据目录
+     * 删除字典目录
      *
      * @param catalogCode DataCatalog主键
      * @param request  {@link HttpServletRequest}
      * @param response {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{catalogCode}", method = RequestMethod.DELETE)
+    @RecordOperationLog(content = "删除字典目录")
     public void deleteCatalog(@PathVariable String catalogCode,
             HttpServletRequest request,HttpServletResponse response) {
         DataCatalog dataCatalog = dataDictionaryManager.getObjectById(catalogCode);
-        catalogPrDeleteHander(dataCatalog,request);
+        catalogPrDeleteHandler(dataCatalog,request);
 
         dataDictionaryManager.deleteDataDictionary(catalogCode);
         JsonResultUtils.writeBlankJson(response);
 
         /*****************log************************/
-        OperationLogCenter.logDeleteObject(request, optId, catalogCode, OperationLog.P_OPT_LOG_METHOD_D,
-                "删除数据字典目录", dataCatalog);
+//        OperationLogCenter.logDeleteObject(request, optId, catalogCode, OperationLog.P_OPT_LOG_METHOD_D,
+//                "删除数据字典目录", dataCatalog);
         /*****************log************************/
     }
 
@@ -426,20 +449,21 @@ public class DataDictionaryController extends BaseController {
      * @param response {@link HttpServletResponse}
      */
     @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}", method = RequestMethod.DELETE)
+    @RecordOperationLog(content = "删除数据字典")
     public void deleteDictionary(@PathVariable String catalogCode, @PathVariable String dataCode,
             HttpServletRequest request,HttpServletResponse response) {
         DataCatalog dataCatalog = dataDictionaryManager.getObjectById(catalogCode);
         DataDictionary dataDictionary = dataDictionaryManager.getDataDictionaryPiece(new DataDictionaryId(catalogCode, dataCode));
 
-        dictionaryPreDeleteHander(dataCatalog, dataDictionary,request);
+        dictionaryPreDeleteHandler(dataCatalog, dataDictionary,request);
 
         dataDictionaryManager.deleteDataDictionaryPiece(dataDictionary.getId());
 
         JsonResultUtils.writeBlankJson(response);
 
         /*****************log************************/
-        OperationLogCenter.logDeleteObject(request, optId, catalogCode+"-"+dataCode, OperationLog.P_OPT_LOG_METHOD_D,
-                "删除数据字典明细", dataDictionary);
+//        OperationLogCenter.logDeleteObject(request, optId, catalogCode+"-"+dataCode, OperationLog.P_OPT_LOG_METHOD_D,
+//                "删除数据字典明细", dataDictionary);
         /*****************log************************/
     }
 

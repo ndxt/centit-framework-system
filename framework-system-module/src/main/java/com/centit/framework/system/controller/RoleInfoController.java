@@ -7,6 +7,7 @@ import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.model.basedata.IUserUnit;
 import com.centit.framework.model.basedata.OperationLog;
+import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.OptMethodManager;
 import com.centit.framework.system.service.SysRoleManager;
@@ -201,6 +202,7 @@ public class RoleInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(method = RequestMethod.POST)
+    @RecordOperationLog(content = "新增角色")
     public void createGlobalRole(@Valid RoleInfo roleInfo,HttpServletRequest request, HttpServletResponse response) {
         String roleType = roleInfo.getRoleType();
         if(StringUtils.isBlank(roleType)){
@@ -222,8 +224,8 @@ public class RoleInfoController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
 
         /*********log*********/
-        OperationLogCenter.logNewObject(request,optId,roleInfo.getRoleCode(),
-                OperationLog.P_OPT_LOG_METHOD_C, "新增角色" ,roleInfo);
+//        OperationLogCenter.logNewObject(request,optId,roleInfo.getRoleCode(),
+//                OperationLog.P_OPT_LOG_METHOD_C, "新增角色" ,roleInfo);
         /*********log*********/
     }
 
@@ -236,6 +238,7 @@ public class RoleInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/addopt/{roleCode}/{optCode}", method = RequestMethod.PUT)
+    @RecordOperationLog(content = "给角色添加权限")
     public void addOptToRole(@PathVariable String roleCode, @PathVariable String optCode,
             HttpServletRequest request,HttpServletResponse response) {
 
@@ -260,8 +263,8 @@ public class RoleInfoController extends BaseController {
         sysRoleManager.loadRoleSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
-        OperationLogCenter.logNewObject(request,optId, rolePower.getOptCode(),
-                OperationLog.P_OPT_LOG_METHOD_C,  "角色"+dbRoleInfo.getRoleName()+"添加权限:" , rolePower);
+//        OperationLogCenter.logNewObject(request,optId, rolePower.getOptCode(),
+//                OperationLog.P_OPT_LOG_METHOD_C,  "角色"+dbRoleInfo.getRoleName()+"添加权限:" , rolePower);
         /*********log*********/
     }
 
@@ -273,6 +276,7 @@ public class RoleInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/delopt/{roleCode}/{optCode}", method = RequestMethod.DELETE)
+    @RecordOperationLog(content = "删除角色权限")
     public void deleteOptFormRole(@PathVariable String roleCode, @PathVariable String optCode,
             HttpServletRequest request, HttpServletResponse response) {
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
@@ -294,8 +298,8 @@ public class RoleInfoController extends BaseController {
         sysRoleManager.loadRoleSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
-        OperationLogCenter.logDeleteObject(request,optId,rolePower.getOptCode(),
-                OperationLog.P_OPT_LOG_METHOD_D, "删除角色"+dbRoleInfo.getRoleName()+"的权限" , rolePower);
+//        OperationLogCenter.logDeleteObject(request,optId,rolePower.getOptCode(),
+//                OperationLog.P_OPT_LOG_METHOD_D, "删除角色"+dbRoleInfo.getRoleName()+"的权限" , rolePower);
         /*********log*********/
     }
 
@@ -308,6 +312,7 @@ public class RoleInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{roleCode}", method = RequestMethod.PUT)
+    @RecordOperationLog(content = "更新角色")
     public void edit(@PathVariable String roleCode, @Valid RoleInfo roleInfo,
                      HttpServletRequest request, HttpServletResponse response) {
 
@@ -325,8 +330,8 @@ public class RoleInfoController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
 
         /*********log*********/
-        OperationLogCenter.logUpdateObject(request,optId, roleCode, OperationLog.P_OPT_LOG_METHOD_U,
-                "更新角色信息",roleInfo, oldValue);
+//        OperationLogCenter.logUpdateObject(request,optId, roleCode, OperationLog.P_OPT_LOG_METHOD_U,
+//                "更新角色信息",roleInfo, oldValue);
         /*********log*********/
     }
 
@@ -339,6 +344,7 @@ public class RoleInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/power/{roleCode}", method = RequestMethod.PUT)
+    @RecordOperationLog(content = "更新角色权限")
     public void updateRolePower(@PathVariable String roleCode, RoleInfo roleInfo,
                      HttpServletRequest request, HttpServletResponse response) {
 
@@ -372,8 +378,8 @@ public class RoleInfoController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
 
         /*********log*********/
-        OperationLogCenter.logUpdateObject(request,optId, roleCode, OperationLog.P_OPT_LOG_METHOD_U,
-                "更新角色"+dbRoleInfo.getRoleName()+"权限",dbRoleInfo,oldRoleInfo);
+//        OperationLogCenter.logUpdateObject(request,optId, roleCode, OperationLog.P_OPT_LOG_METHOD_U,
+//                "更新角色"+dbRoleInfo.getRoleName()+"权限",dbRoleInfo,oldRoleInfo);
         /*********log*********/
     }
 
@@ -427,6 +433,7 @@ public class RoleInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{roleCode}", method = RequestMethod.DELETE)
+    @RecordOperationLog(content = "删除角色")
     public void deleteRole(@PathVariable String roleCode, HttpServletRequest request, HttpServletResponse response) {
         if(StringUtils.equalsAny(roleCode,
           "public", "anonymous", "forbidden")){
@@ -454,10 +461,10 @@ public class RoleInfoController extends BaseController {
             return ;
         }*/
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
-        if(dbRoleInfo!=null) {
-            OperationLogCenter.logDeleteObject(request, optId, roleCode,
-                    OperationLog.P_OPT_LOG_METHOD_D, "删除角色" + dbRoleInfo.getRoleName(), dbRoleInfo);
-        }
+//        if(dbRoleInfo!=null) {
+//            OperationLogCenter.logDeleteObject(request, optId, roleCode,
+//                    OperationLog.P_OPT_LOG_METHOD_D, "删除角色" + dbRoleInfo.getRoleName(), dbRoleInfo);
+//        }
         sysRoleManager.deleteRoleInfo(roleCode);
         JsonResultUtils.writeSuccessJson(response);
     }

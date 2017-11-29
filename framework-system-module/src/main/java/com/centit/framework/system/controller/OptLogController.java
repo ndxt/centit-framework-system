@@ -7,6 +7,7 @@ import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.model.basedata.OperationLog;
+import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.OptLog;
 import com.centit.framework.system.service.OptLogManager;
 import com.centit.support.database.utils.PageDesc;
@@ -77,14 +78,15 @@ public class OptLogController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{logId}", method = {RequestMethod.DELETE})
+    @RecordOperationLog(content = "删除日志")
     public void deleteOne(@PathVariable Long logId, HttpServletRequest request, HttpServletResponse response) {
         OptLog optLog = optLogManager.getObjectById(logId);
         optLogManager.deleteObjectById(logId);
         JsonResultUtils.writeBlankJson(response);
 
         /***************log*******************/
-        OperationLogCenter.logDeleteObject(request, optId, logId.toString(), OperationLog.P_OPT_LOG_METHOD_D,
-                "删除日志", optLog);
+//        OperationLogCenter.logDeleteObject(request, optId, logId.toString(), OperationLog.P_OPT_LOG_METHOD_D,
+//                "删除日志", optLog);
         /***************log*******************/
     }
 
@@ -95,14 +97,15 @@ public class OptLogController extends BaseController {
      * @param request HttpServletRequest
      */
     @RequestMapping(value = "/deleteMany", method = RequestMethod.DELETE)
+    @RecordOperationLog(content = "删除日志")
     public void deleteMany(Long[] logIds,HttpServletRequest request, HttpServletResponse response) {
-        for(Long logId : logIds) {
+        /*for(Long logId : logIds) {
             OptLog optLog = optLogManager.getObjectById(logId);
-            /***************log*******************/
+            *//***************log*******************//*
             OperationLogCenter.logDeleteObject(request, optId, logId.toString(), OperationLog.P_OPT_LOG_METHOD_D,
                     "删除日志", optLog);
-            /***************log*******************/
-        }
+            *//***************log*******************//*
+        }*/
         optLogManager.deleteMany(logIds);
 
         JsonResultUtils.writeBlankJson(response);
@@ -115,6 +118,7 @@ public class OptLogController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/delete", method = {RequestMethod.DELETE})
+    @RecordOperationLog(content = "删除日志")
     public void deleteByTime(Date begin, Date end, HttpServletResponse response) {
         optLogManager.delete(begin,end);
 

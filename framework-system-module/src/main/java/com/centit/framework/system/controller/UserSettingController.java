@@ -7,6 +7,7 @@ import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.model.basedata.OperationLog;
+import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserSetting;
 import com.centit.framework.system.po.UserSettingId;
@@ -122,6 +123,7 @@ public class UserSettingController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{paramCode}", method = {RequestMethod.POST, RequestMethod.PUT})
+    @RecordOperationLog(content = "更新当前用户设置参数")
     public void editUserSetting(@PathVariable String paramCode, @Valid UserSetting userSetting,
                  HttpServletRequest request, BindingResult bindingResult,
                  HttpServletResponse response) {
@@ -143,9 +145,9 @@ public class UserSettingController extends BaseController {
         }
         JsonResultUtils.writeBlankJson(response);
 
-        OperationLogCenter.logNewObject(request,optId,userSetting.getUserCode(),
-                OperationLog.P_OPT_LOG_METHOD_U,
-                "更新当前用户设置参数",userSetting);
+//        OperationLogCenter.logNewObject(request,optId,userSetting.getUserCode(),
+//                OperationLog.P_OPT_LOG_METHOD_U,
+//                "更新当前用户设置参数",userSetting);
 
     }
 
@@ -157,6 +159,7 @@ public class UserSettingController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{paramCode}", method = {RequestMethod.DELETE})
+    @RecordOperationLog(content = "删除用户设置参数")
     public void deleteUserSetting(@PathVariable String paramCode, HttpServletRequest request,
             HttpServletResponse response) {
         UserSetting dbUserSetting=userSettingManager.getObjectById(
@@ -164,8 +167,8 @@ public class UserSettingController extends BaseController {
         userSettingManager.deleteObject(dbUserSetting);
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
-        OperationLogCenter.logDeleteObject(request,optId,dbUserSetting.getUserCode(),
-                OperationLog.P_OPT_LOG_METHOD_D,  "已删除",dbUserSetting);
+//        OperationLogCenter.logDeleteObject(request,optId,dbUserSetting.getUserCode(),
+//                OperationLog.P_OPT_LOG_METHOD_D,  "已删除",dbUserSetting);
         /*********log*********/
     }
 

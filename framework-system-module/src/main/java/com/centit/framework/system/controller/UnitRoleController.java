@@ -123,7 +123,7 @@ public class UnitRoleController extends BaseController {
 
 
     /**
-     * 更新用户角色关联信息
+     * 更新机构角色关联信息
      * @param roleCode 角色代码
      * @param unitCode 机构代码
      * @param unitRole UserRole
@@ -131,7 +131,7 @@ public class UnitRoleController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{roleCode}/{unitCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content="用户{userInfo.userCode}修改机构{arg1}角色{arg0.roleCode}")
+    @RecordOperationLog(content="修改机构角色关联信息")
     public void edit(@PathVariable String roleCode, @PathVariable String unitCode, @Valid UnitRole unitRole,
                      HttpServletRequest request, HttpServletResponse response) {
         UnitRole dbUnitRole = sysUnitRoleManager.getUnitRoleById(unitCode,roleCode);
@@ -150,7 +150,7 @@ public class UnitRoleController extends BaseController {
     }
 
     /**
-     * 删除用户角色关联信息
+     * 删除机构角色关联信息
      * @param roleCode 角色代码
      * @param unitCodes 批量删除代码
      * @param request  {@link HttpServletRequest}
