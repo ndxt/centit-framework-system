@@ -1,14 +1,14 @@
 package com.centit.framework.system.service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.centit.framework.system.po.OptLog;
+import com.centit.support.database.utils.PageDesc;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import com.alibaba.fastjson.JSONArray;
-import com.centit.support.database.utils.PageDesc;
-import com.centit.framework.system.po.OptLog;
 
 public interface OptLogManager {
 
@@ -35,7 +35,7 @@ public interface OptLogManager {
     List<String> listOptIds();
 
     void deleteMany(Long[] logIds);
-    
+
      JSONArray listObjectsAsJson(
             String[] fields,
             Map<String, Object> filterMap, PageDesc pageDesc);

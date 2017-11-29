@@ -34,8 +34,15 @@ public class UserSettingDaoImpl extends BaseDaoImpl<UserSetting, UserSettingId> 
     }
 
     @Override
+    @Transactional
     public UserSetting getObjectById(UserSettingId userSettingId) {
         return super.getObjectById(userSettingId);
+    }
+
+    @Override
+    @Transactional
+    public void deleteObjectById(UserSettingId userSettingId) {
+        super.deleteObjectById(userSettingId);
     }
 
     @Transactional

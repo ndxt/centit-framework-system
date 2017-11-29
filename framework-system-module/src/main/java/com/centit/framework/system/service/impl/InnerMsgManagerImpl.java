@@ -1,6 +1,5 @@
 package com.centit.framework.system.service.impl;
 
-import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.model.adapter.MessageSender;
 import com.centit.framework.system.dao.InnerMsgDao;
@@ -8,6 +7,7 @@ import com.centit.framework.system.dao.InnerMsgRecipientDao;
 import com.centit.framework.system.po.InnerMsg;
 import com.centit.framework.system.po.InnerMsgRecipient;
 import com.centit.framework.system.service.InnerMsgManager;
+import com.centit.support.database.utils.PageDesc;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

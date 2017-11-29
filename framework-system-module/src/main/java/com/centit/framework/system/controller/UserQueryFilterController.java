@@ -4,11 +4,11 @@ import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
-import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.system.po.UserQueryFilter;
 import com.centit.framework.system.service.UserQueryFilterManager;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.StringBaseOpt;
+import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.Map;
 /**
  * UserQueryFilter  Controller.
- * create by scaffold 2016-02-29 
+ * create by scaffold 2016-02-29
  * @author codefan@sina.com
- * 用户自定义过滤条件表null   
+ * 用户自定义过滤条件表null
 */
 
 
@@ -53,7 +53,7 @@ public class UserQueryFilterController  extends BaseController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public void list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> searchColumn = convertSearchColumn(request);        
+        Map<String, Object> searchColumn = convertSearchColumn(request);
         List<UserQueryFilter> listObjects = userQueryFilterMag.listObjects(searchColumn, pageDesc);
 
         SimplePropertyPreFilter simplePropertyPreFilter = null;
@@ -71,7 +71,7 @@ public class UserQueryFilterController  extends BaseController {
 
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
-    
+
     /**
      * 查找用户某个模块的所有过滤器
      * @param modelCode 按照模块列出用户所有的过滤器
@@ -80,7 +80,7 @@ public class UserQueryFilterController  extends BaseController {
      */
     @RequestMapping(value = "/list/{modelCode}", method = {RequestMethod.GET})
     public void listUserQueryFilter(@PathVariable String modelCode, HttpServletRequest request, HttpServletResponse response) {
-        
+
         List<UserQueryFilter> userFilters =
                 userQueryFilterMag.listUserQueryFilterByModle(
                         super.getLoginUserCode(request), modelCode);
@@ -88,7 +88,7 @@ public class UserQueryFilterController  extends BaseController {
         JsonResultUtils.writeSingleDataJson(userFilters, response);
     }
     /**
-     * 查询单个  用户自定义过滤条件表 
+     * 查询单个  用户自定义过滤条件表
 
      * @param filterNo  FILTER_NO
      * @param response    {@link HttpServletResponse}
@@ -98,10 +98,10 @@ public class UserQueryFilterController  extends BaseController {
 
         UserQueryFilter userQueryFilter =
                 userQueryFilterMag.getUserQueryFilter( filterNo);
-        
+
         JsonResultUtils.writeSingleDataJson(userQueryFilter, response);
     }
-    
+
     /**
      * 新增 用户自定义过滤条件表
      *
@@ -123,7 +123,7 @@ public class UserQueryFilterController  extends BaseController {
         userQueryFilterMag.saveNewObject(userQueryFilter);
         JsonResultUtils.writeSingleDataJson(userQueryFilter.getFilterNo(),response);
     }
-    
+
     /**
     * 保存用户最新查看筛选器
     *
@@ -146,7 +146,7 @@ public class UserQueryFilterController  extends BaseController {
        Serializable pk = userQueryFilterMag.saveUserDefaultFilter(userQueryFilter);
        JsonResultUtils.writeSingleDataJson(pk,response);
    }
-   
+
    /**
     * 保存用户最新查看筛选器
     *
@@ -165,7 +165,7 @@ public class UserQueryFilterController  extends BaseController {
 
 
     /**
-     * 删除单个  用户自定义过滤条件表 
+     * 删除单个  用户自定义过滤条件表
 
      * @param filterNo  FILTER_NO
      * @param response  {@link HttpServletResponse}
@@ -178,23 +178,23 @@ public class UserQueryFilterController  extends BaseController {
             JsonResultUtils.writeBlankJson(response);
         else
             JsonResultUtils.writeErrorMessageJson("不能删除默认过滤条件！", response);
-    } 
-    
+    }
+
     /**
-     * 新增或保存 用户自定义过滤条件表 
-    
+     * 新增或保存 用户自定义过滤条件表
+
      * @param filterNo  FILTER_NO
      * @param userQueryFilter  {@link UserQueryFilter}
      * @param response    {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{filterNo}", method = {RequestMethod.PUT})
-    public void updateUserQueryFilter(@PathVariable Long filterNo, 
+    public void updateUserQueryFilter(@PathVariable Long filterNo,
         @Valid UserQueryFilter userQueryFilter, HttpServletResponse response) {
 
 
         UserQueryFilter dbUserQueryFilter  =
                 userQueryFilterMag.getUserQueryFilter( filterNo);
-        
+
         if (null != userQueryFilter) {
             dbUserQueryFilter .copy(userQueryFilter);
             dbUserQueryFilter.setCreateDate(DatetimeOpt.currentUtilDate());

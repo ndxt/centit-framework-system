@@ -2,14 +2,14 @@ package com.centit.framework.system.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.core.dao.DictionaryMapUtils;
-import com.centit.framework.system.dao.UserInfoDao;
-import com.centit.framework.system.po.UserInfo;
-import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
+import com.centit.framework.system.dao.UserInfoDao;
 import com.centit.framework.system.dao.UserRoleDao;
+import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
 import com.centit.framework.system.service.SysUserRoleManager;
+import com.centit.support.database.utils.PageDesc;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

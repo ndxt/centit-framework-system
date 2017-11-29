@@ -1,6 +1,5 @@
 package com.centit.framework.system.service.impl;
 
-import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.DataCatalogDao;
 import com.centit.framework.system.dao.DataDictionaryDao;
@@ -9,6 +8,7 @@ import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.DataDictionaryId;
 import com.centit.framework.system.service.DataDictionaryManager;
 import com.centit.support.algorithm.ListOpt;
+import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;

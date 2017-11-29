@@ -2,11 +2,11 @@ package com.centit.framework.system.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.core.dao.DictionaryMapUtils;
-import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.QueryFilterConditionDao;
 import com.centit.framework.system.po.QueryFilterCondition;
 import com.centit.framework.system.service.QueryFilterConditionManager;
+import com.centit.support.database.utils.PageDesc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,9 +20,9 @@ import java.util.Map;
 
 /**
  * QueryFilterCondition  Service.
- * create by scaffold 2016-03-01 
+ * create by scaffold 2016-03-01
  * @author codefan@sina.com
- * 系统内置查询方式null   
+ * 系统内置查询方式null
 */
 @Service
 public class QueryFilterConditionManagerImpl implements QueryFilterConditionManager{
@@ -34,7 +34,7 @@ public class QueryFilterConditionManagerImpl implements QueryFilterConditionMana
     private QueryFilterConditionDao queryFilterConditionDao ;
 
     @Override
-    @Transactional(propagation=Propagation.REQUIRED) 
+    @Transactional(propagation=Propagation.REQUIRED)
     public JSONArray listQueryFilterConditionsAsJson(
             String[] fields,
             Map<String, Object> filterMap, PageDesc pageDesc){

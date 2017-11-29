@@ -1,8 +1,8 @@
 package com.centit.framework.system.service;
 
-import java.util.List;
-
 import com.centit.framework.system.po.OptMethod;
+
+import java.util.List;
 
 public interface OptMethodManager{
 
