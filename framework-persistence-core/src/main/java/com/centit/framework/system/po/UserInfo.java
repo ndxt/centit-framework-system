@@ -486,6 +486,34 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         this.updateDate=other.updateDate;
     }
 
+    public void copyNotNullProperty(IUserInfo other) {
+        if (other.getIsValid() != null)
+            this.isValid = other.getIsValid();
+        if (other.getUserType() != null)
+            this.userType = other.getUserType();
+        if(other.getPrimaryUnit()!=null)
+            this.primaryUnit=other.getPrimaryUnit();
+        if (other.getLoginName() != null)
+            this.loginName = other.getLoginName();
+        if (other.getUserName() != null)
+            this.userName = other.getUserName();
+        if (other.getUserDesc() != null)
+            this.userDesc = other.getUserDesc();
+
+        if (other.getIdCardNo() != null)
+            this.idCardNo = other.getIdCardNo();
+        if (other.getRegEmail() != null)
+            this.regEmail = other.getRegEmail();
+        if (other.getUserTag() != null)
+            this.userTag = other.getUserTag();
+        if (other.getEnglishName() != null)
+            this.englishName =other.getEnglishName();
+        if (other.getUserOrder() != null)
+            this.userOrder = other.getUserOrder();
+        if (other.getRegCellPhone() != null)
+            this.regCellPhone = other.getRegCellPhone();
+    }
+
     public void copyNotNullProperty(UserInfo other) {
         /*if (other.getUserCode() != null)
             this.userCode = other.getUserCode();
@@ -511,6 +539,8 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
             this.loginIp = other.getLoginIp();
         if (other.getAddrbookId() != null)
             this.addrbookId = other.getAddrbookId();
+        if (other.getIdCardNo() != null)
+            this.idCardNo = other.getIdCardNo();
         if (other.getRegEmail() != null)
             this.regEmail = other.getRegEmail();
         if (other.getUserTag() != null)

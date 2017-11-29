@@ -7,8 +7,9 @@ import java.util.List;
 
 public interface UserSettingDao {
 
-     UserSetting getObjectById(UserSettingId userSettingId);
+    UserSetting getObjectById(UserSettingId userSettingId);
 
+    void deleteObjectById(UserSettingId userSettingId);
     /**
      * update or insert
      * @param userSetting userSetting
@@ -17,13 +18,15 @@ public interface UserSettingDao {
 
     // return listObjectsAll("From UserSetting where cid.userCode=?",userCode);
      List<UserSetting> getUserSettingsByCode(String userCode);
-    
+
     // listObjectsAll("From UserSetting where cid.userCode=? and optId= ?",
         //new Object[]{userCode,optID});
     //参数String userCode,String optID
      List<UserSetting> getUserSettings(String userCode, String optId);
-    
+
     //UserSetting us = new UserSetting(userCode,  paramCode, paramValue,
          //paramClass,  paramName);
-     void saveUserSetting(UserSetting userSetting);
+    void saveUserSetting(UserSetting userSetting);
+
+    void updateObject(UserSetting userSetting);
 }

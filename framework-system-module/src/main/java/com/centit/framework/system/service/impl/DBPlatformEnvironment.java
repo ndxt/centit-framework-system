@@ -3,16 +3,14 @@ package com.centit.framework.system.service.impl;
 import com.centit.framework.common.SysParametersUtils;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.model.adapter.PlatformEnvironment;
-import com.centit.framework.model.basedata.IDataDictionary;
-import com.centit.framework.model.basedata.IUnitInfo;
-import com.centit.framework.model.basedata.IUnitRole;
-import com.centit.framework.model.basedata.IUserInfo;
+import com.centit.framework.model.basedata.*;
 import com.centit.framework.security.model.CentitPasswordEncoder;
 import com.centit.framework.security.model.CentitSecurityMetadata;
 import com.centit.framework.security.model.OptTreeNode;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.security.CentitUserDetailsImpl;
+import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.StringRegularOpt;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -140,12 +138,43 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional(readOnly = true)
-    public String getUserSetting(String userCode, String paramCode) {
-        UserSetting us = userSettingDao.getObjectById(new UserSettingId(userCode,paramCode));
-        if(us==null) {
-          return null;
-        } else {
-          return us.getParamValue();
+    public UserSetting getUserSetting(String userCode, String paramCode) {
+        return userSettingDao.getObjectById(new UserSettingId(userCode,paramCode));
+    }
+
+    @Override
+    @Transactional
+    public void saveUserSetting(IUserSetting userSetting) {
+        // regCellPhone  idCardNo  regEmail
+        if(StringUtils.equalsAny(userSetting.getParamCode(),
+            "regCellPhone", "idCardNo","regEmail")) {
+            UserInfo ui = userInfoDao.getUserByCode(userSetting.getUserCode());
+            if (ui == null) return;
+            if("regCellPhone".equals(userSetting.getParamCode())){
+                ui.setRegCellPhone(userSetting.getParamValue());
+            }else if("idCardNo".equals(userSetting.getParamCode())){
+                ui.setIdCardNo(userSetting.getParamValue());
+            }else if("regEmail".equals(userSetting.getParamCode())){
+                ui.setRegEmail(userSetting.getParamValue());
+            }
+            userInfoDao.updateUser(ui);
+        }else{
+            if(StringUtils.isBlank(userSetting.getParamValue())){
+                userSettingDao.deleteObjectById(
+                  new UserSettingId(userSetting.getUserCode(),userSetting.getParamCode()) );
+            }else {
+                UserSetting us = userSettingDao.getObjectById(
+                    new UserSettingId(userSetting.getUserCode(), userSetting.getParamCode()));
+                if(us==null) {
+                    us = new UserSetting();
+                    us.copyNotNullProperty(userSetting);
+                    us.setCreateDate(DatetimeOpt.currentUtilDate());
+                    userSettingDao.saveUserSetting(us);
+                }else {
+                    us.copyNotNullProperty(userSetting);
+                    userSettingDao.updateObject(us);
+                }
+            }
         }
     }
 
@@ -291,24 +320,17 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         return userUnitDao.listObjectsAll();
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    @Cacheable(value="UserUnits",key="#userCode")
-    public List<UserUnit> listUserUnits(String userCode) {
-        List<UserUnit> userUnits = userUnitDao.listUserUnitsByUserCode(userCode);
+    private List<UserUnit> fetchUserUnitXzRank(List<UserUnit> userUnits){
         if(userUnits!=null){
             for (UserUnit uu : userUnits) {
-                if (null == uu) {
-                    continue;
-                }
                 // 设置行政角色等级
                 IDataDictionary dd = CodeRepositoryUtil.getDataPiece("RankType", uu.getUserRank());
                 if (dd != null && dd.getExtraCode() != null && StringRegularOpt.isNumber(dd.getExtraCode())) {
                     try {
-                        uu.setXzRank(Integer.valueOf(dd.getExtraCode()));
+                      uu.setXzRank(Integer.valueOf(dd.getExtraCode()));
                     } catch (Exception e) {
-                        logger.error(e.getMessage(),e);
-                        uu.setXzRank(CodeRepositoryUtil.MAXXZRANK);
+                      logger.error(e.getMessage(),e);
+                      uu.setXzRank(CodeRepositoryUtil.MAXXZRANK);
                     }
                 }
             }
@@ -317,28 +339,17 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    @Cacheable(value="UserUnits",key="#userCode")
+    public List<UserUnit> listUserUnits(String userCode) {
+        return fetchUserUnitXzRank(userUnitDao.listUserUnitsByUserCode(userCode));
+    }
+
+    @Override
     @Cacheable(value="UnitUsers",key="#unitCode")
     @Transactional(readOnly = true)
     public List<UserUnit> listUnitUsers(String unitCode) {
-        List<UserUnit> unitUsers = userUnitDao.listUnitUsersByUnitCode(unitCode);
-        if(unitUsers!=null){
-            for (UserUnit uu : unitUsers) {
-                if (null == uu) {
-                    continue;
-                }
-                // 设置行政角色等级
-                IDataDictionary dd = CodeRepositoryUtil.getDataPiece("RankType", uu.getUserRank());
-                if (dd != null && dd.getExtraCode() != null && StringRegularOpt.isNumber(dd.getExtraCode())) {
-                    try {
-                        uu.setXzRank(Integer.valueOf(dd.getExtraCode()));
-                    } catch (Exception e) {
-                        logger.error(e.getMessage(),e);
-                        uu.setXzRank(CodeRepositoryUtil.MAXXZRANK);
-                    }
-                 }
-            }
-        }
-        return unitUsers;
+      return fetchUserUnitXzRank(userUnitDao.listUnitUsersByUnitCode(unitCode));
     }
 
     @Override
@@ -546,6 +557,16 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
              return null;
            }
         return fillUserDetailsField(userinfo);
+    }
+
+    @Override
+    @Transactional
+    public void updateUserInfo(IUserInfo userInfo) {
+        UserInfo ui = userInfoDao.getUserByCode(userInfo.getUserCode());
+        if(ui==null)
+          return;
+        ui.copyNotNullProperty(userInfo);
+        userInfoDao.updateUser(ui);
     }
 
     private static List<OptInfo> getMenuFuncs(List<OptInfo> preOpts, List<FVUserOptMoudleList> ls) {
