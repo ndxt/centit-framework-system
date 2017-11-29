@@ -197,8 +197,8 @@ public class DataDictionaryManagerImpl implements
 
     @Override
     @Transactional
-    public void mergeObject(DataCatalog dataCatalog) {
-        dataCatalogDao.mergeObject(dataCatalog);
+    public void updateCatalog(DataCatalog dataCatalog) {
+        dataCatalogDao.updateCatalog(dataCatalog);
     }
 
     @Override
