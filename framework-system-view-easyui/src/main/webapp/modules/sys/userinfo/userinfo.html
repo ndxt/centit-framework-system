@@ -1,81 +1,9 @@
-<div class="easyui-layout" id="userinfo_panel" fit="true">
-
-  <div data-options="region:'east'" border="false" style="width: 440px; padding: 4px;">
-  </div>
-
-  <div data-options="region:'center'" border="false" style="padding: 4px;">
-    <div class="easyui-layout" fit="true" id="user-info-main">
-      <div region="north" class="search-body" cls="search" style="height: auto;">
-        <form class="clearFromValue">
-          <div class="search-item">
-            <label>用户名</label>
-            <input type="text" class="easyui-textbox" name="s_userName" />
-          </div>
-          <div class="search-item">
-            <label>主机构名称</label>
-            <input class="easyui-combotree" name="s_byUnderUnit" editable="false" target="unit" panelWidth="auto" />
-          </div>
-          <a></a>
-          <div class="search-item">
-            <label id="e@state">状态</label>
-            <input type="radio" name="s_isValid" value=""/> <p>全部</p>
-            <input type="radio" name="s_isValid" value="T" checked="checked" class="defaultChecked"/> <p>在用 </p>
-            <input type="radio" name="s_isValid" value="F"/> <p>禁用 </p>
-          </div>
-
-          <div class="search-actions">
-            <a class="easyui-linkbutton btn-search" iconCls="icon-search">搜索</a>
-            <a class="easyui-linkbutton btn-reset" iconcls="icon-reload">重置</a>
-          </div>
-        </form>
-      </div>
-
-      <div region="center" border="false">
-        <table
-          fit="true"
-          url="system/userinfo?_search=false&field=userCode&field=loginName&field=userOrder&field=userName&field=isValid&field=primaryUnit"
-          id="userInfoTable"
-          fitColumns="true"
-          sortName="userOrder"
-          sortOrder="asc"
-          search=".search"
-          toolbar=".temp-toolbar"
-          selectOnCheck="false"
-          checkOnSelect="false"
-        >
-          <thead>
-          <tr>
-            <th data-options="field:'ck',checkbox:true"></th>
-            <th data-options="field:'userCode'" width="100" sortable="true">用户编码</th>
-            <th data-options="field:'userName'" width="100" sortable="true">用户名</th>
-            <th id="e@loginName" data-options="field:'loginName'" width="130" sortable="true">登录名</th>
-            <th id="e@userOrder" data-options="field:'userOrder'" hidden="true" sortable="true">用户排序</th>
-            <th data-options="field:'primaryUnit'" format="Unit" width="200">主机构名称</th>
-          </tr>
-          </thead>
-        </table>
-        <div class="temp-toolbar">
-          <a iconCls="icon-add" href="modules/sys/userinfo/userinfo-info.html" trigger="none"
-             target="dialog" rel="userinfo_add" title="新增用户" maximizable="true"
-             width="640" height="540" btnValue="添加">新增</a>
-          <hr>
-
-          <a iconCls="icon-edit" href="modules/sys/userinfo/userinfo-info.html" trigger="single"
-             target="dialog" rel="userinfo_edit" title="编辑 {{userName}} 用户" width="640" height="540" btnValue="更新">编辑</a>
-          <hr>
-          <a iconCls="icon-base icon-base-magnifier" href="modules/sys/userinfo/userinfo-power-view.html" trigger="single"
-             target="dialog" rel="userinfo_power_view" title="查看 {{roleName}} 操作权限" width="720" height="600">查看权限</a>
-          <hr>
-          <a iconCls="icon-base icon-base-ban" trigger="multiple"
-             target="confirm" rel="userinfo_delete" title="确定删除?">删除</a>
-          <hr>
-          <a iconCls="icon-base icon-base-lock" trigger="multiple"
-             target="confirm" rel="userinfo_resetpassword" title="确定重置 所选用户密码为 000000 吗？">重置密码</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<div
+  class="panel"
+  href="../../modules/sys/userinfo/userinfo-list.html"
+  fit="true"
+  border="false"
+></div>
 
 <script>
 
@@ -83,11 +11,17 @@
     $.parser.onComplete = $.noop;
 
     requirejs([
+      'jquery',
       'core/filter/filter.dictionary',
       'modules/sys/userinfo/ctrl/userinfo'
-    ], function (FilterDictionary, UserInfo) {
+    ], function ($, FilterDictionary, UserInfo) {
       FilterDictionary.add(['YesOrNo', 'StationType', 'RankType']).then(function () {
-        new UserInfo('userinfo', panel).load(panel);
+        $('.panel', panel).panel({
+          onLoad: function () {
+            var div = $(this);
+            new UserInfo('UserInfo', div).load(div);
+          }
+        });
       });
     });
   };
