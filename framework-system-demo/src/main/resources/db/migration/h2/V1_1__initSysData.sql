@@ -447,5 +447,14 @@ insert into F_USERROLE (USER_CODE, ROLE_CODE, OBTAIN_DATE,
 			SECEDE_DATE, CHANGE_DESC, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
 values ('u0000000', 'SYSADMIN', parsedatetime('23-05-2012','dd-MM-yyyy','en'),
 	parsedatetime('01-10-2020', 'dd-MM-yyyy','en'),'' ,today(), today(),'u0000000','u0000000');
-	commit;
+
+
+insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
+values ('userSettingKey', '用户设置参数', 'F', 'L', '用户可以设置的参数', null, null, null, 'DICTSET_M', '1','u0000000','u0000000');
+
+insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
+values ('userSettingKey', 'receiveways', null, null, 'T', '消息接收方式', 'S', '用户接收消息的方式，可以是多个用逗号隔开', null, null, null);
+
+insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
+values ('userSettingKey', 'LOCAL_LANG', null, null, 'T', '语言', 'S', '设置用户语言', null, null, null);
 
