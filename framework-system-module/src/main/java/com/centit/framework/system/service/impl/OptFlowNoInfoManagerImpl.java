@@ -1,6 +1,5 @@
 package com.centit.framework.system.service.impl;
 
-import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.OptFlowNoInfoDao;
 import com.centit.framework.system.dao.OptFlowNoPoolDao;
@@ -10,6 +9,7 @@ import com.centit.framework.system.po.OptFlowNoPool;
 import com.centit.framework.system.po.OptFlowNoPoolId;
 import com.centit.framework.system.service.OptFlowNoInfoManager;
 import com.centit.support.algorithm.DatetimeOpt;
+import com.centit.support.database.utils.PageDesc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
     @Resource
     @NotNull
     private OptFlowNoInfoDao optFlowNoInfoDao;
-    
+
     @Resource
     @NotNull
     private OptFlowNoPoolDao optFlowNoPoolDao;
@@ -203,7 +203,7 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
         map.put("ownerCode", ownerCode);
         map.put("codeCode", codeCode);
         map.put("codeBaseDate", String.valueOf(codeBaseDate));
-    
+
          long minPoolNo = optFlowNoPoolDao.fetchFirstLsh(ownerCode, codeCode, codeBaseDate);
         if (minPoolNo > 0) {
             OptFlowNoPoolId obj = new OptFlowNoPoolId();
@@ -285,7 +285,7 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
         filterMap.put("ownerCode", ownerCode);
         filterMap.put("codeDate", codeBaseDate);
         filterMap.put("codeCode", codeCode);
-        
+
         return optFlowNoPoolDao.pageQuery(
                 QueryParameterPrepare.prepPageParams(filterMap,pageDesc,
                         optFlowNoPoolDao.pageCount(filterMap)));
@@ -315,5 +315,5 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
         return listLshInPool(DefaultOwnerCode, codeCode, DefaultCodeDate, pageDesc);
     }
 
-    
+
 }

@@ -2,13 +2,13 @@ package com.centit.framework.system.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.core.dao.DictionaryMapUtils;
-import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.model.adapter.OperationLogWriter;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.system.dao.OptLogDao;
 import com.centit.framework.system.po.OptLog;
 import com.centit.framework.system.service.OptLogManager;
+import com.centit.support.database.utils.PageDesc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,7 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
     }
 
     @Override
-    @Transactional(propagation=Propagation.REQUIRED) 
+    @Transactional(propagation=Propagation.REQUIRED)
     public void saveBatchObjects(List<OptLog> optLogs) {
         if (CollectionUtils.isEmpty(optLogs)) {
             return;
@@ -50,7 +50,7 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
     }
 
     @Override
-    @Transactional(propagation=Propagation.REQUIRED) 
+    @Transactional(propagation=Propagation.REQUIRED)
     public void delete(Date begin, Date end) {
         Map <String,String>map =new HashMap<String,String>();
         map.put("beginDate", String.valueOf(begin));
@@ -59,13 +59,13 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
     }
 
     @Override
-    @Transactional(propagation=Propagation.REQUIRED) 
+    @Transactional(propagation=Propagation.REQUIRED)
     public List<String> listOptIds() {
         return optLogDao.listOptIds();
     }
 
     @Override
-    @Transactional(propagation=Propagation.REQUIRED) 
+    @Transactional(propagation=Propagation.REQUIRED)
     public void deleteMany(Long[] logIds) {
         for (Long logId : logIds) {
             optLogDao.deleteObjectById(logId);
@@ -73,7 +73,7 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
     }
 
     @Override
-    @Transactional(propagation=Propagation.REQUIRED) 
+    @Transactional(propagation=Propagation.REQUIRED)
     public void save(final OperationLog optLog) {
         OptLog optlog = new OptLog();
         optlog.copy(optLog);
@@ -82,7 +82,7 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
     }
 
     @Override
-    @Transactional(propagation=Propagation.REQUIRED) 
+    @Transactional(propagation=Propagation.REQUIRED)
     public void save(List<OperationLog> optLogs) {
         List<OptLog> optlogs = new ArrayList<OptLog>();
         for(OperationLog ol : optLogs){
@@ -92,9 +92,9 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
         }
         saveBatchObjects(optlogs);
     }
-    
+
     @Override
-    @Transactional(propagation=Propagation.REQUIRED) 
+    @Transactional(propagation=Propagation.REQUIRED)
     public JSONArray listObjectsAsJson( String[] fields,
             Map<String, Object> filterMap, PageDesc pageDesc){
 

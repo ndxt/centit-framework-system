@@ -1,17 +1,17 @@
 package com.centit.framework.system.service;
 
 import com.alibaba.fastjson.JSONArray;
-import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.system.po.UserQueryFilter;
+import com.centit.support.database.utils.PageDesc;
 
 import java.util.List;
 import java.util.Map;
 
 /**
  * UserQueryFilter  Service.
- * create by scaffold 2016-02-29 
+ * create by scaffold 2016-02-29
  * @author codefan@sina.com
- * 用户自定义过滤条件表null   
+ * 用户自定义过滤条件表null
 */
 
 public interface UserQueryFilterManager

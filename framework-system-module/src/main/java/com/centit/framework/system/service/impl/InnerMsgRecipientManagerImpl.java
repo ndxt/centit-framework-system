@@ -1,8 +1,7 @@
 package com.centit.framework.system.service.impl;
 
-import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.common.ObjectException;
-import com.centit.support.database.utils.PageDesc;
+import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.model.adapter.MessageSender;
 import com.centit.framework.model.basedata.IUnitInfo;
@@ -12,6 +11,7 @@ import com.centit.framework.system.dao.InnerMsgRecipientDao;
 import com.centit.framework.system.po.InnerMsg;
 import com.centit.framework.system.po.InnerMsgRecipient;
 import com.centit.framework.system.service.InnerMsgRecipientManager;
+import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +32,7 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
 
     /*
      * 更新接受者信息
-     * 
+     *
      */
     @Override
     @Transactional
@@ -46,7 +46,7 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
     /*
      * msg为消息主题，recipient为接收人
      * 添加消息接受者,群发(receipient.receive为数组，但是保存到数据库是挨个保存)
-     * 
+     *
      */
     @Override
     @Transactional
@@ -54,7 +54,7 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
         String receive = recipient.getReceive();
         String receives[] = StringUtils.split(receive, ",");
         InnerMsg msg = recipient.getMInnerMsg();
-        //拆分recieve   
+        //拆分recieve
         if (!StringUtils.isNotBlank(msg.getSender())) {
             msg.setSender(sysUserCode);
             //msg.setSenderName(CodeRepositoryUtil.getUserInfoByCode(sysUserCode).getUserName());
@@ -91,7 +91,7 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
 
     /*
      * 获取两者间来往消息列表
-     * 
+     *
      */
     @Override
     @Transactional

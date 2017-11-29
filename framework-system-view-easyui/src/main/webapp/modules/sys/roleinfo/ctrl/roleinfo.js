@@ -28,7 +28,7 @@ define(function (require) {
 
     // @override
     this.load = function (panel) {
-      var selectIndex = -1
+      var selectIndex = -1;
       var vm = this;
       var RoleUserPanel = $('#roleinfo_layout', panel).layout('panel', 'east');
 
@@ -92,7 +92,7 @@ define(function (require) {
       var types = {
         G: '全局角色',
         P: '公共角色',
-        F: '固定角色'
+        F: '内置角色'
       };
 
       return types[value] ? types[value] : value;

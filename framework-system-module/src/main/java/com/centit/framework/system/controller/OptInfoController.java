@@ -387,10 +387,10 @@ public class OptInfoController extends BaseController {
     OptMethod dbOptDef = optMethodManager.getObjectById(optCode);
     if (null == dbOptDef) {
       optDef.setOptId(optId);
-      optMethodManager.mergeObject(optDef);
+      optMethodManager.updateOptMethod(optDef);
     } else {
       BeanUtils.copyProperties(optInfo, dbOptDef, new String[]{"optInfo"});
-      optMethodManager.mergeObject(dbOptDef);
+      optMethodManager.updateOptMethod(dbOptDef);
     }
 
     JsonResultUtils.writeSuccessJson(response);

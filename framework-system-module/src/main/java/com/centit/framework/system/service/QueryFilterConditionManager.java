@@ -1,20 +1,20 @@
 package com.centit.framework.system.service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.centit.framework.system.po.QueryFilterCondition;
+import com.centit.support.database.utils.PageDesc;
+
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.fastjson.JSONArray;
-import com.centit.support.database.utils.PageDesc;
-import com.centit.framework.system.po.QueryFilterCondition;
-
 /**
  * QueryFilterCondition  Service.
- * create by scaffold 2016-03-01 
+ * create by scaffold 2016-03-01
  * @author codefan@sina.com
- * 系统内置查询方式null   
+ * 系统内置查询方式null
 */
 
-public interface QueryFilterConditionManager 
+public interface QueryFilterConditionManager
 {
 
     public List<QueryFilterCondition> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);

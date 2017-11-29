@@ -4,9 +4,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
-import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.system.po.QueryFilterCondition;
 import com.centit.framework.system.service.QueryFilterConditionManager;
+import com.centit.support.database.utils.PageDesc;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +20,9 @@ import java.io.Serializable;
 import java.util.Map;
 /**
  * QueryFilterCondition  Controller.
- * create by scaffold 2016-03-01 
+ * create by scaffold 2016-03-01
  * @author codefan@sina.com
- * 系统内置查询方式null   
+ * 系统内置查询方式null
 */
 
 
@@ -49,24 +49,24 @@ public class QueryFilterConditionController  extends BaseController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public void list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> searchColumn = convertSearchColumn(request);        
-        
+        Map<String, Object> searchColumn = convertSearchColumn(request);
+
         JSONArray listObjects = queryFilterConditionMag.listQueryFilterConditionsAsJson(field,searchColumn, pageDesc);
 
         if (null == pageDesc) {
             JsonResultUtils.writeSingleDataJson(listObjects, response);
             return;
         }
-        
+
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, listObjects);
         resData.addResponseData(PAGE_DESC, pageDesc);
 
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
-    
+
     /**
-     * 查询单个  系统内置查询方式 
+     * 查询单个  系统内置查询方式
 
      * @param conditionNo  CONDITION_NO
      * @param response HttpServletResponse
@@ -76,10 +76,10 @@ public class QueryFilterConditionController  extends BaseController {
 
         QueryFilterCondition queryFilterCondition =
                 queryFilterConditionMag.getObjectById( conditionNo);
-        
+
         JsonResultUtils.writeSingleDataJson(queryFilterCondition, response);
     }
-    
+
     /**
      * 新增 系统内置查询方式
      *
@@ -93,7 +93,7 @@ public class QueryFilterConditionController  extends BaseController {
     }
 
     /**
-     * 删除单个  系统内置查询方式 
+     * 删除单个  系统内置查询方式
 
      * @param conditionNo  CONDITION_NO
      * @param response HttpServletResponse
@@ -102,26 +102,26 @@ public class QueryFilterConditionController  extends BaseController {
     public void deleteQueryFilterCondition(@PathVariable Long conditionNo, HttpServletResponse response) {
 
         queryFilterConditionMag.deleteObjectById( conditionNo);
-        
+
         JsonResultUtils.writeBlankJson(response);
-    } 
-    
+    }
+
     /**
-     * 新增或保存 系统内置查询方式 
-    
+     * 新增或保存 系统内置查询方式
+
      * @param conditionNo  CONDITION_NO
      * @param queryFilterCondition  {@link QueryFilterCondition}
      * @param response    {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{conditionNo}", method = {RequestMethod.PUT})
-    public void updateQueryFilterCondition(@PathVariable Long conditionNo, 
+    public void updateQueryFilterCondition(@PathVariable Long conditionNo,
         @Valid QueryFilterCondition queryFilterCondition, HttpServletResponse response) {
 
 
         QueryFilterCondition dbQueryFilterCondition  =
                 queryFilterConditionMag.getObjectById( conditionNo);
-        
-        
+
+
 
         if (null != queryFilterCondition) {
             dbQueryFilterCondition.copy(queryFilterCondition);

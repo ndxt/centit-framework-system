@@ -1,10 +1,10 @@
 package com.centit.framework.system.service.impl;
 
-import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.system.dao.UserSettingDao;
 import com.centit.framework.system.po.UserSetting;
 import com.centit.framework.system.po.UserSettingId;
 import com.centit.framework.system.service.UserSettingManager;
+import com.centit.support.database.utils.PageDesc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -21,23 +21,23 @@ public class UserSettingManagerImpl implements UserSettingManager {
 
     @Resource
     private UserSettingDao userSettingDao;
-    
+
     @Override
     public List<UserSetting> getUserSettings(String userCode) {
         return userSettingDao.getUserSettingsByCode(userCode);
     }
-    
+
     @Override
     public List<UserSetting> getUserSettings(String userCode,String optID) {
         return userSettingDao.getUserSettings(userCode, optID);
     }
- 
+
     @Override
     public UserSetting getUserSetting(String userCode, String paramCode) {
-      
+
         return userSettingDao.getObjectById(new UserSettingId(userCode,paramCode));
     }
-    
+
     @Override
     @Transactional
     public void saveUserSetting(UserSetting userSetting){

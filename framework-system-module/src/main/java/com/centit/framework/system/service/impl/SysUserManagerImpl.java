@@ -225,7 +225,7 @@ public class SysUserManagerImpl implements SysUserManager {
 
         if(userinfo.getUserUnits() !=null){
             for(UserUnit uu: userinfo.getUserUnits() ){
-                 userUnitDao.mergeObject(uu);
+                 userUnitDao.updateOptMethod(uu);
             }
         }
 

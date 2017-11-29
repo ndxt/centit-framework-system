@@ -41,13 +41,6 @@ public class DataDictionaryDaoImpl extends BaseDaoImpl<DataDictionary, DataDicti
         return listObjects("FROM DataDictionary WHERE id.catalogCode = ? ORDER BY dataOrder", catalogCode);
     }
 
-
-    @Transactional
-    public String getNextPrimarykey() {
-        return StringBaseOpt.objectToString(DatabaseOptUtils.getNextKeyByHqlStrOfMax(this, "id.dataCode",
-                "DataDictionary WHERE length(id.dataCode)=12"));
-    }
-
     @Transactional
     public void deleteDictionary(String catalog) {
         try {
@@ -57,6 +50,11 @@ public class DataDictionaryDaoImpl extends BaseDaoImpl<DataDictionary, DataDicti
             logger.error("delete DataDictionary failed", re);
             throw re;
         }
+    }
+
+    @Override
+    public void updateDictionary(DataDictionary dataDictionary){
+        super.updateObject(dataDictionary);
     }
 
 }

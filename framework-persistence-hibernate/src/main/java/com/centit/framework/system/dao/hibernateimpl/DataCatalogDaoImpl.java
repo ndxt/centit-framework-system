@@ -44,4 +44,9 @@ public class DataCatalogDaoImpl extends BaseDaoImpl<DataCatalog, String> impleme
         }
         return filterField;
     }
+
+    @Override
+    public void updateCatalog(DataCatalog dataCatalog){
+        super.updateObject(dataCatalog);
+    }
 }

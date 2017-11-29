@@ -160,7 +160,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
         }
 
         for(OptMethod o : newOpts){
-            optMethodDao.mergeObject(o);
+            optMethodDao.updateOptMethod(o);
         }
 
         List<OptDataScope>  newDataScopes = optInfo.getDataScopes();

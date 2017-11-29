@@ -1,6 +1,5 @@
 package com.centit.framework.system.service.impl;
 
-import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.DataCatalogDao;
 import com.centit.framework.system.dao.DataDictionaryDao;
@@ -9,6 +8,7 @@ import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.DataDictionaryId;
 import com.centit.framework.system.service.DataDictionaryManager;
 import com.centit.support.algorithm.ListOpt;
+import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -62,7 +62,7 @@ public class DataDictionaryManagerImpl implements
     @CacheEvict(value = "DataDictionary",key="#dataCatalog.catalogCode")
     public List<DataDictionary> saveCatalogIncludeDataPiece(DataCatalog dataCatalog,boolean isAdmin){
 
-//        dataCatalogDao.mergeObject(dataCatalog);
+//        dataCatalogDao.updateOptMethod(dataCatalog);
 
         List<DataDictionary> oldData = dictionaryDao.listDataDictionary(dataCatalog.getCatalogCode());
         List<DataDictionary> newData = dataCatalog.getDataDictionaries();
@@ -93,7 +93,7 @@ public class DataDictionaryManagerImpl implements
                 if(isAdmin || "U".equals(oldD.getDataStyle())){
                     /*BeanUtils.copyProperties(newD, oldD, new String[]{"id","dataStyle"});
                     dictionaryDao.updateObject(oldD);*/
-                    dictionaryDao.mergeObject(newD);
+                    dictionaryDao.updateDictionary(newD);
                 }
             }
         }
@@ -127,7 +127,7 @@ public class DataDictionaryManagerImpl implements
         // datacatalog.setIsUpload("0");
         //datacatalog.setLastModifyDate(lastModifyDate);
         //baseDao.saveObject(datacatalog);
-        dictionaryDao.mergeObject(dd);
+        dictionaryDao.updateDictionary(dd);
     }
 
     public String[] getFieldsDesc(String sDesc, String sType) {
@@ -197,8 +197,8 @@ public class DataDictionaryManagerImpl implements
 
     @Override
     @Transactional
-    public void mergeObject(DataCatalog dataCatalog) {
-        dataCatalogDao.mergeObject(dataCatalog);
+    public void updateCatalog(DataCatalog dataCatalog) {
+        dataCatalogDao.updateCatalog(dataCatalog);
     }
 
     @Override
