@@ -263,7 +263,7 @@ public class UnitInfoController extends BaseController {
 
         sysUnitManager.updateUnitInfo(unitInfo);
 
-        JsonResultUtils.writeBlankJson(response);
+      JsonResultUtils.writeSingleDataJson(unitInfo, response);
 
         /*********log*********/
         OperationLogCenter.logUpdateObject(request, optId, unitCode, OperationLog.P_OPT_LOG_METHOD_U,
