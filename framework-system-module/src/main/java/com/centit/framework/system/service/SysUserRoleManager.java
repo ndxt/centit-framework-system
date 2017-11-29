@@ -1,14 +1,13 @@
 package com.centit.framework.system.service;
 
-import java.util.List;
-import java.util.Map;
-
 import com.alibaba.fastjson.JSONArray;
-import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.UserInfo;
-import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
+import com.centit.support.database.utils.PageDesc;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**

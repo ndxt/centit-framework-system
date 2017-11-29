@@ -1,10 +1,10 @@
 package com.centit.framework.system.service;
 
-import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.RolePower;
 import com.centit.framework.system.po.VOptTree;
+import com.centit.support.database.utils.PageDesc;
 
 import java.io.Serializable;
 import java.util.List;
@@ -31,11 +31,11 @@ public interface SysRoleManager{
     void updateRoleInfo(RoleInfo o);
 
     List<RolePower> updateRolePower(RoleInfo o);
-    
+
     void deleteRoleInfo(String roleCode);
-    
+
     RoleInfo getRoleInfo(String roleCode);
-    
+
     List<RolePower> listAllRolePowers();
 
     List<OptMethod> listAllOptMethods();

@@ -1,6 +1,5 @@
 package com.centit.framework.system.controller;
 
-import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.components.CodeRepositoryUtil;

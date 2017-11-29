@@ -2,13 +2,13 @@ package com.centit.framework.system.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.core.dao.DictionaryMapUtils;
-import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.UserQueryFilterDao;
 import com.centit.framework.system.po.UserQueryFilter;
 import com.centit.framework.system.service.UserQueryFilterManager;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.StringBaseOpt;
+import com.centit.support.database.utils.PageDesc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -21,9 +21,9 @@ import java.util.Map;
 
 /**
  * UserQueryFilter  Service.
- * create by scaffold 2016-02-29 
+ * create by scaffold 2016-02-29
  * @author codefan@sina.com
- * 用户自定义过滤条件表null   
+ * 用户自定义过滤条件表null
 */
 @Service
 public class UserQueryFilterManagerImpl implements UserQueryFilterManager{

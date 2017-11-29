@@ -15,7 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service("generalService")
 public  class GeneralServiceImpl implements GeneralService {

@@ -1,11 +1,11 @@
 package com.centit.framework.system.service;
 
-import java.util.Date;
-import java.util.List;
-
-import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.system.po.OptFlowNoPool;
 import com.centit.support.algorithm.DatetimeOpt;
+import com.centit.support.database.utils.PageDesc;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * 流水号生成规则，流水号根据   编码属主    OwnerCode  ，编码类别    CodeCode ，编码依据日期  CodeDate 三个属性进行顺序编码

@@ -1,19 +1,19 @@
 package com.centit.framework.system.service.impl;
 
 import com.centit.framework.components.CodeRepositoryUtil;
-import com.centit.framework.system.dao.UnitInfoDao;
-import com.centit.framework.system.po.UnitInfo;
-import com.centit.framework.system.service.SysUnitManager;
-import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.model.basedata.IDataDictionary;
+import com.centit.framework.system.dao.UnitInfoDao;
 import com.centit.framework.system.dao.UserInfoDao;
 import com.centit.framework.system.dao.UserUnitDao;
+import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserUnit;
+import com.centit.framework.system.service.SysUnitManager;
 import com.centit.framework.system.service.SysUserUnitManager;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.algorithm.StringRegularOpt;
+import com.centit.support.database.utils.PageDesc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;

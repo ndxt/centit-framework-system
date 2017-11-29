@@ -1,17 +1,17 @@
 package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
-import com.centit.framework.components.CodeRepositoryUtil;
-import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
+import com.centit.framework.components.CodeRepositoryUtil;
+import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
-import com.centit.support.database.utils.PageDesc;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserSetting;
 import com.centit.framework.system.po.UserSettingId;
 import com.centit.framework.system.service.UserSettingManager;
+import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
