@@ -177,7 +177,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
         }
 
         for(RolePower rp : newRPs){
-            rolePowerDao.mergeObject(rp);
+            rolePowerDao.updateRolePower(rp);
         }
         return rps;
     }

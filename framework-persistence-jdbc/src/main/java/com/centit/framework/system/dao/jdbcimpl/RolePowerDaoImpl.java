@@ -63,4 +63,9 @@ public class RolePowerDaoImpl extends BaseDaoImpl<RolePower, RolePowerId> implem
             super.mergeObject(rolePowers.get(i));
         }
     }
+
+    @Override
+    public void updateRolePower(RolePower rolePower){
+        super.updateObject(rolePower);
+    }
 }
