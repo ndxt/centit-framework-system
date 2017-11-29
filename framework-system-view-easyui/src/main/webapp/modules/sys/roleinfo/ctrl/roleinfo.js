@@ -92,7 +92,7 @@ define(function (require) {
       var types = {
         G: '全局角色',
         P: '公共角色',
-        F: '固定角色'
+        F: '内置角色'
       };
 
       return types[value] ? types[value] : value;

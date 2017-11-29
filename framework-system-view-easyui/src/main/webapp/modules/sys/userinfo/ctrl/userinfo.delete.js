@@ -5,7 +5,7 @@ define(function (require) {
 
   // 删除数据字典
   var UserInfoDelete = Page.extend(function () {
-    var _self = this;
+    var vm = this;
 
     // @override
     this.submit = function (table, data) {
@@ -13,7 +13,6 @@ define(function (require) {
       for (var i = 0; i < data.length; i++) {
         userCodes.push(data[i].userCode);
       }
-
 
       Core.ajax(Config.ContextPath + 'system/userinfo/' + userCodes, {
         type: 'json',
@@ -24,12 +23,8 @@ define(function (require) {
       }).then(function () {
         return require('loaders/cache/loader.system').loadAll()
       }).then(function () {
+        vm.parent.clearPanel();
         table.datagrid('reload');
-        var layout = _self.parent.panel.find('.easyui-layout').layout('panel', 'east');
-        // var layout = $('#userinfo_panel').layout('panel', 'east');
-        layout.panel('setTitle', '机构与权限');
-        layout.panel('clear');
-
       });
     };
   });
