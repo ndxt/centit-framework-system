@@ -18,7 +18,7 @@ define(function (require) {
 
   // 角色信息列表
   var UserInfo = Page.extend(function () {
-    var vm = this;
+
     this.selectIndex = -1;
 
     this.injecte([
@@ -36,13 +36,19 @@ define(function (require) {
       this.selectIndex = -1;
     };
 
+    this.queryUrl = 'system/userinfo?_search=false&field=userCode&field=loginName&field=userOrder&field=userName&field=isValid&field=primaryUnit';
+
     // @override
     this.load = function (panel) {
+      var vm = this;
+
       this.$autoHeight('north', $('#user-info-main', panel));
       this.AsidePanel = $('#userinfo_panel', panel).layout('panel', 'east');
       this.AsideController = UserInfoAside;
 
       panel.find('table').cdatagrid({
+        url: this.queryUrl,
+
         controller: this,
 
         queryParams: {
@@ -75,6 +81,8 @@ define(function (require) {
     };
 
     this.selectUser = function (user) {
+      var vm = this;
+
       if (!user || !user.userCode) {
         return this.clearPanel();
       }
@@ -86,6 +94,8 @@ define(function (require) {
     };
 
     this.clearPanel = function () {
+      var vm = this;
+
       vm.selectIndex = -1;
       this.AsidePanel.data('panel').options.onLoad = $.noop;
       this.AsidePanel.panel('clear');

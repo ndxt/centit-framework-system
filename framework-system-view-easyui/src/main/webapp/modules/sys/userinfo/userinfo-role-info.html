@@ -1,29 +1,29 @@
 <form class="form centit">
-	<div class="two fields">
-		<div class="field ">
-			<label id="c@username">用户名</label>
-			<input type="text" class="easyui-textbox" name="userCode"
-				 readonly="readonly" target='user'/>
+  <div class="two fields">
+    <div class="field ">
+      <label id="c@username">用户名</label>
+      <input type="text" class="easyui-textbox" name="userCode"
+             readonly="readonly" target='user'/>
 
-		</div>
+    </div>
 
-		<div class="field required">
-			<label id="c@rolename">角色名</label>
-			<input type="text" class="easyui-combobox" name="roleCode"
-			url="system/roleinfo/listRoles/S" textField="roleName" valueField="roleCode" required  panelHeight="200"/>
-		</div>
-	</div>
+    <div class="field required">
+      <label id="c@rolename">角色名</label>
+      <input type="text" name="roleCode" textField="roleName" valueField="roleCode" required panelHeight="200"/>
+    </div>
+  </div>
 
 
-	<div class="two fields">
-		<div class="field required">
-			<label id="c@effectiveDate">生效日期</label>
-			<input type="text" class="easyui-datebox" name="obtainDate" required />
-		</div>
-	</div>
+  <div class="two fields">
+    <div class="field required">
+      <label id="c@effectiveDate">生效日期</label>
+      <input type="text" class="easyui-datebox" name="obtainDate" required/>
+    </div>
+  </div>
 
-	<div class="field">
-		<label id="c@remarks">备注</label>
-		<input validType="maxLength[255]" type="text" class="easyui-textbox" name="changeDesc" height="100" multiline="true" style="height: 100px; width: 99%"/>
-	</div>
+  <div class="field">
+    <label id="c@remarks">备注</label>
+    <input validType="maxLength[255]" type="text" class="easyui-textbox" name="changeDesc" height="100" multiline="true"
+           style="height: 100px; width: 99%"/>
+  </div>
 </form>
