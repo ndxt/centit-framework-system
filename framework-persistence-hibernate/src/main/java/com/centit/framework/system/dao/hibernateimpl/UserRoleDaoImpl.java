@@ -25,16 +25,11 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
             filterField = new HashMap<>();
 
             filterField.put("roleCode", "id.roleCode = :roleCode");
-
             filterField.put("userCode", "id.userCode = :userCode");
-
             filterField.put("roleName", CodeBook.LIKE_HQL_ID);
-
-            filterField.put("unitCode", "id.roleCode in (select roleCode from RoleInfo where roleType = 'D' and unitCode = :unitCode)");
-            filterField.put("NP_userRoleType", "id.roleCode not in (select roleCode from RoleInfo where roleType = 'D')");
-
+            filterField.put("roleUnitCode", "id.roleCode in (select roleCode from RoleInfo where (roleType = 'P' or (roleType = 'D' and unitCode = :unitCode))");
+            filterField.put("unitCode", "id.userCode in (select uu.userCode from UserUnit uu where uu.unitCode = :unitCode)");
             filterField.put("userCode_isValid", "id.userCode in (select userCode from UserInfo where isValid = :userCode_isValid)");
-
             filterField.put(CodeBook.ORDER_BY_HQL_ID, " id.userCode ");
 
             filterField.put("(like)userName", "id.userCode in (select userCode from UserInfo where userName like :userName)");

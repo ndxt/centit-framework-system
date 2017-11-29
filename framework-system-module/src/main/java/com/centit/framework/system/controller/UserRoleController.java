@@ -10,6 +10,7 @@ import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
+import com.centit.framework.system.service.SysRoleManager;
 import com.centit.framework.system.service.SysUserRoleManager;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
@@ -38,6 +39,11 @@ import java.util.Map;
 @Controller
 @RequestMapping("/userrole")
 public class UserRoleController extends BaseController {
+
+    @Resource
+    @NotNull
+    private SysRoleManager sysRoleManager;
+
     @Resource
     @NotNull
     private SysUserRoleManager sysUserRoleManager;
@@ -141,15 +147,18 @@ public class UserRoleController extends BaseController {
     public void listUserUnitRoles(@PathVariable String unitCode,@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
       Map<String, Object> filterMap = convertSearchColumn(request);
       filterMap.put("userCode", userCode);
-      filterMap.put("unitCode", unitCode);
+      filterMap.put("roleUnitCode", unitCode);
       listObject(filterMap, pageDesc, response);
     }
 
     @RequestMapping(value = "/unitroleusers/{unitCode}/{roleCode}", method = RequestMethod.GET)
     public void listUnitRoleUsers(@PathVariable String unitCode,@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+        RoleInfo role = sysRoleManager.getObjectById(roleCode);
         Map<String, Object> filterMap = convertSearchColumn(request);
         filterMap.put("roleCode", roleCode);
-        filterMap.put("unitCode", unitCode);
+        if(role !=null && "P".equals(role.getRoleType())) {
+            filterMap.put("unitCode", unitCode);
+        }
         listObject(filterMap, pageDesc, response);
     }
     /**
