@@ -47,6 +47,81 @@ public class UserRoleController extends BaseController {
      */
     private String optId = "USERROLE";//CodeRepositoryUtil.getCode("OPTID", "userRole");
 
+
+    //INHERITED
+    @RequestMapping(value = "/roleusersinherited/{roleCode}", method = RequestMethod.GET)
+    public void listUserRoleSInherited(@PathVariable String roleCode, PageDesc pageDesc, HttpServletResponse response) {
+        Map<String, Object> filterMap = new HashMap<>(8);
+        filterMap.put("roleCode",roleCode);
+        filterMap.put("obtainType","I");
+        JSONArray listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
+        ResponseMapData resData = new ResponseMapData();
+        resData.addResponseData(OBJLIST, listObjects);
+        resData.addResponseData(PAGE_DESC, pageDesc);
+        JsonResultUtils.writeResponseDataAsJson(resData, response);
+    }
+
+    @RequestMapping(value = "/userrolesinherited/{userCode}", method = RequestMethod.GET)
+    public void listRoleUsersInherited(@PathVariable String userCode, PageDesc pageDesc, HttpServletResponse response) {
+        Map<String, Object> filterMap = new HashMap<>(8);
+        filterMap.put("userCode",userCode);
+        filterMap.put("obtainType","I");
+        JSONArray listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
+        ResponseMapData resData = new ResponseMapData();
+        resData.addResponseData(OBJLIST, listObjects);
+        resData.addResponseData(PAGE_DESC, pageDesc);
+        JsonResultUtils.writeResponseDataAsJson(resData, response);
+    }
+
+    @RequestMapping(value = "/userrolesall/{userCode}", method = RequestMethod.GET)
+    public void listRoleUsersAll(@PathVariable String userCode, PageDesc pageDesc, HttpServletResponse response) {
+        Map<String, Object> filterMap = new HashMap<>(8);
+        filterMap.put("userCode",userCode);
+        JSONArray listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
+        ResponseMapData resData = new ResponseMapData();
+        resData.addResponseData(OBJLIST, listObjects);
+        resData.addResponseData(PAGE_DESC, pageDesc);
+        JsonResultUtils.writeResponseDataAsJson(resData, response);
+    }
+    /**
+     * 查询所有用户角色
+     *
+     * @param filterMap   显示结果中只需要显示的字段
+     * @param pageDesc PageDesc
+     * @param response HttpServletResponse
+     */
+    protected void listObject(Map<String, Object> filterMap, PageDesc pageDesc, HttpServletResponse response) {
+        JSONArray listObjects = sysUserRoleManager.listObjects(filterMap, pageDesc);
+        ResponseMapData resData = new ResponseMapData();
+        resData.addResponseData(OBJLIST, listObjects);
+        resData.addResponseData(PAGE_DESC, pageDesc);
+
+        Map<Class<?>, String[]> excludes = new HashMap<>();
+        excludes.put(RoleInfo.class, new String[]{"rolePowers"});
+        JsonResultUtils.writeResponseDataAsJson(resData, response, JsonPropertyUtils.getExcludePropPreFilter(excludes));
+    }
+    /**
+     * 通过用户代码获取角色
+     *
+     * @param userCode 用户代码
+     * @param pageDesc PageDesc
+     * @param request  {@link HttpServletRequest}
+     * @param response  {@link HttpServletResponse}
+     */
+    @RequestMapping(value = "/userroles/{userCode}", method = RequestMethod.GET)
+    public void listRolesByUser(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> filterMap = convertSearchColumn(request);
+        filterMap.put("userCode", userCode);
+        //String type = request.getParameter("type");
+        /*if("S".equals(type)){
+            filterMap.put("NP_userRoleType", true);
+        }else if("D".equals(type)){
+            filterMap.put("NP_unitRoleType", true);
+
+        }*/
+        listObject(filterMap, pageDesc, response);
+    }
+
     /**
      * 通过角色代码获取用户
      *
@@ -62,51 +137,21 @@ public class UserRoleController extends BaseController {
         listObject(filterMap, pageDesc, response);
     }
 
-    /**
-     * 通过用户代码获取角色
-     *
-     * @param userCode 用户代码
-     * @param pageDesc PageDesc
-     * @param request  {@link HttpServletRequest}
-     * @param response  {@link HttpServletResponse}
-     */
-    @RequestMapping(value = "/userroles/{userCode}", method = RequestMethod.GET)
-    public void listRolesByUser(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/userunitroles/{unitCode}/{userCode}", method = RequestMethod.GET)
+    public void listUserUnitRoles(@PathVariable String unitCode,@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+      Map<String, Object> filterMap = convertSearchColumn(request);
+      filterMap.put("userCode", userCode);
+      filterMap.put("unitCode", unitCode);
+      listObject(filterMap, pageDesc, response);
+    }
+
+    @RequestMapping(value = "/unitroleusers/{unitCode}/{roleCode}", method = RequestMethod.GET)
+    public void listUnitRoleUsers(@PathVariable String unitCode,@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = convertSearchColumn(request);
-        filterMap.put("userCode", userCode);
-
-        String type = request.getParameter("type");
-        if("S".equals(type)){
-            filterMap.put("NP_userRoleType", true);
-        }else if("D".equals(type)){
-            filterMap.put("NP_unitRoleType", true);
-
-        }
-
+        filterMap.put("roleCode", roleCode);
+        filterMap.put("unitCode", unitCode);
         listObject(filterMap, pageDesc, response);
     }
-
-
-    /**
-     * 查询所有用户角色
-     *
-     * @param filterMap   显示结果中只需要显示的字段
-     * @param pageDesc PageDesc
-     * @param response HttpServletResponse
-     */
-    protected void listObject(Map<String, Object> filterMap, PageDesc pageDesc, HttpServletResponse response) {
-        JSONArray listObjects = sysUserRoleManager.listObjects(filterMap, pageDesc);
-
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, listObjects);
-        resData.addResponseData(PAGE_DESC, pageDesc);
-
-        Map<Class<?>, String[]> excludes = new HashMap<>();
-        excludes.put(RoleInfo.class, new String[]{"rolePowers"});
-        JsonResultUtils.writeResponseDataAsJson(resData, response, JsonPropertyUtils.getExcludePropPreFilter(excludes));
-    }
-
-
     /**
      * 返回一条用户角色关联信息
      * @param roleCode 角色代码

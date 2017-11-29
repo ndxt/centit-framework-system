@@ -27,54 +27,57 @@
         <result property="inheritedFrom" column="INHERITED_FROM" />
     </resultMap>
 
-    <!-- 查询条件 -->
-    <sql id="condition" databaseId="oracle">
-        <if test="roleCode != null  and roleCode != ''  ">
-            and u.ROLE_CODE = #{roleCode}
-        </if>
-        <if test="userCode != null  and userCode != ''  ">
-            and u.USER_CODE = #{userCode}
-        </if>
-        <if test="roleName != null  and roleName != ''  ">
-            and u.ROLE_NAME  like '%'|| #{roleName}||'%'
-        </if>
-        <if test="userName != null  and userName != ''  ">
-            and u.USER_CODE in (select id.USER_CODE from F_USERINFO id where id.USER_NAME like '%'|| #{userName}||'%')
-        </if>
-        <if test="NP_unitRoleType != null  and NP_unitRoleType != ''  ">
-            and u.ROLE_CODE in (select ROLE_CODE from F_ROLEINFO where UNIT_CODE is not null)
-        </if>
-        <if test="NP_userRoleType != null  and NP_userRoleType != ''  ">
-            and u.ROLE_CODE not in (select ROLE_CODE from F_ROLEINFO where UNIT_CODE is not null)
-        </if>
-        <if test="userCode_isValid != null  and userCode_isValid != ''  ">
-            and u.USER_CODE in (select USER_CODE from F_ROLEINFO where IS_VALID =#{userCode_isValid})
-        </if>
-    </sql>
 
-    <sql id="condition" databaseId="mysql">
-        <if test="roleCode != null  and roleCode != ''  ">
-            and u.ROLE_CODE = #{roleCode}
-        </if>
-        <if test="userCode != null  and userCode != ''  ">
-            and u.USER_CODE = #{userCode}
-        </if>
-        <if test="roleName != null  and roleName != ''  ">
-            and u.ROLE_NAME  like concat('%', #{roleName}, '%')
-        </if>
-        <if test="userName != null  and userName != ''  ">
-            and u.USER_CODE in (select id.USER_CODE from F_USERINFO id where id.USER_NAME like concat('%', #{userName}, '%'))
-        </if>
-        <if test="NP_unitRoleType != null  and NP_unitRoleType != ''  ">
-            and u.ROLE_CODE in (select ROLE_CODE from F_ROLEINFO where UNIT_CODE is not null)
-        </if>
-        <if test="NP_userRoleType != null  and NP_userRoleType != ''  ">
-            and u.ROLE_CODE not in (select ROLE_CODE from F_ROLEINFO where UNIT_CODE is not null)
-        </if>
-        <if test="userCode_isValid != null  and userCode_isValid != ''  ">
-            and u.USER_CODE in (select USER_CODE from F_ROLEINFO where IS_VALID =#{userCode_isValid})
-        </if>
-    </sql>
+
+	<!-- 查询条件 -->
+	<sql id="condition" databaseId="oracle">
+		<if test="roleCode != null  and roleCode != '' ">
+			  and u.ROLE_CODE =#{roleCode}
+		</if>
+		<if test="userCode != null  and userCode != '' ">
+			  and u.USER_CODE =#{userCode}
+		</if>
+		<if test="roleName != null  and roleName != '' ">
+			  and u.ROLE_NAME  like '%'|| #{roleName}||'%'
+		</if>
+    <if test="userName != null  and userName != '' ">
+      and u.USER_CODE in (select id.USER_CODE from F_USERINFO id where id.USER_NAME like '%'|| #{userName}||'%')
+    </if>
+		<if test="unitCode != null  and unitCode != '' ">
+			  and u.ROLE_CODE in (select ROLE_CODE from F_ROLEINFO where ROLE_TYPE='D' and UNIT_CODE =  #{unitCode} )
+		</if>
+		<if test="NP_userRoleType != null  and NP_userRoleType != '' ">
+			 and u.ROLE_CODE not in (select ROLE_CODE from F_ROLEINFO where ROLE_TYPE='D')
+		</if>
+		<if test="userCode_isValid != null  and userCode_isValid != '' ">
+			 and u.USER_CODE in (select USER_CODE from F_ROLEINFO where IS_VALID =#{userCode_isValid})
+		</if>
+	</sql>
+
+  <sql id="condition" databaseId="mysql">
+    <if test="roleCode != null  and roleCode != '' ">
+      and u.ROLE_CODE =#{roleCode}
+    </if>
+    <if test="userCode != null  and userCode != '' ">
+      and u.USER_CODE =#{userCode}
+    </if>
+    <if test="roleName != null  and roleName != '' ">
+      and u.ROLE_NAME  like concat('%', #{roleName}, '%')
+    </if>
+    <if test="userName != null  and userName != '' ">
+      and u.USER_CODE in (select id.USER_CODE from F_USERINFO id where id.USER_NAME like concat('%', #{userName}, '%'))
+    </if>
+    <if test="unitCode != null  and unitCode != '' ">
+      and u.ROLE_CODE in (select ROLE_CODE from F_ROLEINFO where ROLE_TYPE='D' and UNIT_CODE =  #{unitCode})
+    </if>
+    <if test="NP_userRoleType != null  and NP_userRoleType != '' ">
+      and u.ROLE_CODE not in (select ROLE_CODE from F_ROLEINFO where ROLE_TYPE='D')
+    </if>
+    <if test="userCode_isValid != null  and userCode_isValid != '' ">
+      and u.USER_CODE in (select USER_CODE from F_ROLEINFO where IS_VALID =#{userCode_isValid})
+    </if>
+  </sql>
+
 
     <sql id="condition" databaseId="h2">
         <if test="roleCode != null  and roleCode != ''  ">
@@ -89,16 +92,17 @@
         <if test="userName != null  and userName != ''  ">
             and u.USER_CODE in (select id.USER_CODE from F_USERINFO id where id.USER_NAME like concat('%', #{userName}, '%'))
         </if>
-        <if test="NP_unitRoleType != null  and NP_unitRoleType != ''  ">
-            and u.ROLE_CODE in (select ROLE_CODE from F_ROLEINFO where UNIT_CODE is not null)
+        <if test="unitCode != null  and unitCode != ''  ">
+            and u.ROLE_CODE in (select ROLE_CODE from F_ROLEINFO where ROLE_TYPE='D' and UNIT_CODE =  #{unitCode})
         </if>
         <if test="NP_userRoleType != null  and NP_userRoleType != ''  ">
-            and u.ROLE_CODE not in (select ROLE_CODE from F_ROLEINFO where UNIT_CODE is not null)
+            and u.ROLE_CODE not in (select ROLE_CODE from F_ROLEINFO where ROLE_TYPE='D')
         </if>
         <if test="userCode_isValid != null  and userCode_isValid != ''  ">
             and u.USER_CODE in (select USER_CODE from F_ROLEINFO where IS_VALID =#{userCode_isValid})
         </if>
     </sql>
+
 
     <!-- 查询核心SQL -->
     <sql id="coreSql">
@@ -118,7 +122,7 @@
     <!--分页计数 -->
     <select id="pageCount" parameterType="map" resultType="int">
         <![CDATA[
-            select count(0) cnt
+            select count(*) cnt
             from  F_USERROLE u
         ]]>
         <where>
@@ -133,9 +137,6 @@
         <where>
             <include refid="condition" />
         </where>
-        <if test="pageDesc != null ">
-            order by ${pageDesc}
-        </if>
         <include refid="com.centit.framework.mybatis.dao.BaseDao.pageEnd" />
     </select>
     <!--分页查询结束 -->
@@ -150,6 +151,7 @@
         </where>
     </select>
     <!--查询单条记录 结束 -->
+
 
     <!--插入新单据 start -->
     <sql id="insertSql">
@@ -296,5 +298,43 @@
         from F_V_USERROLES
         where ROLE_CODE = #{roleCode}
     </select>
+
+  <!--分页计数 -->
+  <select id="pageCountUserRole" parameterType="map" resultType="int">
+    <![CDATA[
+	    select count(*) cnt
+	    from F_V_USERROLES u
+      where 1=1
+       ]]>
+    <if test="userCode != null  and userCode != '' ">
+      and u.USER_CODE = #{userCode}
+    </if>
+    <if test="roleCode != null  and roleCode != '' ">
+      and u.ROLE_CODE = #{roleCode}
+    </if>
+    <if test="obtainType != null  and obtainType != '' ">
+      and u.OBTAIN_TYPE = #{obtainType}
+    </if>
+  </select>
+  <!--分页查询 -->
+  <select id="pageQueryUserRole" parameterType="map" resultMap="FvuserRole">
+    <include refid="com.centit.framework.mybatis.dao.BaseDao.pageBegin" />
+    <![CDATA[
+	   select u.USER_CODE,u.ROLE_CODE,u.ROLE_NAME,u.IS_VALID,u.ROLE_DESC,
+	        u.ROLE_TYPE,u.UNIT_CODE,u.OBTAIN_TYPE,u.INHERITED_FROM
+     from F_V_USERROLES u where 1=1
+       ]]>
+    <if test="userCode != null  and userCode != '' ">
+      and u.USER_CODE = #{userCode}
+    </if>
+    <if test="roleCode != null  and roleCode != '' ">
+      and u.ROLE_CODE = #{roleCode}
+    </if>
+    <if test="obtainType != null  and obtainType != '' ">
+      and u.OBTAIN_TYPE = #{obtainType}
+    </if>
+
+    <include refid="com.centit.framework.mybatis.dao.BaseDao.pageEnd" />
+  </select>
 
 </mapper>

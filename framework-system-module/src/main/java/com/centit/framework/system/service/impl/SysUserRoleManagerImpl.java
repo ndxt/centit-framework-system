@@ -5,6 +5,7 @@ import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.UserInfoDao;
 import com.centit.framework.system.dao.UserRoleDao;
+import com.centit.framework.system.po.FVUserRoles;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
@@ -73,4 +74,30 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
         map.put("queryByRole", roleCode);
         return userInfoDao.listObjects(map);
     }
+
+    @Override
+    @Transactional
+    public List<FVUserRoles> listUserRolesByUserCode(String userCode) {
+        return userRoleDao.listUserRolesByUserCode(userCode);
+    }
+
+
+
+    @Override
+    @Transactional
+    public List<FVUserRoles> listRoleUsersByRoleCode(String roleCode) {
+        return userRoleDao.listRoleUsersByRoleCode(roleCode);
+    }
+
+    @Override
+    @Transactional
+    public JSONArray pageQueryUserRole(Map<String, Object> filterMap, PageDesc pageDesc) {
+
+      return DictionaryMapUtils.objectsToJSONArray(
+          userRoleDao.pageQueryUserRole(
+          QueryParameterPrepare.prepPageParams(
+            filterMap,pageDesc,userRoleDao.pageCountUserRole(filterMap))));
+    }
+
+
 }

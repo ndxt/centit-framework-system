@@ -7,11 +7,12 @@ import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.po.FVUserRoles;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
+import com.centit.support.algorithm.NumberBaseOpt;
+import com.centit.support.database.utils.QueryAndNamedParams;
+import com.centit.support.database.utils.QueryUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +30,8 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
 
             filterField.put("roleName", CodeBook.LIKE_HQL_ID);
 
-            filterField.put("NP_unitRoleType", "id.roleCode in (select roleCode from RoleInfo where unitCode is not null)");
-            filterField.put("NP_userRoleType", "id.roleCode not in (select roleCode from RoleInfo where unitCode is not null)");
+            filterField.put("unitCode", "id.roleCode in (select roleCode from RoleInfo where roleType = 'D' and unitCode = :unitCode)");
+            filterField.put("NP_userRoleType", "id.roleCode not in (select roleCode from RoleInfo where roleType = 'D')");
 
             filterField.put("userCode_isValid", "id.userCode in (select userCode from UserInfo where isValid = :userCode_isValid)");
 
@@ -65,6 +66,7 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
           this, sSqlsen, new Object[]{userCode});
     }
 
+
     @Override
     @SuppressWarnings("unchecked")
     @Transactional
@@ -72,6 +74,38 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
         final String sSqlsen = "from FVUserRoles v where v.id.roleCode = ?";
         return (List<FVUserRoles>) DatabaseOptUtils.findObjectsByHql(
           this, sSqlsen, new Object[]{roleCode});
+    }
+
+    @Override
+    @Transactional
+    public int pageCountUserRole(Map<String, Object> filterDescMap) {
+        final String sSqlsen = "select count(*) as cnt from FVUserRoles v " +
+          "where 1=1 [:roleCode | v.id.roleCode = :roleCode] " +
+          "[:userCode | v.id.userCode = :userCode]" +
+          "[:obtainType | v.obtainType = :obtainType] ";
+        QueryAndNamedParams qap = QueryUtils.translateQuery(sSqlsen, filterDescMap );
+        return NumberBaseOpt.castObjectToInteger(
+            DatabaseOptUtils.getSingleObjectByHql(this, qap.getQuery(), qap.getParams()));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public List<FVUserRoles> pageQueryUserRole(Map<String, Object> pageQureyMap) {
+        final String sSqlsen = "from FVUserRoles v " +
+          "where 1=1 [:roleCode | v.id.roleCode = :roleCode] " +
+          "[:userCode | v.id.userCode = :userCode]" +
+          "[:obtainType | v.obtainType = :obtainType] ";
+        int startPos = 0;
+        int maxSize = 0;
+        if(pageQureyMap!=null){
+          startPos = NumberBaseOpt.castObjectToInteger(pageQureyMap.get("startRow"));
+          maxSize = NumberBaseOpt.castObjectToInteger(pageQureyMap.get("maxSize"));
+        }
+
+        QueryAndNamedParams qap = QueryUtils.translateQuery(sSqlsen, pageQureyMap );
+        return ( List<FVUserRoles>) DatabaseOptUtils.findObjectsByHql (
+          this, qap.getQuery(), qap.getParams(),startPos,maxSize);
     }
 
 }

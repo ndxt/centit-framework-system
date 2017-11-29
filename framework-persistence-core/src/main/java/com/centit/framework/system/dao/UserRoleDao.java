@@ -13,7 +13,7 @@ public interface UserRoleDao {
 
      List<UserRole> listObjects();
 
-    void mergeObject(UserRole dbUserRole);
+     void mergeObject(UserRole dbUserRole);
 
      void deleteObject(UserRole dbUserRole);
 
@@ -25,13 +25,13 @@ public interface UserRoleDao {
      int  pageCount(Map<String, Object> filterDescMap);
      List<UserRole>  pageQuery(Map<String, Object> pageQureyMap);
 
-    //DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.roleCode = ?", roid);
+     //DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.roleCode = ?", roid);
      void deleteByRoleId(String roleCode);
 
-    //DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.userCode = ?", usid);
+     //DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.userCode = ?", usid);
      void deleteByUserId(String userCode);
 
-      /**
+     /**
      * List roleInfos = new ArrayList();
         //所有的用户 都要添加这个角色
         roleInfos.add(new RoleInfo("G-", "general ","G",
@@ -40,9 +40,9 @@ public interface UserRoleDao {
      * @param userCode usid
      * @return List FVUserRoles
      */
-      List<FVUserRoles> listUserRolesByUserCode(String userCode);
+     List<FVUserRoles> listUserRolesByUserCode(String userCode);
 
-    /**
+     /**
      * List roleInfos = new ArrayList();
      //所有的用户 都要添加这个角色
      roleInfos.add(new RoleInfo("G-", "general ","G",
@@ -52,6 +52,20 @@ public interface UserRoleDao {
      * @return 拥有该角色的用户
      */
      List<FVUserRoles> listRoleUsersByRoleCode(String roleCode);
+
+      /**
+       * 所有的用户角色关系，包括 继承来的额角色
+       * @param filterDescMap 条件Map
+       * @return 返回列表数量
+       */
+      int  pageCountUserRole(Map<String, Object> filterDescMap);
+
+      /**
+       * 所有的用户角色关系，包括 继承来的额角色
+       * @param pageQureyMap 条件Map
+       * @return 返回列表
+       */
+      List<FVUserRoles>  pageQueryUserRole(Map<String, Object> pageQureyMap);
 
 
 }

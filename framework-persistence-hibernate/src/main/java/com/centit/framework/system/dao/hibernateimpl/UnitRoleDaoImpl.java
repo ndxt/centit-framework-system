@@ -39,7 +39,7 @@ public class UnitRoleDaoImpl extends BaseDaoImpl<UnitRole, UnitRoleId> implement
         super.mergeObject(dbUnitRole);
     }
 
-  @Override
+    @Override
     @Transactional
     public void deleteUnitRole(UnitRole dbUnitRole){
         super.deleteObject(dbUnitRole);

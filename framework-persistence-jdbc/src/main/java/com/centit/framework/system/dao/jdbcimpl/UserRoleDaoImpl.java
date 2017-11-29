@@ -1,12 +1,15 @@
 package com.centit.framework.system.dao.jdbcimpl;
 
 import com.centit.framework.core.dao.CodeBook;
+import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.po.FVUserRoles;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
 import com.centit.support.database.orm.OrmDaoUtils;
+import com.centit.support.database.utils.PageDesc;
+import com.centit.support.database.utils.QueryAndNamedParams;
 import com.centit.support.database.utils.QueryUtils;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
@@ -26,10 +29,10 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
             filterField.put("roleCode", CodeBook.EQUAL_HQL_ID);
             filterField.put("userCode", CodeBook.EQUAL_HQL_ID);
             filterField.put("roleName", CodeBook.LIKE_HQL_ID);
-            filterField.put("NP_unitRoleType", "roleCode in (select ro.ROLE_CODE from f_roleinfo ro " +
-                    "where ro.UNIT_CODE is not null)");
+            filterField.put("unitCode", "roleCode in (select ro.ROLE_CODE from f_roleinfo ro " +
+                    "where ro.ROLE_TYPE = 'D' and ro.UNIT_CODE = :unitCode)");
             filterField.put("NP_userRoleType", "roleCode not in (select ro.ROLE_CODE from f_roleinfo ro " +
-                    "where ro.UNIT_CODE is not null)");
+                    "where ro.ROLE_TYPE ='D')");
             filterField.put("userCode_isValid", "userCode in (select us.USER_CODE from f_userinfo us " +
                     "where us.IS_VALID = :userCode_isValid)");
             //filterField.put(CodeBook.ORDER_BY_HQL_ID, " userCode ");
@@ -74,6 +77,7 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
               FVUserRoles.class));
     }
 
+
     @Override
     @SuppressWarnings("unchecked")
     @Transactional
@@ -84,6 +88,37 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
             QueryUtils.createSqlParamsMap("roleCode",roleCode) ,
             FVUserRoles.class));
     }
+
+    @Override
+    @Transactional
+    public int pageCountUserRole(Map<String, Object> filterDescMap) {
+        String sql = "select count(*) as cnt from F_V_USERROLES u " +
+          "where 1=1 [:roleCode | u.ROLE_CODE = :roleCode] " +
+          "[:userCode | u.USER_CODE = :userCode]" +
+          "[:obtainType | u.OBTAIN_TYPE = :obtainType] ";
+        QueryAndNamedParams qap = QueryUtils.translateQuery(sql , filterDescMap);
+        return jdbcTemplate.execute(
+          (ConnectionCallback<Integer>) conn ->
+            OrmDaoUtils.fetchObjectsCount(conn, qap.getQuery(), qap.getParams()));
+    }
+
+    @Override
+    @Transactional
+    public List<FVUserRoles> pageQueryUserRole(Map<String, Object> pageQureyMap) {
+      String querySql = "select u.USER_CODE,u.ROLE_CODE,u.ROLE_NAME,u.IS_VALID,u.ROLE_DESC," +
+        " u.ROLE_TYPE,u.UNIT_CODE,u.OBTAIN_TYPE,u.INHERITED_FROM" +
+        " from F_V_USERROLES u " +
+        "where 1=1 [:roleCode | u.ROLE_CODE = :roleCode] " +
+        "[:userCode | u.USER_CODE = :userCode]" +
+        "[:obtainType | u.OBTAIN_TYPE = :obtainType] ";
+      PageDesc pageDesc = QueryParameterPrepare.fetckPageDescParams(pageQureyMap);
+      QueryAndNamedParams qap = QueryUtils.translateQuery(querySql, pageQureyMap);
+      return jdbcTemplate.execute(
+           (ConnectionCallback<List<FVUserRoles>>) conn -> OrmDaoUtils
+          .queryObjectsByNamedParamsSql(conn, qap.getQuery(), qap.getParams(), FVUserRoles.class,
+            pageDesc.getRowStart(), pageDesc.getPageSize()));
+    }
+
 
     @Transactional
     public void deleteByRoleCodeAndUserCode(String roleCode,String userCode) {
