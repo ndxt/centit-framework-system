@@ -150,8 +150,15 @@
         </where>
     </select>
     <!--查询单条记录 结束 -->
+    <select id="listUserRoles" parameterType="String" resultMap="UserRole">
+      <include refid="coreSql" />
+      where u.USER_CODE = #{userCode}
+    </select>
 
-
+    <select id="listRoleUsers" parameterType="String" resultMap="UserRole">
+      <include refid="coreSql" />
+      where u.ROLE_CODE = #{roleCode}
+    </select>
     <!--插入新单据 start -->
     <sql id="insertSql">
         (

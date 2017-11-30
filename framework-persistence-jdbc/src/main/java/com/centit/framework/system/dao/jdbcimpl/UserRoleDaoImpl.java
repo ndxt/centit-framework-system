@@ -43,6 +43,18 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
 
     @Override
     @Transactional
+    public List<UserRole> listUserRoles(String userCode) {
+        return super.listObjects(QueryUtils.createSqlParamsMap("userCode",userCode));
+    }
+
+    @Override
+    @Transactional
+    public List<UserRole> listRoleUsers(String roleCode) {
+        return super.listObjects(QueryUtils.createSqlParamsMap("roleCode",roleCode));
+    }
+
+    @Override
+    @Transactional
     public void deleteObjectById(UserRoleId id) {
           super.deleteObjectById(id);
       }

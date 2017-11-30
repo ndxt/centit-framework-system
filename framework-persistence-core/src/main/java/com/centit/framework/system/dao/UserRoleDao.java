@@ -27,6 +27,18 @@ public interface UserRoleDao {
     List<UserRole> listObjects();
 
     /**
+     * 查询全部
+     * @param userCode 用户编码
+     * @return List<UserRole>
+     */
+    List<UserRole> listUserRoles(String userCode);
+    /**
+     * 查询全部
+     * @param roleCode 角色编码
+     * @return List<UserRole>
+     */
+    List<UserRole> listRoleUsers(String roleCode);
+    /**
     *
     * @param dbUserRole
     */

@@ -38,19 +38,29 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
         return filterField;
     }
 
+    @Override
+    @Transactional
+    public List<UserRole> listUserRoles(String userCode) {
+        return super.listObjects(QueryUtils.createSqlParamsMap("userCode",userCode));
+    }
+
+    @Override
+    @Transactional
+    public List<UserRole> listRoleUsers(String roleCode) {
+        return super.listObjects(QueryUtils.createSqlParamsMap("roleCode",roleCode));
+    }
+
+    @Override
     @Transactional
     public void deleteByRoleId(String roid) {
         DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.roleCode = ?", roid);
     }
+
+    @Override
     @Transactional
     public void deleteByUserId(String usid) {
         DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.userCode = ?", usid);
     }
-    @Transactional
-    public void deleteByRoleCodeAndUserCode(String roleCode,String userCode) {
-        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.userCode = '"+userCode+"' and id.roleCode= '"+roleCode+"'");
-    }
-
 
     @Override
     @SuppressWarnings("unchecked")

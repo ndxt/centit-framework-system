@@ -3,17 +3,19 @@ package com.centit.framework.system.service.impl;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.model.basedata.IDataDictionary;
+import com.centit.framework.model.basedata.IRoleInfo;
 import com.centit.framework.system.dao.UnitInfoDao;
 import com.centit.framework.system.dao.UserInfoDao;
+import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.dao.UserUnitDao;
-import com.centit.framework.system.po.UnitInfo;
-import com.centit.framework.system.po.UserInfo;
-import com.centit.framework.system.po.UserUnit;
-import com.centit.framework.system.service.SysUnitManager;
+import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysUserUnitManager;
+import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.algorithm.StringRegularOpt;
 import com.centit.support.database.utils.PageDesc;
+import com.centit.support.database.utils.QueryUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -22,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +40,7 @@ import java.util.Map;
 @Transactional
 public class SysUserUnitManagerImpl
     implements SysUserUnitManager {
-  public static final Logger logger = LoggerFactory.getLogger(SysUserUnitManagerImpl.class);
+    public static final Logger logger = LoggerFactory.getLogger(SysUserUnitManagerImpl.class);
 
     @Resource
     @NotNull
@@ -51,7 +54,7 @@ public class SysUserUnitManagerImpl
     private UserInfoDao userInfoDao;
 
     @Resource
-    private SysUnitManager sysUnitManager;
+    private UserRoleDao userRoleDao;
 
     @Override
     @Transactional(readOnly = true)
@@ -90,16 +93,38 @@ public class SysUserUnitManagerImpl
         return true;
     }
 
+    private void addUserRoleWhenNotExist(String userCode, String roleCode , List<UserRole> userRoles){
+        if(StringUtils.isNotBlank(roleCode)){
+          boolean hasRole = false;
+          for(UserRole userRole : userRoles){
+            if(userRole.getRoleCode().equals(roleCode)){
+              hasRole = true;
+            }
+          }
+          if(!hasRole){
+            IRoleInfo roleInfo = CodeRepositoryUtil.getRoleByRoleCode(roleCode);
+            if(roleInfo != null){
+              UserRole newUserRole = new UserRole(
+                new UserRoleId(userCode,roleInfo.getRoleCode()),
+                DatetimeOpt.currentUtilDate(), "根据用户岗位自动授予");
+              userRoleDao.saveNewObject(newUserRole);
+              userRoles.add(newUserRole);
+            }
+          }
+          //}
+        }
+    }
+
     @Override
     @CacheEvict(value ={"UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
     public String saveNewUserUnit(UserUnit userunit) {
         // 一对多模式, 删除主机构    多对多，将当前主机构设置为非主机构
-      if (! isMultiToMulti()) {
-        UserUnit pUserUnit = userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode());
-        if (null != pUserUnit) {
-          userUnitDao.deleteObjectById(pUserUnit.getUserUnitId());
+        if (! isMultiToMulti()) {
+            UserUnit pUserUnit = userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode());
+            if (null != pUserUnit) {
+              userUnitDao.deleteObjectById(pUserUnit.getUserUnitId());
+            }
         }
-      }
 
         if(StringBaseOpt.isNvl(userunit.getUserUnitId())){
             userunit.setUserUnitId(userUnitDao.getNextKey());
@@ -109,7 +134,7 @@ public class SysUserUnitManagerImpl
             UserUnit origPrimUnit=userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode());
             if(origPrimUnit!=null){
                 origPrimUnit.setIsPrimary("F");
-                userunit.setIsPrimary("T");
+                //userunit.setIsPrimary("T");
                 userUnitDao.updateObject(origPrimUnit);
             }
             UserInfo user=userInfoDao.getUserByCode(userunit.getUserCode());
@@ -119,8 +144,14 @@ public class SysUserUnitManagerImpl
             }
         }
         // userunit.setIsprimary("T");//modify by hx bug：会默认都是主机构
-         userUnitDao.saveNewObject(userunit);
-         return userunit.getUserUnitId();
+        userUnitDao.saveNewObject(userunit);
+
+        List<UserRole> userRoles = userRoleDao.listUserRoles(userunit.getUserCode());
+        IDataDictionary dd = CodeRepositoryUtil.getDataPiece("StationType",userunit.getUserStation());
+        addUserRoleWhenNotExist(userunit.getUserCode(),dd.getExtraCode2(), userRoles);
+        dd = CodeRepositoryUtil.getDataPiece("RankType",userunit.getUserRank());
+        addUserRoleWhenNotExist(userunit.getUserCode(),dd.getExtraCode2(), userRoles);
+        return userunit.getUserUnitId();
     }
 
 
@@ -133,7 +164,7 @@ public class SysUserUnitManagerImpl
 
     @Override
     public boolean hasUserStation(String stationCode,String userCode) {
-        HashMap <String ,Object>filterDesc=new HashMap<String ,Object>();
+        HashMap <String ,Object>filterDesc=new HashMap<>();
         filterDesc.put("userStation", stationCode);
         filterDesc.put("userCode", userCode);
         List<UserUnit> list=userUnitDao.listObjects(filterDesc);

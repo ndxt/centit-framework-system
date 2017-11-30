@@ -223,9 +223,6 @@
         <where>
             <include refid="condition" />
         </where>
-        <if test="pageDesc != null ">
-            order by ${pageDesc}
-        </if>
         <include refid="com.centit.framework.mybatis.dao.BaseDao.pageEnd" />
     </select>
     <!--分页查询结束 -->
@@ -506,22 +503,22 @@
 
     <select id="getUserByRegEmail" parameterType="String" resultMap="UserInfo">
         <include refid="coreSql" />
-        where REG_EMAIL=#{regEmail}
+        where u.REG_EMAIL=#{regEmail}
     </select>
 
     <select id="getUserByRegCellPhone" parameterType="String" resultMap="UserInfo">
         <include refid="coreSql" />
-        where REG_CELL_PHONE=#{regCellPhone}
+        where u.REG_CELL_PHONE=#{regCellPhone}
     </select>
 
     <select id="getUserByTag" parameterType="String" resultMap="UserInfo">
         <include refid="coreSql" />
-        where USER_TAG=#{userTag}
+        where u.USER_TAG=#{userTag}
     </select>
 
     <select id="getUserByWord" parameterType="String" resultMap="UserInfo">
         <include refid="coreSql" />
-        where USER_WORD=#{userWord}
+        where u.USER_WORD=#{userWord}
     </select>
 
     <select id="listUserinfoByUsercodes">
