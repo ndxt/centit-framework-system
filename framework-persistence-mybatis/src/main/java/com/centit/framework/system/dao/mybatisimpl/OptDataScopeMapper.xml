@@ -140,7 +140,7 @@
             </if>
         </set>
     </sql>
-    <update id="update" parameterType="com.centit.framework.system.po.OptDataScope">
+    <update id="updateOptDataScope" parameterType="com.centit.framework.system.po.OptDataScope">
         update F_OPTDATASCOPE
         <include refid="updSql" />
         where  OPT_SCOPE_CODE=#{optScopeCode}

@@ -192,7 +192,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
         }
 
         for(OptDataScope s : newDataScopes){
-            dataScopeDao.mergeObject(s);
+            dataScopeDao.updateOptDataScope(s);
         }
         return result;
     }
@@ -217,6 +217,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
     }
 
     @Override
+    @CacheEvict(value = "OptInfo", allEntries = true)
     @Transactional
     public void deleteOptInfo(OptInfo optinfo){
         deleteOptInfoById(optinfo.getOptId());

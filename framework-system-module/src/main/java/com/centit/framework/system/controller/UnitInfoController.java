@@ -11,6 +11,7 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.model.basedata.IUserInfo;
 import com.centit.framework.model.basedata.OperationLog;
+import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysRoleManager;
 import com.centit.framework.system.service.SysUnitManager;
@@ -169,6 +170,7 @@ public class UnitInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{unitCode}", method = {RequestMethod.DELETE})
+    @RecordOperationLog(content = "删除机构")
     public void delete(@PathVariable String unitCode,HttpServletRequest request, HttpServletResponse response) {
         UnitInfo unitInfo = sysUnitManager.getObjectById(unitCode);
         if(unitInfo==null){
@@ -185,8 +187,8 @@ public class UnitInfoController extends BaseController {
 
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
-        OperationLogCenter.logDeleteObject(request,optId,unitInfo.getUnitCode(), OperationLog.P_OPT_LOG_METHOD_D,
-                "删除机构"+unitInfo.getUnitName(), unitInfo);
+//        OperationLogCenter.logDeleteObject(request,optId,unitInfo.getUnitCode(), OperationLog.P_OPT_LOG_METHOD_D,
+//                "删除机构"+unitInfo.getUnitName(), unitInfo);
         /*********log*********/
     }
 
@@ -199,6 +201,7 @@ public class UnitInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(method = RequestMethod.POST)
+    @RecordOperationLog(content = "新增机构")
     public void create(@Valid UnitInfo unitInfo, HttpServletRequest request,HttpServletResponse response) {
 
         if(!sysUnitManager.isUniqueName(unitInfo)){
@@ -216,8 +219,8 @@ public class UnitInfoController extends BaseController {
 
 
         /*********log*********/
-        OperationLogCenter.logNewObject(request,optId,unitInfo.getUnitCode(),
-                OperationLog.P_OPT_LOG_METHOD_C,  "新增机构" , unitInfo);
+//        OperationLogCenter.logNewObject(request,optId,unitInfo.getUnitCode(),
+//                OperationLog.P_OPT_LOG_METHOD_C,  "新增机构" , unitInfo);
         /*********log*********/
     }
 
@@ -230,6 +233,7 @@ public class UnitInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{unitCode}", method = RequestMethod.PUT)
+    @RecordOperationLog(content = "更新机构")
     public void edit(@PathVariable String unitCode, @Valid UnitInfo unitInfo,
             HttpServletRequest request,HttpServletResponse response) {
 
@@ -265,8 +269,8 @@ public class UnitInfoController extends BaseController {
       JsonResultUtils.writeSingleDataJson(unitInfo, response);
 
         /*********log*********/
-        OperationLogCenter.logUpdateObject(request, optId, unitCode, OperationLog.P_OPT_LOG_METHOD_U,
-                "更新机构信息", unitInfo, oldValue);
+//        OperationLogCenter.logUpdateObject(request, optId, unitCode, OperationLog.P_OPT_LOG_METHOD_U,
+//                "更新机构信息", unitInfo, oldValue);
         /*********log*********/
     }
 
@@ -279,6 +283,7 @@ public class UnitInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{unitCode}/status/{statusValue}", method = RequestMethod.PUT)
+    @RecordOperationLog(content = "更新机构状态")
     public void changeStatus(@PathVariable String unitCode, @PathVariable String statusValue,
             HttpServletRequest request,HttpServletResponse response) {
         UnitInfo dbUnitInfo = sysUnitManager.getObjectById(unitCode);
@@ -299,9 +304,9 @@ public class UnitInfoController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
 
         /*********log*********/
-         String optContent = "更新机构状态,机构名称:" + CodeRepositoryUtil.getCode(CodeRepositoryUtil.UNIT_CODE, unitCode) + ",机构是否启用:" + ("T".equals
-                (statusValue) ? "是" : "否");
-        OperationLogCenter.log(request,optId,unitCode, OperationLog.P_OPT_LOG_METHOD_U,  optContent);
+//         String optContent = "更新机构状态,机构名称:" + CodeRepositoryUtil.getCode(CodeRepositoryUtil.UNIT_CODE, unitCode) + ",机构是否启用:" + ("T".equals
+//                (statusValue) ? "是" : "否");
+//        OperationLogCenter.log(request,optId,unitCode, OperationLog.P_OPT_LOG_METHOD_U,  optContent);
         /*********log*********/
     }
 
@@ -403,6 +408,7 @@ public class UnitInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/unit/saveopts/{unitcode}",method = RequestMethod.POST)
+    @RecordOperationLog(content = "更新机构权限")
     public void setUnitPowers(@PathVariable String unitcode,
             String optCodes,
             HttpServletRequest request,HttpServletResponse response) {
@@ -437,8 +443,8 @@ public class UnitInfoController extends BaseController {
        sysRoleManager.loadRoleSecurityMetadata();
        JsonResultUtils.writeBlankJson(response);
        /*********log*********/
-       OperationLogCenter.logNewObject(request,optId, roleInfo.getRoleCode(), OperationLog.P_OPT_LOG_METHOD_U,
-               "更新机构权限",roleInfo);
+//       OperationLogCenter.logNewObject(request,optId, roleInfo.getRoleCode(), OperationLog.P_OPT_LOG_METHOD_U,
+//               "更新机构权限",roleInfo);
        /*********log*********/
     }
 }

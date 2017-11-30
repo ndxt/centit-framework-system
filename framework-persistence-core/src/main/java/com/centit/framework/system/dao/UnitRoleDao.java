@@ -15,7 +15,7 @@ public interface UnitRoleDao {
 
     void mergeUnitRole(UnitRole dbUnitRole);
 
-    void deleteUnitRole(UnitRole dbUnitRole);
+    void deleteUnitRole(UnitRole unitRole);
 
     void deleteUnitRoleById(UnitRoleId id);
 

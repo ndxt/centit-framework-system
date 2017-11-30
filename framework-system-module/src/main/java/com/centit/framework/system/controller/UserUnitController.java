@@ -9,6 +9,7 @@ import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.model.basedata.IUnitInfo;
 import com.centit.framework.model.basedata.IUserInfo;
 import com.centit.framework.model.basedata.OperationLog;
+import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserUnit;
 import com.centit.framework.system.service.SysUserManager;
@@ -197,6 +198,7 @@ public class UserUnitController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(method = RequestMethod.POST)
+    @RecordOperationLog(content = "新增用户机构关联信息")
     public void create(@Valid UserUnit userUnit,HttpServletRequest request, HttpServletResponse response) {
 
         userUnit.setCreator(getLoginUserCode(request));
@@ -205,7 +207,7 @@ public class UserUnitController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
 
         /*********log*********/
-        OperationLogCenter.logNewObject(request,optId, OperationLog.P_OPT_LOG_METHOD_C, OperationLog.P_OPT_LOG_METHOD_C, "新增用户机构关联信息" , userUnit);
+//        OperationLogCenter.logNewObject(request,optId, OperationLog.P_OPT_LOG_METHOD_C, OperationLog.P_OPT_LOG_METHOD_C, "新增用户机构关联信息" , userUnit);
         /*********log*********/
     }
 
@@ -219,6 +221,7 @@ public class UserUnitController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{userunitid}", method = RequestMethod.PUT)
+    @RecordOperationLog(content = "更新用户机构关联信息")
     public void edit(@PathVariable String userunitid, @Valid UserUnit userUnit,
                      HttpServletRequest request, HttpServletResponse response) {
 
@@ -239,8 +242,8 @@ public class UserUnitController extends BaseController {
         JsonResultUtils.writeSingleDataJson(userUnit, response);
 
         /*********log*********/
-        OperationLogCenter.logUpdateObject(request,optId,oldValue.getUserUnitId(), OperationLog.P_OPT_LOG_METHOD_U,
-                "更新用户机构关联信息", dbUserUnit, oldValue);
+//        OperationLogCenter.logUpdateObject(request,optId,oldValue.getUserUnitId(), OperationLog.P_OPT_LOG_METHOD_U,
+//                "更新用户机构关联信息", dbUserUnit, oldValue);
         /*********log*********/
     }
 
@@ -252,6 +255,7 @@ public class UserUnitController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{userunitid}", method = RequestMethod.DELETE)
+    @RecordOperationLog(content = "删除用户机构关联信息")
     public void delete(@PathVariable String userunitid,
                        HttpServletRequest request, HttpServletResponse response) {
         UserUnit dbUserUnit = sysUserUnitManager.getObjectById(userunitid);
@@ -266,8 +270,8 @@ public class UserUnitController extends BaseController {
 
 
         /*********log*********/
-        OperationLogCenter.logDeleteObject(request,optId,dbUserUnit.getUserUnitId(),
-                OperationLog.P_OPT_LOG_METHOD_D,  "删除用户机构关联信息",dbUserUnit);
+//        OperationLogCenter.logDeleteObject(request,optId,dbUserUnit.getUserUnitId(),
+//                OperationLog.P_OPT_LOG_METHOD_D,  "删除用户机构关联信息",dbUserUnit);
         /*********log*********/
     }
 

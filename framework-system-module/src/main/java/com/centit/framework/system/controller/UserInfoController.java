@@ -4,9 +4,8 @@ import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
-import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
-import com.centit.framework.model.basedata.OperationLog;
+import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.security.model.CentitUserDetails;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserRole;
@@ -99,6 +98,7 @@ public class UserInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(method = RequestMethod.POST)
+    @RecordOperationLog(content = "新增用户")
     public void create(@Valid UserInfo userInfo, UserUnit userUnit,
                        HttpServletRequest request, HttpServletResponse response) {
 
@@ -125,8 +125,8 @@ public class UserInfoController extends BaseController {
 
 
         /*********log*********/
-        OperationLogCenter.logNewObject(request,optId,userInfo.getUserCode(),
-                OperationLog.P_OPT_LOG_METHOD_C,  "新增用户", userInfo);
+//        OperationLogCenter.logNewObject(request,optId,userInfo.getUserCode(),
+//                OperationLog.P_OPT_LOG_METHOD_C,  "新增用户", userInfo);
     }
 
     /**
@@ -137,6 +137,7 @@ public class UserInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{userCode}", method = RequestMethod.PUT)
+    @RecordOperationLog(content = "更新用户信息")
     public void edit(@PathVariable String userCode, @Valid UserInfo userInfo, UserUnit userUnit,
                      HttpServletRequest request, HttpServletResponse response) {
 
@@ -173,8 +174,8 @@ public class UserInfoController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
 
         /*********log*********/
-       OperationLogCenter.logUpdateObject(request,optId, userCode, OperationLog.P_OPT_LOG_METHOD_U,
-               "更新用户信息", userInfo, oldValue);
+       //OperationLogCenter.logUpdateObject(request,optId, userCode, OperationLog.P_OPT_LOG_METHOD_U,
+       //       "更新用户信息", userInfo, oldValue);
         /*********log*********/
     }
 
@@ -256,6 +257,7 @@ public class UserInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/change/{userCode}", method = RequestMethod.PUT)
+    @RecordOperationLog(content = "更新用户密码")
     public void changePwd(@PathVariable String userCode, String password, String newPassword,
             HttpServletRequest request,HttpServletResponse response) {
 
@@ -264,11 +266,18 @@ public class UserInfoController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
 
         /*********log*********/
-        OperationLogCenter.log(request,optId,userCode, "changePassword", "更新用户密码,用户代码:" + userCode);
+        //OperationLogCenter.log(request,optId,userCode, "changePassword", "更新用户密码,用户代码:" + userCode);
         /*********log*********/
     }
 
+    /**
+     * 强制更新用户密码
+     * @param userCode 用户代码
+     * @param request {@link HttpServletRequest}
+     * @param response {@link HttpServletResponse}
+     */
     @RequestMapping(value = "/changePwd/{userCode}", method = RequestMethod.PUT)
+    @RecordOperationLog(content = "强制更新用户密码")
     public void forceChangePwd(@PathVariable String userCode,
                                HttpServletRequest request,HttpServletResponse response) {
         String newPassword = request.getParameter("newPassword");
@@ -280,12 +289,13 @@ public class UserInfoController extends BaseController {
 
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
-        OperationLogCenter.log(request,optId,userCode, "forceChangePwd", "更新用户密码,用户代码:" + userCode);
+        //OperationLogCenter.log(request,optId,userCode, "forceChangePwd", "更新用户密码,用户代码:" + userCode);
         /*********log*********/
     }
 
     @RequestMapping(value = "/canchange/{userCode}/{oldPassword}", method = RequestMethod.GET)
-    public void canChangePwd(@PathVariable String userCode,@PathVariable String oldPassword,HttpServletRequest request,HttpServletResponse response) {
+    public void canChangePwd(@PathVariable String userCode,@PathVariable String oldPassword,
+                             HttpServletRequest request,HttpServletResponse response) {
         boolean bo=true;
         bo=sysUserManager.checkUserPassword(userCode,oldPassword);
 
@@ -294,45 +304,32 @@ public class UserInfoController extends BaseController {
 
     /**
      * 批量重置密码
-     *
      * @param userCodes 用户代码集合
-     * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/reset", method = RequestMethod.PUT)
-    public void resetBatchPwd(String[] userCodes,HttpServletRequest request, HttpServletResponse response) {
+    @RecordOperationLog(content = "重置用户密码")
+    public void resetBatchPwd(String[] userCodes, HttpServletResponse response) {
         if (ArrayUtils.isEmpty(userCodes)) {
             JsonResultUtils.writeErrorMessageJson("用户代码集合为空", response);
-
             return;
         }
-
         sysUserManager.resetPwd(userCodes);
 
         JsonResultUtils.writeBlankJson(response);
 
         /*********log*********/
-        OperationLogCenter.logNewObject(request,optId,null, "resetPassword",  "批量重置密码",userCodes);
+        //OperationLogCenter.logNewObject(request,optId,null, "resetPassword",  "批量重置密码",userCodes);
     }
 
     /**
-     * 重置用户密码
-     *
-     * @param userCode 用户代码
-     * @param request  HttpServletRequest
-     * @param response HttpServletResponse
+     * 删除用户
+     * @param userCodes 用户代码
+     * @param request {@link HttpServletRequest}
+     * @param response {@link HttpServletResponse}
      */
-    @RequestMapping(value = "/reset/{userCode}", method = RequestMethod.PUT)
-    public void resetPwd(@PathVariable String userCode, HttpServletRequest request,HttpServletResponse response) {
-        sysUserManager.resetPwd(userCode);
-
-        JsonResultUtils.writeBlankJson(response);
-
-        /*********log*********/
-        OperationLogCenter.log(request,optId,userCode, "resetPassword", "重置用户密码,用户代码:" + userCode);
-    }
-
     @RequestMapping(value="/{userCodes}",method=RequestMethod.DELETE)
+    @RecordOperationLog(content = "删除用户")
     public  void deleteUser(@PathVariable String[] userCodes,HttpServletRequest request,HttpServletResponse response){
         for(String userCode : userCodes) {
             UserInfo userInfo = sysUserManager.getObjectById(userCode);
@@ -346,8 +343,8 @@ public class UserInfoController extends BaseController {
             }
 
             /*********log*********/
-            OperationLogCenter.logDeleteObject(request, optId, userCode, OperationLog.P_OPT_LOG_METHOD_D,
-                    "删除用户"+userInfo.getUserName(), userInfo);
+//            OperationLogCenter.logDeleteObject(request, optId, userCode, OperationLog.P_OPT_LOG_METHOD_D,
+//                    "删除用户"+userInfo.getUserName(), userInfo);
             /*********log*********/
         }
         JsonResultUtils.writeSuccessJson(response);

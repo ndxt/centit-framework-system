@@ -21,6 +21,8 @@ define(function (require) {
       UnitInfoAsideImpl
     ]);
 
+    this.queryUnitUrl = 'system/unitinfo?struct=true';
+
     this.beforeSearch = function() {
       this.currentUnit = null;
     };
@@ -36,6 +38,8 @@ define(function (require) {
 
       table.ctreegrid({
         controller: this,
+
+        url: this.queryUnitUrl,
 
         rowStyler: function (row) {
           if (row && row.isValid === 'F') {

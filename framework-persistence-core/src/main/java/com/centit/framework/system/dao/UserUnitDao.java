@@ -6,104 +6,135 @@ import com.centit.support.database.utils.PageDesc;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 用户机构Dao
+ * @author god
+ * updated by zou_wy@centit.com
+ */
 public interface UserUnitDao {
 
-     List<UserUnit> listObjects(Map<String, Object> filterMap);
-
-
-     int  pageCount(Map<String, Object> filterDescMap);
-     List<UserUnit>  pageQuery(Map<String, Object> pageQureyMap);
-
-
-     List<UserUnit> listObjectsAll();
-
-     UserUnit getObjectById(String userUnitId);
-
-    void saveNewObject(UserUnit object);
-
-     void updateObject(UserUnit object);
-
-     void deleteObjectById(String userUnitId);
-
-     void deleteObjectForceById(String id);
-
-     void deleteObject(UserUnit object);
-
-    //"FROM UserUnit where userCode=?", userId
-     List<UserUnit> listUserUnitsByUserCode(String userId);
-
-    //"FROM UserUnit where userCode=? and unitCode=?",new Object[]{userCode,unitCode});
-    //参数 String userCode,String unitCode
-     List<UserUnit> listObjectByUserUnit(String userCode, String unitCode);
-
-    // return "s"+ DatabaseOptUtils.getNextKeyBySequence(this, "S_USER_UNIT_ID", 9);
-     String getNextKey();
-
-    //"update UserUnit set isPrimary='F',lastModifyDate= ?  where userCode = ? and (unitCode <> ? or userStation <> ? or userRank <> ?) and isPrimary='T'",
-     void deleteOtherPrimaryUnit(UserUnit object);
-
-    // "delete UserUnit  where userCode = ? ",userCode
-     void deleteUserUnitByUser(String userCode);
-
-    // "delete UserUnit  where unitCode = ? ",unitCode
-     void deleteUserUnitByUnit(String unitCode);
-
-    //"FROM UserUnit where userCode=? and isPrimary='T'", userId
-     UserUnit getPrimaryUnitByUserId(String userId);
-
-    //"FROM UserUnit where unitCode=?", unitCode
-     List<UserUnit> listUnitUsersByUnitCode(String unitCode);
+    /**
+    * 根据条件查询
+    * @param filterMap 过滤条件
+    * @return List<UserUnit>
+    */
+    List<UserUnit> listObjects(Map<String, Object> filterMap);
 
     /**
-     * unitcode不为null就是某个处室的某个角色，为NULL就是所有处室的某个角色
-     *if (unitCode != null &amp;&amp; !"".equals(unitCode)) {
-            if ("gw".equals(roleType))
-                ls =listObjectsAll("FROM UserUnit where unitCode=? and userStation=? ",
-                               new Object[]{ unitCode, roleCode});
-            else if ("xz".equals(roleType))
-                ls = listObjectsAll("FROM UserUnit where unitCode=? and userRank=? ",
-                        new Object[]{ unitCode, roleCode});
-        } else {
-            if ("gw".equals(roleType))
-                ls = listObjectsAll("FROM UserUnit where userStation=? ",
-                                roleCode);
-            else if ("xz".equals(roleType))
-                ls = listObjectsAll("FROM UserUnit where userRank=? ",
-                                roleCode);
-        }
-     * @param roleType String
-     * @param roleCode String
-     * @param unitCode String
-     * @return List UserUnit
-     * 分页
-     */
-//     List<UserUnit> listUserUnitsByRoleAndUnitFilterPagination(String roleType,
-//                                                               String roleCode, String unitCode);
-    //"FROM UserUnit where unitCode=? "  hql.append("order by " + filterMap.get("ORDER_BY"));
-    //分页
-//     List<UserUnit> listUnitUsersByUnitCodeAndFilterPagination(String unitCode, PageDesc pageDesc,
-//            Map<String, Object> filterMap);
-
-
+    * 查询数量 用于分页
+    * @param filterDescMap 过滤条件
+    * @return int
+    */
+    int pageCount(Map<String, Object> filterDescMap);
 
     /**
-     * 批量添加或更新
-     * super.saveObject(userunits.get(i));
-     * @param userunits UserUnit
-     */
-    void mergeObject(UserUnit userunits);
+    * 分页查询
+    * @param pageQueryMap 过滤条件
+    * @return List<UserUnit>
+    */
+    List<UserUnit> pageQuery(Map<String, Object> pageQueryMap);
 
-  /**
-   * 查询用户组数量 用于分页
-   * @param filterDescMap 过滤条件
-   * @return 条数
-   */
+    /**
+    * 查询全部
+    * @return List<UserUnit>
+    */
+    List<UserUnit> listObjectsAll();
+
+    /**
+    * 根据Id查询
+    * @param userUnitId 用户机构Id
+    * @return UserUnit
+    */
+    UserUnit getObjectById(String userUnitId);
+
+    /**
+    * 新增
+    * @param userUnit 用户机构
+    */
+    void saveNewObject(UserUnit userUnit);
+
+    /**
+    * 更新
+    * @param userUnit 用户机构
+    */
+    void updateObject(UserUnit userUnit);
+
+    /**
+    * 根据Id删除
+    * @param userUnitId 用户机构Id
+    */
+    void deleteObjectById(String userUnitId);
+
+    /**
+    * 强制删除
+    * @param id 用户机构Id
+    */
+    void deleteObjectForceById(String id);
+
+    /**
+    * 删除
+    * @param object 用户机构
+    */
+    void deleteObject(UserUnit object);
+
+    /**
+    * 根据用户代码查询
+    * @param userId 用户代码
+    * @return List<UserUnit>
+    */
+    List<UserUnit> listUserUnitsByUserCode(String userId);
+
+    /**
+    * 根据用户和机构代码查询
+    * @param userCode 用户代码
+    * @param unitCode 机构代码
+    * @return List<UserUnit>
+    */
+    List<UserUnit> listObjectByUserUnit(String userCode, String unitCode);
+
+    /**
+    * 获取下一个序列
+    * @return String
+    */
+    String getNextKey();
+
+    /**
+    * 根据用户代码删除
+    * @param userCode 用户代码
+    */
+    void deleteUserUnitByUser(String userCode);
+
+    /**
+    * 根据机构代码删除
+    * @param unitCode 机构代码
+    */
+    void deleteUserUnitByUnit(String unitCode);
+
+    /**
+    * 根据用户代码获取主机构关系
+    * @param userId 用户代码
+    * @return UserUnit
+    */
+    UserUnit getPrimaryUnitByUserId(String userId);
+
+    /**
+    * 根据机构代码查询
+    * @param unitCode 机构代码
+    * @return List<UserUnit>
+    */
+    List<UserUnit> listUnitUsersByUnitCode(String unitCode);
+
+    /**
+    * 查询用户组数量 用于分页
+    * @param filterDescMap 过滤条件
+    * @return 条数
+    */
     int countSubUserUnits(Map<String, Object> filterDescMap);
 
     /**
-     * 分页查询 用户组
-     * @param pageQueryMap 包含分页信息 过滤条件
-     * @return 用户组列表
-     */
+    * 分页查询 用户组
+    * @param pageQueryMap 包含分页信息 过滤条件
+    * @return 用户组列表
+    */
     List<UserUnit> querySubUserUnits(Map<String, Object> pageQueryMap);
 }

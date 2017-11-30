@@ -6,30 +6,54 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: sx
- * Date: 14-10-29
- * Time: 下午3:18
- * To change this template use File | Settings | File Templates.
+ * 角色权限Dao
+ * @author god
+ * updated by zou_wy@centit.com
  */
-
 public interface RolePowerDao {
 
+  /**
+   * 查询全部
+   * @return List<RolePower>
+   */
     List<RolePower> listObjectsAll();
 
-    void mergeObject(RolePower rolePowers);
+  /**
+   * 更新角色权限
+   * @param rolePower 角色权限对象
+   */
+  void updateRolePower(RolePower rolePower);
 
+  /**
+   * 删除
+   * @param rolePowers 角色权限对象
+   */
     void deleteObject(RolePower rolePowers);
 
+  /**
+   * 根据条件查询
+   * @param filterMap 查询条件
+   * @return List<RolePower>
+   */
     List<RolePower> listObjects(Map<String, Object> filterMap);
 
-    //"DELETE FROM RolePower rp where rp.id.roleCode=?", rolecode
-    void deleteRolePowersByRoleCode(String rolecode);
-    
-    //"DELETE FROM RolePower rp where rp.id.optCode=?", optecode
-    void deleteRolePowersByOptCode(String optecode);
-    
-    //"FROM RolePower rp where rp.id.roleCode=?", rolecode
+  /**
+   * 根据角色代码删除角色权限
+   * @param roleCode 角色代码
+   */
+    void deleteRolePowersByRoleCode(String roleCode);
+
+  /**
+   * 根据操作代码删除角色权限
+   * @param optCode 操作代码
+   */
+    void deleteRolePowersByOptCode(String optCode);
+
+  /**
+   * 根据角色代码查询
+   * @param roleCode 角色代码
+   * @return List<RolePower>
+   */
     List<RolePower> listRolePowersByRoleCode(String roleCode);
-    
+
 }

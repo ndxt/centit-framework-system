@@ -105,22 +105,6 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
 
     @Override
     @Transactional
-    public void deleteOtherPrimaryUnit(UserUnit object) {
-        try {
-            DatabaseOptUtils.doExecuteSql(this,
-                    "update UserUnit set isPrimary='F',lastModifyDate= ?  " +
-                     "where userCode = ? and (unitCode <> ? or userStation <> ? or userRank <> ?) and isPrimary='T'",
-                    new Object[]{DatetimeOpt.currentUtilDate(), object.getUserCode(),
-                            object.getUnitCode(), object.getUserStation(),
-                            object.getUserRank()});
-        }catch(SQLException e){
-            logger.error(e.getMessage(), e);
-        }
-
-    }
-
-    @Override
-    @Transactional
     public void deleteUserUnitByUser(String userCode) {
         Map<String, Object> map = new HashMap<>();
         map.put("userCode", userCode);
