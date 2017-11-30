@@ -89,7 +89,7 @@ public class RoleInfoController extends BaseController {
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/global", method = RequestMethod.GET)
     public void listGlobalAndPublicRole(String[] field,PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
 
         Map<String, Object> filterMap = convertSearchColumn(request);
