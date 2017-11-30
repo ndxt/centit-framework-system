@@ -138,12 +138,12 @@ public class UserSettingController extends BaseController {
 
             BeanUtils.copyProperties(userSetting, dbUserSetting, new String[]{"cid"});
 
-            userSettingManager.saveUserSetting(dbUserSetting);
+            userSettingManager.updateUserSetting(dbUserSetting);
         }else {
 
             userSetting.setCid(id);
             userSetting.setCreateDate(new Date());
-            userSettingManager.saveUserSetting(userSetting);
+            userSettingManager.saveNewUserSetting(userSetting);
         }
         JsonResultUtils.writeBlankJson(response);
 

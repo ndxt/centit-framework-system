@@ -142,4 +142,9 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
         }
         return urlt.get(0);
     }
+
+    @Override
+    public void updateUserRole(UserRole userRole){
+        super.updateObject(userRole);
+    }
 }

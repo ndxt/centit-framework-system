@@ -24,11 +24,6 @@ public interface UserSettingDao {
     * @param userSettingId 个人设置Id
     */
     void deleteObjectById(UserSettingId userSettingId);
-    /**
-    * update or insert
-    * @param userSetting userSetting
-    */
-    void mergeObject(UserSetting userSetting);
 
     /**
     * 根据用户代码查询
@@ -46,8 +41,8 @@ public interface UserSettingDao {
     List<UserSetting> getUserSettings(String userCode, String optId);
 
     /**
-    *
-    * @param userSetting
+    * 新增
+    * @param userSetting 个人设置对象
     */
     void saveNewUserSetting(UserSetting userSetting);
 
