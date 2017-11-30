@@ -21,7 +21,7 @@ define(function (require) {
       this.refresh = false;
 
       $('input[name=roleCode]').combobox({
-        url: this.queryRoleUrl
+        url: this.$findUp('queryRoleUrl')
       });
 
       // 获取父窗口的用户信息

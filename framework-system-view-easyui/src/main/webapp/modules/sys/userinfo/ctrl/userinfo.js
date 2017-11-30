@@ -36,7 +36,7 @@ define(function (require) {
       this.selectIndex = -1;
     };
 
-    this.queryUrl = 'system/userinfo?_search=false&field=userCode&field=loginName&field=userOrder&field=userName&field=isValid&field=primaryUnit';
+    this.queryUserUrl = 'system/userinfo?_search=false&field=userCode&field=loginName&field=userOrder&field=userName&field=isValid&field=primaryUnit';
 
     // @override
     this.load = function (panel) {
@@ -47,7 +47,7 @@ define(function (require) {
       this.AsideController = UserInfoAside;
 
       panel.find('table').cdatagrid({
-        url: this.queryUrl,
+        url: this.queryUserUrl,
 
         controller: this,
 

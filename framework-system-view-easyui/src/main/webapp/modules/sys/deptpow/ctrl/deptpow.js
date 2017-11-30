@@ -2,6 +2,6 @@ define(function (require) {
   var UnitInfo = require('modules/sys/unitinfo/ctrl/unitinfo');
 
   return UnitInfo.extend(function () {
-    this.queryUrl = 'system/unitinfo/subunits?struct=true';
+    this.queryUnitUrl = 'system/unitinfo/subunits?struct=true';
   });
 });
