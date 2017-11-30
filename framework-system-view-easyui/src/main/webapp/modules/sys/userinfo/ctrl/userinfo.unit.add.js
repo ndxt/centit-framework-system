@@ -24,7 +24,7 @@ define(function (require) {
     // @override
     this.load = function (panel) {
 
-     this.initUnitCombotree($('input[name=unitCode]', panel));
+     this.$findUp('initUnitCombotree')($('input[name=unitCode]', panel));
 
       // 获取父窗口的用户信息
       var userinfo = this.parent.data;
