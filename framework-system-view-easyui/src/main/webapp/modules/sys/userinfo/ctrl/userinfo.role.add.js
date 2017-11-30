@@ -7,7 +7,7 @@ define(function (require) {
 
   return Page.extend(function () {
 
-    this.queryRoleUrl = "system/roleinfo?NP_GLOBAL=true";
+    this.queryRoleUrl = "system/roleinfo/global";
 
     // @override
     this.object = {
@@ -20,7 +20,10 @@ define(function (require) {
       this.refresh = false;
 
       $('input[name=roleCode]', panel).combobox({
-        url: this.$findUp('queryRoleUrl')
+        url: this.$findUp('queryRoleUrl'),
+        loadFilter: function(data) {
+          return data.objList ? data.objList : data;
+        }
       });
 
       // 获取父窗口的用户信息
