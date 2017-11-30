@@ -2,14 +2,20 @@
   <div class="two fields">
     <div class="field ">
       <label id="c@username">用户名</label>
-      <input type="text" class="easyui-textbox" name="userCode"
-             readonly="readonly" target='user'/>
+      <input type="text" class="easyui-textbox" name="userName"
+             readonly="readonly" style="width: 100%;"/>
 
     </div>
 
     <div class="field required">
       <label id="c@rolename">角色名</label>
-      <input type="text" name="roleCode" textField="roleName" valueField="roleCode" required panelHeight="200"/>
+      <input
+        type="text"
+        name="roleCode"
+        textField="roleName"
+        valueField="roleCode"
+        required style="width: 100%;"
+      />
     </div>
   </div>
 
@@ -24,6 +30,6 @@
   <div class="field">
     <label id="c@remarks">备注</label>
     <input validType="maxLength[255]" type="text" class="easyui-textbox" name="changeDesc" height="100" multiline="true"
-           style="height: 100px; width: 99%"/>
+           style="height: 100px; width: 100%"/>
   </div>
 </form>

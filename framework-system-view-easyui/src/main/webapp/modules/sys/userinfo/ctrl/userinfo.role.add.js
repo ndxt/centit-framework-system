@@ -5,10 +5,9 @@ define(function (require) {
   var Page = require('core/page');
   var Utils = require('core/utils');
 
-  // 机构添加用户
-  var UserInfoRoleAdd = Page.extend(function () {
+  return Page.extend(function () {
 
-    this.queryRoleUrl = "system/roleinfo/listRoles/S";
+    this.queryRoleUrl = "system/roleinfo?NP_GLOBAL=true";
 
     // @override
     this.object = {
@@ -20,16 +19,16 @@ define(function (require) {
     this.load = function (panel) {
       this.refresh = false;
 
-      $('input[name=roleCode]').combobox({
+      $('input[name=roleCode]', panel).combobox({
         url: this.$findUp('queryRoleUrl')
       });
 
       // 获取父窗口的用户信息
-      var userinfo = this.parent.data;
+      var userInfo = this.parent.data;
 
       var data = this.data = $.extend({}, this.object, {
-        userCode: userinfo.userCode,
-        userName: userinfo.userName
+        userCode: userInfo.userCode,
+        userName: userInfo.userName
       });
 
       panel.find('form').form('disableValidation')
@@ -66,6 +65,4 @@ define(function (require) {
     };
 
   });
-
-  return UserInfoRoleAdd;
 });

@@ -1,13 +1,12 @@
 define(function (require) {
   var Config = require('config');
-  var Core = require('core/core');
   var Page = require('core/page');
 
   var UserInfoAdd = require('../ctrl/userinfo.add');
   var UserInfoEdit = require('../ctrl/userinfo.edit');
   var UserInfoDelete = require('../ctrl/userinfo.delete');
 
-  var DeptUserInfoPowerView = require('../ctrl/userinfo.power.view');//新增查看权限按钮
+  var DeptUserInfoPowerView = require('../ctrl/userinfo.power.view');
   var UserInfoAside = require('../ctrl/userinfo.aside');
   UserInfoAside = new UserInfoAside('UserInfoAside');
 
@@ -16,10 +15,7 @@ define(function (require) {
 
   var UserInfoResetPassword = require('../ctrl/userinfo.resetpassword');
 
-  // 角色信息列表
-  var UserInfo = Page.extend(function () {
-
-    this.selectIndex = -1;
+  return Page.extend(function () {
 
     this.injecte([
       new UserInfoAdd('userinfo_add'),
@@ -33,7 +29,7 @@ define(function (require) {
     ]);
 
     this.beforeSearch = function () {
-      this.selectIndex = -1;
+      this.currentUserCode = null;
     };
 
     this.queryUserUrl = 'system/userinfo?_search=false&field=userCode&field=loginName&field=userOrder&field=userName&field=isValid&field=primaryUnit';
@@ -43,6 +39,7 @@ define(function (require) {
       var vm = this;
 
       this.$autoHeight('north', $('#user-info-main', panel));
+
       this.AsidePanel = $('#userinfo_panel', panel).layout('panel', 'east');
       this.AsideController = UserInfoAside;
 
@@ -62,8 +59,8 @@ define(function (require) {
         },
 
         onSelect: function (index, row) {
-          if (index !== vm.selectIndex) {
-            vm.selectIndex = index;
+          if (vm.currentUserCode !== row.userCode) {
+            vm.currentUserCode = row.userCode;
             vm.selectUser(row);
           }
         },
@@ -71,8 +68,20 @@ define(function (require) {
         onLoadSuccess: function () {
           var table = $(this);
           var rows = table.datagrid('getRows');
+
           if (rows.length) {
-            table.datagrid('selectRow', vm.selectIndex === -1 ? 0 : vm.selectIndex);
+            // 重新刷新后，获取之前选中对象在新数据中的index
+            var index = 0;
+            for (var i = 0; i < rows.length; i++) {
+              if (rows[i].userCode === vm.currentUserCode) {
+                index = i;
+                break;
+              }
+            }
+
+            // 重置，确保数据能够被刷新
+            vm.currentUserCode = null;
+            table.datagrid('selectRow', index);
           } else {
             vm.clearPanel();
           }
@@ -94,13 +103,9 @@ define(function (require) {
     };
 
     this.clearPanel = function () {
-      var vm = this;
-
-      vm.selectIndex = -1;
+      this.currentUserCode = null;
       this.AsidePanel.data('panel').options.onLoad = $.noop;
       this.AsidePanel.panel('clear');
     };
   });
-
-  return UserInfo;
 });
