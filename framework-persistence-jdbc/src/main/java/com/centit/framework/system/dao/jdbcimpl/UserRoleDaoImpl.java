@@ -29,10 +29,9 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
             filterField.put("roleCode", CodeBook.EQUAL_HQL_ID);
             filterField.put("userCode", CodeBook.EQUAL_HQL_ID);
             filterField.put("roleName", CodeBook.LIKE_HQL_ID);
-            filterField.put("unitCode", "roleCode in (select ro.ROLE_CODE from f_roleinfo ro " +
-                    "where ro.ROLE_TYPE = 'D' and ro.UNIT_CODE = :unitCode)");
-            filterField.put("NP_userRoleType", "roleCode not in (select ro.ROLE_CODE from f_roleinfo ro " +
-                    "where ro.ROLE_TYPE ='D')");
+            filterField.put("roleUnitCode", "ROLE_CODE in (select ro.ROLE_CODE from f_roleinfo ro " +
+                    "where (ro.ROLE_TYPE = 'P' or (ro.ROLE_TYPE = 'D' and ro.UNIT_CODE = :unitCode))");
+            filterField.put("unitCode", "USER_CODE in (select uu.USER_CODE from F_USERUNIT uu where uu.UNIT_CODE = :unitCode)");
             filterField.put("userCode_isValid", "userCode in (select us.USER_CODE from f_userinfo us " +
                     "where us.IS_VALID = :userCode_isValid)");
             //filterField.put(CodeBook.ORDER_BY_HQL_ID, " userCode ");

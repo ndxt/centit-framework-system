@@ -7,7 +7,6 @@ import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.security.model.CentitUserDetails;
-import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserUnit;
@@ -51,8 +50,10 @@ public class UserInfoController extends BaseController {
     /**
      * 系统日志中记录
      */
-    private String optId = "USERMAG";//CodeRepositoryUtil.getCode("OPTID", "userInfo");
-
+    //private String optId = "USERMAG";//CodeRepositoryUtil.getCode("OPTID", "userInfo");
+    public String getOptId() {
+        return  "USERMAG";
+    }
     /**
      * 查询所有用户信息
      *
@@ -211,20 +212,6 @@ public class UserInfoController extends BaseController {
         excludes.put(UserUnit.class,new String[]{"userInfo"});
         excludes.put(UserRole.class,new String[]{"userInfo"});
         JsonResultUtils.writeResponseDataAsJson(responseData,response, JsonPropertyUtils.getExcludePropPreFilter(excludes));
-    }
-
-    /**
-     * 通过用户代码获取角色
-     *
-     * @param userCode 用户代码
-     * @param response HttpServletResponse
-     */
-    @RequestMapping(value = "/allroles/{userCode}", method = RequestMethod.GET)
-    public void listRolesByUser(@PathVariable String userCode,
-             HttpServletResponse response) {
-
-        List<RoleInfo> roles = sysUserManager.listUserValidRoles(userCode);
-        JsonResultUtils.writeSingleDataJson(roles, response);
     }
 
 

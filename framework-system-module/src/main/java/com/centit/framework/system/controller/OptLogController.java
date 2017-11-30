@@ -31,9 +31,10 @@ public class OptLogController extends BaseController {
     @NotNull
     private OptLogManager optLogManager;
 
-    private String optId = "OPTLOG";
-
-
+    //private String optId = "OPTLOG";
+    public String getOptId() {
+        return  "OPTLOG";
+    }
     /**
      * 查询系统日志
      *

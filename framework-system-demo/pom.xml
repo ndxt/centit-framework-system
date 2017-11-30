@@ -51,8 +51,8 @@
 
         <dependency>
             <groupId>com.centit.framework</groupId>
-            <!--<artifactId>framework-persistence-jdbc</artifactId>-->
-            <artifactId>framework-persistence-hibernate</artifactId>
+            <artifactId>framework-persistence-jdbc</artifactId>
+            <!--<artifactId>framework-persistence-hibernate</artifactId>-->
             <!--<artifactId>framework-persistence-mybatis</artifactId>-->
             <version>${centit.framework.version}</version>
         </dependency>
@@ -78,16 +78,6 @@
             <version>${servlet-api.version}</version>
             <scope>provided</scope>
         </dependency>
-      <dependency>
-        <groupId>com.centit.framework</groupId>
-        <artifactId>centit-persistence-hibernate</artifactId>
-        <version>RELEASE</version>
-      </dependency>
-      <dependency>
-        <groupId>com.centit.framework</groupId>
-        <artifactId>centit-persistence-hibernate</artifactId>
-        <version>RELEASE</version>
-      </dependency>
     </dependencies>
 
     <build>

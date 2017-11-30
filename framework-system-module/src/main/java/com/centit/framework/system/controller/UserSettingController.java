@@ -46,8 +46,10 @@ public class UserSettingController extends BaseController {
     /**
      * 系统日志中记录
      */
-    private String optId = "userSetting";//CodeRepositoryUtil.getCode("OPTID", "userSetting");
-
+    //private String optId = "userSetting";//CodeRepositoryUtil.getCode("OPTID", "userSetting");
+    public String getOptId() {
+        return  "userSetting";
+    }
     /**
      * 查询当前用户所有的用户参数设置信息
      *
