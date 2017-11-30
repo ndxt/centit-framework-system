@@ -26,6 +26,8 @@ define(function (require) {
       RoleAside
     ]);
 
+    this.queryRoleUrl = 'system/roleinfo/all';
+
     // @override
     this.load = function (panel) {
       var selectIndex = -1;
@@ -36,6 +38,8 @@ define(function (require) {
 
       this.table = panel.find('table').cdatagrid({
         controller: this,
+
+        url: this.$findUp('queryRoleUrl'),
 
         queryParams: {
           s_isValid: 'T'
