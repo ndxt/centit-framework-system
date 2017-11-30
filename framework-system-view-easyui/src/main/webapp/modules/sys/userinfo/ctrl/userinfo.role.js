@@ -1,6 +1,6 @@
 define(function (require) {
   var Config = require('config');
-  var Core = require('core/core');
+  var $ = require('jquery');
   var Page = require('core/page');
 
   var UserInfoRoleAdd = require('../ctrl/userinfo.role.add');
@@ -8,7 +8,7 @@ define(function (require) {
   var UserInfoRoleRemove = require('../ctrl/userinfo.role.remove');
   var UserInfoRoleBan = require('../ctrl/userinfo.role.ban');
 
-  var UserInfoRole = Page.extend(function () {
+  return Page.extend(function () {
     var _self = this;
 
     this.injecte([
@@ -22,16 +22,23 @@ define(function (require) {
     this.load = function (panel, data) {
       this.data = data;
 
-      var table = this.table = panel.find('table');
-      table.cdatagrid({
+      // 继承自岗位
+      $('table.role-unit').cdatagrid({
         controller: _self,
-        url: Config.ContextPath + 'system/userrole/userroles/' + data.userCode,
+        url: Config.ContextPath + 'system/userrole/userrolesinherited/' + data.userCode,
         onLoadSuccess: function() {
           _self.$autoHeight();
+        },
+        onLoadError: function() {
+          _self.$autoHeight();
         }
+      });
+
+      // 自有角色
+      $('table.role').cdatagrid({
+        controller: _self,
+        url: Config.ContextPath + 'system/userrole/userroles/' + data.userCode
       })
     };
   });
-
-  return UserInfoRole;
 });
