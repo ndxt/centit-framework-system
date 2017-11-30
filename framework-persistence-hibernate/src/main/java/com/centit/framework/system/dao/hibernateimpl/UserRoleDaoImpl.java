@@ -80,9 +80,9 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
     @Transactional
     public int pageCountUserRole(Map<String, Object> filterDescMap) {
         final String sSqlsen = "select count(*) as cnt from FVUserRoles v " +
-          "where 1=1 [:roleCode | v.id.roleCode = :roleCode] " +
-          "[:userCode | v.id.userCode = :userCode]" +
-          "[:obtainType | v.obtainType = :obtainType] ";
+          "where 1=1 [:roleCode | and v.id.roleCode = :roleCode] " +
+          "[:userCode | and v.id.userCode = :userCode]" +
+          "[:obtainType | and v.obtainType = :obtainType] ";
         QueryAndNamedParams qap = QueryUtils.translateQuery(sSqlsen, filterDescMap );
         return NumberBaseOpt.castObjectToInteger(
             DatabaseOptUtils.getSingleObjectByHql(this, qap.getQuery(), qap.getParams()));
@@ -93,9 +93,9 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
     @Transactional
     public List<FVUserRoles> pageQueryUserRole(Map<String, Object> pageQureyMap) {
         final String sSqlsen = "from FVUserRoles v " +
-          "where 1=1 [:roleCode | v.id.roleCode = :roleCode] " +
-          "[:userCode | v.id.userCode = :userCode]" +
-          "[:obtainType | v.obtainType = :obtainType] ";
+          "where 1=1 [:roleCode | and v.id.roleCode = :roleCode] " +
+          "[:userCode | and v.id.userCode = :userCode]" +
+          "[:obtainType | and v.obtainType = :obtainType] ";
         int startPos = 0;
         int maxSize = 0;
         if(pageQureyMap!=null){

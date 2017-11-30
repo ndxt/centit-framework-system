@@ -169,7 +169,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                     us = new UserSetting();
                     us.copyNotNullProperty(userSetting);
                     us.setCreateDate(DatetimeOpt.currentUtilDate());
-                    userSettingDao.saveUserSetting(us);
+                    userSettingDao.saveNewUserSetting(us);
                 }else {
                     us.copyNotNullProperty(userSetting);
                     userSettingDao.updateObject(us);

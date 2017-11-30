@@ -48,7 +48,7 @@ public class UserSettingManagerImpl implements UserSettingManager {
     public void saveUserSetting(String userCode,String paramCode,String paramName,String paramValue,String optId){
         UserSetting userSetting = new UserSetting( userCode,  paramCode, paramValue,
                                         optId,  paramName);
-        userSettingDao.mergeObject(userSetting);
+        userSettingDao.saveNewUserSetting(userSetting);
     }
 
     @Override

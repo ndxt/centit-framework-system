@@ -5,28 +5,55 @@ import com.centit.framework.system.po.UserSettingId;
 
 import java.util.List;
 
+/**
+ * 个人设置Dao
+ * @author god
+ * updated by zou_wy@centit.com
+ */
 public interface UserSettingDao {
 
+    /**
+    * 根据Id查询
+    * @param userSettingId 个人设置Id
+    * @return UserSetting
+    */
     UserSetting getObjectById(UserSettingId userSettingId);
 
+    /**
+    * 根据Id删除
+    * @param userSettingId 个人设置Id
+    */
     void deleteObjectById(UserSettingId userSettingId);
     /**
-     * update or insert
-     * @param userSetting userSetting
-     */
+    * update or insert
+    * @param userSetting userSetting
+    */
     void mergeObject(UserSetting userSetting);
 
-    // return listObjectsAll("From UserSetting where cid.userCode=?",userCode);
-     List<UserSetting> getUserSettingsByCode(String userCode);
+    /**
+    * 根据用户代码查询
+    * @param userCode 用户代码
+    * @return List<UserSetting>
+    */
+    List<UserSetting> getUserSettingsByCode(String userCode);
 
-    // listObjectsAll("From UserSetting where cid.userCode=? and optId= ?",
-        //new Object[]{userCode,optID});
-    //参数String userCode,String optID
-     List<UserSetting> getUserSettings(String userCode, String optId);
+    /**
+    * 根据用户代码和项目模块查询
+    * @param userCode 用户代码
+    * @param optId 项目模块
+    * @return List<UserSetting>
+    */
+    List<UserSetting> getUserSettings(String userCode, String optId);
 
-    //UserSetting us = new UserSetting(userCode,  paramCode, paramValue,
-         //paramClass,  paramName);
-    void saveUserSetting(UserSetting userSetting);
+    /**
+    *
+    * @param userSetting
+    */
+    void saveNewUserSetting(UserSetting userSetting);
 
+    /**
+    * 更新个人设置
+    * @param userSetting 个人设置对象
+    */
     void updateObject(UserSetting userSetting);
 }

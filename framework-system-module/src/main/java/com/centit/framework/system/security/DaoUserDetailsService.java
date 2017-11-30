@@ -91,7 +91,7 @@ public class DaoUserDetailsService
     public void saveUserSetting(String userCode, String paramCode,String paramValue,
             String paramClass, String paramName) {
 
-        userSettingDao.saveUserSetting(new UserSetting(userCode, paramCode, paramValue,
+        userSettingDao.saveNewUserSetting(new UserSetting(userCode, paramCode, paramValue,
                  paramClass,  paramName));
     }
 

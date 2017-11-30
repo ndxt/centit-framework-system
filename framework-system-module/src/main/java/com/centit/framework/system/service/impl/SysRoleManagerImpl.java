@@ -9,11 +9,14 @@ import com.centit.framework.security.model.OptTreeNode;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysRoleManager;
+import com.centit.support.algorithm.ListOpt;
 import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.database.utils.QueryUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
@@ -25,10 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service("sysRoleManager")
 public class SysRoleManagerImpl implements SysRoleManager {
@@ -168,16 +168,19 @@ public class SysRoleManagerImpl implements SysRoleManager {
         for(RolePower rp : newRPs){
             rp.setRoleCode(o.getRoleCode());
         }
-        if( rps != null){
-            for(RolePower rp : rps){
-                if(! newRPs.contains(rp)){
+
+        Triple<List<RolePower>, List<Pair<RolePower,RolePower>>, List<RolePower>>
+            forUpdate =  ListOpt.compareTwoList(rps, newRPs, Comparator.comparing(RolePower::getOptCode));
+
+        if( forUpdate.getRight() != null){
+            for(RolePower rp : forUpdate.getRight()){
                     rolePowerDao.deleteObject(rp);
-                }
             }
         }
-
-        for(RolePower rp : newRPs){
-            rolePowerDao.updateRolePower(rp);
+        if( forUpdate.getLeft() != null){
+          for(RolePower rp : forUpdate.getLeft()){
+              rolePowerDao.saveNewRolePower(rp);
+          }
         }
         return rps;
     }

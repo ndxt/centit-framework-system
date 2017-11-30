@@ -19,21 +19,21 @@ public interface OptLogDao  {
     Long createNewLogId();
 
     /**
-     *
-     * @param logId
-     * @return
+     * 根据Id查询
+     * @param logId 日志Id
+     * @return OptLog
      */
       OptLog getObjectById(Long logId);
 
     /**
-     *
-     * @param o
+     * 新增
+     * @param o 日志对象
      */
     void saveNewObject(OptLog o);
 
     /**
-     *
-     * @param logId
+     * 根据Id删除
+     * @param logId 日志Id
      */
       void deleteObjectById(Long logId);
 

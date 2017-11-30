@@ -19,6 +19,12 @@ public interface RolePowerDao {
     List<RolePower> listObjectsAll();
 
   /**
+   * 新增
+   * @param rolePower 角色权限
+   */
+    void saveNewRolePower(RolePower rolePower);
+
+  /**
    * 更新角色权限
    * @param rolePower 角色权限对象
    */

@@ -143,7 +143,7 @@
             #{createDate}
         )
     </sql>
-    <insert id="saveUserSetting" parameterType="com.centit.framework.system.po.UserSetting">
+    <insert id="saveNewUserSetting" parameterType="com.centit.framework.system.po.UserSetting">
         insert into F_USERSETTING
         <include refid="insertSql" />
     </insert>

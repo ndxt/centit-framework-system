@@ -93,9 +93,9 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
     @Transactional
     public int pageCountUserRole(Map<String, Object> filterDescMap) {
         String sql = "select count(*) as cnt from F_V_USERROLES u " +
-          "where 1=1 [:roleCode | u.ROLE_CODE = :roleCode] " +
-          "[:userCode | u.USER_CODE = :userCode]" +
-          "[:obtainType | u.OBTAIN_TYPE = :obtainType] ";
+          "where 1=1 [:roleCode | and u.ROLE_CODE = :roleCode] " +
+          "[:userCode | and u.USER_CODE = :userCode]" +
+          "[:obtainType | and u.OBTAIN_TYPE = :obtainType] ";
         QueryAndNamedParams qap = QueryUtils.translateQuery(sql , filterDescMap);
         return jdbcTemplate.execute(
           (ConnectionCallback<Integer>) conn ->
@@ -108,9 +108,9 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
       String querySql = "select u.USER_CODE,u.ROLE_CODE,u.ROLE_NAME,u.IS_VALID,u.ROLE_DESC," +
         " u.ROLE_TYPE,u.UNIT_CODE,u.OBTAIN_TYPE,u.INHERITED_FROM" +
         " from F_V_USERROLES u " +
-        "where 1=1 [:roleCode | u.ROLE_CODE = :roleCode] " +
-        "[:userCode | u.USER_CODE = :userCode]" +
-        "[:obtainType | u.OBTAIN_TYPE = :obtainType] ";
+        "where 1=1 [:roleCode | and u.ROLE_CODE = :roleCode] " +
+        "[:userCode | and u.USER_CODE = :userCode]" +
+        "[:obtainType | and u.OBTAIN_TYPE = :obtainType] ";
       PageDesc pageDesc = QueryParameterPrepare.fetckPageDescParams(pageQureyMap);
       QueryAndNamedParams qap = QueryUtils.translateQuery(querySql, pageQureyMap);
       return jdbcTemplate.execute(

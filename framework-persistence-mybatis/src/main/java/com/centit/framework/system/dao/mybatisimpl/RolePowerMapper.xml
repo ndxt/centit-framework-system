@@ -83,6 +83,10 @@
         )
     </sql>
     <!--插入新单据 end -->
+  <insert id="saveNewRolePower" parameterType="com.centit.framework.system.po.RolePower">
+    insert into F_ROLEPOWER
+    <include refid="insertSql" />
+  </insert>
 
     <!--更新单据 start -->
     <sql id="updSql">
