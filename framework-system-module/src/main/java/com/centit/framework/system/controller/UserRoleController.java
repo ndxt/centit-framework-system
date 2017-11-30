@@ -52,8 +52,10 @@ public class UserRoleController extends BaseController {
     /**
      * 系统日志中记录
      */
-    private String optId = "USERROLE";//CodeRepositoryUtil.getCode("OPTID", "userRole");
-
+    //private String optId = "USERROLE";//CodeRepositoryUtil.getCode("OPTID", "userRole");
+    public String getOptId() {
+        return  "USERROLE";
+    }
 
     //INHERITED
     @RequestMapping(value = "/roleusersinherited/{roleCode}", method = RequestMethod.GET)

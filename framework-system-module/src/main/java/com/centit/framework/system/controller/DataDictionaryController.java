@@ -54,8 +54,10 @@ public class DataDictionaryController extends BaseController {
     @Resource
     private DataDictionaryManager dataDictionaryManager;
 
-    private String optId = "DICTSET";
-
+    //private String optId = "DICTSET";
+    public String getOptId() {
+      return  "DICTSET";
+    }
     /**
      * 查询所有字典目录列表
      *

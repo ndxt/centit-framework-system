@@ -50,8 +50,10 @@ public class UserInfoController extends BaseController {
     /**
      * 系统日志中记录
      */
-    private String optId = "USERMAG";//CodeRepositoryUtil.getCode("OPTID", "userInfo");
-
+    //private String optId = "USERMAG";//CodeRepositoryUtil.getCode("OPTID", "userInfo");
+    public String getOptId() {
+        return  "USERMAG";
+    }
     /**
      * 查询所有用户信息
      *

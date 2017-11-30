@@ -30,7 +30,9 @@ import java.util.Map;
 @RequestMapping("/queryfiltercondition")
 public class QueryFilterConditionController  extends BaseController {
     //private static final Logger logger = LoggerFactory.getLogger(QueryFilterConditionController.class);
-
+    public String getOptId() {
+      return  "QueryFilter";
+    }
     @Resource
     private QueryFilterConditionManager queryFilterConditionMag;
     /*public void setQueryFilterConditionMag(QueryFilterConditionManager basemgr)

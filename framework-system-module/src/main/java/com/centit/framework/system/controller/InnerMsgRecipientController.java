@@ -39,6 +39,9 @@ public class InnerMsgRecipientController extends BaseController {
     @NotNull
     public InnerMsgManager innerMsgManager;
 
+    public String getOptId() {
+      return  "InnerMsg";
+    }
     /**
      * 查询收件箱
      * @param field     显示结果中只需要显示的字段

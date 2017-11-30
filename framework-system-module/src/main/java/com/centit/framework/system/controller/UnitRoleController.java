@@ -35,8 +35,10 @@ public class UnitRoleController extends BaseController {
     /**
      * 系统日志中记录
      */
-    private String optId = "UNITROLE";//CodeRepositoryUtil.getCode("OPTID", "userRole");
-
+    //private String optId = "UNITROLE";//CodeRepositoryUtil.getCode("OPTID", "userRole");
+    public String getOptId() {
+        return  "UNITROLE";
+    }
     /**
      * 通过角色代码获取机构
      *

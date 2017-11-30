@@ -34,7 +34,9 @@ import java.util.Map;
 @RequestMapping("/userqueryfilter")
 public class UserQueryFilterController  extends BaseController {
     //private static final Logger logger = LoggerFactory.getLogger(UserQueryFilterController.class);
-
+    public String getOptId() {
+        return  "UserQueryFilter";
+    }
     @Resource
     private UserQueryFilterManager userQueryFilterMag;
     /*public void setUserQueryFilterMag(UserQueryFilterManager basemgr)

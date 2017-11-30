@@ -53,8 +53,10 @@ public class UserUnitController extends BaseController {
     /**
      * 系统日志中记录
      */
-    private String optId = "USERUNIT";//CodeRepositoryUtil.getCode("OPTID", "userUnit");
-
+    //private String optId = "USERUNIT";//CodeRepositoryUtil.getCode("OPTID", "userUnit");
+    public String getOptId() {
+        return  "USERUNIT";
+    }
     /**
      * 机构人员树形信息
      *

@@ -42,11 +42,16 @@ public class RoleInfoController extends BaseController {
 
     @Resource
     private SysUserRoleManager sysUserRoleManager;
+
+
+
     /**
      * 系统日志中记录
      */
-    private String optId = "ROLEMAG";//CodeRepositoryUtil.getCode("OPTID", "roleInfo");
-
+    //private String optId = "ROLEMAG";//CodeRepositoryUtil.getCode("OPTID", "roleInfo");
+    public String getOptId() {
+      return "ROLEMAG";
+    }
 
     private void writeRoleListToResponse(List<RoleInfo> roleInfos,String[] field,PageDesc pageDesc,HttpServletResponse response) {
 

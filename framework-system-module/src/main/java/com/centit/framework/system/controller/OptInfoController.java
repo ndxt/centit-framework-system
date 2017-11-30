@@ -49,8 +49,10 @@ public class OptInfoController extends BaseController {
   /**
    * 系统日志中记录
    */
-  private String optId = "OPTINFO";//CodeRepositoryUtil.getCode("OPTID", "optInfo");
-
+  //private String optId = "OPTINFO";//CodeRepositoryUtil.getCode("OPTID", "optInfo");
+  public String getOptId() {
+    return  "OPTINFO";
+  }
   /**
    * 查询所有系统业务
    *

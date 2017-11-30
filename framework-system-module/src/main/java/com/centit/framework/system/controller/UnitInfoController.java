@@ -65,8 +65,10 @@ public class UnitInfoController extends BaseController {
     /**
      * 系统日志中记录
      */
-    private String optId = "UNITMAG";// CodeRepositoryUtil.getCode("OPTID", "unitInfo");
-
+    //private String optId = "UNITMAG";// CodeRepositoryUtil.getCode("OPTID", "unitInfo");
+    public String getOptId() {
+        return  "UNITMAG";
+    }
     /**
      * 查询所有机构信息
      *
