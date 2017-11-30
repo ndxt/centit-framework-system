@@ -6,6 +6,7 @@ define(function (require) {
   // 角色信息列表
   return UserInfo.extend(function () {
     var loginUser = Cache.get('loginuser');
+
     this.queryUserUrl = Config.ContextPath + "system/unitinfo/" + loginUser.primaryUnit + "/users";
 
     // 修改用户角色链接

@@ -39,9 +39,15 @@ public interface UserRoleDao {
      */
     List<UserRole> listRoleUsers(String roleCode);
     /**
-    *
-    * @param dbUserRole
+    * 更新
+    * @param userRole 用户角色
     */
+    void updateUserRole(UserRole userRole);
+
+    /**
+     * 合并
+     * @param dbUserRole 用户角色
+     */
     void mergeObject(UserRole dbUserRole);
 
     /**

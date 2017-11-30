@@ -40,8 +40,13 @@ public class UserSettingManagerImpl implements UserSettingManager {
 
     @Override
     @Transactional
-    public void saveUserSetting(UserSetting userSetting){
-        userSettingDao.mergeObject(userSetting);
+    public void saveNewUserSetting(UserSetting userSetting){
+        userSettingDao.saveNewUserSetting(userSetting);
+    }
+    @Override
+    @Transactional
+    public void updateUserSetting(UserSetting userSetting){
+        userSettingDao.updateObject(userSetting);
     }
     @Override
     @Transactional

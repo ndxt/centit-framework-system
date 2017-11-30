@@ -5,14 +5,14 @@ define(function (require) {
   var Page = require('core/page');
 
   // 机构添加用户
-  var UserInfoUnitAdd = Page.extend(function () {
+  return Page.extend(function () {
     var _self = this;
 
-    this.initUnitCombotree = function(input) {
+    this.initUnitCombotree = function (input) {
       input
         .attr('target', 'unit')
         .combotree({
-         target: 'unit'
+          target: 'unit'
         });
     };
 
@@ -24,14 +24,14 @@ define(function (require) {
     // @override
     this.load = function (panel) {
 
-     this.$findUp('initUnitCombotree')($('input[name=unitCode]', panel));
+      this.$findUp('initUnitCombotree')($('input[name=unitCode]', panel));
 
       // 获取父窗口的用户信息
-      var userinfo = this.parent.data;
+      var userInfo = this.parent.data;
 
       var data = this.data = $.extend({}, this.object, {
-        userCode: userinfo.userCode,
-        userName: userinfo.userName
+        userCode: userInfo.userCode,
+        userName: userInfo.userName
       });
 
       panel.find('form').form('disableValidation')
@@ -52,11 +52,8 @@ define(function (require) {
           data: data
         }).then(function () {
           return require('loaders/cache/loader.system').loadAll()
-        }).then(function (data) {
-          var table_userinfo = _self.parent.parent.panel.find("#userInfoTable");
-          //var row=table_userinfo.datagrid("getSelected");
-          //table_userinfo.datagrid("updateRow",{index:0,row:data});
-          table_userinfo.datagrid("reload");
+        }).then(function () {
+          _self.parent.table.datagrid("reload");
           closeCallback();
         });
       }
@@ -64,11 +61,6 @@ define(function (require) {
       return false;
     };
 
-    // @override
-    this.onClose = function (table) {
-      table.datagrid('reload');
-    };
   });
 
-  return UserInfoUnitAdd;
 });

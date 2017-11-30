@@ -113,4 +113,8 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
           this, qap.getQuery(), qap.getParams(),startPos,maxSize);
     }
 
+    @Override
+    public void updateUserRole(UserRole userRole){
+      super.updateObject(userRole);
+    }
 }

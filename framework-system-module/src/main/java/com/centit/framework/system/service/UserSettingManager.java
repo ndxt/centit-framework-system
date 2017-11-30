@@ -9,21 +9,23 @@ import java.util.Map;
 
 public interface UserSettingManager {
 
-    public List<UserSetting> getUserSettings(String userCode);
+    List<UserSetting> getUserSettings(String userCode);
 
-    public List<UserSetting> getUserSettings(String userCode,String optID);
+    List<UserSetting> getUserSettings(String userCode,String optID);
 
-    public UserSetting getUserSetting(String userCode,String paramCode);
+    UserSetting getUserSetting(String userCode,String paramCode);
 
-    public void saveUserSetting(UserSetting userSetting);
+    void saveNewUserSetting(UserSetting userSetting);
 
-    public void saveUserSetting(String userCode,String paramCode,String paramName,String paramValue,String optId);
+    void updateUserSetting(UserSetting userSetting);
 
-    public List<UserSetting> listObjects(Map<String,Object>searchColumn,PageDesc pageDesc);
+    void saveUserSetting(String userCode,String paramCode,String paramName,String paramValue,String optId);
 
-    public List<UserSetting> listObjects(Map<String,Object>searchColumn);
+    List<UserSetting> listObjects(Map<String,Object>searchColumn,PageDesc pageDesc);
 
-    public UserSetting getObjectById(UserSettingId userSettingid);
+    List<UserSetting> listObjects(Map<String,Object>searchColumn);
 
-    public void deleteObject(UserSetting userSetting);
+    UserSetting getObjectById(UserSettingId userSettingid);
+
+    void deleteObject(UserSetting userSetting);
 }

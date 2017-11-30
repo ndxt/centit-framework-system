@@ -299,7 +299,7 @@
             </if>
         </set>
     </sql>
-    <update id="update" parameterType="com.centit.framework.system.po.OptInfo" timeout="2000">
+    <update id="updateOptInfo" parameterType="com.centit.framework.system.po.OptInfo" timeout="2000">
         update F_OPTINFO
         <include refid="updSql" />
         where OPT_ID=#{optId}
