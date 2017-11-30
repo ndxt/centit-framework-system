@@ -2,15 +2,15 @@ define(function(require) {
 	var Config = require('config');
 	var Core = require('core/core');
 	var DictionaryAdd = require('../ctrl/dictionary.add');
-	
+
 	var RoleInfoEdit = DictionaryAdd.extend(function() {
 		var _self = this;
-		
+
 		// @override
 		this.load = function(panel, data) {
-					
+
 			var form = panel.find('form');
-			
+
 			Core.ajax(Config.ContextPath+this.url+data.catalogCode, {
 				method: 'get'
 			}).then(function(data) {
@@ -19,22 +19,23 @@ define(function(require) {
 					.form('load', data)
 					.form('readonly', 'catalogCode')
 					.form('focus');
-				
+
 				// 初始化字段描述
-				_self.initPropertyFields(panel, data.fieldDesc);
+				this.table = _self.initPropertyFields(panel, data.fieldDesc);
 			});
-			
-			
+
+
 		};
-		
+
 		// @overload
 		this.submit = function(panel, data, closeCallback) {
 			var form = panel.find('form');
-			
+      var table = panel.find('table#property_desc');
+
 			// 开启校验
 			form.form('enableValidation');
-			var isValid = form.form('validate');
-			
+			var isValid = form.form('validate') && table.cdatagrid('endEdit');
+
 			if (isValid) {
 				form.form('ajax', {
 					url: Config.ContextPath + this.url + data.catalogCode,
@@ -45,10 +46,10 @@ define(function(require) {
 					})
 				}).then(closeCallback);
 			}
-			
+
 			return false;
 		};
 	});
-	
+
 	return RoleInfoEdit;
 });

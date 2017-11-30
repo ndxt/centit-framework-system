@@ -3,7 +3,6 @@ define(function (require) {
   var Core = require('core/core');
   var Page = require('core/page');
 
-
   // 添加数据字典
   var DictionaryAdd = Page.extend(function () {
 
@@ -48,51 +47,102 @@ define(function (require) {
     };
 
     // 添加字段命名列表，顺序分别是：编码、扩展编码、扩展编码2、数据标记、数值、数据描述 ，共6个字段。在明细中按照这个顺序显示。
-    //扩展编码2改为排序
     this.initPropertyFields = function (panel, value) {
+      var checkbox = {
+        editor: {
+          type: 'checkbox',
+          options: {
+            on: 'T',
+            off: 'F'
+          }
+        },
+        formatter: function (value) {
+          return value === 'T' ? '是' : '否'
+        }
+      };
+      var textbox = {
+        editor: {
+          type: 'textbox',
+          options: {
+            required: true
+          }
+        }
+      };
+
       // 列描述
       var columns = [[
-        {field: 'name', title: '字段', width: '35%'},
+
+        {
+          field: 'name',
+          title: '字段',
+          width: '35%'
+        },
         {
           field: 'value',
           title: '描述',
           width: '35%',
-          editor: {type: 'checkbox', options: {required: true}}
+          editor: textbox.editor
         },
         {
-          field: 'isUse', title: '是否使用', width: '30%',
+          field: 'isUse',
+          title: '是否使用',
+          width: '30%',
           align: 'center',
-          editor: {type: 'checkbox', options: {on: 'T', off: 'F'}},
-          formatter: function (value) {
-            return value === 'T' ? '是' : '否'
-          }
+          editor: checkbox.editor,
+          formatter: checkbox.formatter
         }
       ]];
 
       var fieldMap = vm.parseFieldDesc(value);
 
       // 字段描述表格展示数据
-      var data = {
-        "total": 6, "rows": [
-          {field: 'dataCode', "name": "编码", "value": fieldMap.dataCode.value, "isUse": fieldMap.dataCode.isUse},
-          {field: 'dataValue', "name": "数值", "value": fieldMap.dataValue.value, "isUse": fieldMap.dataValue.isUse},
-          {field: 'extraCode', "name": "扩展编码", "value": fieldMap.extraCode.value, "isUse": fieldMap.extraCode.isUse},
-          {field: 'extraCode2', "name": "排序", "value": fieldMap.extraCode2.value, "isUse": fieldMap.extraCode2.isUse},
-          {field: 'dataTag', "name": "数据标记", "value": fieldMap.dataTag.value, "isUse": fieldMap.dataTag.isUse},
-          {
-            field: 'dataDesc',
-            "name": "数据描述",
-            "value": fieldMap.dataDesc.value,
-            "isUse": fieldMap.dataDesc.isUse
-          }
-        ]
-      };
+      var data = [
+        {
+          field: 'dataCode',
+          "name": "dataCode",
+          "value": fieldMap.dataCode.value,
+          "isUse": 'T'
+        },
+        {
+          field: 'dataValue',
+          "name": "dataValue",
+          "value": fieldMap.dataValue.value,
+          "isUse": 'T'
+        },
+        {
+          field: 'extraCode',
+          "name": "extraCode",
+          "value": fieldMap.extraCode.value,
+          "isUse": fieldMap.extraCode.isUse
+        },
+        {
+          field: 'extraCode2',
+          "name": "extraCode2",
+          "value": fieldMap.extraCode2.value,
+          "isUse": fieldMap.extraCode2.isUse
+        },
+        {
+          field: 'dataTag',
+          "name": "dataTag",
+          "value": fieldMap.dataTag.value,
+          "isUse": fieldMap.dataTag.isUse
+        },
+        {
+          field: 'dataDesc',
+          "name": "dataDesc",
+          "value": fieldMap.dataDesc.value,
+          "isUse": fieldMap.dataDesc.isUse
+
+        }
+      ];
 
       panel.find('table#property_desc')
-        .datagrid({
+        .cdatagrid({
+          controller: this,
           columns: columns
         })
-        .datagrid('loadData', data);
+        .cdatagrid('loadData', data);
+
     };
 
     // 获取字段描述值
@@ -135,10 +185,11 @@ define(function (require) {
     // @override
     this.submit = function (panel, data, closeCallback) {
       var form = panel.find('form');
+      var table = panel.find('table#property_desc');
 
       // 开启校验
       form.form('enableValidation');
-      var isValid = form.form('validate');
+      var isValid = form.form('validate') && table.cdatagrid('endEdit');
 
       if (isValid) {
         form.form('ajax', {
