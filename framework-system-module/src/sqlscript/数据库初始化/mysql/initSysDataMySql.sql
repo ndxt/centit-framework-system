@@ -1,413 +1,413 @@
 -- mysql -u tfzc -D tfzcpt -p <D:\Projects\j2eews\tfzcpt\src\sqlScript\sysDataInit.sql
 
---´´½¨ÓÃ»§
+-- åˆ›å»ºç”¨æˆ·
 delete from f_userinfo;
 
 insert into f_userinfo (USERCODE, USERPIN, ISVALID, LOGINNAME, USERNAME, USERDESC, LOGINTIMES, ACTIVETIME, LOGINIP, ADDRBOOKID, REGEMAIL, USERORDER, USERPWD, REGCELLPHONE, CREATEDATE,CREATOR,UPDATOR,UPDATEDATE)
-values ('noname', '$2a$11$xLOqxWXU6laDFfbiHP/vmOCEHGXzawFJ5ZSRARTvA1ipUwS5m9lPS', 'F', 'noname', 'ÄäÃûÓÃ»§', 'ÄäÃûÓÃ»§', null, null, '', null, 'noname@centit.com', 1, '', '', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'),'u0000000','u0000000',now());
+values ('noname', '$2a$11$xLOqxWXU6laDFfbiHP/vmOCEHGXzawFJ5ZSRARTvA1ipUwS5m9lPS', 'F', 'noname', 'åŒ¿åç”¨æˆ·', 'åŒ¿åç”¨æˆ·', null, null, '', null, 'noname@centit.com', 1, '', '', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'),'u0000000','u0000000',now());
 insert into f_userinfo (USERCODE, USERPIN, ISVALID, LOGINNAME, USERNAME, USERDESC, LOGINTIMES, ACTIVETIME, LOGINIP, ADDRBOOKID, REGEMAIL, USERORDER, USERPWD, REGCELLPHONE, CREATEDATE ,CREATOR,UPDATOR,UPDATEDATE)
-values ('u0000000', '$2a$11$DbyFNhHeCES5CKoMuM5sXepY7GM35sZkUSqQbjYJnFTzJ2GDIYGLK', 'T', 'admin', '¹ÜÀíÔ±', '', null, null, '', null, 'codefan@centit.com', 1, '', '18017458877', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'),'u0000000','u0000000',now());
+values ('u0000000', '$2a$11$DbyFNhHeCES5CKoMuM5sXepY7GM35sZkUSqQbjYJnFTzJ2GDIYGLK', 'T', 'admin', 'ç®¡ç†å‘˜', '', null, null, '', null, 'codefan@centit.com', 1, '', '18017458877', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'),'u0000000','u0000000',now());
 
---³õÊ¼»¯Êý¾Ý×Öµä
---str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s')
+-- åˆå§‹åŒ–æ•°æ®å­—å…¸
+-- str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s')
 insert into f_datacatalog (CATALOGCODE, CATALOGNAME, CATALOGSTYLE, CATALOGTYPE, CATALOGDESC, FIELDDESC, UPDATEDATE, CREATEDATE, OPTID, NEEDCACHE,CREATOR,UPDATOR)
-values ('MsgType', 'ÏûÏ¢ÀàÐÍ', 'U', 'L', '²âÊÔ²âÊÔ', null, str_to_date('25-02-2016 17:55:21', '%d-%m-%Y %H:%i:%s'), null, 'innermsg', '1','u0000000','u0000000');
-
-insert into f_datacatalog (CATALOGCODE, CATALOGNAME, CATALOGSTYLE, CATALOGTYPE, CATALOGDESC, FIELDDESC, UPDATEDATE, CREATEDATE, OPTID, NEEDCACHE,CREATOR,UPDATOR)
-values ('CatalogStyle', '×ÖµäÀàÐÍ', 'S', 'L', 'F : ¿ò¼Ü¹ÌÓÐµÄ U:ÓÃ»§ S£ºÏµÍ³', null, null, null, 'dictionary', '1','u0000000','u0000000');
+values ('MsgType', 'æ¶ˆæ¯ç±»åž‹', 'U', 'L', 'æµ‹è¯•æµ‹è¯•', null, str_to_date('25-02-2016 17:55:21', '%d-%m-%Y %H:%i:%s'), null, 'innermsg', '1','u0000000','u0000000');
 
 insert into f_datacatalog (CATALOGCODE, CATALOGNAME, CATALOGSTYLE, CATALOGTYPE, CATALOGDESC, FIELDDESC, UPDATEDATE, CREATEDATE, OPTID, NEEDCACHE,CREATOR,UPDATOR)
-values ('CatalogType', '×Öµä½á¹¹', 'S', 'L', 'L:ÁÐ±íT:Ê÷ÐÎ ²âÊÔÐÞ¸Ä', null, str_to_date('01-12-2015 11:41:23', '%d-%m-%Y %H:%i:%s'), null, 'dictionary', '1','u0000000','u0000000');
+values ('CatalogStyle', 'å­—å…¸ç±»åž‹', 'S', 'L', 'F : æ¡†æž¶å›ºæœ‰çš„ U:ç”¨æˆ· Sï¼šç³»ç»Ÿ', null, null, null, 'dictionary', '1','u0000000','u0000000');
 
 insert into f_datacatalog (CATALOGCODE, CATALOGNAME, CATALOGSTYLE, CATALOGTYPE, CATALOGDESC, FIELDDESC, UPDATEDATE, CREATEDATE, OPTID, NEEDCACHE,CREATOR,UPDATOR)
-values ('UnitType', 'µ¥Î»ÀàÐÍ', 'U', 'L', 'µ¥Î»ÀàÐÍ', null, null, null, null, '1','u0000000','u0000000');
+values ('CatalogType', 'å­—å…¸ç»“æž„', 'S', 'L', 'L:åˆ—è¡¨T:æ ‘å½¢ æµ‹è¯•ä¿®æ”¹', null, str_to_date('01-12-2015 11:41:23', '%d-%m-%Y %H:%i:%s'), null, 'dictionary', '1','u0000000','u0000000');
 
 insert into f_datacatalog (CATALOGCODE, CATALOGNAME, CATALOGSTYLE, CATALOGTYPE, CATALOGDESC, FIELDDESC, UPDATEDATE, CREATEDATE, OPTID, NEEDCACHE,CREATOR,UPDATOR)
-values ('OptType', 'ÒµÎñÀà±ð', 'S', 'L', 'ÒµÎñÀà±ð', 'ÒµÎñÀà±ð', null, null, '1', '1','u0000000','u0000000');
+values ('UnitType', 'å•ä½ç±»åž‹', 'U', 'L', 'å•ä½ç±»åž‹', null, null, null, null, '1','u0000000','u0000000');
 
 insert into f_datacatalog (CATALOGCODE, CATALOGNAME, CATALOGSTYLE, CATALOGTYPE, CATALOGDESC, FIELDDESC, UPDATEDATE, CREATEDATE, OPTID, NEEDCACHE,CREATOR,UPDATOR)
-values ('StationType', '¸ÚÎ»½ÇÉ«', 'U', 'L', 'ÒµÎñ¸ÚÎ»Àà±ð£¬Àà±ð´úÂë³¤¶ÈÎª4', 'ÒµÎñÀà±ðxx', null, null, '0', '0','u0000000','u0000000');
+values ('OptType', 'ä¸šåŠ¡ç±»åˆ«', 'S', 'L', 'ä¸šåŠ¡ç±»åˆ«', 'ä¸šåŠ¡ç±»åˆ«', null, null, '1', '1','u0000000','u0000000');
 
 insert into f_datacatalog (CATALOGCODE, CATALOGNAME, CATALOGSTYLE, CATALOGTYPE, CATALOGDESC, FIELDDESC, UPDATEDATE, CREATEDATE, OPTID, NEEDCACHE,CREATOR,UPDATOR)
-values ('RankType', 'ÐÐÕþÖ°ÎñÀà±ð', 'U', 'L', 'ÒµÎñÖ°ÎñÀà±ð£¬Àà±ð´úÂë³¤¶ÈÎª2¡£ÊýÖµÔ½µÍµÈ¼¶Ô½¸ß', 'Ö°Î»´úÂë;µÈ¼¶;Î´ÓÃ;Ö°Î»Ãû³Æ', null, null, null, '0','u0000000','u0000000');
+values ('StationType', 'å²—ä½è§’è‰²', 'U', 'L', 'ä¸šåŠ¡å²—ä½ç±»åˆ«ï¼Œç±»åˆ«ä»£ç é•¿åº¦ä¸º4', 'ä¸šåŠ¡ç±»åˆ«xx', null, null, '0', '0','u0000000','u0000000');
 
 insert into f_datacatalog (CATALOGCODE, CATALOGNAME, CATALOGSTYLE, CATALOGTYPE, CATALOGDESC, FIELDDESC, UPDATEDATE, CREATEDATE, OPTID, NEEDCACHE,CREATOR,UPDATOR)
-values ('SUPPORT_LANG', 'ÏµÍ³Ö§³ÖµÄÓïÑÔ', 'U', 'L', 'ÏµÍ³Ö§³ÖµÄÓïÑÔ,ÐèÒªÔÚsystem.propertiesÖÐ°Ñ²ÎÊýsys.multi_langÉèÖÃÎªtrue²Å»áÉúÐ§', null, str_to_date('28-01-2016 20:33:23', '%d-%m-%Y %H:%i:%s'), null, 'DICTSET', '1','u0000000','u0000000');
+values ('RankType', 'è¡Œæ”¿èŒåŠ¡ç±»åˆ«', 'U', 'L', 'ä¸šåŠ¡èŒåŠ¡ç±»åˆ«ï¼Œç±»åˆ«ä»£ç é•¿åº¦ä¸º2ã€‚æ•°å€¼è¶Šä½Žç­‰çº§è¶Šé«˜', 'èŒä½ä»£ç ;ç­‰çº§;æœªç”¨;èŒä½åç§°', null, null, null, '0','u0000000','u0000000');
 
 insert into f_datacatalog (CATALOGCODE, CATALOGNAME, CATALOGSTYLE, CATALOGTYPE, CATALOGDESC, FIELDDESC, UPDATEDATE, CREATEDATE, OPTID, NEEDCACHE,CREATOR,UPDATOR)
-values ('LogLevel', 'ÈÕÖ¾ÀàÐÍ', 'F', 'L', 'ÈÕÖ¾ÀàÐÍ', 'ÈÕÖ¾ÀàÐÍ', str_to_date('07-04-2016', '%d-%m-%Y'), str_to_date('07-04-2016', '%d-%m-%Y'), 'OptLog', '1','u0000000','u0000000');
+values ('SUPPORT_LANG', 'ç³»ç»Ÿæ”¯æŒçš„è¯­è¨€', 'U', 'L', 'ç³»ç»Ÿæ”¯æŒçš„è¯­è¨€,éœ€è¦åœ¨system.propertiesä¸­æŠŠå‚æ•°sys.multi_langè®¾ç½®ä¸ºtrueæ‰ä¼šç”Ÿæ•ˆ', null, str_to_date('28-01-2016 20:33:23', '%d-%m-%Y %H:%i:%s'), null, 'DICTSET', '1','u0000000','u0000000');
+
+insert into f_datacatalog (CATALOGCODE, CATALOGNAME, CATALOGSTYLE, CATALOGTYPE, CATALOGDESC, FIELDDESC, UPDATEDATE, CREATEDATE, OPTID, NEEDCACHE,CREATOR,UPDATOR)
+values ('LogLevel', 'æ—¥å¿—ç±»åž‹', 'F', 'L', 'æ—¥å¿—ç±»åž‹', 'æ—¥å¿—ç±»åž‹', str_to_date('07-04-2016', '%d-%m-%Y'), str_to_date('07-04-2016', '%d-%m-%Y'), 'OptLog', '1','u0000000','u0000000');
 
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('MsgType', 'P', null, null, 'T', '¸öÈËÏûÏ¢', 'U', null, str_to_date('25-02-2016 17:55:21', '%d-%m-%Y %H:%i:%s'), null, null);
+values ('MsgType', 'P', null, null, 'T', 'ä¸ªäººæ¶ˆæ¯', 'U', null, str_to_date('25-02-2016 17:55:21', '%d-%m-%Y %H:%i:%s'), null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('MsgType', 'A', null, null, 'T', '¹«¸æ', 'U', '¸ø²¿ÃÅÈº·¢µÄÏûÏ¢', str_to_date('25-02-2016 17:55:21', '%d-%m-%Y %H:%i:%s'), null, null);
+values ('MsgType', 'A', null, null, 'T', 'å…¬å‘Š', 'U', 'ç»™éƒ¨é—¨ç¾¤å‘çš„æ¶ˆæ¯', str_to_date('25-02-2016 17:55:21', '%d-%m-%Y %H:%i:%s'), null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('CatalogStyle', 'F', null, null, 'T', '¿ò¼Ü¹ÌÓÐ', 'S', 'ÈÎºÎµØ·½¶¼²»ÔÊÐí±à¼­£¬Ö»ÄÜÓÐ¿ª·¢ÈËÔ±¸ø³ö¸üÐÂ½Å±¾Ìí¼Ó¡¢¸ü¸ÄºÍÉ¾³ý', null, null, null);
+values ('CatalogStyle', 'F', null, null, 'T', 'æ¡†æž¶å›ºæœ‰', 'S', 'ä»»ä½•åœ°æ–¹éƒ½ä¸å…è®¸ç¼–è¾‘ï¼Œåªèƒ½æœ‰å¼€å‘äººå‘˜ç»™å‡ºæ›´æ–°è„šæœ¬æ·»åŠ ã€æ›´æ”¹å’Œåˆ é™¤', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('CatalogStyle', 'G', null, null, 'T', '¹ú±ê', 'S', 'Õâ¸öÔÝÊ±²»¿¼ÂÇ¿ÉÒÔÔÚ×ÖµäÀà±ðÖÐ½øÐÐÃèÊö', null, null, null);
+values ('CatalogStyle', 'G', null, null, 'T', 'å›½æ ‡', 'S', 'è¿™ä¸ªæš‚æ—¶ä¸è€ƒè™‘å¯ä»¥åœ¨å­—å…¸ç±»åˆ«ä¸­è¿›è¡Œæè¿°', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('CatalogStyle', 'S', null, null, 'T', 'ÏµÍ³²ÎÊý', 'S', 'ÊµÊ©ÈËÔ±¿ÉÒÔÔÚÊµÊ©Èë¿Ú¶ÔÊý¾Ý×ÖµäµÄÀà±ðºÍ×ÖµäÌõÄ¿½øÐÐCRUD²Ù×÷', null, null, null);
+values ('CatalogStyle', 'S', null, null, 'T', 'ç³»ç»Ÿå‚æ•°', 'S', 'å®žæ–½äººå‘˜å¯ä»¥åœ¨å®žæ–½å…¥å£å¯¹æ•°æ®å­—å…¸çš„ç±»åˆ«å’Œå­—å…¸æ¡ç›®è¿›è¡ŒCRUDæ“ä½œ', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('CatalogStyle', 'U', null, null, 'T', 'ÓÃ»§²ÎÊý', 'S', '¹ÜÀíÔ±Èë¿Ú ºÍ ÊµÊ©ÈËÔ±Èë¿Ú ¶¼ ¶ÔÕâÀà±ð×ÖµäÀà±ðºÍÌõÄ¿½øÐÐCRUD', null, null, null);
+values ('CatalogStyle', 'U', null, null, 'T', 'ç”¨æˆ·å‚æ•°', 'S', 'ç®¡ç†å‘˜å…¥å£ å’Œ å®žæ–½äººå‘˜å…¥å£ éƒ½ å¯¹è¿™ç±»åˆ«å­—å…¸ç±»åˆ«å’Œæ¡ç›®è¿›è¡ŒCRUD', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('CatalogType', 'L', null, null, 'T', 'ÁÐ±í', 'S', 'ÁÐ±í', str_to_date('01-12-2015 11:41:23', '%d-%m-%Y %H:%i:%s'), null, null);
+values ('CatalogType', 'L', null, null, 'T', 'åˆ—è¡¨', 'S', 'åˆ—è¡¨', str_to_date('01-12-2015 11:41:23', '%d-%m-%Y %H:%i:%s'), null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('CatalogType', 'T', null, null, 'T', 'Ê÷ÐÎ', 'S', 'Ê÷ÐÎ', str_to_date('01-12-2015 11:41:23', '%d-%m-%Y %H:%i:%s'), null, null);
+values ('CatalogType', 'T', null, null, 'T', 'æ ‘å½¢', 'S', 'æ ‘å½¢', str_to_date('01-12-2015 11:41:23', '%d-%m-%Y %H:%i:%s'), null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('UnitType', 'A', 'CCCC', null, 'T', '¹ÜÀí', 'S', 'administrator', null, null, null);
+values ('UnitType', 'A', 'CCCC', null, 'T', 'ç®¡ç†', 'S', 'administrator', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('UnitType', 'L', 'BBB', null, 'T', 'ºóÇÚ', 'S', 'logistics', null, null, null);
+values ('UnitType', 'L', 'BBB', null, 'T', 'åŽå‹¤', 'S', 'logistics', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('UnitType', 'O', 'DDD', null, 'T', 'ÒµÎñ', 'S', 'operator', null, null, null);
+values ('UnitType', 'O', 'DDD', null, 'T', 'ä¸šåŠ¡', 'S', 'operator', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('UnitType', 'R', 'A', null, 'T', 'ÑÐ·¢', 'S', 'Rearch', null, null, null);
+values ('UnitType', 'R', 'A', null, 'T', 'ç ”å‘', 'S', 'Rearch', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('RankType', 'IM', '3', null, 'T', 'ÏîÄ¿¾­Àí', 'U', 'ÏîÄ¿¾­Àí', null, null, null);
+values ('RankType', 'IM', '3', null, 'T', 'é¡¹ç›®ç»ç†', 'U', 'é¡¹ç›®ç»ç†', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('RankType', 'GM', '1', null, 'T', '×Ü¾­Àí', null, null, null, null, null);
+values ('RankType', 'GM', '1', null, 'T', 'æ€»ç»ç†', null, null, null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('RankType', 'DM', '2', null, 'T', '²¿ÃÅ¾­Àí', null, null, null, null, null);
+values ('RankType', 'DM', '2', null, 'T', 'éƒ¨é—¨ç»ç†', null, null, null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('RankType', 'EM', '9', null, 'T', 'Ô±¹¤', null, null, null, null, null);
+values ('RankType', 'EM', '9', null, 'T', 'å‘˜å·¥', null, null, null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('RankType', 'KZ', '10', null, 'T', '¿Æ³¤', null, '¿Æ³¤', null, null, null);
+values ('RankType', 'KZ', '10', null, 'T', 'ç§‘é•¿', null, 'ç§‘é•¿', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('RankType', 'ZR', '10', null, 'T', 'Ö÷ÈÎ', null, 'Ö÷ÈÎ', null, null, null);
+values ('RankType', 'ZR', '10', null, 'T', 'ä¸»ä»»', null, 'ä¸»ä»»', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('RankType', 'KY', '10', null, 'T', '°ì¹«ÊÒ¿ÆÔ±', null, '°ì¹«ÊÒ¿ÆÔ±', null, null, null);
+values ('RankType', 'KY', '10', null, 'T', 'åŠžå…¬å®¤ç§‘å‘˜', null, 'åŠžå…¬å®¤ç§‘å‘˜', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('RankType', 'CZ', '10', null, 'T', '´¦³¤', null, '´¦³¤', null, null, null);
+values ('RankType', 'CZ', '10', null, 'T', 'å¤„é•¿', null, 'å¤„é•¿', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('RankType', 'WDZ', '4', null, 'T', 'Î¯µ³×é', null, null, null, null, null);
+values ('RankType', 'WDZ', '4', null, 'T', 'å§”å…šç»„', null, null, null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('RankType', 'WLD', '5', null, 'T', 'Î¯Áìµ¼', null, 'Î¯Áìµ¼', null, null, null);
+values ('RankType', 'WLD', '5', null, 'T', 'å§”é¢†å¯¼', null, 'å§”é¢†å¯¼', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('RankType', 'FC', '6', null, 'T', '¸±´¦³¤', null, '¸±´¦³¤', null, null, null);
+values ('RankType', 'FC', '6', null, 'T', 'å‰¯å¤„é•¿', null, 'å‰¯å¤„é•¿', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('RankType', 'JJZ', '7', null, 'T', '¼Í¼ì×é', null, '¼Í¼ì×é', null, null, null);
+values ('RankType', 'JJZ', '7', null, 'T', 'çºªæ£€ç»„', null, 'çºªæ£€ç»„', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('RankType', 'JGDW', '8', null, 'T', '»ú¹Øµ³Î¯', null, '»ú¹Øµ³Î¯', null, null, null);
+values ('RankType', 'JGDW', '8', null, 'T', 'æœºå…³å…šå§”', null, 'æœºå…³å…šå§”', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'slbmfzr', null, null, 'T', 'ÊÜÀí²¿ÃÅ¸ºÔðÈË', 'S', null, null, null, null);
+values ('StationType', 'slbmfzr', null, null, 'T', 'å—ç†éƒ¨é—¨è´Ÿè´£äºº', 'S', null, null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'fgjz', null, null, 'T', '·Ö¹Ü¾Ö³¤', null, null, null, null, null);
+values ('StationType', 'fgjz', null, null, 'T', 'åˆ†ç®¡å±€é•¿', null, null, null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'sfy', null, null, 'T', 'ÊÕ·ÑÔ±', null, null, null, null, null);
+values ('StationType', 'sfy', null, null, 'T', 'æ”¶è´¹å‘˜', null, null, null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'xbr', null, null, 'T', 'Ð­°ì´¦ÊÒ¸ºÔðÈË', null, 'Ð­°ì´¦ÊÒ¸ºÔðÈË', null, null, null);
+values ('StationType', 'xbr', null, null, 'T', 'ååŠžå¤„å®¤è´Ÿè´£äºº', null, 'ååŠžå¤„å®¤è´Ÿè´£äºº', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'bgszr', null, null, 'T', '°ì¹«ÊÒÖ÷ÈÎ', null, '°ì¹«ÊÒÖ÷ÈÎ', null, null, null);
+values ('StationType', 'bgszr', null, null, 'T', 'åŠžå…¬å®¤ä¸»ä»»', null, 'åŠžå…¬å®¤ä¸»ä»»', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'xkdj', null, null, 'T', 'Ðí¿ÉµÇ¼Ç', 'S', 'Ðí¿ÉµÇ¼Ç', null, null, null);
+values ('StationType', 'xkdj', null, null, 'T', 'è®¸å¯ç™»è®°', 'S', 'è®¸å¯ç™»è®°', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'xkbl', null, null, 'T', 'Ðí¿É°ìÀí', 'S', 'Ðí¿É°ìÀí', null, null, null);
+values ('StationType', 'xkbl', null, null, 'T', 'è®¸å¯åŠžç†', 'S', 'è®¸å¯åŠžç†', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'dcdb_jcry', null, null, 'T', '¶½²é¶½°ì_¼à²ìÈËÔ±', 'S', '·¢Æð¶½°ìµÄ¼à²ìÈËÔ±', null, null, null);
+values ('StationType', 'dcdb_jcry', null, null, 'T', 'ç£æŸ¥ç£åŠž_ç›‘å¯Ÿäººå‘˜', 'S', 'å‘èµ·ç£åŠžçš„ç›‘å¯Ÿäººå‘˜', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'dcdb_jbrld', null, null, 'T', '¶½²é¶½°ì_¾­°ìÈËÁìµ¼', 'S', '±»¶½°ìÈËµÄ·Ö¹ÜÁìµ¼', null, null, null);
+values ('StationType', 'dcdb_jbrld', null, null, 'T', 'ç£æŸ¥ç£åŠž_ç»åŠžäººé¢†å¯¼', 'S', 'è¢«ç£åŠžäººçš„åˆ†ç®¡é¢†å¯¼', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'dcdb_jcld', null, null, 'T', '¶½²é¶½°ì_¼à²ìÁìµ¼', 'S', '·¢Æð¶½°ìµÄ¼à²ìÈËÔ±·Ö¹ÜÁìµ¼', null, null, null);
+values ('StationType', 'dcdb_jcld', null, null, 'T', 'ç£æŸ¥ç£åŠž_ç›‘å¯Ÿé¢†å¯¼', 'S', 'å‘èµ·ç£åŠžçš„ç›‘å¯Ÿäººå‘˜åˆ†ç®¡é¢†å¯¼', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'dcdb_jbr', null, null, 'T', '¶½²é¶½°ì_¾­°ìÈË', 'S', '±»¶½°ìÈË', null, null, null);
+values ('StationType', 'dcdb_jbr', null, null, 'T', 'ç£æŸ¥ç£åŠž_ç»åŠžäºº', 'S', 'è¢«ç£åŠžäºº', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'fzr', null, null, 'T', 'Ö÷°ì´¦ÊÒ¸ºÔðÈË', null, 'Ö÷°ì´¦ÊÒ¸ºÔðÈË', null, null, null);
+values ('StationType', 'fzr', null, null, 'T', 'ä¸»åŠžå¤„å®¤è´Ÿè´£äºº', null, 'ä¸»åŠžå¤„å®¤è´Ÿè´£äºº', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'sjr', null, null, 'T', '°ì¹«ÊÒÊÕ¼þÈË', null, '°ì¹«ÊÒÊÕ¼þÈË', null, null, null);
+values ('StationType', 'sjr', null, null, 'T', 'åŠžå…¬å®¤æ”¶ä»¶äºº', null, 'åŠžå…¬å®¤æ”¶ä»¶äºº', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'pf', null, null, 'T', '°ì¹«ÊÒÅú·ÖÈË', null, '°ì¹«ÊÒÅú·ÖÈË', null, null, null);
+values ('StationType', 'pf', null, null, 'T', 'åŠžå…¬å®¤æ‰¹åˆ†äºº', null, 'åŠžå…¬å®¤æ‰¹åˆ†äºº', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'cbr', null, null, 'T', 'Ö÷°ì³Ð°ìÈË', null, 'Ö÷°ì³Ð°ìÈË', null, null, null);
+values ('StationType', 'cbr', null, null, 'T', 'ä¸»åŠžæ‰¿åŠžäºº', null, 'ä¸»åŠžæ‰¿åŠžäºº', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'syr', null, null, 'T', '°ì¹«ÊÒÉóÔÄÈË', null, '°ì¹«ÊÒÉóÔÄÈË', null, null, null);
+values ('StationType', 'syr', null, null, 'T', 'åŠžå…¬å®¤å®¡é˜…äºº', null, 'åŠžå…¬å®¤å®¡é˜…äºº', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'sr', null, null, 'T', '°ì¹«ÊÒÈËÔ±', null, '°ì¹«ÊÒÈËÔ±', null, null, null);
+values ('StationType', 'sr', null, null, 'T', 'åŠžå…¬å®¤äººå‘˜', null, 'åŠžå…¬å®¤äººå‘˜', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'fgzr', null, null, 'T', '·Ö¹ÜÖ÷ÈÎ', null, '·Ö¹ÜÖ÷ÈÎ', null, null, null);
+values ('StationType', 'fgzr', null, null, 'T', 'åˆ†ç®¡ä¸»ä»»', null, 'åˆ†ç®¡ä¸»ä»»', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'fw_nw', null, null, 'T', '·¢ÎÄÄâÎÄ', 'S', null, null, null, null);
+values ('StationType', 'fw_nw', null, null, 'T', 'å‘æ–‡æ‹Ÿæ–‡', 'S', null, null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'wysry', null, null, 'T', 'ÎÄÓ¡ÊÒÈËÔ±', null, 'ÎÄÓ¡ÊÒÈËÔ±', null, null, null);
+values ('StationType', 'wysry', null, null, 'T', 'æ–‡å°å®¤äººå‘˜', null, 'æ–‡å°å®¤äººå‘˜', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'wyszr', null, null, 'T', 'ÎÄÓ¡ÊÒÖ÷ÈÎ', null, 'ÎÄÓ¡ÊÒÖ÷ÈÎ', null, null, null);
+values ('StationType', 'wyszr', null, null, 'T', 'æ–‡å°å®¤ä¸»ä»»', null, 'æ–‡å°å®¤ä¸»ä»»', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'spcjbr', null, null, 'T', 'ÉóÅú´¦¾­°ìÈË', 'S', 'ÉóÅú´¦¾­°ìÈË', null, null, null);
+values ('StationType', 'spcjbr', null, null, 'T', 'å®¡æ‰¹å¤„ç»åŠžäºº', 'S', 'å®¡æ‰¹å¤„ç»åŠžäºº', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'spccz', null, null, 'T', 'ÉóÅú´¦´¦³¤', 'S', 'ÉóÅú´¦´¦³¤', null, null, null);
+values ('StationType', 'spccz', null, null, 'T', 'å®¡æ‰¹å¤„å¤„é•¿', 'S', 'å®¡æ‰¹å¤„å¤„é•¿', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'bgsms', null, null, 'T', '°ì¹«ÊÒÃØÊé', 'S', '°ì¹«ÊÒÃØÊé', null, null, null);
+values ('StationType', 'bgsms', null, null, 'T', 'åŠžå…¬å®¤ç§˜ä¹¦', 'S', 'åŠžå…¬å®¤ç§˜ä¹¦', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'bgsfgzr', null, null, 'T', '°ì¹«ÊÒ·Ö¹ÜÖ÷ÈÎ', 'S', '°ì¹«ÊÒ·Ö¹ÜÖ÷ÈÎ', null, null, null);
+values ('StationType', 'bgsfgzr', null, null, 'T', 'åŠžå…¬å®¤åˆ†ç®¡ä¸»ä»»', 'S', 'åŠžå…¬å®¤åˆ†ç®¡ä¸»ä»»', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'wld', null, null, 'T', 'Î¯Áìµ¼Ç©·¢', 'S', 'Î¯Áìµ¼Ç©·¢', null, null, null);
+values ('StationType', 'wld', null, null, 'T', 'å§”é¢†å¯¼ç­¾å‘', 'S', 'å§”é¢†å¯¼ç­¾å‘', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('StationType', 'bgsfwh', null, null, 'T', '°ì¹«ÊÒÎÄÃØÊÒÎÄºÅ', 'S', '°ì¹«ÊÒÎÄÃØÊÒÎÄºÅ', null, null, null);
+values ('StationType', 'bgsfwh', null, null, 'T', 'åŠžå…¬å®¤æ–‡ç§˜å®¤æ–‡å·', 'S', 'åŠžå…¬å®¤æ–‡ç§˜å®¤æ–‡å·', null, null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('SUPPORT_LANG', 'zh_CN', null, null, 'T', 'ÖÐÎÄ', 'U', null, str_to_date('28-01-2016 20:33:23', '%d-%m-%Y %H:%i:%s'), null, null);
+values ('SUPPORT_LANG', 'zh_CN', null, null, 'T', 'ä¸­æ–‡', 'U', null, str_to_date('28-01-2016 20:33:23', '%d-%m-%Y %H:%i:%s'), null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
 values ('SUPPORT_LANG', 'en_US', null, null, 'T', 'English', 'U', null, str_to_date('28-01-2016 20:33:23', '%d-%m-%Y %H:%i:%s'), null, null);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('OptType', 'S', null, null, 'T', 'ÊµÊ©ÒµÎñ', 'F', 'ÊµÊ©ÒµÎñ', str_to_date('01-04-2015 01:00:00', '%d-%m-%Y %H:%i:%s'), str_to_date('01-04-2015 01:00:00', '%d-%m-%Y %H:%i:%s'), 2);
+values ('OptType', 'S', null, null, 'T', 'å®žæ–½ä¸šåŠ¡', 'F', 'å®žæ–½ä¸šåŠ¡', str_to_date('01-04-2015 01:00:00', '%d-%m-%Y %H:%i:%s'), str_to_date('01-04-2015 01:00:00', '%d-%m-%Y %H:%i:%s'), 2);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('OptType', 'O', null, null, 'T', 'ÆÕÍ¨ÒµÎñ', 'F', 'ÆÕÍ¨ÒµÎñ', str_to_date('01-04-2015 01:00:00', '%d-%m-%Y %H:%i:%s'), str_to_date('01-04-2015 01:00:00', '%d-%m-%Y %H:%i:%s'), 1);
+values ('OptType', 'O', null, null, 'T', 'æ™®é€šä¸šåŠ¡', 'F', 'æ™®é€šä¸šåŠ¡', str_to_date('01-04-2015 01:00:00', '%d-%m-%Y %H:%i:%s'), str_to_date('01-04-2015 01:00:00', '%d-%m-%Y %H:%i:%s'), 1);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('OptType', 'I', null, null, 'T', 'ÏîÄ¿ÒµÎñ', 'F', 'ÏîÄ¿ÒµÎñ', str_to_date('01-04-2015 01:00:00', '%d-%m-%Y %H:%i:%s'), str_to_date('01-04-2015 01:00:00', '%d-%m-%Y %H:%i:%s'), 3);
+values ('OptType', 'I', null, null, 'T', 'é¡¹ç›®ä¸šåŠ¡', 'F', 'é¡¹ç›®ä¸šåŠ¡', str_to_date('01-04-2015 01:00:00', '%d-%m-%Y %H:%i:%s'), str_to_date('01-04-2015 01:00:00', '%d-%m-%Y %H:%i:%s'), 3);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('OptType', 'W', null, null, 'T', '¹¤×÷Á÷ÒµÎñ', 'F', '¹¤×÷Á÷ÒµÎñ', str_to_date('01-04-2015 01:00:00', '%d-%m-%Y %H:%i:%s'), str_to_date('01-04-2015 01:00:00', '%d-%m-%Y %H:%i:%s'), 4);
+values ('OptType', 'W', null, null, 'T', 'å·¥ä½œæµä¸šåŠ¡', 'F', 'å·¥ä½œæµä¸šåŠ¡', str_to_date('01-04-2015 01:00:00', '%d-%m-%Y %H:%i:%s'), str_to_date('01-04-2015 01:00:00', '%d-%m-%Y %H:%i:%s'), 4);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('LogLevel', '1', null, null, 'T', '´íÎóÌáÊ¾', 'F', null, str_to_date('07-04-2016', '%d-%m-%Y'), str_to_date('07-04-2016', '%d-%m-%Y'), 2);
+values ('LogLevel', '1', null, null, 'T', 'é”™è¯¯æç¤º', 'F', null, str_to_date('07-04-2016', '%d-%m-%Y'), str_to_date('07-04-2016', '%d-%m-%Y'), 2);
 
 insert into f_datadictionary (CATALOGCODE, DATACODE, EXTRACODE, EXTRACODE2, DATATAG, DATAVALUE, DATASTYLE, DATADESC, LASTMODIFYDATE, CREATEDATE, DATAORDER)
-values ('LogLevel', '0', null, null, 'T', '²Ù×÷ÈÕÖ¾', 'F', null, str_to_date('07-04-2016', '%d-%m-%Y'), str_to_date('07-04-2016', '%d-%m-%Y'), 1);
+values ('LogLevel', '0', null, null, 'T', 'æ“ä½œæ—¥å¿—', 'F', null, str_to_date('07-04-2016', '%d-%m-%Y'), str_to_date('07-04-2016', '%d-%m-%Y'), 1);
 
 
---³õÊ¼»¯ÒµÎñ²Ëµ¥
+--åˆå§‹åŒ–ä¸šåŠ¡èœå•
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('DEPTMAG', '²¿ÃÅ¹ÜÀí', '0', '...', '...', null, 'O', null, null, 'Y', null, null, null, null, 'I', 'icon-base icon-base-computer', null, null, str_to_date('12-01-2016 17:04:01', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
-
-insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('DEPTPOW', 'ÏÂÊô²¿ÃÅ¹ÜÀí', 'DEPTMAG', 'modules/sys/deptpow/deptpow.html', '/system/deptManager', null, 'O', null, null, 'Y', null, null, 0, null, 'D', 'icon-base icon-base-user', null, null, str_to_date('12-01-2016 17:10:45', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
+values ('DEPTMAG', 'éƒ¨é—¨ç®¡ç†', '0', '...', '...', null, 'O', null, null, 'Y', null, null, null, null, 'I', 'icon-base icon-base-computer', null, null, str_to_date('12-01-2016 17:04:01', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
 
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('DEPTROLE', '²¿ÃÅ½ÇÉ«¶¨Òå', 'DEPTMAG', 'modules/sys/deptrole/deptrole.html', '/system/deptManager!', null, 'O', null, null, 'Y', null, null, 0, null, 'D', 'icon-base icon-base-gear', null, null, str_to_date('12-01-2016 17:10:41', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
+values ('DEPTPOW', 'ä¸‹å±žéƒ¨é—¨ç®¡ç†', 'DEPTMAG', 'modules/sys/deptpow/deptpow.html', '/system/deptManager', null, 'O', null, null, 'Y', null, null, 0, null, 'D', 'icon-base icon-base-user', null, null, str_to_date('12-01-2016 17:10:45', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
 
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('DEPTUSERINFO', '²¿ÃÅÓÃ»§¹ÜÀí', 'DEPTMAG', 'modules/sys/deptuserinfo/deptuserinfo.html', '/system/userDef', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null, str_to_date('12-01-2016 17:11:02', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
+values ('DEPTROLE', 'éƒ¨é—¨è§’è‰²å®šä¹‰', 'DEPTMAG', 'modules/sys/deptrole/deptrole.html', '/system/deptManager!', null, 'O', null, null, 'Y', null, null, 0, null, 'D', 'icon-base icon-base-gear', null, null, str_to_date('12-01-2016 17:10:41', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
 
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('UNITMAG', '»ú¹¹¹ÜÀí', 'ORGMAG', 'modules/sys/unitinfo/unitinfo.html', '/system/unitinfo', null, 'O', null, null, 'Y', null, null, 2, null, 'D', null, null, null, str_to_date('14-03-2016 14:41:07', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
+values ('DEPTUSERINFO', 'éƒ¨é—¨ç”¨æˆ·ç®¡ç†', 'DEPTMAG', 'modules/sys/deptuserinfo/deptuserinfo.html', '/system/userDef', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null, str_to_date('12-01-2016 17:11:02', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
 
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('USERMAG', 'ÓÃ»§¹ÜÀí', 'ORGMAG', 'modules/sys/userinfo/userinfo.html', '/system/userinfo', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null, str_to_date('18-02-2016 17:46:43', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
+values ('UNITMAG', 'æœºæž„ç®¡ç†', 'ORGMAG', 'modules/sys/unitinfo/unitinfo.html', '/system/unitinfo', null, 'O', null, null, 'Y', null, null, 2, null, 'D', null, null, null, str_to_date('14-03-2016 14:41:07', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
 
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('USERROLE', 'ÓÃ»§½ÇÉ«', 'ORGMAG', '/modules/sys/userrole.html', '/system/userrole', null, 'O', null, null, 'N', null, null, null, null, 'D', null, null, null, null, null,'u0000000','u0000000');
+values ('USERMAG', 'ç”¨æˆ·ç®¡ç†', 'ORGMAG', 'modules/sys/userinfo/userinfo.html', '/system/userinfo', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null, str_to_date('18-02-2016 17:46:43', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
 
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('USERUNIT', 'ÓÃ»§»ú¹¹', 'ORGMAG', '/modules/sys/userunit.html', '/system/userunit', null, 'O', null, null, 'N', null, null, null, null, 'D', null, null, null, null, null,'u0000000','u0000000');
+values ('USERROLE', 'ç”¨æˆ·è§’è‰²', 'ORGMAG', '/modules/sys/userrole.html', '/system/userrole', null, 'O', null, null, 'N', null, null, null, null, 'D', null, null, null, null, null,'u0000000','u0000000');
 
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('DICTSET_M', 'Êý¾Ý×Öµä', 'SYS_CONFIG', 'modules/sys/dictionary/dictionary.html', '/system/dictionary', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null, str_to_date('30-01-2016 19:53:38', '%d-%m-%Y %H:%i:%s'), str_to_date('23-12-2014 14:04:59', '%d-%m-%Y %H:%i:%s'),'u0000000','u0000000');
+values ('USERUNIT', 'ç”¨æˆ·æœºæž„', 'ORGMAG', '/modules/sys/userunit.html', '/system/userunit', null, 'O', null, null, 'N', null, null, null, null, 'D', null, null, null, null, null,'u0000000','u0000000');
 
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('OPT_LOG_QUERY', 'ÏµÍ³ÈÕÖ¾', 'SYS_CONFIG', 'modules/sys/loginfo/loginfo.html', '/system/optlog', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null, str_to_date('27-11-2015 11:19:09', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
+values ('DICTSET_M', 'æ•°æ®å­—å…¸', 'SYS_CONFIG', 'modules/sys/dictionary/dictionary.html', '/system/dictionary', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null, str_to_date('30-01-2016 19:53:38', '%d-%m-%Y %H:%i:%s'), str_to_date('23-12-2014 14:04:59', '%d-%m-%Y %H:%i:%s'),'u0000000','u0000000');
 
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('USER_SETTING', 'ÉèÖÃÖÐÐÄ', 'SYS_CONFIG', '/modules/sys/usersetting.html', '/system/usersetting', null, 'N', null, null, 'N', null, null, null, null, 'D', null, null, null, str_to_date('23-12-2014 16:52:40', '%d-%m-%Y %H:%i:%s'), str_to_date('23-12-2014 16:52:40', '%d-%m-%Y %H:%i:%s'),'u0000000','u0000000');
+values ('OPT_LOG_QUERY', 'ç³»ç»Ÿæ—¥å¿—', 'SYS_CONFIG', 'modules/sys/loginfo/loginfo.html', '/system/optlog', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null, str_to_date('27-11-2015 11:19:09', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
 
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('CALENDAR', 'ÈÕÀú', 'SYS_CONFIG', '/modules/sys/schedule/schedule.html', '/system/calendar', null, 'O', null, null, 'Y', null, null, null, null, 'D', 'icon-base icon-base-calendar', null, null, str_to_date('04-03-2015 09:55:31', '%d-%m-%Y %H:%i:%s'), str_to_date('04-03-2015 09:55:31', '%d-%m-%Y %H:%i:%s'),'u0000000','u0000000');
+values ('USER_SETTING', 'è®¾ç½®ä¸­å¿ƒ', 'SYS_CONFIG', '/modules/sys/usersetting.html', '/system/usersetting', null, 'N', null, null, 'N', null, null, null, null, 'D', null, null, null, str_to_date('23-12-2014 16:52:40', '%d-%m-%Y %H:%i:%s'), str_to_date('23-12-2014 16:52:40', '%d-%m-%Y %H:%i:%s'),'u0000000','u0000000');
 
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('DEPLOY', 'ÊµÊ©²Ëµ¥', '0', '...', '...', null, 'S', null, null, 'Y', null, null, null, null, 'D', '444', null, null, str_to_date('15-12-2014 14:10:08', '%d-%m-%Y %H:%i:%s'), str_to_date('15-12-2014 14:10:08', '%d-%m-%Y %H:%i:%s'),'u0000000','u0000000');
+values ('CALENDAR', 'æ—¥åŽ†', 'SYS_CONFIG', '/modules/sys/schedule/schedule.html', '/system/calendar', null, 'O', null, null, 'Y', null, null, null, null, 'D', 'icon-base icon-base-calendar', null, null, str_to_date('04-03-2015 09:55:31', '%d-%m-%Y %H:%i:%s'), str_to_date('04-03-2015 09:55:31', '%d-%m-%Y %H:%i:%s'),'u0000000','u0000000');
 
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('SYSCONF', 'ÏµÍ³ÅäÖÃ', 'DEPLOY', '...', '...', null, 'O', null, null, 'Y', null, null, null, null, 'I', 'icon-base icon-base-gear', null, null, null, null,'u0000000','u0000000');
+values ('DEPLOY', 'å®žæ–½èœå•', '0', '...', '...', null, 'S', null, null, 'Y', null, null, null, null, 'D', '444', null, null, str_to_date('15-12-2014 14:10:08', '%d-%m-%Y %H:%i:%s'), str_to_date('15-12-2014 14:10:08', '%d-%m-%Y %H:%i:%s'),'u0000000','u0000000');
 
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('DICTSET', 'Êý¾Ý×Öµä¹ÜÀí', 'SYSCONF', 'modules/sys/dictionary/dictionary.admin.html', '/system/dictionary', null, 'S', null, null, 'Y', null, null, 0, null, 'D', 'icon-base icon-base-gear', null, null, str_to_date('18-02-2016 17:48:18', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
+values ('SYSCONF', 'ç³»ç»Ÿé…ç½®', 'DEPLOY', '...', '...', null, 'O', null, null, 'Y', null, null, null, null, 'I', 'icon-base icon-base-gear', null, null, null, null,'u0000000','u0000000');
 
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('OPTINFO', 'ÏµÍ³ÒµÎñ', 'SYSCONF', 'modules/sys/optinfo/optinfo.html', '/system/optinfo', null, 'S', null, null, 'Y', null, null, 4, null, 'D', null, null, null, str_to_date('30-01-2016 19:50:37', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
+values ('DICTSET', 'æ•°æ®å­—å…¸ç®¡ç†', 'SYSCONF', 'modules/sys/dictionary/dictionary.admin.html', '/system/dictionary', null, 'S', null, null, 'Y', null, null, 0, null, 'D', 'icon-base icon-base-gear', null, null, str_to_date('18-02-2016 17:48:18', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
 
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('OPTLOG', 'ÏµÍ³ÈÕÖ¾', 'SYSCONF', 'modules/sys/loginfo/loginfo.admin.html', '/system/optlog', null, 'S', null, null, 'Y', null, null, null, null, 'D', null, null, null, null, null,'u0000000','u0000000');
+values ('OPTINFO', 'ç³»ç»Ÿä¸šåŠ¡', 'SYSCONF', 'modules/sys/optinfo/optinfo.html', '/system/optinfo', null, 'S', null, null, 'Y', null, null, 4, null, 'D', null, null, null, str_to_date('30-01-2016 19:50:37', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
 
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('ROLEMAG', '½ÇÉ«¶¨Òå', 'ORGMAG', 'modules/sys/roleinfo/roleinfo.html', '/system/roleinfo', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null, null, null,'u0000000','u0000000');
+values ('OPTLOG', 'ç³»ç»Ÿæ—¥å¿—', 'SYSCONF', 'modules/sys/loginfo/loginfo.admin.html', '/system/optlog', null, 'S', null, null, 'Y', null, null, null, null, 'D', null, null, null, null, null,'u0000000','u0000000');
 
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('ORGMAG', '×éÖ¯¹ÜÀí', '0', '...', '...', null, 'O', null, null, 'Y', null, null, 3, null, 'I', 'icon-base icon-base-user', null, null, str_to_date('31-01-2016 15:55:53', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
+values ('ROLEMAG', 'è§’è‰²å®šä¹‰', 'ORGMAG', 'modules/sys/roleinfo/roleinfo.html', '/system/roleinfo', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null, null, null,'u0000000','u0000000');
 
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('SYS_CONFIG', 'ÏµÍ³ÅäÖÃ', '0', '...', '...', null, 'O', null, null, 'Y', null, null, null, null, 'D', 'icon-base icon-base-gear', null, null, null, null,'u0000000','u0000000');
+values ('ORGMAG', 'ç»„ç»‡ç®¡ç†', '0', '...', '...', null, 'O', null, null, 'Y', null, null, 3, null, 'I', 'icon-base icon-base-user', null, null, str_to_date('31-01-2016 15:55:53', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
 
 insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('LOGINCAS', 'CASµÇÂ¼Èë¿Ú', '0', '/system/mainframe/logincas', '/system/mainframe', null, 'O', null, null, 'N', null, null, null, null, 'D', null, null, null, str_to_date('07-04-2016 15:06:08', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
+values ('SYS_CONFIG', 'ç³»ç»Ÿé…ç½®', '0', '...', '...', null, 'O', null, null, 'Y', null, null, null, null, 'D', 'icon-base icon-base-gear', null, null, null, null,'u0000000','u0000000');
+
+insert into f_optinfo (OPTID, OPTNAME, PREOPTID, OPTROUTE, OPTURL, FORMCODE, OPTTYPE, MSGNO, MSGPRM, ISINTOOLBAR, IMGINDEX, TOPOPTID, ORDERIND, FLOWCODE, PAGETYPE, ICON, HEIGHT, WIDTH, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
+values ('LOGINCAS', 'CASç™»å½•å…¥å£', '0', '/system/mainframe/logincas', '/system/mainframe', null, 'O', null, null, 'N', null, null, null, null, 'D', null, null, null, str_to_date('07-04-2016 15:06:08', '%d-%m-%Y %H:%i:%s'), null,'u0000000','u0000000');
 
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000038', 'USER_SETTING', 'ÐÂÔö»ò¸üÐÂÓÃ»§ÉèÖÃ', null, null, null, null, null, '/*', 'CU','u0000000','u0000000');
+values ('1000038', 'USER_SETTING', 'æ–°å¢žæˆ–æ›´æ–°ç”¨æˆ·è®¾ç½®', null, null, null, null, null, '/*', 'CU','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000037', 'USER_SETTING', '»ñÈ¡ÓÃ»§ÉèÖÃ²ÎÊý', null, '»ñÈ¡µ±Ç°ÓÃ»§ÉèÖÃµÄ²ÎÊý', null, null, null, '/*', 'R','u0000000','u0000000');
+values ('1000037', 'USER_SETTING', 'èŽ·å–ç”¨æˆ·è®¾ç½®å‚æ•°', null, 'èŽ·å–å½“å‰ç”¨æˆ·è®¾ç½®çš„å‚æ•°', null, null, null, '/*', 'R','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000039', 'USER_SETTING', 'É¾³ýÓÃ»§ÉèÖÃ²ÎÊý', null, 'É¾³ýÓÃ»§ÉèÖÃ²ÎÊý', null, null, null, '/*', 'D','u0000000','u0000000');
+values ('1000039', 'USER_SETTING', 'åˆ é™¤ç”¨æˆ·è®¾ç½®å‚æ•°', null, 'åˆ é™¤ç”¨æˆ·è®¾ç½®å‚æ•°', null, null, null, '/*', 'D','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000040', 'USER_SETTING', 'µ¼³öÓÃ»§ÉèÖÃ²ÎÊý', null, 'µ¼³öÓÃ»§ÉèÖÃ²ÎÊý', null, null, null, '/export', 'R','u0000000','u0000000');
+values ('1000040', 'USER_SETTING', 'å¯¼å‡ºç”¨æˆ·è®¾ç½®å‚æ•°', null, 'å¯¼å‡ºç”¨æˆ·è®¾ç½®å‚æ•°', null, null, null, '/export', 'R','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000051', 'USERUNIT', '»ñÈ¡µ¥¸öÓÃ»§»ú¹¹¹ØÁªÐÅÏ¢', null, '»ñÈ¡µ¥¸öÓÃ»§»ú¹¹¹ØÁªÐÅÏ¢', null, null, null, '/*/*', 'R','u0000000','u0000000');
+values ('1000051', 'USERUNIT', 'èŽ·å–å•ä¸ªç”¨æˆ·æœºæž„å…³è”ä¿¡æ¯', null, 'èŽ·å–å•ä¸ªç”¨æˆ·æœºæž„å…³è”ä¿¡æ¯', null, null, null, '/*/*', 'R','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000020', 'OPTLOG', '²éÑ¯', 'list', '²éÑ¯ÏµÍ³ÈÕÖ¾', null, null, null, '/*', 'R','u0000000','u0000000');
+values ('1000020', 'OPTLOG', 'æŸ¥è¯¢', 'list', 'æŸ¥è¯¢ç³»ç»Ÿæ—¥å¿—', null, null, null, '/*', 'R','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000041', 'OPT_LOG_QUERY', '²é¿´ÈÕÖ¾ÏêÇé', null, '²é¿´µ¥ÌõÈÕÖ¾', null, str_to_date('27-11-2015 11:19:09', '%d-%m-%Y %H:%i:%s'), null, '/*', 'R','u0000000','u0000000');
+values ('1000041', 'OPT_LOG_QUERY', 'æŸ¥çœ‹æ—¥å¿—è¯¦æƒ…', null, 'æŸ¥çœ‹å•æ¡æ—¥å¿—', null, str_to_date('27-11-2015 11:19:09', '%d-%m-%Y %H:%i:%s'), null, '/*', 'R','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000070', 'USERMAG', 'ÓÃ»§ÁÐ±í', null, 'ÓÃ»§ÁÐ±í', null, str_to_date('18-02-2016 17:46:43', '%d-%m-%Y %H:%i:%s'), null, '/', 'R','u0000000','u0000000');
+values ('1000070', 'USERMAG', 'ç”¨æˆ·åˆ—è¡¨', null, 'ç”¨æˆ·åˆ—è¡¨', null, str_to_date('18-02-2016 17:46:43', '%d-%m-%Y %H:%i:%s'), null, '/', 'R','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000029', 'USERUNIT', 'ÐÂÔöÓÃ»§»ú¹¹¹ØÁª', null, 'Ìí¼ÓÓÃ»§¹ØÁª»ú¹¹', null, null, null, '/', 'C','u0000000','u0000000');
+values ('1000029', 'USERUNIT', 'æ–°å¢žç”¨æˆ·æœºæž„å…³è”', null, 'æ·»åŠ ç”¨æˆ·å…³è”æœºæž„', null, null, null, '/', 'C','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000032', 'USERROLE', 'ÐÂÔöÓÃ»§½ÇÉ«¹ØÁª', null, 'Ìí¼ÓÓÃ»§¹ØÁª½ÇÉ«', null, null, null, '/', 'C','u0000000','u0000000');
+values ('1000032', 'USERROLE', 'æ–°å¢žç”¨æˆ·è§’è‰²å…³è”', null, 'æ·»åŠ ç”¨æˆ·å…³è”è§’è‰²', null, null, null, '/', 'C','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000030', 'USERUNIT', '±à¼­ÓÃ»§»ú¹¹¹ØÁª', null, '¸üÐÂÓÃ»§»ú¹¹¹ØÁªÐÅÏ¢', null, null, null, '/*/*', 'U','u0000000','u0000000');
+values ('1000030', 'USERUNIT', 'ç¼–è¾‘ç”¨æˆ·æœºæž„å…³è”', null, 'æ›´æ–°ç”¨æˆ·æœºæž„å…³è”ä¿¡æ¯', null, null, null, '/*/*', 'U','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000031', 'USERUNIT', 'É¾³ýÓÃ»§»ú¹¹¹ØÁª', null, 'É¾³ýÓÃ»§¹ØÁª»ú¹¹¹ØÁª', null, null, null, '/*/*', 'D','u0000000','u0000000');
+values ('1000031', 'USERUNIT', 'åˆ é™¤ç”¨æˆ·æœºæž„å…³è”', null, 'åˆ é™¤ç”¨æˆ·å…³è”æœºæž„å…³è”', null, null, null, '/*/*', 'D','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000033', 'USERROLE', '±à¼­ÓÃ»§½ÇÉ«¹ØÁª', null, '¸üÐÂÓÃ»§¹ØÁª½ÇÉ«ÐÅÏ¢', null, null, null, '/*/*', 'U','u0000000','u0000000');
+values ('1000033', 'USERROLE', 'ç¼–è¾‘ç”¨æˆ·è§’è‰²å…³è”', null, 'æ›´æ–°ç”¨æˆ·å…³è”è§’è‰²ä¿¡æ¯', null, null, null, '/*/*', 'U','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000034', 'USERROLE', 'É¾³ýÓÃ»§½ÇÉ«¹ØÁª', null, 'É¾³ýÓÃ»§¹ØÁª½ÇÉ«', null, null, null, '/*/*', 'D','u0000000','u0000000');
+values ('1000034', 'USERROLE', 'åˆ é™¤ç”¨æˆ·è§’è‰²å…³è”', null, 'åˆ é™¤ç”¨æˆ·å…³è”è§’è‰²', null, null, null, '/*/*', 'D','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000071', 'USERMAG', '´´½¨ÓÃ»§', null, '´´½¨ÓÃ»§', null, str_to_date('18-02-2016 17:46:44', '%d-%m-%Y %H:%i:%s'), null, '/', 'C','u0000000','u0000000');
+values ('1000071', 'USERMAG', 'åˆ›å»ºç”¨æˆ·', null, 'åˆ›å»ºç”¨æˆ·', null, str_to_date('18-02-2016 17:46:44', '%d-%m-%Y %H:%i:%s'), null, '/', 'C','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000072', 'USERMAG', '¸üÐÂÓÃ»§', null, '¸üÐÂÓÃ»§', null, str_to_date('18-02-2016 17:46:44', '%d-%m-%Y %H:%i:%s'), null, '/*', 'U','u0000000','u0000000');
+values ('1000072', 'USERMAG', 'æ›´æ–°ç”¨æˆ·', null, 'æ›´æ–°ç”¨æˆ·', null, str_to_date('18-02-2016 17:46:44', '%d-%m-%Y %H:%i:%s'), null, '/*', 'U','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000073', 'USERMAG', 'É¾³ýÓÃ»§', null, 'É¾³ýÓÃ»§', null, str_to_date('18-02-2016 17:46:44', '%d-%m-%Y %H:%i:%s'), null, '/*', 'D','u0000000','u0000000');
+values ('1000073', 'USERMAG', 'åˆ é™¤ç”¨æˆ·', null, 'åˆ é™¤ç”¨æˆ·', null, str_to_date('18-02-2016 17:46:44', '%d-%m-%Y %H:%i:%s'), null, '/*', 'D','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000052', 'DICTSET', '²éÑ¯µ¥¸öÊý¾ÝÄ¿Â¼', null, '²éÑ¯µ¥¸öÊý¾ÝÄ¿Â¼', null, str_to_date('18-02-2016 17:48:18', '%d-%m-%Y %H:%i:%s'), null, '/*', 'R','u0000000','u0000000');
+values ('1000052', 'DICTSET', 'æŸ¥è¯¢å•ä¸ªæ•°æ®ç›®å½•', null, 'æŸ¥è¯¢å•ä¸ªæ•°æ®ç›®å½•', null, str_to_date('18-02-2016 17:48:18', '%d-%m-%Y %H:%i:%s'), null, '/*', 'R','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000053', 'DICTSET', '²éÑ¯µ¥¸öÊý¾Ý×Öµä', null, '²éÑ¯µ¥¸öÊý¾Ý×Öµä', null, str_to_date('18-02-2016 17:48:19', '%d-%m-%Y %H:%i:%s'), null, '/dictionary/*/*', 'R','u0000000','u0000000');
+values ('1000053', 'DICTSET', 'æŸ¥è¯¢å•ä¸ªæ•°æ®å­—å…¸', null, 'æŸ¥è¯¢å•ä¸ªæ•°æ®å­—å…¸', null, str_to_date('18-02-2016 17:48:19', '%d-%m-%Y %H:%i:%s'), null, '/dictionary/*/*', 'R','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000054', 'DICTSET', '»ñÈ¡»º´æÖÐËùÓÐÊý¾Ý×Öµä', null, '»ñÈ¡»º´æÖÐËùÓÐÊý¾Ý×Öµä', null, str_to_date('18-02-2016 17:48:19', '%d-%m-%Y %H:%i:%s'), null, '/cache/*', 'R','u0000000','u0000000');
+values ('1000054', 'DICTSET', 'èŽ·å–ç¼“å­˜ä¸­æ‰€æœ‰æ•°æ®å­—å…¸', null, 'èŽ·å–ç¼“å­˜ä¸­æ‰€æœ‰æ•°æ®å­—å…¸', null, str_to_date('18-02-2016 17:48:19', '%d-%m-%Y %H:%i:%s'), null, '/cache/*', 'R','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000009', 'DICTSET', 'É¾³ýÊý¾Ý×Öµä', 'DELTE', 'É¾³ýÊý¾Ý×Öµä', 'F', str_to_date('18-02-2016 17:48:19', '%d-%m-%Y %H:%i:%s'), null, '/dictionary/*/*', 'D','u0000000','u0000000');
+values ('1000009', 'DICTSET', 'åˆ é™¤æ•°æ®å­—å…¸', 'DELTE', 'åˆ é™¤æ•°æ®å­—å…¸', 'F', str_to_date('18-02-2016 17:48:19', '%d-%m-%Y %H:%i:%s'), null, '/dictionary/*/*', 'D','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000007', 'DICTSET', 'ÁÐ¾Ù×Öµä', 'LIST', '³õÊ¼Ò³Ãæ', 'F', str_to_date('18-02-2016 17:48:19', '%d-%m-%Y %H:%i:%s'), null, '/data', 'U','u0000000','u0000000');
+values ('1000007', 'DICTSET', 'åˆ—ä¸¾å­—å…¸', 'LIST', 'åˆå§‹é¡µé¢', 'F', str_to_date('18-02-2016 17:48:19', '%d-%m-%Y %H:%i:%s'), null, '/data', 'U','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000008', 'DICTSET', 'ÐÂÔö/±à¼­Êý¾Ý×Öµä', 'EDIT', 'ÐÂÔö/±à¼­Êý¾Ý×Öµä', 'F', str_to_date('18-02-2016 17:48:19', '%d-%m-%Y %H:%i:%s'), null, '/dictionary/*/*', 'CU','u0000000','u0000000');
+values ('1000008', 'DICTSET', 'æ–°å¢ž/ç¼–è¾‘æ•°æ®å­—å…¸', 'EDIT', 'æ–°å¢ž/ç¼–è¾‘æ•°æ®å­—å…¸', 'F', str_to_date('18-02-2016 17:48:19', '%d-%m-%Y %H:%i:%s'), null, '/dictionary/*/*', 'CU','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000010', 'DICTSET', 'ÐÂÔö/±à¼­Êý¾ÝÄ¿Â¼', 'editDetail', '±à¼­/ÐÂ½¨Êý¾ÝÄ¿Â¼', 'F', str_to_date('18-02-2016 17:48:19', '%d-%m-%Y %H:%i:%s'), null, '/*', 'CU','u0000000','u0000000');
+values ('1000010', 'DICTSET', 'æ–°å¢ž/ç¼–è¾‘æ•°æ®ç›®å½•', 'editDetail', 'ç¼–è¾‘/æ–°å»ºæ•°æ®ç›®å½•', 'F', str_to_date('18-02-2016 17:48:19', '%d-%m-%Y %H:%i:%s'), null, '/*', 'CU','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000011', 'DICTSET', 'É¾³ýÊý¾ÝÄ¿Â¼', 'deleteDetail', 'É¾³ý×ÖµäÄ¿Â¼', 'F', str_to_date('18-02-2016 17:48:19', '%d-%m-%Y %H:%i:%s'), null, '/*', 'D','u0000000','u0000000');
+values ('1000011', 'DICTSET', 'åˆ é™¤æ•°æ®ç›®å½•', 'deleteDetail', 'åˆ é™¤å­—å…¸ç›®å½•', 'F', str_to_date('18-02-2016 17:48:19', '%d-%m-%Y %H:%i:%s'), null, '/*', 'D','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000042', 'DICTSET_M', '²éÑ¯µ¥¸öÊý¾ÝÄ¿Â¼', null, '²éÑ¯µ¥¸öÊý¾ÝÄ¿Â¼', null, str_to_date('30-01-2016 19:53:38', '%d-%m-%Y %H:%i:%s'), null, '/*', 'R','u0000000','u0000000');
+values ('1000042', 'DICTSET_M', 'æŸ¥è¯¢å•ä¸ªæ•°æ®ç›®å½•', null, 'æŸ¥è¯¢å•ä¸ªæ•°æ®ç›®å½•', null, str_to_date('30-01-2016 19:53:38', '%d-%m-%Y %H:%i:%s'), null, '/*', 'R','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000043', 'DICTSET_M', '²éÑ¯µ¥¸öÊý¾Ý×Öµä', null, '²éÑ¯µ¥¸öÊý¾Ý×Öµä', null, str_to_date('30-01-2016 19:53:38', '%d-%m-%Y %H:%i:%s'), null, '/*/dictionary/*', 'R','u0000000','u0000000');
+values ('1000043', 'DICTSET_M', 'æŸ¥è¯¢å•ä¸ªæ•°æ®å­—å…¸', null, 'æŸ¥è¯¢å•ä¸ªæ•°æ®å­—å…¸', null, str_to_date('30-01-2016 19:53:38', '%d-%m-%Y %H:%i:%s'), null, '/*/dictionary/*', 'R','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000044', 'DICTSET_M', 'ÐÂÔö/±à¼­Êý¾ÝÄ¿Â¼', null, 'ÐÂÔö/±à¼­Êý¾ÝÄ¿Â¼', null, str_to_date('30-01-2016 19:53:38', '%d-%m-%Y %H:%i:%s'), null, '/*', 'CU','u0000000','u0000000');
+values ('1000044', 'DICTSET_M', 'æ–°å¢ž/ç¼–è¾‘æ•°æ®ç›®å½•', null, 'æ–°å¢ž/ç¼–è¾‘æ•°æ®ç›®å½•', null, str_to_date('30-01-2016 19:53:38', '%d-%m-%Y %H:%i:%s'), null, '/*', 'CU','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000045', 'DICTSET_M', 'ÐÂÔö/±à¼­Êý¾Ý×Öµä', null, 'ÐÂÔö/±à¼­Êý¾Ý×Öµä', null, str_to_date('30-01-2016 19:53:38', '%d-%m-%Y %H:%i:%s'), null, '/*/dictionary/*', 'CU','u0000000','u0000000');
+values ('1000045', 'DICTSET_M', 'æ–°å¢ž/ç¼–è¾‘æ•°æ®å­—å…¸', null, 'æ–°å¢ž/ç¼–è¾‘æ•°æ®å­—å…¸', null, str_to_date('30-01-2016 19:53:38', '%d-%m-%Y %H:%i:%s'), null, '/*/dictionary/*', 'CU','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000046', 'DICTSET_M', 'É¾³ýÊý¾ÝÄ¿Â¼', null, 'É¾³ýÊý¾ÝÄ¿Â¼', null, str_to_date('30-01-2016 19:53:38', '%d-%m-%Y %H:%i:%s'), null, '/*', 'D','u0000000','u0000000');
+values ('1000046', 'DICTSET_M', 'åˆ é™¤æ•°æ®ç›®å½•', null, 'åˆ é™¤æ•°æ®ç›®å½•', null, str_to_date('30-01-2016 19:53:38', '%d-%m-%Y %H:%i:%s'), null, '/*', 'D','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000047', 'DICTSET_M', 'É¾³ýÊý¾Ý×Öµä', null, 'É¾³ýÊý¾Ý×Öµä', null, str_to_date('30-01-2016 19:53:38', '%d-%m-%Y %H:%i:%s'), null, '/*/dictionary/*', 'D','u0000000','u0000000');
+values ('1000047', 'DICTSET_M', 'åˆ é™¤æ•°æ®å­—å…¸', null, 'åˆ é™¤æ•°æ®å­—å…¸', null, str_to_date('30-01-2016 19:53:38', '%d-%m-%Y %H:%i:%s'), null, '/*/dictionary/*', 'D','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000048', 'DICTSET_M', '»ñÈ¡»º´æÖÐËùÓÐÊý¾Ý×Öµä', null, '»ñÈ¡»º´æÖÐËùÓÐÊý¾Ý×Öµä', null, str_to_date('30-01-2016 19:53:38', '%d-%m-%Y %H:%i:%s'), null, '/cache/*', 'R','u0000000','u0000000');
+values ('1000048', 'DICTSET_M', 'èŽ·å–ç¼“å­˜ä¸­æ‰€æœ‰æ•°æ®å­—å…¸', null, 'èŽ·å–ç¼“å­˜ä¸­æ‰€æœ‰æ•°æ®å­—å…¸', null, str_to_date('30-01-2016 19:53:38', '%d-%m-%Y %H:%i:%s'), null, '/cache/*', 'R','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000059', 'UNITMAG', '²é¿´ËùÓÐ»ú¹¹', null, '²é¿´ËùÓÐ»ú¹¹', null, str_to_date('14-03-2016 14:41:07', '%d-%m-%Y %H:%i:%s'), null, '/', 'R','u0000000','u0000000');
+values ('1000059', 'UNITMAG', 'æŸ¥çœ‹æ‰€æœ‰æœºæž„', null, 'æŸ¥çœ‹æ‰€æœ‰æœºæž„', null, str_to_date('14-03-2016 14:41:07', '%d-%m-%Y %H:%i:%s'), null, '/', 'R','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000001', 'UNITMAG', 'ÐÂ½¨/±à¼­»ú¹¹', 'EDIT', 'ÐÂ½¨ºÍ¸üÐÂ»ú¹¹', 'F', str_to_date('14-03-2016 14:41:07', '%d-%m-%Y %H:%i:%s'), null, '/*', 'CU','u0000000','u0000000');
+values ('1000001', 'UNITMAG', 'æ–°å»º/ç¼–è¾‘æœºæž„', 'EDIT', 'æ–°å»ºå’Œæ›´æ–°æœºæž„', 'F', str_to_date('14-03-2016 14:41:07', '%d-%m-%Y %H:%i:%s'), null, '/*', 'CU','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000002', 'UNITMAG', '½ûÓÃ/»Ö¸´»ú¹¹', 'DELETE', '¸üÐÂ»ú¹¹×´Ì¬', 'F', str_to_date('14-03-2016 14:41:07', '%d-%m-%Y %H:%i:%s'), null, '/*/status/*', 'U','u0000000','u0000000');
+values ('1000002', 'UNITMAG', 'ç¦ç”¨/æ¢å¤æœºæž„', 'DELETE', 'æ›´æ–°æœºæž„çŠ¶æ€', 'F', str_to_date('14-03-2016 14:41:07', '%d-%m-%Y %H:%i:%s'), null, '/*/status/*', 'U','u0000000','u0000000');
 
 insert into f_optdef (OPTCODE, OPTID, OPTNAME, OPTMETHOD, OPTDESC, ISINWORKFLOW, UPDATEDATE, CREATEDATE, OPTURL, OPTREQ,CREATOR,UPDATOR)
-values ('1000080', 'LOGINCAS', 'CASµÇÂ¼Èë¿Ú', null, null, null, null, null, '/logincas', 'RCU','u0000000','u0000000');
+values ('1000080', 'LOGINCAS', 'CASç™»å½•å…¥å£', null, null, null, null, null, '/logincas', 'RCU','u0000000','u0000000');
 
--- ÓÃ»§¡¢½ÇÉ«¡¢È¨ÏÞ³õÊ¼»¯
+-- ç”¨æˆ·ã€è§’è‰²ã€æƒé™åˆå§‹åŒ–
 
 
---³õÊ¼»¯½ÇÉ«ÐÅÏ¢
---³õÊ¼»¯½ÇÉ«ÐÅÏ¢
+--åˆå§‹åŒ–è§’è‰²ä¿¡æ¯
+--åˆå§‹åŒ–è§’è‰²ä¿¡æ¯
 insert into f_roleinfo (ROLECODE, ROLENAME,ROLETYPE, ISVALID, ROLEDESC, CREATEDATE, UPDATEDATE,CREATOR,UPDATOR)
-values ('G-DEPLOY', 'ÊµÊ©ÈËÔ±','S','T', 'ÊµÊ©ÈËÔ±½ÇÉ«', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
+values ('G-DEPLOY', 'å®žæ–½äººå‘˜','S','T', 'å®žæ–½äººå‘˜è§’è‰²', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
 
 insert into f_roleinfo (ROLECODE, ROLENAME,ROLETYPE,  ISVALID, ROLEDESC, CREATEDATE, UPDATEDATE,CREATOR,UPDATOR)
-values ('G-SYSADMIN', 'ÏµÍ³¹ÜÀíÔ±','S', 'T', 'ËùÓÐÏµÍ³ÅäÖÃ¹¦ÄÜ', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
+values ('G-SYSADMIN', 'ç³»ç»Ÿç®¡ç†å‘˜','S', 'T', 'æ‰€æœ‰ç³»ç»Ÿé…ç½®åŠŸèƒ½', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
 
 insert into f_roleinfo (ROLECODE, ROLENAME,ROLETYPE,  ISVALID, ROLEDESC, CREATEDATE, UPDATEDATE,CREATOR,UPDATOR)
-values ('G-anonymous', 'ÄäÃû½ÇÉ«','S', 'T', 'ÄäÃûÓÃ»§½ÇÉ«', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
+values ('G-anonymous', 'åŒ¿åè§’è‰²','S', 'T', 'åŒ¿åç”¨æˆ·è§’è‰²', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
 
 insert into f_roleinfo (ROLECODE, ROLENAME,ROLETYPE,  ISVALID, ROLEDESC, CREATEDATE, UPDATEDATE,CREATOR,UPDATOR)
-values ('G-public', '¹«¹²½ÇÉ«','S', 'F', '¹«¹²½ÇÉ«È¨ÏÞ»áÄ¬ÈÏ¸ø²»°üÀ¨ÄäÃûÓÃ»§µÄËùÓÐÈË', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
+values ('G-public', 'å…¬å…±è§’è‰²','S', 'F', 'å…¬å…±è§’è‰²æƒé™ä¼šé»˜è®¤ç»™ä¸åŒ…æ‹¬åŒ¿åç”¨æˆ·çš„æ‰€æœ‰äºº', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
 
 
 ------
@@ -418,15 +418,15 @@ SET SQL_SAFE_UPDATES = 0;
 
 insert into f_optdef(optcode,optid,optname,optmethod,optdesc,
 			isinworkflow,UPDATEDATE,createdate,opturl,optreq,CREATOR,UPDATOR)
-select  sequence_nextval('S_OPTDEFCODE'),optid , '²é¿´', 'list',  '²é¿´',
+select  sequence_nextval('S_OPTDEFCODE'),optid , 'æŸ¥çœ‹', 'list',  'æŸ¥çœ‹',
 		'F',now(),now(),'/*','R' ,CREATOR,UPDATOR
 		from f_optinfo where optid not in (select optid from f_optdef);
 
 insert into f_rolepower(rolecode,optcode,updateDate,createdate,optscopecodes,CREATOR,UPDATOR)
 	select 'G-SYSADMIN',optcode,now(),now(),'',CREATOR,UPDATOR from f_optdef;
 
-insert into f_userrole (USERCODE, ROLECODE, OBTAINDATE, 
+insert into f_userrole (USERCODE, ROLECODE, OBTAINDATE,
 			SECEDEDATE, CHANGEDESC, UPDATEDATE, CREATEDATE,CREATOR,UPDATOR)
-values ('u0000000', 'G-SYSADMIN', STR_TO_DATE('23-05-2012','%d-%m-%Y'), 
+values ('u0000000', 'G-SYSADMIN', STR_TO_DATE('23-05-2012','%d-%m-%Y'),
 	STR_TO_DATE('01-10-2020', '%d-%m-%Y'),'' ,now(), now(),'u0000000','u0000000');
 

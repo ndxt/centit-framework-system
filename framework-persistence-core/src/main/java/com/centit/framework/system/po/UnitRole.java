@@ -35,6 +35,10 @@ public class UnitRole implements IUnitRole, EntityWithTimestamp, java.io.Seriali
     @Temporal(TemporalType.DATE)
     private Date obtainDate; // 获得角色时间
 
+    @Column(name = "SECEDE_DATE")
+    @Temporal(TemporalType.DATE)
+    private Date secedeDate;
+
     @Column(name = "CHANGE_DESC")
     @Length(max = 256, message = "字段长度不能大于{max}")
     private String changeDesc; // 说明
@@ -159,10 +163,18 @@ public class UnitRole implements IUnitRole, EntityWithTimestamp, java.io.Seriali
         this.createDate = createDate;
     }
 
+    public Date getSecedeDate() {
+        return secedeDate;
+    }
+
+    public void setSecedeDate(Date secedeDate) {
+        this.secedeDate = secedeDate;
+    }
     public void copy(UnitRole other) {
 
         this.setId(other.getId());
         this.obtainDate = other.getObtainDate();
+        this.secedeDate = other.secedeDate;
         this.changeDesc = other.getChangeDesc();
         this.creator=other.creator;
         this.updator=other.updator;
@@ -181,10 +193,9 @@ public class UnitRole implements IUnitRole, EntityWithTimestamp, java.io.Seriali
             this.creator =other.getCreator();
         if (other.getUpdator() != null)
             this.updator =other.getUpdator();
-        if (other.getUpdateDate() != null)
-            this.updateDate =other.getUpdateDate();
         if (other.getCreateDate() != null)
             this.createDate = other.getCreateDate();
+        this.secedeDate = other.secedeDate;
     }
 
     //创建人、更新人、更新时间
@@ -192,34 +203,34 @@ public class UnitRole implements IUnitRole, EntityWithTimestamp, java.io.Seriali
           return this.creator;
       }
 
-      public void setCreator(String creator) {
-          this.creator = creator;
-      }
-
-      public String getUpdator() {
-          return this.updator;
-      }
-
-      public void setUpdator(String updator) {
-          this.updator = updator;
-      }
-
-      public Date getUpdateDate() {
-          return updateDate;
-      }
-
-      public void setUpdateDate(Date updateDate) {
-          this.updateDate = updateDate;
-      }
-
-      @Override
-      public Date getLastModifyDate() {
-          return updateDate;
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
-      @Override
-      public void setLastModifyDate(Date lastModifyDate) {
-          this.updateDate = lastModifyDate;
+    public String getUpdator() {
+        return this.updator;
     }
-    //结束
+
+    public void setUpdator(String updator) {
+        this.updator = updator;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    @Override
+    public Date getLastModifyDate() {
+        return updateDate;
+  }
+
+    @Override
+    public void setLastModifyDate(Date lastModifyDate) {
+        this.updateDate = lastModifyDate;
+  }
+
 }

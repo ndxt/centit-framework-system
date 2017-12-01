@@ -33,6 +33,10 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
     @Temporal(TemporalType.DATE)
     private Date obtainDate; // 获得角色时间
 
+    @Column(name = "SECEDE_DATE")
+    @Temporal(TemporalType.DATE)
+    private Date secedeDate;
+
     @Column(name = "CHANGE_DESC")
     @Length(max = 256, message = "字段长度不能大于{max}")
     private String changeDesc; // 说明
@@ -187,6 +191,13 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
         this.obtainDate =obtaindate;
     }
 
+    public Date getSecedeDate() {
+        return secedeDate;
+    }
+
+    public void setSecedeDate(Date secedeDate) {
+        this.secedeDate = secedeDate;
+    }
     /*
      * public void setSecededate(String ssecededate) { try { this.secededate =
      * sdfDate.parse(ssecededate); } catch (ParseException e) {
@@ -217,6 +228,7 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
         this.creator=other.creator;
         this.updator=other.updator;
         this.updateDate=other.updateDate;
+        this.secedeDate =other.secedeDate;
         this.createDate = other.getCreateDate();
     }
 
@@ -235,6 +247,8 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
             this.updateDate =other.getUpdateDate();
         if (other.getCreateDate() != null)
             this.createDate = other.getCreateDate();
+
+        this.secedeDate =other.secedeDate;
     }
 
     //创建人、更新人、更新时间

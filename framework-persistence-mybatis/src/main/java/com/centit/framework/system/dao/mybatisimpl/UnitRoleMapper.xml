@@ -8,6 +8,7 @@
         <result property="unitCode" column="UNIT_CODE" />
         <result property="roleCode" column="ROLE_CODE" />
         <result property="obtainDate" column="OBTAIN_DATE" />
+        <result property="secedeDate" column="SECEDE_DATE" />
         <result property="changeDesc" column="CHANGE_DESC" />
         <result property="createDate" column="CREATE_DATE" />
         <result property="creator" column="CREATOR" />
@@ -31,6 +32,7 @@
             select u.UNIT_CODE,
                    u.ROLE_CODE,
                    u.OBTAIN_DATE,
+                   u.SECEDE_DATE,
                    u.CHANGE_DESC,
                    u.CREATE_DATE,
                    u.CREATOR,
@@ -79,6 +81,7 @@
             UNIT_CODE,
             ROLE_CODE,
             OBTAIN_DATE,
+            SECEDE_DATE,
             CHANGE_DESC,
             CREATE_DATE,
             CREATOR,
@@ -88,6 +91,7 @@
             #{unitCode,jdbcType=VARCHAR},
             #{roleCode,jdbcType=VARCHAR},
             #{obtainDate,jdbcType=DATE},
+            #{secedeDate,jdbcType=DATE},
             #{changeDesc,jdbcType=VARCHAR},
             #{createDate,jdbcType=DATE},
             #{creator,jdbcType=VARCHAR},
@@ -108,6 +112,7 @@
             <if test="obtainDate !=null ">
                 OBTAIN_DATE  =  #{obtainDate},
             </if>
+            SECEDE_DATE  =  #{secedeDate},
             <if test="changeDesc !=null ">
                 CHANGE_DESC  =  #{changeDesc},
             </if>
