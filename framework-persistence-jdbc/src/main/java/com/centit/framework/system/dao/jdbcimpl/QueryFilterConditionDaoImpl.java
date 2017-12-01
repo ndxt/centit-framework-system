@@ -60,4 +60,14 @@ public class QueryFilterConditionDaoImpl extends BaseDaoImpl<QueryFilterConditio
     public void deleteObjectById(Long filterNo) {
         super.deleteObjectById(filterNo);
     }
+
+    @Override
+    public void saveNewQueryFilterCondition(QueryFilterCondition queryFilterCondition){
+        super.saveNewObject(queryFilterCondition);
+    }
+
+    @Override
+    public void updateQueryFilterCondition(QueryFilterCondition queryFilterCondition){
+        super.updateObject(queryFilterCondition);
+    }
 }

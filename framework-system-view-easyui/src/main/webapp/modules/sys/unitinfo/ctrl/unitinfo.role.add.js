@@ -6,12 +6,19 @@ define(function(require) {
 
 	// 机构添加用户
 	var UnitInfoUserAdd = Page.extend(function() {
-
+    this.queryRoleUrl = "system/roleinfo/global";
 
 		// @override
 		this.load = function(panel) {
 			// 获取父窗口的机构信息
 			var unitInfo = this.parent.data;
+
+      $('input[name=roleCode]', panel).combobox({
+        url: this.$findUp('queryRoleUrl'),
+        loadFilter: function(data) {
+          return data.objList ? data.objList : data;
+        }
+      });
 
 			var data = this.data = $.extend({}, {
 				unitCode: unitInfo.unitCode,

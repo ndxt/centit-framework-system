@@ -14,6 +14,7 @@ public interface OptDataScopeDao {
 
     /**
      * 新增
+     * @param optDataScope 数据范围对象
      */
     void saveNewOPtDataScope(OptDataScope optDataScope);
 

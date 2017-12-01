@@ -130,11 +130,19 @@
             #{lastCodeDate}
         )
     </sql>
-    <insert id="saveObject" parameterType="com.centit.framework.system.po.OptFlowNoInfo">
+    <insert id="saveNewOptFlowNoInfo" parameterType="com.centit.framework.system.po.OptFlowNoInfo">
         insert into F_OPTFLOWNOINFO
         <include refid="insertSql" />
     </insert>
     <!--插入新单据 end -->
+
+  <update id="updateOptFlowNoPool" parameterType="com.centit.framework.system.po.OptFlowNoInfo" timeout="2000">
+      update F_OPTFLOWNOINFO
+      <include refid="updSql" />
+      where OWNER_CODE = #{ownerCode}
+            and CODE_DATE = #{codeDate}
+            and CODE_CODE = #{codeCode}
+    </update>
 
     <!--删除记录  -->
     <delete id="deleteObjectById" parameterType="com.centit.framework.system.po.OptFlowNoInfoId" timeout="2000">

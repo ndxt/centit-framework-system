@@ -17,10 +17,10 @@ define(function (require) {
     ]);
 
     /**
-     * 角色用户（直接获取角色的用户，可编辑） /userrole/roleusers/{rolecode}
+     * 间接获取角色的用户（不可编辑）/userrole/roleusersinherited/{rolecode}
      * @type {string}
      */
-    this.roleInfoUsersUrl = Config.ContextPath + 'system/userrole/roleusers/{{roleCode}}';
+    this.roleInfoUsersInheritedUrl = Config.ContextPath + 'system/userrole/roleusersinherited/{{roleCode}}';
 
     // @override
     this.load = function (panel, data) {
@@ -30,7 +30,7 @@ define(function (require) {
       var table = panel.find('table');
       table.cdatagrid({
         controller: _self,
-        url: Mustache.render(this.$findUp('roleInfoUsersUrl'), data),
+        url: Mustache.render(this.$findUp('roleInfoUsersInheritedUrl'), data),
       })
     };
   });

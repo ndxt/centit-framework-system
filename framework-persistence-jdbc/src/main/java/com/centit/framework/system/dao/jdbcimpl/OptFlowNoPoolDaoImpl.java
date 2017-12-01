@@ -55,6 +55,16 @@ public class OptFlowNoPoolDaoImpl extends BaseDaoImpl<OptFlowNoPool, OptFlowNoPo
                 "select min(CURNO) as MinNo from F_OPTFLOWNOPOOL" +
                 " where OWNERCODE = ? and CODECODE = ? and CODEDATE = ?",
                 new Object[]{ownerCode,ownerCode,codeBaseDate }));
-        return lsh == null ? 0l: lsh;
+        return lsh == null ? 0L: lsh;
+    }
+
+    @Override
+    public void saveNewOptFlowNoPool(OptFlowNoPool optFlowNoPool){
+        super.saveNewObject(optFlowNoPool);
+    }
+
+    @Override
+    public void updateOptFlowNoPool(OptFlowNoPool optFlowNoPool){
+        super.updateObject(optFlowNoPool);
     }
 }
