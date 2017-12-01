@@ -100,6 +100,7 @@ public  class GeneralServiceImpl implements GeneralService {
         DataPowerFilter dpf = new DataPowerFilter();
         //当前用户信息
         dpf.addSourceData("currentUser", userDetails.getUserInfo());
+        dpf.addSourceData("currentStation", userDetails.getCurrentStation());
         //当前用户主机构信息
         dpf.addSourceData("primaryUnit", CodeRepositoryUtil
                 .getUnitInfoByCode(userDetails.getUserInfo().getPrimaryUnit()));
