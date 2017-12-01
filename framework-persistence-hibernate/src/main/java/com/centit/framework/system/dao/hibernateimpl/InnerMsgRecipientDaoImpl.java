@@ -83,4 +83,9 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
                 + "  order by re.id desc";
         return listObjects(queryString, userCode);
     }
+
+    @Override
+    public void updateInnerMsgRecipient(InnerMsgRecipient innerMsgRecipient){
+      super.updateObject(innerMsgRecipient);
+    }
 }

@@ -13,6 +13,6 @@ public interface InnerMsgManager{
 
     public InnerMsg getObjectById(String msgCode);
 
-    void mergeMInnerMsg(InnerMsg msgCopy, InnerMsg msg);
+    void updateInnerMsg(InnerMsg msg);
     void deleteMsgById(String msgCode);
 }

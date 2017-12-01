@@ -5,26 +5,56 @@ import com.centit.framework.system.po.InnerMsg;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 内部消息Dao
+ * @author god
+ * updated by zou_wy@centit.com
+ */
 public interface InnerMsgDao {
-    
-     InnerMsg getObjectById(String msgCode);
 
-     void mergeObject(InnerMsg innerMsg);
+    /**
+    * 根据Id查询
+    * @param msgCode 消息编号
+    * @return InnerMsg
+    */
+    InnerMsg getObjectById(String msgCode);
 
-     void deleteObject(InnerMsg innerMsg);
+    /**
+    * 更新
+    * @param innerMsg
+    */
+    void updateInnerMsg(InnerMsg innerMsg);
 
-     void saveObject(InnerMsg innerMsg);
+    /**
+    * 删除
+    * @param innerMsg 消息对象
+    */
+    void deleteObject(InnerMsg innerMsg);
+
     /** 新建
-     * @param o InnerMsg
-     */
-    // String msgCode = DatabaseOptUtils.getNextKeyBySequence(this, "S_MSGCODE",16);
-    void saveNewObject(InnerMsg o);
-    
-     List<InnerMsg> listObjects(Map<String, Object> filterMap);
+    * @param innerMsg 消息对象
+    */
+    void saveNewObject(InnerMsg innerMsg);
 
+    /**
+    * 根据条件查询
+    * @param filterMap 过滤条件
+    * @return List<InnerMsg>
+    */
+    List<InnerMsg> listObjects(Map<String, Object> filterMap);
 
-    //分页  //startRow  startRow
-     int  pageCount(Map<String, Object> filterDescMap);
-     List<InnerMsg>  pageQuery(Map<String, Object> pageQureyMap);
-    
+    /**
+    * 查询条数 用户分页
+    * @param filterDescMap 过滤条件
+    * @return int
+    */
+    int pageCount(Map<String, Object> filterDescMap);
+
+    /**
+    * 分页查询
+    * @param pageQueryMap 过滤条件
+    * @return List<InnerMsg>
+    */
+    List<InnerMsg> pageQuery(Map<String, Object> pageQueryMap);
+
 }

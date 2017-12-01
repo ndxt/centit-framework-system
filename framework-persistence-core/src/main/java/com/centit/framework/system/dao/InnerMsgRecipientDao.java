@@ -5,54 +5,77 @@ import com.centit.framework.system.po.InnerMsgRecipient;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 消息接收Dao
+ * @author god
+ * updated by zou_wy@centit.com
+ */
 public interface InnerMsgRecipientDao {
-
-    void mergeObject(InnerMsgRecipient optMethod);
-
-     void deleteObject(InnerMsgRecipient optMethod);
-
-     void saveObject(InnerMsgRecipient optMethod);
-
-     List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap);
-
-
-     int  pageCount(Map<String, Object> filterDescMap);
-     List<InnerMsgRecipient>  pageQuery(Map<String, Object> pageQureyMap);
-    
-    
-
-     InnerMsgRecipient getObjectById(String id);
     /**
-     * 新建
-     * @param recipient InnerMsgRecipient
-     */
+    * 更新
+    * @param innerMsgRecipient InnerMsgRecipient
+    */
+    void updateInnerMsgRecipient(InnerMsgRecipient innerMsgRecipient);
+
+    /**
+    * 删除
+    * @param innerMsgRecipient InnerMsgRecipient
+    */
+    void deleteObject(InnerMsgRecipient innerMsgRecipient);
+
+    /**
+    * 根据条件查询
+    * @param filterMap 过滤条件
+    * @return List<InnerMsgRecipient>
+    */
+    List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap);
+
+    /**
+    * 查询条数 用户分页
+    * @param filterDescMap 过滤条件
+    * @return int
+    */
+    int pageCount(Map<String, Object> filterDescMap);
+
+    /**
+    * 分页查询
+    * @param pageQueryMap 过滤条件
+    * @return List<InnerMsgRecipient>
+    */
+    List<InnerMsgRecipient> pageQuery(Map<String, Object> pageQueryMap);
+
+    /**
+    * 根据Id查询
+    * @param id 主键
+    * @return InnerMsgRecipient
+    */
+    InnerMsgRecipient getObjectById(String id);
+
+    /**
+    * 新建
+    * @param recipient InnerMsgRecipient
+    */
     void saveNewObject(InnerMsgRecipient recipient);
-    
+
     /**
-     * 两人间来往消息列表
-     *         String queryString ="From InnerMsgRecipient where( (msgCode in (Select msgCode from InnerMsg where sender= ? and (mailType='I' or mailType='O')) and Receive= ?) " +
-                "or (msgCode in(Select msgCode from InnerMsg where sender= ? and (mailType='I' or mailType='O')) and Receive=? )) order by msgCode desc";
-        List l = listObjectsAll(queryString, new Object[]{sender,receiver,receiver,sender});
-        String sender, String receiver
-     * @param sender 发送方
-     * @param receiver 接收方
-     * @return List InnerMsgRecipient
-     */
-      List<InnerMsgRecipient> getExchangeMsgs(String sender, String receiver);
-   
+    * 两人间来往消息列表
+    * @param sender 发送方
+    * @param receiver 接收方
+    * @return List InnerMsgRecipient
+    */
+    List<InnerMsgRecipient> getExchangeMsgs(String sender, String receiver);
+
     /**
-     *  Object obj= DatabaseOptUtils.getSingleObjectByHql(this, "select count(1)"
-                + " from InnerMsgRecipient re Where re.receive = ? and msgState ='U'",userCode);
-     * @param userCode userCode
-     * @return long
-     */
-     long getUnreadMessageCount(String userCode);
+    * 查询用户消息数量
+    * @param userCode userCode
+    * @return long
+    */
+    long getUnreadMessageCount(String userCode);
+
     /**
-     * String queryString ="From InnerMsgRecipient re Where re.receive = ? and re.msgState ='U' "
-                + "  order by re.id desc";
-     * @param userCode userCode
-     * @return List InnerMsgRecipient
-     */
-     List<InnerMsgRecipient> listUnreadMessage(String userCode);
+     * 查询用户消息列表
+    * @param userCode userCode
+    * @return List InnerMsgRecipient
+    */
+    List<InnerMsgRecipient> listUnreadMessage(String userCode);
 }
- 

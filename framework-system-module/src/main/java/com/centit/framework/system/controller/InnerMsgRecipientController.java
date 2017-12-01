@@ -219,7 +219,7 @@ public class InnerMsgRecipientController extends BaseController {
             JsonResultUtils.writeErrorMessageJson("当前机构中无此信息", response);
             return;
         }
-        innerMsgManager.mergeMInnerMsg(msgCopy, msg);
+        innerMsgManager.updateInnerMsg(msg);
         // 需要返回msg的msgCode给前端recipient保存用
         JsonResultUtils.writeSingleDataJson(msg, response);
     }
@@ -239,7 +239,7 @@ public class InnerMsgRecipientController extends BaseController {
             JsonResultUtils.writeErrorMessageJson("当前机构中无此信息", response);
             return;
         }
-        innerMsgRecipientManager.mergeRecipient(recipientCopy, recipient);
+        innerMsgRecipientManager.updateRecipient(recipient);
         // 需要返回msg的msgCode给前端recipient保存用
         JsonResultUtils.writeSingleDataJson(recipient, response);
     }

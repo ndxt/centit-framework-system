@@ -19,11 +19,6 @@ public class InnerMsgDaoImpl extends BaseDaoImpl<InnerMsg, String> implements In
     }
 
     @Override
-    public void saveObject(InnerMsg innerMsg) {
-        super.saveNewObject(innerMsg);
-    }
-
-    @Override
     public List<InnerMsg> listObjects(Map<String, Object> filterMap) {
         return super.listObjectsByProperties(filterMap);
     }
@@ -50,4 +45,9 @@ public class InnerMsgDaoImpl extends BaseDaoImpl<InnerMsg, String> implements In
                 "[:sender | and SENDER = :sender ] " +
                 "[:receive | and MSG_CODE in ( select re.MSG_CODE from M_INNERMSG_RECIPIENT re Where re.RECEIVE = :receive )] ";
     */
+
+    @Override
+    public void updateInnerMsg(InnerMsg innerMsg){
+        super.updateObject(innerMsg);
+    }
 }

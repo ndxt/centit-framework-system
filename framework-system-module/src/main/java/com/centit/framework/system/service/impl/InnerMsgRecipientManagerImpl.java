@@ -36,10 +36,8 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
      */
     @Override
     @Transactional
-    public void mergeRecipient(InnerMsgRecipient recipientCopy,
-                               InnerMsgRecipient recipient) {
-        innerMsgRecipientDao.deleteObject(recipientCopy);
-        innerMsgRecipientDao.mergeObject(recipient);
+    public void updateRecipient(InnerMsgRecipient recipient) {
+        innerMsgRecipientDao.updateInnerMsgRecipient(recipient);
 
     }
 
@@ -142,7 +140,7 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
     public void deleteOneRecipientById(String id) {
         InnerMsgRecipient re = innerMsgRecipientDao.getObjectById(id);
         re.setMsgState("D");
-        innerMsgRecipientDao.saveObject(re);
+        innerMsgRecipientDao.updateInnerMsgRecipient(re);
     }
 
 

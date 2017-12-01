@@ -33,9 +33,8 @@ public class InnerMsgManagerImpl implements InnerMsgManager, MessageSender{
      *
      */
     @Override
-    public void mergeMInnerMsg(InnerMsg msgCopy, InnerMsg msg) {
-       innerMsgDao.deleteObject(msgCopy);
-       innerMsgDao.mergeObject(msg);
+    public void updateInnerMsg(InnerMsg msg) {
+       innerMsgDao.updateInnerMsg(msg);
     }
     /**
      * 发送消息
@@ -76,7 +75,7 @@ public class InnerMsgManagerImpl implements InnerMsgManager, MessageSender{
     public void deleteMsgById(String msgCode) {
        InnerMsg msg= innerMsgDao.getObjectById(msgCode);
        msg.setMsgState("D");
-       innerMsgDao.saveObject(msg);
+       innerMsgDao.updateInnerMsg(msg);
     }
 
     @Override

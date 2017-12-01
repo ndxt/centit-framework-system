@@ -38,11 +38,6 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
     }
 
     @Override
-    public void saveObject(InnerMsgRecipient optMethod) {
-        super.saveNewObject(optMethod);
-    }
-
-    @Override
     public List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap) {
         return super.listObjectsByProperties(filterMap);
     }
@@ -74,11 +69,16 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
                 + " Where receive = ? and msgState ='U'",
                 new Object[]{userCode});
         Long l = NumberBaseOpt.castObjectToLong(obj);
-        return l==null?0l:l;
+        return l==null?0L:l;
     }
 
     public List<InnerMsgRecipient> listUnreadMessage(String userCode){
         return listObjectsByProperties(QueryUtils.createSqlParamsMap(
                 "receive", userCode,"msgState","U"));
+    }
+
+    @Override
+    public void updateInnerMsgRecipient(InnerMsgRecipient innerMsgRecipient){
+        super.updateObject(innerMsgRecipient);
     }
 }

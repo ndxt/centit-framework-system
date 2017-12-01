@@ -16,8 +16,7 @@ public interface InnerMsgRecipientManager{
 
     List<InnerMsgRecipient> getExchangeMsgs(String sender, String receiver);
 
-    void mergeRecipient(InnerMsgRecipient recipientCopy,
-            InnerMsgRecipient recipient);
+    void updateRecipient(InnerMsgRecipient recipient);
     /*
      * msg为消息主题，recipient为接收人
      * 添加消息接受者,群发(receipient.receive为数组，但是保存到数据库是挨个保存)

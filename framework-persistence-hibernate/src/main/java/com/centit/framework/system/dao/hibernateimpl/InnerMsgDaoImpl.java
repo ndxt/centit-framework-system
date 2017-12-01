@@ -40,4 +40,9 @@ public class InnerMsgDaoImpl extends BaseDaoImpl<InnerMsg, String> implements In
 //        return msgCode;
     }
 
+    @Override
+    public void updateInnerMsg(InnerMsg innerMsg){
+        super.updateObject(innerMsg);
+    }
+
 }

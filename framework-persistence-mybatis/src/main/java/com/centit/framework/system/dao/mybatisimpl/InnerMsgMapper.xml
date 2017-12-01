@@ -189,7 +189,7 @@
             </if>
         </set>
     </sql>
-    <update id="update" parameterType="com.centit.framework.system.po.InnerMsg" >
+    <update id="updateInnerMsg" parameterType="com.centit.framework.system.po.InnerMsg" >
         update M_InnerMsg
         <include refid="updSql" />
         where  MSG_CODE=#{msgCode}
