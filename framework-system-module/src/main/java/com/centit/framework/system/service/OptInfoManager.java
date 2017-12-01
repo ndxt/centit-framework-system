@@ -52,7 +52,7 @@ public interface OptInfoManager{
 
      void updateOptInfo(OptInfo optinfo);
 
-    Map<String, List> updateOperationPower(OptInfo optInfo);
+     void updateOperationPower(OptInfo optInfo);
 
      void deleteOptInfo(OptInfo optinfo);
 

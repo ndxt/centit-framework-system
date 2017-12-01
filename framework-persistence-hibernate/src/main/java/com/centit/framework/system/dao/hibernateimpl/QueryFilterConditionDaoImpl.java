@@ -64,4 +64,14 @@ public class QueryFilterConditionDaoImpl extends BaseDaoImpl<QueryFilterConditio
     public Long getNextKey() {
         return DatabaseOptUtils.getNextLongSequence(this, "S_FILTER_NO");
     }
+
+    @Override
+    public void saveNewQueryFilterCondition(QueryFilterCondition queryFilterCondition){
+        super.saveNewObject(queryFilterCondition);
+    }
+
+    @Override
+    public void updateQueryFilterCondition(QueryFilterCondition queryFilterCondition){
+        super.updateObject(queryFilterCondition);
+    }
 }

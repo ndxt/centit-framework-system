@@ -300,7 +300,7 @@ public class OptInfoController extends BaseController {
 
     dbOptInfo.addAllOptMethods(optInfo.getOptMethods());
     dbOptInfo.addAllDataScopes(optInfo.getDataScopes());
-    Map<String, List> old = optInfoManager.updateOperationPower(dbOptInfo);
+    optInfoManager.updateOperationPower(dbOptInfo);
 //    oldValue.setOptMethods(old.get("methods"));
 //    oldValue.setDataScopes(old.get("scopes"));
     //刷新缓存

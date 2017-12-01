@@ -21,28 +21,38 @@ public class OptFlowNoPoolDaoImpl extends BaseDaoImpl<OptFlowNoPool, OptFlowNoPo
   implements OptFlowNoPoolDao {
 
 
-    public static final Logger logger = LoggerFactory.getLogger(OptFlowNoPoolDaoImpl.class);
+      public static final Logger logger = LoggerFactory.getLogger(OptFlowNoPoolDaoImpl.class);
 
-    public Map<String, String> getFilterField() {
-        if (filterField == null) {
-            filterField = new HashMap<String, String>();
+      public Map<String, String> getFilterField() {
+          if (filterField == null) {
+              filterField = new HashMap<String, String>();
 
-            filterField.put("ownerCode", "cid.ownerCode = :ownerCode");
-            filterField.put("codeDate", "cid.codeDate = :codeDate");
-            filterField.put("codeCode", "cid.codeCode = :codeCode");
-            filterField.put("curNo", "cid.ownerCode = :curNo");
-        }
-        return filterField;
-    }
+              filterField.put("ownerCode", "cid.ownerCode = :ownerCode");
+              filterField.put("codeDate", "cid.codeDate = :codeDate");
+              filterField.put("codeCode", "cid.codeCode = :codeCode");
+              filterField.put("curNo", "cid.ownerCode = :curNo");
+          }
+          return filterField;
+      }
 
-    @Transactional
-    public long fetchFirstLsh(String ownerCode, String codeCode,
-                              Date codeBaseDate) {
-        return DatabaseOptUtils.getSingleIntBySql(this,
-                "select min(CURNO) as MinNo from F_OPTFLOWNOPOOL" +
-                " where OWNERCODE = " + QueryUtils.buildStringForQuery(ownerCode) +
-                " and CODECODE = " + QueryUtils.buildStringForQuery(ownerCode) +
-                " and CODEDATE = (date)" + QueryUtils.buildStringForQuery(
-                DatetimeOpt.convertDatetimeToString(codeBaseDate)));
-    }
+      @Transactional
+      public long fetchFirstLsh(String ownerCode, String codeCode,
+                                Date codeBaseDate) {
+          return DatabaseOptUtils.getSingleIntBySql(this,
+                  "select min(CURNO) as MinNo from F_OPTFLOWNOPOOL" +
+                  " where OWNERCODE = " + QueryUtils.buildStringForQuery(ownerCode) +
+                  " and CODECODE = " + QueryUtils.buildStringForQuery(ownerCode) +
+                  " and CODEDATE = (date)" + QueryUtils.buildStringForQuery(
+                  DatetimeOpt.convertDatetimeToString(codeBaseDate)));
+      }
+
+      @Override
+      public void saveNewOptFlowNoPool(OptFlowNoPool optFlowNoPool){
+          super.saveNewObject(optFlowNoPool);
+      }
+
+      @Override
+      public void updateOptFlowNoPool(OptFlowNoPool optFlowNoPool){
+          super.updateObject(optFlowNoPool);
+      }
 }

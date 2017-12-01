@@ -8,20 +8,20 @@ import java.util.Map;
 
 /**
  * QueryFilterConditionDao  Repository.
- * create by scaffold 2016-03-01 
+ * create by scaffold 2016-03-01
  * @author codefan@sina.com
- * 系统内置查询方式null   
+ * 系统内置查询方式null
 */
 
 public interface QueryFilterConditionDao {
 
     //DatabaseOptUtils.getNextLongSequence(this, "S_FILTER_NO");
     Long getNextKey();
-    
-    
+
+
     int  pageCount(Map<String, Object> filterDescMap);
     List<QueryFilterCondition>  pageQuery(Map<String, Object> pageQureyMap);
-    
+
 
     QueryFilterCondition getObjectById(Long filterNo);
 
@@ -29,5 +29,7 @@ public interface QueryFilterConditionDao {
 
     void deleteObjectById(Long filterNo);
 
-    void saveNewObject(QueryFilterCondition userQueryFilter);
+    void saveNewQueryFilterCondition(QueryFilterCondition queryFilterCondition);
+
+    void updateQueryFilterCondition(QueryFilterCondition queryFilterCondition);
 }

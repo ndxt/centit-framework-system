@@ -43,4 +43,14 @@ public class OptFlowNoInfoDaoImpl extends BaseDaoImpl<OptFlowNoInfo, OptFlowNoIn
         super.saveNewObject(optFlowNoInfo);
     }
 
+    @Override
+    public void saveNewOptFlowNoInfo(OptFlowNoInfo optFlowNoInfo){
+        super.saveNewObject(optFlowNoInfo);
+    }
+
+    @Override
+    public void updateOptFlowNoInfo(OptFlowNoInfo optFlowNoInfo){
+        super.updateObject(optFlowNoInfo);
+    }
+
 }

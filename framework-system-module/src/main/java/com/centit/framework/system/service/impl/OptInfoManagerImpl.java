@@ -8,7 +8,10 @@ import com.centit.framework.system.po.OptDataScope;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.service.OptInfoManager;
+import com.centit.support.algorithm.ListOpt;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
@@ -123,86 +126,73 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Override
     @CacheEvict(value="OptInfo",allEntries = true)
     @Transactional
-    public Map<String, List> updateOperationPower(OptInfo optInfo) {
+    public void updateOperationPower(OptInfo optInfo) {
 
         optInfoDao.updateOptInfo(optInfo);
 
-        Map<String, List> result = new HashMap<>();
+        List<OptMethod> newOptMethods = optInfo.getOptMethods();
 
-        List<OptMethod>  newOpts = optInfo.getOptMethods();
-
-        if(newOpts == null || newOpts.size() < 0){
+        if(newOptMethods == null || newOptMethods.size() < 1){
             optMethodDao.deleteOptMethodsByOptID(optInfo.getOptId());
         }
 
-        if(newOpts.size()>0 ){
-            // 对于显示的菜单添加显示权限
-            for(OptMethod o : newOpts){
-                if(StringUtils.isBlank(o.getOptCode())){
-                    o.setOptCode(optMethodDao.getNextOptCode());
-                }
-                o.setOptId(optInfo.getOptId());
+        List<OptMethod> oldOptMethods = optMethodDao.listOptMethodByOptID(optInfo.getOptId());
+
+        Triple<List<OptMethod>, List<Pair<OptMethod,OptMethod>>, List<OptMethod>> compareMethod =
+            ListOpt.compareTwoList(oldOptMethods, newOptMethods, Comparator.comparing(OptMethod::getOptId));
+
+        if(compareMethod.getRight() != null) {
+            for (OptMethod optMethod : compareMethod.getRight()) {
+                optMethodDao.deleteObject(optMethod);
             }
         }
 
-        List<OptMethod> oldOpts = optMethodDao.listOptMethodByOptID(optInfo.getOptId());
-        List<OptMethod> optMethods = new ArrayList<>();
-        for(OptMethod o : oldOpts){
-            OptMethod optMethod = new OptMethod();
-            BeanUtils.copyProperties(o, optMethod);
-            optMethods.add(optMethod);
-        }
-        result.put("methods", optMethods);
-
-        if( oldOpts != null){
-            for(OptMethod o : oldOpts){
-                if(! newOpts.contains(o)){
-                    optMethodDao.deleteObject(o);
-                    rolePowerDao.deleteRolePowersByOptCode(o.getOptCode());
-                }
+        if(compareMethod.getLeft() != null){
+            for(OptMethod optMethod : compareMethod.getLeft()){
+                optMethod.setOptCode(optMethodDao.getNextOptCode());
+                optMethod.setOptId(optInfo.getOptId());
+                optMethodDao.saveNewObject(optMethod);
             }
         }
-        newOpts.removeAll(oldOpts);
-        for(OptMethod o : newOpts){
-            optMethodDao.saveNewObject(o);
+
+        if(compareMethod.getMiddle() != null){
+            for(Pair<OptMethod, OptMethod> pair : compareMethod.getMiddle()){
+                pair.getLeft().copyNotNullProperty(pair.getRight());
+                optMethodDao.updateOptMethod(pair.getLeft());
+            }
         }
 
         List<OptDataScope>  newDataScopes = optInfo.getDataScopes();
 
-      if(newDataScopes == null || newDataScopes.size() < 1){
-          dataScopeDao.deleteDataScopeOfOptID(optInfo.getOptId());
-      }
-        if(newDataScopes.size()>0 ){
-            // 对于显示的菜单添加显示权限
-            for(OptDataScope s : newDataScopes){
-                if(StringUtils.isBlank(s.getOptScopeCode())){
-                    s.setOptScopeCode(dataScopeDao.getNextOptCode());
-                }
-                s.setOptId(optInfo.getOptId());
-            }
+        if(newDataScopes == null || newDataScopes.size() < 1){
+            dataScopeDao.deleteDataScopeOfOptID(optInfo.getOptId());
         }
 
         List<OptDataScope> oldDataScopes = dataScopeDao.getDataScopeByOptID(optInfo.getOptId());
-        List<OptDataScope> dataScopes = new ArrayList<>();
-        for(OptDataScope o : oldDataScopes){
-            OptDataScope optDataScope = new OptDataScope();
-            BeanUtils.copyProperties(o, optDataScope);
-            dataScopes.add(optDataScope);
-        }
-        result.put("scopes", dataScopes);
 
-        if( oldDataScopes != null){
-            for(OptDataScope s : oldDataScopes){
-                if(! newDataScopes.contains(s)){
-                    dataScopeDao.deleteObject(s);
-                }
+        Triple<List<OptDataScope>, List<Pair<OptDataScope, OptDataScope>>, List<OptDataScope>> compareScope =
+              ListOpt.compareTwoList(oldDataScopes, newDataScopes, Comparator.comparing(OptDataScope::getOptId));
+
+        if(compareScope.getRight() != null){
+            for(OptDataScope optDataScope : compareScope.getRight()){
+                dataScopeDao.deleteObject(optDataScope);
             }
         }
-        newDataScopes.removeAll(oldDataScopes);
-        for(OptDataScope s : newDataScopes){
-            dataScopeDao.saveNewOPtDataScope(s);
+
+        if(compareScope.getLeft() != null){
+            for(OptDataScope optDataScope : compareScope.getLeft()){
+                optDataScope.setOptScopeCode(dataScopeDao.getNextOptCode());
+                optDataScope.setOptId(optInfo.getOptId());
+                dataScopeDao.saveNewOPtDataScope(optDataScope);
+            }
         }
-        return result;
+
+        if(compareScope.getMiddle() != null){
+            for(Pair<OptDataScope, OptDataScope> pair : compareScope.getMiddle()){
+                pair.getLeft().copyNotNullProperty(pair.getRight());
+                dataScopeDao.updateOptDataScope(pair.getLeft());
+            }
+        }
     }
 
     @Transactional
