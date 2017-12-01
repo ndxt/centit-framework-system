@@ -485,17 +485,23 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         List<UserUnit> usun = userUnitDao.listUserUnitsByUserCode(userinfo.getUserCode());
         userinfo.setUserUnits(usun);
         CentitUserDetailsImpl sysuser = new CentitUserDetailsImpl(userinfo);
-
+        for(UserUnit uu :usun){
+            if("T".equals(uu.getIsPrimary())){
+                sysuser.setCurrentUserUnit(uu);
+                break;
+            }
+        }
         //edit by zhuxw  代码从原框架迁移过来，可和其它地方合并
         List<RoleInfo> roles = new ArrayList<>();
         //所有的用户 都要添加这个角色
         roles.add(new RoleInfo("public", "general public","G",
                  "G","T", "general public"));
-        List<FVUserRoles> ls = userRoleDao.listUserRolesByUserCode(userinfo.getUserCode());
-        if(ls!=null) {
-             for (FVUserRoles l : ls) {
+        List<FVUserRoles> userRolesList = userRoleDao.listUserRolesByUserCode(userinfo.getUserCode());
+        if(userRolesList!=null) {
+             for (FVUserRoles role : userRolesList) {
                  RoleInfo roleInfo = new RoleInfo();
-                 BeanUtils.copyProperties(l, roleInfo);
+                 //roleInfo.copy(role);
+                 BeanUtils.copyProperties(role, roleInfo);
                  roles.add(roleInfo);
              }
          }

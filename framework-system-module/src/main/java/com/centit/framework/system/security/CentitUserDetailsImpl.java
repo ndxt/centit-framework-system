@@ -109,6 +109,10 @@ public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Seriali
         return currentStation;
     }
 
+    public void setCurrentUserUnit(UserUnit userUnit) {
+        currentStation = userUnit;
+    }
+
     @Override
     public void setCurrentStation(String userUnitId) {
         List<UserUnit> uus = getUserInfo().getUserUnits();
@@ -189,7 +193,7 @@ public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Seriali
       return "T".equals(this.userInfo.getIsValid());
     }
 
-  @Override
+    @Override
     @JSONField(serialize = false)
     public String getPassword() {
         return this.userInfo.getUserPin();
