@@ -42,10 +42,6 @@ public class OptFlowNoPoolDaoImpl extends BaseDaoImpl<OptFlowNoPool, OptFlowNoPo
         super.deleteObjectById(cid);
     }
 
-    @Override
-    public void saveObject(OptFlowNoPool optFlowNoPool) {
-        super.saveNewObject(optFlowNoPool);
-    }
 
     @Transactional
     public long fetchFirstLsh(String ownerCode, String codeCode,
@@ -63,8 +59,8 @@ public class OptFlowNoPoolDaoImpl extends BaseDaoImpl<OptFlowNoPool, OptFlowNoPo
         super.saveNewObject(optFlowNoPool);
     }
 
-    @Override
+    /*@Override
     public void updateOptFlowNoPool(OptFlowNoPool optFlowNoPool){
         super.updateObject(optFlowNoPool);
-    }
+    }*/
 }

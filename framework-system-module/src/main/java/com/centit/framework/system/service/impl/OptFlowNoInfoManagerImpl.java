@@ -52,10 +52,11 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
         long nextCode = 1l;
         if (noInfo == null) {
             noInfo = new OptFlowNoInfo(noId, 1l, DatetimeOpt.currentUtilDate());
+            optFlowNoInfoDao.saveNewOptFlowNoInfo(noInfo);
         } else {
             nextCode = noInfo.getCurNo() + 1;
             //检查新生产的号是否已经被预留
-            while (true) {
+            /*while (true) {
                 OptFlowNoPoolId poolId = new OptFlowNoPoolId(ownerCode, codeDate, codeCode, nextCode);
                 OptFlowNoPool poolNo = optFlowNoPoolDao.getObjectById(poolId);
                 //没有被预留
@@ -63,12 +64,11 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
                     break;
                 }
                 nextCode++;
-            }
+            }*/
             noInfo.setCurNo(nextCode);
             noInfo.setLastCodeDate(DatetimeOpt.currentUtilDate());
-
+            optFlowNoInfoDao.updateOptFlowNoInfo(noInfo);
         }
-        optFlowNoInfoDao.saveObject(noInfo);
         return nextCode;
     }
 
@@ -162,12 +162,12 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
         OptFlowNoInfo noInfo = optFlowNoInfoDao.getObjectById(noId);
         if (noInfo == null) {
             noInfo = new OptFlowNoInfo(noId, currCode, DatetimeOpt.currentUtilDate());
-            optFlowNoInfoDao.saveObject(noInfo);
+            optFlowNoInfoDao.saveNewOptFlowNoInfo(noInfo);
         } else {
             if (noInfo.getCurNo() < currCode) {
                 noInfo.setCurNo(currCode);
                 noInfo.setLastCodeDate(DatetimeOpt.currentUtilDate());
-                optFlowNoInfoDao.saveObject(noInfo);
+                optFlowNoInfoDao.updateOptFlowNoInfo(noInfo);
             }
         }
     }
@@ -250,7 +250,7 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
         obj.setCodeCode(codeCode);
         obj.setCurNo(currCode);
         obj.setCreateDate(DatetimeOpt.currentUtilDate());
-        optFlowNoPoolDao.saveObject(obj);
+        optFlowNoPoolDao.saveNewOptFlowNoPool(obj);
     }
 
     @Override

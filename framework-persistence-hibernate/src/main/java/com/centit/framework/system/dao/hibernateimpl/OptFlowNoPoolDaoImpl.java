@@ -51,8 +51,8 @@ public class OptFlowNoPoolDaoImpl extends BaseDaoImpl<OptFlowNoPool, OptFlowNoPo
           super.saveNewObject(optFlowNoPool);
       }
 
-      @Override
+      /*@Override
       public void updateOptFlowNoPool(OptFlowNoPool optFlowNoPool){
           super.updateObject(optFlowNoPool);
-      }
+      }*/
 }

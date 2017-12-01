@@ -9,42 +9,35 @@ import java.util.Map;
 
 public interface OptFlowNoPoolDao {
 
-  /**
-   * 根据Id查询
-   * @param cid
-   * @return
-   */
-     OptFlowNoPool getObjectById(OptFlowNoPoolId cid);
+    /**
+     * 根据Id查询
+     * @param cid
+     * @return
+     */
+    OptFlowNoPool getObjectById(OptFlowNoPoolId cid);
 
-  /**
-   * 删除
-   * @param optFlowNoPool
-   */
-  void deleteObject(OptFlowNoPool optFlowNoPool);
+    /**
+     * 删除
+     * @param optFlowNoPool
+     */
+    void deleteObject(OptFlowNoPool optFlowNoPool);
 
-  /**
-   * 根据Id删除
-   * @param cid
-   */
-     void deleteObjectById(OptFlowNoPoolId cid);
-
-     void saveObject(OptFlowNoPool optFlowNoPool);
-
-  /**
-   * 新增
-   * @param optFlowNoPool
-   */
-  void saveNewOptFlowNoPool(OptFlowNoPool optFlowNoPool);
-
-  /**
-   * 更新
-   * @param optFlowNoPool
-   */
-     void updateOptFlowNoPool(OptFlowNoPool optFlowNoPool);
+    /**
+     * 根据Id删除
+     * @param cid
+     */
+    void deleteObjectById(OptFlowNoPoolId cid);
 
 
-     int  pageCount(Map<String, Object> filterDescMap);
-     List<OptFlowNoPool>  pageQuery(Map<String, Object> pageQureyMap);
+    /**
+     * 新增
+     * @param optFlowNoPool
+     */
+    void saveNewOptFlowNoPool(OptFlowNoPool optFlowNoPool);
+
+    int  pageCount(Map<String, Object> filterDescMap);
+
+    List<OptFlowNoPool>  pageQuery(Map<String, Object> pageQureyMap);
 
 
     /**
@@ -59,5 +52,5 @@ public interface OptFlowNoPoolDao {
      * @param ownerCode 归属人员
      * @return long
      */
-     long fetchFirstLsh(String ownerCode, String codeCode, Date codeBaseDate);
+    long fetchFirstLsh(String ownerCode, String codeCode, Date codeBaseDate);
 }
