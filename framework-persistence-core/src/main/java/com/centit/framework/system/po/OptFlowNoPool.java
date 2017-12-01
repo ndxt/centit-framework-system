@@ -3,7 +3,6 @@ package com.centit.framework.system.po;
 import com.centit.framework.core.po.EntityWithTimestamp;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * create by scaffold
@@ -19,11 +18,11 @@ public class OptFlowNoPool implements EntityWithTimestamp, java.io.Serializable 
 
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    protected Date createDate;
+    protected java.util.Date createDate;
 
     @Column(name = "LAST_MODIFY_DATE")
     @Temporal(TemporalType.TIMESTAMP)
-    protected Date lastModifyDate;
+    protected java.util.Date lastModifyDate;
 
     // Constructors
 
@@ -42,7 +41,7 @@ public class OptFlowNoPool implements EntityWithTimestamp, java.io.Serializable 
     }
 
     public OptFlowNoPool(OptFlowNoPoolId id
-            , Date lastCodeDate) {
+            , java.util.Date lastCodeDate) {
         this.cid = id;
         this.createDate = lastCodeDate;
     }
@@ -67,13 +66,13 @@ public class OptFlowNoPool implements EntityWithTimestamp, java.io.Serializable 
         this.cid.setOwnerCode(ownerCode);
     }
 
-    public Date getCodeDate() {
+    public java.sql.Date getCodeDate() {
         if (this.cid == null)
             this.cid = new OptFlowNoPoolId();
         return this.cid.getCodeDate();
     }
 
-    public void setCodeDate(Date codeDate) {
+    public void setCodeDate(java.sql.Date codeDate) {
         if (this.cid == null)
             this.cid = new OptFlowNoPoolId();
         this.cid.setCodeDate(codeDate);
@@ -104,21 +103,21 @@ public class OptFlowNoPool implements EntityWithTimestamp, java.io.Serializable 
     }
 
 
-    public Date getCreateDate() {
+    public java.util.Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(java.util.Date createDate) {
         this.createDate = createDate;
     }
 
     @Override
-    public Date getLastModifyDate() {
+    public java.util.Date getLastModifyDate() {
         return lastModifyDate;
     }
 
     @Override
-    public void setLastModifyDate(Date lastModifyDate) {
+    public void setLastModifyDate(java.util.Date lastModifyDate) {
         this.lastModifyDate = lastModifyDate;
     }
 

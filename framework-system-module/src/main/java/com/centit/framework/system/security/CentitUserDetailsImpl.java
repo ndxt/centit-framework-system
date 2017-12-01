@@ -1,10 +1,12 @@
 package com.centit.framework.system.security;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.centit.framework.model.basedata.IUserUnit;
 import com.centit.framework.security.model.CentitSecurityMetadata;
 import com.centit.framework.security.model.CentitUserDetails;
 import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.UserInfo;
+import com.centit.framework.system.po.UserUnit;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,8 +21,6 @@ import java.util.*;
 public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Serializable{
     private static final long serialVersionUID = 1L;
 
-
-
     public CentitUserDetailsImpl(){
         arrayAuths = null;
     }
@@ -29,7 +29,7 @@ public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Seriali
         this.userInfo = userInfo;
         arrayAuths = null;
     }
-
+    private UserUnit currentStation;
     protected UserInfo userInfo;
 
     public String getUserCode(){
@@ -77,6 +77,7 @@ public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Seriali
         this.userOptList = userOptList;
     }
 
+    @Override
     public boolean checkOptPower(String optId, String optMethod){
         String s = userOptList.get(optId + "-" + optMethod);
         if (s == null) {
@@ -85,12 +86,44 @@ public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Seriali
         return "T".equals(s);
     }
 
+    @Override
     public List<RoleInfo> getUserRoles() {
       return userRoles;
     }
 
     public void setUserRoles(List<RoleInfo> userRoles) {
       this.userRoles = userRoles;
+    }
+
+    @Override
+    public IUserUnit getCurrentStation() {
+        if(currentStation==null){
+            List<UserUnit> uus = getUserInfo().getUserUnits();
+            for(UserUnit uu : uus){
+                if("T".equals(uu.getIsPrimary())){
+                    currentStation = uu;
+                    break;
+                }
+            }
+        }
+        return currentStation;
+    }
+
+    @Override
+    public void setCurrentStation(String userUnitId) {
+        List<UserUnit> uus = getUserInfo().getUserUnits();
+        for(UserUnit uu : uus){
+            if(StringUtils.equals(userUnitId,uu.getUserUnitId())){
+                currentStation = uu;
+                return ;
+            }
+        }
+    }
+
+    @Override
+    public String getCurrentUnit(){
+        IUserUnit cs = getCurrentStation();
+        return cs != null? cs.getUnitCode() : getUserInfo().getPrimaryUnit();
     }
 
     private void makeUserAuthorities(){

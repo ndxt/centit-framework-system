@@ -46,7 +46,7 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
      */
     @Override
     public synchronized long newNextLsh(String ownerCode, String codeCode, Date codeBaseDate) {
-        Date codeDate = codeBaseDate; // DatetimeOpt.convertSqlDate(codeBaseDate);
+        java.sql.Date codeDate = DatetimeOpt.convertToSqlDate(codeBaseDate); // DatetimeOpt.convertSqlDate(codeBaseDate);
         OptFlowNoInfoId noId = new OptFlowNoInfoId(ownerCode, codeDate, codeCode);
         OptFlowNoInfo noInfo = optFlowNoInfoDao.getObjectById(noId);
         long nextCode = 1l;
@@ -111,7 +111,7 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
      */
     @Override
     public synchronized long viewNextLsh(String ownerCode, String codeCode, Date codeBaseDate) {
-        Date codeDate = codeBaseDate; // DatetimeOpt.convertSqlDate(codeBaseDate);
+        java.sql.Date codeDate = DatetimeOpt.convertToSqlDate(codeBaseDate);
         OptFlowNoInfoId noId = new OptFlowNoInfoId(ownerCode, codeDate, codeCode);
         OptFlowNoInfo noInfo = optFlowNoInfoDao.getObjectById(noId);
         long nextCode = 1l;
@@ -148,7 +148,7 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
     @Override
     public synchronized void recordNextLsh(String ownerCode, String codeCode,
                                            Date codeBaseDate, long currCode) {
-        Date codeDate = codeBaseDate;// DatetimeOpt.convertSqlDate(codeBaseDate);
+        java.sql.Date codeDate = DatetimeOpt.convertToSqlDate(codeBaseDate);
         // 如果是从池中取出的，在池中删除
         OptFlowNoPoolId poolId = new OptFlowNoPoolId(ownerCode, codeDate, codeCode, currCode);
 
@@ -199,16 +199,16 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
 
     @Override
     public synchronized long assignNextLsh(String ownerCode, String codeCode, Date codeBaseDate) {
-        Map map=new HashMap();
+        /*Map map=new HashMap();
         map.put("ownerCode", ownerCode);
         map.put("codeCode", codeCode);
-        map.put("codeBaseDate", String.valueOf(codeBaseDate));
+        map.put("codeBaseDate", String.valueOf(codeBaseDate));*/
 
-         long minPoolNo = optFlowNoPoolDao.fetchFirstLsh(ownerCode, codeCode, codeBaseDate);
+        long minPoolNo = optFlowNoPoolDao.fetchFirstLsh(ownerCode, codeCode, codeBaseDate);
         if (minPoolNo > 0) {
             OptFlowNoPoolId obj = new OptFlowNoPoolId();
             obj.setOwnerCode(ownerCode);
-            obj.setCodeDate(codeBaseDate);
+            obj.setCodeDate(DatetimeOpt.convertToSqlDate(codeBaseDate));
             obj.setCodeCode(codeCode);
             obj.setCurNo(minPoolNo);
             optFlowNoPoolDao.deleteObjectById(obj);
@@ -246,7 +246,7 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
     public void releaseLsh(String ownerCode, String codeCode, Date codeBaseDate, long currCode) {
         OptFlowNoPool obj = new OptFlowNoPool();
         obj.setOwnerCode(ownerCode);
-        obj.setCodeDate(codeBaseDate);
+        obj.setCodeDate(DatetimeOpt.convertToSqlDate(codeBaseDate));
         obj.setCodeCode(codeCode);
         obj.setCurNo(currCode);
         obj.setCreateDate(DatetimeOpt.currentUtilDate());
@@ -314,6 +314,5 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
     public List<OptFlowNoPool> listLshInPool(String codeCode, PageDesc pageDesc) {
         return listLshInPool(DefaultOwnerCode, codeCode, DefaultCodeDate, pageDesc);
     }
-
 
 }

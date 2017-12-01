@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Date;
 
 /**
  * create by scaffold
@@ -22,7 +21,7 @@ public class OptFlowNoInfo implements java.io.Serializable {
     private Long curNo;
 
     @Column(name = "LAST_CODE_DATE")
-    private Date lastCodeDate;
+    private java.util.Date lastCodeDate;
 
     // Constructors
 
@@ -53,7 +52,7 @@ public class OptFlowNoInfo implements java.io.Serializable {
      */
     public OptFlowNoInfo(OptFlowNoInfoId id
 
-            , Long curNo, Date lastCodeDate) {
+            , Long curNo, java.util.Date lastCodeDate) {
         this.cid = id;
 
         this.curNo = curNo;
@@ -81,13 +80,13 @@ public class OptFlowNoInfo implements java.io.Serializable {
         this.cid.setOwnerCode(ownerCode);
     }
 
-    public Date getCodeDate() {
+    public java.sql.Date getCodeDate() {
         if (this.cid == null)
             this.cid = new OptFlowNoInfoId();
         return this.cid.getCodeDate();
     }
 
-    public void setCodeDate(Date codeDate) {
+    public void setCodeDate(java.sql.Date codeDate) {
         if (this.cid == null)
             this.cid = new OptFlowNoInfoId();
         this.cid.setCodeDate(codeDate);
@@ -115,11 +114,11 @@ public class OptFlowNoInfo implements java.io.Serializable {
         this.curNo = curNo;
     }
 
-    public Date getLastCodeDate() {
+    public java.util.Date getLastCodeDate() {
         return this.lastCodeDate;
     }
 
-    public void setLastCodeDate(Date lastCodeDate) {
+    public void setLastCodeDate(java.util.Date lastCodeDate) {
         this.lastCodeDate = lastCodeDate;
     }
 
