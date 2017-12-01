@@ -5,8 +5,6 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
@@ -26,7 +24,6 @@ public class OptFlowNoPoolId implements java.io.Serializable {
 
     @Column(name = "CODE_DATE")
     @NotNull(message = "字段不能为空")
-    @Temporal(TemporalType.DATE)
     private Date codeDate;
 
     @Column(name = "CODE_CODE")

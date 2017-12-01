@@ -9,7 +9,6 @@
         <result property="codeCode" column="CODE_CODE" />
         <result property="curNo" column="CUR_NO" />
         <result property="createDate" column="CREATE_DATE" />
-        <result property="lastModifyDate" column="LAST_MODIFY_DATE" />
     </resultMap>
 
     <!-- 查询条件 -->
@@ -65,8 +64,7 @@
                    u.CODE_DATE,
                    u.CODE_CODE,
                    u.CUR_NO,
-                   u.CREATE_DATE,
-                   u.LAST_MODIFY_DATE
+                   u.CREATE_DATE
             from F_OPTFLOWNOPOOL u
         ]]>
     </sql>
@@ -117,15 +115,13 @@
             CODE_DATE,
             CODE_CODE,
             CUR_NO,
-            CREATE_DATE,
-            LAST_MODIFY_DATE
+            CREATE_DATE
         )values(
             #{ownerCode},
             #{codeDate},
             #{codeCode},
             #{curNo},
-            #{createDate},
-            #{lastModifyDate }
+            #{createDate} }
         )
     </sql>
     <insert id="saveNewOptFlowNoPool" parameterType="com.centit.framework.system.po.OptFlowNoPool">

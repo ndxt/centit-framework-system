@@ -11,7 +11,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "F_OPTFLOWNOPOOL")
-public class OptFlowNoPool implements EntityWithTimestamp, java.io.Serializable {
+public class OptFlowNoPool implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     private OptFlowNoPoolId cid;
@@ -19,10 +19,6 @@ public class OptFlowNoPool implements EntityWithTimestamp, java.io.Serializable 
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected java.util.Date createDate;
-
-    @Column(name = "LAST_MODIFY_DATE")
-    @Temporal(TemporalType.TIMESTAMP)
-    protected java.util.Date lastModifyDate;
 
     // Constructors
 
@@ -110,17 +106,6 @@ public class OptFlowNoPool implements EntityWithTimestamp, java.io.Serializable 
     public void setCreateDate(java.util.Date createDate) {
         this.createDate = createDate;
     }
-
-    @Override
-    public java.util.Date getLastModifyDate() {
-        return lastModifyDate;
-    }
-
-    @Override
-    public void setLastModifyDate(java.util.Date lastModifyDate) {
-        this.lastModifyDate = lastModifyDate;
-    }
-
 
     public void copy(OptFlowNoPool other) {
 
