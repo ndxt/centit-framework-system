@@ -56,7 +56,7 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
         } else {
             nextCode = noInfo.getCurNo() + 1;
             //检查新生产的号是否已经被预留
-            /*while (true) {
+            while (true) {
                 OptFlowNoPoolId poolId = new OptFlowNoPoolId(ownerCode, codeDate, codeCode, nextCode);
                 OptFlowNoPool poolNo = optFlowNoPoolDao.getObjectById(poolId);
                 //没有被预留
@@ -64,7 +64,7 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
                     break;
                 }
                 nextCode++;
-            }*/
+            }
             noInfo.setCurNo(nextCode);
             noInfo.setLastCodeDate(DatetimeOpt.currentUtilDate());
             optFlowNoInfoDao.updateOptFlowNoInfo(noInfo);
