@@ -4,10 +4,8 @@ import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.model.basedata.IDataDictionary;
 import com.centit.framework.model.basedata.IRoleInfo;
-import com.centit.framework.system.dao.UnitInfoDao;
-import com.centit.framework.system.dao.UserInfoDao;
-import com.centit.framework.system.dao.UserRoleDao;
-import com.centit.framework.system.dao.UserUnitDao;
+import com.centit.framework.operationlog.RecordOperationLog;
+import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysUserUnitManager;
 import com.centit.support.algorithm.DatetimeOpt;
@@ -56,6 +54,9 @@ public class SysUserUnitManagerImpl
     @Resource
     private UserRoleDao userRoleDao;
 
+    @Resource
+    private RoleInfoDao roleInfoDao;
+
     @Override
     @Transactional(readOnly = true)
     public List<UserUnit> listObjectByUserUnit(String userCode,String unitCode){
@@ -102,7 +103,8 @@ public class SysUserUnitManagerImpl
             }
           }
           if(!hasRole){
-            IRoleInfo roleInfo = CodeRepositoryUtil.getRoleByRoleCode(roleCode);
+//            IRoleInfo roleInfo = CodeRepositoryUtil.getRoleByRoleCode(roleCode);
+            RoleInfo roleInfo = roleInfoDao.getObjectById(roleCode);
             if(roleInfo != null){
               UserRole newUserRole = new UserRole(
                 new UserRoleId(userCode,roleInfo.getRoleCode()),

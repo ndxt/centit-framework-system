@@ -13,6 +13,11 @@ import java.util.List;
 public interface OptDataScopeDao {
 
     /**
+     * 新增
+     */
+    void saveNewOPtDataScope(OptDataScope optDataScope);
+
+  /**
      * 更新数据范围
      * @param optDataScope 数据范围对象
      */

@@ -109,7 +109,7 @@ public class UnitRoleController extends BaseController {
                 UnitRole ur = new UnitRole();
                 ur.copy(unitRole);
                 ur.setUnitCode(u);
-                sysUnitRoleManager.mergeUnitRole(ur);
+                sysUnitRoleManager.saveNewUnitRole(ur);
             }
         }else{
             sysUnitRoleManager.mergeUnitRole(unitRole);

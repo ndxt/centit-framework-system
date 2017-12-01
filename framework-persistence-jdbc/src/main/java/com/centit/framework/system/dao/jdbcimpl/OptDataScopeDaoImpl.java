@@ -68,4 +68,9 @@ public class OptDataScopeDaoImpl extends BaseDaoImpl<OptDataScope, String> imple
         super.updateObject(optDataScope);
     }
 
+    @Override
+    public void saveNewOPtDataScope(OptDataScope optDataScope){
+        super.saveNewObject(optDataScope);
+    }
+
 }

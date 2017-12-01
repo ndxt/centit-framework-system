@@ -131,6 +131,10 @@ public class OptInfoManagerImpl implements OptInfoManager {
 
         List<OptMethod>  newOpts = optInfo.getOptMethods();
 
+        if(newOpts == null || newOpts.size() < 0){
+            optMethodDao.deleteOptMethodsByOptID(optInfo.getOptId());
+        }
+
         if(newOpts.size()>0 ){
             // 对于显示的菜单添加显示权限
             for(OptMethod o : newOpts){
@@ -158,12 +162,16 @@ public class OptInfoManagerImpl implements OptInfoManager {
                 }
             }
         }
-
+        newOpts.removeAll(oldOpts);
         for(OptMethod o : newOpts){
-            optMethodDao.updateOptMethod(o);
+            optMethodDao.saveNewObject(o);
         }
 
         List<OptDataScope>  newDataScopes = optInfo.getDataScopes();
+
+      if(newDataScopes == null || newDataScopes.size() < 1){
+          dataScopeDao.deleteDataScopeOfOptID(optInfo.getOptId());
+      }
         if(newDataScopes.size()>0 ){
             // 对于显示的菜单添加显示权限
             for(OptDataScope s : newDataScopes){
@@ -190,9 +198,9 @@ public class OptInfoManagerImpl implements OptInfoManager {
                 }
             }
         }
-
+        newDataScopes.removeAll(oldDataScopes);
         for(OptDataScope s : newDataScopes){
-            dataScopeDao.updateOptDataScope(s);
+            dataScopeDao.saveNewOPtDataScope(s);
         }
         return result;
     }
