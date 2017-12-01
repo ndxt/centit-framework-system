@@ -1,0 +1,41 @@
+<div class="easyui-layout" fit="true">
+  <div region="north" border="false">
+    <div class="easyui-panel search-body" cls="search" style="width: 100%; height: auto; border-width: 0 0 1px 0; margin-bottom: 0;">
+      <form class="clearFromValue" >
+        <div class="search-item">
+          <label id="e@name">用户名</label>
+          <input type="text" class="easyui-textbox" name="s_userName"/>
+        </div>
+        <a class="easyui-linkbutton btn-search" iconCls="icon-search"><p id="e@btn.search">搜索</p></a>
+        <a class="easyui-linkbutton btn-reset" style="margin-top:8px;" iconcls="icon-reload">
+          重置
+        </a>
+      </form>
+    </div>
+  </div>
+
+  <div region="center" border="false">
+    <table
+      border="false"
+      fit="true"
+      class="user"
+      pagination="true"
+      search=".search"
+      sigleSelect="false"
+      checkOnSelect="false"
+      selectOnCheck="false"
+    >
+      <thead>
+      <tr>
+        <th id="c@username" field="userCode" format="AllUser" width="50%">用户名</th>
+        <th id="c@effectiveDate" field="inheritedFrom" width="50%" align="center" format="Unit">继承自</th>
+      </tr>
+      </thead>
+    </table>
+  </div>
+</div>
+
+
+
+
+

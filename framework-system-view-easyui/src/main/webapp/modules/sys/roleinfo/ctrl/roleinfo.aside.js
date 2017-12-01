@@ -1,6 +1,7 @@
 define(function (require) {
   var Page = require('core/page');
   var RoleUser = require('./roleinfo.user');
+  var RoleUserInherited = require('./roleinfo.user.inherited');
   var RoleUnit = require('./roleinfo.unit');
   var $ = require('jquery');
 
@@ -9,7 +10,8 @@ define(function (require) {
 
     var controllers = [
       new RoleUser('role_user'),
-      new RoleUnit('role_unit')
+      new RoleUserInherited('RoleUserInherited'),
+      new RoleUnit('role_unit'),
     ];
 
     this.injecte(controllers);
