@@ -88,7 +88,7 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
      */
     @Column(name = "UPDATE_DATE")
     @ValueGenerator( strategy= GeneratorType.FUNCTIION,
-       value = "now", condition = GeneratorCondition.ALWAYS, occasion = GeneratorTime.ALWAYS )
+       value = "today()", condition = GeneratorCondition.ALWAYS, occasion = GeneratorTime.ALWAYS )
     private Date  updateDate;
     //结束
 
