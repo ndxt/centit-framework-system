@@ -72,6 +72,7 @@
 		          ], function(FilterDictionary, Dictionary) {
 
 				FilterDictionary.add(['CatalogStyle', 'CatalogType']).then(function() {
+                    window.isAdmin = true;
 					new Dictionary('dictionary', panel).load(panel);
 				});
 

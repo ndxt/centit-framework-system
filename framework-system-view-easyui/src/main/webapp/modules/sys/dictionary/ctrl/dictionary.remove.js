@@ -2,13 +2,21 @@ define(function(require) {
 	var Config = require('config');
 	var Core = require('core/core');
 	var Page = require('core/page');
-	
+
 	// 删除数据字典
 	var DictionaryRemove = Page.extend(function() {
-		
+
+        this.renderButton = function (btn, row) {
+            if (row.catalogStyle === 'F') {
+                return false;
+            }
+
+            return window.isAdmin ? true : row.catalogStyle !== 'S';
+        };
+
 		this.url = 'system/dictionary/';
-		
-		// @override
+
+        // @override
 		this.submit = function(table, data) {
 			Core.ajax(Config.ContextPath+this.url+data.catalogCode, {
             	type: 'json',
@@ -21,6 +29,6 @@ define(function(require) {
             });
 		}
 	});
-	
-	return DictionaryRemove;
+
+    return DictionaryRemove;
 });

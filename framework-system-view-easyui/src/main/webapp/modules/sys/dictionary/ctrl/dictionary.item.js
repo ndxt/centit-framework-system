@@ -6,7 +6,7 @@ define(function (require) {
     var DictionaryItemSubAdd = require('./dictionary.item.subadd');
     var DictionaryItemAdd = require('../ctrl/dictionary.item.add');
     var DictionaryItemRemove = require('../ctrl/dictionary.item.remove');
-    var Dialog = require('centit/centit.dialog');
+    var FilterDictionay = require('core/filter/filter.dictionary');
     var _Controller = require('../ctrl/dictionary.edit.internationalization');
     // 数据字典明细
     var DictionaryItem = DictionaryAdd.extend(function () {
@@ -135,11 +135,20 @@ define(function (require) {
                 width: 150,
                 editor: {type: 'textbox', options: {required: true}}
             },
+            dataStyle: {
+                field: 'dataStyle',
+                title: '类型',
+                width: 100,
+                formatter: function (value, row, index) {
+                    return FilterDictionay.convert.apply(this, ['CatalogStyle', value, row, index]);
+                }
+            },
             extraCode: {
                 field: 'extraCode',
                 title: '扩展代码',
                 width: 150,
-                editor: 'text'
+                editor: 'text',
+
             },
             extraCode2: {
                 field: 'extraCode2',
@@ -167,6 +176,7 @@ define(function (require) {
           //{field: 'dataOrder', require: true, frozen: true},
             {field: 'dataCode', require: true, frozen: true},
             {field: 'dataValue', require: true, frozen: true},
+            {field: 'dataStyle', require: true, frozen: true},
             {field: 'extraCode', frozen: true},
             {field: 'extraCode2', require: true,frozen: true},
             {field: 'dataTag', frozen: true},
