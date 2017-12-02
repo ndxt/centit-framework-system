@@ -49,27 +49,46 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
         java.sql.Date codeDate = DatetimeOpt.convertToSqlDate(codeBaseDate); // DatetimeOpt.convertSqlDate(codeBaseDate);
         OptFlowNoInfoId noId = new OptFlowNoInfoId(ownerCode, codeDate, codeCode);
         OptFlowNoInfo noInfo = optFlowNoInfoDao.getObjectById(noId);
-        long nextCode = 1l;
+        long nextCode = noInfo == null ? 1L : noInfo.getCurNo()+1;
+        //检查新生产的号是否已经被预留
+        while (true) {
+            OptFlowNoPoolId poolId = new OptFlowNoPoolId(ownerCode, codeDate, codeCode, nextCode);
+            OptFlowNoPool poolNo = optFlowNoPoolDao.getObjectById(poolId);
+            //没有被预留
+            if (poolNo == null) {
+                break;
+              }
+            nextCode++;
+        }
         if (noInfo == null) {
-            noInfo = new OptFlowNoInfo(noId, 1l, DatetimeOpt.currentUtilDate());
+            noInfo = new OptFlowNoInfo(noId, nextCode, DatetimeOpt.currentUtilDate());
             optFlowNoInfoDao.saveNewOptFlowNoInfo(noInfo);
         } else {
-            nextCode = noInfo.getCurNo() + 1;
-            //检查新生产的号是否已经被预留
-            while (true) {
-                OptFlowNoPoolId poolId = new OptFlowNoPoolId(ownerCode, codeDate, codeCode, nextCode);
-                OptFlowNoPool poolNo = optFlowNoPoolDao.getObjectById(poolId);
-                //没有被预留
-                if (poolNo == null) {
-                    break;
-                }
-                nextCode++;
-            }
             noInfo.setCurNo(nextCode);
             noInfo.setLastCodeDate(DatetimeOpt.currentUtilDate());
             optFlowNoInfoDao.updateOptFlowNoInfo(noInfo);
         }
         return nextCode;
+    }
+
+    @Override
+    @Transactional
+    public boolean reserveLsh(String ownerCode, String codeCode, Date codeBaseDate, Long lsh){
+        java.sql.Date codeDate = DatetimeOpt.convertToSqlDate(codeBaseDate);
+        OptFlowNoInfoId noId = new OptFlowNoInfoId(ownerCode, codeDate, codeCode);
+        OptFlowNoInfo noInfo = optFlowNoInfoDao.getObjectById(noId);
+        Long cur = noInfo == null ? 0 : noInfo.getCurNo();
+        if(lsh > cur) {
+            OptFlowNoPoolId poolId = new OptFlowNoPoolId(ownerCode, codeDate, codeCode, lsh);
+            OptFlowNoPool dbPool = optFlowNoPoolDao.getObjectById(poolId);
+            if(dbPool != null){
+                return false;
+            }
+            OptFlowNoPool pool = new OptFlowNoPool(poolId, DatetimeOpt.currentUtilDate());
+            optFlowNoPoolDao.saveNewOptFlowNoPool(pool);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -114,7 +133,7 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
         java.sql.Date codeDate = DatetimeOpt.convertToSqlDate(codeBaseDate);
         OptFlowNoInfoId noId = new OptFlowNoInfoId(ownerCode, codeDate, codeCode);
         OptFlowNoInfo noInfo = optFlowNoInfoDao.getObjectById(noId);
-        long nextCode = 1l;
+        long nextCode = 1L;
         if (noInfo != null)
             nextCode = noInfo.getCurNo() + 1;
         return nextCode;

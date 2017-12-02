@@ -42,5 +42,12 @@ public interface SysRoleManager{
 
     int countRoleUserSum(String roleCode);
 
-    boolean isRoleNameNotExist(String unitCode, String roleName, String roleCode);
+  /**
+   * 判断角色名称是否重复
+   * @param roleName 角色名称
+   * @param roleCode 角色代码 （新增时设为null）
+   * @param unitCode 部门代码 （系统角色设为null）
+   * @return 名称是否可用 （true 可用； false 不可用）
+   */
+    boolean judgeSysRoleNameExist(String roleName, String roleCode, String unitCode);
 }

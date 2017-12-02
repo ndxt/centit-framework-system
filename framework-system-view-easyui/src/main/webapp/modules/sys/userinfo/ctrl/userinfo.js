@@ -105,7 +105,7 @@ define(function (require) {
     this.clearPanel = function () {
       this.currentUserCode = null;
       this.AsidePanel.data('panel').options.onLoad = $.noop;
-      this.AsidePanel.panel('clear');
+      this.AsidePanel.panel('refresh', Config.ViewContextPath + 'modules/sys/commons/no-data.html');
     };
   });
 });
