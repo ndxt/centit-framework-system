@@ -98,14 +98,14 @@ public class RoleInfoController extends BaseController {
     }
 
     /**
-     * 查询所有 某部门部门角色
+     * 查询所有 某部门角色
      * @param field field[]
      * @param unitCode unitCode
      * @param pageDesc PageDesc
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
-    @RequestMapping(value = "/unit/{unitCode}", method = RequestMethod.GET)
+    @GetMapping(value = "/unit/{unitCode}")
     public void listUnitAndPublicRole(String[] field,@PathVariable String unitCode,PageDesc pageDesc,
                                       HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = convertSearchColumn(request);
@@ -388,29 +388,11 @@ public class RoleInfoController extends BaseController {
     }
 
     /**
-     * 角色代码是否存在
-     *
-     * @param roleCode 角色代码
-     * @param response HttpServletResponse
-     * @throws IOException IOException
-     */
-    @RequestMapping(value = "/notexists/{roleCode}", method = RequestMethod.GET)
-    public void isNotExists(@PathVariable String roleCode, HttpServletResponse response) throws IOException {
-        if(roleCode.indexOf('-')<1){
-            boolean notExist = sysRoleManager.getObjectById("G-"+roleCode)==null;
-            if(notExist)
-                notExist = sysRoleManager.getObjectById("P-"+roleCode)==null;
-            JsonResultUtils.writeOriginalObject(notExist, response);
-        }else
-            JsonResultUtils.writeOriginalObject(null == sysRoleManager.getObjectById(roleCode), response);
-    }
-
-    /**
      * 新增系统角色 判断名称是否存在
      * @param roleName 角色名称
      * @param response HttpServletResponse
      */
-    @GetMapping(value = "/issysrolenotexist/{roleName}")
+    @GetMapping(value = "/issysroleunique/{roleName}")
     public void isSysRoleNotExist(@PathVariable String roleName, HttpServletResponse response){
         JsonResultUtils.writeOriginalObject(sysRoleManager.judgeSysRoleNameExist(roleName,null, null), response);
     }
@@ -433,7 +415,7 @@ public class RoleInfoController extends BaseController {
      * @param roleName 角色名称
      * @param response HttpServletResponse
      */
-    @GetMapping(value = "/isunitrolenotexist/{unitCode}/{roleName}")
+    @GetMapping(value = "/isunitroleunique/{unitCode}/{roleName}")
     public void isUnitRoleNotExist(@PathVariable String unitCode,
                                    @PathVariable String roleName, HttpServletResponse response){
         JsonResultUtils.writeOriginalObject(sysRoleManager.judgeSysRoleNameExist(roleName,null, unitCode), response);
