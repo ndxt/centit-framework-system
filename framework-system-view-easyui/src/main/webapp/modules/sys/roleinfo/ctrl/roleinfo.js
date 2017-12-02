@@ -89,7 +89,7 @@ define(function (require) {
 
     this.clearRole = function (panel) {
       panel.data('panel').options.onLoad = $.noop;
-      panel.panel('clear');
+      panel.panel('refresh', Config.ViewContextPath + 'modules/sys/commons/no-data.html');
     };
 
     this.roleTypeFormatter = function (value) {

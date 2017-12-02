@@ -217,7 +217,7 @@ public class RoleInfoController extends BaseController {
             if(StringUtils.isBlank(roleInfo.getUnitCode())){
                 //JsonResultUtils.writeErrorMessageJson("机构角色必须指定所属机构。",response);
                 //return;
-                roleInfo.setUnitCode( super.getLoginUser(request).getUserInfo().getPrimaryUnit());
+                roleInfo.setUnitCode( super.getLoginUser(request).getCurrentUnit());
             }
         }
         //roleInfo.setUnitCode("G");
