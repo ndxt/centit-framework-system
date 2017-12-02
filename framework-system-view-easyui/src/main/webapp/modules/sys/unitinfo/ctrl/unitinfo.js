@@ -84,7 +84,7 @@ define(function (require) {
     this.clearUnit = function () {
       var panel = this.UnitUserPanel;
       panel.data('panel').options.onLoad = $.noop;
-      panel.panel('clear');
+      panel.panel('refresh', Config.ViewContextPath + 'modules/sys/commons/no-data.html');
     };
 
   });
