@@ -5,13 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
-import com.centit.framework.components.CodeRepositoryUtil;
-import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.DictionaryMapUtils;
-import com.centit.framework.model.basedata.IUserInfo;
-import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.operationlog.RecordOperationLog;
+import com.centit.framework.security.model.CentitUserDetails;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysRoleManager;
 import com.centit.framework.system.service.SysUnitManager;
@@ -372,8 +369,8 @@ public class UnitInfoController extends BaseController {
    */
     @RequestMapping(value = "/currentusers/{state}", method = RequestMethod.GET)
     public void listAllUsersByCurrentUser(@PathVariable String state, HttpServletRequest request, HttpServletResponse response) {
-        IUserInfo userInfo =  getLoginUser(request).getUserInfo();
-        String unitCode = userInfo.getPrimaryUnit();
+        CentitUserDetails userInfo =  getLoginUser(request);
+        String unitCode = userInfo.getCurrentUnit();
 
         Map<String, Object> filterMap = new HashMap<>(4);
         filterMap.put("unitCode", unitCode);
