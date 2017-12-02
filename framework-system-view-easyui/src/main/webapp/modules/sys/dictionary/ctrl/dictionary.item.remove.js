@@ -1,9 +1,17 @@
 define(function(require) {
 	var Page = require('core/page');
-	
+
 	// 删除字典明细
 	var DictionaryItemRemove = Page.extend(function() {
 		var vm = this;
+
+        this.renderButton = function (btn, row) {
+            if (row.dataStyle === 'F') {
+                return false;
+            }
+
+            return window.isAdmin ? true : row.dataStyle !== 'S';
+        };
 
 		// @override
 		this.submit = function(table, row) {
@@ -15,8 +23,8 @@ define(function(require) {
 				this.removeTreeItem(table);
 			}
 
-			
-		};
+
+        };
 
 		// 删除列表明细
 		this.removeListItem = function (table, row) {
@@ -31,9 +39,9 @@ define(function(require) {
 			if (row) {
 				table.treegrid('remove', row._id);
 			}
-			
-		}
+
+        }
 	});
-	
-	return DictionaryItemRemove;
+
+    return DictionaryItemRemove;
 });
