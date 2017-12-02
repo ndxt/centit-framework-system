@@ -1,18 +1,26 @@
 <form class="centit form" novalidate="true">
-	<div class="field required">
-		<label id="a@encoding">编码</label>
-		<input type="text" class="easyui-textbox" name="roleCode" required/>
-	</div>
+
+  <div class="fields two">
+    <div class="field required">
+      <label id="a@encoding">编码</label>
+      <input type="text" class="easyui-textbox" name="roleCode" required style="width: 100%;"/>
+    </div>
+    <div class="field required">
+      <label>类型</label>
+      <input id="role_type" type="text" class="easyui-textbox" readonly style="width: 100%;" />
+    </div>
+  </div>
+
 
 	<div class="field required">
 		<label id="a@name">名称</label>
 		<input type="text" class="easyui-textbox" name="roleName"
-			required />
+			required style="width: 100%;" />
 	</div>
 
 	<div class="field">
 		<label id="a@describe">描述</label>
-		<input  validType="maxLength[255]" type="text" class="easyui-textbox" name="roleDesc" height="100" multiline="true" style="height: 100px;"/>
+		<input  validType="maxLength[255]" type="text" class="easyui-textbox" name="roleDesc" height="100" multiline="true" style="height: 100px; width: 100%;"/>
 	</div>
 
 	<div class="field">

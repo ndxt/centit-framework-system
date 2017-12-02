@@ -2,14 +2,17 @@ define(function (require) {
   var Config = require('config');
   var Core = require('core/core');
   var RoleInfoAdd = require('../ctrl/roleinfo.add');
+  var Mustache = require('plugins/mustache.min');
 
   // 编辑角色信息
-  var RoleInfoEdit = RoleInfoAdd.extend(function () {
+  return RoleInfoAdd.extend(function () {
     var _self = this;
 
     this.renderButton = function(btn, row) {
       return 'F' !== row.roleType;
     };
+
+    this.validateRoleNameWhenEdit = Config.ContextPath + 'system/roleinfo/issysroleunique/{{roleName}}/{{roleCode}}';
 
     // @override
     this.load = function (panel, data) {
@@ -18,10 +21,9 @@ define(function (require) {
       Core.ajax(Config.ContextPath + 'system/roleinfo/' + data.roleCode, {
         method: 'get'
       }).then(function (data) {
-        // var optCodes = _self.getOptCodes(data).join(',');
-        // data.optCodes = optCodes;
 
-        // _self.data = $.extend(_self.object, data);
+        $('#role_type', panel)
+          .textbox('setValue', _self.parent.roleTypeFormatter(data.roleType));
 
         form.form('disableValidation')
           .form('load', data)
@@ -30,13 +32,14 @@ define(function (require) {
             roleName: {
               required: true,
               validType: {
-                remote: [Config.ContextPath + 'system/roleinfo/isNameUnique/{{roleName}}/' + data.roleCode + '/G',
-                  'roleName']
+                remote: [
+                  Mustache.render(_self.$findUp('validateRoleNameWhenEdit'), data),
+                  'roleName'
+                ]
               }
             }
           })
           .form('focus');
-
       });
     };
 
@@ -60,7 +63,7 @@ define(function (require) {
         });
       }
       return false;
-    }
+    };
 
     // 从角色信息中获取OptCodes集合
     this.getOptCodes = function (role) {
@@ -74,5 +77,4 @@ define(function (require) {
     };
   });
 
-  return RoleInfoEdit;
 });
