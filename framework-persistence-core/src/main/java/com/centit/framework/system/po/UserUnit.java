@@ -64,7 +64,7 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
 
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    @ValueGenerator( strategy= GeneratorType.FUNCTIION, value = "now")
+    @ValueGenerator( strategy= GeneratorType.FUNCTIION, value = "today()")
     protected Date createDate;
 
     @Transient
@@ -87,7 +87,8 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
      * UPDATEDATE(更新时间) 更新时间
      */
     @Column(name = "UPDATE_DATE")
-    @ValueGenerator( strategy= GeneratorType.FUNCTIION, value = "now", condition = GeneratorCondition.ALWAYS, occasion = GeneratorTime.ALWAYS )
+    @ValueGenerator( strategy= GeneratorType.FUNCTIION,
+       value = "now", condition = GeneratorCondition.ALWAYS, occasion = GeneratorTime.ALWAYS )
     private Date  updateDate;
     //结束
 

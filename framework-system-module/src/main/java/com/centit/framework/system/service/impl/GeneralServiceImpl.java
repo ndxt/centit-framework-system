@@ -2,6 +2,7 @@ package com.centit.framework.system.service.impl;
 
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.DataPowerFilter;
+import com.centit.framework.model.basedata.IUserUnit;
 import com.centit.framework.security.model.CentitUserDetails;
 import com.centit.framework.system.dao.OptDataScopeDao;
 import com.centit.framework.system.dao.OptInfoDao;
@@ -15,9 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service("generalService")
 public  class GeneralServiceImpl implements GeneralService {
@@ -105,11 +104,32 @@ public  class GeneralServiceImpl implements GeneralService {
         dpf.addSourceData("primaryUnit", CodeRepositoryUtil
                 .getUnitInfoByCode(userDetails.getUserInfo().getPrimaryUnit()));
         //当前用户所有机构关联关系信息
-        dpf.addSourceData("userUnits",
-                CodeRepositoryUtil.getUserUnits(userDetails.getUserInfo().getUserCode()));
+        List<? extends IUserUnit>  userUnits = CodeRepositoryUtil
+              .listUserUnits(userDetails.getUserCode());
+        if(userUnits!=null) {
+            dpf.addSourceData("userUnits", userUnits);
+            Map<String, List<IUserUnit>> rankUnits = new HashMap<>(5);
+            Map<String, List<IUserUnit>> stationUnits = new HashMap<>(5);
+            for(IUserUnit uu : userUnits ){
+                List<IUserUnit> rankUnit = rankUnits.get(uu.getUserRank());
+                if(rankUnit==null){
+                    rankUnit = new ArrayList<>(4);
+                }
+                rankUnit.add(uu);
+                rankUnits.put(uu.getUserRank(),rankUnit);
+
+                List<IUserUnit> stationUnit = stationUnits.get(uu.getUserStation());
+                if(stationUnit==null){
+                    stationUnit = new ArrayList<>(4);
+                }
+                stationUnit.add(uu);
+                stationUnits.put(uu.getUserStation(),rankUnit);
+            }
+            dpf.addSourceData("rankUnits", rankUnits);
+            dpf.addSourceData("stationUnits", stationUnits);
+        }
         //当前用户的角色信息
         dpf.addSourceData("userRoles", userDetails.getUserRoles());
-
         return dpf;
     }
 }
