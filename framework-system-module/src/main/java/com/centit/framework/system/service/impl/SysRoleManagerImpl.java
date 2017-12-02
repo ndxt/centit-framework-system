@@ -232,18 +232,21 @@ public class SysRoleManagerImpl implements SysRoleManager {
 
     @Override
     @Transactional
-    public boolean isRoleNameNotExist(String unitCode, String roleName, String roleCode){
+    public boolean judgeSysRoleNameExist(String roleName, String roleCode, String unitCode){
 
-        Map<String, Object> filterMap = new HashMap<>();
-        if(StringUtils.isBlank(unitCode) || "G".equals(unitCode) || "P".equals(unitCode)){
-            filterMap.put("NP_GLOBAL","true");
-        }else {
-            filterMap.put("publicUnitRole", unitCode);
-        }
-        filterMap.put("roleNameEq",roleName);
-
+        Map<String, Object> filterMap = new HashMap<>(4);
         List<RoleInfo> roleInfos = roleInfoDao.listObjects(filterMap);
-        boolean isEmpty = roleInfos==null || roleInfos.size() == 0;
-        return isEmpty ? true : roleCode!=null && roleCode.equals(roleInfos.get(0).getRoleCode());
+        //系统角色
+        if(unitCode == null) {
+          filterMap.put("NP_ALL", "true");
+          //部门角色
+        }else{
+          filterMap.put("roleType", "D");
+          filterMap.put("unitCode", unitCode);
+        }
+        filterMap.put("roleNameEq", roleName);
+
+        return (roleInfos==null || roleInfos.size() == 0) ||
+            (roleCode!=null && roleCode.equals(roleInfos.get(0).getRoleCode()));
     }
 }

@@ -3,10 +3,8 @@ package com.centit.framework.system.controller;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.components.CodeRepositoryUtil;
-import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.model.basedata.IUserUnit;
-import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.OptMethodManager;
@@ -17,6 +15,7 @@ import com.centit.support.json.JsonPropertyUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -407,28 +406,50 @@ public class RoleInfoController extends BaseController {
     }
 
     /**
-     * 角色代码是否存在
-     *
-     * @param roleName 角色代码
-     * @param unitCode 机构代码
+     * 新增系统角色 判断名称是否存在
+     * @param roleName 角色名称
      * @param response HttpServletResponse
      */
-    @RequestMapping(value = "/nameexists/{roleName}/{unitCode}", method = RequestMethod.GET)
-    public void isNameExists(@PathVariable String roleName,@PathVariable String unitCode, HttpServletResponse response){
-        JsonResultUtils.writeOriginalObject(sysRoleManager.isRoleNameNotExist(unitCode,roleName,null), response);
+    @GetMapping(value = "/issysrolenotexist/{roleName}")
+    public void isSysRoleNotExist(@PathVariable String roleName, HttpServletResponse response){
+        JsonResultUtils.writeOriginalObject(sysRoleManager.judgeSysRoleNameExist(roleName,null, null), response);
     }
+
     /**
-     * 角色代码是否存在
-     *
+     * 更新系统角色 判断名称是否存在
      * @param roleName 角色名称
      * @param roleCode 角色代码
-     * @param unitCode 机构代码
      * @param response HttpServletResponse
      */
-    @RequestMapping(value = "/isNameUnique/{roleName}/{roleCode}/{unitCode}", method = RequestMethod.GET)
-    public void isNameUnique(@PathVariable String roleName,@PathVariable String roleCode,
-                             @PathVariable String unitCode, HttpServletResponse response){
-        JsonResultUtils.writeOriginalObject(sysRoleManager.isRoleNameNotExist(unitCode,roleName,roleCode), response);
+    @GetMapping(value = "/issysroleunique/{roleName}/{roleCode}")
+    public void isSysRoleUnique(@PathVariable String roleName,
+                                @PathVariable String roleCode, HttpServletResponse response){
+        JsonResultUtils.writeOriginalObject(sysRoleManager.judgeSysRoleNameExist(roleName,roleCode, null), response);
+    }
+
+    /**
+     * 新增部门角色 判断名称是否存在
+     * @param unitCode 部门代码
+     * @param roleName 角色名称
+     * @param response HttpServletResponse
+     */
+    @GetMapping(value = "/isunitrolenotexist/{unitCode}/{roleName}")
+    public void isUnitRoleNotExist(@PathVariable String unitCode,
+                                   @PathVariable String roleName, HttpServletResponse response){
+        JsonResultUtils.writeOriginalObject(sysRoleManager.judgeSysRoleNameExist(roleName,null, unitCode), response);
+    }
+
+    /**
+     * 更新部门角色 判断名称是否存在
+     * @param unitCode 部门代码
+     * @param roleName 角色名称
+     * @param roleCode 角色代码
+     * @param response HttpServletResponse
+     */
+    @GetMapping(value = "/isunitroleunique/{unitCode}/{roleName}/{roleCode}")
+    public void isUnitRoleUnique(@PathVariable String unitCode, @PathVariable String roleName,
+                                 @PathVariable String roleCode, HttpServletResponse response){
+        JsonResultUtils.writeOriginalObject(sysRoleManager.judgeSysRoleNameExist(roleName, roleCode, unitCode), response);
     }
 
     /**
