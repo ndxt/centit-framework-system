@@ -94,9 +94,10 @@ define(function (require) {
 
     this.roleTypeFormatter = function (value) {
       var types = {
-        G: '全局角色',
+        G: '一般角色',
         P: '公共角色',
-        F: '内置角色'
+        F: '内置角色',
+        D: '部门角色'
       };
 
       return types[value] ? types[value] : value;
