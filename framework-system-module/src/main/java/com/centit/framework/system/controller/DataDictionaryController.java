@@ -216,17 +216,16 @@ public class DataDictionaryController extends BaseController {
             JsonResultUtils.writeErrorMessageJson("当前对象不存在", response);
             return;
         }
-
         DataCatalog oldValue = new DataCatalog();
         BeanUtils.copyProperties(dbDataCatalog, oldValue);
-
         boolean isAdmin = isLoginAsAdmin(request);
         String datastyle = isAdmin?"S":"U";
         for(DataDictionary d : dataCatalog.getDataDictionaries()){
-            d.setDataStyle(datastyle);
+            if(StringUtils.isBlank(d.getDataStyle())) {
+                d.setDataStyle(datastyle);
+            }
         }
         dbDataCatalog.addAllDataPiece(dataCatalog.getDataDictionaries());
-
         List<DataDictionary> oldDictionaries = dataDictionaryManager.saveCatalogIncludeDataPiece(dbDataCatalog,isAdmin);
         oldValue.setDataDictionaries(oldDictionaries);
 
