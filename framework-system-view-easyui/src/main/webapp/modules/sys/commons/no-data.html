@@ -1,0 +1,18 @@
+<div
+  class="easyui-panel"
+  fit="true"
+  border="false"
+>
+  <h2 style="line-height: 128px;
+    height: 128px;
+    text-align: center;
+    font-size: 22px;
+    color: #bbb;">
+    亲，没有可显示的数据哦 ╮(╯▽╰)╭
+  </h2>
+</div>
+<script>
+  requirejs(['plugins/loading'], function(Loading) {
+    Loading.pop()
+  })
+</script>
