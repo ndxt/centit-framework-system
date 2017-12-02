@@ -80,6 +80,10 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
         Long cur = noInfo == null ? 0 : noInfo.getCurNo();
         if(lsh > cur) {
             OptFlowNoPoolId poolId = new OptFlowNoPoolId(ownerCode, codeDate, codeCode, lsh);
+            OptFlowNoPool dbPool = optFlowNoPoolDao.getObjectById(poolId);
+            if(dbPool != null){
+                return false;
+            }
             OptFlowNoPool pool = new OptFlowNoPool(poolId, DatetimeOpt.currentUtilDate());
             optFlowNoPoolDao.saveNewOptFlowNoPool(pool);
             return true;
