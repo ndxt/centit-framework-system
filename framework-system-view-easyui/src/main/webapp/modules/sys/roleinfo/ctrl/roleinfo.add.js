@@ -1,20 +1,26 @@
 define(function (require) {
   var Config = require('config');
-  var Core = require('core/core');
   var Page = require('core/page');
 
   // 新增角色信息
-  var RoleInfoAdd = Page.extend(function () {
+  return Page.extend(function () {
     var vm = this;
 
     // @override
     this.object = {
       isValid: 'T'
-    }
+    };
+
+    this.validateRoleNameWhenAdd = Config.ContextPath + 'system/roleinfo/issysroleunique/{{roleName}}';
 
     // @override
     this.load = function (panel) {
-      form = panel.find('form');
+      var form = panel.find('form');
+
+      var doDeptRoleAdd = this.$findUp('doDeptRoleAdd');
+      if (doDeptRoleAdd) {
+        doDeptRoleAdd(this)
+      }
 
       form.form('disableValidation')
         .form('load', this.object)
@@ -22,7 +28,10 @@ define(function (require) {
           roleName: {
             required: true,
             validType: {
-              remote: [Config.ContextPath + 'system/roleinfo/nameexists/{{roleName}}/G', 'roleName']
+              remote: [
+                this.$findUp('validateRoleNameWhenAdd'),
+                'roleName'
+              ]
             }
           }
         })
@@ -33,14 +42,13 @@ define(function (require) {
     this.submit = function (panel, data, closeCallback) {
       var form = panel.find('form');
 
-      //var value = form.form('value').isGlobal;
-
       var isValid = form.form('enableValidation').form('validate');
 
       if (isValid) {
         form.form('ajax', {
           url: Config.ContextPath + 'system/roleinfo',
-          method: 'post'
+          method: 'post',
+          data: this.object
         }).then(function () {
           return require('loaders/cache/loader.system').loadAll()
         }).then(function () {
@@ -52,10 +60,6 @@ define(function (require) {
       return false;
     };
 
-    // @override
-    this.onClose = function (table, data) {
-    };
   });
 
-  return RoleInfoAdd;
 });
