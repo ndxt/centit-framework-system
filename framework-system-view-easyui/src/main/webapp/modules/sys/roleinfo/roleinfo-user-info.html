@@ -2,12 +2,13 @@
 	<div class="two fields">
 		<div class="field required">
 			<label id="b@rolename">角色名</label>
-			<input type="text" class="easyui-textbox" name="roleCode" required  readonly="readonly" target="role" />
+      <input type="text" class="easyui-textbox" name="roleCode" required readonly="readonly" target="role"
+             width="100%"/>
 		</div>
 		<div class="field required">
 			<label id="b@username">用户名</label>
 			<input type="text" class="easyui-combobox" name="userCode[]"
-				required  target='user' multiple="true" multiline="true"/>
+             required target='user' multiple="true" multiline="true" width="100%"/>
 
 		</div>
 	</div>
@@ -16,12 +17,17 @@
 	<div class="two fields">
 		<div class="field required">
 			<label id="b@effectiveDate">生效日期</label>
-			<input type="text" class="easyui-datebox" name="obtainDate" required />
+      <input type="text" class="easyui-datebox" name="obtainDate" required width="100%"/>
 		</div>
+    <div class="field">
+      <label>失效日期</label>
+      <input type="text" class="easyui-datebox" name="secedeDate" width="100%"/>
+    </div>
 	</div>
 
 	<div class="field">
 		<label id="b@remarks">备注</label>
-		<input validType="maxLength[255]" type="text" class="easyui-textbox" name="changeDesc" height="100" multiline="true" style="height: 100px; width: 99%"/>
+    <input validType="maxLength[255]" type="text" class="easyui-textbox" name="changeDesc" height="100" multiline="true"
+           style="height: 100px; width: 100%"/>
 	</div>
 </form>
