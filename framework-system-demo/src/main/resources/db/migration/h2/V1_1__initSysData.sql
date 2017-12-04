@@ -22,389 +22,138 @@ update_Date, Create_Date) VALUES ('s000000000','U00001','u0000000','T','pf','CZ'
 -- 初始化数据字典
 
 
-insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
-values ('MsgType', '消息类型', 'U', 'L', '测试测试', null, parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, 'DICTSET_M', '1','u0000000','u0000000');
+INSERT INTO f_datacatalog VALUES ('CatalogStyle', '字典类型', 'F', 'L', 'F : 框架固有的 U:用户 S：系统', '{\"dataCode\":{\"value\":\"类型编码\",\"isUse\":\"T\"},\"dataValue\":{\"value\":\"类型说明\",\"isUse\":\"T\"},\"extraCode\":{\"value\":\"扩展编码\",\"isUse\":\"F\"},\"extraCode2\":{\"value\":\"扩展编码2\",\"isUse\":\"F\"},\"dataTag\":{\"value\":\"数据标记\",\"isUse\":\"F\"},\"dataDesc\":{\"value\":\"数据描述\",\"isUse\":\"T\"}}', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), 'DICTSET_M', '1', 'u0000000', 'u0000000');
+INSERT INTO f_datacatalog VALUES ('CatalogType', '字典结构', 'F', 'L', 'L:列表T:树形 测试修改', '{\"dataCode\":{\"value\":\"结构编码\",\"isUse\":\"T\"},\"dataValue\":{\"value\":\"结构名称\",\"isUse\":\"T\"},\"extraCode\":{\"value\":\"扩展编码\",\"isUse\":\"F\"},\"extraCode2\":{\"value\":\"排序\",\"isUse\":\"F\"},\"dataTag\":{\"value\":\"数据标记\",\"isUse\":\"F\"},\"dataDesc\":{\"value\":\"数据描述\",\"isUse\":\"T\"}}', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), 'DICTSET_M', '1', 'u0000000', 'u0000000');
+INSERT INTO f_datacatalog VALUES ('FlowUserRole', '工作流流程角色', 'S', 'L', '', '{\"dataCode\":{\"value\":\"角色编码\",\"isUse\":\"T\"},\"dataValue\":{\"value\":\"角色名称\",\"isUse\":\"T\"},\"extraCode\":{\"value\":\"扩展编码\",\"isUse\":\"F\"},\"extraCode2\":{\"value\":\"扩展编码2\",\"isUse\":\"F\"},\"dataTag\":{\"value\":\"数据标记\",\"isUse\":\"F\"},\"dataDesc\":{\"value\":\"数据描述\",\"isUse\":\"T\"}}', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'SYS_CONFIG', '1', null, null);
+INSERT INTO f_datacatalog VALUES ('LogLevel', '日志类型', 'F', 'L', '日志类型', '{\"dataCode\":{\"value\":\"类型编码\",\"isUse\":\"T\"},\"dataValue\":{\"value\":\"类型名称\",\"isUse\":\"T\"},\"extraCode\":{\"value\":\"扩展编码\",\"isUse\":\"F\"},\"extraCode2\":{\"value\":\"扩展编码2\",\"isUse\":\"F\"},\"dataTag\":{\"value\":\"数据标记\",\"isUse\":\"F\"},\"dataDesc\":{\"value\":\"数据描述\",\"isUse\":\"T\"}}', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), 'OPT_LOG_QUERY', '1', 'u0000000', 'u0000000');
+INSERT INTO f_datacatalog VALUES ('MsgType', '消息类型', 'F', 'L', '测试测试', '{\"dataCode\":{\"value\":\"类型编码\",\"isUse\":\"T\"},\"dataValue\":{\"value\":\"类型名称\",\"isUse\":\"T\"},\"extraCode\":{\"value\":\"扩展编码\",\"isUse\":\"F\"},\"extraCode2\":{\"value\":\"扩展编码2\",\"isUse\":\"F\"},\"dataTag\":{\"value\":\"数据标记\",\"isUse\":\"F\"},\"dataDesc\":{\"value\":\"数据描述\",\"isUse\":\"T\"}}', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), 'USER_SETTING', '1', 'u0000000', 'u0000000');
+INSERT INTO f_datacatalog VALUES ('OptType', '业务类别', 'F', 'L', '业务类别', '{\"dataCode\":{\"value\":\"类别编码\",\"isUse\":\"T\"},\"dataValue\":{\"value\":\"类别名称\",\"isUse\":\"T\"},\"extraCode\":{\"value\":\"扩展编码\",\"isUse\":\"F\"},\"extraCode2\":{\"value\":\"排序\",\"isUse\":\"F\"},\"dataTag\":{\"value\":\"数据标记\",\"isUse\":\"F\"},\"dataDesc\":{\"value\":\"数据描述\",\"isUse\":\"T\"}}', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), 'SYSCONF', '1', 'u0000000', 'u0000000');
+INSERT INTO f_datacatalog VALUES ('RankType', '行政职务类别', 'S', 'L', '业务职务类别，类别代码长度为2。数值越低等级越高', '{\"dataCode\":{\"value\":\"职务代码\",\"isUse\":\"T\"},\"dataValue\":{\"value\":\"职务名称\",\"isUse\":\"T\"},\"extraCode\":{\"value\":\"等级\",\"isUse\":\"T\"},\"extraCode2\":{\"value\":\"关联角色\",\"isUse\":\"T\"},\"dataTag\":{\"value\":\"数据标记\",\"isUse\":\"F\"},\"dataDesc\":{\"value\":\"数据描述\",\"isUse\":\"T\"}}', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'SYS_CONFIG', '0', 'u0000000', 'u0000000');
+INSERT INTO f_datacatalog VALUES ('StationType', '岗位角色', 'S', 'L', '业务岗位类别，类别代码长度为4', '{\"dataCode\":{\"value\":\"岗位编码\",\"isUse\":\"T\"},\"dataValue\":{\"value\":\"岗位名称\",\"isUse\":\"T\"},\"extraCode\":{\"value\":\"扩展编码\",\"isUse\":\"F\"},\"extraCode2\":{\"value\":\"关联角色\",\"isUse\":\"T\"},\"dataTag\":{\"value\":\"数据标记\",\"isUse\":\"F\"},\"dataDesc\":{\"value\":\"数据描述\",\"isUse\":\"T\"}}', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), 'USERUNIT', '0', 'u0000000', 'u0000000');
+INSERT INTO f_datacatalog VALUES ('SUPPORT_LANG', '系统支持的语言', 'S', 'L', '系统支持的语言,需要在system.properties中把参数sys.multi_lang设置为true才会生效', null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'DICTSET', '1', 'u0000000', 'u0000000');
+INSERT INTO f_datacatalog VALUES ('UnitType', '机构类别', 'S', 'L', '', '{\"dataCode\":{\"value\":\"类别编码\",\"isUse\":\"T\"},\"dataValue\":{\"value\":\"类别名称\",\"isUse\":\"T\"},\"extraCode\":{\"value\":\"扩展编码\",\"isUse\":\"F\"},\"extraCode2\":{\"value\":\"排序\",\"isUse\":\"F\"},\"dataTag\":{\"value\":\"数据标记\",\"isUse\":\"F\"},\"dataDesc\":{\"value\":\"数据描述\",\"isUse\":\"T\"}}', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'ORGMAG', '1', null, null);
+INSERT INTO f_datacatalog VALUES ('userSettingKey', '用户设置参数', 'S', 'L', '用户可以设置的参数', '{\"dataCode\":{\"value\":\"参数编码\",\"isUse\":\"T\"},\"dataValue\":{\"value\":\"参数名称\",\"isUse\":\"T\"},\"extraCode\":{\"value\":\"扩展编码\",\"isUse\":\"F\"},\"extraCode2\":{\"value\":\"排序\",\"isUse\":\"F\"},\"dataTag\":{\"value\":\"数据标记\",\"isUse\":\"F\"},\"dataDesc\":{\"value\":\"参数填写说明\",\"isUse\":\"T\"}}', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), 'DICTSET_M', '1', 'u0000000', 'u0000000');
+INSERT INTO f_datacatalog VALUES ('YesOrNo', '是否', 'F', 'L', '', '{\"dataCode\":{\"value\":\"编码\",\"isUse\":\"T\"},\"dataValue\":{\"value\":\"数值\",\"isUse\":\"T\"},\"extraCode\":{\"value\":\"扩展编码\",\"isUse\":\"F\"},\"extraCode2\":{\"value\":\"排序\",\"isUse\":\"F\"},\"dataTag\":{\"value\":\"数据标记\",\"isUse\":\"F\"},\"dataDesc\":{\"value\":\"数据描述\",\"isUse\":\"T\"}}', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), 'SYS_CONFIG', '1', 'u0000000', 'u0000000');
+
+
+
+
+INSERT INTO f_datadictionary VALUES ('CatalogStyle', 'F', null, null, 'T', '框架固有', 'F', '任何地方都不允许编辑，只能有开发人员给出更新脚本添加、更改和删除', null, null, '0');
+INSERT INTO f_datadictionary VALUES ('CatalogStyle', 'G', null, null, 'T', '国标', 'F', '这个暂时不考虑可以在字典类别中进行描述', null, null, '1');
+INSERT INTO f_datadictionary VALUES ('CatalogStyle', 'S', null, null, 'T', '系统参数', 'F', '实施人员可以在实施入口对数据字典的类别和字典条目进行CRUD操作', null, null, '2');
+INSERT INTO f_datadictionary VALUES ('CatalogStyle', 'U', null, null, 'T', '用户参数', 'F', '管理员入口 和 实施人员入口 都 对这类别字典类别和条目进行CRUD', null, null, '3');
+INSERT INTO f_datadictionary VALUES ('CatalogType', 'L', null, null, 'T', '列表', 'F', '列表', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, '0');
+INSERT INTO f_datadictionary VALUES ('CatalogType', 'T', null, null, 'T', '树形', 'F', '树形', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, '1');
+INSERT INTO f_datadictionary VALUES ('FlowUserRole', 'auditor', null, '03', 'T', '审核人', 'U', '流程业务的审核人', null, null, '2');
+INSERT INTO f_datadictionary VALUES ('FlowUserRole', 'operator', null, '02', 'T', '经办人', 'U', '流程业务的经办人', null, null, '1');
+INSERT INTO f_datadictionary VALUES ('FlowUserRole', 'request', null, '01', 'T', '申请人', 'U', '流程业务的申请人', null, null, '0');
+INSERT INTO f_datadictionary VALUES ('LogLevel', '0', null, null, 'T', '操作日志', 'F', null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), '0');
+INSERT INTO f_datadictionary VALUES ('LogLevel', '1', null, null, 'T', '错误提示', 'F', null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), '1');
+INSERT INTO f_datadictionary VALUES ('MsgType', 'A', null, null, 'T', '公告', 'F', '给部门群发的消息', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, '0');
+INSERT INTO f_datadictionary VALUES ('MsgType', 'P', null, null, 'T', '个人消息', 'F', null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, '1');
+INSERT INTO f_datadictionary VALUES ('OptType', 'I', null, null, 'T', '项目业务', 'F', '项目业务', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), '2');
+INSERT INTO f_datadictionary VALUES ('OptType', 'O', null, null, 'T', '普通业务', 'F', '普通业务', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), '0');
+INSERT INTO f_datadictionary VALUES ('OptType', 'S', null, null, 'T', '实施业务', 'F', '实施业务', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), '1');
+INSERT INTO f_datadictionary VALUES ('OptType', 'W', null, null, 'T', '工作流业务', 'F', '工作流业务', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), '3');
+INSERT INTO f_datadictionary VALUES ('RankType', 'CM', '1', '', 'T', '董事长', 'S', '', null, null, '1');
+INSERT INTO f_datadictionary VALUES ('RankType', 'DM', '5', '', 'T', '部门经理', 'S', '', null, null, '5');
+INSERT INTO f_datadictionary VALUES ('RankType', 'GM', '2', '', 'T', '总经理', 'S', '', null, null, '2');
+INSERT INTO f_datadictionary VALUES ('RankType', 'PM', '3', '', 'T', '副总经理', 'S', '', null, null, '3');
+INSERT INTO f_datadictionary VALUES ('RankType', 'ST', '10', '', 'T', '员工', 'S', '', null, null, '10');
+INSERT INTO f_datadictionary VALUES ('StationType', 'info', null, '', 'T', '信息维护', 'S', '', null, null, '2');
+INSERT INTO f_datadictionary VALUES ('StationType', 'mang', null, '', 'T', '管理岗', 'S', '', null, null, '0');
+INSERT INTO f_datadictionary VALUES ('StationType', 'serv', null, '', 'T', '后勤', 'S', '', null, null, '3');
+INSERT INTO f_datadictionary VALUES ('StationType', 'tech', null, '', 'T', '技术岗', 'S', '', null, null, '1');
+INSERT INTO f_datadictionary VALUES ('SUPPORT_LANG', 'en_US', null, null, 'T', 'English', 'S', null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, '0');
+INSERT INTO f_datadictionary VALUES ('SUPPORT_LANG', 'zh_CN', null, null, 'T', '中文', 'S', null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, '1');
+INSERT INTO f_datadictionary VALUES ('UnitType', 'A', null, null, 'T', '一般机构', 'U', '', null, null, '1');
+INSERT INTO f_datadictionary VALUES ('UnitType', 'I', null, null, 'T', '项目组', 'U', '因为某个事务或者项目而建立的项目组', null, null, '2');
+INSERT INTO f_datadictionary VALUES ('UnitType', 'O', null, null, 'T', '业务结构', 'U', '根据业务创建的组织', null, null, '3');
+INSERT INTO f_datadictionary VALUES ('userSettingKey', 'LOCAL_LANG', null, null, 'T', '语言', 'S', '设置用户语言', null, null, null);
+INSERT INTO f_datadictionary VALUES ('userSettingKey', 'receiveways', null, null, 'T', '消息接收方式', 'S', '用户接收消息的方式，可以是多个用逗号隔开', null, null, null);
+INSERT INTO f_datadictionary VALUES ('YesOrNo', 'F', null, null, 'N', '否', 'F', '', null, null, '2');
+INSERT INTO f_datadictionary VALUES ('YesOrNo', 'T', null, null, 'N', '是', 'F', '', null, null, '1');
+
+
+
+INSERT INTO f_optdatascope VALUES ('117', 'USERMAG', '维护本部门用户', '[F_USERINFO.UNITCODE] = {currentStation.unitCode :currUnit}', '维护本部门数据库', 'G');
+INSERT INTO f_optdatascope VALUES ('118', 'USERMAG', '所有用户', 'all', '维护全部用户', 'G');
 
-insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
-values ('CatalogStyle', '字典类型', 'S', 'L', 'F : 框架固有的 U:用户 S：系统', null, null, null, 'DICTSET_M', '1','u0000000','u0000000');
-
-insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
-values ('CatalogType', '字典结构', 'S', 'L', 'L:列表T:树形 测试修改', null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'DICTSET_M', '1','u0000000','u0000000');
-
-insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
-values ('UnitType', '单位类型', 'U', 'L', '单位类型', null, null, null, 'DICTSET_M', '1','u0000000','u0000000');
-
-insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
-values ('OptType', '业务类别', 'S', 'L', '业务类别', '业务类别', null, null, 'DICTSET_M', '1','u0000000','u0000000');
-
-insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
-values ('StationType', '岗位角色', 'U', 'L', '业务岗位类别，类别代码长度为4', '业务类别xx', null, null, 'DICTSET_M', '0','u0000000','u0000000');
-
-insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
-values ('RankType', '行政职务类别', 'U', 'L', '业务职务类别，类别代码长度为2。数值越低等级越高', '职位代码;等级;未用;职位名称', null, null, 'DICTSET_M', '0','u0000000','u0000000');
-
-insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
-values ('SUPPORT_LANG', '系统支持的语言', 'U', 'L', '系统支持的语言,需要在system.properties中把参数sys.multi_lang设置为true才会生效', null, parsedatetime('28-01-2016', 'dd-MM-yyyy','en'), null, 'DICTSET_M', '1','u0000000','u0000000');
-
-insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
-values ('LogLevel', '日志类型', 'F', 'L', '日志类型', '日志类型', parsedatetime('07-04-2016', 'dd-MM-yyyy','en'), parsedatetime('07-04-2016', 'dd-MM-yyyy','en'), 'OptLog', '1','u0000000','u0000000');
-INSERT INTO f_datacatalog VALUES ('YesOrNo', '是否', 'S', 'L', null, null, null, null, null, '1', null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('MsgType', 'P', null, null, 'T', '个人消息', 'U', null, parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('MsgType', 'A', null, null, 'T', '公告', 'U', '给部门群发的消息', parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('CatalogStyle', 'F', null, null, 'T', '框架固有', 'S', '任何地方都不允许编辑，只能有开发人员给出更新脚本添加、更改和删除', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('CatalogStyle', 'G', null, null, 'T', '国标', 'S', '这个暂时不考虑可以在字典类别中进行描述', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('CatalogStyle', 'S', null, null, 'T', '系统参数', 'S', '实施人员可以在实施入口对数据字典的类别和字典条目进行CRUD操作', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('CatalogStyle', 'U', null, null, 'T', '用户参数', 'S', '管理员入口 和 实施人员入口 都 对这类别字典类别和条目进行CRUD', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('CatalogType', 'L', null, null, 'T', '列表', 'S', '列表',  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('CatalogType', 'T', null, null, 'T', '树形', 'S', '树形',  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('UnitType', 'A', 'CCCC', null, 'T', '管理', 'S', 'administrator', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('UnitType', 'L', 'BBB', null, 'T', '后勤', 'S', 'logistics', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('UnitType', 'O', 'DDD', null, 'T', '业务', 'S', 'operator', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('UnitType', 'R', 'A', null, 'T', '研发', 'S', 'Rearch', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('RankType', 'IM', '3', null, 'T', '项目经理', 'U', '项目经理', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('RankType', 'GM', '1', null, 'T', '总经理', null, null, null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('RankType', 'DM', '2', null, 'T', '部门经理', null, null, null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('RankType', 'EM', '9', null, 'T', '员工', null, null, null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('RankType', 'KZ', '10', null, 'T', '科长', null, '科长', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('RankType', 'ZR', '10', null, 'T', '主任', null, '主任', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('RankType', 'KY', '10', null, 'T', '办公室科员', null, '办公室科员', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('RankType', 'CZ', '10', null, 'T', '处长', null, '处长', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('RankType', 'WDZ', '4', null, 'T', '委党组', null, null, null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('RankType', 'WLD', '5', null, 'T', '委领导', null, '委领导', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('RankType', 'FC', '6', null, 'T', '副处长', null, '副处长', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('RankType', 'JJZ', '7', null, 'T', '纪检组', null, '纪检组', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('RankType', 'JGDW', '8', null, 'T', '机关党委', null, '机关党委', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'slbmfzr', null, null, 'T', '受理部门负责人', 'S', null, null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'fgjz', null, null, 'T', '分管局长', null, null, null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'sfy', null, null, 'T', '收费员', null, null, null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'xbr', null, null, 'T', '协办处室负责人', null, '协办处室负责人', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'bgszr', null, null, 'T', '办公室主任', null, '办公室主任', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'xkdj', null, null, 'T', '许可登记', 'S', '许可登记', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'xkbl', null, null, 'T', '许可办理', 'S', '许可办理', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'dcdb_jcry', null, null, 'T', '督查督办_监察人员', 'S', '发起督办的监察人员', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'dcdb_jbrld', null, null, 'T', '督查督办_经办人领导', 'S', '被督办人的分管领导', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'dcdb_jcld', null, null, 'T', '督查督办_监察领导', 'S', '发起督办的监察人员分管领导', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'dcdb_jbr', null, null, 'T', '督查督办_经办人', 'S', '被督办人', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'fzr', null, null, 'T', '主办处室负责人', null, '主办处室负责人', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'sjr', null, null, 'T', '办公室收件人', null, '办公室收件人', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'pf', null, null, 'T', '办公室批分人', null, '办公室批分人', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'cbr', null, null, 'T', '主办承办人', null, '主办承办人', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'syr', null, null, 'T', '办公室审阅人', null, '办公室审阅人', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'sr', null, null, 'T', '办公室人员', null, '办公室人员', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'fgzr', null, null, 'T', '分管主任', null, '分管主任', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'fw_nw', null, null, 'T', '发文拟文', 'S', null, null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'wysry', null, null, 'T', '文印室人员', null, '文印室人员', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'wyszr', null, null, 'T', '文印室主任', null, '文印室主任', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'spcjbr', null, null, 'T', '审批处经办人', 'S', '审批处经办人', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'spccz', null, null, 'T', '审批处处长', 'S', '审批处处长', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'bgsms', null, null, 'T', '办公室秘书', 'S', '办公室秘书', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'bgsfgzr', null, null, 'T', '办公室分管主任', 'S', '办公室分管主任', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'wld', null, null, 'T', '委领导签发', 'S', '委领导签发', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('StationType', 'bgsfwh', null, null, 'T', '办公室文秘室文号', 'S', '办公室文秘室文号', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('SUPPORT_LANG', 'zh_CN', null, null, 'T', '中文', 'U', null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('SUPPORT_LANG', 'en_US', null, null, 'T', 'English', 'U', null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('OptType', 'S', null, null, 'T', '实施业务', 'F', '实施业务',  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'),  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), 2);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('OptType', 'O', null, null, 'T', '普通业务', 'F', '普通业务',  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'),  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), 1);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('OptType', 'I', null, null, 'T', '项目业务', 'F', '项目业务',  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'),  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), 3);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('OptType', 'W', null, null, 'T', '工作流业务', 'F', '工作流业务',  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'),  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), 4);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('LogLevel', '1', null, null, 'T', '错误提示', 'F', null, parsedatetime('07-04-2016', 'dd-MM-yyyy'), parsedatetime('07-04-2016', 'dd-MM-yyyy'), 2);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('LogLevel', '0', null, null, 'T', '操作日志', 'F', null, parsedatetime('07-04-2016', 'dd-MM-yyyy'), parsedatetime('07-04-2016', 'dd-MM-yyyy'), 1);
-
-INSERT INTO f_datadictionary VALUES ('YesOrNo', 'F', null, null, null, '否', null, null, null, null, null);
-INSERT INTO f_datadictionary VALUES ('YesOrNo', 'T', null, null, null, '是', null, null, null, null, null);
 
 -- 初始化业务菜单
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('DEPTMAG', '部门管理', '0', '...', '...', null, 'O', null, null, 'Y', null, null, null, null, 'I', 'icon-base icon-base-computer', null, null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null,'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('DEPTPOW', '下属部门管理', 'DEPTMAG', 'modules/sys/deptpow/deptpow.html', '/system/deptManager', null, 'O', null, null, 'Y', null, null, 0, null, 'D', 'icon-base icon-base-user', null, null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null,'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('DEPTROLE', '部门角色定义', 'DEPTMAG', 'modules/sys/deptrole/deptrole.html', '/system/deptManager!', null, 'O', null, null, 'Y', null, null, 0, null, 'D', 'icon-base icon-base-gear', null, null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null,'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('DEPTUSERINFO', '部门用户管理', 'DEPTMAG', 'modules/sys/deptuserinfo/deptuserinfo.html', '/system/userDef', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null,'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('UNITMAG', '机构管理', 'ORGMAG', 'modules/sys/unitinfo/unitinfo.html', '/system/unitinfo', null, 'O', null, null, 'Y', null, null, 2, null, 'D', null, null, null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null,'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('USERMAG', '用户管理', 'ORGMAG', 'modules/sys/userinfo/userinfo.html', '/system/userinfo', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null,'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('USERROLE', '用户角色', 'ORGMAG', '/modules/sys/userrole.html', '/system/userrole', null, 'O', null, null, 'N', null, null, null, null, 'D', null, null, null, null, null,'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('USERUNIT', '用户机构', 'ORGMAG', '/modules/sys/userunit.html', '/system/userunit', null, 'O', null, null, 'N', null, null, null, null, 'D', null, null, null, null, null,'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('DICTSET_M', '数据字典', 'SYS_CONFIG', 'modules/sys/dictionary/dictionary.html', '/system/dictionary', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'),  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'),'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('OPT_LOG_QUERY', '系统日志', 'SYS_CONFIG', 'modules/sys/loginfo/loginfo.html', '/system/optlog', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null,'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('USER_SETTING', '设置中心', 'SYS_CONFIG', '/modules/sys/usersetting.html', '/system/usersetting', null, 'N', null, null, 'N', null, null, null, null, 'D', null, null, null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'),  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'),'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('CALENDAR', '日历', 'SYS_CONFIG', '/modules/sys/schedule/schedule.html', '/system/calendar', null, 'O', null, null, 'Y', null, null, null, null, 'D', 'icon-base icon-base-calendar', null, null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), parsedatetime('25-02-2016', 'dd-MM-yyyy','en'),'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('DEPLOY', '实施菜单', '0', '...', '...', null, 'S', null, null, 'Y', null, null, null, null, 'D', '444', null, null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'),  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'),'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('SYSCONF', '系统配置', 'DEPLOY', '...', '...', null, 'O', null, null, 'Y', null, null, null, null, 'I', 'icon-base icon-base-gear', null, null, null, null,'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('DICTSET', '数据字典管理', 'SYSCONF', 'modules/sys/dictionary/dictionary.admin.html', '/system/dictionary', null, 'S', null, null, 'Y', null, null, 0, null, 'D', 'icon-base icon-base-gear', null, null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null,'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('OPTINFO', '系统业务', 'SYSCONF', 'modules/sys/optinfo/optinfo.html', '/system/optinfo', null, 'S', null, null, 'Y', null, null, 4, null, 'D', null, null, null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null,'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('OPTLOG', '系统日志', 'SYSCONF', 'modules/sys/loginfo/loginfo.admin.html', '/system/optlog', null, 'S', null, null, 'Y', null, null, null, null, 'D', null, null, null, null, null,'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('ROLEMAG', '角色定义', 'ORGMAG', 'modules/sys/roleinfo/roleinfo.html', '/system/roleinfo', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null, null, null,'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('ORGMAG', '组织管理', '0', '...', '...', null, 'O', null, null, 'Y', null, null, 3, null, 'I', 'icon-base icon-base-user', null, null, parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null,'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('SYS_CONFIG', '系统配置', '0', '...', '...', null, 'O', null, null, 'Y', null, null, null, null, 'D', 'icon-base icon-base-gear', null, null, null, null,'u0000000','u0000000');
-
-insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('LOGINCAS', 'CAS登录入口', '0', '/system/mainframe/logincas', '/system/mainframe', null, 'O', null, null, 'N', null, null, null, null, 'D', null, null, null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null,'u0000000','u0000000');
+INSERT INTO f_optinfo VALUES ('DATABASE', '集成数据库', 'DEPLOY', 'modules/sys/databaseinfo/databaseinfo.html', '/service/sys/databaseinfo', null, 'S', null, null, 'Y', null, null, null, null, 'D', '', null, null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'u0000000', 'u0000000');
+INSERT INTO f_optinfo VALUES ('DEPLOY', '实施菜单', '0', '...', '...', null, 'S', null, null, 'Y', null, null, null, null, 'D', 'icon-ok', null, null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), 'u0000000', 'u0000000');
+INSERT INTO f_optinfo VALUES ('DEPTMAG', '部门管理', '0', '13', '...', null, 'O', null, null, 'Y', null, null, null, null, 'I', 'icon-base icon-base-computer', null, null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'u0000000', 'u0000000');
+INSERT INTO f_optinfo VALUES ('DEPTPOW', '下属部门管理', 'DEPTMAG', 'modules/sys/deptpow/deptpow.html', '/system/deptManager', null, 'O', null, null, 'Y', null, null, '0', null, 'D', 'icon-base icon-base-user', null, null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'u0000000', 'u0000000');
+INSERT INTO f_optinfo VALUES ('DEPTROLE', '部门角色定义', 'DEPTMAG', 'modules/sys/deptrole/deptrole.html', '/system/roleinfo', null, 'O', null, null, 'Y', null, null, '0', null, 'D', 'icon-base icon-base-gear', null, null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'u0000000', 'u0000000');
+INSERT INTO f_optinfo VALUES ('DEPTUSERINFO', '部门用户管理', 'DEPTMAG', 'modules/sys/deptuserinfo/deptuserinfo.html', '/system/unitinfo', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'u0000000', 'u0000000');
+INSERT INTO f_optinfo VALUES ('DICTSET', '数据字典管理', 'DEPLOY', 'modules/sys/dictionary/dictionary.admin.html', '/system/dictionary', null, 'S', null, null, 'Y', null, null, '0', null, 'D', 'icon-base icon-base-gear', null, null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'u0000000', 'u0000000');
+INSERT INTO f_optinfo VALUES ('DICTSET_M', '数据字典', 'SYS_CONFIG', 'modules/sys/dictionary/dictionary.html', '/system/dictionary', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), 'u0000000', 'u0000000');
+INSERT INTO f_optinfo VALUES ('LOGINCAS', 'CAS登录入口', '0', '/system/mainframe/logincas', '/system/mainframe', null, 'O', null, null, 'N', null, null, null, null, 'D', '', null, null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'u0000000', 'u0000000');
+INSERT INTO f_optinfo VALUES ('OPTINFO', '系统业务', 'DEPLOY', 'modules/sys/optinfo/optinfo.html', '/system/optinfo', null, 'S', null, null, 'Y', null, null, '4', null, 'D', '', null, null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'u0000000', 'u0000000');
+INSERT INTO f_optinfo VALUES ('OPTLOG', '系统日志', 'DEPLOY', 'modules/sys/loginfo/loginfo.admin.html', '/system/optlog', null, 'S', null, null, 'Y', null, null, null, null, 'D', 'icon-ok', null, null, null, null, 'u0000000', 'u0000000');
+INSERT INTO f_optinfo VALUES ('OPT_LOG_QUERY', '系统日志', 'SYS_CONFIG', 'modules/sys/loginfo/loginfo.html', '/system/optlog', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'u0000000', 'u0000000');
+INSERT INTO f_optinfo VALUES ('ORGMAG', '组织管理', '0', '...', '...', null, 'O', null, null, 'Y', null, null, '3', null, 'I', 'icon-base icon-base-user', null, null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'u0000000', 'u0000000');
+INSERT INTO f_optinfo VALUES ('OS_INFO', '集成业务系统', 'DEPLOY', 'modules/sys/osinfo/osinfo.html', '/service/sys/os', null, 'S', null, null, 'Y', null, null, null, null, 'D', 'icon-base icon-base-gear', null, null, null, null, 'u0000000', 'u0000000');
+INSERT INTO f_optinfo VALUES ('ROLEMAG', '角色定义', 'DEPLOY', 'modules/sys/roleinfo/roleinfo.html', '/system/roleinfo', null, 'S', null, null, 'Y', null, null, null, null, 'D', '', null, null, null, null, 'u0000000', 'u0000000');
+INSERT INTO f_optinfo VALUES ('SYS_CONFIG', '系统维护', '0', '...', '...', null, 'O', null, null, 'Y', null, null, null, null, 'D', 'icon-base icon-base-gear', null, null, null, null, 'u0000000', 'u0000000');
+INSERT INTO f_optinfo VALUES ('UNITINFO', '机构维护', 'SYS_CONFIG', 'modules/sys/unitinfo/unitinfo.html', '/system/unitinfo', null, 'O', null, null, 'Y', null, null, null, null, 'D', '', null, null, null, null, null, null);
+INSERT INTO f_optinfo VALUES ('UNITMAG', '机构管理', 'ORGMAG', 'modules/sys/unitinfo/unitinfo.html', '/system/unitinfo', null, 'O', null, null, 'N', null, null, '2', null, 'D', '', null, null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'u0000000', 'u0000000');
+INSERT INTO f_optinfo VALUES ('USERINFO', '用户管理', 'SYS_CONFIG', 'modules/sys/userinfo/userinfo.html', '/system/userinfo', null, 'O', null, null, 'Y', null, null, null, null, 'D', '', null, null, null, null, null, null);
+INSERT INTO f_optinfo VALUES ('USERMAG', '用户管理', 'ORGMAG', 'modules/sys/userinfo/userinfo.html', '/system/userinfo', null, 'O', null, null, 'N', null, null, null, null, 'D', '', null, null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'u0000000', 'u0000000');
+INSERT INTO f_optinfo VALUES ('USERROLE', '用户角色', 'ORGMAG', '/modules/sys/userrole.html', '/system/userrole', null, 'O', null, null, 'N', null, null, null, null, 'D', null, null, null, null, null, 'u0000000', 'u0000000');
+INSERT INTO f_optinfo VALUES ('USERUNIT', '用户机构', 'ORGMAG', '/modules/sys/userunit.html', '/system/userunit', null, 'O', null, null, 'N', null, null, null, null, 'D', null, null, null, null, null, 'u0000000', 'u0000000');
 
 
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000038', 'USER_SETTING', '新增或更新用户设置', null, null, null, null, null, '/*', 'CU','u0000000','u0000000');
 
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000037', 'USER_SETTING', '获取用户设置参数', null, '获取当前用户设置的参数', null, null, null, '/*', 'R','u0000000','u0000000');
 
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000039', 'USER_SETTING', '删除用户设置参数', null, '删除用户设置参数', null, null, null, '/*', 'D','u0000000','u0000000');
 
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000040', 'USER_SETTING', '导出用户设置参数', null, '导出用户设置参数', null, null, null, '/export', 'R','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000051', 'USERUNIT', '获取单个用户机构关联信息', null, '获取单个用户机构关联信息', null, null, null, '/*/*', 'R','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000020', 'OPTLOG', '查询', 'list', '查询系统日志', null, null, null, '/*', 'R','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000041', 'OPT_LOG_QUERY', '查看日志详情', null, '查看单条日志', null, parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/*', 'R','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000070', 'USERMAG', '用户列表', null, '用户列表', null, parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/', 'R','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000029', 'USERUNIT', '新增用户机构关联', null, '添加用户关联机构', null, null, null, '/', 'C','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000032', 'USERROLE', '新增用户角色关联', null, '添加用户关联角色', null, null, null, '/', 'C','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000030', 'USERUNIT', '编辑用户机构关联', null, '更新用户机构关联信息', null, null, null, '/*/*', 'U','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000031', 'USERUNIT', '删除用户机构关联', null, '删除用户关联机构关联', null, null, null, '/*/*', 'D','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000033', 'USERROLE', '编辑用户角色关联', null, '更新用户关联角色信息', null, null, null, '/*/*', 'U','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000034', 'USERROLE', '删除用户角色关联', null, '删除用户关联角色', null, null, null, '/*/*', 'D','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000071', 'USERMAG', '创建用户', null, '创建用户', null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/', 'C','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000072', 'USERMAG', '更新用户', null, '更新用户', null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/*', 'U','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000073', 'USERMAG', '删除用户', null, '删除用户', null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/*', 'D','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000052', 'DICTSET', '查询单个数据目录', null, '查询单个数据目录', null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/*', 'R','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000053', 'DICTSET', '查询单个数据字典', null, '查询单个数据字典', null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/dictionary/*/*', 'R','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000054', 'DICTSET', '获取缓存中所有数据字典', null, '获取缓存中所有数据字典', null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/cache/*', 'R','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000009', 'DICTSET', '删除数据字典', 'DELTE', '删除数据字典', 'F',  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/dictionary/*/*', 'D','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000007', 'DICTSET', '列举字典', 'LIST', '初始页面', 'F', parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/data', 'U','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000008', 'DICTSET', '新增/编辑数据字典', 'EDIT', '新增/编辑数据字典', 'F', parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/dictionary/*/*', 'CU','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000010', 'DICTSET', '新增/编辑数据目录', 'editDetail', '编辑/新建数据目录', 'F',  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/*', 'CU','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000011', 'DICTSET', '删除数据目录', 'deleteDetail', '删除字典目录', 'F',  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/*', 'D','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000042', 'DICTSET_M', '查询单个数据目录', null, '查询单个数据目录', null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/*', 'R','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000043', 'DICTSET_M', '查询单个数据字典', null, '查询单个数据字典', null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/*/dictionary/*', 'R','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000044', 'DICTSET_M', '新增/编辑数据目录', null, '新增/编辑数据目录', null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/*', 'CU','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000045', 'DICTSET_M', '新增/编辑数据字典', null, '新增/编辑数据字典', null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/*/dictionary/*', 'CU','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000046', 'DICTSET_M', '删除数据目录', null, '删除数据目录', null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/*', 'D','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000047', 'DICTSET_M', '删除数据字典', null, '删除数据字典', null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/*/dictionary/*', 'D','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000048', 'DICTSET_M', '获取缓存中所有数据字典', null, '获取缓存中所有数据字典', null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/cache/*', 'R','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000059', 'UNITMAG', '查看所有机构', null, '查看所有机构', null,  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/', 'R','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000001', 'UNITMAG', '新建/编辑机构', 'EDIT', '新建和更新机构', 'F',  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/*', 'CU','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000002', 'UNITMAG', '禁用/恢复机构', 'DELETE', '更新机构状态', 'F',  parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), null, '/*/status/*', 'U','u0000000','u0000000');
-
-insert into F_OPTDEF (OPT_CODE, OPT_ID, OPT_NAME, OPT_METHOD, OPT_DESC, IS_IN_WORKFLOW, UPDATE_DATE, CREATE_DATE, OPT_URL, OPT_REQ,CREATOR,UPDATOR)
-values ('1000080', 'LOGINCAS', 'CAS登录入口', null, null, null, null, null, '/logincas', 'RCU','u0000000','u0000000');
+INSERT INTO f_optdef VALUES ('1', 'DEPLOY', '查看', 'list', '/*', '查看', null, 'F', null, null, 'R', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('10', 'SYS_CONFIG', '查看', 'list', '/*', '查看', null, 'F', null, null, 'R', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000001', 'UNITMAG', '编辑机构', 'update', '/*', '更新机构', null, 'F', null, null, 'U', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000002', 'UNITMAG', '删除机构', 'delete', '/*', '更新机构状态', null, 'F', null, null, 'D', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000007', 'DICTSET', '列举字典', 'list', '/', '查看字典初始页面', null, 'F', null, null, 'R', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000008', 'DICTSET', '新增字典目录', 'create', '/', '新建字典目录', null, 'F', null, null, 'C', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000009', 'DICTSET', '删除字典目录', 'delete', '/*', '删除字典目录', null, 'F', null, null, 'D', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000010', 'DICTSET', '修改字典目录', 'update', '/*', '编辑数据目录', null, 'F', null, null, 'U', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000020', 'OPTLOG', '查询列表', '', '/dummy', '查询系统日志入口', null, null, null, null, 'R', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000029', 'USERUNIT', '新增用户机构关联', 'create', '/', '添加用户关联机构', null, null, null, null, 'C', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000030', 'USERUNIT', '编辑用户机构关联', 'update', '/*', '更新用户机构关联信息', null, null, null, null, 'U', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000031', 'USERUNIT', '删除用户机构关联', 'delete', '/*', '删除用户关联机构关联', null, null, null, null, 'D', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000032', 'USERROLE', '新增用户角色关联', null, '/', '添加用户关联角色', null, null, null, null, 'C', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000033', 'USERROLE', '编辑用户角色关联', null, '/*/*', '更新用户关联角色信息', null, null, null, null, 'U', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000034', 'USERROLE', '删除用户角色关联', null, '/*/*', '删除用户关联角色', null, null, null, null, 'D', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000041', 'OPT_LOG_QUERY', '查看日志详情', '', '/dummy', '查看日志入口', null, null, null, null, 'R', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000042', 'DICTSET_M', '查询数据字典', 'list', '/', '查询数据字典列表', null, null, null, null, 'R', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000043', 'DICTSET_M', '新增数据字典', 'create', '/', '新增数据目录', null, null, null, null, 'C', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000044', 'DICTSET_M', '编辑数据字典', 'update', '/*', '编辑数据字典', null, null, null, null, 'U', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000045', 'DICTSET_M', '删除数据字典', 'delete', '/*', '删除数据目录', null, null, null, null, 'D', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000059', 'UNITMAG', '查看所有机构', 'list', '/', '查看所有机构', null, null, null, null, 'R', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000070', 'USERMAG', '用户列表', null, '/', '用户列表', null, null, null, null, 'R', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000071', 'USERMAG', '创建用户', null, '/', '创建用户', null, null, null, null, 'C', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000072', 'USERMAG', '更新用户', null, '/*', '更新用户', null, null, null, null, 'U', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000073', 'USERMAG', '删除用户', null, '/*', '删除用户', null, null, null, null, 'D', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000080', 'LOGINCAS', 'CAS登录入口', null, '/logincas', null, null, null, null, null, 'RCU', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000101', 'OS_INFO', '所有权限', 'ALL', '/*', '更新机构状态', null, 'F', null, null, 'CRUD', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('1000102', 'DATABASE', '所有权限', 'ALL', '/*', null, null, null, null, null, 'CRUD', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('120', 'OPTLOG', '删除日志', 'delete', '/*', '删除日志', null, null, null, null, 'D', null, null);
+INSERT INTO f_optdef VALUES ('124', 'OPTINFO', '新增', 'create', '/', '新建菜单（顶级和下级）', null, null, null, null, 'C', null, null);
+INSERT INTO f_optdef VALUES ('125', 'OPTINFO', '删除', 'delete', '/*', '删除菜单', null, null, null, null, 'D', null, null);
+INSERT INTO f_optdef VALUES ('126', 'OPTINFO', '编辑', 'update', '/*', '编辑菜单（包括操作权限）', null, null, null, null, 'U', null, null);
+INSERT INTO f_optdef VALUES ('128', 'DICTSET', '编辑字典明细', 'updateDetail', '/update/*', '编辑字典明细', null, null, null, null, 'U', null, null);
+INSERT INTO f_optdef VALUES ('130', 'DICTSET_M', '编辑字典明细', 'updateDetail', '/update/*', '编辑字典明细', null, null, null, null, 'U', null, null);
+INSERT INTO f_optdef VALUES ('146', 'DEPTUSERINFO', '列表入口', 'list', '/dummy', '查看', null, 'F', null, null, 'R', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('150', 'UNITMAG', '新建机构', 'create', '/', '新建机构', null, null, null, null, 'C', null, null);
+INSERT INTO f_optdef VALUES ('154', 'DEPTROLE', '查看', 'list', '/unit/*', '查看某个具体机构的角色', null, 'F', null, null, 'R', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('166', 'ROLEMAG', '修改', 'update', '/*', '修改角色包括权限', null, null, null, null, 'U', null, null);
+INSERT INTO f_optdef VALUES ('167', 'ROLEMAG', '删除', 'delete', '/*', '删除角色', null, null, null, null, 'D', null, null);
+INSERT INTO f_optdef VALUES ('168', 'ROLEMAG', '新建', 'create', '/', '创建角色', null, null, null, null, 'C', null, null);
+INSERT INTO f_optdef VALUES ('169', 'USERINFO', '列表入口', '', '/dummy', '列表入口', null, null, null, null, 'R', null, null);
+INSERT INTO f_optdef VALUES ('172', 'UNITINFO', '列表入口', '', '/dummy', '机构维护列表入口', null, null, null, null, 'R', null, null);
+INSERT INTO f_optdef VALUES ('2', 'DEPTMAG', '查看', 'list', '/*', '查看', null, 'F', null, null, 'R', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('3', 'DEPTPOW', '查看', 'list', '/*', '查看', null, 'F', null, null, 'R', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('7', 'ORGMAG', '查看', 'list', '/*', '查看', null, 'F', null, null, 'R', 'u0000000', 'u0000000');
+INSERT INTO f_optdef VALUES ('8', 'ROLEMAG', '查看', 'list', '/all', '查看', null, 'F', null, null, 'R', 'u0000000', 'u0000000');
 
 -- 用户、角色、权限初始化
 
@@ -457,4 +206,23 @@ values ('userSettingKey', 'receiveways', null, null, 'T', '消息接收方式', 
 
 insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
 values ('userSettingKey', 'LOCAL_LANG', null, null, 'T', '语言', 'S', '设置用户语言', null, null, null);
+
+update F_ROLEINFO
+set ROLE_CODE = substring(ROLE_CODE, 3)
+where ROLE_CODE like 'G-%';
+
+update F_ROLEPOWER
+set ROLE_CODE = substring(ROLE_CODE, 3)
+where ROLE_CODE like 'G-%';
+
+update F_USERROLE
+set ROLE_CODE = substring(ROLE_CODE, 3)
+where ROLE_CODE like 'G-%';
+
+update F_ROLEINFO
+set ROLE_TYPE = 'G';
+
+update F_ROLEINFO
+set ROLE_TYPE = 'F'
+where ROLE_CODE = 'public' or ROLE_CODE = 'anonymous' or ROLE_CODE = 'forbidden';
 

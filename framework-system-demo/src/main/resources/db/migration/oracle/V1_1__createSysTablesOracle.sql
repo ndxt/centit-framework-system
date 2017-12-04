@@ -220,16 +220,6 @@ comment on column F_OptInfo.Order_Ind is     '这个顺序只需在同一个父�
 comment on column F_OptInfo.Page_Type is    'D : DIV I:iFrame'   ;
 alter table F_OptInfo add primary key (Opt_ID);
 
-create table F_OptInfoData
-(
-   TBCODE               varchar2(32) not null,
-   OptID                varchar2(8) not null,
-   LastModifyDate       date,
-   CreateDate           date
-);
-
-comment on table F_OptInfoData is '业务模块和表是多对多的关系,这个表仅仅是作为数据权限设置时的一个辅助表的';
-alter table F_OptInfoData  add primary key (TBCODE, OptID);
 
 create table F_QUERY_FILTER_CONDITION
 (

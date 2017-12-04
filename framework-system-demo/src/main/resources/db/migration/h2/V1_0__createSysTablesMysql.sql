@@ -17,7 +17,6 @@ drop table if exists F_OptFlowNoPool;
 
 drop table if exists F_OptInfo;
 
-drop table if exists F_OptInfoData;
 
 drop table if exists F_QUERY_FILTER_CONDITION;
 
@@ -287,20 +286,7 @@ create table F_OptInfo
 alter table F_OptInfo
    add primary key (Opt_ID);
 
-/*==============================================================*/
-/* Table: F_OptInfoData                                         */
-/*==============================================================*/
-create table F_OptInfoData
-(
-   TBCODE               varchar(32) not null,
-   OptID                varchar(8) not null,
-   LastModifyDate       datetime,
-   CreateDate           datetime
-);
 
-
-alter table F_OptInfoData
-   add primary key (TBCODE, OptID);
 
 /*==============================================================*/
 /* Table: F_QUERY_FILTER_CONDITION                              */

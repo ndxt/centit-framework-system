@@ -53,8 +53,6 @@ drop table if exists F_OptFlowNoPool;
 
 drop table if exists F_OptInfo;
 
-drop table if exists F_OptInfoData;
-
 drop table if exists F_QUERY_FILTER_CONDITION;
 
 drop table if exists F_RANKGRANT;
@@ -331,21 +329,6 @@ create table F_OptInfo
 alter table F_OptInfo
    add primary key (Opt_ID);
 
-/*==============================================================*/
-/* Table: F_OptInfoData                                         */
-/*==============================================================*/
-create table F_OptInfoData
-(
-   TBCODE               varchar(32) not null,
-   OptID                varchar(8) not null,
-   LastModifyDate       datetime,
-   CreateDate           datetime
-);
-
-alter table F_OptInfoData comment '业务模块和表是多对多的关系,这个表仅仅是作为数据权限设置时的一个辅助表的';
-
-alter table F_OptInfoData
-   add primary key (TBCODE, OptID);
 
 /*==============================================================*/
 /* Table: F_QUERY_FILTER_CONDITION                              */
