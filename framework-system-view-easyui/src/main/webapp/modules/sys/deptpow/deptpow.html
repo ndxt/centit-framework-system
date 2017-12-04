@@ -26,6 +26,9 @@
             var div = $(this);
             // 部门管理页面没有添加顶级部门按钮
             $('#btn_topOrganization', div).remove();
+
+            // 部门管理不能修改权限
+            $('#authorityManage, #authorityManage + hr', div).remove();
             new UnitInfo('UnitInfo', div).load(div);
           }
         });
