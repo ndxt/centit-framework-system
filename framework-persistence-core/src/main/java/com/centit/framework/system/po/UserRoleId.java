@@ -40,11 +40,11 @@ public class UserRoleId implements java.io.Serializable {
     /**
      * full constructor
      * @param userCode String
-     * @param rolecode String
+     * @param roleCode String
      */
-    public UserRoleId(String userCode, String rolecode) {
+    public UserRoleId(String userCode, String roleCode) {
         this.userCode = userCode;
-        this.roleCode = rolecode;
+        this.roleCode = roleCode;
     }
 
     // Property accessors

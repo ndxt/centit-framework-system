@@ -308,7 +308,7 @@ public class DataDictionaryController extends BaseController {
         JsonResultUtils.writeBlankJson(response);
     }
 
-  /**
+    /**
      * 数据字典公共验证
      * @param dataCatalog DataCatalog
      * @param dataDictionary DataDictionary
@@ -326,8 +326,8 @@ public class DataDictionaryController extends BaseController {
             if (extraCode.equals(dataDictionary.getDataCode())) {
                 throw new ObjectException("extraCode 与 dataCode 不能一致");
             }
-
-            DataDictionary dd = dataDictionaryManager.getDataDictionaryPiece(new DataDictionaryId(dataDictionary.getCatalogCode(), extraCode));
+            DataDictionary dd = dataDictionaryManager.getDataDictionaryPiece(
+                new DataDictionaryId(dataDictionary.getCatalogCode(), extraCode));
             if (null == dd) {
                 throw new ObjectException("当前父节点不存在");
             }

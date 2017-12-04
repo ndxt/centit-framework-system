@@ -1,10 +1,9 @@
 define(function (require) {
   var Config = require('config');
-  var Core = require('core/core');
   var Page = require('core/page');
 
   // 添加数据字典
-  var DictionaryAdd = Page.extend(function () {
+  return Page.extend(function () {
 
     var vm = this;
 
@@ -37,7 +36,7 @@ define(function (require) {
           dataCode: {value: '编码', isUse: 'T'},
           dataValue: {value: '数值', isUse: 'T'},
           extraCode: {value: '扩展编码', isUse: 'F'},
-          extraCode2: {value: '排序', isUse: 'F'},
+          extraCode2: {value: '扩展编码2', isUse: 'F'},
           dataTag: {value: '数据标记', isUse: 'F'},
           dataDesc: {value: '数据描述', isUse: 'T'}
         }, fieldMap);
@@ -60,6 +59,7 @@ define(function (require) {
           return value === 'T' ? '是' : '否'
         }
       };
+
       var textbox = {
         editor: {
           type: 'textbox',
@@ -71,7 +71,6 @@ define(function (require) {
 
       // 列描述
       var columns = [[
-
         {
           field: 'name',
           title: '字段',
@@ -132,7 +131,6 @@ define(function (require) {
           "name": "dataDesc",
           "value": fieldMap.dataDesc.value,
           "isUse": fieldMap.dataDesc.isUse
-
         }
       ];
 
@@ -198,17 +196,15 @@ define(function (require) {
           data: $.extend({}, this.object, {
             fieldDesc: this.stringifyFieldDesc(panel)
           })
-        }).then(closeCallback);
+        }).then(function () {
+          vm.parent.table.datagrid('reload');
+          closeCallback();
+        });
       }
 
       return false;
     };
 
-    // @override
-    this.onClose = function (table) {
-      table.datagrid('reload');
-    };
   });
 
-  return DictionaryAdd;
 });

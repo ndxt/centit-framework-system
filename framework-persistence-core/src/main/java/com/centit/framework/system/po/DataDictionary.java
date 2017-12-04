@@ -259,6 +259,7 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
         this.dataValue = other.getDataValue();
         this.dataStyle = other.getDataStyle();
         this.dataDesc = other.getDataDesc();
+        this.dataOrder = other.getDataOrder();
     }
 
     public void copyNotNullProperty(DataDictionary other) {
@@ -275,6 +276,8 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
             this.dataStyle = other.getDataStyle();
         if (other.getDataDesc() != null)
             this.dataDesc = other.getDataDesc();
+        if (other.getDataOrder() != null)
+            this.dataOrder = other.getDataOrder();
     }
 
     public String display() {

@@ -94,26 +94,31 @@ public class SysUserUnitManagerImpl
         return true;
     }
 
-    private void addUserRoleWhenNotExist(String userCode, String roleCode , List<UserRole> userRoles){
-        if(StringUtils.isNotBlank(roleCode)){
-          boolean hasRole = false;
-          for(UserRole userRole : userRoles){
-            if(userRole.getRoleCode().equals(roleCode)){
-              hasRole = true;
+    private void addUserRoleWhenNotExist(String userCode, String roleCodeOrName , List<FVUserRoles> userRoles){
+        if(StringUtils.isNotBlank(roleCodeOrName)){
+            boolean hasRole = false;
+            for(FVUserRoles userRole : userRoles){
+                if(userRole.getRoleCode().equals(roleCodeOrName) ||
+                    (("G".equals(userRole.getRoleType()) || "P".equals(userRole.getRoleType()))
+                        && userRole.getRoleName().equals(roleCodeOrName))){
+                  hasRole = true;
+                }
             }
-          }
-          if(!hasRole){
-//            IRoleInfo roleInfo = CodeRepositoryUtil.getRoleByRoleCode(roleCode);
-            RoleInfo roleInfo = roleInfoDao.getObjectById(roleCode);
-            if(roleInfo != null){
-              UserRole newUserRole = new UserRole(
-                new UserRoleId(userCode,roleInfo.getRoleCode()),
-                DatetimeOpt.currentUtilDate(), "根据用户岗位自动授予");
-              userRoleDao.saveNewObject(newUserRole);
-              userRoles.add(newUserRole);
+            if(!hasRole){
+            //            IRoleInfo roleInfo = CodeRepositoryUtil.getRoleByRoleCode(roleCode);
+                RoleInfo roleInfo = roleInfoDao.getRoleByCodeOrName(roleCodeOrName);
+                if(roleInfo != null){
+                    UserRole newUserRole = new UserRole(
+                    new UserRoleId(userCode,roleInfo.getRoleCode()),
+                    DatetimeOpt.currentUtilDate(), "根据用户岗位自动授予");
+                    userRoleDao.saveNewObject(newUserRole);
+                    FVUserRoles fvUserRoles = new FVUserRoles( userCode,roleInfo.getRoleCode());
+                    fvUserRoles.setRoleName(roleInfo.getRoleName());
+                    fvUserRoles.setRoleType(roleInfo.getRoleType());
+                    userRoles.add(fvUserRoles);
+                }
             }
-          }
-          //}
+            //}
         }
     }
 
@@ -147,8 +152,7 @@ public class SysUserUnitManagerImpl
         }
         // userunit.setIsprimary("T");//modify by hx bug：会默认都是主机构
         userUnitDao.saveNewObject(userunit);
-
-        List<UserRole> userRoles = userRoleDao.listUserRoles(userunit.getUserCode());
+        List<FVUserRoles> userRoles = userRoleDao.listUserRolesByUserCode(userunit.getUserCode());
         IDataDictionary dd = CodeRepositoryUtil.getDataPiece("StationType",userunit.getUserStation());
         addUserRoleWhenNotExist(userunit.getUserCode(),dd.getExtraCode2(), userRoles);
         dd = CodeRepositoryUtil.getDataPiece("RankType",userunit.getUserRank());
