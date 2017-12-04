@@ -1,10 +1,9 @@
 define(function (require) {
   var Config = require('config');
-  var Core = require('core/core');
   var Page = require('core/page');
 
   // 添加数据字典
-  var DictionaryAdd = Page.extend(function () {
+  return Page.extend(function () {
 
     var vm = this;
 
@@ -60,6 +59,7 @@ define(function (require) {
           return value === 'T' ? '是' : '否'
         }
       };
+
       var textbox = {
         editor: {
           type: 'textbox',
@@ -71,7 +71,6 @@ define(function (require) {
 
       // 列描述
       var columns = [[
-
         {
           field: 'name',
           title: '字段',
@@ -198,17 +197,15 @@ define(function (require) {
           data: $.extend({}, this.object, {
             fieldDesc: this.stringifyFieldDesc(panel)
           })
-        }).then(closeCallback);
+        }).then(function () {
+          vm.parent.table.datagrid('reload');
+          closeCallback();
+        });
       }
 
       return false;
     };
 
-    // @override
-    this.onClose = function (table) {
-      table.datagrid('reload');
-    };
   });
 
-  return DictionaryAdd;
 });

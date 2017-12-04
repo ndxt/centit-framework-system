@@ -3,7 +3,7 @@ define(function(require) {
 	var Core = require('core/core');
 	var DictionaryAdd = require('../ctrl/dictionary.add');
 
-	var RoleInfoEdit = DictionaryAdd.extend(function() {
+  return DictionaryAdd.extend(function () {
 		var _self = this;
 
 		// @override
@@ -44,12 +44,14 @@ define(function(require) {
 					data: $.extend({}, this.data, {
 						fieldDesc: this.stringifyFieldDesc(panel)
 					})
-				}).then(closeCallback);
+        }).then(function () {
+          _self.parent.table.datagrid('reload');
+          closeCallback()
+        });
 			}
 
 			return false;
 		};
 	});
 
-	return RoleInfoEdit;
 });
