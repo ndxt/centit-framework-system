@@ -36,7 +36,7 @@ define(function (require) {
           dataCode: {value: '编码', isUse: 'T'},
           dataValue: {value: '数值', isUse: 'T'},
           extraCode: {value: '扩展编码', isUse: 'F'},
-          extraCode2: {value: '排序', isUse: 'F'},
+          extraCode2: {value: '扩展编码2', isUse: 'F'},
           dataTag: {value: '数据标记', isUse: 'F'},
           dataDesc: {value: '数据描述', isUse: 'T'}
         }, fieldMap);
@@ -131,7 +131,6 @@ define(function (require) {
           "name": "dataDesc",
           "value": fieldMap.dataDesc.value,
           "isUse": fieldMap.dataDesc.isUse
-
         }
       ];
 
