@@ -19,7 +19,7 @@ import org.springframework.context.annotation.*;
         SystemBeanConfig.class,
         SpringSecurityDaoConfig.class,
         SpringSecurityCasConfig.class})
-@ComponentScan(basePackages = "com.centit.framework",
+@ComponentScan(basePackages = {"com.centit.framework","com.otherpackage"},
         excludeFilters = @ComponentScan.Filter(value = org.springframework.stereotype.Controller.class))
 public class ServiceConfig {
     @Bean
