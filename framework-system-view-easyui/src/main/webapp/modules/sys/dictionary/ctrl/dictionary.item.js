@@ -20,6 +20,7 @@ define(function (require) {
 
     // @override
     this.load = function (panel, data) {
+      this.$autoHeight();
       var form = panel.find('form');
       var table = panel.find('table');
       this.table = table;
@@ -114,13 +115,13 @@ define(function (require) {
       icon: {
         field: 'icon'
       },
-      // dataOrder: {
-      //     field: 'dataOrder',
-      //     title: '排序',
-      //     align: 'center',
-      //     width: 50,
-      //     editor: {type: 'numberbox', options: {required: true}}
-      // },
+      dataOrder: {
+        field: 'dataOrder',
+        title: '排序',
+        align: 'center',
+        width: 50,
+        editor: {type: 'numberbox', options: {required: true}}
+      },
       dataCode: {
         field: 'dataCode',
         title: '编码',
@@ -150,10 +151,9 @@ define(function (require) {
       },
       extraCode2: {
         field: 'extraCode2',
-        title: '排序',
+        title: '扩展代码2',
         width: 150,
-        editor: 'text',
-        sortable: 'true'
+        editor: 'text'
       },
       dataTag: {
         field: 'dataTag',
@@ -171,17 +171,18 @@ define(function (require) {
 
     // 列表列
     var ListColumnNames = [
-      //{field: 'dataOrder', require: true, frozen: true},
+      {field: 'dataOrder', require: true, frozen: true},
       {field: 'dataCode', require: true, frozen: true},
       {field: 'dataValue', require: true, frozen: true},
       {field: 'dataStyle', require: true, frozen: true},
       {field: 'extraCode', frozen: true},
-      {field: 'extraCode2', require: true, frozen: true},
+      {field: 'extraCode2', frozen: true},
       {field: 'dataTag', frozen: true},
       {field: 'dataDesc', require: true}];
 
     // 树列
     var TreeColumnNames = [
+      {field: 'dataOrder', require: true, frozen: true},
       {field: 'icon', require: true, frozen: true},
       {field: 'dataCode', require: true, frozen: true},
       {field: 'dataValue', require: true, frozen: true},
