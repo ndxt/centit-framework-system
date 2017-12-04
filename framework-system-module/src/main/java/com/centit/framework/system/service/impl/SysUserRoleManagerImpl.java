@@ -81,8 +81,6 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
         return userRoleDao.listUserRolesByUserCode(userCode);
     }
 
-
-
     @Override
     @Transactional
     public List<FVUserRoles> listRoleUsersByRoleCode(String roleCode) {
@@ -92,12 +90,30 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
     @Override
     @Transactional
     public JSONArray pageQueryUserRole(Map<String, Object> filterMap, PageDesc pageDesc) {
-
-      return DictionaryMapUtils.objectsToJSONArray(
-          userRoleDao.pageQueryUserRole(
-          QueryParameterPrepare.prepPageParams(
-            filterMap,pageDesc,userRoleDao.pageCountUserRole(filterMap))));
+        return DictionaryMapUtils.objectsToJSONArray(
+            userRoleDao.pageQueryUserRole(
+            QueryParameterPrepare.prepPageParams(
+                filterMap,pageDesc,userRoleDao.pageCountUserRole(filterMap))));
     }
 
-
+    /**
+     * 查询全部
+     * @param userCode 用户编码
+     * @return List<UserRole>
+     */
+    @Override
+    @Transactional
+    public List<UserRole> listUserRoles(String userCode){
+        return userRoleDao.listRoleUsers(userCode);
+    }
+    /**
+     * 查询全部
+     * @param roleCode 角色编码
+     * @return List<UserRole>
+     */
+    @Override
+    @Transactional
+    public List<UserRole> listRoleUsers(String roleCode){
+        return userRoleDao.listRoleUsers(roleCode);
+    }
 }

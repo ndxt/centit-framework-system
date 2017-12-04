@@ -1,5 +1,6 @@
 package com.centit.framework.system.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.components.CodeRepositoryUtil;
@@ -9,6 +10,7 @@ import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.OptMethodManager;
 import com.centit.framework.system.service.SysRoleManager;
+import com.centit.framework.system.service.SysUnitRoleManager;
 import com.centit.framework.system.service.SysUserRoleManager;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
@@ -25,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -37,12 +38,13 @@ public class RoleInfoController extends BaseController {
 
     @Resource
     @NotNull
-    private OptMethodManager optDefManager;
+    private OptMethodManager optMethodManager;
 
     @Resource
     private SysUserRoleManager sysUserRoleManager;
 
-
+    @Resource
+    private SysUnitRoleManager sysUnitRoleManager;
 
     /**
      * 系统日志中记录
@@ -179,7 +181,7 @@ public class RoleInfoController extends BaseController {
     public void getRolePowerByOptId(@PathVariable String optId, HttpServletResponse response) {
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 
-        List<OptMethod> optDefs = optDefManager.listOptMethodByOptID(optId);
+        List<OptMethod> optDefs = optMethodManager.listOptMethodByOptID(optId);
 
 
         for (OptMethod def : optDefs) {
@@ -442,7 +444,7 @@ public class RoleInfoController extends BaseController {
      */
     @RequestMapping(value = "/{roleCode}", method = RequestMethod.DELETE)
     @RecordOperationLog(content = "删除角色")
-    public void deleteRole(@PathVariable String roleCode, HttpServletRequest request, HttpServletResponse response) {
+    public void deleteRole(@PathVariable String roleCode, HttpServletResponse response) {
         if(StringUtils.equalsAny(roleCode,
           "public", "anonymous", "forbidden")){
             JsonResultUtils.writeErrorMessageJson("系统内置角色不能删除。", response);
@@ -462,17 +464,12 @@ public class RoleInfoController extends BaseController {
           JsonResultUtils.writeErrorMessageJson("有禁用用户引用这个角色，不能删除。", response);
           return ;
         }
-
-        //RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
-       /* if(n>0){
-            JsonResultUtils.writeErrorMessageJson("有用户引用这个角色，不能删除。", response);
+        JSONArray roleUnts = sysUnitRoleManager.listRoleUnits(roleCode, new PageDesc(1,2));
+        if(roleUnts!=null && roleUnts.size()>0){
+            JsonResultUtils.writeErrorMessageJson("有机构引用这个角色，不能删除。", response);
             return ;
-        }*/
-        RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
-//        if(dbRoleInfo!=null) {
-//            OperationLogCenter.logDeleteObject(request, optId, roleCode,
-//                    OperationLog.P_OPT_LOG_METHOD_D, "删除角色" + dbRoleInfo.getRoleName(), dbRoleInfo);
-//        }
+        }
+        //RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         sysRoleManager.deleteRoleInfo(roleCode);
         JsonResultUtils.writeSuccessJson(response);
     }
@@ -509,24 +506,6 @@ public class RoleInfoController extends BaseController {
         JsonResultUtils.writeSingleDataJson(rolePowers, response);
     }
 
-    /**
-     * 对角色信息进行模糊搜索，适用于带搜索条件的下拉框。
-     *
-     * @param key      搜索条件
-     * @param field    需要搜索的字段，如为空，默认，roleCode,roleName
-     * @param response HttpServletResponse
-     */
-    @RequestMapping(value = "/search/{key}", method = RequestMethod.GET)
-    public void search(@PathVariable String key, String[] field, HttpServletResponse response) {
-//        if (ArrayUtils.isEmpty(field)) {
-//            field = new String[]{"roleCode", "roleName"};
-//        }
-//
-//        List<RoleInfo> listObjects = sysRoleManager.search(key, field);
-//
-//        JsonResultUtils.writeSingleDataJson(listObjects, response,
-//                JsonPropertyUtils.getExcludePropPreFilter(RoleInfo.class, "rolePowers"));
-    }
 
 
     /**

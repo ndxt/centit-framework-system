@@ -33,6 +33,18 @@ public interface SysUserRoleManager{
     List<UserInfo> listUsersByRole(String roleCode);
 
     /**
+     * 查询全部
+     * @param userCode 用户编码
+     * @return List<UserRole>
+     */
+    List<UserRole> listUserRoles(String userCode);
+    /**
+     * 查询全部
+     * @param roleCode 角色编码
+     * @return List<UserRole>
+     */
+    List<UserRole> listRoleUsers(String roleCode);
+    /**
      * List roleInfos = new ArrayList();
      //所有的用户 都要添加这个角色
      roleInfos.add(new RoleInfo("G-", "general ","G",
