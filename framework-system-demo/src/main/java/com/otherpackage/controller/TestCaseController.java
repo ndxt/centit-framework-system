@@ -1,4 +1,4 @@
-package com.centit.framework.web.demo.controller;
+package com.otherpackage.controller;
 
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseSingleData;

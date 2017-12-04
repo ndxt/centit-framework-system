@@ -9,6 +9,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
 import javax.servlet.ServletRegistration.Dynamic;
 
 
@@ -23,7 +24,8 @@ public class WebInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext servletContext) throws ServletException {
 
         initializeSpringConfig(servletContext);
-        initializeSpringMvcConfig(servletContext);
+        initializeSystemSpringMvcConfig(servletContext);
+        initializeNormalSpringMvcConfig(servletContext);
         WebConfig.registerRequestContextListener(servletContext);
         WebConfig.registerSingleSignOutHttpSessionListener(servletContext);
         WebConfig.registerResponseCorsFilter(servletContext);
@@ -50,7 +52,7 @@ public class WebInitializer implements WebApplicationInitializer {
      * 加载Servlet 配置
      * @param servletContext ServletContext
      */
-    private void initializeSpringMvcConfig(ServletContext servletContext) {
+    private void initializeSystemSpringMvcConfig(ServletContext servletContext) {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.register(SystemSpringMvcConfig.class);
         Dynamic system  = servletContext.addServlet("system", new DispatcherServlet(context));
@@ -59,5 +61,16 @@ public class WebInitializer implements WebApplicationInitializer {
         system.setAsyncSupported(true);
     }
 
-
+    /**
+     * 加载Servlet 项目配置
+     * @param servletContext ServletContext
+     */
+    private void initializeNormalSpringMvcConfig(ServletContext servletContext) {
+        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
+        context.register(NormalSpringMvcConfig.class);
+        ServletRegistration.Dynamic system  = servletContext.addServlet("service", new DispatcherServlet(context));
+        system.addMapping("/service/*");
+        system.setLoadOnStartup(1);
+        system.setAsyncSupported(true);
+    }
 }
