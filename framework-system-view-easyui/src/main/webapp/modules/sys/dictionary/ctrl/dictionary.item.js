@@ -92,7 +92,7 @@ define(function (require) {
             item.id.dataCode = item.dataCode;
           }
 
-          item.dataOrder = order++;
+          // item.dataOrder = order++;
 
           // 无需传到后台的值
           delete item.children;
@@ -100,7 +100,7 @@ define(function (require) {
 
         data.dataDictionaries = items;
         data._method = 'PUT';
-        Core.ajax(Config.ContextPath + this.url + "/update/" + data.catalogCode, {
+        Core.ajax(Config.ContextPath + this.url + "update/" + data.catalogCode, {
           data: data,
           method: 'post'
         }).then(closeCallback);
@@ -120,7 +120,7 @@ define(function (require) {
         title: '排序',
         align: 'center',
         width: 50,
-        editor: {type: 'numberbox', options: {required: true}}
+        editor: {type: 'textbox', options: {required: true}}
       },
       dataCode: {
         field: 'dataCode',
@@ -249,9 +249,9 @@ define(function (require) {
       var columnsMap = _self.createColumns(data.fieldDesc);
 
       // 重新写入排序号（因为有很多数据原来没有排序）
-      data.dataDictionaries.forEach(function (item, index) {
-        item.dataOrder = index + 1;
-      });
+      // data.dataDictionaries.forEach(function (item, index) {
+      //   item.dataOrder = index + 1;
+      // });
 
       table.cdatagrid({
         // 必须要加此项!!
