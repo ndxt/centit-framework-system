@@ -46,6 +46,9 @@ insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TY
 values ('LogLevel', '日志类型', 'F', 'L', '日志类型', '日志类型', sysdate, sysdate, 'OptLog', '1','u0000000','u0000000');
 INSERT INTO f_datacatalog VALUES ('YesOrNo', '是否', 'S', 'L', null, null, null, null, null, '1', null, null);
 
+insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
+values ('userSettingKey', '用户设置参数', 'F', 'L', '用户可以设置的参数', null, null, null, 'DICTSET_M', '1','u0000000','u0000000');
+
 
 insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
 values ('MsgType', 'P', null, null, 'T', '个人消息', 'U', null, sysdate, null, null);
@@ -229,6 +232,13 @@ values ('LogLevel', '0', null, null, 'T', '操作日志', 'F', null, sysdate, sy
 
 INSERT INTO f_datadictionary VALUES ('YesOrNo', 'F', null, null, null, '否', null, null, null, null, null);
 INSERT INTO f_datadictionary VALUES ('YesOrNo', 'T', null, null, null, '是', null, null, null, null, null);
+
+
+insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
+values ('userSettingKey', 'receiveways', null, null, 'T', '消息接收方式', 'S', '用户接收消息的方式，可以是多个用逗号隔开', null, null, null);
+
+insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
+values ('userSettingKey', 'LOCAL_LANG', null, null, 'T', '语言', 'S', '设置用户语言', null, null, null);
 
 -- 初始化业务菜单
 insert into F_OptInfo (OPT_ID, OPT_NAME, PRE_OPT_ID, OPT_ROUTE, OPT_URL, FORM_CODE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, TOP_OPT_ID, ORDER_IND, FLOW_CODE, PAGE_TYPE, ICON, HEIGHT, WIDTH, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
@@ -417,6 +427,8 @@ insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CRE
 values ('public', '公共角色','F', 'T', '公共角色权限会默认给不包括匿名用户的所有人', sysdate, sysdate,'u0000000','u0000000');
 
 
+insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
+values ('forbidden', '禁用的功能','F', 'T', '这个角色不能赋给任何人，这个角色中的操作任何人都不可以调用。', to_date('12-12-2014 16:05:46', 'DD-MM-YYYY HH24:MI:SS'), sysdate,'u0000000','u0000000');
 
 insert into F_ROLEPOWER (ROLE_CODE, OPT_CODE, UPDATE_DATE, CREATE_DATE, OPT_SCOPE_CODES,CREATOR,UPDATOR)
 values ('public', '1000080', sysdate, sysdate, '','u0000000','u0000000');
@@ -436,4 +448,25 @@ insert into F_USERROLE (USER_CODE, ROLE_CODE, OBTAIN_DATE,
       SECEDE_DATE, CHANGE_DESC, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
 values ('u0000000', 'SYSADMIN', sysdate,
  null,'' ,sysdate, sysdate,'u0000000','u0000000');
+ 
+update F_ROLEINFO
+set ROLE_CODE = substr(ROLE_CODE, 3)
+where ROLE_CODE like 'G-%';
+
+update F_ROLEPOWER
+set ROLE_CODE = substr(ROLE_CODE, 3)
+where ROLE_CODE like 'G-%';
+
+update F_USERROLE
+set ROLE_CODE = substr(ROLE_CODE, 3)
+where ROLE_CODE like 'G-%';
+
+update F_ROLEINFO
+set ROLE_TYPE = 'G';
+
+update F_ROLEINFO
+set ROLE_TYPE = 'F'
+where ROLE_CODE = 'public' or ROLE_CODE = 'anonymous' or ROLE_CODE = 'forbidden';
+
+ 
   commit;

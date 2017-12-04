@@ -254,6 +254,9 @@ values ('anonymous', '匿名角色','F', 'T', '匿名用户角色', str_to_date(
 insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
 values ('public', '公共角色','F', 'T', '公共角色权限会默认给不包括匿名用户的所有人', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
 
+insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
+values ('forbidden', '禁用的功能','F', 'T', '这个角色不能赋给任何人，这个角色中的操作任何人都不可以调用。', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
+
 insert into F_ROLEPOWER (ROLE_CODE, OPT_CODE, UPDATE_DATE, CREATE_DATE, OPT_SCOPE_CODES,CREATOR,UPDATOR)
 values ('public', '1000080', str_to_date('11-04-2016 10:21:17', '%d-%m-%Y %H:%i:%s'), str_to_date('11-04-2016 10:21:17', '%d-%m-%Y %H:%i:%s'), '','u0000000','u0000000');
 
@@ -272,5 +275,24 @@ insert into F_USERROLE (USER_CODE, ROLE_CODE, OBTAIN_DATE,
 			SECEDE_DATE, CHANGE_DESC, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
 values ('u0000000', 'SYSADMIN', STR_TO_DATE('23-05-2012','%d-%m-%Y'),
 	STR_TO_DATE('01-10-2020', '%d-%m-%Y'),'' ,now(), now(),'u0000000','u0000000');
+	
+update F_ROLEINFO
+set ROLE_CODE = substring(ROLE_CODE, 3)
+where ROLE_CODE like 'G-%';
+
+update F_ROLEPOWER
+set ROLE_CODE = substring(ROLE_CODE, 3)
+where ROLE_CODE like 'G-%';
+
+update F_USERROLE
+set ROLE_CODE = substring(ROLE_CODE, 3)
+where ROLE_CODE like 'G-%';
+
+update F_ROLEINFO
+set ROLE_TYPE = 'G';
+
+update F_ROLEINFO
+set ROLE_TYPE = 'F'
+where ROLE_CODE = 'public' or ROLE_CODE = 'anonymous' or ROLE_CODE = 'forbidden';
 	commit;
 

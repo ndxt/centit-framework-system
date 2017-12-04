@@ -31,6 +31,9 @@ INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
 INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
 ('S_SYS_LOG', 0, 1);
 
+INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
+  ('S_ROLECODE', 0, 1);
+
 
 drop table if exists F_ADDRESS_BOOK;
 
@@ -90,6 +93,7 @@ drop table if exists M_MsgAnnex;
 
 drop table if exists P_TASK_LIST;
 
+drop table if exists  F_UNITROLE;
 /*==============================================================*/
 /* Table: F_ADDRESS_BOOK                                        */
 /*==============================================================*/
@@ -776,7 +780,20 @@ alter table P_TASK_LIST
    add primary key (taskid);
 
 
-
+create table F_UNITROLE
+(
+   UNIT_CODE            varchar(32) not null,
+   ROLE_CODE            varchar(32) not null,
+   OBTAIN_DATE          datetime not null,
+   SECEDE_DATE          datetime,
+   CHANGE_DESC          varchar(256),
+   update_Date          datetime,
+   Create_Date          datetime,
+   creator              varchar(32),
+   updator              varchar(32)
+);
+alter table F_UNITROLE
+   add primary key (UNIT_CODE, ROLE_CODE);
 
 --  函数
 
@@ -882,6 +899,16 @@ SELECT a.unit_code AS top_unit_code,  b.unit_code,b.unit_type, b.parent_unit, b.
   FROM F_UNITINFO a , F_UNITINFO b
  WHERE b.Unit_Path LIKE CONCAT(a.Unit_Path,'%' );
 
+ create or replace view F_V_USERROLES as
+select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'D' as OBTAIN_TYPE,
+      b.ROLE_DESC, b.CREATE_DATE, b.UPDATE_DATE ,a.USER_CODE, NULL as INHERITED_FROM
+    from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE)
+    where a.OBTAIN_DATE <=  now() and (a.SECEDE_DATE is null or a.SECEDE_DATE > now()) and b.IS_VALID='T'
+union
+  select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'I' as OBTAIN_TYPE,
+        b.ROLE_DESC, b.CREATE_DATE, b.UPDATE_DATE ,c.USER_CODE, a.UNIT_CODE as INHERITED_FROM
+    from F_UNITROLE a join F_ROLEINFO b on (a.ROLE_CODE = b.ROLE_CODE) JOIN F_USERUNIT c on( a.UNIT_CODE = c.UNIT_CODE)
+    where a.OBTAIN_DATE <=  now() and (a.SECEDE_DATE is null or a.SECEDE_DATE > now()) and b.IS_VALID='T';
 
  create or replace view F_V_Opt_Role_Map as
 select concat(`c`.`opt_url`,`b`.`OPT_URL`) as opt_url, b.opt_req, a.role_code, c.opt_id, b.opt_code
@@ -893,17 +920,7 @@ select concat(`c`.`opt_url`,`b`.`OPT_URL`) as opt_url, b.opt_req, a.role_code, c
  where c.Opt_Type <> 'W'
    and c.opt_url <> '...'
  order by c.opt_url, b.opt_req, a.role_code;
-/*==============================================================*/
-/* View: F_V_USERROLES                                          */
-/*==============================================================*/
-create or replace view F_V_USERROLES as
-select distinct b.ROLE_CODE,b.ROLE_NAME,b.IS_VALID,b.ROLE_DESC,b.CREATE_DATE,b.UPDATE_DATE ,a.user_code
-    from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE)
-    where a.OBTAIN_DATE <=  now() and (a.SECEDE_DATE is null or a.SECEDE_DATE > now()) and b.IS_VALID='T'
-union all
-  select d.ROLE_CODE,d.ROLE_NAME,d.IS_VALID,d.ROLE_DESC,d.CREATE_DATE,d.UPDATE_DATE , c.user_code
-   from F_USERINFO c , F_ROLEINFO d
-   where d.role_code = 'G-public';
+
 
 /*==============================================================*/
 /* View: F_V_UserOptDataScopes                                  */

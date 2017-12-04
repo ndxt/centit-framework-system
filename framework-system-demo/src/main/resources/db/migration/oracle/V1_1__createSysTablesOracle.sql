@@ -8,6 +8,7 @@ create sequence s_usercode;
 create sequence S_MSGCODE ;
 create sequence S_RECIPIENT ;
 create sequence S_ADDRESSID ;
+create sequence S_ROLECODE;
 
 create table F_ADDRESS_BOOK
 (
@@ -600,6 +601,19 @@ comment on column P_TASK_LIST.  noticeSign   is    '提醒标志为：禁止提�
 comment on column P_TASK_LIST. lastNoticeTime    is  '最后一次提醒时间，根据提醒策略可以提醒多次'  ;
 alter table P_TASK_LIST  add primary key (taskid);
 
+create table F_UNITROLE
+(
+   UNIT_CODE            varchar2(32) not null,
+   ROLE_CODE            varchar2(32) not null,
+   OBTAIN_DATE          date not null,
+   SECEDE_DATE          date,
+   CHANGE_DESC          varchar2(256),
+   update_Date          date,
+   Create_Date          date,
+   creator              varchar2(32),
+   updator              varchar2(32)
+);
+
 CREATE OR REPLACE VIEW v_hi_unitinfo AS
 SELECT a.unit_code AS top_unit_code,  b.unit_code,b.unit_type, b.parent_unit, b.is_valid,     b.unit_name,b.unit_desc,b.unit_short_name,b.addrbook_id,b.unit_order,b.dep_no,
        b.unit_word,b.unit_grade,
@@ -608,7 +622,18 @@ SELECT a.unit_code AS top_unit_code,  b.unit_code,b.unit_type, b.parent_unit, b.
   FROM F_UNITINFO a , F_UNITINFO b
  WHERE b.Unit_Path LIKE CONCAT(a.Unit_Path,'%' );
 
+create or replace view F_V_USERROLES as
+select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'D' as OBTAIN_TYPE,
+       b.ROLE_DESC, b.CREATE_DATE, b.UPDATE_DATE ,a.USER_CODE, null as INHERITED_FROM
+    from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE)
+    where a.OBTAIN_DATE <=  sysdate and (a.SECEDE_DATE is null or a.SECEDE_DATE > sysdate) and b.IS_VALID='T'
+union
+  select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'I' as OBTAIN_TYPE,
+      b.ROLE_DESC, b.CREATE_DATE, b.UPDATE_DATE ,c.USER_CODE, a.UNIT_CODE as INHERITED_FROM
+    from F_UNITROLE a join F_ROLEINFO b on (a.ROLE_CODE = b.ROLE_CODE) JOIN F_USERUNIT c on( a.UNIT_CODE = c.UNIT_CODE)
+    where a.OBTAIN_DATE <=  sysdate and (a.SECEDE_DATE is null or a.SECEDE_DATE > sysdate) and b.IS_VALID='T';
 
+ 
  create or replace view F_V_Opt_Role_Map as
 select c.opt_url||b.OPT_URL as opt_url, b.opt_req, a.role_code, c.opt_id, b.opt_code
   from F_ROLEPOWER a
@@ -619,15 +644,6 @@ select c.opt_url||b.OPT_URL as opt_url, b.opt_req, a.role_code, c.opt_id, b.opt_
  where c.Opt_Type <> 'W'
    and c.opt_url <> '...'
  order by c.opt_url, b.opt_req, a.role_code;
-
-create or replace view F_V_USERROLES as
-select distinct b.ROLE_CODE,b.ROLE_NAME,b.IS_VALID,b.ROLE_DESC,b.CREATE_DATE,b.UPDATE_DATE ,a.user_code
-    from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE)
-    where a.OBTAIN_DATE <=  sysdate and (a.SECEDE_DATE is null or a.SECEDE_DATE > sysdate) and b.IS_VALID='T'
-union all
-  select d.ROLE_CODE,d.ROLE_NAME,d.IS_VALID,d.ROLE_DESC,d.CREATE_DATE,d.UPDATE_DATE , c.user_code
-   from F_USERINFO c , F_ROLEINFO d
-   where d.role_code = 'G-public';
 
 create or replace view F_V_UserOptDataScopes as
 select  distinct a.User_Code, c. OPT_ID ,  c.OPT_METHOD , b.opt_Scope_Codes
