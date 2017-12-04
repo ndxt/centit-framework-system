@@ -213,6 +213,22 @@
             ]]>
         </where>
     </select>
+
+    <!--查询单条记录ById -->
+    <select id="getRoleByCodeOrName" parameterType="String" resultMap="RoleInfo">
+        <include refid="coreSql" />
+        <where>
+            <![CDATA[
+                u.IS_VALID ='T' and ( u.ROLE_CODE= #{roleCodeOrName} or " +
+                "((u.ROLE_TYPE='G' or u.ROLE_TYPE='P') and ROLE_NAME = #{roleCodeOrName}))
+            ]]>
+        </where>
+    </select>
+
+
+
+
+
     <!--查询单条记录 结束 -->
 
     <!--插入新单据 start -->

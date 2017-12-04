@@ -64,6 +64,15 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
     @Override
     public void updateRole(RoleInfo roleInfo){
         super.updateObject(roleInfo);
-  }
+    }
+
+    @Override
+    public RoleInfo getRoleByCodeOrName(String roleCodeOrName) {
+        List<RoleInfo> roles = this.listObjects(" From RoleInfo where isValid ='T' and ( roleCode= ? or " +
+            "(( roleType='G' or roleType='P') and roleName = ?))", new Object[]{roleCodeOrName,roleCodeOrName});
+        if(roles!=null && roles.size()>0)
+            return roles.get(0);
+        return null;
+    }
 
 }

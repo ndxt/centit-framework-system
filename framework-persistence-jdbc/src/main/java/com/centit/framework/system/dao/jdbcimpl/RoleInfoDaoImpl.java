@@ -63,6 +63,15 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
         return super.getObjectById(roleCode);
     }
 
+    @Override
+    public RoleInfo getRoleByCodeOrName(String roleCodeOrName) {
+        List<RoleInfo> roles = this.listObjectsByFilter(" where IS_VALID ='T' and ( ROLE_CODE= ? or " +
+                    "((ROLE_TYPE='G' or ROLE_TYPE='P') and ROLE_NAME =?))", new Object[]{roleCodeOrName,roleCodeOrName});
+        if(roles!=null && roles.size()>0)
+            return roles.get(0);
+        return null;
+    }
+
     @SuppressWarnings("unchecked")
     @Transactional
     public List<VOptTree> getVOptTreeList() {

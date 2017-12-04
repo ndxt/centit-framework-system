@@ -8,6 +8,7 @@ import org.springframework.util.CollectionUtils;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -60,6 +61,15 @@ public class FVUserRoles implements IUserRole, IRoleInfo, Serializable {
 
     @Transient
     private List<RolePower> rolePowers;
+
+    public FVUserRoles() {
+        obtainType = "D";
+    }
+
+    public FVUserRoles(String userCode, String roleCode) {
+        obtainType = "D";
+        this.id = new UserRoleId(userCode, roleCode);
+    }
 
     public UserRoleId getId() {
         return id;

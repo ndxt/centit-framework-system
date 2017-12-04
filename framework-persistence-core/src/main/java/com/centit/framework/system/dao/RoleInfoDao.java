@@ -72,6 +72,13 @@ public interface RoleInfoDao {
     RoleInfo getObjectById(String roleCode);
 
     /**
+     * 查询角色 根据代码 或者 名称（根据名称查询时经查询 G 和 P 类别的角色）
+     * @param roleCodeOrName 角色代码或者名称
+     * @return RoleInfo
+     */
+    RoleInfo getRoleByCodeOrName(String roleCodeOrName);
+
+    /**
      * 查询菜单树
      * @return List<VOptTree>
      */
