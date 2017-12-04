@@ -40,6 +40,7 @@ define(function (require) {
       form.form('enableValidation');
       var isValid = form.form('validate');
 
+      this.newObject = null;
       if (isValid) {
         this.newObject = form.form('value');
 
@@ -54,28 +55,16 @@ define(function (require) {
 
     // @override
     this.onClose = function (table, data) {
-      var newObject = this.newObject;
-
-      if (!newObject) return;
-
-      newObject = $.extend(newObject, {
-        id: newObject.optId,
-        text: newObject.optName,
-        url: newObject.optRoute
-      });
-
-      if (data) {
-        // 展开节点
-        table.treegrid('expand', data.id);
-        // 添加新菜单到树
-        table.treegrid('append', {
-          parent: newObject.preOptId,
-          data: [newObject]
-        });
+      if (!data) {
+        return;
       }
-      else {
-        table.treegrid('reload');
-      }
+
+      this.parent.currentOpt = data.optId;
+
+      // 展开节点
+      table.treegrid('reload', data.pid);
+
+      require('loaders/cache/loader.system').loadAll();
     };
   });
 
