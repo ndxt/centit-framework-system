@@ -439,7 +439,7 @@ public class RoleInfoController extends BaseController {
     /**
      * 从操作定义反向删除角色代码
      * @param roleCode 角色代码
-     * @param request HttpServletRequest
+     * //param request HttpServletRequest
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{roleCode}", method = RequestMethod.DELETE)

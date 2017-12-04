@@ -88,13 +88,15 @@ public class DataDictionaryManagerImpl implements
             for(Pair<DataDictionary,DataDictionary> updateDp: dbOptList.getMiddle()){
                 DataDictionary oldD = updateDp.getLeft();
                 DataDictionary newD = updateDp.getRight();
-                if("F".equals(oldD.getDataStyle()))
-                    continue;
+
                 if(isAdmin || "U".equals(oldD.getDataStyle())){
                     /*BeanUtils.copyProperties(newD, oldD, new String[]{"id","dataStyle"});
                     dictionaryDao.updateObject(oldD);*/
-                    dictionaryDao.updateDictionary(newD);
+                    oldD.copy(newD);
+                }else{ // 否则只能排序
+                    oldD.setDataOrder(newD.getDataOrder());
                 }
+                dictionaryDao.updateDictionary(oldD);
             }
         }
         return oldData;
