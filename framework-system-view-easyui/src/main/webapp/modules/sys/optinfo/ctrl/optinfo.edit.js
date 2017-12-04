@@ -38,29 +38,6 @@ define(function (require) {
           url: Config.ContextPath + 'system/optinfo/' + data.optId,
           method: 'put',
           data: data
-        }).then(function () {
-          return require('loaders/cache/loader.system').loadAll();
-
-          var newObject = _self.newObject;
-
-          if (!newObject) return;
-
-          newObject = $.extend(newObject, {
-            id: newObject.optId,
-            text: newObject.optName,
-            url: newObject.optRoute
-          });
-
-          // 更新树中菜单
-          table.treegrid('update', {
-            id: newObject.id,
-            row: newObject
-          });
-
-          table.treegrid("reload");
-
-          var panel = table.treegrid('getPanel');
-          btns = panel.find('.easyui-linkbutton').linkbutton();
         }).then(closeCallback);
       }
 

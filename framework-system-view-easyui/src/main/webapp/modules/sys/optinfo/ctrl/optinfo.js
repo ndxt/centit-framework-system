@@ -13,6 +13,8 @@ define(function (require) {
   // 业务信息
   return Page.extend(function () {
 
+    var vm = this;
+
     this.injecte([
       new OptInfoAdd('optinfo_add'),
       new OptInfoAdd1('optinfo_add1'),
@@ -21,6 +23,8 @@ define(function (require) {
       new OptInfoAll('optinfo_all'),
       new OptInfoRemove('optinfo_remove')
     ]);
+
+    this.currentOpt = null;
 
     // @override
     this.load = function (panel) {
@@ -38,13 +42,22 @@ define(function (require) {
           }
         },
 
-        // 加载完数据回调函数
-        onLoadSuccess: function (data) {
+        onLoadSuccess: function () {
           var panel = $(this).treegrid('getPanel');
           panel.find('.easyui-linkbutton').linkbutton();
+
+          if (vm.currentOpt) {
+            var optId = vm.currentOpt;
+            // 确保刷新时一定重新加载子页面
+            vm.currentOpt = null;
+            return $(this).treegrid('select', optId);
+          }
+
+          var root = $(this).treegrid('getRoot');
+          if (root) {
+            $(this).treegrid('select', root.optId);
+          }
         }
-
-
       });
     };
 
@@ -73,6 +86,4 @@ define(function (require) {
       }
     }
   });
-
-  return OptInfo;
 });

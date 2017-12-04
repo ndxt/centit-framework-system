@@ -34,383 +34,386 @@ import java.util.Map;
 @Controller
 @RequestMapping("/optinfo")
 public class OptInfoController extends BaseController {
-  @Resource
-  private OptInfoManager optInfoManager;
+    @Resource
+    private OptInfoManager optInfoManager;
 
-  @Resource
-  private OptMethodManager optMethodManager;
+    @Resource
+    private OptMethodManager optMethodManager;
 
-  @Resource
-  @NotNull
-  private SysRoleManager sysRoleManager;
+    @Resource
+    @NotNull
+    private SysRoleManager sysRoleManager;
 
-  @Resource
-  private PlatformEnvironment platformEnvironment;
-  /**
-   * 系统日志中记录
-   */
-  //private String optId = "OPTINFO";//CodeRepositoryUtil.getCode("OPTID", "optInfo");
-  public String getOptId() {
-    return  "OPTINFO";
-  }
-  /**
-   * 查询所有系统业务
-   *
-   * @param id       父id
-   * @param request  HttpServletRequest
-   * @param response HttpServletResponse
-   */
-  @RequestMapping(value = "/sub", method = RequestMethod.GET)
-  public void listFromParent(String id, HttpServletRequest request, HttpServletResponse response) {
-    Map<String, Object> searchColumn = convertSearchColumn(request);
+    @Resource
+    private PlatformEnvironment platformEnvironment;
 
-    if (StringUtils.isNotBlank(id)) {
-      searchColumn.put("preOptId", id);
-    } else {
-      searchColumn.put("NP_TOPOPT", "true");
+    /**
+     * 系统日志中记录
+     */
+    //private String optId = "OPTINFO";//CodeRepositoryUtil.getCode("OPTID", "optInfo");
+    public String getOptId() {
+        return "OPTINFO";
     }
 
-    List<OptInfo> listObjects = optInfoManager.listObjects(searchColumn);
+    /**
+     * 查询所有系统业务
+     *
+     * @param id       父id
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
+     */
+    @RequestMapping(value = "/sub", method = RequestMethod.GET)
+    public void listFromParent(String id, HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> searchColumn = convertSearchColumn(request);
 
-    for (OptInfo opt : listObjects) {
-      //if("...".equals(opt.getOptRoute()))
-      opt.setState(optInfoManager.hasChildren(opt.getOptId()) ?
-        "closed" : "open");
+        if (StringUtils.isNotBlank(id)) {
+            searchColumn.put("preOptId", id);
+        } else {
+            searchColumn.put("NP_TOPOPT", "true");
+        }
+
+        List<OptInfo> listObjects = optInfoManager.listObjects(searchColumn);
+
+        for (OptInfo opt : listObjects) {
+            //if("...".equals(opt.getOptRoute()))
+            opt.setState(optInfoManager.hasChildren(opt.getOptId()) ?
+                "closed" : "open");
+        }
+        JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(listObjects), response);
     }
-    JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(listObjects), response);
-  }
 
-  private JSONArray makeMenuFuncsJson(List<OptInfo> menuFunsByUser) {
-    return ViewDataTransform.makeTreeViewJson(menuFunsByUser,
-      ViewDataTransform.createStringHashMap("id", "optId",
-        "optId", "optId",
-        "optCode", "optId",
-        "pid", "preOptId",
-        "text", "optName",
-        "url", "optRoute",
-        "icon", "icon",
-        "children", "children",
-        "isInToolbar", "isInToolbar",
-        "state", "state",
-        "optMethods", "optMethods"
-      ), (jsonObject, obj) -> jsonObject.put("external", !("D".equals(obj.getPageType()))));
-  }
-
-  /**
-   * 查询所有系统业务
-   *
-   * @param field    需要显示的字段
-   * @param struct   True根据父子节点排序的树形结构，False，排序的列表结构
-   * @param request  HttpServletRequest
-   * @param response HttpServletResponse
-   */
-  @RequestMapping(method = RequestMethod.GET)
-  public void listAll(String[] field, boolean struct, HttpServletRequest request, HttpServletResponse response) {
-    Map<String, Object> searchColumn = convertSearchColumn(request);
-    List<OptInfo> listObjects = optInfoManager.listObjects(searchColumn);
-
-    if (struct) {
-      listObjects = optInfoManager.listObjectFormatTree(listObjects, false);
+    private JSONArray makeMenuFuncsJson(List<OptInfo> menuFunsByUser) {
+        return ViewDataTransform.makeTreeViewJson(menuFunsByUser,
+            ViewDataTransform.createStringHashMap("id", "optId",
+                "optId", "optId",
+                "optCode", "optId",
+                "pid", "preOptId",
+                "text", "optName",
+                "url", "optRoute",
+                "icon", "icon",
+                "children", "children",
+                "isInToolbar", "isInToolbar",
+                "state", "state",
+                "optMethods", "optMethods"
+            ), (jsonObject, obj) -> jsonObject.put("external", !("D".equals(obj.getPageType()))));
     }
-    if (ArrayUtils.isNotEmpty(field))
-      JsonResultUtils.writeSingleDataJson(listObjects, response,
-        JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
-    else
-      JsonResultUtils.writeSingleDataJson(listObjects, response);
-  }
 
+    /**
+     * 查询所有系统业务
+     *
+     * @param field    需要显示的字段
+     * @param struct   True根据父子节点排序的树形结构，False，排序的列表结构
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
+     */
+    @RequestMapping(method = RequestMethod.GET)
+    public void listAll(String[] field, boolean struct, HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> searchColumn = convertSearchColumn(request);
+        List<OptInfo> listObjects = optInfoManager.listObjects(searchColumn);
 
-  /**
-   * 查询所有需要通过权限管理的业务
-   *
-   * @param response HttpServletResponse
-   */
-  @RequestMapping(value = "/poweropts", method = RequestMethod.GET)
-  public void listPowerOpts(HttpServletResponse response) {
-    List<OptInfo> listObjects = optInfoManager.listSysAndOptPowerOpts();
-    listObjects = optInfoManager.listObjectFormatTree(listObjects, true);
-    JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(listObjects), response);
-  }
-
-
-  /**
-   * 查询所有项目权限管理的业务
-   *
-   * @param field    需要显示的字段
-   * @param response HttpServletResponse
-   */
-  @RequestMapping(value = "/itempoweropts", method = RequestMethod.GET)
-  public void listItemPowerOpts(String[] field, HttpServletResponse response) {
-    List<OptInfo> listObjects = optInfoManager.listItemPowerOpts();
-    listObjects = optInfoManager.listObjectFormatTree(listObjects, true);
-
-    if (ArrayUtils.isNotEmpty(field))
-      JsonResultUtils.writeSingleDataJson(listObjects, response,
-        JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
-    else
-      JsonResultUtils.writeSingleDataJson(listObjects, response);
-  }
-
-
-  /**
-   * 查询某个部门权限的业务
-   *
-   * @param field    需要显示的字段
-   * @param unitCode unitCode
-   * @param response HttpServletResponse
-   */
-  @RequestMapping(value = "/unitpoweropts/{unitCode}", method = RequestMethod.GET)
-  public void listUnitPowerOpts(@PathVariable String unitCode, String[] field,
-                                HttpServletResponse response) {
-    List<OptInfo> listObjects = optInfoManager.listOptWithPowerUnderUnit(unitCode);
-    listObjects = optInfoManager.listObjectFormatTree(listObjects, false);
-
-    JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(listObjects), response);
-  }
-
-  /**
-   * 新增菜单
-   *
-   * @param optInfo  OptInfo
-   * @param request  HttpServletRequest
-   * @param response HttpServletResponse
-   */
-  @RequestMapping(method = {RequestMethod.POST})
-  @RecordOperationLog(content = "新增菜单")
-  public void createOptInfo(@Valid OptInfo optInfo, HttpServletRequest request, HttpServletResponse response) {
-
-    if (StringUtils.isBlank(optInfo.getOptRoute())) {
-      optInfo.setOptRoute("...");
+        if (struct) {
+            listObjects = optInfoManager.listObjectFormatTree(listObjects, false);
+        }
+        if (ArrayUtils.isNotEmpty(field))
+            JsonResultUtils.writeSingleDataJson(listObjects, response,
+                JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
+        else
+            JsonResultUtils.writeSingleDataJson(listObjects, response);
     }
-    // 解决问题新增菜单没有url
-    if (StringUtils.isBlank(optInfo.getOptUrl()) || "...".equals(optInfo.getOptUrl())) {
-      optInfo.setOptUrl(optInfo.getOptRoute());
+
+
+    /**
+     * 查询所有需要通过权限管理的业务
+     *
+     * @param response HttpServletResponse
+     */
+    @RequestMapping(value = "/poweropts", method = RequestMethod.GET)
+    public void listPowerOpts(HttpServletResponse response) {
+        List<OptInfo> listObjects = optInfoManager.listSysAndOptPowerOpts();
+        listObjects = optInfoManager.listObjectFormatTree(listObjects, true);
+        JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(listObjects), response);
     }
-    OptInfo parentOpt = optInfoManager.getOptInfoById(optInfo.getPreOptId());
-    if (parentOpt == null)
-      optInfo.setPreOptId("0");
-    optInfoManager.saveNewOptInfo(optInfo);
 
-    //刷新缓存
-    sysRoleManager.loadRoleSecurityMetadata();
 
-    JsonResultUtils.writeBlankJson(response);
-    /*********log*********/
+    /**
+     * 查询所有项目权限管理的业务
+     *
+     * @param field    需要显示的字段
+     * @param response HttpServletResponse
+     */
+    @RequestMapping(value = "/itempoweropts", method = RequestMethod.GET)
+    public void listItemPowerOpts(String[] field, HttpServletResponse response) {
+        List<OptInfo> listObjects = optInfoManager.listItemPowerOpts();
+        listObjects = optInfoManager.listObjectFormatTree(listObjects, true);
+
+        if (ArrayUtils.isNotEmpty(field))
+            JsonResultUtils.writeSingleDataJson(listObjects, response,
+                JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
+        else
+            JsonResultUtils.writeSingleDataJson(listObjects, response);
+    }
+
+
+    /**
+     * 查询某个部门权限的业务
+     *
+     * @param field    需要显示的字段
+     * @param unitCode unitCode
+     * @param response HttpServletResponse
+     */
+    @RequestMapping(value = "/unitpoweropts/{unitCode}", method = RequestMethod.GET)
+    public void listUnitPowerOpts(@PathVariable String unitCode, String[] field,
+                                  HttpServletResponse response) {
+        List<OptInfo> listObjects = optInfoManager.listOptWithPowerUnderUnit(unitCode);
+        listObjects = optInfoManager.listObjectFormatTree(listObjects, false);
+
+        JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(listObjects), response);
+    }
+
+    /**
+     * 新增菜单
+     *
+     * @param optInfo  OptInfo
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
+     */
+    @RequestMapping(method = {RequestMethod.POST})
+    @RecordOperationLog(content = "新增菜单")
+    public void createOptInfo(@Valid OptInfo optInfo, HttpServletRequest request, HttpServletResponse response) {
+
+        if (StringUtils.isBlank(optInfo.getOptRoute())) {
+            optInfo.setOptRoute("...");
+        }
+        // 解决问题新增菜单没有url
+        if (StringUtils.isBlank(optInfo.getOptUrl()) || "...".equals(optInfo.getOptUrl())) {
+            optInfo.setOptUrl(optInfo.getOptRoute());
+        }
+        OptInfo parentOpt = optInfoManager.getOptInfoById(optInfo.getPreOptId());
+        if (parentOpt == null)
+            optInfo.setPreOptId("0");
+        optInfoManager.saveNewOptInfo(optInfo);
+
+        //刷新缓存
+        sysRoleManager.loadRoleSecurityMetadata();
+
+        JsonResultUtils.writeSingleDataJson(optInfo, response);
+        /*********log*********/
 //    OperationLogCenter.logNewObject(request, optId, optInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_C,
 //      "新增业务菜单", optInfo);
-    /*********log*********/
-  }
+        /*********log*********/
+    }
 
-  /**
-   * optId是否已存在
-   *
-   * @param optId    optId
-   * @param response HttpServletResponse
-   * @throws IOException IOException
-   */
-  @RequestMapping(value = "/notexists/{optId}", method = {RequestMethod.GET})
-  public void isNotExists(@PathVariable String optId, HttpServletResponse response) throws IOException {
-    OptInfo optInfo = optInfoManager.getObjectById(optId);
-    JsonResultUtils.writeOriginalObject(null == optInfo, response);
-  }
+    /**
+     * optId是否已存在
+     *
+     * @param optId    optId
+     * @param response HttpServletResponse
+     * @throws IOException IOException
+     */
+    @RequestMapping(value = "/notexists/{optId}", method = {RequestMethod.GET})
+    public void isNotExists(@PathVariable String optId, HttpServletResponse response) throws IOException {
+        OptInfo optInfo = optInfoManager.getObjectById(optId);
+        JsonResultUtils.writeOriginalObject(null == optInfo, response);
+    }
 
-  /**
-   * 更新菜单
-   * @param optId    主键
-   * @param optInfo  OptInfo
-   * @param request  HttpServletRequest
-   * @param response HttpServletResponse
-   */
-  @RequestMapping(value = "/{optId}", method = {RequestMethod.PUT})
-  @RecordOperationLog(content = "更新菜单")
-  public void edit(@PathVariable String optId, @Valid OptInfo optInfo,
-                   HttpServletRequest request, HttpServletResponse response) {
+    /**
+     * 更新菜单
+     *
+     * @param optId    主键
+     * @param optInfo  OptInfo
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
+     */
+    @RequestMapping(value = "/{optId}", method = {RequestMethod.PUT})
+    @RecordOperationLog(content = "更新菜单")
+    public void edit(@PathVariable String optId, @Valid OptInfo optInfo,
+                     HttpServletRequest request, HttpServletResponse response) {
 
-      OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
-      if (null == dbOptInfo) {
-        JsonResultUtils.writeErrorMessageJson("当前对象不存在", response);
-        return;
-      }
+        OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
+        if (null == dbOptInfo) {
+            JsonResultUtils.writeErrorMessageJson("当前对象不存在", response);
+            return;
+        }
 
-      if (!StringUtils.equals(dbOptInfo.getPreOptId(), optInfo.getPreOptId())) {
-          OptInfo parentOpt = optInfoManager.getOptInfoById(optInfo.getPreOptId());
-          if (parentOpt == null) {
-              optInfo.setPreOptId(dbOptInfo.getPreOptId());
-          }
-      }
+        if (!StringUtils.equals(dbOptInfo.getPreOptId(), optInfo.getPreOptId())) {
+            OptInfo parentOpt = optInfoManager.getOptInfoById(optInfo.getPreOptId());
+            if (parentOpt == null) {
+                optInfo.setPreOptId(dbOptInfo.getPreOptId());
+            }
+        }
 
-      if (!optInfoManager.hasChildren(optId)) {
-          if (StringUtils.isBlank(optInfo.getOptUrl()) || "...".equals(optInfo.getOptUrl())) {
-              optInfo.setOptUrl(optInfo.getOptRoute());
-          }
-      }
+        if (!optInfoManager.hasChildren(optId)) {
+            if (StringUtils.isBlank(optInfo.getOptUrl()) || "...".equals(optInfo.getOptUrl())) {
+                optInfo.setOptUrl(optInfo.getOptRoute());
+            }
+        }
 
-      /*********log*********/
+        /*********log*********/
 //      OptInfo oldValue = new OptInfo();
 //      BeanUtils.copyProperties(dbOptInfo, oldValue);
-      /*********log*********/
+        /*********log*********/
 
-      BeanUtils.copyProperties(optInfo, dbOptInfo, "optMethods", "dataScopes");
+        BeanUtils.copyProperties(optInfo, dbOptInfo, "optMethods", "dataScopes");
 
-      optInfoManager.updateOptInfo(dbOptInfo);
-      /*********log*********/
+        optInfoManager.updateOptInfo(dbOptInfo);
+        /*********log*********/
 //      OperationLogCenter.logUpdateObject(request, this.optId, dbOptInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_U,
 //        "更新业务菜单" + dbOptInfo.getOptId(), dbOptInfo, oldValue);
-      /*********log*********/
+        /*********log*********/
 
-      JsonResultUtils.writeSuccessJson(response);
-  }
-
-  /**
-   * 更新操作权限
-   *
-   * @param optId    主键
-   * @param optInfo  OptInfo
-   * @param request  HttpServletRequest
-   * @param response HttpServletResponse
-   */
-  @RequestMapping(value = "/editpower{optId}", method = {RequestMethod.PUT})
-  @RecordOperationLog(content = "更新操作权限")
-  public void editPower(@PathVariable String optId, @Valid OptInfo optInfo,
-                        HttpServletRequest request, HttpServletResponse response) {
-
-    OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
-    if (null == dbOptInfo) {
-      JsonResultUtils.writeErrorMessageJson("当前对象不存在", response);
-      return;
+        JsonResultUtils.writeSingleDataJson(dbOptInfo, response);
     }
 
-    if (!StringUtils.equals(dbOptInfo.getPreOptId(), optInfo.getPreOptId())) {
-      OptInfo parentOpt = optInfoManager.getOptInfoById(optInfo.getPreOptId());
-      if (parentOpt == null) {
-          optInfo.setPreOptId(dbOptInfo.getPreOptId());
-      }
-    }
-    /*********log*********/
+    /**
+     * 更新操作权限
+     *
+     * @param optId    主键
+     * @param optInfo  OptInfo
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
+     */
+    @RequestMapping(value = "/editpower{optId}", method = {RequestMethod.PUT})
+    @RecordOperationLog(content = "更新操作权限")
+    public void editPower(@PathVariable String optId, @Valid OptInfo optInfo,
+                          HttpServletRequest request, HttpServletResponse response) {
+
+        OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
+        if (null == dbOptInfo) {
+            JsonResultUtils.writeErrorMessageJson("当前对象不存在", response);
+            return;
+        }
+
+        if (!StringUtils.equals(dbOptInfo.getPreOptId(), optInfo.getPreOptId())) {
+            OptInfo parentOpt = optInfoManager.getOptInfoById(optInfo.getPreOptId());
+            if (parentOpt == null) {
+                optInfo.setPreOptId(dbOptInfo.getPreOptId());
+            }
+        }
+        /*********log*********/
 //    OptInfo oldValue = new OptInfo();
 //    BeanUtils.copyProperties(dbOptInfo, oldValue);
-    /*********log*********/
+        /*********log*********/
 
-    for (OptMethod optDef : optInfo.getOptMethods()) {
-      if (StringUtils.isBlank(optDef.getOptCode())) {
-        optDef.setOptCode(optMethodManager.getNextOptCode());
-      }
-    }
-    BeanUtils.copyProperties(optInfo, dbOptInfo, "optMethods", "dataScopes");
+        for (OptMethod optDef : optInfo.getOptMethods()) {
+            if (StringUtils.isBlank(optDef.getOptCode())) {
+                optDef.setOptCode(optMethodManager.getNextOptCode());
+            }
+        }
+        BeanUtils.copyProperties(optInfo, dbOptInfo, "optMethods", "dataScopes");
 
-    dbOptInfo.addAllOptMethods(optInfo.getOptMethods());
-    dbOptInfo.addAllDataScopes(optInfo.getDataScopes());
-    optInfoManager.updateOperationPower(dbOptInfo);
+        dbOptInfo.addAllOptMethods(optInfo.getOptMethods());
+        dbOptInfo.addAllDataScopes(optInfo.getDataScopes());
+        optInfoManager.updateOperationPower(dbOptInfo);
 //    oldValue.setOptMethods(old.get("methods"));
 //    oldValue.setDataScopes(old.get("scopes"));
-    //刷新缓存
-    sysRoleManager.loadRoleSecurityMetadata();
-    /*********log*********/
+        //刷新缓存
+        sysRoleManager.loadRoleSecurityMetadata();
+        /*********log*********/
 //    OperationLogCenter.logUpdateObject(request, this.optId, dbOptInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_U,
 //      "更新操作权限" + dbOptInfo.getOptId(), dbOptInfo, oldValue);
-    /*********log*********/
+        /*********log*********/
 
-    JsonResultUtils.writeSuccessJson(response);
-  }
+        JsonResultUtils.writeSuccessJson(response);
+    }
 
-  /**
-   * 删除菜单
-   *
-   * @param optId    主键
-   * @param request  HttpServletRequest
-   * @param response HttpServletResponse
-   */
-  @RequestMapping(value = "/{optId}", method = {RequestMethod.DELETE})
-  @RecordOperationLog(content = "删除菜单")
-  public void delete(@PathVariable String optId, HttpServletRequest request, HttpServletResponse response) {
-    OptInfo dboptInfo = optInfoManager.getObjectById(optId);
+    /**
+     * 删除菜单
+     *
+     * @param optId    主键
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
+     */
+    @RequestMapping(value = "/{optId}", method = {RequestMethod.DELETE})
+    @RecordOperationLog(content = "删除菜单")
+    public void delete(@PathVariable String optId, HttpServletRequest request, HttpServletResponse response) {
+        OptInfo dboptInfo = optInfoManager.getObjectById(optId);
 
-    optInfoManager.deleteOptInfo(dboptInfo);
-    //刷新缓存
-    sysRoleManager.loadRoleSecurityMetadata();
-    JsonResultUtils.writeBlankJson(response);
-    /*********log*********/
+        optInfoManager.deleteOptInfo(dboptInfo);
+        //刷新缓存
+        sysRoleManager.loadRoleSecurityMetadata();
+        JsonResultUtils.writeBlankJson(response);
+        /*********log*********/
 //    OperationLogCenter.logDeleteObject(request, this.optId, dboptInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_D,
 //      "删除业务菜单", dboptInfo);
-    /*********log*********/
-  }
-
-  /**
-   * 查询单条数据
-   *
-   * @param optId    主键
-   * @param response HttpServletResponse
-   */
-  @RequestMapping(value = "/{optId}", method = {RequestMethod.GET})
-  public void getOptInfoById(@PathVariable String optId, HttpServletResponse response) {
-    OptInfo dbOptInfo = optInfoManager.getOptInfoById(optId);
-
-    JsonResultUtils.writeSingleDataJson(dbOptInfo, response);
-  }
-
-  /**
-   * 新增页面时获取OptDef主键
-   *
-   * @param response HttpServletResponse
-   */
-  @RequestMapping(value = "/nextOptCode", method = RequestMethod.GET)
-  public void getNextOptCode(HttpServletResponse response) {
-    String optCode = optMethodManager.getNextOptCode();
-
-    ResponseMapData responseData = new ResponseMapData();
-    responseData.addResponseData("optCode", optCode);
-
-    JsonResultUtils.writeResponseDataAsJson(responseData, response);
-  }
-
-  /**
-   * 新建或更新业务操作
-   *
-   * @param optId    主键
-   * @param optCode  optCode
-   * @param optDef   OptMethod
-   * @param response HttpServletResponse
-   */
-  @RequestMapping(value = "/{optId}/{optCode}", method = {RequestMethod.POST, RequestMethod.PUT})
-  public void optDefEdit(@PathVariable String optId, @PathVariable String optCode, @Valid OptMethod optDef,
-                         HttpServletResponse response) {
-    OptInfo optInfo = optInfoManager.getObjectById(optId);
-    if (null == optInfo) {
-      JsonResultUtils.writeSingleErrorDataJson(
-        ResponseData.ERROR_INTERNAL_SERVER_ERROR,
-        "数据库不匹配", "数据库中不存在optId为" + optId + "的业务信息。", response);
-      return;
+        /*********log*********/
     }
 
-    OptMethod dbOptDef = optMethodManager.getObjectById(optCode);
-    if (null == dbOptDef) {
-      optDef.setOptId(optId);
-      optMethodManager.updateOptMethod(optDef);
-    } else {
-      BeanUtils.copyProperties(optInfo, dbOptDef, new String[]{"optInfo"});
-      optMethodManager.updateOptMethod(dbOptDef);
+    /**
+     * 查询单条数据
+     *
+     * @param optId    主键
+     * @param response HttpServletResponse
+     */
+    @RequestMapping(value = "/{optId}", method = {RequestMethod.GET})
+    public void getOptInfoById(@PathVariable String optId, HttpServletResponse response) {
+        OptInfo dbOptInfo = optInfoManager.getOptInfoById(optId);
+
+        JsonResultUtils.writeSingleDataJson(dbOptInfo, response);
     }
 
-    JsonResultUtils.writeSuccessJson(response);
-  }
+    /**
+     * 新增页面时获取OptDef主键
+     *
+     * @param response HttpServletResponse
+     */
+    @RequestMapping(value = "/nextOptCode", method = RequestMethod.GET)
+    public void getNextOptCode(HttpServletResponse response) {
+        String optCode = optMethodManager.getNextOptCode();
 
-  @RequestMapping(value = "/allOptInfo", method = RequestMethod.GET)
-  public void loadAllOptInfo(HttpServletResponse response) {
-    List<OptInfo> optInfos = optInfoManager.listObjects();
-    JsonResultUtils.writeSingleDataJson(optInfos, response);
-  }
+        ResponseMapData responseData = new ResponseMapData();
+        responseData.addResponseData("optCode", optCode);
 
-  @RequestMapping(value = "/allOptMethod", method = RequestMethod.GET)
-  public void loadAllOptMethod(HttpServletResponse response) {
-    List<OptMethod> optDefs = optMethodManager.listObjects();
-    JsonResultUtils.writeSingleDataJson(optDefs, response);
-  }
+        JsonResultUtils.writeResponseDataAsJson(responseData, response);
+    }
 
-  @RequestMapping(value="/userpoweropts/{userCode}", method = RequestMethod.GET)
-  public void listUserOpts(@PathVariable String userCode, HttpServletResponse response){
-    List<OptInfo> optInfos = (List<OptInfo>)platformEnvironment.listUserMenuOptInfos(userCode, false);
-    optInfos = optInfoManager.listObjectFormatTree(optInfos, true);
-    JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(optInfos), response);
-  }
+    /**
+     * 新建或更新业务操作
+     *
+     * @param optId    主键
+     * @param optCode  optCode
+     * @param optDef   OptMethod
+     * @param response HttpServletResponse
+     */
+    @RequestMapping(value = "/{optId}/{optCode}", method = {RequestMethod.POST, RequestMethod.PUT})
+    public void optDefEdit(@PathVariable String optId, @PathVariable String optCode, @Valid OptMethod optDef,
+                           HttpServletResponse response) {
+        OptInfo optInfo = optInfoManager.getObjectById(optId);
+        if (null == optInfo) {
+            JsonResultUtils.writeSingleErrorDataJson(
+                ResponseData.ERROR_INTERNAL_SERVER_ERROR,
+                "数据库不匹配", "数据库中不存在optId为" + optId + "的业务信息。", response);
+            return;
+        }
+
+        OptMethod dbOptDef = optMethodManager.getObjectById(optCode);
+        if (null == dbOptDef) {
+            optDef.setOptId(optId);
+            optMethodManager.updateOptMethod(optDef);
+        } else {
+            BeanUtils.copyProperties(optInfo, dbOptDef, new String[]{"optInfo"});
+            optMethodManager.updateOptMethod(dbOptDef);
+        }
+
+        JsonResultUtils.writeSuccessJson(response);
+    }
+
+    @RequestMapping(value = "/allOptInfo", method = RequestMethod.GET)
+    public void loadAllOptInfo(HttpServletResponse response) {
+        List<OptInfo> optInfos = optInfoManager.listObjects();
+        JsonResultUtils.writeSingleDataJson(optInfos, response);
+    }
+
+    @RequestMapping(value = "/allOptMethod", method = RequestMethod.GET)
+    public void loadAllOptMethod(HttpServletResponse response) {
+        List<OptMethod> optDefs = optMethodManager.listObjects();
+        JsonResultUtils.writeSingleDataJson(optDefs, response);
+    }
+
+    @RequestMapping(value = "/userpoweropts/{userCode}", method = RequestMethod.GET)
+    public void listUserOpts(@PathVariable String userCode, HttpServletResponse response) {
+        List<OptInfo> optInfos = (List<OptInfo>) platformEnvironment.listUserMenuOptInfos(userCode, false);
+        optInfos = optInfoManager.listObjectFormatTree(optInfos, true);
+        JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(optInfos), response);
+    }
 
 }
