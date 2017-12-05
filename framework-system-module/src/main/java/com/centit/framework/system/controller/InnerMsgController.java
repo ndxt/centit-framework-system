@@ -30,8 +30,8 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/innermsgrecipient")
-public class InnerMsgRecipientController extends BaseController {
+@RequestMapping("/innermsg")
+public class InnerMsgController extends BaseController {
     @Resource
     public InnerMsgRecipientManager innerMsgRecipientManager;
 
