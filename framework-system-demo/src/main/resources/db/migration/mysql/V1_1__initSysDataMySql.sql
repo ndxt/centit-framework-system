@@ -173,12 +173,13 @@ insert into F_ROLEPOWER (ROLE_CODE, OPT_CODE, UPDATE_DATE, CREATE_DATE, OPT_SCOP
 values ('public', '1000080', str_to_date('11-04-2016 10:21:17', '%d-%m-%Y %H:%i:%s'), str_to_date('11-04-2016 10:21:17', '%d-%m-%Y %H:%i:%s'), '','u0000000','u0000000');
 
 
-
+/**
 insert into F_OPTDEF(opt_code,opt_id,opt_name,opt_method,opt_desc,
 			is_in_workflow,UPDATE_DATE,create_date,opt_url,opt_req,CREATOR,UPDATOR)
 select  sequence_nextval('S_OPTDEFCODE'),opt_id , '查看', 'list',  '查看',
-		'F',now(),now(),'/*','R' ,CREATOR,UPDATOR
+		'F',now(),now(),'/','R' ,CREATOR,UPDATOR
 		from F_OptInfo where opt_id not in (select opt_id from F_OPTDEF);
+*/
 
 insert into F_ROLEPOWER(role_code,opt_code,update_Date,create_date,opt_scope_codes,CREATOR,UPDATOR)
 	select 'SYSADMIN',opt_code,now(),now(),'',CREATOR,UPDATOR from F_OPTDEF;
@@ -188,7 +189,7 @@ insert into F_USERROLE (USER_CODE, ROLE_CODE, OBTAIN_DATE,
 values ('u0000000', 'SYSADMIN', STR_TO_DATE('23-05-2012','%d-%m-%Y'),
 	STR_TO_DATE('01-10-2020', '%d-%m-%Y'),'' ,now(), now(),'u0000000','u0000000');
 	
-update F_ROLEINFO
+/*update F_ROLEINFO
 set ROLE_CODE = substring(ROLE_CODE, 3)
 where ROLE_CODE like 'G-%';
 
@@ -205,6 +206,7 @@ set ROLE_TYPE = 'G';
 
 update F_ROLEINFO
 set ROLE_TYPE = 'F'
-where ROLE_CODE = 'public' or ROLE_CODE = 'anonymous' or ROLE_CODE = 'forbidden';
-	commit;
+where ROLE_CODE = 'public' or ROLE_CODE = 'anonymous' or ROLE_CODE = 'forbidden';*/
+
+commit;
 

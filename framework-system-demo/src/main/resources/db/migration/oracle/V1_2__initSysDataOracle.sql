@@ -175,11 +175,11 @@ values ('public', '1000080', sysdate, sysdate, '','u0000000','u0000000');
 
 
 
-insert into F_OPTDEF(opt_code,opt_id,opt_name,opt_method,opt_desc,
+/*insert into F_OPTDEF(opt_code,opt_id,opt_name,opt_method,opt_desc,
       is_in_workflow,UPDATE_DATE,create_date,opt_url,opt_req,CREATOR,UPDATOR)
 select  S_OPTDEFCODE.NEXTVAL,opt_id , '查看', 'list',  '查看',
     'F',sysdate,sysdate,'/*','R' ,CREATOR,UPDATOR
-    from F_OptInfo where opt_id not in (select opt_id from F_OPTDEF);
+    from F_OptInfo where opt_id not in (select opt_id from F_OPTDEF);*/
 
 insert into F_ROLEPOWER(role_code,opt_code,update_Date,create_date,opt_scope_codes,CREATOR,UPDATOR)
   select 'SYSADMIN',opt_code,sysdate,sysdate,'',CREATOR,UPDATOR from F_OPTDEF;
@@ -189,6 +189,7 @@ insert into F_USERROLE (USER_CODE, ROLE_CODE, OBTAIN_DATE,
 values ('u0000000', 'SYSADMIN', sysdate,
  null,'' ,sysdate, sysdate,'u0000000','u0000000');
  
+/*
 update F_ROLEINFO
 set ROLE_CODE = substr(ROLE_CODE, 3)
 where ROLE_CODE like 'G-%';
@@ -207,6 +208,7 @@ set ROLE_TYPE = 'G';
 update F_ROLEINFO
 set ROLE_TYPE = 'F'
 where ROLE_CODE = 'public' or ROLE_CODE = 'anonymous' or ROLE_CODE = 'forbidden';
+*/
 
  
-  commit;
+commit;

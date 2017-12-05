@@ -21,7 +21,6 @@ update_Date, Create_Date) VALUES ('s000000000','U00001','u0000000','T','pf','CZ'
 
 -- 初始化数据字典
 
-
 INSERT INTO f_datacatalog VALUES ('CatalogStyle', '字典类型', 'F', 'L', 'F : 框架固有的 U:用户 S：系统', '{\"dataCode\":{\"value\":\"类型编码\",\"isUse\":\"T\"},\"dataValue\":{\"value\":\"类型说明\",\"isUse\":\"T\"},\"extraCode\":{\"value\":\"扩展编码\",\"isUse\":\"F\"},\"extraCode2\":{\"value\":\"扩展编码2\",\"isUse\":\"F\"},\"dataTag\":{\"value\":\"数据标记\",\"isUse\":\"F\"},\"dataDesc\":{\"value\":\"数据描述\",\"isUse\":\"T\"}}', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), 'DICTSET_M', '1', 'u0000000', 'u0000000');
 INSERT INTO f_datacatalog VALUES ('CatalogType', '字典结构', 'F', 'L', 'L:列表T:树形 测试修改', '{\"dataCode\":{\"value\":\"结构编码\",\"isUse\":\"T\"},\"dataValue\":{\"value\":\"结构名称\",\"isUse\":\"T\"},\"extraCode\":{\"value\":\"扩展编码\",\"isUse\":\"F\"},\"extraCode2\":{\"value\":\"排序\",\"isUse\":\"F\"},\"dataTag\":{\"value\":\"数据标记\",\"isUse\":\"F\"},\"dataDesc\":{\"value\":\"数据描述\",\"isUse\":\"T\"}}', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), 'DICTSET_M', '1', 'u0000000', 'u0000000');
 INSERT INTO f_datacatalog VALUES ('FlowUserRole', '工作流流程角色', 'S', 'L', '', '{\"dataCode\":{\"value\":\"角色编码\",\"isUse\":\"T\"},\"dataValue\":{\"value\":\"角色名称\",\"isUse\":\"T\"},\"extraCode\":{\"value\":\"扩展编码\",\"isUse\":\"F\"},\"extraCode2\":{\"value\":\"扩展编码2\",\"isUse\":\"F\"},\"dataTag\":{\"value\":\"数据标记\",\"isUse\":\"F\"},\"dataDesc\":{\"value\":\"数据描述\",\"isUse\":\"T\"}}', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'SYS_CONFIG', '1', null, null);
@@ -34,8 +33,6 @@ INSERT INTO f_datacatalog VALUES ('SUPPORT_LANG', '系统支持的语言', 'S', 
 INSERT INTO f_datacatalog VALUES ('UnitType', '机构类别', 'S', 'L', '', '{\"dataCode\":{\"value\":\"类别编码\",\"isUse\":\"T\"},\"dataValue\":{\"value\":\"类别名称\",\"isUse\":\"T\"},\"extraCode\":{\"value\":\"扩展编码\",\"isUse\":\"F\"},\"extraCode2\":{\"value\":\"排序\",\"isUse\":\"F\"},\"dataTag\":{\"value\":\"数据标记\",\"isUse\":\"F\"},\"dataDesc\":{\"value\":\"数据描述\",\"isUse\":\"T\"}}', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), null, 'ORGMAG', '1', null, null);
 INSERT INTO f_datacatalog VALUES ('userSettingKey', '用户设置参数', 'S', 'L', '用户可以设置的参数', '{\"dataCode\":{\"value\":\"参数编码\",\"isUse\":\"T\"},\"dataValue\":{\"value\":\"参数名称\",\"isUse\":\"T\"},\"extraCode\":{\"value\":\"扩展编码\",\"isUse\":\"F\"},\"extraCode2\":{\"value\":\"排序\",\"isUse\":\"F\"},\"dataTag\":{\"value\":\"数据标记\",\"isUse\":\"F\"},\"dataDesc\":{\"value\":\"参数填写说明\",\"isUse\":\"T\"}}', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), 'DICTSET_M', '1', 'u0000000', 'u0000000');
 INSERT INTO f_datacatalog VALUES ('YesOrNo', '是否', 'F', 'L', '', '{\"dataCode\":{\"value\":\"编码\",\"isUse\":\"T\"},\"dataValue\":{\"value\":\"数值\",\"isUse\":\"T\"},\"extraCode\":{\"value\":\"扩展编码\",\"isUse\":\"F\"},\"extraCode2\":{\"value\":\"排序\",\"isUse\":\"F\"},\"dataTag\":{\"value\":\"数据标记\",\"isUse\":\"F\"},\"dataDesc\":{\"value\":\"数据描述\",\"isUse\":\"T\"}}', parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), 'SYS_CONFIG', '1', 'u0000000', 'u0000000');
-
-
 
 
 INSERT INTO f_datadictionary VALUES ('CatalogStyle', 'F', null, null, 'T', '框架固有', 'F', '任何地方都不允许编辑，只能有开发人员给出更新脚本添加、更改和删除', null, null, '0');
@@ -182,12 +179,13 @@ values ('public', '1000080', parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), par
 
 //sequence_nextval('S_OPTDEFCODE')
 
-
+/*
 insert into F_OPTDEF(opt_code,opt_id,opt_name,opt_method,opt_desc,
 			is_in_workflow,UPDATE_DATE,create_date,opt_url,opt_req,CREATOR,UPDATOR)
 select NEXT VALUE FOR s_optdefcode ,opt_id , '查看', 'list',  '查看',
 		'F',today(),today(),'/*','R' ,CREATOR,UPDATOR
 		from F_OptInfo where opt_id not in (select opt_id from F_OPTDEF);
+*/
 
 insert into F_ROLEPOWER(role_code,opt_code,update_Date,create_date,opt_scope_codes,CREATOR,UPDATOR)
 	select 'SYSADMIN',opt_code,today(),today(),'',CREATOR,UPDATOR from F_OPTDEF;
@@ -196,33 +194,4 @@ insert into F_USERROLE (USER_CODE, ROLE_CODE, OBTAIN_DATE,
 			SECEDE_DATE, CHANGE_DESC, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
 values ('u0000000', 'SYSADMIN', parsedatetime('23-05-2012','dd-MM-yyyy','en'),
 	parsedatetime('01-10-2020', 'dd-MM-yyyy','en'),'' ,today(), today(),'u0000000','u0000000');
-
-
-insert into F_DATACATALOG (CATALOG_CODE, CATALOG_NAME, CATALOG_STYLE, CATALOG_TYPE, CATALOG_DESC, FIELD_DESC, UPDATE_DATE, CREATE_DATE, OPT_ID, NEED_CACHE,CREATOR,UPDATOR)
-values ('userSettingKey', '用户设置参数', 'F', 'L', '用户可以设置的参数', null, null, null, 'DICTSET_M', '1','u0000000','u0000000');
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('userSettingKey', 'receiveways', null, null, 'T', '消息接收方式', 'S', '用户接收消息的方式，可以是多个用逗号隔开', null, null, null);
-
-insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
-values ('userSettingKey', 'LOCAL_LANG', null, null, 'T', '语言', 'S', '设置用户语言', null, null, null);
-
-update F_ROLEINFO
-set ROLE_CODE = substring(ROLE_CODE, 3)
-where ROLE_CODE like 'G-%';
-
-update F_ROLEPOWER
-set ROLE_CODE = substring(ROLE_CODE, 3)
-where ROLE_CODE like 'G-%';
-
-update F_USERROLE
-set ROLE_CODE = substring(ROLE_CODE, 3)
-where ROLE_CODE like 'G-%';
-
-update F_ROLEINFO
-set ROLE_TYPE = 'G';
-
-update F_ROLEINFO
-set ROLE_TYPE = 'F'
-where ROLE_CODE = 'public' or ROLE_CODE = 'anonymous' or ROLE_CODE = 'forbidden';
 
