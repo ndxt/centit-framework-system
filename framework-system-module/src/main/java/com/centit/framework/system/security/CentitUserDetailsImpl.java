@@ -96,7 +96,7 @@ public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Seriali
     }
 
     @Override
-    public IUserUnit getCurrentStation() {
+    public UserUnit getCurrentStation() {
         if(currentStation==null){
             List<UserUnit> uus = getUserInfo().getUserUnits();
             for(UserUnit uu : uus){
