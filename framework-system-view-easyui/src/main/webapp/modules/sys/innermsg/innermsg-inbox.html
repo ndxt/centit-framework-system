@@ -4,36 +4,36 @@
 			<label id="b@sender">发件人</label>
 			<input type="text" class="easyui-combobox" name="s_sender" target="user" />
 		</div>
-		
+
 		<div class="search-item">
 			<label id="b@messageType">消息类型</label>
 			<input type="text" class="easyui-combobox" name="s_msgType" target="dictionary" key="MsgType" />
 		</div>
-		
+
 		<div class="search-item">
 			<label id="b@title">标题</label>
 			<input type="text" class="easyui-textbox" name="s_msgTitle" />
 		</div>
-		
-		
+
+
 		<div class="search-item">
 			<label id="b@content">内容</label>
 			<input type="text" class="easyui-textbox" name="s_msgContent" />
 		</div>
-		
+
 		<div class="search-item">
 			<label id="b@state">状态</label>
 			<input type="radio" name="s_msgState" value="" checked="checked" /> <p id="b@all">全部</p>
 			<input type="radio" name="s_msgState" value="U" /> <p id="b@unread">未读</p>
 			<input type="radio" name="s_msgState" value="R" /> <p  id="b@read">已读</p>
 		</div>
-		
+
 		<a class="easyui-linkbutton btn-search" iconCls="icon-search"><p  id="b@btn.search">搜索</p></a>
-	</form>	
+	</form>
 </div>
 
 <table
-	url="system/innermsgrecipient/inbox?_search=true&s_msgStateNot=D&s_mailTypeNot=D"
+	url="system/innermsg/inbox?_search=true&s_msgStateNot=D&s_mailTypeNot=D"
 	search=".search"
 	layoutH=".search"
 	toolbar=".temp-toolbar"
@@ -52,19 +52,19 @@
 			<th id="b1@content" field="msgContent" width="500">内容</th>
 		</tr>
 	</thead>
-</table> 
+</table>
 
 <div class="temp-toolbar">
 	<a iconCls="icon-base icon-base-pencil" href="modules/sys/innermsg/innermsg-write.html" trigger="single"
 		target="dialog" rel="innermsg_reply" title="回复 {{senderName}}-{{msgTitle}}" width="640" height="480" btnValue="发送"><p  id="b@link.reply">回复</p></a>
-	
+
 	<hr>
 
 	<a iconCls="icon-base icon-base-info" href="modules/sys/innermsg/innermsg-inbox-info.html" trigger="single"
 		target="dialog" rel="innermsg_view" title="查看 {{msgTitle}}" width="640" height="480"><p  id="b@link.view">查看</p></a>
-		
+
 	<hr>
-	
+
 	<a iconCls="icon-base icon-base-ban" trigger="single"
 		target="confirm" rel="innermsg_remove" title="是否确定删除消息 {{msgTitle}}？？"><p  id="b@btn.delete">删除</p></a>
 </div>
