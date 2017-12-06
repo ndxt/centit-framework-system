@@ -130,7 +130,9 @@ public class InnerMsg implements  Serializable{
     /**
              一个消息可以有多个收件人
      */
+
     @OneToMany(targetEntity= InnerMsgRecipient.class, mappedBy="mInnerMsg",fetch = FetchType.LAZY)
+    @JoinColumn(name="MSG_CODE", referencedColumnName="MSG_CODE")
     @JSONField(serialize=false)
     private List<InnerMsgRecipient> recipients;
 
@@ -191,6 +193,7 @@ public class InnerMsg implements  Serializable{
     public void setMsgTitle(String msgTitle) {
         this.msgTitle = msgTitle;
     }
+
     public String getMsgType() {
         return msgType;
     }
@@ -198,6 +201,7 @@ public class InnerMsg implements  Serializable{
     public void setMsgType(String msgType) {
         this.msgType = msgType;
     }
+
     public String getMailType() {
         return mailType;
     }

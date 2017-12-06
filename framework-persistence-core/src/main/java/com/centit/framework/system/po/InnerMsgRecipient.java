@@ -29,11 +29,9 @@ public class InnerMsgRecipient implements Serializable{
     /**
      * 消息编码
      */
+    @Column(name="MSG_CODE")
+    private String msgCode;
 
-    @ManyToOne
-    @JoinColumn(name="MSG_CODE",updatable=false)
-    //@JSONField(serialize=false)
-    private InnerMsg mInnerMsg;
     /**
      * 接收人编号
      */
@@ -80,15 +78,24 @@ public class InnerMsgRecipient implements Serializable{
     private String msgState;
 
 
+    @ManyToOne(targetEntity = InnerMsg.class )
+    @JoinColumn(name="MSG_CODE", referencedColumnName="MSG_CODE", updatable=false)
+    private InnerMsg mInnerMsg;
+
     public void setMInnerMsg(InnerMsg InnerMsg){
         this.mInnerMsg=InnerMsg;
     }
+
     public InnerMsgRecipient(){
 
     }
 
     public String getMsgCode() {
-        return this.getMInnerMsg().getMsgCode();
+        return this.msgCode;
+    }
+
+    public void setMsgCode(String msgCode) {
+        this.msgCode = msgCode;
     }
 
 

@@ -21,7 +21,7 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
     @Override
     public Map<String, String> getFilterField() {
         if (filterField == null) {
-            filterField = new HashMap<String, String>();
+            filterField = new HashMap<>();
             filterField.put("receive", "receive = :receive");
             filterField.put("sender", "msgCode in (select im.MSG_CODE from M_INNERMSG im where im.SENDER = :sender )");
             filterField.put("msgContent", "msgCode in (select im.MSG_CODE from M_INNERMSG im where im.MSG_CONTENT LIKE :msgContent )");
