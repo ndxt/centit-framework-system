@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface InnerMsgRecipientManager{
-    public List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap);
+    List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap);
 
-    public List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
+    List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
 
-    public InnerMsgRecipient getObjectById(String id);
+    InnerMsgRecipient getObjectById(String id);
 
     List<InnerMsgRecipient> getExchangeMsgs(String sender, String receiver);
 
