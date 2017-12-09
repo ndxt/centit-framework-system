@@ -57,6 +57,11 @@ public class UserSettingManagerImpl implements UserSettingManager {
     }
 
     @Override
+    public List<UserSetting> getAllSettings(){
+        return userSettingDao.getAllSettings();
+    }
+
+    @Override
     public List<UserSetting> listObjects(Map<String, Object> searchColumn, PageDesc pageDesc) {
         // TODO Auto-generated method stub
         return null;

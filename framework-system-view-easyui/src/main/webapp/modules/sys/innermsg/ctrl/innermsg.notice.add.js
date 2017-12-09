@@ -9,12 +9,12 @@ define(function(require) {
 		// @override
 		this.object = {
 			msgType: 'P',
-			
+
 			// 类型：消息
 			mailType: 'O',
-			
+
 			holdUsers: 2,
-			
+
 			// 状态：未读
 			msgState: 'U',
 			sender:loginuser.userCode
@@ -24,8 +24,8 @@ define(function(require) {
 			panel.find('form').form('disableValidation')
 			.form('focus');
 		};
-		
-		
+
+
 		this.submit = function(panel,data,closeCallback){
 			var form = panel.find('form');
 			var table=this.parent.table;
@@ -35,7 +35,7 @@ define(function(require) {
 			var unitCode=formData.unitCode;
 			if (isValid) {
 				form.form('ajax', {
-					url: Config.ContextPath+'system/innermsgrecipient/notify/'+unitCode,
+					url: Config.ContextPath+'system/innermsg/notify/'+unitCode,
 					method: 'post',
 					data: this.object
 				}).then(function(){
@@ -47,9 +47,9 @@ define(function(require) {
 		}
 		// @override
 		this.onClose = function() {
-			
+
 		};
 	});
-	
+
 	return NotifyAdd;
 });

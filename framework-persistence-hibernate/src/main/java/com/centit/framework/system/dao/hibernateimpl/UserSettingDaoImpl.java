@@ -55,4 +55,9 @@ public class UserSettingDaoImpl extends BaseDaoImpl<UserSetting, UserSettingId> 
     public void saveNewUserSetting(UserSetting us){
         super.saveNewObject(us);
     }
+
+    @Override
+    public List<UserSetting> getAllSettings(){
+        return super.listObjectsAll();
+    }
 }

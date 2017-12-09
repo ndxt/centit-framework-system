@@ -50,6 +50,11 @@ public class UserSettingDaoImpl extends BaseDaoImpl<UserSetting, UserSettingId> 
         return listObjectsByProperty("userCode",userCode);
     }
 
+    @Override
+    public List<UserSetting> getAllSettings(){
+        return super.listObjects();
+    }
+
     @Transactional
     public List<UserSetting> getUserSettings(String userCode,String optID) {
         return listObjectsByFilter(" where USER_CODE =? and OPT_ID = ?",

@@ -28,4 +28,6 @@ public interface UserSettingManager {
     UserSetting getObjectById(UserSettingId userSettingid);
 
     void deleteObject(UserSetting userSetting);
+
+    List<UserSetting> getAllSettings();
 }

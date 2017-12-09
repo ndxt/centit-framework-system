@@ -137,6 +137,11 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
+    public List<UserSetting> getAllSettings(){
+        return userSettingDao.getAllSettings();
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public UserSetting getUserSetting(String userCode, String paramCode) {
         return userSettingDao.getObjectById(new UserSettingId(userCode,paramCode));

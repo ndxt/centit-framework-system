@@ -77,6 +77,7 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
             msg.setReceiveName(receiveName);
             innerMsgDao.saveNewObject(msg);
             recipient.setMInnerMsg(msg);
+            recipient.setMsgCode(msg.getMsgCode());
             //DataPushSocketServer.pushMessage(msg.getSender(), "你发送邮件："+ msg.getMsgTitle());
             for (String userCode : receives) {
                 recipient.setReceive(userCode);

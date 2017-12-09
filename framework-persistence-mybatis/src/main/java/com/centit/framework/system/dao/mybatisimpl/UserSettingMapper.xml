@@ -89,6 +89,10 @@
         ]]>
     </sql>
 
+    <select id="getAllSettings"  resultMap="UserSetting">
+        <include refid="coreSql" />
+    </select>
+
     <!--分页计数 -->
     <select id="pageCount" parameterType="map" resultType="int">
         <![CDATA[

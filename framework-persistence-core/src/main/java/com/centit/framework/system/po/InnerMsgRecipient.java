@@ -182,7 +182,7 @@ public class InnerMsgRecipient implements Serializable{
     }
 
     public String getMsgTypeText(){
-        switch(getMInnerMsg().getMsgType()){
+        switch(getMInnerMsg() == null ? "Other" : getMInnerMsg().getMsgType()){
             case("P"):{
                 return "个人消息";
             }

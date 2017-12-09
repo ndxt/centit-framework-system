@@ -41,6 +41,12 @@ public interface UserSettingDao {
     List<UserSetting> getUserSettings(String userCode, String optId);
 
     /**
+     * 查询全部个人设置
+     * @return 个人设置列表
+     */
+    List<UserSetting> getAllSettings();
+
+    /**
     * 新增
     * @param userSetting 个人设置对象
     */
