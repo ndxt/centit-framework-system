@@ -9,8 +9,10 @@ import java.util.Map;
 
 public interface InnerMsgRecipientManager{
     List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap);
+    List<InnerMsgRecipient> listObjectsCascade(Map<String, Object> filterMap);
 
     List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
+    List<InnerMsgRecipient> listObjectsCascade(Map<String, Object> filterMap, PageDesc pageDesc);
 
     InnerMsgRecipient getObjectById(String id);
 

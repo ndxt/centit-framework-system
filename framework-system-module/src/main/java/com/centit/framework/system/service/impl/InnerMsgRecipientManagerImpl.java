@@ -80,8 +80,10 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
             recipient.setMsgCode(msg.getMsgCode());
             //DataPushSocketServer.pushMessage(msg.getSender(), "你发送邮件："+ msg.getMsgTitle());
             for (String userCode : receives) {
-                recipient.setReceive(userCode);
-                innerMsgRecipientDao.saveNewObject(recipient);
+                InnerMsgRecipient innerMsgRecipient  = new InnerMsgRecipient();
+                innerMsgRecipient.copyNOtNUllProperties(recipient);
+                innerMsgRecipient.setReceive(userCode);
+                innerMsgRecipientDao.saveNewObject(innerMsgRecipient);
                 //DataPushSocketServer.pushMessage(userCode, "你有新邮件：" + recipient.getMsgTitle());
             }
         }
@@ -110,7 +112,7 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
 
         List<IUnitInfo> unitList = CodeRepositoryUtil.getSubUnits(unitCode);
         //(ArrayList<UnitInfo>) unitDao.listAllSubUnits(unitCode);
-        List<IUserInfo> userList = new ArrayList<>();
+        Set<IUserInfo> userList = CodeRepositoryUtil.getUnitUsers(unitCode);
         for (IUnitInfo ui : unitList) {
             userList.addAll(CodeRepositoryUtil.getUnitUsers(ui.getUnitCode()));
         }
@@ -121,14 +123,17 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
             msg.setMsgType("A");
             innerMsgDao.saveNewObject(msg);
 
-            InnerMsgRecipient recipient = new InnerMsgRecipient();
-            recipient.setMsgState(msg.getMsgState());
-            recipient.setMailType(msg.getMailType());
-            recipient.setMInnerMsg(msg);
             for (IUserInfo ui : userList) {
-                recipient.setReceive(ui.getUserCode());
-                innerMsgRecipientDao.saveNewObject(recipient);
-                //DataPushSocketServer.pushMessage(ui.getUserCode(), "你有新邮件：" + recipient.getMsgTitle());
+                if(!Objects.equals(msg.getSender(),ui.getUserCode())){
+                    InnerMsgRecipient recipient = new InnerMsgRecipient();
+                    recipient.setMsgState(msg.getMsgState());
+                    recipient.setMailType(msg.getMailType());
+                    recipient.setMInnerMsg(msg);
+                    recipient.setMsgCode(msg.getMsgCode());
+                    recipient.setReceive(ui.getUserCode());
+                    innerMsgRecipientDao.saveNewObject(recipient);
+                    //DataPushSocketServer.pushMessage(ui.getUserCode(), "你有新邮件：" + recipient.getMsgTitle());
+                }
             }
         } else {
             throw new ObjectException("该机构中暂无用户");
@@ -208,5 +213,25 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
     @Override
     public InnerMsgRecipient getObjectById(String id) {
         return innerMsgRecipientDao.getObjectById(id);
+    }
+
+    @Override
+    public List<InnerMsgRecipient> listObjectsCascade(Map<String, Object> filterMap){
+//       return innerMsgRecipientDao.listObjectsCascade(filterMap);
+        List<InnerMsgRecipient> recipients = innerMsgRecipientDao.listObjects(filterMap);
+        for(InnerMsgRecipient recipient : recipients){
+            recipient.setMInnerMsg(innerMsgDao.getObjectById(recipient.getMsgCode()));
+        }
+        return recipients;
+    }
+    @Override
+    public List<InnerMsgRecipient> listObjectsCascade(Map<String, Object> filterMap, PageDesc pageDesc){
+        List<InnerMsgRecipient> recipients =
+            innerMsgRecipientDao.pageQuery(
+                QueryParameterPrepare.prepPageParams(filterMap, pageDesc, innerMsgRecipientDao.pageCount(filterMap)));
+        for(InnerMsgRecipient recipient : recipients){
+            recipient.setMInnerMsg(innerMsgDao.getObjectById(recipient.getMsgCode()));
+        }
+        return recipients;
     }
 }

@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 //M_InnerMsg_Recipient
 @Entity
@@ -179,6 +180,40 @@ public class InnerMsgRecipient implements Serializable{
             return this.getMInnerMsg().getMsgContent();
         else
            return null;
+    }
+
+    public void copy(InnerMsgRecipient other){
+        this.setMsgCode(other.getMsgCode());
+        this.setReceive(other.getReceive());
+        this.setReplyMsgCode(other.getReplyMsgCode());
+        this.setReceiveType(other.getReceiveType());
+        this.setMailType(other.getMailType());
+        this.setMsgState(other.getMsgState());
+        this.setMInnerMsg(other.getMInnerMsg());
+    }
+
+    public void copyNOtNUllProperties(InnerMsgRecipient other){
+        if(!Objects.isNull(other.getMsgCode())) {
+            this.setMsgCode(other.getMsgCode());
+        }
+        if(!Objects.isNull(other.getReceive())) {
+            this.setReceive(other.getReceive());
+        }
+        //if(!Objects.isNull(other.getReplyMsgCode())) {
+            this.setReplyMsgCode(other.getReplyMsgCode());
+        //}
+        if(!Objects.isNull(other.getReceiveType())) {
+            this.setReceiveType(other.getReceiveType());
+        }
+        if(!Objects.isNull(other.getMailType())) {
+            this.setMailType(other.getMailType());
+        }
+        if(!Objects.isNull(other.getMsgState())) {
+            this.setMsgState(other.getMsgState());
+        }
+        if(!Objects.isNull(other.getMInnerMsg())) {
+            this.setMInnerMsg(other.getMInnerMsg());
+        }
     }
 
     public String getMsgTypeText(){

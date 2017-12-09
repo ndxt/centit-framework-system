@@ -67,10 +67,12 @@ public class InnerMsgController extends BaseController {
             searchColumn.put("msgContent", "%" + s + "%");
         }
         List<InnerMsgRecipient> listObjects = null;
-        if (null == pageDesc)
-            listObjects = innerMsgRecipientManager.listObjects(searchColumn);
-        else
-            listObjects = innerMsgRecipientManager.listObjects(searchColumn,pageDesc);
+        if (null == pageDesc) {
+            listObjects = innerMsgRecipientManager.listObjectsCascade(searchColumn);
+        }
+        else {
+            listObjects = innerMsgRecipientManager.listObjectsCascade(searchColumn, pageDesc);
+        }
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
         resData.addResponseData(PAGE_DESC, pageDesc);

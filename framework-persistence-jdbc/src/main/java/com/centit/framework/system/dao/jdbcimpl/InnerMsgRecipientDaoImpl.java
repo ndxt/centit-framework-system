@@ -81,4 +81,12 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
     public void updateInnerMsgRecipient(InnerMsgRecipient innerMsgRecipient){
         super.updateObject(innerMsgRecipient);
     }
+
+    /*@Override
+    public List<InnerMsgRecipient> listObjectsCascade(Map<String, Object> filterMap){
+        List<InnerMsgRecipient> recipients = listObjects(filterMap);
+        for(InnerMsgRecipient recipient : recipients){
+            DatabaseOptUtils.getObjectCascadeById(inn)
+        }
+    }*/
 }
