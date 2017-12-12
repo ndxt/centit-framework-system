@@ -15,8 +15,7 @@ define(function (require) {
       var userInfo = this.parent.data;
 
       var data = this.data = $.extend({}, this.object, {
-        userCode: userInfo.userCode,
-        userName: userInfo.userName
+        userCode: userInfo.userCode
       });
 
       panel.find('form').form('disableValidation')
@@ -30,10 +29,12 @@ define(function (require) {
 
       form.form('enableValidation');
       var isValid = form.form('validate');
+      data.paramCode = panel.find('#paramCode').combobox('getValue');
+      data.paramName = panel.find('#paramCode').combobox('getText');
 
       if (isValid) {
         form.form('ajax', {
-          url: Config.ContextPath + 'system/usersetting',
+          url: Config.ContextPath + 'system/usersetting/'+data.paramCode,
           data: data
         }).then(function () {
           return require('loaders/cache/loader.system').loadAll()

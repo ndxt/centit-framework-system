@@ -2,8 +2,7 @@
 
     <div class="field required">
       <label id="d@post">参数名称</label>
-      <input type="text" hidden class="easyui-text" name="paramCode" />
-      <input type="text" class="easyui-combobox" name="paramName" required target="dictionary" key="userSettingKey"
+      <input type="text" class="easyui-combobox" id="paramCode" name="paramCode" required target="dictionary" key="userSettingKey"
              style="width: 100%;"/>
     </div>
 
@@ -11,5 +10,10 @@
       <label id="d@remarks">参数值</label>
       <input validType="maxLength[255]" type="text" class="easyui-textbox" name="paramValue" height="100" multiline="true"
              style="height: 100px; width: 100%"/>
+    </div>
+
+    <div class="field">
+      <label id="a@serviceModule">业务模块</label>
+      <input type="text" class="easyui-combotree" name="optId" target="optinfo" />
     </div>
 </form>

@@ -17,10 +17,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.annotation.Resource;
@@ -141,14 +138,14 @@ public class UserSettingController extends BaseController {
      *
      * @param paramCode     参数代码
      * @param userSetting   UserSetting
-     * @param bindingResult BindingResult
+//     * @param bindingResult BindingResult
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{paramCode}", method = {RequestMethod.POST, RequestMethod.PUT})
     @RecordOperationLog(content = "更新当前用户设置参数")
     public void editUserSetting(@PathVariable String paramCode, @Valid UserSetting userSetting,
-                 HttpServletRequest request, BindingResult bindingResult,
+                 HttpServletRequest request, /*BindingResult bindingResult,*/
                  HttpServletResponse response) {
 
         UserSettingId id = new UserSettingId(

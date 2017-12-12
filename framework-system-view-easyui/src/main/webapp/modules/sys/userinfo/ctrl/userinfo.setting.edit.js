@@ -13,22 +13,15 @@ define(function (require) {
     // @override
     this.load = function (panel, data) {
 
-      // 保存原始信息
-      this.oldData = data;
-      this.$findUp('initUnitCombotree')($('input[name=unitCode]', panel));
-
       var form = panel.find('form');
-      Core.ajax(Config.ContextPath + 'system/usersetting/' + data.paraCode, {
+      Core.ajax(Config.ContextPath + 'system/usersetting/' + data.cid.paramCode, {
         method: 'get'
       }).then(function (data) {
         _self.data = data;
 
         form.form('disableValidation').form('load', data)
-          .form('readonly', 'unitCode')
+          .form('readonly', 'paramCode')
           .form('focus');
-        if (data.isPrimary === 'T') {
-          $("input[name='isPrimary']").attr("disabled", true);
-        }
       });
     };
 
@@ -40,11 +33,8 @@ define(function (require) {
       var isValid = form.form('validate');
 
       if (isValid) {
-        // 原始职位和岗位
-        data.oldUserStation = this.oldData.userStation;
-        data.oldUserRank = this.oldData.userRank;
         form.form('ajax', {
-          url: Config.ContextPath + 'system/usersetting/' + data.userUnitId,
+          url: Config.ContextPath + 'system/usersetting/' + data.cid.paramCode,
           method: 'put',
           data: data
         }).then(function () {

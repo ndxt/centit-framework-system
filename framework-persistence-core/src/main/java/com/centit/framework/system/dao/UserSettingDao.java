@@ -42,6 +42,12 @@ public interface UserSettingDao {
     void deleteObjectById(UserSettingId userSettingId);
 
     /**
+     * 删除个人设置
+     * @param userSetting 个人设置
+     */
+    void deleteObject(UserSetting userSetting);
+
+    /**
     * 根据用户代码查询
     * @param userCode 用户代码
     * @return List<UserSetting>

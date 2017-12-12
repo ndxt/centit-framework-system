@@ -65,4 +65,5 @@ public class UserSettingDaoImpl extends BaseDaoImpl<UserSetting, UserSettingId> 
     public void saveNewUserSetting(UserSetting us){
         super.saveNewObject(us);
     }
+
 }

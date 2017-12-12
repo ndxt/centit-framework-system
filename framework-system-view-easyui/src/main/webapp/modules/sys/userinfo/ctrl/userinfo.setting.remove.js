@@ -10,12 +10,10 @@ define(function(require) {
 		// @override
 		this.submit = function(table, data) {
 
-			Core.ajax(Config.ContextPath+'system/userunit/'+data.userUnitId, {
+			Core.ajax(Config.ContextPath+'system/usersetting/'+data.cid.paramCode, {
 				method: 'post',
 				data: {
 					_method: 'DELETE',
-					userStation: data.userStation,
-	                userRank: data.userRank
 				}
 			}).then(function(){
 				return require('loaders/cache/loader.system').loadAll()
