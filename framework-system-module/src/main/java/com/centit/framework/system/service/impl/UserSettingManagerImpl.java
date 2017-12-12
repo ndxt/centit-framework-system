@@ -1,5 +1,6 @@
 package com.centit.framework.system.service.impl;
 
+import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.UserSettingDao;
 import com.centit.framework.system.po.UserSetting;
 import com.centit.framework.system.po.UserSettingId;
@@ -63,8 +64,9 @@ public class UserSettingManagerImpl implements UserSettingManager {
 
     @Override
     public List<UserSetting> listObjects(Map<String, Object> searchColumn, PageDesc pageDesc) {
-        // TODO Auto-generated method stub
-        return null;
+        return userSettingDao.pageQuery(
+            QueryParameterPrepare.prepPageParams(
+                searchColumn,pageDesc,userSettingDao.pageCount(searchColumn)));
     }
 
     @Override
