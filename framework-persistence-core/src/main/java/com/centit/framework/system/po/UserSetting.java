@@ -44,7 +44,7 @@ public class UserSetting implements IUserSetting,java.io.Serializable {
      * 创建时间
      */
     @Column(name = "CREATE_DATE")
-    @Temporal(TemporalType.TIMESTAMP)
+//    @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
 
 

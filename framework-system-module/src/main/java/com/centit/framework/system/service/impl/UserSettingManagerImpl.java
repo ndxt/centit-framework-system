@@ -1,5 +1,6 @@
 package com.centit.framework.system.service.impl;
 
+import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.UserSettingDao;
 import com.centit.framework.system.po.UserSetting;
 import com.centit.framework.system.po.UserSettingId;
@@ -7,6 +8,7 @@ import com.centit.framework.system.service.UserSettingManager;
 import com.centit.support.database.utils.PageDesc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,11 +41,13 @@ public class UserSettingManagerImpl implements UserSettingManager {
     }
 
     @Override
+//    @CacheEvict(value ={"UserInfo","UserSetting"},allEntries = true)
     @Transactional
     public void saveNewUserSetting(UserSetting userSetting){
         userSettingDao.saveNewUserSetting(userSetting);
     }
     @Override
+//    @CacheEvict(value ={"UserInfo","UserSetting"},allEntries = true)
     @Transactional
     public void updateUserSetting(UserSetting userSetting){
         userSettingDao.updateObject(userSetting);
@@ -63,8 +67,9 @@ public class UserSettingManagerImpl implements UserSettingManager {
 
     @Override
     public List<UserSetting> listObjects(Map<String, Object> searchColumn, PageDesc pageDesc) {
-        // TODO Auto-generated method stub
-        return null;
+        return userSettingDao.pageQuery(
+            QueryParameterPrepare.prepPageParams(
+                searchColumn,pageDesc,userSettingDao.pageCount(searchColumn)));
     }
 
     @Override
@@ -75,16 +80,13 @@ public class UserSettingManagerImpl implements UserSettingManager {
 
     @Override
     public UserSetting getObjectById(UserSettingId userSettingid) {
-        // TODO Auto-generated method stub
-        return null;
+        return userSettingDao.getObjectById(userSettingid);
     }
 
     @Override
     public void deleteObject(UserSetting userSetting) {
-        // TODO Auto-generated method stub
+        userSettingDao.deleteObject(userSetting);
 
     }
-
-
 
 }

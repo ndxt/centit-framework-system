@@ -17,7 +17,7 @@
     </resultMap>
 
     <!-- 查询条件 -->
-    <sql id="condition">
+    <sql id="condition" databaseId="oracle">
         <if test="logId != null  and logId != ''  ">
             and u.LOG_ID = #{logId}
         </if>
@@ -31,7 +31,7 @@
             and u.OPT_TIME >= to_date(#{optTimeBegin},'yyyy-mm-dd')
         </if>
         <if test="optTimeEnd != null  and optTimeEnd != ''  ">
-            and u.OPT_TIME  <![CDATA[<= ]]> to_date(#{optTimeEnd},'yyyy-mm-dd')
+            and u.OPT_TIME <![CDATA[<= ]]> to_date(#{optTimeEnd},'yyyy-mm-dd')
         </if>
         <if test="optId != null  and optId != ''  ">
             and u.OPT_ID like '%'|| #{optId}||'%'
@@ -47,6 +47,78 @@
         </if>
         <if test="optMethod != null  and optMethod != ''  ">
             and u.OPT_METHOD like '%'|| #{optMethod}||'%'
+        </if>
+        <if test="optId != null  and optId != ''  ">
+            and u.OPT_ID = #{optId}
+        </if>
+    </sql>
+
+    <sql id="condition" databaseId="mysql">
+        <if test="logId != null  and logId != ''  ">
+            and u.LOG_ID = #{logId}
+        </if>
+        <if test="logLevel != null  and logLevel != ''  ">
+            and u.LOG_LEVEL like concat('%', #{logLevel}, '%')
+        </if>
+        <if test="userCode != null  and userCode != ''  ">
+            and u.USER_CODE = #{userCode}
+        </if>
+        <if test="optTimeBegin != null  and optTimeBegin != ''  ">
+            and u.OPT_TIME >= str_to_date(#{optTimeBegin},'%Y-%m-%d')
+        </if>
+        <if test="optTimeEnd != null  and optTimeEnd != ''  ">
+            and u.OPT_TIME <![CDATA[<= ]]> str_to_date(#{optTimeEnd},'%Y-%m-%d')
+        </if>
+        <if test="optId != null  and optId != ''  ">
+            and u.OPT_ID like concat('%', #{optId}, '%')
+        </if>
+        <if test="optCode != null  and optCode != ''  ">
+            and u.OPT_CODE like concat('%', #{optCode}, '%')
+        </if>
+        <if test="optContent != null  and optContent != ''  ">
+            and u.OPT_CONTENT like concat('%', #{optContent}, '%')
+        </if>
+        <if test="oldValue != null  and oldValue != ''  ">
+            and u.OLD_VALUE like concat('%', #{oldValue}, '%')
+        </if>
+        <if test="optMethod != null  and optMethod != ''  ">
+            and u.OPT_METHOD like concat('%', #{optMethod}, '%')
+        </if>
+        <if test="optId != null  and optId != ''  ">
+            and u.OPT_ID = #{optId}
+        </if>
+    </sql>
+
+    <sql id="condition" databaseId="h2">
+        <if test="logId != null  and logId != ''  ">
+            and u.LOG_ID = #{logId}
+        </if>
+        <if test="logLevel != null  and logLevel != ''  ">
+            and u.LOG_LEVEL like concat('%', #{logLevel}, '%')
+        </if>
+        <if test="userCode != null  and userCode != ''  ">
+            and u.USER_CODE = #{userCode}
+        </if>
+        <if test="optTimeBegin != null  and optTimeBegin != ''  ">
+            and u.OPT_TIME >= str_to_date(#{optTimeBegin},'%Y-%m-%d')
+        </if>
+        <if test="optTimeEnd != null  and optTimeEnd != ''  ">
+            and u.OPT_TIME <![CDATA[<= ]]> str_to_date(#{optTimeEnd},'%Y-%m-%d')
+        </if>
+        <if test="optId != null  and optId != ''  ">
+            and u.OPT_ID like concat('%', #{optId}, '%')
+        </if>
+        <if test="optCode != null  and optCode != ''  ">
+            and u.OPT_CODE like concat('%', #{optCode}, '%')
+        </if>
+        <if test="optContent != null  and optContent != ''  ">
+            and u.OPT_CONTENT like concat('%', #{optContent}, '%')
+        </if>
+        <if test="oldValue != null  and oldValue != ''  ">
+            and u.OLD_VALUE like concat('%', #{oldValue}, '%')
+        </if>
+        <if test="optMethod != null  and optMethod != ''  ">
+            and u.OPT_METHOD like concat('%', #{optMethod}, '%')
         </if>
         <if test="optId != null  and optId != ''  ">
             and u.OPT_ID = #{optId}

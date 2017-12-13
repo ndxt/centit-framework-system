@@ -17,9 +17,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.annotation.Resource;
@@ -46,7 +44,6 @@ public class UserSettingController extends BaseController {
     /**
      * 系统日志中记录
      */
-    //private String optId = "userSetting";//CodeRepositoryUtil.getCode("OPTID", "userSetting");
     public String getOptId() {
         return  "userSetting";
     }
@@ -61,7 +58,7 @@ public class UserSettingController extends BaseController {
     @RequestMapping
     public void list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = convertSearchColumn(request);
-        UserInfo userInfo = (UserInfo) getLoginUser(request);
+        UserInfo userInfo = (UserInfo) getLoginUser(request).getUserInfo();
         searchColumn.put(CodeRepositoryUtil.USER_CODE, userInfo.getUserCode());
 
         List<UserSetting> listObjects = userSettingManager.listObjects(searchColumn, pageDesc);
@@ -76,6 +73,27 @@ public class UserSettingController extends BaseController {
         resData.addResponseData(PAGE_DESC, pageDesc);
 
         JsonResultUtils.writeResponseDataAsJson(resData, response, simplePropertyPreFilter);
+    }
+
+    /**
+     * 查询用户个人设置列表
+     * @param pageDesc 分页信息
+     * @param request {@link HttpServletRequest}
+     * @param response {@link HttpServletResponse}
+     */
+    @GetMapping(value = "/list/{userCode}")
+    public void listUserSetting(@PathVariable String userCode, PageDesc pageDesc,
+                                HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> searchColumn = convertSearchColumn(request);
+        searchColumn.put(CodeRepositoryUtil.USER_CODE, userCode);
+
+        List<UserSetting> listObjects = userSettingManager.listObjects(searchColumn, pageDesc);
+
+        ResponseMapData resData = new ResponseMapData();
+        resData.addResponseData(OBJLIST, listObjects);
+        resData.addResponseData(PAGE_DESC, pageDesc);
+
+        JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
 
 
@@ -120,14 +138,14 @@ public class UserSettingController extends BaseController {
      *
      * @param paramCode     参数代码
      * @param userSetting   UserSetting
-     * @param bindingResult BindingResult
+//     * @param bindingResult BindingResult
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{paramCode}", method = {RequestMethod.POST, RequestMethod.PUT})
     @RecordOperationLog(content = "更新当前用户设置参数")
     public void editUserSetting(@PathVariable String paramCode, @Valid UserSetting userSetting,
-                 HttpServletRequest request, BindingResult bindingResult,
+                 HttpServletRequest request, /*BindingResult bindingResult,*/
                  HttpServletResponse response) {
 
         UserSettingId id = new UserSettingId(

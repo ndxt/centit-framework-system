@@ -2,8 +2,10 @@ package com.centit.framework.system.dao;
 
 import com.centit.framework.system.po.UserSetting;
 import com.centit.framework.system.po.UserSettingId;
+import com.centit.support.database.utils.PageDesc;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 个人设置Dao
@@ -11,6 +13,20 @@ import java.util.List;
  * updated by zou_wy@centit.com
  */
 public interface UserSettingDao {
+
+    /**
+     * 根据条件查询
+     * @param pageQueryMap 查询条件
+     * @return List<UserSetting>
+     */
+    List<UserSetting> pageQuery(Map<String, Object> pageQueryMap);
+
+    /**
+     * 查询数量 用于分页
+     * @param filterDescMap 过滤条件
+     * @return int
+     */
+    int pageCount(Map<String, Object> filterDescMap);
 
     /**
     * 根据Id查询
@@ -24,6 +40,12 @@ public interface UserSettingDao {
     * @param userSettingId 个人设置Id
     */
     void deleteObjectById(UserSettingId userSettingId);
+
+    /**
+     * 删除个人设置
+     * @param userSetting 个人设置
+     */
+    void deleteObject(UserSetting userSetting);
 
     /**
     * 根据用户代码查询
