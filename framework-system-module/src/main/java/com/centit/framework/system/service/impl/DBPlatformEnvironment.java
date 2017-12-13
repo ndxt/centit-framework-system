@@ -107,7 +107,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         for(RolePower rp: rplist ){
             List<ConfigAttribute/*roleCode*/> roles = CentitSecurityMetadata.optMethodRoleMap.get(rp.getOptCode());
             if(roles == null){
-                roles = new ArrayList<ConfigAttribute/*roleCode*/>();
+                roles = new ArrayList</*roleCode*/>();
             }
             roles.add(new SecurityConfig(CentitSecurityMetadata.ROLE_PREFIX + StringUtils.trim(rp.getRoleCode())));
             CentitSecurityMetadata.optMethodRoleMap.put(rp.getOptCode(), roles);
