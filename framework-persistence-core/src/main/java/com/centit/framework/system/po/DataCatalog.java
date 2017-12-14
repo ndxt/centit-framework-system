@@ -109,7 +109,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
      * UPDATEDATE(更新时间) 更新时间
      */
     @Column(name = "UPDATE_DATE")
-    @ValueGenerator(strategy = GeneratorType.FUNCTIION, occasion = GeneratorTime.ALWAYS,
+    @ValueGenerator(strategy = GeneratorType.FUNCTION, occasion = GeneratorTime.ALWAYS,
             condition = GeneratorCondition.ALWAYS, value="today()" )
     private Date  updateDate;
     //结束

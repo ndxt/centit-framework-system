@@ -123,7 +123,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
 
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    @ValueGenerator( strategy= GeneratorType.FUNCTIION, value = "today()")
+    @ValueGenerator( strategy= GeneratorType.FUNCTION, value = "today()")
     protected Date createDate;
 
     /**
@@ -142,7 +142,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
      * UPDATEDATE(更新时间) 更新时间
      */
     @Column(name = "UPDATE_DATE")
-    @ValueGenerator( strategy= GeneratorType.FUNCTIION, value = "today()", condition = GeneratorCondition.ALWAYS, occasion = GeneratorTime.ALWAYS )
+    @ValueGenerator( strategy= GeneratorType.FUNCTION, value = "today()", condition = GeneratorCondition.ALWAYS, occasion = GeneratorTime.ALWAYS )
     private Date  updateDate;
 
 
