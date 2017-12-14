@@ -80,7 +80,7 @@
             and u.USER_CODE in (select r.USER_CODE from F_USERROLE r, F_ROLEINFO i where r.ROLE_CODE = #{queryByRole} and r.ROLE_CODE = i.ROLE_CODE and i.IS_VALID = 'T')
         </if>
         <if test="unitCode != null  and unitCode != ''  ">
-            and k.UNIT_PATH like '%/'|| #{unitCode}|| '%')
+            and k.UNIT_PATH like '%/' || #{unitCode} || '%'
         </if>
     </sql>
 
