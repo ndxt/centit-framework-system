@@ -22,6 +22,7 @@
         <centit.framework.version>4.0.4-SNAPSHOT</centit.framework.version>
         <centit.commons.version>2.2.5-SNAPSHOT</centit.commons.version>
         <centit.ui.version>3.0.1-SNAPSHOT</centit.ui.version>
+        <centit.stat.version>2.0.1-SNAPSHOT</centit.stat.version>
 
         <ojdbc6.version>11.2.0.4</ojdbc6.version>
         <junit.version>4.12</junit.version>
@@ -79,6 +80,14 @@
             <version>${servlet-api.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+            <version>${junit.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
