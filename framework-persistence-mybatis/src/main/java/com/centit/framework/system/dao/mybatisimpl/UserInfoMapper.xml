@@ -260,7 +260,7 @@
     </select>
 
     <!--查询单条记录ById -->
-    <select id="getObjectById" parameterType="String" resultMap="UserInfo">
+    <select id="getUserByCode" parameterType="String" resultMap="UserInfo">
         <include refid="coreSql" />
         <where>
             <![CDATA[

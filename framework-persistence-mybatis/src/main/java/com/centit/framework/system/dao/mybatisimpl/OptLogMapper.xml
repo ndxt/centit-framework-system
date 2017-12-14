@@ -31,7 +31,7 @@
             and u.OPT_TIME >= to_date(#{optTimeBegin},'yyyy-mm-dd')
         </if>
         <if test="optTimeEnd != null  and optTimeEnd != ''  ">
-            and u.OPT_TIME <![CDATA[<= ]]> to_date(#{optTimeEnd},'yyyy-mm-dd')
+            and u.OPT_TIME <![CDATA[<= ]]> to_date(#{optTimeEnd},'yyyy-mm-dd')+1
         </if>
         <if test="optId != null  and optId != ''  ">
             and u.OPT_ID like '%'|| #{optId}||'%'
@@ -67,7 +67,7 @@
             and u.OPT_TIME >= str_to_date(#{optTimeBegin},'%Y-%m-%d')
         </if>
         <if test="optTimeEnd != null  and optTimeEnd != ''  ">
-            and u.OPT_TIME <![CDATA[<= ]]> str_to_date(#{optTimeEnd},'%Y-%m-%d')
+            and u.OPT_TIME <![CDATA[<= ]]> date_sub(str_to_date(#{optTimeEnd},'%Y-%m-%d'),INTERVAL -1 DAY)
         </if>
         <if test="optId != null  and optId != ''  ">
             and u.OPT_ID like concat('%', #{optId}, '%')
@@ -103,7 +103,7 @@
             and u.OPT_TIME >= str_to_date(#{optTimeBegin},'%Y-%m-%d')
         </if>
         <if test="optTimeEnd != null  and optTimeEnd != ''  ">
-            and u.OPT_TIME <![CDATA[<= ]]> str_to_date(#{optTimeEnd},'%Y-%m-%d')
+            and u.OPT_TIME <![CDATA[<= ]]> date_sub(str_to_date(#{optTimeEnd},'%Y-%m-%d'),INTERVAL -1 DAY)
         </if>
         <if test="optId != null  and optId != ''  ">
             and u.OPT_ID like concat('%', #{optId}, '%')

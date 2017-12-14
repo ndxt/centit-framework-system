@@ -11,7 +11,7 @@ define(function (require) {
     this.submit = function (table, data) {
 
       Core.ajax(Config.ContextPath + 'system/unitrole/' + data.roleCode + '/' + this.parent.data.unitCode, {
-        method: 'post',
+        method: 'delete',
         data: {
           _method: 'DELETE'
         }
