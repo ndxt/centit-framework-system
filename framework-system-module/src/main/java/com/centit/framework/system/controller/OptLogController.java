@@ -33,14 +33,15 @@ public class OptLogController extends BaseController {
 
     //private String optId = "OPTLOG";
     public String getOptId() {
-        return  "OPTLOG";
+        return "OPTLOG";
     }
+
     /**
      * 查询系统日志
      *
      * @param field    需要显示的字段
-     * @param pageDesc  分页信息
-     * @param request    HttpServletRequest
+     * @param pageDesc 分页信息
+     * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
     @RequestMapping
@@ -59,7 +60,7 @@ public class OptLogController extends BaseController {
     /**
      * 查询单条日志
      *
-     * @param logId logId
+     * @param logId    logId
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{logId}", method = {RequestMethod.GET})
@@ -74,8 +75,8 @@ public class OptLogController extends BaseController {
     /**
      * 删除单条系统日志
      *
-     * @param logId logId
-     * @param request HttpServletRequest
+     * @param logId    logId
+     * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{logId}", method = {RequestMethod.DELETE})
@@ -93,13 +94,14 @@ public class OptLogController extends BaseController {
 
     /**
      * 删除多条系统日志
-     * @param logIds logIds[]
+     *
+     * @param logIds   logIds[]
      * @param response HttpServletResponse
-     * @param request HttpServletRequest
+     * @param request  HttpServletRequest
      */
     @RequestMapping(value = "/deleteMany", method = RequestMethod.DELETE)
     @RecordOperationLog(content = "删除日志")
-    public void deleteMany(Long[] logIds,HttpServletRequest request, HttpServletResponse response) {
+    public void deleteMany(Long[] logIds, HttpServletRequest request, HttpServletResponse response) {
         /*for(Long logId : logIds) {
             OptLog optLog = optLogManager.getObjectById(logId);
             *//***************log*******************//*
@@ -111,17 +113,18 @@ public class OptLogController extends BaseController {
 
         JsonResultUtils.writeBlankJson(response);
     }
+
     /**
      * 删除某时段之前的系统日志
      *
-     * @param begin Date
-     * @param end Date
+     * @param begin    Date
+     * @param end      Date
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/delete", method = {RequestMethod.DELETE})
     @RecordOperationLog(content = "删除日志")
     public void deleteByTime(Date begin, Date end, HttpServletResponse response) {
-        optLogManager.delete(begin,end);
+        optLogManager.delete(begin, end);
 
         JsonResultUtils.writeBlankJson(response);
     }
