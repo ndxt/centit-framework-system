@@ -77,11 +77,12 @@ public class DataDictionaryManagerImpl implements
                 }
             }
         }
-        if( (isAdmin || !"F".equals(dataCatalog.getCatalogStyle()))
-                && dbOptList.getLeft()!=null ){
-             for(DataDictionary dp: dbOptList.getLeft() ){
-                 dictionaryDao.saveNewObject(dp);
-             }
+        if(dbOptList != null) {
+            for (DataDictionary dp : dbOptList.getLeft()) {
+                //if ((isAdmin || !"F".equals(dp.getDataStyle()))) {
+                    dictionaryDao.saveNewObject(dp);
+                //}
+            }
         }
 
         if(null != dbOptList.getMiddle()){
