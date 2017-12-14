@@ -48,6 +48,11 @@
             <version>${ehcache.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.centit.support</groupId>
+            <artifactId>centit-report-utils</artifactId>
+            <version>${centit.stat.version}</version>
+        </dependency>
         <!-- server runtime library -->
         <dependency>
             <groupId>com.sun</groupId>

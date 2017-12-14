@@ -10,6 +10,7 @@
 
         <centit.ui.version>3.0.1-SNAPSHOT</centit.ui.version>
         <centit.persistence.version>1.0.2-SNAPSHOT</centit.persistence.version>
+        <centit.stat.version>2.0.1-SNAPSHOT</centit.stat.version>
 
         <hibernate.validator.version>5.4.2.Final</hibernate.validator.version>
         <persistence-api.version>2.2</persistence-api.version>
