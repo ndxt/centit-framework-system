@@ -7,11 +7,11 @@ define(function(require) {
 
 	  // 部门角色只查询主部门下的角色
     var loginUser = Cache.get('loginuser');
-    this.queryRoleUrl = Config.ContextPath + "system/roleinfo/unit/" + loginUser.primaryUnit;
+    this.queryRoleUrl = Config.ContextPath + "system/roleinfo/unit/" + loginUser.userInfo.primaryUnit;
 
-    this.validateRoleNameWhenAdd = Config.ContextPath + 'system/roleinfo/isunitroleunique/' + loginUser.primaryUnit + '/{{roleName}}';
+    this.validateRoleNameWhenAdd = Config.ContextPath + 'system/roleinfo/isunitroleunique/' + loginUser.userInfo.primaryUnit + '/{{roleName}}';
 
-    this.validateRoleNameWhenEdit = Config.ContextPath + 'system/roleinfo/isunitroleunique/' + loginUser.primaryUnit + '/{{roleName}}/{{roleCode}}';
+    this.validateRoleNameWhenEdit = Config.ContextPath + 'system/roleinfo/isunitroleunique/' + loginUser.userInfo.primaryUnit + '/{{roleName}}/{{roleCode}}';
 
     // 新增部门角色的roleType必须为 D
     this.doDeptRoleAdd = function(ctrl) {

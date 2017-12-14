@@ -64,7 +64,7 @@ public class DataDictionaryManagerImpl implements
 
 //        dataCatalogDao.updateOptMethod(dataCatalog);
 
-        List<DataDictionary> oldData = dictionaryDao.listDataDictionary(dataCatalog.getCatalogCode());
+         List<DataDictionary> oldData = dictionaryDao.listDataDictionary(dataCatalog.getCatalogCode());
         List<DataDictionary> newData = dataCatalog.getDataDictionaries();
         Triple<List<DataDictionary>, List<Pair<DataDictionary,DataDictionary>>, List<DataDictionary>>
             dbOptList = ListOpt.compareTwoList(oldData, newData,

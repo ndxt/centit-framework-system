@@ -7,7 +7,7 @@ define(function (require) {
   return UserInfo.extend(function () {
     var loginUser = Cache.get('loginuser');
 
-    this.queryUserUrl = Config.ContextPath + "system/unitinfo/" + loginUser.primaryUnit + "/users";
+    this.queryUserUrl = Config.ContextPath + "system/unitinfo/" + loginUser.userInfo.primaryUnit + "/users";
 
     // 修改用户角色链接
     this.queryRoleUrl = 'system/roleinfo/listRoles/D';
