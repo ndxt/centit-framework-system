@@ -22,7 +22,7 @@
     </resultMap>
 
     <!-- 查询条件 -->
-    <sql id="condition">
+    <sql id="condition" databaseId="oracle">
         <if test="msgType != null  and msgType != ''  ">
             and u.MSG_TYPE = #{msgType}
         </if>
@@ -34,6 +34,45 @@
         </if>
         <if test="msgStateNot != null  and msgStateNot != ''  ">
             and u.MSG_STATE != #{msgStateNot}
+        </if>
+        <if test="receive != null  and receive != ''  ">
+            and u.RECEIVE_NAME like '%' || (select k.USER_NAME from F_USERINFO k where k.USER_CODE = #{receive}) || '%'
+        </if>
+    </sql>
+
+    <sql id="condition" databaseId="mysql">
+        <if test="msgType != null  and msgType != ''  ">
+            and u.MSG_TYPE = #{msgType}
+        </if>
+        <if test="msgTitle != null  and msgTitle != ''  ">
+            and u.MSG_TITLE like concat('%', #{msgTitle}, '%')
+        </if>
+        <if test="msgContent != null  and msgContent != ''  ">
+            and u.MSG_CONTENT like concat('%', #{msgContent}, '%')
+        </if>
+        <if test="msgStateNot != null  and msgStateNot != ''  ">
+            and u.MSG_STATE != #{msgStateNot}
+        </if>
+        <if test="receive != null  and receive != ''  ">
+            and u.RECEIVE_NAME like concat('%', (select k.USER_NAME from F_USERINFO k where k.USER_CODE = #{receive}), '%')
+        </if>
+    </sql>
+
+    <sql id="condition" databaseId="h2">
+        <if test="msgType != null  and msgType != ''  ">
+            and u.MSG_TYPE = #{msgType}
+        </if>
+        <if test="msgTitle != null  and msgTitle != ''  ">
+            and u.MSG_TITLE like concat('%', #{msgTitle}, '%')
+        </if>
+        <if test="msgContent != null  and msgContent != ''  ">
+            and u.MSG_CONTENT like concat('%', #{msgContent}, '%')
+        </if>
+        <if test="msgStateNot != null  and msgStateNot != ''  ">
+            and u.MSG_STATE != #{msgStateNot}
+        </if>
+        <if test="receive != null  and receive != ''  ">
+            and u.RECEIVE_NAME like concat('%', (select k.USER_NAME from F_USERINFO k where k.USER_CODE = #{receive}), '%')
         </if>
     </sql>
 
