@@ -88,4 +88,9 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
     public void updateInnerMsgRecipient(InnerMsgRecipient innerMsgRecipient){
       super.updateObject(innerMsgRecipient);
     }
+
+    @Override
+    public String getNextKey() {
+        return DatabaseOptUtils.getNextValueOfSequence(this, "S_RECIPIENT");
+    }
 }

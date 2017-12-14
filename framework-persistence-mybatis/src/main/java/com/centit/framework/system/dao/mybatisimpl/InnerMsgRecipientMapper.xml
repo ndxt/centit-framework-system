@@ -122,6 +122,18 @@
         <include refid="insertSql" />
     </insert>
 
+    <select id="getNextKey" databaseId="oracle" resultType="String">
+        select to_char(S_RECIPIENT.nextval) from dual
+    </select>
+
+    <select id="getNextKey" databaseId="mysql" resultType="String">
+        select sequence_nextval('S_RECIPIENT')
+    </select>
+
+    <select id="getNextKey" databaseId="h2" resultType="String">
+        select NEXT VALUE FOR S_RECIPIENT
+    </select>
+
     <insert id="saveObject" parameterType="com.centit.framework.system.po.InnerMsgRecipient">
         insert into M_InnerMsg_Recipient
         <include refid="insertSql" />

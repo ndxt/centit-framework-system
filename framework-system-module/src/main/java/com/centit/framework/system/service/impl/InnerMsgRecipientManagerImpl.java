@@ -75,12 +75,14 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
                 bo++;
             }
             msg.setReceiveName(receiveName);
+            msg.setMsgCode(innerMsgDao.getNextKey());
             innerMsgDao.saveNewObject(msg);
             recipient.setMInnerMsg(msg);
             recipient.setMsgCode(msg.getMsgCode());
             //DataPushSocketServer.pushMessage(msg.getSender(), "你发送邮件："+ msg.getMsgTitle());
             for (String userCode : receives) {
                 InnerMsgRecipient innerMsgRecipient  = new InnerMsgRecipient();
+                innerMsgRecipient.setId(innerMsgRecipientDao.getNextKey());
                 innerMsgRecipient.copyNOtNUllProperties(recipient);
                 innerMsgRecipient.setReceive(userCode);
                 innerMsgRecipientDao.saveNewObject(innerMsgRecipient);
@@ -121,6 +123,7 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
             String receiveName = CodeRepositoryUtil.getUnitName(unitCode);
             msg.setReceiveName(receiveName);
             msg.setMsgType("A");
+            msg.setMsgCode(innerMsgDao.getNextKey());
             innerMsgDao.saveNewObject(msg);
 
             for (IUserInfo ui : userList) {
@@ -131,6 +134,7 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
                     recipient.setMInnerMsg(msg);
                     recipient.setMsgCode(msg.getMsgCode());
                     recipient.setReceive(ui.getUserCode());
+                    recipient.setId(innerMsgRecipientDao.getNextKey());
                     innerMsgRecipientDao.saveNewObject(recipient);
                     //DataPushSocketServer.pushMessage(ui.getUserCode(), "你有新邮件：" + recipient.getMsgTitle());
                 }

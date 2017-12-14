@@ -328,7 +328,7 @@
 
     <select id="listUnitUsersByUnitCode" parameterType="String" resultMap="UserUnit">
         <include refid="coreSql" />
-        where USER_CODE=#{unitCode}
+        where u.UNIT_CODE=#{unitCode}
     </select>
 
     <select id="listUserUnitsByRoleAndUnit" parameterType="String" resultMap="UserUnit">

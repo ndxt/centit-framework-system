@@ -2,9 +2,12 @@ package com.centit.framework.system.dao.jdbcimpl;
 
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.InnerMsgDao;
 import com.centit.framework.system.po.InnerMsg;
+import com.centit.support.algorithm.StringBaseOpt;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -49,5 +52,12 @@ public class InnerMsgDaoImpl extends BaseDaoImpl<InnerMsg, String> implements In
     @Override
     public void updateInnerMsg(InnerMsg innerMsg){
         super.updateObject(innerMsg);
+    }
+
+    @Override
+    @Transactional
+    public String getNextKey() {
+        return StringBaseOpt.objectToString(
+            DatabaseOptUtils.getSequenceNextValue(this, "S_MSGCODE"));
     }
 }

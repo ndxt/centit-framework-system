@@ -37,6 +37,12 @@ public interface InnerMsgDao {
     void saveNewObject(InnerMsg innerMsg);
 
     /**
+     * 获取下一个序列值
+     * @return
+     */
+    String getNextKey();
+
+    /**
     * 根据条件查询
     * @param filterMap 过滤条件
     * @return List<InnerMsg>

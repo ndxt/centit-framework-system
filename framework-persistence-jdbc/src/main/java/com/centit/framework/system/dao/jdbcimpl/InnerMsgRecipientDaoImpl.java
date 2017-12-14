@@ -6,6 +6,7 @@ import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.InnerMsgRecipientDao;
 import com.centit.framework.system.po.InnerMsgRecipient;
 import com.centit.support.algorithm.NumberBaseOpt;
+import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.QueryUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,4 +90,11 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
             DatabaseOptUtils.getObjectCascadeById(inn)
         }
     }*/
+
+    @Override
+    @Transactional
+    public String getNextKey() {
+        return StringBaseOpt.objectToString(
+            DatabaseOptUtils.getSequenceNextValue(this, "S_RECIPIENT"));
+    }
 }

@@ -65,6 +65,12 @@ public interface InnerMsgRecipientDao {
     void saveNewObject(InnerMsgRecipient recipient);
 
     /**
+     * 获取下一个序列值
+     * @return
+     */
+    String getNextKey();
+
+    /**
      * 两人间来往消息列表
      *
      * @param sender   发送方
