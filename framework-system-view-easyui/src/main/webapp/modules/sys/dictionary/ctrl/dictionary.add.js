@@ -194,7 +194,8 @@ define(function (require) {
           url: Config.ContextPath + this.url,
           method: 'post',
           data: $.extend({}, this.object, {
-            fieldDesc: this.stringifyFieldDesc(panel)
+            fieldDesc: this.stringifyFieldDesc(panel),
+            catalogStyle: this.$findUp('isAdmin') ? 'S' : 'U'
           })
         }).then(function () {
           vm.parent.table.datagrid('reload');
