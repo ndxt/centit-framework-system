@@ -213,7 +213,9 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Override
     @Transactional
     public List<RoleInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return roleInfoDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap,pageDesc,roleInfoDao.pageCount(filterMap)));
+        return roleInfoDao.pageQuery(
+            QueryParameterPrepare.makeMybatisOrderByParam(
+                QueryParameterPrepare.prepPageParams(filterMap,pageDesc,roleInfoDao.pageCount(filterMap)),RoleInfo.class));
     }
 
     @Override

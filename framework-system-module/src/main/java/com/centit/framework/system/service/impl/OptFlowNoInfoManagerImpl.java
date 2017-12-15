@@ -306,8 +306,9 @@ public class OptFlowNoInfoManagerImpl implements OptFlowNoInfoManager {
         filterMap.put("codeCode", codeCode);
 
         return optFlowNoPoolDao.pageQuery(
+            QueryParameterPrepare.makeMybatisOrderByParam(
                 QueryParameterPrepare.prepPageParams(filterMap,pageDesc,
-                        optFlowNoPoolDao.pageCount(filterMap)));
+                        optFlowNoPoolDao.pageCount(filterMap)),OptFlowNoPool.class));
     }
 
     public List<OptFlowNoPool> listLshBaseDayInPool(String ownerCode,

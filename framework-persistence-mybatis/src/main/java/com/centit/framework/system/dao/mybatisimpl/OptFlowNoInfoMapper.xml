@@ -96,8 +96,8 @@
         <where>
             <include refid="condition" />
         </where>
-        <if test="pageDesc != null ">
-            order by ${pageDesc}
+        <if test="mybatisOrderBy != null and mybatisOrderBy != '' ">
+            order by ${mybatisOrderBy}
         </if>
         <include refid="com.centit.framework.mybatis.dao.BaseDao.pageEnd" />
     </select>

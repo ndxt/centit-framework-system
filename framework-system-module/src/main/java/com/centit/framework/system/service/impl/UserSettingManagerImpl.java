@@ -68,8 +68,9 @@ public class UserSettingManagerImpl implements UserSettingManager {
     @Override
     public List<UserSetting> listObjects(Map<String, Object> searchColumn, PageDesc pageDesc) {
         return userSettingDao.pageQuery(
+            QueryParameterPrepare.makeMybatisOrderByParam(
             QueryParameterPrepare.prepPageParams(
-                searchColumn,pageDesc,userSettingDao.pageCount(searchColumn)));
+                searchColumn,pageDesc,userSettingDao.pageCount(searchColumn)),UserSetting.class));
     }
 
     @Override

@@ -48,7 +48,8 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
     @Override
     public JSONArray listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
         List<UserRole> userRoles = userRoleDao.pageQuery(
-                QueryParameterPrepare.prepPageParams(filterMap,pageDesc,userRoleDao.pageCount(filterMap)));
+            QueryParameterPrepare.makeMybatisOrderByParam(
+                QueryParameterPrepare.prepPageParams(filterMap,pageDesc,userRoleDao.pageCount(filterMap)),UserRole.class));
         return DictionaryMapUtils.objectsToJSONArray(userRoles);
     }
 
@@ -92,8 +93,9 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
     public JSONArray pageQueryUserRole(Map<String, Object> filterMap, PageDesc pageDesc) {
         return DictionaryMapUtils.objectsToJSONArray(
             userRoleDao.pageQueryUserRole(
-            QueryParameterPrepare.prepPageParams(
-                filterMap,pageDesc,userRoleDao.pageCountUserRole(filterMap))));
+                QueryParameterPrepare.makeMybatisOrderByParam(
+                    QueryParameterPrepare.prepPageParams(
+                        filterMap,pageDesc,userRoleDao.pageCountUserRole(filterMap)),FVUserRoles.class)));
     }
 
     /**
