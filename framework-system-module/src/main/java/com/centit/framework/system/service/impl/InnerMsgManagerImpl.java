@@ -85,7 +85,10 @@ public class InnerMsgManagerImpl implements InnerMsgManager, MessageSender{
 
     @Override
     public List<InnerMsg> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return innerMsgDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap,pageDesc,innerMsgDao.pageCount(filterMap)));
+        return innerMsgDao.pageQuery(
+            QueryParameterPrepare.makeMybatisOrderByParam(
+                QueryParameterPrepare.prepPageParams(filterMap,pageDesc,innerMsgDao.pageCount(filterMap)),
+                    InnerMsg.class));
     }
 
     @Override

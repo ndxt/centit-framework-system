@@ -214,8 +214,9 @@ public class SysUserUnitManagerImpl
     @Override
     public List<UserUnit> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
         return userUnitDao.pageQuery(
+            QueryParameterPrepare.makeMybatisOrderByParam(
                 QueryParameterPrepare.prepPageParams(
-                        filterMap,pageDesc,userUnitDao.pageCount(filterMap)));
+                        filterMap,pageDesc,userUnitDao.pageCount(filterMap)),UserUnit.class));
     }
 
     @Override
@@ -237,7 +238,8 @@ public class SysUserUnitManagerImpl
         if(unitInfo != null){
             map.put("unitPath", unitInfo.getUnitPath());
             return userUnitDao.querySubUserUnits(
-              QueryParameterPrepare.prepPageParams(map,pageDesc,userUnitDao.countSubUserUnits(map)));
+                QueryParameterPrepare.makeMybatisOrderByParam(
+              QueryParameterPrepare.prepPageParams(map,pageDesc,userUnitDao.countSubUserUnits(map)),UserUnit.class));
         }
         return null;
     }

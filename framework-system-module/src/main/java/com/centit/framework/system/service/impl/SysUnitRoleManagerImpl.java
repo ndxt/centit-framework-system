@@ -32,8 +32,9 @@ public class SysUnitRoleManagerImpl implements SysUnitRoleManager {
         Map<String, Object> filterMap = new HashMap<>(5);
         filterMap.put("unitCode",unitCode);
         List<UnitRole> unitRoles = unitRoleDao.pageQuery(
-            QueryParameterPrepare.prepPageParams(
-                filterMap,pageDesc,unitRoleDao.pageCount(filterMap)));
+            QueryParameterPrepare.makeMybatisOrderByParam(
+                QueryParameterPrepare.prepPageParams(
+                    filterMap,pageDesc,unitRoleDao.pageCount(filterMap)),UnitRole.class));
         return DictionaryMapUtils.objectsToJSONArray(unitRoles);
     }
 
@@ -43,8 +44,9 @@ public class SysUnitRoleManagerImpl implements SysUnitRoleManager {
         Map<String, Object> filterMap = new HashMap<>(5);
         filterMap.put("roleCode",roleCode);
         List<UnitRole> unitRoles = unitRoleDao.pageQuery(
-            QueryParameterPrepare.prepPageParams(
-                filterMap,pageDesc,unitRoleDao.pageCount(filterMap)));
+            QueryParameterPrepare.makeMybatisOrderByParam(
+                QueryParameterPrepare.prepPageParams(
+                    filterMap,pageDesc,unitRoleDao.pageCount(filterMap)),UnitRole.class));
         return DictionaryMapUtils.objectsToJSONArray(unitRoles);
     }
 

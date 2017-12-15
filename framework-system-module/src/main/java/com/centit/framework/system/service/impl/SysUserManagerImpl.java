@@ -278,8 +278,9 @@ public class SysUserManagerImpl implements SysUserManager {
     @Transactional
     public List<UserInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
         return userInfoDao.pageQuery(
-            QueryParameterPrepare.prepPageParams(filterMap,pageDesc,
-              userInfoDao.pageCount(filterMap)));
+            QueryParameterPrepare.makeMybatisOrderByParam(
+                QueryParameterPrepare.prepPageParams(filterMap,pageDesc,
+                  userInfoDao.pageCount(filterMap)),UserInfo.class));
     }
 
     @Override

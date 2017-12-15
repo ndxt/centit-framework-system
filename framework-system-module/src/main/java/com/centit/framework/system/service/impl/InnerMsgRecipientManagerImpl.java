@@ -211,7 +211,10 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
 
     @Override
     public List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return innerMsgRecipientDao.pageQuery(QueryParameterPrepare.prepPageParams(filterMap, pageDesc, innerMsgRecipientDao.pageCount(filterMap)));
+        return innerMsgRecipientDao.pageQuery(
+            QueryParameterPrepare.makeMybatisOrderByParam(
+                QueryParameterPrepare.prepPageParams(
+                    filterMap, pageDesc, innerMsgRecipientDao.pageCount(filterMap)),InnerMsgRecipient.class));
     }
 
     @Override
@@ -232,7 +235,9 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
     public List<InnerMsgRecipient> listObjectsCascade(Map<String, Object> filterMap, PageDesc pageDesc){
         List<InnerMsgRecipient> recipients =
             innerMsgRecipientDao.pageQuery(
-                QueryParameterPrepare.prepPageParams(filterMap, pageDesc, innerMsgRecipientDao.pageCount(filterMap)));
+                QueryParameterPrepare.makeMybatisOrderByParam(
+                    QueryParameterPrepare.prepPageParams(
+                        filterMap, pageDesc, innerMsgRecipientDao.pageCount(filterMap)),InnerMsgRecipient.class));
         for(InnerMsgRecipient recipient : recipients){
             recipient.setMInnerMsg(innerMsgDao.getObjectById(recipient.getMsgCode()));
         }

@@ -215,8 +215,9 @@ public class DataDictionaryManagerImpl implements
     @Transactional
     public List<DataCatalog> listObjects(Map<String, Object> filterDescMap, PageDesc pageDesc) {
           return dataCatalogDao.pageQuery(
+              QueryParameterPrepare.makeMybatisOrderByParam(
                   QueryParameterPrepare.prepPageParams(filterDescMap, pageDesc,
-                          dataCatalogDao.pageCount(filterDescMap) ) );
+                          dataCatalogDao.pageCount(filterDescMap) ),DataCatalog.class));
     }
 
 }

@@ -138,6 +138,9 @@
         <where>
             <include refid="condition" />
         </where>
+        <if test="mybatisOrderBy != null and mybatisOrderBy != '' ">
+            order by ${mybatisOrderBy}
+        </if>
         <include refid="com.centit.framework.mybatis.dao.BaseDao.pageEnd" />
     </select>
     <!--分页查询结束 -->
@@ -344,7 +347,9 @@
     <if test="obtainType != null  and obtainType != '' ">
       and u.OBTAIN_TYPE = #{obtainType}
     </if>
-
+      <if test="mybatisOrderBy != null and mybatisOrderBy != '' ">
+          order by ${mybatisOrderBy}
+      </if>
     <include refid="com.centit.framework.mybatis.dao.BaseDao.pageEnd" />
   </select>
 

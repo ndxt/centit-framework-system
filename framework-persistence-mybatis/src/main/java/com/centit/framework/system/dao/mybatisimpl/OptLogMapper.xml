@@ -160,8 +160,8 @@
         <where>
             <include refid="condition" />
         </where>
-        <if test="sort != null and sort != '' ">
-            order by ${sort}
+        <if test="mybatisOrderBy != null and mybatisOrderBy != '' ">
+            order by ${mybatisOrderBy}
         </if>
 
         <include refid="com.centit.framework.mybatis.dao.BaseDao.pageEnd" />

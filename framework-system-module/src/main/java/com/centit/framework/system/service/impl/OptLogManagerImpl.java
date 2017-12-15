@@ -100,8 +100,9 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
 
         return DictionaryMapUtils.objectsToJSONArray(
                     optLogDao.pageQuery(
-                        QueryParameterPrepare.prepPageParams(filterMap,pageDesc,
-                            optLogDao.pageCount(filterMap))), fields);
+                        QueryParameterPrepare.makeMybatisOrderByParam(
+                            QueryParameterPrepare.prepPageParams(filterMap,pageDesc,
+                                optLogDao.pageCount(filterMap)),OperationLog.class)), fields);
     }
 
 
