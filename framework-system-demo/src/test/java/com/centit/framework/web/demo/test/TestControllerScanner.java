@@ -28,7 +28,7 @@ import java.util.Map;
  * Created by codefan on 17-9-11.
  */
 public class TestControllerScanner {
-    @Test
+    //@Test
     public void testClassScanner() {
         List<Class<?>> classes = ClassScannerOpt.getClassList("com.centit" ,
             true, Controller.class);
@@ -39,7 +39,7 @@ public class TestControllerScanner {
         System.out.println("done!");
     }
 
-    @Test
+    //@Test
     public void testControllerMapping() {
         JSONArray optInfoList = RequestMappingUtils.mapControllerInfosByPackage("com.centit" );
         String excelFileName = "D:/Projects/RunData/demo_home/optInfos.xlsx";
@@ -61,7 +61,7 @@ public class TestControllerScanner {
         System.out.println(optInfoList.toJSONString());
     }
 
-    @Test
+    //@Test
     public void testImportOptInfo(){
         Map<Integer, String> optInfoColumnField = new HashMap<>(10);
         optInfoColumnField.put(0, "optId");

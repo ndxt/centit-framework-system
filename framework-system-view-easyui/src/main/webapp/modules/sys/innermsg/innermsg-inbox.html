@@ -36,15 +36,17 @@
 	url="system/innermsg/inbox?_search=true&s_msgStateNot=D&s_mailTypeNot=D"
 	search=".search"
 	layoutH=".search"
+  sortName="sendDate"
+  sortOrder="desc"
 	toolbar=".temp-toolbar"
 	>
 	<thead frozen="true">
 		<tr>
-			<th id="b1@messageCode" field="msgCode" hidden="true">消息编码</th>
-			<th id="b1@sender" field="sender" width="150" format="AllUser">发件人</th>
-			<th id="b1@messageType" field="msgTypeText" >消息类型</th>
-			<th id="b1@title" field="msgTitle" width="350">标题</th>
-			<th id="b1@sendDate" field="sendDate" width="150" align="center">发送日期</th>
+			<th id="b1@messageCode" field="msgCode" hidden="true" sortable="true">消息编码</th>
+			<th id="b1@sender" field="sender" width="150" format="AllUser" sortable="true">发件人</th>
+			<th id="b1@messageType" field="msgTypeText" sortable="true">消息类型</th>
+			<th id="b1@title" field="msgTitle" width="350" sortable="true">标题</th>
+			<th id="b1@sendDate" field="sendDate" width="150" align="center" sortable="true">发送日期</th>
 		</tr>
 	</thead>
 	<thead>

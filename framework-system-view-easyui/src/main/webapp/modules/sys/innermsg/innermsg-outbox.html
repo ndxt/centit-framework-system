@@ -26,15 +26,17 @@
 	url="system/innermsg/outbox?_search=true&s_mailTypeNot=D&s_msgStateNot=D"
 	search=".search"
 	layoutH=".search"
+  sortName="sendDate"
+  sortOrder="desc"
 	toolbar=".temp-toolbar"
 	>
 	<thead frozen="true">
 		<tr>
-			<th id="e@messageCode" field="msgCode" hidden="true">消息编码</th>
-			<th id="e1@receiver" field="receiveName" width="150">收件人</th>
-			<th id="e@title" field="msgTitle" width="350">标题</th>
-			<th id="e@messageType" field="msgTypeText">消息类型</th>
-			<th id="e@sendDate" field="sendDate" width="150" align="center">发送日期</th>
+			<th id="e@messageCode" field="msgCode" hidden="true" sortable="true">消息编码</th>
+			<th id="e1@receiver" field="receiveName" width="150" sortable="true">收件人</th>
+			<th id="e@title" field="msgTitle" width="350" sortable="true">标题</th>
+			<th id="e@messageType" field="msgTypeText" sortable="true">消息类型</th>
+			<th id="e@sendDate" field="sendDate" width="150" align="center" sortable="true">发送日期</th>
 		</tr>
 	</thead>
 	<thead>
