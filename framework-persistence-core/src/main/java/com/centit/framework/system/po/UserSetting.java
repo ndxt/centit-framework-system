@@ -47,14 +47,9 @@ public class UserSetting implements IUserSetting,java.io.Serializable {
 //    @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
 
-    public boolean isDefaultValue() {
-        return isDefaultValue;
-    }
-
-    public void setDefaultValue(boolean defaultValue) {
-        isDefaultValue = defaultValue;
-    }
-
+    /**
+     * 标识用户这个参数是来之 系统的默认设置不是用户自己设置的
+     */
     @Transient
     private boolean isDefaultValue;
 
@@ -140,15 +135,13 @@ public class UserSetting implements IUserSetting,java.io.Serializable {
         this.cid.setParamCode(paramCode);
     }
 
-    // Property accessors
+    public boolean isDefaultValue() {
+        return isDefaultValue;
+    }
 
-//    public UserInfo getUserInfo() {
-//        return userInfo;
-//    }
-//
-//    public void setUserInfo(UserInfo userInfo) {
-//        this.userInfo = userInfo;
-//    }
+    public void setDefaultValue(boolean defaultValue) {
+        isDefaultValue = defaultValue;
+    }
 
     public String getParamValue() {
         return this.paramValue;
