@@ -47,11 +47,22 @@ public class UserSetting implements IUserSetting,java.io.Serializable {
 //    @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
 
+    public boolean isDefaultValue() {
+        return isDefaultValue;
+    }
+
+    public void setDefaultValue(boolean defaultValue) {
+        isDefaultValue = defaultValue;
+    }
+
+    @Transient
+    private boolean isDefaultValue;
 
     /**
      * default constructor
      */
     public UserSetting() {
+        this.isDefaultValue = false;
     }
 
     /**
@@ -62,7 +73,7 @@ public class UserSetting implements IUserSetting,java.io.Serializable {
 
     ) {
         this.cid = id;
-
+        this.isDefaultValue = false;
     }
 
     public UserSetting(String userCode, String paramCode,String paramValue, String paramName) {
@@ -71,6 +82,7 @@ public class UserSetting implements IUserSetting,java.io.Serializable {
         this.optId = "SYS";
         this.paramName = paramName;
         this.createDate = DatetimeOpt.currentUtilDate();
+        this.isDefaultValue = false;
     }
 
     public UserSetting(String userCode, String paramCode,String paramValue,
@@ -80,6 +92,7 @@ public class UserSetting implements IUserSetting,java.io.Serializable {
         this.optId = paramClass;
         this.paramName = paramName;
         this.createDate = DatetimeOpt.currentUtilDate();
+        this.isDefaultValue = false;
     }
 
     public UserSetting(UserSettingId id
@@ -91,6 +104,7 @@ public class UserSetting implements IUserSetting,java.io.Serializable {
         this.optId = paramClass;
         this.paramName = paramName;
         this.createDate = createDate;
+        this.isDefaultValue = false;
     }
 
     public UserSettingId getCid() {
