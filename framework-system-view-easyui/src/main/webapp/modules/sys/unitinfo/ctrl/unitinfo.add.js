@@ -58,11 +58,11 @@ define(function (require) {
 
       // 子节点
       if ("0" !== data.parentUnit) {
-        table.treegrid('reload', data.parentUnit);
+        this.parent.table.treegrid('reload', data.parentUnit);
       }
       // 顶级节点
       else {
-        table.treegrid('reload');
+        this.parent.table.treegrid('reload');
       }
 
       require('loaders/cache/loader.system').loadAll();

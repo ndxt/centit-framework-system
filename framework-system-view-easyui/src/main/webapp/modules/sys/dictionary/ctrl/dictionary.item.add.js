@@ -29,6 +29,7 @@ define(function (require) {
 
       // 插入新数据
       table.datagrid('appendRow', $.extend({}, this.object, {
+        dataStyle: this.$findUp('isAdmin') ? 'S' : 'U',
         catalogCode: this.parent.data.catalogCode,
         dataOrder: table.datagrid('getRows').length + 1
       }));
@@ -54,7 +55,10 @@ define(function (require) {
         newRow = $.extend({
           _id: id,
           icon: ""
-        }, this.object, {catalogCode: this.parent.data.catalogCode});
+        }, this.object, {
+          dataStyle: this.$findUp('isAdmin') ? 'S' : 'U',
+          catalogCode: this.parent.data.catalogCode
+        });
 
         table.treegrid('insert', {
           after: row._id,

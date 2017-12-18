@@ -102,7 +102,7 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
                     optLogDao.pageQuery(
                         QueryParameterPrepare.makeMybatisOrderByParam(
                             QueryParameterPrepare.prepPageParams(filterMap,pageDesc,
-                                optLogDao.pageCount(filterMap)),OperationLog.class)), fields);
+                                optLogDao.pageCount(filterMap)),OptLog.class)));
     }
 
 

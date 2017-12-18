@@ -87,7 +87,12 @@
             <scope>test</scope>
             <version>${junit.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.centit.support</groupId>
+            <artifactId>centit-report-utils</artifactId>
+            <version>${centit.stat.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
