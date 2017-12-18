@@ -71,10 +71,10 @@
             and (u.ROLE_TYPE = 'P' or ( u.ROLE_TYPE = 'D' and u.UNIT_CODE = #{publicUnitRole}))
         </if>
         <if test="createDateBeg != null  and createDateBeg != ''  ">
-            <![CDATA[ and u.CREATE_DATE >= #{createDateBeg} ]]>
+            <![CDATA[ and u.CREATE_DATE >= to_date(#{createDateBeg}, 'yyyy-mm-dd') ]]>
         </if>
         <if test="createDateEnd != null  and createDateEnd != ''  ">
-            <![CDATA[ and u.CREATE_DATE <= #{createDateEnd} ]]>
+            <![CDATA[ and u.CREATE_DATE <= to_date(#{createDateEnd}, 'yyyy-mm-dd')+1 ]]>
         </if>
     </sql>
 
@@ -113,10 +113,10 @@
             and (u.ROLE_TYPE = 'P' or ( u.ROLE_TYPE = 'D' and u.UNIT_CODE = #{publicUnitRole}))
         </if>
         <if test="createDateBeg != null  and createDateBeg != ''  ">
-            <![CDATA[ and u.CREATE_DATE >= #{createDateBeg} ]]>
+            <![CDATA[ and u.CREATE_DATE >= str_to_date(#{createDateBeg}, '%Y-%m-%d') ]]>
         </if>
         <if test="createDateEnd != null  and createDateEnd != ''  ">
-            <![CDATA[ and u.CREATE_DATE <= #{createDateEnd} ]]>
+            <![CDATA[ and u.CREATE_DATE <= date_sub(str_to_date(#{createDateEnd}, '%Y-%m-%d'), INTERVAL -1 DAY) ]]>
         </if>
     </sql>
 
@@ -155,10 +155,10 @@
             and (u.ROLE_TYPE = 'P' or ( u.ROLE_TYPE = 'D' and u.UNIT_CODE = #{publicUnitRole}))
         </if>
         <if test="createDateBeg != null  and createDateBeg != ''  ">
-            <![CDATA[ and u.CREATE_DATE >= #{createDateBeg} ]]>
+            <![CDATA[ and u.CREATE_DATE >= str_to_date(#{createDateBeg}, '%Y-%m-%d') ]]>
         </if>
         <if test="createDateEnd != null  and createDateEnd != ''  ">
-            <![CDATA[ and u.CREATE_DATE <= #{createDateEnd} ]]>
+            <![CDATA[ and u.CREATE_DATE <= date_sub(str_to_date(#{createDateEnd}, '%Y-%m-%d'), INTERVAL -1 DAY) ]]>
         </if>
     </sql>
 
