@@ -3,6 +3,7 @@ package com.centit.framework.system.dao.hibernateimpl;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.hibernate.dao.BaseDaoImpl;
+import com.centit.framework.hibernate.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UserSettingDao;
 import com.centit.framework.system.po.UserSetting;
 import com.centit.framework.system.po.UserSettingId;
@@ -59,5 +60,11 @@ public class UserSettingDaoImpl extends BaseDaoImpl<UserSetting, UserSettingId> 
     @Override
     public List<UserSetting> getAllSettings(){
         return super.listObjectsAll();
+    }
+
+    @Override
+    public String getValue(String userCode, String key){
+        String sql = "SELECT PARAM_VALUE FROM F_USERSETTING WHERE USER_CODE = ? AND PARAM_CODE = ?";
+        return String.valueOf(DatabaseOptUtils.getSingleObjectByHql(this, sql, new Object[]{userCode, key}));
     }
 }

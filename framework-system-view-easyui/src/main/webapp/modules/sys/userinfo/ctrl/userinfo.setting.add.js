@@ -9,7 +9,7 @@ define(function (require) {
     var _self = this;
 
     // @override
-    this.load = function (panel) {
+ /*   this.load = function (panel) {
 
       // 获取父窗口的用户信息
       var userInfo = this.parent.data;
@@ -21,10 +21,31 @@ define(function (require) {
       panel.find('form').form('disableValidation')
         .form('load', data)
 
-    };
+    };*/
 
     // @override
-    this.submit = function (panel, data, closeCallback) {
+    this.submit = function(panel, data) {
+      var table = this.panel.find('#usersetting');
+
+      if (!table.cdatagrid('endEdit')) {
+        return;
+      }
+
+      // 插入新数据
+      table.datagrid('appendRow', $.extend({}, this.object));
+
+      var index = table.datagrid('getRows').length - 1;
+      table.datagrid('selectRow', index);
+
+      // 开启编辑
+      table.cdatagrid('beginEdit', index, 'paramValue');
+
+      table.cdatagrid('endEdit', function(index){
+        alert(1);
+      });
+    };
+
+    /*this.submit = function (panel, data, closeCallback) {
       var form = panel.find('form');
 
       form.form('enableValidation');
@@ -45,7 +66,7 @@ define(function (require) {
       }
 
       return false;
-    };
+    };*/
 
   });
 

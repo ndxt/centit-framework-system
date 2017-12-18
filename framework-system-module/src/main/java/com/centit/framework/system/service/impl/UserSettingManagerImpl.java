@@ -1,7 +1,10 @@
 package com.centit.framework.system.service.impl;
 
 import com.centit.framework.core.dao.QueryParameterPrepare;
+import com.centit.framework.system.dao.DataDictionaryDao;
 import com.centit.framework.system.dao.UserSettingDao;
+import com.centit.framework.system.po.DataCatalog;
+import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.UserSetting;
 import com.centit.framework.system.po.UserSettingId;
 import com.centit.framework.system.service.UserSettingManager;
@@ -13,8 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserSettingManagerImpl implements UserSettingManager {
@@ -23,6 +25,9 @@ public class UserSettingManagerImpl implements UserSettingManager {
 
     @Resource
     private UserSettingDao userSettingDao;
+
+    @Resource
+    private DataDictionaryDao dataDictionaryDao;
 
     @Override
     public List<UserSetting> getUserSettings(String userCode) {
@@ -44,6 +49,12 @@ public class UserSettingManagerImpl implements UserSettingManager {
 //    @CacheEvict(value ={"UserInfo","UserSetting"},allEntries = true)
     @Transactional
     public void saveNewUserSetting(UserSetting userSetting){
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("catalogCode", "userSettingKey");
+//        map.put("dataCode", userSetting.getParamCode());
+//        DataDictionary dictionary = dataDictionaryDao.listObjects(map).get(0);
+//        userSetting.setOptId(dictionary.getExtraCode());
+        userSetting.setCreateDate(new Date());
         userSettingDao.saveNewUserSetting(userSetting);
     }
     @Override
@@ -67,10 +78,35 @@ public class UserSettingManagerImpl implements UserSettingManager {
 
     @Override
     public List<UserSetting> listObjects(Map<String, Object> searchColumn, PageDesc pageDesc) {
-        return userSettingDao.pageQuery(
+        List<UserSetting> userSettings = new ArrayList<>();
+
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("catalogCode", "userSettingKey");
+//        List<DataDictionary> dataDictionaries = dataDictionaryDao.listDataDictionary("userSettingKey")
+        List<DataDictionary> dataDictionaries = dataDictionaryDao.pageQuery(
             QueryParameterPrepare.makeMybatisOrderByParam(
-            QueryParameterPrepare.prepPageParams(
-                searchColumn,pageDesc,userSettingDao.pageCount(searchColumn)),UserSetting.class));
+                QueryParameterPrepare.prepPageParams(map, pageDesc,
+                    dataDictionaryDao.pageCount(map) ),DataDictionary.class));
+
+        for(DataDictionary d : dataDictionaries){
+            UserSetting userSetting = new UserSetting(
+                new UserSettingId(String.valueOf(searchColumn.get("userCode")), d.getDataCode()));
+            String value = userSettingDao.getValue(String.valueOf(searchColumn.get("userCode")), d.getDataCode());
+            if("null".equals(value)){
+                userSetting.setDefaultValue(true);
+            }
+            userSetting.setParamValue(
+                value != "null" ? userSettingDao.getValue(String.valueOf(searchColumn.get("userCode")), d.getDataCode()) :
+                        userSettingDao.getValue("default", d.getDataCode()));
+            userSetting.setOptId(d.getExtraCode());
+            userSetting.setParamName(d.getDataDesc());
+            userSettings.add(userSetting);
+        }
+        return userSettings;
+//        return userSettingDao.pageQuery(
+//            QueryParameterPrepare.makeMybatisOrderByParam(
+//            QueryParameterPrepare.prepPageParams(
+//                searchColumn,pageDesc,userSettingDao.pageCount(searchColumn)),UserSetting.class));
     }
 
     @Override

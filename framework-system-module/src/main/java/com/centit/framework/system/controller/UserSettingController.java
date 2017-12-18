@@ -47,32 +47,27 @@ public class UserSettingController extends BaseController {
     public String getOptId() {
         return  "userSetting";
     }
+
     /**
      * 查询当前用户所有的用户参数设置信息
      *
-     * @param field field[]
      * @param pageDesc pageDesc
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping
-    public void list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+    public void list(PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = convertSearchColumn(request);
         UserInfo userInfo = (UserInfo) getLoginUser(request).getUserInfo();
         searchColumn.put(CodeRepositoryUtil.USER_CODE, userInfo.getUserCode());
 
         List<UserSetting> listObjects = userSettingManager.listObjects(searchColumn, pageDesc);
 
-        SimplePropertyPreFilter simplePropertyPreFilter = null;
-        if (ArrayUtils.isNotEmpty(field)) {
-            simplePropertyPreFilter = new SimplePropertyPreFilter(UserSetting.class, field);
-        }
-
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, listObjects);
         resData.addResponseData(PAGE_DESC, pageDesc);
 
-        JsonResultUtils.writeResponseDataAsJson(resData, response, simplePropertyPreFilter);
+        JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
 
     /**
@@ -136,34 +131,21 @@ public class UserSettingController extends BaseController {
     /**
      * 新增或更新当前用户设置参数
      *
-     * @param paramCode     参数代码
      * @param userSetting   UserSetting
 //     * @param bindingResult BindingResult
-     * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
-    @RequestMapping(value = "/{paramCode}", method = {RequestMethod.POST, RequestMethod.PUT})
+    @RequestMapping(method = {RequestMethod.POST})
     @RecordOperationLog(content = "更新当前用户设置参数")
-    public void editUserSetting(@PathVariable String paramCode, @Valid UserSetting userSetting,
-                 HttpServletRequest request, /*BindingResult bindingResult,*/
-                 HttpServletResponse response) {
+    public void editUserSetting(@Valid UserSetting userSetting, HttpServletResponse response) {
 
-        UserSettingId id = new UserSettingId(
-          super.getLoginUserCode(request), paramCode);
-        UserSetting dbUserSetting = userSettingManager.getObjectById(id);
-
-        if(dbUserSetting!=null){
-
-            BeanUtils.copyProperties(userSetting, dbUserSetting, new String[]{"cid"});
-
-            userSettingManager.updateUserSetting(dbUserSetting);
-        }else {
-
-            userSetting.setCid(id);
-            userSetting.setCreateDate(new Date());
+        boolean isDefaultValue = userSetting.isDefaultValue();
+        if(isDefaultValue){
+            userSetting.setDefaultValue(false);
             userSettingManager.saveNewUserSetting(userSetting);
+        }else {
+            userSettingManager.updateUserSetting(userSetting);
         }
-        JsonResultUtils.writeBlankJson(response);
 
 //        OperationLogCenter.logNewObject(request,optId,userSetting.getUserCode(),
 //                OperationLog.P_OPT_LOG_METHOD_U,

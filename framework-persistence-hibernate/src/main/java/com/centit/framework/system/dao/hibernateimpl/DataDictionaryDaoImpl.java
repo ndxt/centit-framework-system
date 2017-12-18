@@ -24,6 +24,7 @@ public class DataDictionaryDaoImpl extends BaseDaoImpl<DataDictionary, DataDicti
             filterField = new HashMap<String, String>();
             filterField.put("datacode", "id.dataCode = :datacode");
             filterField.put("catalogcode", "id.catalogCode = :catalogcode");
+            filterField.put("catalogCode", "id.catalogCode = :catalogCode");
             filterField.put("NP_system", "dataStyle = 'S'");
             filterField.put("dataValue", CodeBook.LIKE_HQL_ID);
             filterField.put(CodeBook.ORDER_BY_HQL_ID, "dataOrder");

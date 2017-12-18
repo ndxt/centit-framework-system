@@ -1,16 +1,21 @@
 package com.centit.framework.system.dao.jdbcimpl;
 
+import com.centit.framework.common.ObjectException;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UserSettingDao;
 import com.centit.framework.system.po.UserSetting;
 import com.centit.framework.system.po.UserSettingId;
+import com.centit.support.algorithm.StringBaseOpt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +69,12 @@ public class UserSettingDaoImpl extends BaseDaoImpl<UserSetting, UserSettingId> 
     @Transactional
     public void saveNewUserSetting(UserSetting us){
         super.saveNewObject(us);
+    }
+
+    @Override
+    public String getValue(String userCode, String key){
+        String sql = "SELECT PARAM_VALUE FROM F_USERSETTING WHERE USER_CODE = ? AND PARAM_CODE = ?";
+        return String.valueOf(DatabaseOptUtils.getScalarObjectQuery(this, sql, new Object[]{userCode, key}));
     }
 
 }

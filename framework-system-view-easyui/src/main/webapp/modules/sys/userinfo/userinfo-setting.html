@@ -1,30 +1,39 @@
 <table
+  id="usersetting"
   border="false"
-  class="unit"
+  class="usersetting"
   fit="true"
   pagination="false"
   toolbar=".setting-toolbar"
+  editable="true"
 >
   <thead>
     <tr>
       <th id="a@organizationName" field="paramCode" width="25%">编码</th>
       <th id="a@post" field="paramName" width="25%" >名称</th>
-      <th field="paramValue" width="25%" >值</th>
+      <th width="25%" data-options="field:'paramValue',editor:{type:'textbox', options:{required: true}}" >值</th>
+      <th field="optId" hidden>业务模块</th>
     </tr>
   </thead>
 </table>
 
 <div class="setting-toolbar">
+<!--  <a rel="userinfo_setting_add" iconCls="icon-add"
+     target="custom" trigger="none" title="添加个人设置" btnValue="添加" width="500" height="360">
+    <p id="userinfo.a1@link.add">新增</p>
+  </a>-->
+<!--
   <a rel="userinfo_setting_add" iconCls="icon-add" href="modules/sys/userinfo/userinfo-setting-info.html"
      target="dialog" trigger="none" title="添加个人设置" btnValue="添加" width="500" height="360">
     <p id="userinfo.a1@link.add">新增</p>
   </a>
-  <hr>
+-->
+<!--  <hr>
   <a rel="userinfo_setting_edit" iconCls="icon-edit" href="modules/sys/userinfo/userinfo-setting-info.html"
      target="dialog" trigger="single" title="编辑  {{unitName}} 人员机构" btnValue="更新" width="500" height="360">
     <p id="userinfo.a1@btn.edit">编辑</p>
   </a>
-  <hr>
+  <hr>-->
   <a rel="userinfo_setting_remove" iconCls="icon-base icon-base-ban"
      target="confirm" trigger="single" title="确定将 {{unitName}} 从用户{{uniName}}的岗位信息中移出吗？">
     <p id="userinfo.a1@btn.delete">删除</p>

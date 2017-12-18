@@ -70,4 +70,18 @@ public interface DataDictionaryDao {
     */
     void deleteDictionary(String catalogCode);
 
+    /**
+     * 查询条数
+     * @param filterDescMap 过滤条件
+     * @return int
+     */
+    int pageCount(Map<String, Object> filterDescMap);
+
+    /**
+     *  分页查询
+     * @param pageQueryMap 过滤条件
+     * @return List<DataDictionary>
+     */
+    List<DataDictionary>  pageQuery(Map<String, Object> pageQueryMap);
+
 }

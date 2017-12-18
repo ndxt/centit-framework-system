@@ -79,4 +79,12 @@ public interface UserSettingDao {
     * @param userSetting 个人设置对象
     */
     void updateObject(UserSetting userSetting);
+
+    /**
+     *  根据用户代码,key查value
+     *  @param userCode 用户代码
+     * @param key key
+     * @return value
+     */
+    String getValue(String userCode, String key);
 }
