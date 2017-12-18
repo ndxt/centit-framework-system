@@ -110,7 +110,7 @@
             select u.USER_CODE,
                    u.ROLE_CODE,
                    u.OBTAIN_DATE,
-                   u.OBTAIN_DATE,
+                   u.SECEDE_DATE,
                    u.CHANGE_DESC,
                    u.CREATE_DATE,
                    u.CREATOR,
