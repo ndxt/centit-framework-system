@@ -63,6 +63,11 @@ public class TestControllerScanner {
 
     //@Test
     public void testImportOptInfo(){
+        DataSourceDescription dataSourceDescription =
+            new DataSourceDescription(
+                "jdbc:mysql://192.168.131.6:3306/framework?useUnicode=true&characterEncoding=utf-8",
+                "framework","framework");
+
         Map<Integer, String> optInfoColumnField = new HashMap<>(10);
         optInfoColumnField.put(0, "optId");
         optInfoColumnField.put(1, "optName");
@@ -75,25 +80,16 @@ public class TestControllerScanner {
         optMethodColumField.put(2, "optUrl");
         optMethodColumField.put(3, "optMethod");
         optMethodColumField.put(4, "optReq");
-        List<OptInfo> optInfos = null;
-        List<OptMethod> optMethods = null;
-        try {
-            optInfos = ExcelImportUtil.loadObjectFromExcel(
-                "D:/Projects/RunData/demo_home/optInfos.xlsx", "optInfo", OptInfo.class, optInfoColumnField, 1);
 
-            optMethods = ExcelImportUtil.loadObjectFromExcel(
-                "D:/Projects/RunData/demo_home/optInfos.xlsx", "optMethod", OptMethod.class, optMethodColumField, 1);
-
-        }catch (IOException | IllegalAccessException | InstantiationException e){
-            e.printStackTrace();
-        }
-        DataSourceDescription dataSourceDescription =
-            new DataSourceDescription(
-                "jdbc:mysql://192.168.131.6:3306/framework?useUnicode=true&characterEncoding=utf-8",
-                "framework","framework");
-        final  List<OptInfo> finalOptInfos = optInfos;
-        final  List<OptMethod> finalOptMethods = optMethods;
         try {
+            final  List<OptInfo> finalOptInfos = ExcelImportUtil.loadObjectFromExcel(
+                "D:/Projects/RunData/demo_home/optInfos.xlsx", "optInfo",
+                OptInfo.class, optInfoColumnField, 1);
+
+            final  List<OptMethod> finalOptMethods = ExcelImportUtil.loadObjectFromExcel(
+                "D:/Projects/RunData/demo_home/optInfos.xlsx", "optMethod",
+                OptMethod.class, optMethodColumField, 1);
+
             TransactionHandler.executeInTransaction(
                 dataSourceDescription,
                 (conn) -> {
@@ -106,10 +102,10 @@ public class TestControllerScanner {
                                 OrmDaoUtils.getSequenceNextValue(conn,"S_OPTDEFCODE")));
                         OrmDaoUtils.saveNewObject(conn, optMethod);
                     }
-                    return null;
+                    return 1;
 //                    throw new SQLException("rollback");
                 });
-        } catch (SQLException e) {
+        } catch (SQLException| IOException | IllegalAccessException | InstantiationException e){
             e.printStackTrace();
         }
     }
