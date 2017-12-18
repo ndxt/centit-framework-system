@@ -54,10 +54,14 @@ define(function (require) {
         return;
       }
 
+      var talbe = this.parent.table;
+
       this.parent.currentUnit = data.unitCode;
 
+      var children = table.treegrid('getChildren', data.parentUnit);
+
       // 子节点
-      if ("0" !== data.parentUnit) {
+      if ("0" !== data.parentUnit && children.length) {
         this.parent.table.treegrid('reload', data.parentUnit);
       }
       // 顶级节点
