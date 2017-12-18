@@ -1,7 +1,6 @@
 package com.centit.framework.system.config;
 
 import com.centit.framework.listener.InitialWebRuntimeEnvironment;
-import com.centit.framework.security.model.CentitPasswordEncoder;
 import com.centit.framework.security.model.CentitPasswordEncoderImpl;
 import com.centit.framework.security.model.CentitSessionRegistry;
 import com.centit.framework.security.model.MemorySessionRegistryImpl;
@@ -11,7 +10,10 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.EnvironmentAware;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
@@ -44,14 +46,16 @@ public class SystemBeanConfig implements EnvironmentAware {
         return new AutowiredAnnotationBeanPostProcessor();
     }
 
-    @Bean(initMethod = "initialEnvironment")
+    @Bean
     @Lazy(value = false)
     public InitialWebRuntimeEnvironment initialEnvironment() {
-        return new InitialWebRuntimeEnvironment();
+        InitialWebRuntimeEnvironment initialWebRuntimeEnvironment = new InitialWebRuntimeEnvironment();
+        initialWebRuntimeEnvironment.initialEnvironment();
+        return initialWebRuntimeEnvironment;
     }
 
-    @Bean
-    public CentitPasswordEncoder passwordEncoder() {
+    @Bean("passwordEncoder")
+    public CentitPasswordEncoderImpl passwordEncoder() {
         return  new CentitPasswordEncoderImpl();
     }
 
