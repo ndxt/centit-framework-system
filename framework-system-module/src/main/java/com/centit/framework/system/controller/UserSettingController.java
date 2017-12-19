@@ -4,6 +4,7 @@ import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
+import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.operationlog.RecordOperationLog;
@@ -157,10 +158,12 @@ public class UserSettingController extends BaseController {
         boolean isDefaultValue = userSetting.isDefaultValue();
         if(isDefaultValue){
             userSetting.setDefaultValue(false);
+            userSetting.setUserCode(WebOptUtils.getLoginUser().getUserCode());
             userSettingManager.saveNewUserSetting(userSetting);
         }else {
             userSettingManager.updateUserSetting(userSetting);
         }
+        JsonResultUtils.writeBlankJson(response);
 
 //        OperationLogCenter.logNewObject(request,optId,userSetting.getUserCode(),
 //                OperationLog.P_OPT_LOG_METHOD_U,
@@ -177,8 +180,8 @@ public class UserSettingController extends BaseController {
      */
     @RequestMapping(value = "/{paramCode}", method = {RequestMethod.DELETE})
     @RecordOperationLog(content = "删除用户设置参数")
-    public void deleteUserSetting(@PathVariable String paramCode, HttpServletRequest request,
-            HttpServletResponse response) {
+    public void deleteUserSetting(@PathVariable String paramCode, @Valid UserSetting userSetting,
+                                  HttpServletRequest request, HttpServletResponse response) {
         UserSetting dbUserSetting=userSettingManager.getObjectById(
             new UserSettingId(super.getLoginUserCode(request), paramCode));
         userSettingManager.deleteObject(dbUserSetting);
@@ -187,6 +190,26 @@ public class UserSettingController extends BaseController {
 //        OperationLogCenter.logDeleteObject(request,optId,dbUserSetting.getUserCode(),
 //                OperationLog.P_OPT_LOG_METHOD_D,  "已删除",dbUserSetting);
         /*********log*********/
+    }
+    /**
+     * 删除当前用户设置参数
+     * @param userCode 用户代码
+     * @param paramCode 设置编码
+     * @param response  {@link HttpServletResponse}
+     */
+    @RequestMapping(value="/{userCode}/{paramCode}", method = {RequestMethod.DELETE})
+    @RecordOperationLog(content = "删除用户设置参数")
+    public void delete(@PathVariable String userCode, @PathVariable String paramCode,
+                       HttpServletResponse response) {
+        UserSetting userSetting = userSettingManager.getUserSetting(userCode, paramCode);
+        if(userSetting != null){
+            if("default".equals(userSetting.getUserCode())){
+                JsonResultUtils.writeErrorMessageJson("默认设置不能删除！", response);
+                return;
+            }
+            userSettingManager.deleteObject(userSetting);
+        }
+        JsonResultUtils.writeBlankJson(response);
     }
 
 

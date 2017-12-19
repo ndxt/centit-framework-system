@@ -80,33 +80,29 @@ public class UserSettingManagerImpl implements UserSettingManager {
     public List<UserSetting> listObjects(Map<String, Object> searchColumn, PageDesc pageDesc) {
         List<UserSetting> userSettings = new ArrayList<>();
 
-        Map<String, Object> map = new HashMap<>(2);
-        map.put("catalogCode", "userSettingKey");
-//        List<DataDictionary> dataDictionaries = dataDictionaryDao.listDataDictionary("userSettingKey")
+        searchColumn.put("catalogCode", "userSettingKey");
         List<DataDictionary> dataDictionaries = dataDictionaryDao.pageQuery(
             QueryParameterPrepare.makeMybatisOrderByParam(
-                QueryParameterPrepare.prepPageParams(map, pageDesc,
-                    dataDictionaryDao.pageCount(map) ),DataDictionary.class));
+                QueryParameterPrepare.prepPageParams(searchColumn, pageDesc,
+                    dataDictionaryDao.pageCount(searchColumn) ),DataDictionary.class));
 
         for(DataDictionary d : dataDictionaries){
-            UserSetting userSetting = new UserSetting(
-                new UserSettingId(String.valueOf(searchColumn.get("userCode")), d.getDataCode()));
+            UserSetting userSetting = new UserSetting();
+            userSetting.setParamCode(d.getDataCode());
             String value = userSettingDao.getValue(String.valueOf(searchColumn.get("userCode")), d.getDataCode());
             if("null".equals(value)){
                 userSetting.setDefaultValue(true);
+                userSetting.setUserCode("default");
+                userSetting.setParamValue(userSettingDao.getValue("default", d.getDataCode()));
+            }else{
+                userSetting.setUserCode(String.valueOf(searchColumn.get("userCode")));
+                userSetting.setParamValue(userSettingDao.getValue(String.valueOf(searchColumn.get("userCode")), d.getDataCode()));
             }
-            userSetting.setParamValue(
-                value != "null" ? userSettingDao.getValue(String.valueOf(searchColumn.get("userCode")), d.getDataCode()) :
-                        userSettingDao.getValue("default", d.getDataCode()));
             userSetting.setOptId(d.getExtraCode());
             userSetting.setParamName(d.getDataDesc());
             userSettings.add(userSetting);
         }
         return userSettings;
-//        return userSettingDao.pageQuery(
-//            QueryParameterPrepare.makeMybatisOrderByParam(
-//            QueryParameterPrepare.prepPageParams(
-//                searchColumn,pageDesc,userSettingDao.pageCount(searchColumn)),UserSetting.class));
     }
 
     @Override
@@ -114,12 +110,11 @@ public class UserSettingManagerImpl implements UserSettingManager {
     public List<UserSetting> listDefaultSettings(Map<String, Object> map, PageDesc pageDesc){
         List<UserSetting> userSettings = new ArrayList<>();
 
-        Map<String, Object> dicMap = new HashMap<>(2);
         map.put("catalogCode", "userSettingKey");
         List<DataDictionary> dataDictionaries = dataDictionaryDao.pageQuery(
             QueryParameterPrepare.makeMybatisOrderByParam(
-                QueryParameterPrepare.prepPageParams(dicMap, pageDesc,
-                    dataDictionaryDao.pageCount(dicMap) ),DataDictionary.class));
+                QueryParameterPrepare.prepPageParams(map, pageDesc,
+                    dataDictionaryDao.pageCount(map) ),DataDictionary.class));
 
         for(DataDictionary d : dataDictionaries){
             UserSetting userSetting = new UserSetting(new UserSettingId("default", d.getDataCode()));

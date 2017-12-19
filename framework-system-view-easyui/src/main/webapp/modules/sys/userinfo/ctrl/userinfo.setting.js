@@ -3,7 +3,7 @@ define(function (require) {
   var Page = require('core/page');
   var Core = require('core/core');
 
-  var UserInfoSettingAdd = require('./userinfo.setting.add');
+  // var UserInfoSettingAdd = require('./userinfo.setting.add');
   // var UserInfoSettingEdit = require('./userinfo.setting.edit');
   var UserInfoSettingRemove = require('./userinfo.setting.remove');
 
@@ -11,7 +11,7 @@ define(function (require) {
     var _self = this;
 
     this.injecte([
-      new UserInfoSettingAdd('userinfo_setting_add'),
+      // new UserInfoSettingAdd('userinfo_setting_add'),
       // new UserInfoSettingEdit('userinfo_setting_edit'),
       new UserInfoSettingRemove('userinfo_setting_remove')
     ]);
@@ -29,6 +29,8 @@ define(function (require) {
           Core.ajax(Config.ContextPath + 'system/usersetting/', {
             data: row,
             method: 'post'
+          }).then(function(){
+            table.cdatagrid('reload');
           });
         },
 
