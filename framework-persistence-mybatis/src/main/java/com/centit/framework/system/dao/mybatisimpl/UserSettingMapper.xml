@@ -236,4 +236,10 @@
         ]]>
     </select>
 
+    <select id="getValue" parameterType="map" resultType="String">
+        <![CDATA[
+            select u.PARAM_VALUE from F_USERSETTING u where u.USER_CODE=#{userCode} and u.PARAM_CODE=#{key}
+        ]]>
+    </select>
+
 </mapper>
