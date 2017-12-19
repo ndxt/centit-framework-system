@@ -121,6 +121,7 @@ public class UserSettingManagerImpl implements UserSettingManager {
             userSetting.setParamValue(userSettingDao.getValue("default", d.getDataCode()));
             userSetting.setOptId(d.getExtraCode());
             userSetting.setParamName(d.getDataDesc());
+            userSetting.setDefaultValue(true);
             userSettings.add(userSetting);
         }
         return userSettings;

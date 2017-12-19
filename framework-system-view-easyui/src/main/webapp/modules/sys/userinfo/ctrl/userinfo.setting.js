@@ -3,16 +3,12 @@ define(function (require) {
   var Page = require('core/page');
   var Core = require('core/core');
 
-  // var UserInfoSettingAdd = require('./userinfo.setting.add');
-  // var UserInfoSettingEdit = require('./userinfo.setting.edit');
   var UserInfoSettingRemove = require('./userinfo.setting.remove');
 
   return Page.extend(function () {
     var _self = this;
 
     this.injecte([
-      // new UserInfoSettingAdd('userinfo_setting_add'),
-      // new UserInfoSettingEdit('userinfo_setting_edit'),
       new UserInfoSettingRemove('userinfo_setting_remove')
     ]);
 
@@ -35,8 +31,8 @@ define(function (require) {
         },
 
         rowStyler: function (index, row) {
-          if (row.defaultValue === true) {
-            return {'class': 'fix'};
+          if (row.defaultValue) {
+            return 'background-color:#6293BB;color:#fff;';
           }
         }
       });

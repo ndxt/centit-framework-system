@@ -148,7 +148,6 @@ public class UserSettingController extends BaseController {
      * 新增或更新当前用户设置参数
      *
      * @param userSetting   UserSetting
-//     * @param bindingResult BindingResult
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(method = {RequestMethod.POST})
@@ -157,7 +156,7 @@ public class UserSettingController extends BaseController {
 
         boolean isDefaultValue = userSetting.isDefaultValue();
         if(isDefaultValue){
-            userSetting.setDefaultValue(false);
+//            userSetting.setDefaultValue(false);
             userSetting.setUserCode(WebOptUtils.getLoginUser().getUserCode());
             userSettingManager.saveNewUserSetting(userSetting);
         }else {
@@ -169,6 +168,26 @@ public class UserSettingController extends BaseController {
 //                OperationLog.P_OPT_LOG_METHOD_U,
 //                "更新当前用户设置参数",userSetting);
 
+    }
+
+    /**
+     * 更新当前用户默认设置参数
+     *
+     * @param userSetting UserSetting
+     * @param response  {@link HttpServletResponse}
+     */
+    @RequestMapping(method = {RequestMethod.POST})
+    @RecordOperationLog(content = "更新当前用户设置参数")
+    public void editDefaultSetting(@Valid UserSetting userSetting, HttpServletResponse response) {
+
+        UserSetting dbSetting = userSettingManager.getUserSetting(userSetting.getUserCode(), userSetting.getParamCode());
+        if(dbSetting == null){
+            userSetting.setUserCode("default");
+            userSettingManager.saveNewUserSetting(userSetting);
+        }else {
+            userSettingManager.updateUserSetting(userSetting);
+        }
+        JsonResultUtils.writeBlankJson(response);
     }
 
     /**
