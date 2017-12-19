@@ -1,0 +1,17 @@
+<div class="user-info-aside" fit="true" plain="true">
+  <div title="用户默认设置" href="../../modules/sys/systemsetting/userdefaultsetting.html"></div>
+  <div title="系统图标设置" href="../../modules/sys/userinfo/userinfo-role.html" style="padding: 10px;"></div>
+</div>
+
+<script>
+  $.parser.onComplete = function (panel) {
+    $.parser.onComplete = $.noop;
+
+    requirejs([
+      'modules/sys/systemsetting/ctrl/systemsetting'
+    ], function (SystemSetting) {
+      window.SystemSetting = new SystemSetting('systemsetting', panel);
+      window.SystemSetting.load(panel);
+    });
+  };
+</script>

@@ -23,6 +23,14 @@ public interface UserSettingManager {
 
     List<UserSetting> listObjects(Map<String,Object>searchColumn,PageDesc pageDesc);
 
+    /**
+     * 查询全部默认用户设置
+     * @param pageDesc 分页信息
+     * @param map 过滤条件
+     * @return 个人设置列表
+     */
+    List<UserSetting> listDefaultSettings(Map<String, Object> map, PageDesc pageDesc);
+
     List<UserSetting> listObjects(Map<String,Object>searchColumn);
 
     UserSetting getObjectById(UserSettingId userSettingid);

@@ -2,11 +2,10 @@ package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.common.JsonResultUtils;
+import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.components.CodeRepositoryUtil;
-import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
-import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserSetting;
@@ -14,9 +13,7 @@ import com.centit.framework.system.po.UserSettingId;
 import com.centit.framework.system.service.UserSettingManager;
 import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
@@ -24,7 +21,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +85,25 @@ public class UserSettingController extends BaseController {
         resData.addResponseData(PAGE_DESC, pageDesc);
 
         JsonResultUtils.writeResponseDataAsJson(resData, response);
+    }
+
+    /**
+     * 查询用户个人默认设置列表
+     * @param pageDesc 分页信息
+     * @param request {@link HttpServletRequest}
+     */
+    @GetMapping(value = "/listdefault")
+    @ResponseBody
+    public ResponseData listUserDefaultSetting(PageDesc pageDesc, HttpServletRequest request) {
+        Map<String, Object> searchColumn = convertSearchColumn(request);
+
+        List<UserSetting> listObjects = userSettingManager.listDefaultSettings(searchColumn, pageDesc);
+
+        ResponseMapData resData = new ResponseMapData();
+        resData.addResponseData(OBJLIST, listObjects);
+        resData.addResponseData(PAGE_DESC, pageDesc);
+
+        return resData;
     }
 
 

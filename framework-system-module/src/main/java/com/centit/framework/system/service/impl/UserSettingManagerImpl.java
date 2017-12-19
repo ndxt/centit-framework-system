@@ -110,6 +110,28 @@ public class UserSettingManagerImpl implements UserSettingManager {
     }
 
     @Override
+    @Transactional
+    public List<UserSetting> listDefaultSettings(Map<String, Object> map, PageDesc pageDesc){
+        List<UserSetting> userSettings = new ArrayList<>();
+
+        Map<String, Object> dicMap = new HashMap<>(2);
+        map.put("catalogCode", "userSettingKey");
+        List<DataDictionary> dataDictionaries = dataDictionaryDao.pageQuery(
+            QueryParameterPrepare.makeMybatisOrderByParam(
+                QueryParameterPrepare.prepPageParams(dicMap, pageDesc,
+                    dataDictionaryDao.pageCount(dicMap) ),DataDictionary.class));
+
+        for(DataDictionary d : dataDictionaries){
+            UserSetting userSetting = new UserSetting(new UserSettingId("default", d.getDataCode()));
+            userSetting.setParamValue(userSettingDao.getValue("default", d.getDataCode()));
+            userSetting.setOptId(d.getExtraCode());
+            userSetting.setParamName(d.getDataDesc());
+            userSettings.add(userSetting);
+        }
+        return userSettings;
+    }
+
+    @Override
     public List<UserSetting> listObjects(Map<String, Object> searchColumn) {
         // TODO Auto-generated method stub
         return null;
