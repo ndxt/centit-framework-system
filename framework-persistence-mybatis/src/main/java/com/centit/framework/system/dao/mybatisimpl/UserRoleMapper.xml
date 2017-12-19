@@ -206,7 +206,9 @@
             <if test="obtainDate !=null ">
                 OBTAIN_DATE  =  #{obtainDate},
             </if>
-            SECEDE_DATE  =  #{secedeDate},
+            <if test="secedeDate != null">
+                SECEDE_DATE  =  #{secedeDate},
+            </if>
             <if test="changeDesc !=null ">
                 CHANGE_DESC  =  #{changeDesc},
             </if>
