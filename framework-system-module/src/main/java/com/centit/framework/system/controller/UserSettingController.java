@@ -176,7 +176,7 @@ public class UserSettingController extends BaseController {
      * @param userSetting UserSetting
      * @param response  {@link HttpServletResponse}
      */
-    @RequestMapping(method = {RequestMethod.POST})
+    @RequestMapping(value = "editdefault", method = {RequestMethod.POST})
     @RecordOperationLog(content = "更新当前用户设置参数")
     public void editDefaultSetting(@Valid UserSetting userSetting, HttpServletResponse response) {
 
