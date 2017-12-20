@@ -145,7 +145,7 @@ public class UserSettingController extends BaseController {
     }
 
     /**
-     * 新增或更新当前用户设置参数
+     * 更新用户设置参数
      *
      * @param userSetting   UserSetting
      * @param response  {@link HttpServletResponse}
@@ -171,12 +171,12 @@ public class UserSettingController extends BaseController {
     }
 
     /**
-     * 更新当前用户默认设置参数
+     * 更新用户默认设置参数
      *
      * @param userSetting UserSetting
      * @param response  {@link HttpServletResponse}
      */
-    @RequestMapping(value = "editdefault", method = {RequestMethod.POST})
+    @RequestMapping(value = "updatedefault", method = {RequestMethod.POST})
     @RecordOperationLog(content = "更新当前用户设置参数")
     public void editDefaultSetting(@Valid UserSetting userSetting, HttpServletResponse response) {
 
@@ -227,6 +227,24 @@ public class UserSettingController extends BaseController {
                 return;
             }
             userSettingManager.deleteObject(userSetting);
+        }
+        JsonResultUtils.writeBlankJson(response);
+    }
+
+    /**
+     * 删除用户默认设置
+     * @param paramCode 设置编码
+     * @param response  {@link HttpServletResponse}
+     */
+    @RequestMapping(value="/deletedefault/{paramCode}", method = {RequestMethod.DELETE})
+    @RecordOperationLog(content = "删除用户设置参数")
+    public void deleteDefault(@PathVariable String paramCode, HttpServletResponse response) {
+
+        UserSetting userSetting = userSettingManager.getUserSetting("default", paramCode);
+        if(userSetting != null){
+            userSettingManager.deleteObject(userSetting);
+        }else{
+            JsonResultUtils.writeErrorMessageJson("值已为null！", response);
         }
         JsonResultUtils.writeBlankJson(response);
     }

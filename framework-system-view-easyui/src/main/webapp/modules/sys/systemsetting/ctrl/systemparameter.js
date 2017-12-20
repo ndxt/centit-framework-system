@@ -3,13 +3,15 @@ define(function (require) {
   var Page = require('core/page');
   var Core = require('core/core');
 
-  var UserInfoSettingRemove = require('./userinfo.setting.remove');
+  var SystemParameterAdd = require('./systemparameter.add');
+  var SystemParameterRemove = require('./systemparameter.remove');
 
   return Page.extend(function () {
     var _self = this;
 
     this.injecte([
-      new UserInfoSettingRemove('userinfo_setting_remove')
+      new SystemParameterAdd('systmeparameter_add'),
+      new SystemParameterRemove('systmeparameter_remove')
     ]);
 
     // @override
@@ -17,26 +19,26 @@ define(function (require) {
       this.data = data;
 
       var table = this.table = panel.find('table');
-      table.cdatagrid({
-        controller: _self,
-        url: Config.ContextPath + 'system/usersetting/list/' + data.userCode,
+      Core.ajax(Config.ContextPath + 'system/dictionary/SystemParameter', {
+        method: 'get'
+      }).then(function (data) {
+        table.cdatagrid({
+          controller: _self,
+          // url: Config.ContextPath + 'system/dictionary/SystemParameter',
 
-        onEndEdit: function(index, row, changes){
-          if(changes.paramValue) {
-            Core.ajax(Config.ContextPath + 'system/usersetting/', {
+          onEndEdit: function (index, row, changes) {
+            Core.ajax(Config.ContextPath + 'system/dictionary/update/SystemParameter', {
               data: row,
               method: 'post'
-            }).then(function () {
-              table.cdatagrid('reload');
             });
-          }
-        },
+          },
 
-        rowStyler: function (index, row) {
-          if (row.defaultValue) {
-            return 'background-color:#6293BB;color:#fff;';
+          rowStyler: function (index, row) {
+            if (row.paramValue === 'null') {
+              return 'background-color:#6293BB;color:#fff;';
+            }
           }
-        }
+        }).datagrid('loadData', data.dataDictionaries);
       });
     };
 

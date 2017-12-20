@@ -3,15 +3,13 @@ define(function (require) {
   var Page = require('core/page');
   var Core = require('core/core');
 
-  // var UserInfoSettingAdd = require('./userinfo.setting.add');
-  // var UserInfoSettingRemove = require('./userinfo.setting.remove');
+  var UserDefaultSettingRemove = require('./userdefaultsetting.remove');
 
   return Page.extend(function () {
     var _self = this;
 
     this.injecte([
-      // new UserInfoSettingAdd('userinfo_setting_add'),
-      // new UserInfoSettingRemove('userinfo_setting_remove')
+      new UserDefaultSettingRemove('userdefaultsetting_remove')
     ]);
 
     // @override
@@ -24,10 +22,16 @@ define(function (require) {
         url: Config.ContextPath + 'system/usersetting/listdefault/',
 
         onEndEdit: function(index, row, changes){
-          Core.ajax(Config.ContextPath + 'system/usersetting/', {
+          Core.ajax(Config.ContextPath + 'system/usersetting/updatedefault', {
             data: row,
             method: 'post'
           });
+        },
+
+        rowStyler: function (index, row) {
+          if (row.paramValue === 'null') {
+            return 'background-color:#6293BB;color:#fff;';
+          }
         }
       });
     };
