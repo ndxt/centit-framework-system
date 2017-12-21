@@ -4,7 +4,7 @@ define(function(require) {
 
 	var UserDefaultSetting = require('./userdefaultsetting');
 	var SystemParameter = require('./systemparameter');
-	var SystemIcon = require('./systemicon');
+	// var SystemIcon = require('./systemicon');
 
 
 	var SystemSetting = Page.extend(function() {
@@ -12,7 +12,7 @@ define(function(require) {
 		var controllers = [
 		  new UserDefaultSetting('UserDefaultSetting'),
       new SystemParameter('SystemParameter'),
-      new SystemIcon('SystemIcon')
+      // new SystemIcon('SystemIcon')
     ];
 
 		this.injecte(controllers);

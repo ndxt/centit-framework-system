@@ -4,23 +4,29 @@ define(function (require) {
   var Core = require('core/core');
 
   // var SystemParameterAdd = require('./systemparameter.add');
-  var SystemParameterAdd = require('./systemicon');
-  var SystemParameterRemove = require('./systemparameter.remove');
+  // var SystemParameterAdd = require('./systemicon');
+  // var SystemParameterRemove = require('./systemparameter.remove');
 
   return Page.extend(function () {
     var _self = this;
 
     this.injecte([
       // new SystemParameterAdd('systmeparameter_add'),
-      new SystemParameterAdd('systmeico_upload'),
-      new SystemParameterRemove('systmeparameter_remove')
+      // new SystemParameterAdd('systmeico_upload'),
+      // new SystemParameterRemove('systmeparameter_remove')
     ]);
 
     // @override
     this.load = function (panel, data) {
       this.data = data;
 
-      var table = this.table = panel.find('table');
+      panel.find('#systemIcon').filebox({
+        buttonText: '选择图标',
+        buttonAlign: 'left',
+        accept: 'icon/*'
+      })
+
+     /* var table = this.table = panel.find('table');
       Core.ajax(Config.ContextPath + 'system/dictionary/SystemParameter', {
         method: 'get'
       }).then(function (data) {
@@ -41,7 +47,7 @@ define(function (require) {
             }
           }
         }).datagrid('loadData', data.dataDictionaries);
-      });
+      });*/
     };
 
     this.submit = function (panel, data, closeCallback) {

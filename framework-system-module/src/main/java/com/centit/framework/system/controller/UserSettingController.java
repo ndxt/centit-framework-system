@@ -107,7 +107,12 @@ public class UserSettingController extends BaseController {
         return resData;
     }
 
-
+    /**
+     * 查询当前用户所有个人设置 不分页
+     * @param field 需要返回的字段
+     * @param request {@link HttpServletRequest}
+     * @param response {@link HttpServletResponse}
+     */
     @RequestMapping(value = "/listall", method = RequestMethod.GET)
     public void listAll(String[] field, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = new HashMap<>();
@@ -125,6 +130,7 @@ public class UserSettingController extends BaseController {
         resData.addResponseData(OBJLIST, listObjects);
         JsonResultUtils.writeResponseDataAsJson(resData, response, simplePropertyPreFilter);
     }
+
     /**
      * 获取当前用户设置的参数
      *
@@ -151,23 +157,17 @@ public class UserSettingController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(method = {RequestMethod.POST})
-    @RecordOperationLog(content = "更新当前用户设置参数")
+    @RecordOperationLog(content = "更新用户设置参数")
     public void editUserSetting(@Valid UserSetting userSetting, HttpServletResponse response) {
 
         boolean isDefaultValue = userSetting.isDefaultValue();
         if(isDefaultValue){
-//            userSetting.setDefaultValue(false);
             userSetting.setUserCode(WebOptUtils.getLoginUser().getUserCode());
             userSettingManager.saveNewUserSetting(userSetting);
         }else {
             userSettingManager.updateUserSetting(userSetting);
         }
         JsonResultUtils.writeBlankJson(response);
-
-//        OperationLogCenter.logNewObject(request,optId,userSetting.getUserCode(),
-//                OperationLog.P_OPT_LOG_METHOD_U,
-//                "更新当前用户设置参数",userSetting);
-
     }
 
     /**
@@ -210,8 +210,9 @@ public class UserSettingController extends BaseController {
 //                OperationLog.P_OPT_LOG_METHOD_D,  "已删除",dbUserSetting);
         /*********log*********/
     }
+
     /**
-     * 删除当前用户设置参数
+     * 删除用户设置参数
      * @param userCode 用户代码
      * @param paramCode 设置编码
      * @param response  {@link HttpServletResponse}

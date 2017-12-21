@@ -90,7 +90,7 @@ public class UserSettingManagerImpl implements UserSettingManager {
             UserSetting userSetting = new UserSetting();
             userSetting.setParamCode(d.getDataCode());
             String value = userSettingDao.getValue(String.valueOf(searchColumn.get("userCode")), d.getDataCode());
-            if("null".equals(value)){
+            if("".equals(value) || value == null){
                 userSetting.setDefaultValue(true);
                 userSetting.setUserCode("default");
                 userSetting.setParamValue(userSettingDao.getValue("default", d.getDataCode()));
@@ -99,7 +99,7 @@ public class UserSettingManagerImpl implements UserSettingManager {
                 userSetting.setParamValue(userSettingDao.getValue(String.valueOf(searchColumn.get("userCode")), d.getDataCode()));
             }
             userSetting.setOptId(d.getExtraCode());
-            userSetting.setParamName(d.getDataDesc());
+            userSetting.setParamName(d.getDataValue());
             userSettings.add(userSetting);
         }
         return userSettings;
