@@ -3,16 +3,14 @@ define(function (require) {
   var Page = require('core/page');
   var Core = require('core/core');
 
-  // var SystemParameterAdd = require('./systemparameter.add');
-  var SystemParameterAdd = require('./systemicon');
+  var SystemParameterAdd = require('./systemparameter.add');
   var SystemParameterRemove = require('./systemparameter.remove');
 
   return Page.extend(function () {
     var _self = this;
 
     this.injecte([
-      // new SystemParameterAdd('systmeparameter_add'),
-      new SystemParameterAdd('systmeico_upload'),
+      new SystemParameterAdd('systmeparameter_add'),
       new SystemParameterRemove('systmeparameter_remove')
     ]);
 
@@ -46,21 +44,24 @@ define(function (require) {
 
     this.submit = function (panel, data, closeCallback) {
       var form = panel.find('form');
-      var table = this.table;
 
-      if (form.form('validate') && table.cdatagrid('endEdit')) {
-        var formData = form.form('value');
-        var optDefs = table.datagrid('getData').rows;
+      // 开启校验
+      var isValid = form.form('enableValidation').form('validate');
 
-        $.extend(data, formData);
-        data.optDefs = optDefs;
-        data._method = 'PUT';
-
-        Core.ajax(Config.ContextPath + 'system/usersetting/' + data.paramCode, {
-          data: data,
-          method: 'post'
-        }).then(closeCallback);
+      if (isValid) {
+        form.form('ajax', {
+          url: Config.ContextPath + 'system/systemsetting/uploadico',
+          method: 'post',
+          data: data
+        }).then(function () {
+       /*   return require('loaders/cache/loader.system').loadAll()
+        }).then(function () {
+          vm.parent.clearPanel();
+          closeCallback(true)*/
+        });
       }
+
+      return false;
     };
   });
 });

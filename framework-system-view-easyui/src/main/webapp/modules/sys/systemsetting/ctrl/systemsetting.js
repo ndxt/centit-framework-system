@@ -4,13 +4,15 @@ define(function(require) {
 
 	var UserDefaultSetting = require('./userdefaultsetting');
 	var SystemParameter = require('./systemparameter');
+	var SystemIcon = require('./systemicon');
 
 
 	var SystemSetting = Page.extend(function() {
 		var tabSelectedIndex = 0;
 		var controllers = [
 		  new UserDefaultSetting('UserDefaultSetting'),
-      new SystemParameter('SystemParameter')
+      new SystemParameter('SystemParameter'),
+      new SystemIcon('SystemIcon')
     ];
 
 		this.injecte(controllers);

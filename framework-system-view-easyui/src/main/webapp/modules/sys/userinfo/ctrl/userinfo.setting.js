@@ -2,6 +2,7 @@ define(function (require) {
   var Config = require('config');
   var Page = require('core/page');
   var Core = require('core/core');
+  var $ = require('jquery');
 
   var UserInfoSettingRemove = require('./userinfo.setting.remove');
 
@@ -22,7 +23,28 @@ define(function (require) {
         url: Config.ContextPath + 'system/usersetting/list/' + data.userCode,
 
         onEndEdit: function(index, row, changes){
-          if(changes.paramValue) {
+          if(row.paramValue === '' || row.paramValue === null){
+            $.messager.confirm("提示", "设置为空将删除记录！", function(result){
+              if(result){
+                if(row.defaultValue){
+                  $.messager.alert('警告', '默认设置不能删除', 'warning',function(){
+                    table.datagrid('reload');
+                  });
+                  return;
+                }
+                Core.ajax(Config.ContextPath+'system/usersetting/'+row.userCode+'/'+row.paramCode, {
+                  method: 'delete'
+                }).then(function(){
+                  return require('loaders/cache/loader.system').loadAll()
+                }).then(function() {
+                  table.datagrid('reload');
+                });
+              }else{
+                table.datagrid('reload');
+              }
+            });
+          }else if(changes.paramValue) {
+
             Core.ajax(Config.ContextPath + 'system/usersetting/', {
               data: row,
               method: 'post'
