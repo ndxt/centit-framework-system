@@ -1,32 +1,17 @@
 package com.centit.framework.system.controller;
 
-import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.common.JsonResultUtils;
-import com.centit.framework.common.ResponseData;
-import com.centit.framework.common.ResponseMapData;
-import com.centit.framework.common.WebOptUtils;
-import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.controller.BaseController;
-import com.centit.framework.operationlog.RecordOperationLog;
-import com.centit.framework.system.po.UserInfo;
-import com.centit.framework.system.po.UserSetting;
-import com.centit.framework.system.po.UserSettingId;
 import com.centit.framework.system.service.UserSettingManager;
-import com.centit.support.database.utils.PageDesc;
-import com.centit.support.file.FileSystemOpt;
-import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.HtmlUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 系统设置
@@ -45,11 +30,16 @@ public class SystemSettingController extends BaseController {
         return  "SystemSetting";
     }
 
-    @RequestMapping(value="uploadico", method = RequestMethod.POST)
+    @RequestMapping(value = "update", method = RequestMethod.POST)
+    public void updateSystemName(String systemName){
+
+    }
+
+    @RequestMapping(value="/uploadico", method = RequestMethod.POST)
     public void replaceIcon(HttpServletRequest request, HttpServletResponse response) {
         String webPath = request.getSession().getServletContext().getRealPath("");
         request.getServletContext().getRealPath("");
-        String filePath = webPath + "/favicon.ico";
+        String filePath = webPath + "/ui/favicon.ico";
 
         try (OutputStream fileOutputStream = new FileOutputStream(new File(filePath));
              InputStream inputStream = request.getInputStream()) {
@@ -63,5 +53,10 @@ public class SystemSettingController extends BaseController {
 
         }
         JsonResultUtils.writeBlankJson(response);
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public void setSystemParameter(String systemName, HttpServletResponse response){
+
     }
 }

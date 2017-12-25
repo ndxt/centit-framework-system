@@ -9,8 +9,7 @@
     $.parser.onComplete = $.noop;
 
     requirejs([
-      'modules/sys/systemsetting/ctrl/systemsetting',
-      'modules/sys/systemsetting/ctrl/systemparameter'
+      'modules/sys/systemsetting/ctrl/systemsetting'
     ], function (SystemSetting) {
       window.SystemSetting = new SystemSetting('systemsetting', panel);
       window.SystemSetting.load(panel);

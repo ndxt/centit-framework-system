@@ -6,7 +6,7 @@ CREATE_DATE, EXTJSONINFO, CREATOR, UPDATOR, UNIT_PATH)
 values
 ('U00001', null, 'N', 'T', null,
 '根机构', 'root', null, '根机构', null,
-'root', null, null, 1, sysdate,
+'root', 'root', null, 1, sysdate,
 sysdate, null, 'u0000000', 'u0000000', '/U00001');
 
 insert into F_USERINFO (USER_CODE, USER_PIN, IS_VALID, LOGIN_NAME, USER_NAME, USER_DESC, LOGIN_TIMES, ACTIVE_TIME, LOGIN_IP, ADDRBOOK_ID, REG_EMAIL, USER_ORDER, USER_PWD, REG_CELL_PHONE, CREATE_DATE,CREATOR,UPDATOR,UPDATE_DATE)

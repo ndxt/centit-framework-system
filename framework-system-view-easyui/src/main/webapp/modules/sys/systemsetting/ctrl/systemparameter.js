@@ -2,52 +2,42 @@ define(function (require) {
   var Config = require('config');
   var Page = require('core/page');
   var Core = require('core/core');
+  var $ = require('jquery');
+  require('myuploader');
+  // require('upload');
 
-  // var SystemParameterAdd = require('./systemparameter.add');
-  // var SystemParameterAdd = require('./systemicon');
-  // var SystemParameterRemove = require('./systemparameter.remove');
 
   return Page.extend(function () {
     var _self = this;
-
-    this.injecte([
-      // new SystemParameterAdd('systmeparameter_add'),
-      // new SystemParameterAdd('systmeico_upload'),
-      // new SystemParameterRemove('systmeparameter_remove')
-    ]);
 
     // @override
     this.load = function (panel, data) {
       this.data = data;
 
-      panel.find('#systemIcon').filebox({
-        buttonText: '选择图标',
-        buttonAlign: 'left',
-        accept: 'icon/*'
+      $('#fb').filebox({
+        buttonText: 'Choose File',
+        buttonAlign: 'left'
       })
 
-     /* var table = this.table = panel.find('table');
-      Core.ajax(Config.ContextPath + 'system/dictionary/SystemParameter', {
-        method: 'get'
-      }).then(function (data) {
-        table.cdatagrid({
-          controller: _self,
-          // url: Config.ContextPath + 'system/dictionary/SystemParameter',
+        // panel.find('#systemIcon').uploader({
+        //   UploaderPath: Config.ContextPath+'system/systemsetting/uploadico',
+        // });
 
-          onEndEdit: function (index, row, changes) {
-            Core.ajax(Config.ContextPath + 'system/dictionary/update/SystemParameter', {
-              data: row,
-              method: 'post'
-            });
-          },
+      // requirejs(['upload'], function($) {
 
-          rowStyler: function (index, row) {
-            if (row.paramValue === 'null') {
-              return 'background-color:#6293BB;color:#fff;';
-            }
-          }
-        }).datagrid('loadData', data.dataDictionaries);
-      });*/
+      //   $(document).ready(function () {
+      //     $("#demo1").AjaxFileUpload({
+      //       action: ContextPath + 'service/file/upload'
+      //     });
+      //   });
+      // });
+
+
+
+        panel.find('form').on('submit', function() {
+
+      })
+
     };
 
     this.submit = function (panel, data, closeCallback) {
