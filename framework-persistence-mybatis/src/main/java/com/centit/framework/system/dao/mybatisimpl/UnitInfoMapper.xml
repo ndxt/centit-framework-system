@@ -382,9 +382,17 @@
         where   u.PARENT_UNIT=#{primaryUnit}
     </select>
 
-    <select id="listSubUnitsByUnitPaht" parameterType="String" resultMap="UnitInfo">
+    <select id="listSubUnitsByUnitPaht" databaseId="oracle" parameterType="String" resultMap="UnitInfo">
         <include refid="coreSql" />
         where unit_Path like #{unitPath}||'%'
+    </select>
+    <select id="listSubUnitsByUnitPaht" databaseId="mysql" parameterType="String" resultMap="UnitInfo">
+        <include refid="coreSql" />
+        where unit_Path like concat(#{unitPath}, '%')
+    </select>
+    <select id="listSubUnitsByUnitPaht" databaseId="h2" parameterType="String" resultMap="UnitInfo">
+        <include refid="coreSql" />
+        where unit_Path like concat(#{unitPath}, '%')
     </select>
 
     <select id="listUnitinfoByUnitcodes">
