@@ -62,7 +62,8 @@ define(function (require) {
 
       // 子节点
       if ("0" !== data.parentUnit && children.length) {
-        this.parent.table.treegrid('reload', data.parentUnit);
+        //this.parent.table.treegrid('reload', data.parentUnit);
+        this.parent.table.treegrid('reload')
       }
       // 顶级节点
       else {
