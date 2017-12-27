@@ -31,6 +31,7 @@ define(function(require) {
 
 			// 选中的节点
 			var nodes = panel.find('ul.tree').tree('getChecked');
+      var datascope = panel.find('#datascope').datagrid('getChecked');//获取数据范围表格中选中的数据
 
 			// 过滤得到选中的optCodes
 			var rolePowers = nodes.filter(function(obj) {
