@@ -182,6 +182,15 @@ public class SysRoleManagerImpl implements SysRoleManager {
               rolePowerDao.saveNewRolePower(rp);
           }
         }
+
+        if(forUpdate.getMiddle() != null){
+            for(Pair<RolePower, RolePower> rp : forUpdate.getMiddle()){
+                RolePower oldRolePower = rp.getLeft();
+                RolePower newRolePower = rp.getRight();
+                oldRolePower.copyNotNullProperty(newRolePower);
+                rolePowerDao.updateRolePower(oldRolePower);
+            }
+        }
         return rps;
     }
 

@@ -54,7 +54,8 @@ public class OptDataScopeDaoImpl extends BaseDaoImpl<OptDataScope, String> imple
     @Transactional
     public List<String> listDataFiltersByIds(Collection<String> scopeCodes) {
         List<OptDataScope> objs    = this.listObjectsByFilter(
-                "WHERE optId in (?)", new Object[]{scopeCodes});
+                "WHERE OPT_SCOPE_CODE in (:optScopeCode)",
+                QueryUtils.createSqlParamsMap("optScopeCode", scopeCodes));
         if(objs==null)
             return null;
         List<String> filters = new ArrayList<String>();
