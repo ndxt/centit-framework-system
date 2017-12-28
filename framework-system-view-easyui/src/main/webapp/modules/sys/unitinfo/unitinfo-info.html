@@ -1,7 +1,7 @@
 <form class="centit form" novalidate="true">
 	<input type="hidden" name="unitOrder" value="1" />
 	<input type="hidden" name="parentUnit"/>
-	<input type="hidden"  name="unitCode"/>	
+	<input type="hidden"  name="unitCode"/>
 	<div class="three fields">
 		<div class="field">
 			<label>上级机构</label>
@@ -19,7 +19,7 @@
 				required />
 		</div>
 	</div>
-	
+
 	<div class="two fields">
 		<div class="field required">
 			<label>编码</label>
@@ -31,25 +31,25 @@
 				<input type="text" class="easyui-numberbox" name="unitOrder" validtype="integerRange[0,9999]" required />
 		</div>
 	</div>
-	
+
 	<div class="two fields">
 		<div class="field">
 			<label>类别</label>
 			<input type="text" class="easyui-combobox" name="unitType" target="dictionary" key="UnitType" style="width: 100%;" />
 		</div>
-		
+
 		<div class="field">
 			<div class="centit radio">
 				<input type="radio" name="isValid" value="T" />
 				<label>在用</label>
-				
+
 				<input type="radio" name="isValid" value="F" />
 				<label>禁用</label>
 			</div>
 		</div>
 	</div>
-	
-	<div class="field">
+
+	<div class="fields">
 		<label>描述</label>
 		<input type="text" class="easyui-textbox" name="unitDesc" height="100" multiline="true" style="height: 100px; width: 100%"/>
 	</div>
