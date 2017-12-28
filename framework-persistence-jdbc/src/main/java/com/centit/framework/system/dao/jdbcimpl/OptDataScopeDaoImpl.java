@@ -58,7 +58,7 @@ public class OptDataScopeDaoImpl extends BaseDaoImpl<OptDataScope, String> imple
                 QueryUtils.createSqlParamsMap("optScopeCode", scopeCodes));
         if(objs==null)
             return null;
-        List<String> filters = new ArrayList<String>();
+        List<String> filters = new ArrayList<>();
         for(OptDataScope scope:objs)
             filters.add(scope.getFilterCondition());
         return filters;
