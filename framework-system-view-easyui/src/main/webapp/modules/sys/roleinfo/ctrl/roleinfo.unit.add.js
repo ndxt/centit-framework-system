@@ -31,6 +31,7 @@ define(function (require) {
       panel.find('form').form('disableValidation')
         .form('load', data)
         .form('focus');
+      $('#jigouming').combo('hidePanel');
     };
 
     // @override
