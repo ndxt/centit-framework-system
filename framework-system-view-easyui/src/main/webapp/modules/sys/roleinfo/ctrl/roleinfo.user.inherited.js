@@ -20,7 +20,7 @@ define(function (require) {
      * 间接获取角色的用户（不可编辑）/userrole/roleusersinherited/{rolecode}
      * @type {string}
      */
-    this.roleInfoUsersInheritedUrl = Config.ContextPath + 'system/userrole/roleusersinherited/{{roleCode}}';
+
 
     // @override
     this.load = function (panel, data) {
