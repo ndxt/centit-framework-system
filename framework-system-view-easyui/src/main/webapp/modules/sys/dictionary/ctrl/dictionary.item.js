@@ -120,7 +120,7 @@ define(function (require) {
         title: '排序',
         align: 'center',
         width: 50,
-        editor: {type: 'textbox', options: {required: true}}
+        editor: {type: 'numberbox', options: {required: true}}
       },
       dataCode: {
         field: 'dataCode',
