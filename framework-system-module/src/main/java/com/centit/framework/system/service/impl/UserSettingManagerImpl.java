@@ -8,6 +8,7 @@ import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.UserSetting;
 import com.centit.framework.system.po.UserSettingId;
 import com.centit.framework.system.service.UserSettingManager;
+import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,13 +93,14 @@ public class UserSettingManagerImpl implements UserSettingManager {
             String value = userSettingDao.getValue(String.valueOf(searchColumn.get("userCode")), d.getDataCode());
             if("".equals(value) || value == null){
                 userSetting.setDefaultValue(true);
-                userSetting.setUserCode("default");
+//                userSetting.setUserCode("default");
                 userSetting.setParamValue(userSettingDao.getValue("default", d.getDataCode()));
             }else{
-                userSetting.setUserCode(String.valueOf(searchColumn.get("userCode")));
+//                userSetting.setUserCode(String.valueOf(searchColumn.get("userCode")));
                 userSetting.setParamValue(userSettingDao.getValue(String.valueOf(searchColumn.get("userCode")), d.getDataCode()));
             }
-            userSetting.setOptId(d.getExtraCode());
+            userSetting.setUserCode(StringBaseOpt.castObjectToString(searchColumn.get("userCode")));
+            userSetting.setOptId(d.getExtraCode2());
             userSetting.setParamName(d.getDataValue());
             userSettings.add(userSetting);
         }

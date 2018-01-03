@@ -162,7 +162,7 @@ public class UserSettingController extends BaseController {
 
         boolean isDefaultValue = userSetting.isDefaultValue();
         if(isDefaultValue){
-            userSetting.setUserCode(WebOptUtils.getLoginUser().getUserCode());
+//            userSetting.setUserCode(WebOptUtils.getLoginUser().getUserCode());
             userSettingManager.saveNewUserSetting(userSetting);
         }else {
             userSettingManager.updateUserSetting(userSetting);
