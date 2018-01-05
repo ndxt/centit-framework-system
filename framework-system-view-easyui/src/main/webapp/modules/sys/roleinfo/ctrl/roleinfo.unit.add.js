@@ -12,6 +12,14 @@ define(function (require) {
       return 'F' !== this.parent.data.roleType;
     };
 
+    this.initUnitCombotree = function (input) {
+      input
+        .attr('target', 'unit')
+        .combotree({
+          target: 'unit'
+        });
+    };
+
     // @override
     this.object = {
       obtainDate: Utils.formateDate(new Date(), 'yyyy-MM-dd')
@@ -19,6 +27,9 @@ define(function (require) {
 
     // @override
     this.load = function (panel) {
+
+      this.$findUp('initUnitCombotree')($('input[name=unitCode]', panel));
+
       this.refresh = false;
 
       var roleInfo = this.parent.data;
@@ -29,9 +40,7 @@ define(function (require) {
       });
 
       panel.find('form').form('disableValidation')
-        .form('load', data)
-        .form('focus');
-      $('#jigouming').combo('hidePanel');
+        .form('load', data);
     };
 
     // @override

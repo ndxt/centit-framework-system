@@ -56,7 +56,7 @@ define(function (require) {
 
         rowStyler: function (index, row) {
           if (row.defaultValue) {
-            return 'background-color:#6293BB;color:#fff;';
+            return 'background-color:#681966;color:#fff;';
           }
         }
       });
