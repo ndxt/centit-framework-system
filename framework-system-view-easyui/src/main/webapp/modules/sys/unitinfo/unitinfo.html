@@ -12,14 +12,15 @@
     requirejs([
       'jquery',
       'core/filter/filter.dictionary',
-      'modules/sys/unitinfo/ctrl/unitinfo'], function ($, FilterDictionary, UnitInfo) {
+      'modules/sys/unitinfo/ctrl/unitinfo'],
+      function ($, FilterDictionary, UnitInfo) {
 
-      FilterDictionary.add([
-        'YesOrNo',
-        'UnitType',
-        'StationType',
-        'RankType']
-      ).then(function () {
+        FilterDictionary.add([
+          'YesOrNo',
+          'UnitType',
+          'StationType',
+          'RankType']
+        ).then(function () {
         $('.panel', panel).panel({
           onLoad: function () {
             var div = $(this);

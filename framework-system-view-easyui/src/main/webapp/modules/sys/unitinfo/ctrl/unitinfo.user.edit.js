@@ -13,6 +13,11 @@ define(function (require) {
 
       // 保存原始信息
       this.oldData = data;
+      panel.find('input[name=userCode]').combobox({
+        url: this.$findUp('queryUnitUserUrl'),
+        textField: 'userName',
+        valueField: 'userCode'
+      });
 
       var form = panel.find('form');
       Core.ajax(Config.ContextPath + 'system/userunit/' + data.userUnitId, {
@@ -27,6 +32,7 @@ define(function (require) {
         form.form('disableValidation').form('load', data)
           .form('readonly', 'userCode')
           .form('focus');
+        panel.find('input[name=userCode]').combobox('setValue', data.userCode);
 
         if (data.isPrimary === 'T') {
           $("input[name='isPrimary']", panel).attr("disabled", true);
