@@ -30,6 +30,11 @@ public interface SysRoleManager{
 
     void updateRoleInfo(RoleInfo o);
 
+    /**
+     * 更新角色权限
+     * @param o 角色对象
+     * @return 旧的操作权限
+     */
     List<RolePower> updateRolePower(RoleInfo o);
 
     void deleteRoleInfo(String roleCode);

@@ -73,4 +73,9 @@ public class RolePowerDaoImpl extends BaseDaoImpl<RolePower, RolePowerId> implem
     public void saveNewRolePower(RolePower rolePower){
       super.saveNewObject(rolePower);
     }
+
+    @Override
+    public void deleteObjectById(RolePowerId id){
+        super.deleteObjectById(id);
+    }
 }

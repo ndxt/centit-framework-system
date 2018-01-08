@@ -13,7 +13,12 @@ define(function (require) {
 
       // 保存原始信息
       this.oldData = data;
-      this.$findUp('initUnitCombotree')($('input[name=unitCode]', panel));
+      // this.$findUp('initUnitCombotree')($('input[name=unitCode]', panel));
+      $('input[name=unitCode]')
+          .attr('target', 'unit')
+          .combotree({
+            target: 'unit'
+          });
 
       var form = panel.find('form');
       Core.ajax(Config.ContextPath + 'system/userunit/' + data.userUnitId, {
