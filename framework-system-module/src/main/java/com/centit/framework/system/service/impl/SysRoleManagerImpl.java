@@ -176,9 +176,9 @@ public class SysRoleManagerImpl implements SysRoleManager {
 
         if( forUpdate.getRight() != null){
             for(RolePower rp : forUpdate.getRight()){
-                rolePowerDao.deleteObject(rp);
+                rolePowerDao.deleteObjectById(new RolePowerId(rp.getRoleCode(), rp.getOptCode()));
                 //如果删除部门操作权限,则要同步删除该部门下角色对应的操作权限
-                /*if(rp.getRoleCode().startsWith("G$")){
+                if(rp.getRoleCode().startsWith("G$")){
                     String optCode = rp.getOptCode();
                     String unitCode = rp.getRoleCode().substring(2);
                     List<RoleInfo> roleInfos = roleInfoDao.listObjects(
@@ -186,7 +186,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
                     for(RoleInfo roleInfo : roleInfos){
                         rolePowerDao.deleteObjectById(new RolePowerId(roleInfo.getRoleCode(), optCode));
                     }
-                }*/
+                }
             }
         }
         if( forUpdate.getLeft() != null){
