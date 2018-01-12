@@ -131,7 +131,7 @@ public class InnerMsg implements  Serializable{
              一个消息可以有多个收件人
      */
 
-    @OneToMany(targetEntity= InnerMsgRecipient.class, mappedBy="mInnerMsg",fetch = FetchType.LAZY)
+    @OneToMany(targetEntity= InnerMsgRecipient.class,/* mappedBy="mInnerMsg",*/fetch = FetchType.LAZY)
     @JoinColumn(name="MSG_CODE", referencedColumnName="MSG_CODE")
     @JSONField(serialize=false)
     private List<InnerMsgRecipient> recipients;
