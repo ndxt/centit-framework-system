@@ -401,26 +401,25 @@ public class UnitInfoController extends BaseController {
 
     /**
      * 将权限付给部门
-     * @param unitcode unitcode
-     * @param optCodes optCodes
+     * @param unitCode 机构代码
+     * @param optCodes 操作权限代码 以，隔开
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
-    @RequestMapping(value = "/unit/saveopts/{unitcode}",method = RequestMethod.POST)
+    @RequestMapping(value = "/unit/saveopts/{unitCode}",method = RequestMethod.POST)
     @RecordOperationLog(content = "更新机构权限")
-    public void setUnitPowers(@PathVariable String unitcode,
-            String optCodes,
-            HttpServletRequest request,HttpServletResponse response) {
-        String optCodesArray[]=optCodes.split(",");
-        RoleInfo roleInfo = sysRoleManager.getObjectById("G$"+ unitcode);
+    public void setUnitPowers(@PathVariable String unitCode, String optCodes,
+                              HttpServletRequest request,HttpServletResponse response) {
+        String[] optCodesArray = optCodes.split(",");
+        RoleInfo roleInfo = sysRoleManager.getObjectById("G$"+ unitCode);
         if(roleInfo==null){
             roleInfo = new RoleInfo();
             roleInfo.setIsValid("T");
-            roleInfo.setRoleCode("G$"+ unitcode);
-            roleInfo.setRoleName("赋给部门"+unitcode+"的权限");
+            roleInfo.setRoleCode("G$"+ unitCode);
+            roleInfo.setRoleName("赋给部门"+unitCode+"的权限");
             roleInfo.setRoleDesc(roleInfo.getRoleName());
             roleInfo.setRoleType("H");
-            roleInfo.setUnitCode(unitcode);
+            roleInfo.setUnitCode(unitCode);
             roleInfo.setCreateDate(new Date());
             sysRoleManager.saveNewRoleInfo(roleInfo);
             //刷新缓存

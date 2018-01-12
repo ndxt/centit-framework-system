@@ -23,6 +23,8 @@ define(function (require) {
 
     this.queryUnitUrl = 'system/unitinfo?struct=true';
 
+    this.queryUnitUserUrl = 'system/cp/alluser/T';
+
     this.beforeSearch = function() {
       this.currentUnit = null;
     };

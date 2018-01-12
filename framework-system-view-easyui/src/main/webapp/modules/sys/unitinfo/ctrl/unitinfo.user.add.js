@@ -1,6 +1,7 @@
 define(function(require) {
 	var Config = require('config');
 	var Core = require('core/core');
+	var $ = require('jquery');
 
 	var Page = require('core/page');
 
@@ -21,6 +22,12 @@ define(function(require) {
 				unitCode: unitinfo.unitCode,
 				unitName: unitinfo.unitName
 			});
+
+			panel.find('input[name=userCode]').combobox({
+        url: this.$findUp('queryUnitUserUrl'),
+        textField: 'userName',
+        valueField: 'userCode'
+      });
 
 			panel.find('form')
 				.form('disableValidation')

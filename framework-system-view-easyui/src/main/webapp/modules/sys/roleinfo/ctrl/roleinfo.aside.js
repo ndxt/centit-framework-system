@@ -1,5 +1,6 @@
 define(function (require) {
   var Page = require('core/page');
+  var Config = require('config');
   var RoleUser = require('./roleinfo.user');
   var RoleUserInherited = require('./roleinfo.user.inherited');
   var RoleUnit = require('./roleinfo.unit');
@@ -18,6 +19,8 @@ define(function (require) {
 
     this.load = function (panel, data) {
 
+      this.data = data;
+      this.roleInfoUsersInheritedUrl = Config.ContextPath + 'system/userrole/roleusersinherited/{{roleCode}}';
       $('.role-info-aside', panel).tabs({
         selected: tabSelectedIndex,
         onLoad: function(tab) {

@@ -65,4 +65,6 @@ public interface SysUserManager{
      boolean isCellPhoneExist(String userCode, String regPhone);
      boolean isEmailExist(String userCode, String regEmail);
      boolean isAnyOneExist(String userCode, String loginName,String regPhone,String regEmail);
+
+     UserInfo getUserByUserWord(String userWord);
 }

@@ -185,7 +185,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
 
     @Override
     public List<UserUnit> querySubUserUnits(Map<String, Object> pageQueryMap) {
-        String sql = "select USER_UNIT_ID, UNIT_CODE, USER_CODE, IS_PRIMARY, USER_RANK, RANK_MEMO, USER_ORDER, " +
+        String sql = "select USER_UNIT_ID, UNIT_CODE, USER_CODE, IS_PRIMARY, USER_STATION, USER_RANK, RANK_MEMO, USER_ORDER, " +
           "UPDATE_DATE, CREATE_DATE, CREATOR, UPDATOR " +
           "FROM F_USERUNIT WHERE 1=1 " +
           "[:(STARTWITH)unitPath | and UNIT_CODE IN (select UNIT_CODE from f_unitinfo where UNIT_PATH like :unitPath)]"+

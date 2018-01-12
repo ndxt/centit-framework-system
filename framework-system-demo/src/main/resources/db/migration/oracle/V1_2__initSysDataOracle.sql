@@ -6,7 +6,7 @@ CREATE_DATE, EXTJSONINFO, CREATOR, UPDATOR, UNIT_PATH)
 values
 ('U00001', null, 'N', 'T', null,
 '根机构', 'root', null, '根机构', null,
-'root', null, null, 1, sysdate,
+'root', 'root', null, 1, sysdate,
 sysdate, null, 'u0000000', 'u0000000', '/U00001');
 
 insert into F_USERINFO (USER_CODE, USER_PIN, IS_VALID, LOGIN_NAME, USER_NAME, USER_DESC, LOGIN_TIMES, ACTIVE_TIME, LOGIN_IP, ADDRBOOK_ID, REG_EMAIL, USER_ORDER, USER_PWD, REG_CELL_PHONE, CREATE_DATE,CREATOR,UPDATOR,UPDATE_DATE)
@@ -64,7 +64,7 @@ INSERT INTO f_datadictionary (catalog_code, data_code, extra_code, extra_code2, 
 INSERT INTO f_datadictionary (catalog_code, data_code, extra_code, extra_code2, data_tag, data_value, data_style, data_desc, last_modify_date, create_date, data_order) VALUES ('SUPPORT_LANG', 'zh_CN', null, null, 'T', '中文', 'S', null, null, null, '1');
 INSERT INTO f_datadictionary (catalog_code, data_code, extra_code, extra_code2, data_tag, data_value, data_style, data_desc, last_modify_date, create_date, data_order) VALUES ('UnitType', 'A', null, null, 'T', '一般机构', 'U', '', null, null, '1');
 INSERT INTO f_datadictionary (catalog_code, data_code, extra_code, extra_code2, data_tag, data_value, data_style, data_desc, last_modify_date, create_date, data_order) VALUES ('UnitType', 'I', null, null, 'T', '项目组', 'U', '因为某个事务或者项目而建立的项目组', null, null, '2');
-INSERT INTO f_datadictionary (catalog_code, data_code, extra_code, extra_code2, data_tag, data_value, data_style, data_desc, last_modify_date, create_date, data_order) VALUES ('UnitType', 'O', null, null, 'T', '业务结构', 'U', '根据业务创建的组织', null, null, '3');
+INSERT INTO f_datadictionary (catalog_code, data_code, extra_code, extra_code2, data_tag, data_value, data_style, data_desc, last_modify_date, create_date, data_order) VALUES ('UnitType', 'O', null, null, 'T', '业务机构', 'U', '根据业务创建的组织', null, null, '3');
 INSERT INTO f_datadictionary (catalog_code, data_code, extra_code, extra_code2, data_tag, data_value, data_style, data_desc, last_modify_date, create_date, data_order) VALUES ('userSettingKey', 'LOCAL_LANG', null, null, 'T', '语言', 'S', '设置用户语言', null, null, null);
 INSERT INTO f_datadictionary (catalog_code, data_code, extra_code, extra_code2, data_tag, data_value, data_style, data_desc, last_modify_date, create_date, data_order) VALUES ('userSettingKey', 'receiveways', null, null, 'T', '消息接收方式', 'S', '用户接收消息的方式，可以是多个用逗号隔开', null, null, null);
 INSERT INTO f_datadictionary (catalog_code, data_code, extra_code, extra_code2, data_tag, data_value, data_style, data_desc, last_modify_date, create_date, data_order) VALUES ('YesOrNo', 'F', null, null, 'N', '否', 'F', '', null, null, '2');

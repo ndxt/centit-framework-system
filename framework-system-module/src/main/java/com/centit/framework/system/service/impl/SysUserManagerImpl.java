@@ -300,4 +300,10 @@ public class SysUserManagerImpl implements SysUserManager {
     public UserInfo getUserByRegCellPhone(String regCellPhone) {
         return userInfoDao.getUserByRegCellPhone(regCellPhone);
     }
+
+    @Override
+    @Transactional
+    public UserInfo getUserByUserWord(String userWord){
+        return userInfoDao.getUserByUserWord(userWord);
+    }
 }

@@ -2,38 +2,42 @@ define(function (require) {
   var Config = require('config');
   var Page = require('core/page');
   var Core = require('core/core');
+  var $ = require('jquery');
+  require('myuploader');
+  // require('upload');
 
-  var UserDefaultSettingRemove = require('./userdefaultsetting.remove');
 
   return Page.extend(function () {
     var _self = this;
-
-    this.injecte([
-      new UserDefaultSettingRemove('userdefaultsetting_remove')
-    ]);
 
     // @override
     this.load = function (panel, data) {
       this.data = data;
 
-      var table = this.table = panel.find('table');
-      table.cdatagrid({
-        controller: _self,
-        url: Config.ContextPath + 'system/usersetting/listdefault/',
+      $('#fb').filebox({
+        buttonText: 'Choose File',
+        buttonAlign: 'left'
+      })
 
-        onEndEdit: function(index, row, changes){
-          Core.ajax(Config.ContextPath + 'system/usersetting/updatedefault', {
-            data: row,
-            method: 'post'
-          });
-        },
+        // panel.find('#systemIcon').uploader({
+        //   UploaderPath: Config.ContextPath+'system/systemsetting/uploadico',
+        // });
 
-        rowStyler: function (index, row) {
-          if (row.paramValue === 'null') {
-            return 'background-color:#6293BB;color:#fff;';
-          }
-        }
-      });
+      // requirejs(['upload'], function($) {
+
+      //   $(document).ready(function () {
+      //     $("#demo1").AjaxFileUpload({
+      //       action: ContextPath + 'service/file/upload'
+      //     });
+      //   });
+      // });
+
+
+
+        panel.find('form').on('submit', function() {
+
+      })
+
     };
 
     this.submit = function (panel, data, closeCallback) {

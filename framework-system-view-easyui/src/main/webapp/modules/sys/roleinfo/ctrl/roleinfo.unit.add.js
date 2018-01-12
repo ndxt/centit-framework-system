@@ -3,11 +3,21 @@ define(function (require) {
 
   var Page = require('core/page');
   var Utils = require('core/utils');
+  var Core = require('core/core');
+  var Mustache = require('plugins/mustache.min');
 
   // 机构添加用户
   var UserInfoRoleAdd = Page.extend(function () {
     this.renderButton = function () {
       return 'F' !== this.parent.data.roleType;
+    };
+
+    this.initUnitCombotree = function (input) {
+      input
+        .attr('target', 'unit')
+        .combotree({
+          target: 'unit'
+        });
     };
 
     // @override
@@ -17,6 +27,9 @@ define(function (require) {
 
     // @override
     this.load = function (panel) {
+
+      this.$findUp('initUnitCombotree')($('input[name=unitCode]', panel));
+
       this.refresh = false;
 
       var roleInfo = this.parent.data;
@@ -27,8 +40,7 @@ define(function (require) {
       });
 
       panel.find('form').form('disableValidation')
-        .form('load', data)
-        .form('focus');
+        .form('load', data);
     };
 
     // @override
@@ -46,6 +58,13 @@ define(function (require) {
           return require('loaders/cache/loader.system').loadAll()
         }).then(function () {
           _self.refresh = true;
+
+          var roleInfoUrl = Mustache.render(_self.parent.parent.roleInfoUsersInheritedUrl, _self.parent.parent.data);
+          return Core.ajax(roleInfoUrl, {
+            method: 'get'
+          })
+        }).then(function (data) {
+          _self.parent.parent.panel.find('#roleinfoUserTable').datagrid('loadData', data);
           closeCallback();
         });
       }
@@ -55,8 +74,11 @@ define(function (require) {
 
     // @override
     this.onClose = function (table) {
+      console.log(arguments);
       if (this.refresh)
         table.datagrid('reload');
+
+
     };
   });
 

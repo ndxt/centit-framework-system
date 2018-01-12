@@ -150,6 +150,12 @@
         ]]>
     </delete>
 
+    <delete id="deleteObjectById" parameterType="com.centit.framework.system.po.RolePowerId" >
+        <![CDATA[
+            delete from F_ROLEPOWER where ROLE_CODE=#{roleCode} and OPT_CODE=#{optCode}
+        ]]>
+    </delete>
+
     <delete id="deleteRolePowersByRoleCode" databaseId="mysql" parameterType="String">
         <![CDATA[
             delete from F_ROLEPOWER where ROLE_CODE=#{roleCode}

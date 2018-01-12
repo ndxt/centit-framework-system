@@ -3,18 +3,16 @@ define(function(require) {
 	var Page = require('core/page');
 
 	var UserDefaultSetting = require('./userdefaultsetting');
-	// var UserInfoRoleInfo = require('./userinfo.role');
-	// var UserInfoUnitInfo = require('./userinfo.unit');
-	// var UserInfoSetting = require('./userinfo.setting');
+	var SystemParameter = require('./systemparameter');
+	// var SystemIcon = require('./systemicon');
 
 
-	var UserAll = Page.extend(function() {
+	var SystemSetting = Page.extend(function() {
 		var tabSelectedIndex = 0;
 		var controllers = [
-		  new UserDefaultSetting('UserDefaultSetting')
-      // new UserInfoRoleInfo('UserInfoRoleInfo'),
-      // new UserInfoUnitInfo('UserInfoUnitInfo'),
-      // new UserInfoSetting('UserInfoSetting')
+		  new UserDefaultSetting('UserDefaultSetting'),
+      new SystemParameter('SystemParameter'),
+      // new SystemIcon('SystemIcon')
     ];
 
 		this.injecte(controllers);
@@ -34,8 +32,7 @@ define(function(require) {
         }
       })
 		};
-
 	});
 
-	return UserAll;
+	return SystemSetting;
 });

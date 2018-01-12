@@ -74,7 +74,7 @@ public class UserSettingDaoImpl extends BaseDaoImpl<UserSetting, UserSettingId> 
     @Override
     public String getValue(String userCode, String key){
         String sql = "SELECT PARAM_VALUE FROM F_USERSETTING WHERE USER_CODE = ? AND PARAM_CODE = ?";
-        return String.valueOf(DatabaseOptUtils.getScalarObjectQuery(this, sql, new Object[]{userCode, key}));
+        return StringBaseOpt.castObjectToString(DatabaseOptUtils.getScalarObjectQuery(this, sql, new Object[]{userCode, key}));
     }
 
 }

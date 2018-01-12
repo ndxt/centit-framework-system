@@ -17,7 +17,14 @@ define(function(require) {
     this.doDeptRoleAdd = function(ctrl) {
       ctrl.panel.find('.roleType').remove();
       ctrl.object.roleType = 'D';
-    }
+    };
+
+    // 修改用户机构下拉框初始化
+    this.initUnitCombotree = function (input) {
+      input.combotree({
+        url: 'system/unitinfo/subunits'
+      });
+    };
 
 	});
 

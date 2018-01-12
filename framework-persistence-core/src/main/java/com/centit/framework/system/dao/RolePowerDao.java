@@ -1,6 +1,7 @@
 package com.centit.framework.system.dao;
 
 import com.centit.framework.system.po.RolePower;
+import com.centit.framework.system.po.RolePowerId;
 
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,12 @@ public interface RolePowerDao {
    * @param rolePowers 角色权限对象
    */
     void deleteObject(RolePower rolePowers);
+
+    /**
+     * 根据Id删除
+     * @param rolePowerId id
+     */
+    void deleteObjectById(RolePowerId rolePowerId);
 
   /**
    * 根据条件查询

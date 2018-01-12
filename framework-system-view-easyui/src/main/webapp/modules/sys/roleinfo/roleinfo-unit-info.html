@@ -6,8 +6,7 @@
 		</div>
 		<div class="field required">
 			<label id="b@username">机构名</label>
-			<input type="text" class="easyui-combobox" name="unitCode[]"
-				required  target='unit' multiple="true" multiline="true" style="width: 100%;"/>
+      <input name="unitCode" required style="width: 100%;" />
 		</div>
 	</div>
 
@@ -18,8 +17,8 @@
 		</div>
 	</div>
 
-	<div class="field">
+	<div class="fields">
 		<label id="b@remarks">备注</label>
-		<input validType="maxLength[255]" type="text" class="easyui-textbox" name="changeDesc" height="100" multiline="true" style="height: 100px; width: 100%"/>
+		<input validType="maxLength[85]" type="text" class="easyui-textbox" name="changeDesc" height="100" multiline="true" style="height: 100px; width: 100%"/>
 	</div>
 </form>

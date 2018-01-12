@@ -228,7 +228,9 @@ public class SysUserUnitManagerImpl
     @Override
     @Transactional
     public void deletePrimaryUnitByUserCode(String userCode){
-        userUnitDao.deleteObjectById(userUnitDao.getPrimaryUnitByUserId(userCode).getUserUnitId());
+        if(userUnitDao.getPrimaryUnitByUserId(userCode) != null) {
+            userUnitDao.deleteObject(userUnitDao.getPrimaryUnitByUserId(userCode));
+        }
     }
 
     @Override

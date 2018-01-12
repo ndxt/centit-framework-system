@@ -149,7 +149,7 @@ public class UserInfoController extends BaseController {
             return;
         }
         //删除旧主机构
-        if(!dbUserInfo.getPrimaryUnit().equals(userInfo.getPrimaryUnit())){
+//        if(!dbUserInfo.getPrimaryUnit().equals(userInfo.getPrimaryUnit())){
             sysUserUnitManager.deletePrimaryUnitByUserCode(userCode);
             userUnit.setUserCode(userInfo.getUserCode());
             userUnit.setUnitCode(userInfo.getPrimaryUnit());
@@ -157,7 +157,7 @@ public class UserInfoController extends BaseController {
             userUnit.setCreator(getLoginUserCode(request));
             sysUserUnitManager.saveNewUserUnit(userUnit);
 
-        }
+//        }
         UserInfo oldValue= new UserInfo();
         oldValue.copy(dbUserInfo);
         if(oldValue.getUserUnits().size() == 0){

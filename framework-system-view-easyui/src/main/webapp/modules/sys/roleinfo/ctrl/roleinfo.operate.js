@@ -31,6 +31,14 @@ define(function(require) {
 
 			// 选中的节点
 			var nodes = panel.find('ul.tree').tree('getChecked');
+      var datascope = [];
+      if(panel.find('#datascope').length > 0){
+        datascope = panel.find('#datascope').datagrid('getChecked');//获取数据范围表格中选中的数据
+      }
+      var arr = new Array();
+      for(var i = 0;i<datascope.length;i++){
+        arr.push(datascope[i].optScopeCode);
+      }
 
 			// 过滤得到选中的optCodes
 			var rolePowers = nodes.filter(function(obj) {
@@ -38,8 +46,9 @@ define(function(require) {
 			}).map(function(obj) {
 				return {
 					id:{roleCode:data.roleCode,optCode:obj.optCode},
-					optScopeCodes:_self.dataMap.get(obj.optCode)?_self.dataMap.get(obj.optCode).join(','):"",
-                    roleCode:data.roleCode,optCode:obj.optCode
+					// optScopeCodes:_self.dataMap.get(obj.optCode)?_self.dataMap.get(obj.optCode).join(','):"",
+					optScopeCodes:arr?arr.join(','):"",
+          roleCode:data.roleCode,optCode:obj.optCode
 				};
 			});
 
