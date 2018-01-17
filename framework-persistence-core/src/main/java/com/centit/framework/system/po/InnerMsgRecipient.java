@@ -79,8 +79,7 @@ public class InnerMsgRecipient implements Serializable{
     private String msgState;
 
 
-    @ManyToOne(targetEntity = InnerMsg.class )
-    @JoinColumn(name="MSG_CODE", referencedColumnName="MSG_CODE", insertable=false, updatable=false)
+    @Transient
     private InnerMsg mInnerMsg;
 
     public void setMInnerMsg(InnerMsg InnerMsg){
