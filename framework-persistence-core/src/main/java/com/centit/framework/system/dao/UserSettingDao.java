@@ -17,7 +17,7 @@ public interface UserSettingDao {
     /**
      * 根据条件查询
      * @param pageQueryMap 查询条件
-     * @return List<UserSetting>
+     * @return List &lt;UserSetting&gt;
      */
     List<UserSetting> pageQuery(Map<String, Object> pageQueryMap);
 
@@ -50,7 +50,7 @@ public interface UserSettingDao {
     /**
     * 根据用户代码查询
     * @param userCode 用户代码
-    * @return List<UserSetting>
+    * @return List &lt;UserSetting&gt;
     */
     List<UserSetting> getUserSettingsByCode(String userCode);
 
@@ -58,7 +58,7 @@ public interface UserSettingDao {
     * 根据用户代码和项目模块查询
     * @param userCode 用户代码
     * @param optId 项目模块
-    * @return List<UserSetting>
+    * @return List &lt;UserSetting&gt;
     */
     List<UserSetting> getUserSettings(String userCode, String optId);
 

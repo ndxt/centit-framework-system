@@ -15,7 +15,7 @@ public interface RolePowerDao {
 
   /**
    * 查询全部
-   * @return List<RolePower>
+   * @return List &lt;RolePower&gt;
    */
     List<RolePower> listObjectsAll();
 
@@ -46,7 +46,7 @@ public interface RolePowerDao {
   /**
    * 根据条件查询
    * @param filterMap 查询条件
-   * @return List<RolePower>
+   * @return List &lt;RolePower&gt;
    */
     List<RolePower> listObjects(Map<String, Object> filterMap);
 
@@ -65,7 +65,7 @@ public interface RolePowerDao {
   /**
    * 根据角色代码查询
    * @param roleCode 角色代码
-   * @return List<RolePower>
+   * @return List &lt;RolePower&gt;
    */
     List<RolePower> listRolePowersByRoleCode(String roleCode);
 

@@ -16,7 +16,7 @@ public interface UserUnitDao {
     /**
     * 根据条件查询
     * @param filterMap 过滤条件
-    * @return List<UserUnit>
+    * @return List &lt;UserUnit&gt;
     */
     List<UserUnit> listObjects(Map<String, Object> filterMap);
 
@@ -30,13 +30,13 @@ public interface UserUnitDao {
     /**
     * 分页查询
     * @param pageQueryMap 过滤条件
-    * @return List<UserUnit>
+    * @return List &lt;UserUnit&gt;
     */
     List<UserUnit> pageQuery(Map<String, Object> pageQueryMap);
 
     /**
     * 查询全部
-    * @return List<UserUnit>
+    * @return List &lt;UserUnit&gt;
     */
     List<UserUnit> listObjectsAll();
 
@@ -80,7 +80,7 @@ public interface UserUnitDao {
     /**
     * 根据用户代码查询
     * @param userId 用户代码
-    * @return List<UserUnit>
+    * @return List &lt;UserUnit&gt;
     */
     List<UserUnit> listUserUnitsByUserCode(String userId);
 
@@ -88,7 +88,7 @@ public interface UserUnitDao {
     * 根据用户和机构代码查询
     * @param userCode 用户代码
     * @param unitCode 机构代码
-    * @return List<UserUnit>
+    * @return List &lt;UserUnit&gt;
     */
     List<UserUnit> listObjectByUserUnit(String userCode, String unitCode);
 
@@ -120,7 +120,7 @@ public interface UserUnitDao {
     /**
     * 根据机构代码查询
     * @param unitCode 机构代码
-    * @return List<UserUnit>
+    * @return List &lt;UserUnit&gt;
     */
     List<UserUnit> listUnitUsersByUnitCode(String unitCode);
 

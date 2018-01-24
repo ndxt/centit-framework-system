@@ -5,12 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <centit.framework.version>4.0.4-SNAPSHOT</centit.framework.version>
+        <centit.framework.version>4.0-SNAPSHOT</centit.framework.version>
         <jdk.version>1.8</jdk.version>
-
-        <centit.ui.version>3.0.1-SNAPSHOT</centit.ui.version>
-        <centit.persistence.version>1.0.2-SNAPSHOT</centit.persistence.version>
-        <centit.stat.version>2.0.1-SNAPSHOT</centit.stat.version>
+        <centit.ui.version>3.1.0</centit.ui.version>
+        <centit.persistence.version>1.0.2</centit.persistence.version>
 
         <hibernate.validator.version>5.4.2.Final</hibernate.validator.version>
         <persistence-api.version>2.2</persistence-api.version>
@@ -26,7 +24,7 @@
     <groupId>com.centit.framework</groupId>
     <artifactId>framework-system-parent</artifactId>
     <packaging>pom</packaging>
-    <version>4.0.4-SNAPSHOT</version>
+    <version>4.0-SNAPSHOT</version>
     <name>com.centit.framework:framework-system-parent</name>
     <description>设计了一套兼容基础用户、组织机构和功能权限、数据权限体系的系统维护页面，作为公司内部研发的基础平台。
     </description>
@@ -96,7 +94,6 @@
         <module>framework-persistence-jdbc</module>
         <module>framework-system-view-easyui</module>
         <module>framework-system-module</module>
-        <!--<module>framework-system-demo</module>-->
     </modules>
 
     <!-- mvn deploy -DpomFile=pom.xml -->
@@ -153,7 +150,7 @@
                     </execution>
                 </executions>
             </plugin>
-<!--
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -166,10 +163,10 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>-->
-            <!-- GPG自动签名的插件-->
+            </plugin>
 
-            <!--<plugin>
+            <!-- GPG自动签名的插件-->
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
@@ -182,12 +179,12 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>-->
+            </plugin>
 
              <!--sonatype release :
                 mvn nexus-staging:release-->
 
-            <!--<plugin>
+            <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
                 <version>1.6.8</version>
@@ -197,7 +194,7 @@
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
-            </plugin>-->
+            </plugin>
         </plugins>
     </build>
 </project>

@@ -101,7 +101,7 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
     /**
      * 查询全部
      * @param userCode 用户编码
-     * @return List<UserRole>
+     * @return List &lt; UserRole &gt;
      */
     @Override
     @Transactional
@@ -111,7 +111,7 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
     /**
      * 查询全部
      * @param roleCode 角色编码
-     * @return List<UserRole>
+     * @return List &lt; UserRole &gt;
      */
     @Override
     @Transactional

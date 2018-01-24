@@ -40,6 +40,7 @@ public class UserSettingController extends BaseController {
 
     /**
      * 系统日志中记录
+     * @return 业务标识ID
      */
     public String getOptId() {
         return  "userSetting";
@@ -69,6 +70,7 @@ public class UserSettingController extends BaseController {
 
     /**
      * 查询用户个人设置列表
+     * @param userCode 用户代码
      * @param pageDesc 分页信息
      * @param request {@link HttpServletRequest}
      * @param response {@link HttpServletResponse}
@@ -92,6 +94,7 @@ public class UserSettingController extends BaseController {
      * 查询用户个人默认设置列表
      * @param pageDesc 分页信息
      * @param request {@link HttpServletRequest}
+     * @return  ResponseData ajax 请求
      */
     @GetMapping(value = "/listdefault")
     @ResponseBody
@@ -199,7 +202,7 @@ public class UserSettingController extends BaseController {
      */
     @RequestMapping(value = "/{paramCode}", method = {RequestMethod.DELETE})
     @RecordOperationLog(content = "删除用户设置参数")
-    public void deleteUserSetting(@PathVariable String paramCode, @Valid UserSetting userSetting,
+    public void deleteUserSetting(@PathVariable String paramCode,
                                   HttpServletRequest request, HttpServletResponse response) {
         UserSetting dbUserSetting=userSettingManager.getObjectById(
             new UserSettingId(super.getLoginUserCode(request), paramCode));

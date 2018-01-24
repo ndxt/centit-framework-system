@@ -11,27 +11,27 @@ public interface OptFlowNoPoolDao {
 
     /**
      * 根据Id查询
-     * @param cid
-     * @return
+     * @return 流水号池中的流水号
+     * @param cid 复合主键
      */
     OptFlowNoPool getObjectById(OptFlowNoPoolId cid);
 
     /**
      * 删除
-     * @param optFlowNoPool
+     * @param optFlowNoPool  流水号池中的流水号
      */
     void deleteObject(OptFlowNoPool optFlowNoPool);
 
     /**
      * 根据Id删除
-     * @param cid
+     * @param cid 复合主键
      */
     void deleteObjectById(OptFlowNoPoolId cid);
 
 
     /**
      * 新增
-     * @param optFlowNoPool
+     * @param optFlowNoPool  流水号池中的流水号
      */
     void saveNewOptFlowNoPool(OptFlowNoPool optFlowNoPool);
 

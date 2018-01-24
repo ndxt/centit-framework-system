@@ -15,14 +15,14 @@ public interface OptInfoDao {
 
     /**
      * 查询所有机构列表
-     * @return List<UserInfo>
+     * @return List &lt;UserInfo&gt;
      */
     List<OptInfo> listObjectsAll();
 
     /**
      * 根据条件查询机构列表
      * @param filterMap 过滤条件Map
-     * @return List<UserInfo>
+     * @return List&lt;UserInfo&gt;
      */
     List<OptInfo> listObjects(Map<String, Object> filterMap);
 
@@ -68,7 +68,7 @@ public interface OptInfoDao {
      * 查询用户拥有的叶子菜单
       * @param userCode 用户ID
      * @param optType 菜单类型
-     * @return List<FVUserOptMoudleList>
+     * @return List&lt;FVUserOptMoudleList&gt;
      */
      List<FVUserOptMoudleList> getMenuFuncByUserID(String userCode, String optType);
 
@@ -83,20 +83,20 @@ public interface OptInfoDao {
    * @param userCode 用户Id
    * @param optId 菜单Id
    * @param optMethod 操作定义
-   * @return List<String>
+   * @return List&lt;String&gt;
    */
      List<String> listUserDataPowerByOptMethod(String userCode, String optId, String optMethod);
 
     /**
      * 查询全部OptMethodUrlMap
-     * @return List<OptMethodUrlMap>
+     * @return List&lt;OptMethodUrlMap&gt;
      */
     List<OptMethodUrlMap> listAllOptMethodUrlMap();
 
     /**
      * 根据父Id查询下级菜单
      * @param optId 父Id
-     * @return List<OptInfo>
+     * @return List&lt;OptInfo&gt;
      */
     List<OptInfo> listObjectByParentOptid(String optId);
 

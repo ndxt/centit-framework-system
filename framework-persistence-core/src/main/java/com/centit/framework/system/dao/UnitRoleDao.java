@@ -28,7 +28,7 @@ public interface UnitRoleDao {
 
     /**
     *
-    * @param dbUnitRole
+    * @param dbUnitRole 机构角色对象
     */
     void mergeUnitRole(UnitRole dbUnitRole);
 
@@ -60,22 +60,22 @@ public interface UnitRoleDao {
 
     /**
     * 分页查询
-    * @param pageQueryMap
-    * @return List<UnitRole>
+    * @param pageQueryMap 分页查询条件
+    * @return List &lt;UnitRole&gt;
     */
     List<UnitRole> pageQuery(Map<String, Object> pageQueryMap);
 
     /**
     * 根据机构代码查询
     * @param unitCode 机构代码
-    * @return List<UnitRole>
+    * @return List &lt;UnitRole&gt;
     */
     List<UnitRole> listUnitRolesByUnitCode(String unitCode);
 
     /**
     * 根据角色代码查询
     * @param roleCode 角色代码
-    * @return List<UnitRole>
+    * @return List &lt;UnitRole&gt;
     */
     List<UnitRole> listUnitRolesByRoleCode(String roleCode);
 }

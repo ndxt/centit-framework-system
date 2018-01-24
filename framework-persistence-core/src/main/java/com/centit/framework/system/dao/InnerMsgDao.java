@@ -15,13 +15,13 @@ public interface InnerMsgDao {
     /**
     * 根据Id查询
     * @param msgCode 消息编号
-    * @return InnerMsg
+    * @return InnerMsg 消息对象
     */
     InnerMsg getObjectById(String msgCode);
 
     /**
     * 更新
-    * @param innerMsg
+    * @param innerMsg 消息对象
     */
     void updateInnerMsg(InnerMsg innerMsg);
 
@@ -38,14 +38,14 @@ public interface InnerMsgDao {
 
     /**
      * 获取下一个序列值
-     * @return
+     * @return 序列号可作为主键
      */
     String getNextKey();
 
     /**
     * 根据条件查询
     * @param filterMap 过滤条件
-    * @return List<InnerMsg>
+    * @return List&lt; InnerMsg &gt;
     */
     List<InnerMsg> listObjects(Map<String, Object> filterMap);
 
@@ -59,7 +59,7 @@ public interface InnerMsgDao {
     /**
     * 分页查询
     * @param pageQueryMap 过滤条件
-    * @return List<InnerMsg>
+    * @return List&lt; InnerMsg &gt;
     */
     List<InnerMsg> pageQuery(Map<String, Object> pageQueryMap);
 

@@ -38,23 +38,23 @@ public interface OptLogDao  {
       void deleteObjectById(Long logId);
 
     /**
-     *
-     * @return
+     * 这个sql语句效率太低，应该从f_optinfo表中获取
+     * @return 所有的业务列表
      */
     //final String hql = "select DISTINCT f.optId from OptLog f";
       List<String> listOptIds();
 
     /**
      *
-     * @param o
+     * @param o 日志对象
      */
     //设置主键 DatabaseOptUtils.getNextLongSequence(this, "S_SYS_LOG"));
       void mergeObject(OptLog o);
 
     /**
      * 根据开始
-     * @param begin
-     * @param end
+     * @param begin 起始时间
+     * @param end 结束时间
      */
       //"delete from OptLog o where 1=1 ";  "and o.optTime > ?" "and o.optTime < ?";
       //参数 String beginDate, String endDate
@@ -71,7 +71,7 @@ public interface OptLogDao  {
     /**
      * 分页查询
      * @param pageQueryMap 过滤条件
-     * @return List<OptLog>
+     * @return List&lt;OptLog&gt;
      */
       List<OptLog>  pageQuery(Map<String, Object> pageQueryMap);
 
