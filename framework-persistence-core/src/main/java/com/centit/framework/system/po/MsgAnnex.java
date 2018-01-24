@@ -14,9 +14,8 @@ public class MsgAnnex implements Serializable{
      */
     private static final long serialVersionUID = 1L;
 
-    @ManyToOne
     @JSONField(serialize=false)
-    @JoinColumn(name = "Msg_Code", insertable = false, updatable = false)
+    @Transient
     private InnerMsg mInnerMsg;//
 
     @Column(name = "INFO_CODE")

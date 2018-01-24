@@ -15,35 +15,35 @@
 
     <!-- 查询条件 -->
     <sql id="condition">
-        <if test="RECEIVE != null  and RECEIVE != ''  ">
-            and u.RECEIVE = #{RECEIVE}
+        <if test="receive != null  and receive != ''  ">
+            and u.RECEIVE = #{receive}
         </if>
         <if test="sender != null  and sender != ''  ">
             and u.MSG_CODE in ( select  MSG_CODE from M_InnerMsg where SENDER =#{sender} )
         </if>
         <if test="msgContent != null  and msgContent != ''  ">
-            and u.MSG_CODE in ( select  MSG_CODE from M_InnerMsg where MSG_CONTENT like '%'|| #{msgContent}||'%'  )
+            and u.MSG_CODE in ( select  MSG_CODE from M_InnerMsg where MSG_CONTENT like concat('%', #{msgContent},'%')  )
         </if>
         <if test="msgTitle != null  and msgTitle != ''  ">
-            and u.MSG_CODE in ( select  MSG_CODE from M_InnerMsg where MSG_TITLE like '%'|| #{msgTitle}||'%' )
+            and u.MSG_CODE in ( select  MSG_CODE from M_InnerMsg where MSG_TITLE like concat('%', #{msgTitle},'%') )
         </if>
         <if test="mailType != null  and mailType != ''  ">
             and u.MSG_CODE in ( select  MSG_CODE from M_InnerMsg where MAIL_TYPE = #{mailType} )
         </if>
         <if test="mailTypeNot != null  and mailTypeNot != ''  ">
-            and u.MSG_CODE in ( select  MSG_CODE from M_InnerMsg where MAIL_TYPE != #{mailType} )
+            and u.MSG_CODE in ( select  MSG_CODE from M_InnerMsg where MAIL_TYPE != #{mailTypeNot} )
         </if>
         <if test="msgStateNot != null  and msgStateNot != ''  ">
             and u.MSG_STATE != #{msgStateNot}
         </if>
         <if test="innerMsgStateNot != null  and innerMsgStateNot != ''  ">
-            and u.MSG_CODE in ( select  MSG_CODE from M_InnerMsg where MSG_STATE != #{msgStateNot} )
+            and u.MSG_CODE in ( select  MSG_CODE from M_InnerMsg where MSG_STATE != #{innerMsgStateNot} )
         </if>
-        <if test="MSG_STATE != null  and MSG_STATE != ''  ">
-            and u.MSG_STATE =#{MSG_STATE}
+        <if test="msgState != null  and msgState != ''  ">
+            and u.MSG_STATE =#{msgState}
         </if>
         <if test="msgType != null  and msgType != ''  ">
-            and u.MSG_CODE in ( select  MSG_CODE from M_InnerMsg where MAIL_TYPE = #{mailType} )
+            and u.MSG_CODE in ( select  MSG_CODE from M_InnerMsg where MSG_TYPE = #{msgType} )
         </if>
     </sql>
 
@@ -163,7 +163,7 @@
             </if>
         </set>
     </sql>
-    <update id="update" parameterType="com.centit.framework.system.po.InnerMsgRecipient" >
+    <update id="updateInnerMsgRecipient" parameterType="com.centit.framework.system.po.InnerMsgRecipient" >
         update M_InnerMsg_Recipient
         <include refid="updSql" />
         where  ID=#{id}

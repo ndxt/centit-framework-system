@@ -29,6 +29,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 内部消息、公告
+ */
 @Controller
 @RequestMapping("/innermsg")
 public class InnerMsgController extends BaseController {
@@ -44,41 +47,30 @@ public class InnerMsgController extends BaseController {
     }
     /**
      * 查询收件箱
-     * @param field     显示结果中只需要显示的字段
      * @param pageDesc  PageDesc
      * @param request   HttpServletRequest
      * @param response  HttpServletResponse
      */
     @RequestMapping(value = "/inbox", method = { RequestMethod.GET })
-    public void listInbox(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+    public void listInbox(PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = convertSearchColumn(request);
 
         String receive = (String) searchColumn.get("receive");
         if (StringUtils.isBlank(receive)) {
             searchColumn.put("receive", WebOptUtils.getLoginUser(request).getUserInfo().getUserCode());
         }
-        String s = (String) searchColumn.get("msgTitle");
-        if (null != s && StringUtils.isNotBlank(s)) {
-            searchColumn.put("msgTitle", "%" + s + "%");
-        }
-
-        s = (String) searchColumn.get("msgContent");
-        if (null != s && StringUtils.isNotBlank(s)) {
-            searchColumn.put("msgContent", "%" + s + "%");
-        }
-        List<InnerMsgRecipient> listObjects = null;
-        if (null == pageDesc) {
-            listObjects = innerMsgRecipientManager.listObjectsCascade(searchColumn);
-        }
-        else {
-            listObjects = innerMsgRecipientManager.listObjectsCascade(searchColumn, pageDesc);
-        }
+        List<InnerMsgRecipient> listObjects  = innerMsgRecipientManager.listObjectsCascade(searchColumn, pageDesc);
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
         resData.addResponseData(PAGE_DESC, pageDesc);
-        JsonResultUtils.writeResponseDataAsJson(resData, response, JsonPropertyUtils.getIncludePropPreFilter(InnerMsgRecipient.class, field));
+        JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
 
+    /**
+     * 未读消息数量
+     * @param request {@link HttpServletRequest}
+     * @param response {@link HttpServletResponse}
+     */
     @RequestMapping(value = "/unreadMsgCount", method = { RequestMethod.GET })
     public void unreadMsgCount(HttpServletRequest request, HttpServletResponse response) {
         String currUser = WebOptUtils.getLoginUser(request).getUserInfo().getUserCode();
@@ -87,14 +79,12 @@ public class InnerMsgController extends BaseController {
     }
     /**
      * 查询发件箱
-     *
-     * @param field      显示结果中只需要显示的字段
      * @param pageDesc   PageDesc
      * @param request    HttpServletRequest
      * @param response   HttpServletResponse
      */
     @RequestMapping(value = "/outbox", method = { RequestMethod.GET })
-    public void listOutbox(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+    public void listOutbox(PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = convertSearchColumn(request);
 
         String sender = (String) searchColumn.get("sender");
@@ -102,15 +92,11 @@ public class InnerMsgController extends BaseController {
             searchColumn.put("sender", WebOptUtils.getLoginUser(request).getUserInfo().getUserCode());
         }
 
-        List<InnerMsg> listObjects = null;
-        if (null == pageDesc)
-            listObjects = innerMsgManager.listObjects(searchColumn);
-        else
-            listObjects = innerMsgManager.listObjects(searchColumn,pageDesc);
+        List<InnerMsg> listObjects = innerMsgManager.listObjects(searchColumn,pageDesc);
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
         resData.addResponseData(PAGE_DESC, pageDesc);
-        JsonResultUtils.writeResponseDataAsJson(resData, response, JsonPropertyUtils.getIncludePropPreFilter(InnerMsgRecipient.class, field));
+        JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
 
     /**
@@ -119,8 +105,7 @@ public class InnerMsgController extends BaseController {
      */
     @RequestMapping(value = "/cangivenotify", method = { RequestMethod.GET })
     public void cangivenotify(HttpServletResponse response) {
-        boolean s = CodeRepositoryUtil
-                .checkUserOptPower("MSGMAG", "givenotify");
+        boolean s = CodeRepositoryUtil.checkUserOptPower("MSGMAG", "givenotify");
         JsonResultUtils.writeSingleDataJson(s, response);
     }
 
@@ -137,7 +122,6 @@ public class InnerMsgController extends BaseController {
 
     /**
      * 公告列表
-     *
      * @param field       显示结果中只需要显示的字段
      * @param pageDesc    PageDesc
      * @param request     HttpServletRequest

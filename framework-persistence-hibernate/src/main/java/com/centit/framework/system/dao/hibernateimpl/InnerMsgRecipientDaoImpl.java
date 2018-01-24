@@ -20,10 +20,10 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
     public Map<String, String> getFilterField() {
         if (filterField == null) {
             filterField = new HashMap<String, String>();
-            filterField.put("RECEIVE", "receive = :RECEIVE");
+            filterField.put("receive", "receive = :receive");
             filterField.put("sender", "msgCode in ( select  msgCode from InnerMsg where sender = :sender )");
-            filterField.put("msgContent", "msgCode in ( select  msgCode from InnerMsg where msgContent LIKE :msgContent )");
-            filterField.put("msgTitle", "msgCode in ( select  msgCode from InnerMsg where msgTitle LIKE :msgTitle )");
+            filterField.put("(like)msgContent", "msgCode in ( select  msgCode from InnerMsg where msgContent LIKE :msgContent )");
+            filterField.put("(like)msgTitle", "msgCode in ( select  msgCode from InnerMsg where msgTitle LIKE :msgTitle )");
             filterField.put("mailType", "msgCode in ( select  msgCode from InnerMsg where mailType = :mailType )");
             filterField.put("mailTypeNot", "msgCode in ( select  msgCode from InnerMsg where mailType != :mailTypeNot )");
             filterField.put("msgStateNot", "msgState != :msgStateNot");
