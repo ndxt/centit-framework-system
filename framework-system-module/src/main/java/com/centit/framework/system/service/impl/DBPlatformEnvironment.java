@@ -19,6 +19,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +27,7 @@ import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
-@Service("platformEnvironment")
+//@Service("platformEnvironment")
 public class DBPlatformEnvironment implements PlatformEnvironment {
 
     public static final Logger logger = LoggerFactory.getLogger(DBPlatformEnvironment.class);
@@ -34,53 +35,105 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Resource
     private CentitPasswordEncoder passwordEncoder;
 
+    public void setPasswordEncoder(CentitPasswordEncoder p){
+        this.passwordEncoder = p;
+    }
+
     @Resource
     @NotNull
     private UserSettingDao userSettingDao;
+
+    public void setUserSettingDao(UserSettingDao userSettingDao){
+        this.userSettingDao = userSettingDao;
+    }
 
     @Resource
     @NotNull
     private OptInfoDao optInfoDao;
 
+    public void setOptInfoDao(OptInfoDao optInfoDao){
+        this.optInfoDao = optInfoDao;
+    }
+
     @Resource
     @NotNull
     private UserInfoDao userInfoDao;
+
+    public void setUserInfoDao(UserInfoDao userInfoDao){
+        this.userInfoDao = userInfoDao;
+    }
 
     @Resource
     @NotNull
     private DataDictionaryDao dataDictionaryDao;
 
+    public void setDataDictionaryDao(DataDictionaryDao dataDictionaryDao){
+        this.dataDictionaryDao = dataDictionaryDao;
+    }
+
     @Resource
     @NotNull
-    protected DataCatalogDao dataCatalogDao;
+    private DataCatalogDao dataCatalogDao;
+
+    public void setDataCatalogDao(DataCatalogDao dataCatalogDao){
+        this.dataCatalogDao = dataCatalogDao;
+    }
 
     @Resource
     @NotNull
     private UserUnitDao userUnitDao;
 
-    @Resource
-    @NotNull
-    protected UnitInfoDao unitInfoDao;
+    public void setUserUnitDao(UserUnitDao userUnitDao){
+        this.userUnitDao = userUnitDao;
+    }
 
     @Resource
     @NotNull
-    protected RoleInfoDao roleInfoDao;
+    private UnitInfoDao unitInfoDao;
+
+    public void setUnitInfoDao(UnitInfoDao unitInfoDao){
+        this.unitInfoDao = unitInfoDao;
+    }
+
+    @Resource
+    @NotNull
+    private RoleInfoDao roleInfoDao;
+
+    public void setRoleInfoDao(RoleInfoDao roleInfoDao){
+        this.roleInfoDao = roleInfoDao;
+    }
 
     @Resource
     @NotNull
     private UserRoleDao userRoleDao;
 
-    @Resource
-    @NotNull
-    protected UnitRoleDao unitRoleDao;
+    public void setUserRoleDao(UserRoleDao userRoleDao){
+        this.userRoleDao = userRoleDao;
+    }
 
     @Resource
     @NotNull
-    protected OptMethodDao optMethodDao;
+    private UnitRoleDao unitRoleDao;
+
+    public void setUnitRoleDao(UnitRoleDao unitRoleDao){
+        this.unitRoleDao = unitRoleDao;
+    }
+
+    @Resource
+    @NotNull
+    private OptMethodDao optMethodDao;
+
+    public void setOptMethodDao(OptMethodDao optMethodDao){
+        this.optMethodDao = optMethodDao;
+    }
 
     @Resource
     @NotNull
     private RolePowerDao rolePowerDao;
+
+    public void setRolePowerDao(RolePowerDao rolePowerDao){
+        this.rolePowerDao = rolePowerDao;
+    }
 
     /**
      * 刷新数据字典
