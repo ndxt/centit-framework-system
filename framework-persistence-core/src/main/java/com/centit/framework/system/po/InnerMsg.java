@@ -122,17 +122,17 @@ public class InnerMsg implements  Serializable{
     private String optMethod;
 
     /**
-     *操作业务标记 */
+     *操作业务标记
+     * */
     @Column(name="OPT_TAG")
     @Length(max = 200, message = "字段长度不能大于{max}")
     private String optTag;
 
     /**
-             一个消息可以有多个收件人
+     *一个消息可以有多个收件人
      */
 
-    @OneToMany(targetEntity= InnerMsgRecipient.class, mappedBy="mInnerMsg",fetch = FetchType.LAZY)
-    @JoinColumn(name="MSG_CODE", referencedColumnName="MSG_CODE")
+    @Transient
     @JSONField(serialize=false)
     private List<InnerMsgRecipient> recipients;
 

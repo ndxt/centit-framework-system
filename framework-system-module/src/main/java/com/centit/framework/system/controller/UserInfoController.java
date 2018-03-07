@@ -49,6 +49,7 @@ public class UserInfoController extends BaseController {
 
     /**
      * 系统日志中记录
+     * @return 业务标识ID
      */
     //private String optId = "USERMAG";//CodeRepositoryUtil.getCode("OPTID", "userInfo");
     public String getOptId() {
@@ -93,9 +94,8 @@ public class UserInfoController extends BaseController {
 
     /**
      * 新增用户
-     *
      * @param userInfo UserInfo
-     * @param userUnit  用户机构
+     * @param userUnit 用户机构
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
@@ -135,6 +135,7 @@ public class UserInfoController extends BaseController {
      * 更新用户信息
      * @param userCode userCode
      * @param userInfo userInfo
+     * @param userUnit userUnit
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */

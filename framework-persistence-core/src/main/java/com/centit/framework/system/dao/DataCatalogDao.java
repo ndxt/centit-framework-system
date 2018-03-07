@@ -14,7 +14,7 @@ public interface DataCatalogDao{
 
     /**
      * 查询所有类别
-     * @return List<DataCatalog>
+     * @return list &lt; DataCatalog &gt;
      */
     List<DataCatalog> listObjects();
 
@@ -45,19 +45,19 @@ public interface DataCatalogDao{
 
     /**
      * 查询所有框架固有的类别
-     * @return List<DataCatalog>
+     * @return List&lt; DataCatalog &gt;
      */
     List<DataCatalog> listFixCatalog();
 
     /**
      * 查询所有用户定义的类别
-     * @return List<DataCatalog>
+     * @return List&lt; DataCatalog &gt;
      */
     List<DataCatalog> listUserCatalog();
 
     /**
      * 查询所有系统类别
-     * @return List<DataCatalog>
+     * @return List&lt; DataCatalog &gt;
      */
     List<DataCatalog> listSysCatalog();
 
@@ -71,7 +71,7 @@ public interface DataCatalogDao{
     /**
      *  分页查询
      * @param pageQueryMap 过滤条件
-     * @return List<DataCatalog>
+     * @return List&lt; DataCatalog &gt;
      */
     List<DataCatalog>  pageQuery(Map<String, Object> pageQueryMap);
 }

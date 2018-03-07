@@ -61,6 +61,7 @@ public class UnitInfoController extends BaseController {
 
     /**
      * 系统日志中记录
+     * @return 业务标识ID
      */
     //private String optId = "UNITMAG";// CodeRepositoryUtil.getCode("OPTID", "unitInfo");
     public String getOptId() {
@@ -365,6 +366,7 @@ public class UnitInfoController extends BaseController {
   /**
    * 获取当前用户所在机构下所有用户
    * @param state 是否启用 T|F
+   * @param request HttpServletRequest
    * @param response {@link HttpServletResponse}
    */
     @RequestMapping(value = "/currentusers/{state}", method = RequestMethod.GET)

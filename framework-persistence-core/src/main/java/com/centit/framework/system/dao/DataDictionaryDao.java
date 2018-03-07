@@ -16,7 +16,7 @@ public interface DataDictionaryDao {
     /**
     * 查询数据字典
     * @param filterDescMap 过滤条件
-    * @return List<DataDictionary>
+    * @return List&lt; DataDictionary &gt;
     */
     List<DataDictionary> listObjects(Map<String, Object> filterDescMap);
 
@@ -53,14 +53,14 @@ public interface DataDictionaryDao {
 
     /**
     * 查询全部
-    * @return List<DataDictionary>
+    * @return List&lt; DataDictionary &gt;
     */
     List<DataDictionary> getWholeDictionary();
 
     /**
     * 根据类别Id查询数据字典
     * @param catalogCode 类别Id
-    * @return List<DataDictionary>
+    * @return List&lt; DataDictionary &gt;
     */
     List<DataDictionary> listDataDictionary(String catalogCode);
 
@@ -80,7 +80,7 @@ public interface DataDictionaryDao {
     /**
      *  分页查询
      * @param pageQueryMap 过滤条件
-     * @return List<DataDictionary>
+     * @return List&lt; DataDictionary &gt;
      */
     List<DataDictionary>  pageQuery(Map<String, Object> pageQueryMap);
 

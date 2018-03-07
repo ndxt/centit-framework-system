@@ -33,14 +33,14 @@ public interface OptDataScopeDao {
     /**
      * 根据菜单ID查询数据范围
      * @param sOptID 菜单Id
-     * @return List<OptDataScope>
+     * @return List &lt; OptDataScope &gt;
      */
     List<OptDataScope> getDataScopeByOptID(String sOptID);
 
     /**
      * 根据菜单Id查询数据范围数量
      * @param sOptID 菜单ID
-     * @return
+     * @return 数量
      */
     int getOptDataScopeSumByOptID(String sOptID);
 
@@ -59,8 +59,8 @@ public interface OptDataScopeDao {
 
     /**
      * 根据Id查询过滤条件
-     * @param scopeCodes
-     * @return
+     * @param scopeCodes 代码集合
+     * @return 对应的数据范围过滤器 zou_wy
      */
-    List<String> listDataFiltersByIds(Collection<String> scopeCodes);//zou_wy
+    List<String> listDataFiltersByIds(Collection<String> scopeCodes);
 }

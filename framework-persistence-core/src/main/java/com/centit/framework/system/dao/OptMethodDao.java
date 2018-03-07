@@ -8,13 +8,13 @@ import java.util.List;
  * 用户操作Dao
  * @author god
  * update by zou_wy@centit.com
- * @date 2017-11-29
+ * date 2017-11-29
  */
 public interface OptMethodDao {
 
     /**
      * 查询全部操作
-     * @return List<OptMethod>
+     * @return List&lt;OptMethod&gt;
      */
     List<OptMethod> listObjects();
 
@@ -52,14 +52,14 @@ public interface OptMethodDao {
     /**
      * 根据菜单Id查询操作
      * @param sOptID 菜单Id
-     * @return List<OptMethod>
+     * @return List&lt;OptMethod&gt;
      */
     List<OptMethod> listOptMethodByOptID(String sOptID);
 
     /**
      *  根据角色Id查询操作
      * @param roleCode 角色Id
-     * @return List<OptMethod>
+     * @return List&lt;OptMethod&gt;
      */
     List<OptMethod> listOptMethodByRoleCode(String roleCode);
 

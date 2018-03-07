@@ -34,6 +34,7 @@ public class UnitRoleController extends BaseController {
 
     /**
      * 系统日志中记录
+     * @return 业务标识ID
      */
     //private String optId = "UNITROLE";//CodeRepositoryUtil.getCode("OPTID", "userRole");
     public String getOptId() {
@@ -44,12 +45,12 @@ public class UnitRoleController extends BaseController {
      *
      * @param roleCode 角色代码
      * @param pageDesc PageDesc
-     * @param request  {@link HttpServletRequest}
+     * //param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/roleunits/{roleCode}", method = RequestMethod.GET)
     //@RecordOperationLog(content="用户",appendRequest = true )
-    public void listUsersByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+    public void listUsersByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletResponse response) {
       ResponseMapData resData = new ResponseMapData();
       resData.addResponseData(OBJLIST, sysUnitRoleManager.listRoleUnits(roleCode,pageDesc));
       resData.addResponseData(PAGE_DESC, pageDesc);

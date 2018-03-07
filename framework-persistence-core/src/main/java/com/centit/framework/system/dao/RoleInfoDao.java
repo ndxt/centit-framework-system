@@ -14,14 +14,14 @@ public interface RoleInfoDao {
 
     /**
      * 查询所有机构列表
-     * @return List<UserInfo>
+     * @return List &lt;UserInfo&gt;
      */
     List<RoleInfo> listObjectsAll();
 
     /**
      * 根据条件查询机构列表
      * @param filterMap 过滤条件Map
-     * @return List<UserInfo>
+     * @return List &lt;UserInfo&gt;
      */
     List<RoleInfo> listObjects(Map<String, Object> filterMap);
 
@@ -36,7 +36,7 @@ public interface RoleInfoDao {
     /**
      * 分页查询
      * @param pageQueryMap 过滤条件Map
-     * @return List<UserInfo>
+     * @return List &lt;UserInfo&gt;
      */
     List<RoleInfo> pageQuery(Map<String, Object> pageQueryMap);
 
@@ -80,7 +80,7 @@ public interface RoleInfoDao {
 
     /**
      * 查询菜单树
-     * @return List<VOptTree>
+     * @return List &lt;VOptTree&gt;
      */
     List<VOptTree> getVOptTreeList();
 

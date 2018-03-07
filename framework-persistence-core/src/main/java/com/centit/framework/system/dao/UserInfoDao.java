@@ -32,14 +32,14 @@ public interface UserInfoDao {
 
     /**
      * 查询所有用户列表
-     * @return List<UserInfo>
+     * @return List &lt;UserInfo&gt;
      */
     List<UserInfo> listObjects();
 
     /**
      * 根据条件查询用户列表
      * @param filterMap 过滤条件Map
-     * @return List<UserInfo>
+     * @return List &lt;UserInfo&gt;
      */
     List<UserInfo> listObjects(Map<String, Object> filterMap);
 
@@ -60,7 +60,7 @@ public interface UserInfoDao {
     /**
      * 分页查询
      * @param pageQueryMap 过滤条件Map
-     * @return List<UserInfo>
+     * @return List &lt;UserInfo&gt;
      */
     List<UserInfo> pageQuery(Map<String, Object> pageQueryMap);
 
@@ -108,7 +108,7 @@ public interface UserInfoDao {
     /**
      * 根据用户ID 获取操作定义
      * @param userCode 用户ID
-     * @return List<FVUserOptList>
+     * @return List &lt;FVUserOptList&gt;
      */
     List<FVUserOptList> getAllOptMethodByUser(String userCode);
 

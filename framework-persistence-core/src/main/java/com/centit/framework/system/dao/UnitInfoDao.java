@@ -39,14 +39,14 @@ public interface UnitInfoDao {
 
     /**
      * 查询所有机构列表
-     * @return List<UserInfo>
+     * @return List &lt;UnitInfo&gt;
      */
     List<UnitInfo> listObjects();
 
     /**
      * 根据条件查询机构列表
      * @param filterMap 过滤条件Map
-     * @return List<UserInfo>
+     * @return List &lt;UnitInfo&gt;
      */
     List<UnitInfo> listObjects(Map<String, Object> filterMap);
 
@@ -61,20 +61,20 @@ public interface UnitInfoDao {
     /**
      * 分页查询
      * @param pageQueryMap 过滤条件Map
-     * @return List<UserInfo>
+     * @return List &lt;UnitInfo&gt;
      */
     List<UnitInfo> pageQuery(Map<String, Object> pageQueryMap);
 
     /**
      * 获取下一个序列值
-     * @return
+     * @return 序列号 S_UNITCODE 的值 可以作为主键
      */
     String getNextKey();
 
     /**
      * 根据机构Id获取用户列表
      * @param unitCode unitCode
-     * @return List<UserInfo>
+     * @return List &lt;UnitInfo&gt;
      */
     List<UserInfo> listUnitUsers(String unitCode);
 
@@ -102,7 +102,7 @@ public interface UnitInfoDao {
     /**
      * 根据UnitPath查询子机构
      * @param unitPath 机构层级
-     * @return List<UnitInfo>
+     * @return List &lt;UnitInfo&gt;
      */
     List<UnitInfo> listSubUnitsByUnitPaht(String unitPath);
 

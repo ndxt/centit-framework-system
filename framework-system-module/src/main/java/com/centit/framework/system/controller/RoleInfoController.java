@@ -48,6 +48,7 @@ public class RoleInfoController extends BaseController {
 
     /**
      * 系统日志中记录
+     * @return 业务标识ID
      */
     //private String optId = "ROLEMAG";//CodeRepositoryUtil.getCode("OPTID", "roleInfo");
     public String getOptId() {

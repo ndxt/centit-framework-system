@@ -29,7 +29,7 @@ public interface InnerMsgRecipientDao {
      * 根据条件查询
      *
      * @param filterMap 过滤条件
-     * @return List<InnerMsgRecipient>
+     * @return List&lt; InnerMsgRecipient &gt;
      */
     List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap);
 
@@ -45,7 +45,7 @@ public interface InnerMsgRecipientDao {
      * 分页查询
      *
      * @param pageQueryMap 过滤条件
-     * @return List<InnerMsgRecipient>
+     * @return List&lt; InnerMsgRecipient &gt;
      */
     List<InnerMsgRecipient> pageQuery(Map<String, Object> pageQueryMap);
 
@@ -66,7 +66,7 @@ public interface InnerMsgRecipientDao {
 
     /**
      * 获取下一个序列值
-     * @return
+     * @return 序列号 作为主键
      */
     String getNextKey();
 
@@ -95,11 +95,11 @@ public interface InnerMsgRecipientDao {
      */
     List<InnerMsgRecipient> listUnreadMessage(String userCode);
 
-    /**
+    /*
      * 级联查询
      *
      * @param filterMap 过滤条件
-     * @return List<InnerMsgRecipient>
+     * @return List&lt; InnerMsgRecipient &gt;
      */
-//    List<InnerMsgRecipient> listObjectsCascade(Map<String, Object> filterMap);
+    //List<InnerMsgRecipient> listObjectsCascade(Map<String, Object> filterMap);
 }
