@@ -20,8 +20,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>1.8</jdk.version>
         <centit.framework.version>4.0-SNAPSHOT</centit.framework.version>
-        <centit.commons.version>2.2.5-SNAPSHOT</centit.commons.version>
-        <centit.ui.version>3.0.1-SNAPSHOT</centit.ui.version>
+        <centit.persistence.version>1.0-SNAPSHOT</centit.persistence.version>
+
+        <centit.commons.version>2.2.5</centit.commons.version>
+        <centit.ui.version>3.0.1</centit.ui.version>
         <centit.stat.version>2.0.1-SNAPSHOT</centit.stat.version>
 
         <ojdbc6.version>11.2.0.4</ojdbc6.version>
@@ -62,6 +64,21 @@
         <dependency>
             <groupId>com.centit.framework</groupId>
             <artifactId>framework-system-module</artifactId>
+            <version>${centit.framework.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.centit.framework</groupId>
+            <artifactId>centit-persistence-jdbc-config</artifactId>
+            <!--<artifactId>centit-persistence-hibernate-config</artifactId>-->
+            <!--<artifactId>centit-persistence-mybatis-config</artifactId>-->
+            <version>${centit.persistence.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.centit.framework</groupId>
+            <artifactId>framework-system-config</artifactId>
             <version>${centit.framework.version}</version>
         </dependency>
 

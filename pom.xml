@@ -6,9 +6,10 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <centit.framework.version>4.0-SNAPSHOT</centit.framework.version>
+        <centit.persistence.version>1.0-SNAPSHOT</centit.persistence.version>
+
         <jdk.version>1.8</jdk.version>
         <centit.ui.version>3.1.0</centit.ui.version>
-        <centit.persistence.version>1.0.2</centit.persistence.version>
 
         <hibernate.validator.version>5.4.2.Final</hibernate.validator.version>
         <persistence-api.version>2.2</persistence-api.version>
@@ -94,6 +95,7 @@
         <module>framework-persistence-jdbc</module>
         <module>framework-system-view-easyui</module>
         <module>framework-system-module</module>
+        <module>framework-system-config</module>
     </modules>
 
     <!-- mvn deploy -DpomFile=pom.xml -->
