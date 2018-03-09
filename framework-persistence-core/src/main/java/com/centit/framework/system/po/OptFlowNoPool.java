@@ -1,7 +1,5 @@
 package com.centit.framework.system.po;
 
-import com.centit.framework.core.po.EntityWithTimestamp;
-
 import javax.persistence.*;
 
 /**

@@ -1,12 +1,7 @@
 package com.centit.framework.system.po;
 
-import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IUnitRole;
-import com.centit.framework.model.basedata.IUserInfo;
-import com.centit.framework.model.basedata.IUserRole;
-import com.centit.framework.model.basedata.IUserUnit;
-import com.lambdaworks.redis.GeoArgs;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;

@@ -8,7 +8,6 @@ import org.springframework.util.CollectionUtils;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity

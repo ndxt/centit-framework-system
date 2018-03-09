@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 @Service("innerMessageManager")
 @Transactional
 public class InnerMsgManagerImpl implements InnerMsgManager, MessageSender{

@@ -107,7 +107,7 @@
         <snapshotRepository>
             <id>centit-snapshots</id>
             <name>centit-snapshots</name>
-            <url>http://develop.centit.com:8080/nexus/content/repositories/centit-snapshots/</url>
+            <url>http://nexus.centit.com:8081/nexus/content/repositories/centit-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
