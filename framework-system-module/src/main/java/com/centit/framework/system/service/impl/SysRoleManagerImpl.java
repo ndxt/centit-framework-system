@@ -2,7 +2,6 @@ package com.centit.framework.system.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.centit.framework.common.SysParametersUtils;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.security.model.CentitSecurityMetadata;
 import com.centit.framework.security.model.OptTreeNode;
@@ -19,6 +18,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -103,13 +103,15 @@ public class SysRoleManagerImpl implements SysRoleManager {
         return rolePowerDao.listObjects(filterMap);
     }
 
+    @Value("${framework.roleinfo.id.generator}")
+    protected String roleIdFormat;
+
     @Override
     @CacheEvict(value="RoleInfo",key="'roleCodeMap'")
     @Transactional
     public Serializable saveNewRoleInfo(RoleInfo o){
         if(StringUtils.isBlank(o.getRoleCode())) {
             String roleCode = roleInfoDao.getNextKey();
-            String roleIdFormat = SysParametersUtils.getStringValue("framework.roleinfo.id.generator");
             if (StringUtils.isNotBlank(roleIdFormat)) {
                 //{"prefix":"U","length":8,"pad":"0"}
                 JSONObject idFormat = (JSONObject) JSON.parse(roleIdFormat);

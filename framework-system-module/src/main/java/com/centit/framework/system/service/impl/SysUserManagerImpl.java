@@ -3,7 +3,7 @@ package com.centit.framework.system.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.common.ObjectException;
-import com.centit.framework.common.SysParametersUtils;
+
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.security.model.CentitPasswordEncoder;
 import com.centit.framework.system.dao.UserInfoDao;
@@ -18,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -165,12 +166,14 @@ public class SysUserManagerImpl implements SysUserManager {
         return userInfoDao.isAnyOneExist(userCode, loginName, regPhone, regEmail) > 0;
     }
 
+    @Value("${framework.userinfo.id.generator}")
+    protected String userIdFormat;
+
     @Override
     @CacheEvict(value ={"UserInfo","UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
     @Transactional
     public void saveNewUserInfo(UserInfo userInfo, UserUnit userUnit){
         String userCode = userInfoDao.getNextKey();
-        String userIdFormat = SysParametersUtils.getStringValue("framework.userinfo.id.generator");
         if(StringUtils.isBlank(userIdFormat)){
             userCode = StringBaseOpt.midPad(userCode,8,"U",'0');
         }else{
@@ -268,7 +271,7 @@ public class SysUserManagerImpl implements SysUserManager {
                 user.getUserPin(),oldPassword, user.getUserCode());
     }
 
-     @Override
+    @Override
     @Transactional
     public List<UserInfo> listObjects(Map<String, Object> filterMap) {
         return userInfoDao.listObjects(filterMap);

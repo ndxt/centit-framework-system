@@ -2,7 +2,6 @@ package com.centit.framework.system.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.centit.framework.common.SysParametersUtils;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.UnitInfoDao;
 import com.centit.framework.system.dao.UserUnitDao;
@@ -16,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -122,13 +122,15 @@ public class SysUnitManagerImpl implements SysUnitManager {
         unitInfoDao.deleteObjectById(unitinfo.getUnitCode());
     }
 
+    @Value("${framework.unitinfo.id.generator}")
+    protected String userIdFormat;
+
     @Override
     @CacheEvict(value = "UnitInfo",allEntries = true)
     @Transactional
     public String saveNewUnitInfo(UnitInfo unitinfo){
-
         String unitCode = unitInfoDao.getNextKey();
-        String userIdFormat = SysParametersUtils.getStringValue("framework.unitinfo.id.generator");
+
         if(StringUtils.isBlank(userIdFormat)){
             unitCode = StringBaseOpt.midPad(unitCode,6,"D",'0');
         }else{

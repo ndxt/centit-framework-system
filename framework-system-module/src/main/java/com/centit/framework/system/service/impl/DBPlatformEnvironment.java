@@ -1,6 +1,5 @@
 package com.centit.framework.system.service.impl;
 
-import com.centit.framework.common.SysParametersUtils;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.*;
@@ -19,8 +18,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -182,11 +179,6 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             }
         }
         return true;
-    }
-
-    @Override
-    public String getSystemParameter(String paramCode) {
-        return SysParametersUtils.getStringValue(paramCode);
     }
 
     @Override
@@ -707,13 +699,13 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             }
         }
         return opts;
-        // end
-    //            ListOpt.sortAsTree(opts, new ListOpt.ParentChild<OptInfo>() {
-    //                @Override
-    //                public boolean parentAndChild(OptInfo p, OptInfo c) {
-    //                    return p.getOptId().equals(c.getPreOptId());
-    //                }
-    //
-    //            });
+        /*
+        ListOpt.sortAsTree(opts, new ListOpt.ParentChild<OptInfo>() {
+            @Override
+            public boolean parentAndChild(OptInfo p, OptInfo c) {
+                return p.getOptId().equals(c.getPreOptId());
+            }
+
+        });*/
     }
 }
