@@ -1,5 +1,6 @@
 package com.centit.framework.system.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.system.po.UserSetting;
 import com.centit.framework.system.po.UserSettingId;
 import com.centit.support.database.utils.PageDesc;
@@ -21,7 +22,7 @@ public interface UserSettingManager {
 
     void saveUserSetting(String userCode,String paramCode,String paramName,String paramValue,String optId);
 
-    List<UserSetting> listObjects(Map<String,Object>searchColumn,PageDesc pageDesc);
+    JSONArray listObjects(Map<String,Object>searchColumn, PageDesc pageDesc);
 
     /**
      * 查询全部默认用户设置
