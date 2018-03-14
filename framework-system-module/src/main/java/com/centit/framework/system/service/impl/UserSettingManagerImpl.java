@@ -97,7 +97,7 @@ public class UserSettingManagerImpl implements UserSettingManager {
         for(DataDictionary d : dataDictionaries){
             JSONObject userSetting = new JSONObject();
             //参数编码
-            userSetting.put("paramCode", d.getDataValue());
+            userSetting.put("paramCode", d.getDataCode());
             //个人设置的值
             String value = userSettingDao.getValue(String.valueOf(searchColumn.get("userCode")), d.getDataCode());
             if("".equals(value) || value == null){
@@ -116,6 +116,8 @@ public class UserSettingManagerImpl implements UserSettingManager {
             userSetting.put("showType", d.getDataTag());
             //候选值
             userSetting.put("typeValue", d.getExtraCode());
+            //描述
+            userSetting.put("paramDesc", d.getDataDesc());
             userSettings.add(userSetting);
         }
         return userSettings;
