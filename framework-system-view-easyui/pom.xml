@@ -5,7 +5,7 @@
     <parent>
         <artifactId>framework-system-parent</artifactId>
         <groupId>com.centit.framework</groupId>
-        <version>4.0-SNAPSHOT</version>
+        <version>4.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -14,13 +14,13 @@
     <name>com.centit.framework:framework-system-view-easyui</name>
     <description>基于easyui的前端框架
     </description>
+
     <dependencies>
         <dependency>
             <groupId>com.centit.framework</groupId>
             <artifactId>framework-base-view-easyui</artifactId>
             <version>${centit.ui.version}</version>
         </dependency>
-
     </dependencies>
 
     <build>
