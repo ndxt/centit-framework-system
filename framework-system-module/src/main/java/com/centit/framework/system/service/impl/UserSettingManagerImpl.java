@@ -1,5 +1,7 @@
 package com.centit.framework.system.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.DataDictionaryDao;
 import com.centit.framework.system.dao.UserSettingDao;
@@ -77,31 +79,45 @@ public class UserSettingManagerImpl implements UserSettingManager {
         return userSettingDao.getAllSettings();
     }
 
+    /**
+     * 查询用户个人设置
+     * @param searchColumn
+     * @param pageDesc
+     * @return
+     */
     @Override
-    public List<UserSetting> listObjects(Map<String, Object> searchColumn, PageDesc pageDesc) {
-        List<UserSetting> userSettings = new ArrayList<>();
-
+    public JSONArray listObjects(Map<String, Object> searchColumn, PageDesc pageDesc) {
         searchColumn.put("catalogCode", "userSettingKey");
         List<DataDictionary> dataDictionaries = dataDictionaryDao.pageQuery(
             QueryParameterPrepare.makeMybatisOrderByParam(
                 QueryParameterPrepare.prepPageParams(searchColumn, pageDesc,
                     dataDictionaryDao.pageCount(searchColumn) ),DataDictionary.class));
 
+        JSONArray userSettings = new JSONArray(10);
         for(DataDictionary d : dataDictionaries){
-            UserSetting userSetting = new UserSetting();
-            userSetting.setParamCode(d.getDataCode());
+            JSONObject userSetting = new JSONObject();
+            //参数编码
+            userSetting.put("paramCode", d.getDataCode());
+            //个人设置的值
             String value = userSettingDao.getValue(String.valueOf(searchColumn.get("userCode")), d.getDataCode());
             if("".equals(value) || value == null){
-                userSetting.setDefaultValue(true);
-//                userSetting.setUserCode("default");
-                userSetting.setParamValue(userSettingDao.getValue("default", d.getDataCode()));
+                userSetting.put("defaultValue", true);
+                userSetting.put("paramValue", userSettingDao.getValue("default", d.getDataCode()));
             }else{
-//                userSetting.setUserCode(String.valueOf(searchColumn.get("userCode")));
-                userSetting.setParamValue(userSettingDao.getValue(String.valueOf(searchColumn.get("userCode")), d.getDataCode()));
+                userSetting.put("paramValue", value);
             }
-            userSetting.setUserCode(StringBaseOpt.castObjectToString(searchColumn.get("userCode")));
-            userSetting.setOptId(d.getExtraCode2());
-            userSetting.setParamName(d.getDataValue());
+            //用户代码
+            userSetting.put("userCode", StringBaseOpt.castObjectToString(searchColumn.get("userCode")));
+            //业务代码
+            userSetting.put("optId", d.getExtraCode2());
+            //参数名称
+            userSetting.put("paramName", d.getDataValue());
+            //页面展示方式
+            userSetting.put("showType", d.getDataTag());
+            //候选值
+            userSetting.put("typeValue", d.getExtraCode());
+            //描述
+            userSetting.put("paramDesc", d.getDataDesc());
             userSettings.add(userSetting);
         }
         return userSettings;
