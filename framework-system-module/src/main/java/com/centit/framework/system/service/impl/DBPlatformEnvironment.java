@@ -708,4 +708,20 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
         });*/
     }
+
+    /**
+     * 新增菜单和操作
+     * @param optInfos 菜单对象集合
+     * @param optMethods 操作对象集合
+     */
+    @Override
+    @Transactional
+    public void insertOpt(List<? extends IOptInfo> optInfos, List<? extends IOptMethod> optMethods) {
+        for(OptInfo optInfo : (List<OptInfo>)optInfos){
+            optInfoDao.saveNewObject(optInfo);
+        }
+        for(OptMethod optMethod : (List<OptMethod>)optMethods){
+            optMethodDao.saveNewObject(optMethod);
+        }
+    }
 }
