@@ -65,7 +65,7 @@ public class OptInfoController extends BaseController {
      */
     @RequestMapping(value = "/sub", method = RequestMethod.GET)
     public void listFromParent(String id, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> searchColumn = convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
 
         if (StringUtils.isNotBlank(id)) {
             searchColumn.put("preOptId", id);
@@ -109,7 +109,7 @@ public class OptInfoController extends BaseController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public void listAll(String[] field, boolean struct, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> searchColumn = convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
         List<OptInfo> listObjects = optInfoManager.listObjects(searchColumn);
 
         if (struct) {

@@ -55,7 +55,7 @@ public class UserQueryFilterController  extends BaseController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public void list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> searchColumn = convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
         List<UserQueryFilter> listObjects = userQueryFilterMag.listObjects(searchColumn, pageDesc);
 
         SimplePropertyPreFilter simplePropertyPreFilter = null;
@@ -68,8 +68,8 @@ public class UserQueryFilterController  extends BaseController {
             return;
         }
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, listObjects);
-        resData.addResponseData(PAGE_DESC, pageDesc);
+        resData.addResponseData(BaseController.OBJLIST, listObjects);
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
 
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }

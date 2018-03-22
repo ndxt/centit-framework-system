@@ -58,8 +58,8 @@ public class RoleInfoController extends BaseController {
     private void writeRoleListToResponse(List<RoleInfo> roleInfos,String[] field,PageDesc pageDesc,HttpServletResponse response) {
 
         ResponseMapData respData = new ResponseMapData();
-        respData.addResponseData(OBJLIST, roleInfos);
-        respData.addResponseData(PAGE_DESC, pageDesc);
+        respData.addResponseData(BaseController.OBJLIST, roleInfos);
+        respData.addResponseData(BaseController.PAGE_DESC, pageDesc);
 
         if (ArrayUtils.isNotEmpty(field)) {
             JsonResultUtils.writeResponseDataAsJson(respData, response,
@@ -78,7 +78,7 @@ public class RoleInfoController extends BaseController {
      */
     @RequestMapping(value = "/all",method = RequestMethod.GET)
     public void listAllRole(String[] field,PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> filterMap = convertSearchColumn(request);
+        Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("NP_ALL", "true");
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
         writeRoleListToResponse(roleInfos,field,pageDesc,response );
@@ -94,7 +94,7 @@ public class RoleInfoController extends BaseController {
     @RequestMapping(value = "/global", method = RequestMethod.GET)
     public void listGlobalAndPublicRole(String[] field,PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
 
-        Map<String, Object> filterMap = convertSearchColumn(request);
+        Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("NP_GLOBAL", "true");
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
         writeRoleListToResponse(roleInfos,field,pageDesc,response );
@@ -111,7 +111,7 @@ public class RoleInfoController extends BaseController {
     @GetMapping(value = "/unit/{unitCode}")
     public void listUnitAndPublicRole(String[] field,@PathVariable String unitCode,PageDesc pageDesc,
                                       HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> filterMap = convertSearchColumn(request);
+        Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("publicUnitRole", unitCode);
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
         writeRoleListToResponse(roleInfos,field,pageDesc,response );
@@ -127,13 +127,13 @@ public class RoleInfoController extends BaseController {
      */
     @RequestMapping(value = "/item", method = RequestMethod.GET)
     public void listItemRole(String[] field,PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> filterMap = convertSearchColumn(request);
+        Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("ROLETYPE",  "I");
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
 
         ResponseMapData respData = new ResponseMapData();
-        respData.addResponseData(OBJLIST, roleInfos);
-        respData.addResponseData(PAGE_DESC, pageDesc);
+        respData.addResponseData(BaseController.OBJLIST, roleInfos);
+        respData.addResponseData(BaseController.PAGE_DESC, pageDesc);
 
         if (ArrayUtils.isNotEmpty(field)) {
             JsonResultUtils.writeResponseDataAsJson(respData, response,
@@ -522,7 +522,7 @@ public class RoleInfoController extends BaseController {
         if (ArrayUtils.isEmpty(field)) {
             field = new String[]{"roleCode", "roleName"};
         }
-        Map<String,Object> filterMap = convertSearchColumn(request);
+        Map<String,Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("roleType", type);
         filterMap.put("isValid","T");
         if("S".equals(type)){

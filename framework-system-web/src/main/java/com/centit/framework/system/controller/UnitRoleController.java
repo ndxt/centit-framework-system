@@ -52,8 +52,8 @@ public class UnitRoleController extends BaseController {
     //@RecordOperationLog(content="用户",appendRequest = true )
     public void listUsersByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletResponse response) {
       ResponseMapData resData = new ResponseMapData();
-      resData.addResponseData(OBJLIST, sysUnitRoleManager.listRoleUnits(roleCode,pageDesc));
-      resData.addResponseData(PAGE_DESC, pageDesc);
+      resData.addResponseData(BaseController.OBJLIST, sysUnitRoleManager.listRoleUnits(roleCode,pageDesc));
+      resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
 
       JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
@@ -69,8 +69,8 @@ public class UnitRoleController extends BaseController {
     @RequestMapping(value = "/unitroles/{unitCode}", method = RequestMethod.GET)
     public void listRolesByUser(@PathVariable String unitCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, sysUnitRoleManager.listUnitRoles(unitCode,pageDesc));
-        resData.addResponseData(PAGE_DESC, pageDesc);
+        resData.addResponseData(BaseController.OBJLIST, sysUnitRoleManager.listUnitRoles(unitCode,pageDesc));
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
 

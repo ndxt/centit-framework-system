@@ -67,7 +67,7 @@ public class UserInfoController extends BaseController {
     @RequestMapping(method = RequestMethod.GET)
     public void list(String[] field, PageDesc pageDesc, String _search,
                      HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> searchColumn = convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
         List<UserInfo> listObjects = null;
         if (Boolean.parseBoolean(_search)) {
             listObjects = sysUserManager.listObjects(searchColumn);
@@ -86,8 +86,8 @@ public class UserInfoController extends BaseController {
         }
 
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, listObjects);
-        resData.addResponseData(PAGE_DESC, pageDesc);
+        resData.addResponseData(BaseController.OBJLIST, listObjects);
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
 
         JsonResultUtils.writeResponseDataAsJson(resData, response, simplePropertyPreFilter);
     }

@@ -106,13 +106,13 @@ public class UserUnitController extends BaseController {
     @RequestMapping(value = "/unitusers/{unitCode}", method = RequestMethod.GET)
     public void listUsersByUnit(@PathVariable String unitCode, PageDesc pageDesc,
                                 HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> filterMap = convertSearchColumn(request);
+        Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
 
         List<UserUnit> listObjects = sysUserUnitManager.listSubUsersByUnitCode(unitCode,filterMap, pageDesc);
 
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
-        resData.addResponseData(PAGE_DESC, pageDesc);
+        resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
 
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
@@ -131,15 +131,15 @@ public class UserUnitController extends BaseController {
                                 HttpServletRequest request, HttpServletResponse response) {
 
         UserInfo user = sysUserManager.getObjectById(this.getLoginUserCode(request));
-        Map<String, Object> filterMap = convertSearchColumn(request);
+        Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("userCode", userCode);
 //        filterMap.put("unitCode", user.getPrimaryUnit());
 
         List<UserUnit> listObjects = sysUserUnitManager.listObjects(filterMap, pageDesc);
 
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
-        resData.addResponseData(PAGE_DESC, pageDesc);
+        resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
 
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
@@ -149,8 +149,8 @@ public class UserUnitController extends BaseController {
         List<UserUnit> listObjects = sysUserUnitManager.listObjects(filterMap, pageDesc);
 
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
-        resData.addResponseData(PAGE_DESC, pageDesc);
+        resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
 
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }

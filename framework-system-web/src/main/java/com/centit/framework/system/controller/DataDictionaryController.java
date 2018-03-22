@@ -68,7 +68,7 @@ public class DataDictionaryController extends BaseController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public void list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> searchColumn = convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
 
         List<DataCatalog> listObjects = dataDictionaryManager.listObjects(searchColumn, pageDesc);
 
@@ -78,8 +78,8 @@ public class DataDictionaryController extends BaseController {
         }
 
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
-        resData.addResponseData(PAGE_DESC, pageDesc);
+        resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
 
         JsonResultUtils.writeResponseDataAsJson(resData, response, simplePropertyPreFilter);
     }

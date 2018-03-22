@@ -80,7 +80,7 @@ public class UnitInfoController extends BaseController {
                      HttpServletRequest request,
                      HttpServletResponse response) {
 
-        Map<String, Object> searchColumn = convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
         String unitName = (String)searchColumn.get("unitName");
 
         if(StringUtils.isNotBlank(unitName) && StringUtils.isBlank(id)){
@@ -117,7 +117,7 @@ public class UnitInfoController extends BaseController {
      */
     @RequestMapping(value = "/subunits",method = RequestMethod.GET)
     public void listSub(String id, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> searchColumn = convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
         UserInfo user=sysUserMag.getObjectById(super.getLoginUserCode(request));
 
         String unitName = StringBaseOpt.castObjectToString(searchColumn.get("unitName"));
@@ -320,7 +320,7 @@ public class UnitInfoController extends BaseController {
      */
     @RequestMapping(value = "/{unitCode}/children", method = RequestMethod.GET)
     public void listChildren(@PathVariable String unitCode, String[] field, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> searchColumn = convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
         searchColumn.put("parentUnit", unitCode);
 
         List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn);
@@ -340,14 +340,14 @@ public class UnitInfoController extends BaseController {
     public void listUnitUsers(@PathVariable String unitCode, PageDesc pageDesc,
                               HttpServletRequest request, HttpServletResponse response) {
 
-        Map<String, Object> searchColumn = convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
         searchColumn.put("unitCode", unitCode);
 
         List<UserInfo> listObjects = sysUserMag.listObjects(searchColumn, pageDesc);
 
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, listObjects);
-        resData.addResponseData(PAGE_DESC, pageDesc);
+        resData.addResponseData(BaseController.OBJLIST, listObjects);
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
 
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }

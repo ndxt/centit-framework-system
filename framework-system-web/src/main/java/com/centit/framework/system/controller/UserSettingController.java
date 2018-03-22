@@ -56,15 +56,15 @@ public class UserSettingController extends BaseController {
      */
     @RequestMapping
     public void list(PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> searchColumn = convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
         UserInfo userInfo = (UserInfo) getLoginUser(request).getUserInfo();
         searchColumn.put(CodeRepositoryUtil.USER_CODE, userInfo.getUserCode());
 
         JSONArray listObjects = userSettingManager.listObjects(searchColumn, pageDesc);
 
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, listObjects);
-        resData.addResponseData(PAGE_DESC, pageDesc);
+        resData.addResponseData(BaseController.OBJLIST, listObjects);
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
 
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
@@ -79,14 +79,14 @@ public class UserSettingController extends BaseController {
     @GetMapping(value = "/list/{userCode}")
     public void listUserSetting(@PathVariable String userCode, PageDesc pageDesc,
                                 HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> searchColumn = convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
         searchColumn.put(CodeRepositoryUtil.USER_CODE, userCode);
 
         JSONArray listObjects = userSettingManager.listObjects(searchColumn, pageDesc);
 
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, listObjects);
-        resData.addResponseData(PAGE_DESC, pageDesc);
+        resData.addResponseData(BaseController.OBJLIST, listObjects);
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
 
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
@@ -100,13 +100,13 @@ public class UserSettingController extends BaseController {
     @GetMapping(value = "/listdefault")
     @ResponseBody
     public ResponseData listUserDefaultSetting(PageDesc pageDesc, HttpServletRequest request) {
-        Map<String, Object> searchColumn = convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
 
         List<UserSetting> listObjects = userSettingManager.listDefaultSettings(searchColumn, pageDesc);
 
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, listObjects);
-        resData.addResponseData(PAGE_DESC, pageDesc);
+        resData.addResponseData(BaseController.OBJLIST, listObjects);
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
 
         return resData;
     }
@@ -131,7 +131,7 @@ public class UserSettingController extends BaseController {
         }
 
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, listObjects);
+        resData.addResponseData(BaseController.OBJLIST, listObjects);
         JsonResultUtils.writeResponseDataAsJson(resData, response, simplePropertyPreFilter);
     }
 

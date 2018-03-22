@@ -1,12 +1,9 @@
 package com.centit.framework.system.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
-import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
-import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.UserRole;
@@ -66,8 +63,8 @@ public class UserRoleController extends BaseController {
         filterMap.put("obtainType","I");
         JSONArray listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, listObjects);
-        resData.addResponseData(PAGE_DESC, pageDesc);
+        resData.addResponseData(BaseController.OBJLIST, listObjects);
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
 
@@ -78,8 +75,8 @@ public class UserRoleController extends BaseController {
         filterMap.put("obtainType","I");
         JSONArray listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, listObjects);
-        resData.addResponseData(PAGE_DESC, pageDesc);
+        resData.addResponseData(BaseController.OBJLIST, listObjects);
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
 
@@ -89,8 +86,8 @@ public class UserRoleController extends BaseController {
         filterMap.put("userCode",userCode);
         JSONArray listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, listObjects);
-        resData.addResponseData(PAGE_DESC, pageDesc);
+        resData.addResponseData(BaseController.OBJLIST, listObjects);
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
     /**
@@ -103,8 +100,8 @@ public class UserRoleController extends BaseController {
     protected void listObject(Map<String, Object> filterMap, PageDesc pageDesc, HttpServletResponse response) {
         JSONArray listObjects = sysUserRoleManager.listObjects(filterMap, pageDesc);
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, listObjects);
-        resData.addResponseData(PAGE_DESC, pageDesc);
+        resData.addResponseData(BaseController.OBJLIST, listObjects);
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
 
         Map<Class<?>, String[]> excludes = new HashMap<>();
         excludes.put(RoleInfo.class, new String[]{"rolePowers"});
@@ -120,7 +117,7 @@ public class UserRoleController extends BaseController {
      */
     @RequestMapping(value = "/userroles/{userCode}", method = RequestMethod.GET)
     public void listRolesByUser(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> filterMap = convertSearchColumn(request);
+        Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("userCode", userCode);
         //String type = request.getParameter("type");
         /*if("S".equals(type)){
@@ -142,14 +139,14 @@ public class UserRoleController extends BaseController {
      */
     @RequestMapping(value = "/roleusers/{roleCode}", method = RequestMethod.GET)
     public void listUsersByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> filterMap = convertSearchColumn(request);
+        Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("roleCode", roleCode);
         listObject(filterMap, pageDesc, response);
     }
 
     @RequestMapping(value = "/userunitroles/{unitCode}/{userCode}", method = RequestMethod.GET)
     public void listUserUnitRoles(@PathVariable String unitCode,@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
-      Map<String, Object> filterMap = convertSearchColumn(request);
+      Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
       filterMap.put("userCode", userCode);
       filterMap.put("roleUnitCode", unitCode);
       listObject(filterMap, pageDesc, response);
@@ -158,7 +155,7 @@ public class UserRoleController extends BaseController {
     @RequestMapping(value = "/unitroleusers/{unitCode}/{roleCode}", method = RequestMethod.GET)
     public void listUnitRoleUsers(@PathVariable String unitCode,@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         RoleInfo role = sysRoleManager.getObjectById(roleCode);
-        Map<String, Object> filterMap = convertSearchColumn(request);
+        Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("roleCode", roleCode);
         if(role !=null && "P".equals(role.getRoleType())) {
             filterMap.put("unitCode", unitCode);

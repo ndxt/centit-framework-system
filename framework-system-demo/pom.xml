@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <groupId>com.centit.framework</groupId>
-    <version>4.1-SNAPSHOT</version>
+    <version>4.1.1803</version>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>framework-system-demo</artifactId>
@@ -19,10 +19,10 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>1.8</jdk.version>
-        <centit.framework.version>4.1-SNAPSHOT</centit.framework.version>
-        <centit.persistence.version>1.0-SNAPSHOT</centit.persistence.version>
+        <centit.framework.version>4.1.1803</centit.framework.version>
+        <centit.persistence.version>1.1.1803</centit.persistence.version>
+        <centit.commons.version>2.2.1803</centit.commons.version>
 
-        <centit.commons.version>2.2.5</centit.commons.version>
         <centit.ui.version>3.0.1</centit.ui.version>
         <centit.stat.version>2.0.1-SNAPSHOT</centit.stat.version>
 
@@ -63,10 +63,9 @@
 
         <dependency>
             <groupId>com.centit.framework</groupId>
-            <artifactId>framework-system-module</artifactId>
+            <artifactId>framework-system-web</artifactId>
             <version>${centit.framework.version}</version>
         </dependency>
-
 
         <dependency>
             <groupId>com.centit.framework</groupId>

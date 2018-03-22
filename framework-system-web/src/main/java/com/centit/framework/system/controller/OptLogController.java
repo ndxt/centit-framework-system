@@ -50,13 +50,13 @@ public class OptLogController extends BaseController {
      */
     @RequestMapping
     public void list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> searchColumn = convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
 
         JSONArray jsonArray = optLogManager.listObjectsAsJson(field, searchColumn, pageDesc);
 
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, jsonArray);
-        resData.addResponseData(PAGE_DESC, pageDesc);
+        resData.addResponseData(BaseController.OBJLIST, jsonArray);
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
         resData.addResponseData(CodeBook.SELF_ORDER_BY, searchColumn.get(CodeBook.SELF_ORDER_BY));
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }

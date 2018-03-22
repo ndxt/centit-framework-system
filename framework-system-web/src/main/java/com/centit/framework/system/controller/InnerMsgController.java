@@ -53,7 +53,7 @@ public class InnerMsgController extends BaseController {
      */
     @RequestMapping(value = "/inbox", method = { RequestMethod.GET })
     public void listInbox(PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> searchColumn = convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
 
         String receive = (String) searchColumn.get("receive");
         if (StringUtils.isBlank(receive)) {
@@ -61,8 +61,8 @@ public class InnerMsgController extends BaseController {
         }
         List<InnerMsgRecipient> listObjects  = innerMsgRecipientManager.listObjectsCascade(searchColumn, pageDesc);
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
-        resData.addResponseData(PAGE_DESC, pageDesc);
+        resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
 
@@ -85,7 +85,7 @@ public class InnerMsgController extends BaseController {
      */
     @RequestMapping(value = "/outbox", method = { RequestMethod.GET })
     public void listOutbox(PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> searchColumn = convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
 
         String sender = (String) searchColumn.get("sender");
         if (StringUtils.isBlank(sender)) {
@@ -94,8 +94,8 @@ public class InnerMsgController extends BaseController {
 
         List<InnerMsg> listObjects = innerMsgManager.listObjects(searchColumn,pageDesc);
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
-        resData.addResponseData(PAGE_DESC, pageDesc);
+        resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
 
@@ -130,12 +130,12 @@ public class InnerMsgController extends BaseController {
     @RequestMapping(value = "/notice", method = { RequestMethod.GET })
     public void listnotify(String[] field, PageDesc pageDesc,
             HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> searchColumn = convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
         searchColumn.put("msgType", "A");
         List<InnerMsg> listObjects = innerMsgManager.listObjects(searchColumn,pageDesc);
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
-        resData.addResponseData(PAGE_DESC, pageDesc);
+        resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
         JsonResultUtils.writeResponseDataAsJson(resData, response, JsonPropertyUtils
                 .getIncludePropPreFilter(InnerMsg.class, field));
     }
@@ -274,7 +274,7 @@ public class InnerMsgController extends BaseController {
         List<InnerMsgRecipient> recipientlist = innerMsgRecipientManager
                 .getExchangeMsgs(sender, receiver);
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, recipientlist);
+        resData.addResponseData(BaseController.OBJLIST, recipientlist);
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
 
