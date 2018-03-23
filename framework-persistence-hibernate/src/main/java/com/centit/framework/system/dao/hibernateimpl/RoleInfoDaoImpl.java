@@ -6,7 +6,6 @@ import com.centit.framework.hibernate.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.RoleInfoDao;
 import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.VOptTree;
-import com.centit.support.database.utils.QueryUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

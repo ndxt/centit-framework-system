@@ -6,7 +6,6 @@ import com.centit.framework.hibernate.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.DataDictionaryDao;
 import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.DataDictionaryId;
-import com.centit.support.algorithm.StringBaseOpt;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

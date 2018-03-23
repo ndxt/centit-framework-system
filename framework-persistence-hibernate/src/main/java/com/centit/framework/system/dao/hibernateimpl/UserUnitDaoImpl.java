@@ -1,20 +1,15 @@
 package com.centit.framework.system.dao.hibernateimpl;
 
 import com.centit.framework.core.dao.CodeBook;
-import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.hibernate.dao.BaseDaoImpl;
 import com.centit.framework.hibernate.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.po.UserUnit;
-import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.NumberBaseOpt;
-import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.database.utils.QueryAndNamedParams;
 import com.centit.support.database.utils.QueryUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.query.Query;
-import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
