@@ -10,8 +10,12 @@ import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.security.CentitUserDetailsImpl;
 import com.centit.support.algorithm.DatetimeOpt;
+import com.centit.support.algorithm.ListOpt;
 import com.centit.support.algorithm.StringRegularOpt;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -228,15 +232,20 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         }
     }
 
-    private List<OptInfo> formatMenuTree(List<OptInfo> optInfos,String superOptId) {
-        // 获取当前菜单的子菜单
+    /**
+     * 将菜单列表组装为树状
+     * @param optInfos 菜单列表
+     * @param superOptId 顶级菜单ID 不为空时返回该菜单的下级菜单
+     * @return 树状菜单列表
+     */
+    private List<OptInfo> formatMenuTree(List<OptInfo> optInfos,String... superOptId) {
         Iterator<OptInfo> menus = optInfos.iterator();
         OptInfo parentOpt = null;
 
         List<OptInfo> parentMenu = new ArrayList<>();
         while (menus.hasNext()) {
             OptInfo optInfo = menus.next();
-            if (superOptId!=null && superOptId.equals(optInfo.getOptId())) {
+            if (superOptId!=null && ArrayUtils.contains(superOptId, optInfo.getOptId())) {
                 parentOpt=optInfo;
             }
             boolean getParent = false;
@@ -710,18 +719,47 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     /**
-     * 新增菜单和操作
+     * 新增或修改菜单和操作
      * @param optInfos 菜单对象集合
      * @param optMethods 操作对象集合
      */
     @Override
     @Transactional
-    public void insertOpt(List<? extends IOptInfo> optInfos, List<? extends IOptMethod> optMethods) {
+    public void insertOrUpdateMenu(List<? extends IOptInfo> optInfos, List<? extends IOptMethod> optMethods) {
+        List<OptMethod> dbMethods = new ArrayList<>();
         for(OptInfo optInfo : (List<OptInfo>)optInfos){
-            optInfoDao.saveNewObject(optInfo);
+            OptInfo dbOptInfo = optInfoDao.getObjectById(optInfo.getOptId());
+            if(dbOptInfo == null) {
+                optInfoDao.saveNewObject(optInfo);
+            }else{
+                dbOptInfo.copy(optInfo);
+                optInfoDao.updateOptInfo(dbOptInfo);
+            }
+            dbMethods.addAll(optMethodDao.listOptMethodByOptID(optInfo.getOptId()));
         }
-        for(OptMethod optMethod : (List<OptMethod>)optMethods){
-            optMethodDao.saveNewObject(optMethod);
+        Triple<List<OptMethod>, List<Pair<OptMethod, OptMethod>>, List<OptMethod>> triple = ListOpt.compareTwoList(
+            dbMethods, (List<OptMethod>)optMethods,
+            (o1, o2) -> StringUtils.compare(o1.getOptId()+o1.getOptMethod(), o2.getOptId()+o2.getOptMethod()));
+        //新增
+        if(triple.getLeft() != null && triple.getLeft().size()>0){
+            for(OptMethod om : triple.getLeft()){
+                optMethodDao.saveNewObject(om);
+            }
+        }
+        //更新
+        if(triple.getMiddle() != null && triple.getMiddle().size()>0){
+            for(Pair<OptMethod, OptMethod> p : triple.getMiddle()){
+                OptMethod oldMethod = p.getLeft();
+                OptMethod newMethod = p.getRight();
+                oldMethod.copy(newMethod);
+                optMethodDao.updateOptMethod(oldMethod);
+            }
+        }
+        //删除
+        if(triple.getRight() != null && triple.getRight().size()>0){
+            for(OptMethod om : triple.getRight()){
+                optMethodDao.deleteObject(om);
+            }
         }
     }
 }
