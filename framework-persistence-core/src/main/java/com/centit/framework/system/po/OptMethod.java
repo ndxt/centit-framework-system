@@ -209,7 +209,6 @@ public class OptMethod implements IOptMethod,EntityWithTimestamp, java.io.Serial
 
 
     public void copy(OptMethod other) {
-        this.optCode = other.getOptCode();
         this.optName = other.getOptName();
         this.optMethod = other.getOptMethod();
         this.optDesc = other.getOptDesc();

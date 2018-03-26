@@ -728,6 +728,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     public void insertOrUpdateMenu(List<? extends IOptInfo> optInfos, List<? extends IOptMethod> optMethods) {
         List<OptMethod> dbMethods = new ArrayList<>();
         for(OptInfo optInfo : (List<OptInfo>)optInfos){
+            if(StringUtils.isEmpty(optInfo.getPreOptId())){
+                optInfo.setPreOptId("0");
+            }
             OptInfo dbOptInfo = optInfoDao.getObjectById(optInfo.getOptId());
             if(dbOptInfo == null) {
                 optInfoDao.saveNewObject(optInfo);
@@ -743,6 +746,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         //新增
         if(triple.getLeft() != null && triple.getLeft().size()>0){
             for(OptMethod om : triple.getLeft()){
+                om.setOptCode(optMethodDao.getNextOptCode());
                 optMethodDao.saveNewObject(om);
             }
         }
