@@ -124,8 +124,13 @@ public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Seriali
         currentStationId = userUnitId;
     }
 
-    @Override
     public String getCurrentStationId(){
+        return currentStationId;
+    }
+
+    @Override
+    @JSONField(serialize = false)
+    public String getCurrentUnitCode(){
         IUserUnit cs = getCurrentStation();
         return cs != null? cs.getUnitCode() : getUserInfo().getPrimaryUnit();
     }
