@@ -546,7 +546,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         CentitUserDetailsImpl sysuser = new CentitUserDetailsImpl(userinfo);
         for(UserUnit uu :usun){
             if("T".equals(uu.getIsPrimary())){
-                sysuser.setCurrentUserUnit(uu);
+                sysuser.setCurrentStationId(uu.getUserUnitId());
                 break;
             }
         }

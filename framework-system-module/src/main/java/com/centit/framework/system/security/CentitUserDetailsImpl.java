@@ -29,19 +29,24 @@ public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Seriali
         this.userInfo = userInfo;
         arrayAuths = null;
     }
-    private UserUnit currentStation;
+
+    private String currentStationId;
     protected UserInfo userInfo;
 
-    public String getUserCode(){
-      return getUserInfo().getUserCode();
-    }
+    private Map<String, String> userSettings;
+    private Map<String, String> userOptList;
+    private List<RoleInfo> userRoles;
     // role
     // private Date lastUpdateRoleTime;
     @JSONField(serialize = false)
     private List<GrantedAuthority> arrayAuths;
-    private List<RoleInfo> userRoles;
-    private Map<String, String> userSettings;
-    private Map<String, String> userOptList;
+
+
+
+    @JSONField(serialize = false)
+    public String getUserCode(){
+        return getUserInfo().getUserCode();
+    }
 
     @Override
     public UserInfo getUserInfo() {
@@ -96,36 +101,31 @@ public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Seriali
     }
 
     @Override
+    @JSONField(serialize = false)
     public UserUnit getCurrentStation() {
-        if(currentStation==null){
-            List<UserUnit> uus = getUserInfo().getUserUnits();
-            for(UserUnit uu : uus){
-                if("T".equals(uu.getIsPrimary())){
-                    currentStation = uu;
-                    break;
+
+        List<UserUnit> uus = getUserInfo().getUserUnits();
+        if (uus != null) {
+            for (UserUnit uu : uus) {
+                if (StringUtils.equals(currentStationId, uu.getUserUnitId())) {
+                    return uu;
+                }
+
+                if (StringUtils.isBlank(currentStationId) && "T".equals(uu.getIsPrimary())) {
+                    return uu;
                 }
             }
         }
-        return currentStation;
-    }
-
-    public void setCurrentUserUnit(UserUnit userUnit) {
-        currentStation = userUnit;
+        return null;
     }
 
     @Override
-    public void setCurrentStation(String userUnitId) {
-        List<UserUnit> uus = getUserInfo().getUserUnits();
-        for(UserUnit uu : uus){
-            if(StringUtils.equals(userUnitId,uu.getUserUnitId())){
-                currentStation = uu;
-                return ;
-            }
-        }
+    public void setCurrentStationId(String userUnitId) {
+        currentStationId = userUnitId;
     }
 
     @Override
-    public String getCurrentUnit(){
+    public String getCurrentStationId(){
         IUserUnit cs = getCurrentStation();
         return cs != null? cs.getUnitCode() : getUserInfo().getPrimaryUnit();
     }

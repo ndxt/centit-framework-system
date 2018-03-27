@@ -151,7 +151,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     // 用户的主机构，只有在数据字典中有效
 
     @Transient
-    @JSONField(serialize=false)
+    //@JSONField(serialize=false)
     private List<UserUnit> userUnits;
 
     @Transient
