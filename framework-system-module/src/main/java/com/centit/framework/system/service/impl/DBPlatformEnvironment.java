@@ -746,6 +746,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         //新增
         if(triple.getLeft() != null && triple.getLeft().size()>0){
             for(OptMethod om : triple.getLeft()){
+                if(StringUtils.isEmpty(om.getOptReq())){
+                    om.setOptReq("CRUD");
+                }
                 om.setOptCode(optMethodDao.getNextOptCode());
                 optMethodDao.saveNewObject(om);
             }
