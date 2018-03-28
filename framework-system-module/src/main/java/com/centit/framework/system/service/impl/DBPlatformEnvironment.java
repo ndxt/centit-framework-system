@@ -731,6 +731,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             if(StringUtils.isEmpty(optInfo.getPreOptId())){
                 optInfo.setPreOptId("0");
             }
+            optInfo.setCreateDate(new Date());
+            optInfo.setOptType("O");//普通业务
+            optInfo.setCreator("import");//外部导入
             OptInfo dbOptInfo = optInfoDao.getObjectById(optInfo.getOptId());
             if(dbOptInfo == null) {
                 optInfoDao.saveNewObject(optInfo);
