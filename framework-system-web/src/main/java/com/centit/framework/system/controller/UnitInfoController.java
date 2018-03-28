@@ -372,7 +372,7 @@ public class UnitInfoController extends BaseController {
     @RequestMapping(value = "/currentusers/{state}", method = RequestMethod.GET)
     public void listAllUsersByCurrentUser(@PathVariable String state, HttpServletRequest request, HttpServletResponse response) {
         CentitUserDetails userInfo =  getLoginUser(request);
-        String unitCode = userInfo.getCurrentUnit();
+        String unitCode = userInfo.getCurrentUnitCode();
 
         Map<String, Object> filterMap = new HashMap<>(4);
         filterMap.put("unitCode", unitCode);
