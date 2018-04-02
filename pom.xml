@@ -102,16 +102,16 @@
 
     <!-- mvn deploy -DpomFile=pom.xml -->
     <distributionManagement>
-        <!--<repository>
+        <repository>
             <id>ossrh</id>
             <name>sonatype-releases</name>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-        </repository>-->
-        <repository>
+        </repository>
+        <!--<repository>
             <id>centit-releases</id>
             <name>centit-release</name>
             <url>http://nexus.centit.com:8081/nexus/content/repositories/centit-releases/</url>
-        </repository>
+        </repository>-->
 
         <snapshotRepository>
             <id>centit-snapshots</id>
@@ -175,7 +175,7 @@
             </plugin>
 
             <!-- GPG自动签名的插件-->
-            <!--<plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
@@ -190,8 +190,8 @@
                 </executions>
             </plugin>
 
-             &lt;!&ndash;sonatype release :
-                mvn nexus-staging:release&ndash;&gt;
+             <!--sonatype release :
+                mvn nexus-staging:release-->
 
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
@@ -203,7 +203,7 @@
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
-            </plugin>-->
+            </plugin>
         </plugins>
     </build>
 </project>
