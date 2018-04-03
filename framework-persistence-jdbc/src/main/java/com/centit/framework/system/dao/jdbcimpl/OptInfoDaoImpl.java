@@ -156,4 +156,20 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
         super.updateObject(optInfo);
     }
 
+    @Override
+    public List<FVUserOptMoudleList> listUserAllSubMenu(String userCode, String optType){
+        String querySql = "select OPT_ID, USER_CODE, OPT_NAME, PRE_OPT_ID, FORM_CODE,"+
+            "OPT_URL, OPT_ROUTE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, " +
+            "TOP_OPT_ID, ORDER_IND, PAGE_TYPE "+
+            "from F_V_USEROPTMOUDLELIST "+
+            "where USER_CODE = ? "+
+            "and OPT_TYPE = ? "+
+            "order by ORDER_IND ";
+
+        return getJdbcTemplate().execute(
+            (ConnectionCallback<List<FVUserOptMoudleList>>) conn ->
+                OrmDaoUtils.queryObjectsByParamsSql(conn, querySql ,
+                    new Object[]{userCode, optType}, FVUserOptMoudleList.class));
+    }
+
 }

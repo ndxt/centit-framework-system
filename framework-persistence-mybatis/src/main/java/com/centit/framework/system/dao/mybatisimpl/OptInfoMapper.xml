@@ -468,6 +468,29 @@
         order by ORDER_IND
     </select>
 
+    <select id="listUserAllSubMenu" parameterType="map"
+    resultType="com.centit.framework.system.po.FVUserOptMoudleList">
+        select OPT_ID,
+               USER_CODE,
+               OPT_NAME,
+               PRE_OPT_ID,
+               FORM_CODE,
+               OPT_URL,
+               OPT_ROUTE,
+               OPT_TYPE,
+               MSG_NO,
+               MSG_PRM,
+               IS_IN_TOOLBAR,
+               IMG_INDEX,
+               TOP_OPT_ID,
+               ORDER_IND,
+               PAGE_TYPE
+        from F_V_USEROPTMOUDLELIST
+        where USER_CODE = #{userCode}
+        and OPT_TYPE = #{optType}
+        order by ORDER_IND
+    </select>
+
     <select id="getFunctionsByUserAndSuperFunctionId" parameterType="map"
     resultType="com.centit.framework.system.po.OptInfo">
         select OPT_ID,
