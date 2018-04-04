@@ -28,6 +28,8 @@ define(function (require) {
 
     this.queryRoleUrl = 'system/roleinfo/all';
 
+    this.allPowerUrl = 'system/optinfo/poweropts';
+
     // @override
     this.load = function (panel) {
       var selectIndex = -1;

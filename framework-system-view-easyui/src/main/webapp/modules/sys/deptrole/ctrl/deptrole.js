@@ -9,6 +9,8 @@ define(function(require) {
     var loginUser = Cache.get('loginuser');
     this.queryRoleUrl = Config.ContextPath + "system/roleinfo/unit/" + loginUser.userInfo.primaryUnit;
 
+    this.allPowerUrl = 'system/optinfo/unitpoweropts/'+loginUser.userInfo.primaryUnit;
+
     this.validateRoleNameWhenAdd = Config.ContextPath + 'system/roleinfo/isunitroleunique/' + loginUser.userInfo.primaryUnit + '/{{roleName}}';
 
     this.validateRoleNameWhenEdit = Config.ContextPath + 'system/roleinfo/isunitroleunique/' + loginUser.userInfo.primaryUnit + '/{{roleName}}/{{roleCode}}';
