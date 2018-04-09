@@ -111,7 +111,6 @@ public class UnitInfoController extends BaseController {
 
     /**
      * 查询所有子机构信息
-     *
      * @param id    String parentUnit 父类机构
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
@@ -152,6 +151,31 @@ public class UnitInfoController extends BaseController {
       }
 
     /**
+     * 查询 当前机构 子机构
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
+     */
+    @RequestMapping(value = "/validsubunits",method = RequestMethod.GET)
+    public void listValidSubUnit(HttpServletRequest request, HttpServletResponse response) {
+
+        String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
+        List<UnitInfo>  listObjects= sysUnitManager.listValidSubUnits(currentUnitCode);
+
+        JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
+        for(Object o : ja){
+            ((JSONObject)o).put("state", "open");
+            ((JSONObject)o).put("id", ((JSONObject) o).getString("unitCode"));
+            ((JSONObject)o).put("text", ((JSONObject) o).getString("unitName"));
+        }
+        ja = ListOpt.srotAsTreeAndToJSON(ja, (p, c) ->
+        StringUtils.equals(
+          ((JSONObject)p).getString("unitCode"),
+          ((JSONObject)c).getString("parentUnit")),
+            "children");
+        JsonResultUtils.writeSingleDataJson(ja, response, null);
+    }
+
+    /**
      * 查询单个机构信息
      *
      * @param unitCode 机构代码
@@ -181,7 +205,7 @@ public class UnitInfoController extends BaseController {
 
         List<UserUnit> userUnits = sysUserUnitManager.listUnitUsersByUnitCode(unitCode);
         if(userUnits != null && userUnits.size() != 0){
-          JsonResultUtils.writeErrorMessageJson("该机构包含组织信息，不能删除！", response);
+          JsonResultUtils.writeErrorMessageJson("该机构包含用户信息，不能删除！", response);
           return;
         }
         sysUnitManager.deleteUnitInfo(unitInfo);
@@ -257,7 +281,7 @@ public class UnitInfoController extends BaseController {
             }
             List<UserUnit> userUnits = sysUserUnitManager.listUnitUsersByUnitCode(unitCode);
             if(userUnits != null && userUnits.size() != 0){
-              JsonResultUtils.writeErrorMessageJson("该机构包含组织信息，不能设为禁用！", response);
+              JsonResultUtils.writeErrorMessageJson("该机构包含用户信息，不能设为禁用！", response);
               return;
             }
         }

@@ -28,7 +28,7 @@ define(function(require) {
     // 修改用户机构下拉框初始化
     this.initUnitCombotree = function (input) {
       input.combotree({
-        url: 'system/unitinfo/subunits'
+        url: 'system/unitinfo/validsubunits'
       });
     };
 

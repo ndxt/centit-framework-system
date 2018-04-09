@@ -49,4 +49,10 @@ public interface SysUnitManager{
 
     List<UnitInfo> listAllSubUnits(String unitCode);
 
+    /**
+     * 查询启用状态的下级机构
+     * @param unitCode 当前机构代码
+     */
+    List<UnitInfo> listValidSubUnits(String unitCode);
+
 }

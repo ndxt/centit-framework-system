@@ -290,4 +290,19 @@ public class SysUnitManagerImpl implements SysUnitManager {
         result.addAll(unitInfoDao.listSubUnitsByUnitPaht(unitInfo.getUnitPath() + unitCode));
         return result;
     }
+
+    /**
+     * 查询启用状态的下级机构
+     * @param unitCode 当前机构代码
+     */
+    public List<UnitInfo> listValidSubUnits(String unitCode){
+        Map<String, Object> filterMap = new HashMap<>(4);
+        List<UnitInfo> result = new ArrayList<>();
+        UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
+        result.add(unitInfo);
+        filterMap.put("unitPath", unitInfo.getUnitPath() + unitCode);
+        filterMap.put("isValid", "T");
+        result.addAll(unitInfoDao.listObjects(filterMap));
+        return result;
+    }
 }
