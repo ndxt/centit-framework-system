@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
+import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.operationlog.RecordOperationLog;
@@ -118,7 +119,7 @@ public class UnitInfoController extends BaseController {
     @RequestMapping(value = "/subunits",method = RequestMethod.GET)
     public void listSub(String id, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
-        UserInfo user=sysUserMag.getObjectById(super.getLoginUserCode(request));
+        String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
 
         String unitName = StringBaseOpt.castObjectToString(searchColumn.get("unitName"));
 
@@ -132,9 +133,9 @@ public class UnitInfoController extends BaseController {
             if (StringUtils.isNotBlank(id)) {
               filterMap.put("parentUnit", id);
             }else{
-              filterMap.put("parentUnit", StringUtils.isNotBlank(id) ? id : user.getPrimaryUnit());
+              filterMap.put("parentUnit", StringUtils.isNotBlank(id) ? id : currentUnitCode);
             }
-            List<UnitInfo>  listObjects= sysUnitManager.listAllSubUnits(user.getPrimaryUnit());
+            List<UnitInfo>  listObjects= sysUnitManager.listAllSubUnits(currentUnitCode);
 
           JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
           for(Object o : ja){
@@ -331,17 +332,17 @@ public class UnitInfoController extends BaseController {
     /**
      * 当前机构下所有用户
      *
-     * @param unitCode 机构代码
      * @param pageDesc 分页信息
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
-    @RequestMapping(value = "/{unitCode}/users", method = RequestMethod.GET)
-    public void listUnitUsers(@PathVariable String unitCode, PageDesc pageDesc,
-                              HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/currentunit/users", method = RequestMethod.GET)
+    public void listUnitUsers(PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+
+        String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
 
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
-        searchColumn.put("unitCode", unitCode);
+        searchColumn.put("unitCode", currentUnitCode);
 
         List<UserInfo> listObjects = sysUserMag.listObjects(searchColumn, pageDesc);
 

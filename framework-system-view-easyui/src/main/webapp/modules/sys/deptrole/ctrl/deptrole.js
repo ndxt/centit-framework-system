@@ -5,11 +5,13 @@ define(function(require) {
 
 	return RoleController.extend(function() {
 
-	  // 部门角色只查询主部门下的角色
+	  // 部门角色只查询当前部门下的角色
     var loginUser = Cache.get('loginuser');
-    this.queryRoleUrl = Config.ContextPath + "system/roleinfo/unit/" + loginUser.userInfo.primaryUnit;
-
-    this.allPowerUrl = 'system/optinfo/unitpoweropts/'+loginUser.userInfo.primaryUnit;
+    this.queryRoleUrl = Config.ContextPath + "system/roleinfo/currentunit";
+    //部门所有权限
+    this.allPowerUrl = Config.ContextPath + 'system/optinfo/unitpoweropts/'+loginUser.userInfo.primaryUnit;
+    //部门机构
+    this.queryUnitUrl = Config.ContextPath + 'system/unitinfo/'
 
     this.validateRoleNameWhenAdd = Config.ContextPath + 'system/roleinfo/isunitroleunique/' + loginUser.userInfo.primaryUnit + '/{{roleName}}';
 

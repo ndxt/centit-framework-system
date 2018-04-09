@@ -14,7 +14,7 @@ define(function(require) {
 		// @override
 		this.load = function(panel, data) {
 
-		  var allPowerUrl = Config.ContextPath + this.$findUp("allPowerUrl");
+		  var allPowerUrl = this.$findUp("allPowerUrl");
 			var tree = panel.find('ul');
 			Core.ajax(Config.ContextPath + 'system/roleinfo/' + data.roleCode, {
 				method: 'get'
