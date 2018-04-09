@@ -2,10 +2,13 @@ package com.centit.framework.system.controller;
 
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
+import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.operationlog.RecordOperationLog;
+import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UnitRole;
+import com.centit.framework.system.service.SysUnitManager;
 import com.centit.framework.system.service.SysUnitRoleManager;
 import com.centit.support.database.utils.PageDesc;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,6 +36,9 @@ public class UnitRoleController extends BaseController {
     @Resource
     @NotNull
     private SysUnitRoleManager sysUnitRoleManager;
+
+    @Resource
+    private SysUnitManager sysUnitManager;
 
     /**
      * 系统日志中记录
@@ -56,6 +64,29 @@ public class UnitRoleController extends BaseController {
       resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
 
       JsonResultUtils.writeResponseDataAsJson(resData, response);
+    }
+
+    /**
+     * 通过角色代码获取机构
+     *
+     * @param roleCode 角色代码
+     * @param pageDesc PageDesc
+     * //param request  {@link HttpServletRequest}
+     * @param response  {@link HttpServletResponse}
+     */
+    @RequestMapping(value = "/rolesubunits/{roleCode}", method = RequestMethod.GET)
+    public void listSubUnitByRole(@PathVariable String roleCode, PageDesc pageDesc,
+                                  HttpServletResponse response) {
+
+        String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
+        UnitInfo currentUnit = sysUnitManager.getObjectById(currentUnitCode);
+        String unitPathPrefix = currentUnit.getUnitPath() + currentUnitCode + "/";
+
+        ResponseMapData resData = new ResponseMapData();
+        resData.addResponseData(OBJLIST, sysUnitRoleManager.listRoleSubUnits(roleCode, unitPathPrefix,pageDesc));
+        resData.addResponseData(PAGE_DESC, pageDesc);
+
+        JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
 
     /**

@@ -30,6 +30,9 @@ define(function (require) {
 
     this.allPowerUrl = 'system/optinfo/poweropts';
 
+    //角色机构
+    this.queryRoleUnitUrl = Config.ContextPath + "system/unitrole/roleunits/";
+
     // @override
     this.load = function (panel) {
       var selectIndex = -1;

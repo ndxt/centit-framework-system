@@ -11,7 +11,9 @@ define(function(require) {
     //部门所有权限
     this.allPowerUrl = Config.ContextPath + 'system/optinfo/unitpoweropts/'+loginUser.userInfo.primaryUnit;
     //部门机构
-    this.queryUnitUrl = Config.ContextPath + 'system/unitinfo/'
+    this.queryUnitUrl = Config.ContextPath + 'system/unitinfo/';
+    //角色机构
+    this.queryRoleUnitUrl = Config.ContextPath + "system/unitrole/rolesubunits/";
 
     this.validateRoleNameWhenAdd = Config.ContextPath + 'system/roleinfo/isunitroleunique/' + loginUser.userInfo.primaryUnit + '/{{roleName}}';
 

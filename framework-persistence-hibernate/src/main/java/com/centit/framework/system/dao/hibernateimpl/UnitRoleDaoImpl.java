@@ -23,6 +23,9 @@ public class UnitRoleDaoImpl extends BaseDaoImpl<UnitRole, UnitRoleId> implement
 
             filterField.put("unitCode", "id.unitCode = :unitCode");
 
+            filterField.put("(STARTWITH)unitPathPrefix",
+                "UNIT_CODE in (select UNIT_CODE from f_unitinfo where UNIT_PATH like :unitPathPrefix)");
+
         }
         return filterField;
     }

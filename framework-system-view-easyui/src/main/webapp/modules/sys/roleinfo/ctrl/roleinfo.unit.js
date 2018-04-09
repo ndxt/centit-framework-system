@@ -19,7 +19,7 @@ define(function (require) {
       var table = panel.find('table');
       table.cdatagrid({
         controller: _self,
-        url: Config.ContextPath + 'system/unitrole/roleunits/' + data.roleCode
+        url: this.$findUp('queryRoleUnitUrl') + data.roleCode
       })
     };
   });
