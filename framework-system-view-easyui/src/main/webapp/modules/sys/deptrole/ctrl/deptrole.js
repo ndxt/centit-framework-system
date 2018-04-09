@@ -13,7 +13,9 @@ define(function(require) {
     //部门机构
     this.queryUnitUrl = Config.ContextPath + 'system/unitinfo/';
     //角色机构
-    this.queryRoleUnitUrl = Config.ContextPath + "system/unitrole/rolesubunits/";
+    this.queryRoleUnitUrl = Config.ContextPath + "system/unitrole/rolesubunits/{{roleCode}}";
+    //角色用户
+    this.roleInfoUsersUrl = Config.ContextPath + 'system/userrole/rolecurrentusers/{{roleCode}}';
 
     this.validateRoleNameWhenAdd = Config.ContextPath + 'system/roleinfo/isunitroleunique/' + loginUser.userInfo.primaryUnit + '/{{roleName}}';
 
@@ -25,10 +27,21 @@ define(function(require) {
       ctrl.object.roleType = 'D';
     };
 
-    // 修改用户机构下拉框初始化
+    // 修改角色机构下拉框初始化
     this.initUnitCombotree = function (input) {
       input.combotree({
         url: 'system/unitinfo/validsubunits'
+      });
+    };
+    //修改角色用户下拉框初始化
+    this.initUserCombobox = function (input) {
+      input.combobox({
+        url: 'system/unitinfo/currentusers/T',
+        valueField: 'userCode',
+        textField: 'userName',
+        loadFilter: function(data) {
+          return data.objList ? data.objList : data;
+        }
       });
     };
 

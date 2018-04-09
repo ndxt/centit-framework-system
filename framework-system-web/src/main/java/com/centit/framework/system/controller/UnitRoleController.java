@@ -80,7 +80,7 @@ public class UnitRoleController extends BaseController {
 
         String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
         UnitInfo currentUnit = sysUnitManager.getObjectById(currentUnitCode);
-        String unitPathPrefix = currentUnit.getUnitPath() + currentUnitCode + "/";
+        String unitPathPrefix = currentUnit.getUnitPath();
 
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(OBJLIST, sysUnitRoleManager.listRoleSubUnits(roleCode, unitPathPrefix,pageDesc));

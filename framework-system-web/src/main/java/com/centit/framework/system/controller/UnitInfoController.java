@@ -398,9 +398,10 @@ public class UnitInfoController extends BaseController {
     public void listAllUsersByCurrentUser(@PathVariable String state, HttpServletRequest request, HttpServletResponse response) {
         CentitUserDetails userInfo =  getLoginUser(request);
         String unitCode = userInfo.getCurrentUnitCode();
+        UnitInfo currentUnitInfo = sysUnitManager.getObjectById(unitCode);
 
         Map<String, Object> filterMap = new HashMap<>(4);
-        filterMap.put("unitCode", unitCode);
+        filterMap.put("unitPath", currentUnitInfo.getUnitPath());
         filterMap.put("isValid", state);
         List<UserInfo> listObjects = sysUserMag.listObjects(filterMap);
 

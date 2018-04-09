@@ -37,6 +37,8 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
             //filterField.put(CodeBook.ORDER_BY_HQL_ID, " userCode ");
             filterField.put("(like)userName", "userCode in (select us.USER_CODE from f_userinfo us " +
                     "where us.USER_NAME like :userName)");
+            filterField.put("(STARTWITH)unitPath", "userCode in (select us.USER_CODE from f_userunit us where us.UNIT_CODE in " +
+                "                    (select un.UNIT_CODE from f_unitinfo un where un.UNIT_PATH like :unitPath))");
         }
         return filterField;
     }

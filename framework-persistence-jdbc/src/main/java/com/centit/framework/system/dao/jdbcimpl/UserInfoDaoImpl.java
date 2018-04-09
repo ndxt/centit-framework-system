@@ -54,6 +54,9 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
 
             filterField.put("unitCode", "userCode in (select us.USER_CODE from f_userunit us where us.UNIT_CODE in " +
                     "(select un.UNIT_CODE from f_unitinfo un where un.UNIT_CODE = :unitCode or un.PARENT_UNIT = :unitCode))");
+
+            filterField.put("(STARTWITH)unitPath", "userCode in (select us.USER_CODE from f_userunit us where us.UNIT_CODE in " +
+                    "(select un.UNIT_CODE from f_unitinfo un where un.UNIT_PATH like :unitPath))");
         }
         return filterField;
     }

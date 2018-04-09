@@ -148,11 +148,9 @@ public class SysUnitManagerImpl implements SysUnitManager {
         UnitInfo parentUnit = unitInfoDao.getObjectById(unitinfo.getParentUnit());
 
         if (parentUnit == null) {
-//          unitinfo.setUnitPath("/" + unitinfo.getUnitCode());
-          unitinfo.setUnitPath("/");
+          unitinfo.setUnitPath("/" + unitinfo.getUnitCode() + "/");
         } else {
-//          unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitCode());
-          unitinfo.setUnitPath(parentUnit.getUnitPath() + parentUnit.getUnitCode() + "/");
+          unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitCode() + "/");
         }
 
         unitInfoDao.saveNewObject(unitinfo);
@@ -185,12 +183,10 @@ public class SysUnitManagerImpl implements SysUnitManager {
         if(!StringUtils.equals(dbUnitInfo.getParentUnit(), unitinfo.getParentUnit())){
             UnitInfo parentUnit = unitInfoDao.getObjectById(unitinfo.getParentUnit());
             if(parentUnit==null) {
-//                unitinfo.setUnitPath("/"+unitinfo.getUnitCode());
-                unitinfo.setUnitPath("/");
+                unitinfo.setUnitPath("/"+unitinfo.getUnitCode()+"/");
             }
             else {
-//                unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitCode());
-                unitinfo.setUnitPath(parentUnit.getUnitPath() + parentUnit.getUnitCode() + "/");
+                unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitCode() + "/");
             }
             List<UnitInfo> subUnits = unitInfoDao.listSubUnitsByUnitPaht(oldUnitPath);
             int noupl = oldUnitPath.length();
@@ -284,11 +280,8 @@ public class SysUnitManagerImpl implements SysUnitManager {
     @Transactional
     public List<UnitInfo> listAllSubUnits(String unitCode) {
 
-        List<UnitInfo> result = new ArrayList<>();
         UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
-        result.add(unitInfo);
-        result.addAll(unitInfoDao.listSubUnitsByUnitPaht(unitInfo.getUnitPath() + unitCode));
-        return result;
+        return unitInfoDao.listSubUnitsByUnitPaht(unitInfo.getUnitPath());
     }
 
     /**
@@ -297,12 +290,9 @@ public class SysUnitManagerImpl implements SysUnitManager {
      */
     public List<UnitInfo> listValidSubUnits(String unitCode){
         Map<String, Object> filterMap = new HashMap<>(4);
-        List<UnitInfo> result = new ArrayList<>();
         UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
-        result.add(unitInfo);
-        filterMap.put("unitPath", unitInfo.getUnitPath() + unitCode);
+        filterMap.put("unitPath", unitInfo.getUnitPath());
         filterMap.put("isValid", "T");
-        result.addAll(unitInfoDao.listObjects(filterMap));
-        return result;
+        return unitInfoDao.listObjects(filterMap);
     }
 }

@@ -10,6 +10,14 @@ define(function(require) {
 	    return 'F' !== this.parent.data.roleType;
     };
 
+    this.initUserCombobox = function (input) {
+      input
+        .attr('target', 'user')
+        .combobox({
+          target: 'user'
+        });
+    };
+
 		// @override
 		this.object = {
 			isPrimary: 'T',
@@ -18,6 +26,9 @@ define(function(require) {
 
 		// @override
 		this.load = function(panel) {
+
+      this.$findUp('initUserCombobox')($('input[name="userCode[]"]', panel));
+
 			this.refresh=false;
 			// 获取父窗口的角色信息
 			var roleinfo = this.parent.data;
