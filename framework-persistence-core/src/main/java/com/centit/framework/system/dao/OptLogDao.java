@@ -23,7 +23,7 @@ public interface OptLogDao  {
      * @param logId 日志Id
      * @return OptLog
      */
-      OptLog getObjectById(Long logId);
+    OptLog getObjectById(Long logId);
 
     /**
      * 新增
@@ -35,21 +35,21 @@ public interface OptLogDao  {
      * 根据Id删除
      * @param logId 日志Id
      */
-      void deleteObjectById(Long logId);
+    void deleteObjectById(Long logId);
 
     /**
      * 这个sql语句效率太低，应该从f_optinfo表中获取
      * @return 所有的业务列表
      */
     //final String hql = "select DISTINCT f.optId from OptLog f";
-      List<String> listOptIds();
+    List<String> listOptIds();
 
     /**
      *
      * @param o 日志对象
      */
     //设置主键 DatabaseOptUtils.getNextLongSequence(this, "S_SYS_LOG"));
-      void mergeObject(OptLog o);
+    void mergeObject(OptLog o);
 
     /**
      * 根据开始
@@ -58,7 +58,7 @@ public interface OptLogDao  {
      */
       //"delete from OptLog o where 1=1 ";  "and o.optTime > ?" "and o.optTime < ?";
       //参数 String beginDate, String endDate
-      void delete(Date begin, Date end);
+    void delete(Date begin, Date end);
 
 
     /**
@@ -66,13 +66,19 @@ public interface OptLogDao  {
      * @param filterDescMap 过滤条件
      * @return int
      */
-      int pageCount(Map<String, Object> filterDescMap);
+    int pageCount(Map<String, Object> filterDescMap);
 
     /**
      * 分页查询
      * @param pageQueryMap 过滤条件
      * @return List&lt;OptLog&gt;
      */
-      List<OptLog>  pageQuery(Map<String, Object> pageQueryMap);
+    List<OptLog>  pageQuery(Map<String, Object> pageQueryMap);
+    /* 用于测试
+     * 分页查询
+     * @param pageQueryMap 过滤条件
+     * @return List&lt;OptLog&gt;
+     */
+    //List<OptLog>  pageQueryByPDSql(Map<String, Object> pageQueryMap);
 
 }

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>framework-system-parent</artifactId>
         <groupId>com.centit.framework</groupId>
-        <version>4.1.1803</version>
+        <version>4.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -20,6 +20,13 @@
             <groupId>com.centit.framework</groupId>
             <artifactId>framework-core-web</artifactId>
             <version>${centit.framework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>${persistence-api.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

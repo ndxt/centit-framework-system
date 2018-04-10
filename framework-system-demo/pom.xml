@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <groupId>com.centit.framework</groupId>
-    <version>4.1.1803</version>
+    <version>4.1-SNAPSHOT</version>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>framework-system-demo</artifactId>
@@ -19,8 +19,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>1.8</jdk.version>
-        <centit.framework.version>4.1.1803</centit.framework.version>
-        <centit.persistence.version>1.1.1803</centit.persistence.version>
+        <centit.framework.version>4.1-SNAPSHOT</centit.framework.version>
+        <centit.persistence.version>1.1-SNAPSHOT</centit.persistence.version>
         <centit.commons.version>2.2.1803</centit.commons.version>
 
         <centit.ui.version>3.0.1</centit.ui.version>
@@ -55,9 +55,9 @@
 
         <dependency>
             <groupId>com.centit.framework</groupId>
-            <artifactId>framework-persistence-jdbc</artifactId>
+            <!--<artifactId>framework-persistence-jdbc</artifactId>-->
             <!--<artifactId>framework-persistence-hibernate</artifactId>-->
-            <!--<artifactId>framework-persistence-mybatis</artifactId>-->
+            <artifactId>framework-persistence-mybatis</artifactId>
             <version>${centit.framework.version}</version>
         </dependency>
 
@@ -69,9 +69,9 @@
 
         <dependency>
             <groupId>com.centit.framework</groupId>
-            <artifactId>centit-persistence-jdbc-config</artifactId>
+            <!--<artifactId>centit-persistence-jdbc-config</artifactId>-->
             <!--<artifactId>centit-persistence-hibernate-config</artifactId>-->
-            <!--<artifactId>centit-persistence-mybatis-config</artifactId>-->
+            <artifactId>centit-persistence-mybatis-config</artifactId>
             <version>${centit.persistence.version}</version>
         </dependency>
 
