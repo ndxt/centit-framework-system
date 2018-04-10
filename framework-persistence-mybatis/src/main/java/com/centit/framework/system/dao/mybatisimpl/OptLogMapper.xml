@@ -157,6 +157,23 @@
         </if>
 
         <include refid="com.centit.framework.mybatis.dao.BaseDao.pageEnd" />
+    </select>
+
+    <select id="pageQueryByPDSql" parameterType="map" resultMap="OptLog">
+        <include refid="com.centit.framework.mybatis.dao.BaseDao.pageBeginByPDSql" />
+        <include refid="coreSql" />
+        where 1=1 [ :logId | and u.LOG_ID = :logId ]
+        [ :(like)logLevel | and u.LOG_LEVEL like :logLevel]
+        [ :userCode | and u.USER_CODE = :userCode]
+        [ :(date)optTimeBegin | and u.OPT_TIME >= :optTimeBegin]
+        [ :(nextday)optTimeEnd | and u.OPT_TIME <![CDATA[<= ]]> :optTimeEnd]
+        [ :optId | and u.OPT_ID in (:optId)]
+        [ :optCode | and u.OPT_CODE = :optCode]
+        [ :(like)optContent | and u.OPT_CONTENT :optContent]
+        [ :(like)oldValue| and u.OLD_VALUE like :oldValue]
+        [ :(like)optMethod| and u.OPT_METHOD like :optMethod]
+        [ :(INPLACE)mybatisOrderBy | order by :mybatisOrderBy]
+        <include refid="com.centit.framework.mybatis.dao.BaseDao.pageEndByPDSql" />
     </select>-->
 
     <select id="pageQuery" parameterType="map" resultMap="OptLog">
@@ -171,7 +188,7 @@
         [ :optId | and u.OPT_ID in (:optId)]
         [ :optCode | and u.OPT_CODE = :optCode]
         [ :(like)optContent | and u.OPT_CONTENT :optContent]
-        [ :{like}oldValue| and u.OLD_VALUE like :oldValue]
+        [ :(like)oldValue| and u.OLD_VALUE like :oldValue]
         [ :(like)optMethod| and u.OPT_METHOD like :optMethod]
         [ :(INPLACE)mybatisOrderBy | order by :mybatisOrderBy]
         <include refid="com.centit.framework.mybatis.dao.BaseDao.pageEndByPDSql" />
