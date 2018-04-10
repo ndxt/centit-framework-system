@@ -28,6 +28,16 @@ public class SysUnitRoleManagerImpl implements SysUnitRoleManager {
 
     @Override
     @Transactional
+    public JSONArray listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
+        List<UnitRole> unitRoles = unitRoleDao.pageQuery(
+            QueryParameterPrepare.makeMybatisOrderByParam(
+                QueryParameterPrepare.prepPageParams(
+                    filterMap,pageDesc,unitRoleDao.pageCount(filterMap)),UnitRole.class));
+        return DictionaryMapUtils.objectsToJSONArray(unitRoles);
+    }
+
+    @Override
+    @Transactional
     public JSONArray listUnitRoles(String unitCode, PageDesc pageDesc) {
         Map<String, Object> filterMap = new HashMap<>(5);
         filterMap.put("unitCode",unitCode);

@@ -527,7 +527,7 @@ public class RoleInfoController extends BaseController {
             field = new String[]{"roleCode", "roleName"};
         }
         Map<String,Object> filterMap = BaseController.convertSearchColumn(request);
-        filterMap.put("roleType", type);
+//        filterMap.put("roleType", type);
         filterMap.put("isValid","T");
         if("S".equals(type)){
             filterMap.put("NP_unitCode", true);

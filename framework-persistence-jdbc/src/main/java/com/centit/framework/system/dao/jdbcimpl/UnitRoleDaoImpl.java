@@ -24,6 +24,8 @@ public class UnitRoleDaoImpl extends BaseDaoImpl<UnitRole, UnitRoleId> implement
                 "UNIT_CODE in (select UNIT_CODE from f_unitinfo where UNIT_PATH like :unitPathPrefix)");
             filterField.put("currentUnitCode",
                 "ROLE_CODE in (select ROLE_CODE from f_roleinfo where UNIT_CODE = :currentUnitCode)");
+            filterField.put("unitValid", "unitCode in (select UNIT_CODE from f_unitinfo where IS_VALID = :unitValid)");
+            filterField.put("roleValid", "roleCode in (select ROLE_CODE from f_roleinfo where IS_VALID = :roleValid)");
         }
         return filterField;
     }

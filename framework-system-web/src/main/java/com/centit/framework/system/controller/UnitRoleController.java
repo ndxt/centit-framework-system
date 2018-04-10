@@ -60,8 +60,11 @@ public class UnitRoleController extends BaseController {
     @RequestMapping(value = "/roleunits/{roleCode}", method = RequestMethod.GET)
     //@RecordOperationLog(content="用户",appendRequest = true )
     public void listUsersByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletResponse response) {
+        Map<String, Object> filterMap = new HashMap<>(5);
+        filterMap.put("roleCode",roleCode);
+        filterMap.put("unitValid", "T");
       ResponseMapData resData = new ResponseMapData();
-      resData.addResponseData(BaseController.OBJLIST, sysUnitRoleManager.listRoleUnits(roleCode,pageDesc));
+      resData.addResponseData(BaseController.OBJLIST, sysUnitRoleManager.listObjects(filterMap,pageDesc));
       resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
 
       JsonResultUtils.writeResponseDataAsJson(resData, response);
@@ -82,9 +85,13 @@ public class UnitRoleController extends BaseController {
         String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
         UnitInfo currentUnit = sysUnitManager.getObjectById(currentUnitCode);
         String unitPathPrefix = currentUnit.getUnitPath();
+        Map<String, Object> filterMap = new HashMap<>(4);
+        filterMap.put("roleCode", roleCode);
+        filterMap.put("unitPathPrefix", unitPathPrefix);
+        filterMap.put("unitValid", "T");
 
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, sysUnitRoleManager.listRoleSubUnits(roleCode, unitPathPrefix,pageDesc));
+        resData.addResponseData(OBJLIST, sysUnitRoleManager.listObjects(filterMap,pageDesc));
         resData.addResponseData(PAGE_DESC, pageDesc);
 
         JsonResultUtils.writeResponseDataAsJson(resData, response);
@@ -100,8 +107,12 @@ public class UnitRoleController extends BaseController {
      */
     @RequestMapping(value = "/unitroles/{unitCode}", method = RequestMethod.GET)
     public void listRolesByUser(@PathVariable String unitCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> filterMap = new HashMap<>();
+        filterMap.put("unitCode", unitCode);
+        filterMap.put("roleValid", "T");
+
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, sysUnitRoleManager.listUnitRoles(unitCode,pageDesc));
+        resData.addResponseData(BaseController.OBJLIST, sysUnitRoleManager.listObjects(filterMap,pageDesc));
         resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
@@ -116,7 +127,12 @@ public class UnitRoleController extends BaseController {
      */
     @RequestMapping(value = "/currentunitroles/{unitCode}", method = RequestMethod.GET)
     public void listCurrentUnitRole(@PathVariable String unitCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
-        JSONArray ja = sysUnitRoleManager.listCurrentUnitRoles(unitCode, pageDesc);
+        Map<String, Object> filterMap = new HashMap<>(4);
+        filterMap.put("unitCode", unitCode);
+        filterMap.put("currentUnitCode", unitCode);
+        filterMap.put("roleValid", "T");
+
+        JSONArray ja = sysUnitRoleManager.listObjects(filterMap, pageDesc);
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(BaseController.OBJLIST, ja);
         resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
