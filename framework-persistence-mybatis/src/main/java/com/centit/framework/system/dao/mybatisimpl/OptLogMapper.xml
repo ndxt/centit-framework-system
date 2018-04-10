@@ -122,9 +122,7 @@
     </sql>
 
     <!-- 查询核心SQL -->
-    <sql id="coreSql">
-        <![CDATA[
-            select u.LOG_ID,
+    <sql id="coreSql"><![CDATA[ select u.LOG_ID,
                    u.LOG_LEVEL,
                    u.USER_CODE,
                    u.OPT_TIME,
@@ -134,9 +132,7 @@
                    u.OPT_CONTENT,
                    u.NEW_VALUE,
                    u.OLD_VALUE
-            from F_OPT_LOG u
-        ]]>
-    </sql>
+            from F_OPT_LOG u ]]></sql>
 
     <!--分页计数 -->
     <select id="pageCount" parameterType="map" resultType="int">
@@ -150,7 +146,7 @@
     </select>
 
     <!--分页查询 -->
-    <select id="pageQuery" parameterType="map" resultMap="OptLog">
+    <!--<select id="pageQuery" parameterType="map" resultMap="OptLog">
         <include refid="com.centit.framework.mybatis.dao.BaseDao.pageBegin" />
         <include refid="coreSql" />
         <where>
@@ -161,11 +157,10 @@
         </if>
 
         <include refid="com.centit.framework.mybatis.dao.BaseDao.pageEnd" />
-    </select>
+    </select>-->
 
-
-
-    <select id="pageQueryByPDSql" parameterType="map" resultMap="OptLog">
+    <select id="pageQuery" parameterType="map" resultMap="OptLog">
+        /* parameter driver sql */
         <include refid="com.centit.framework.mybatis.dao.BaseDao.pageBeginByPDSql" />
         <include refid="coreSql" />
         where 1=1 [ :logId | and u.LOG_ID = :logId ]
