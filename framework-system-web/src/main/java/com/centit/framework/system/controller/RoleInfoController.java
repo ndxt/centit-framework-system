@@ -120,7 +120,6 @@ public class RoleInfoController extends BaseController {
         respData.addResponseData(BaseController.PAGE_DESC, pageDesc);
         JsonResultUtils.writeResponseDataAsJson(respData, response,
             JsonPropertyUtils.getExcludePropPreFilter(RoleInfo.class, "rolePowers","userRoles"));
-
     }
 
     /**

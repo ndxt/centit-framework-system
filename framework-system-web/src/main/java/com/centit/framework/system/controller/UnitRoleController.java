@@ -1,5 +1,6 @@
 package com.centit.framework.system.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
@@ -106,22 +107,39 @@ public class UnitRoleController extends BaseController {
     }
 
     /**
+     * 通过机构代码获取本机构角色
+     *
+     * @param unitCode 机构代码
+     * @param pageDesc PageDesc
+     * @param request  {@link HttpServletRequest}
+     * @param response  {@link HttpServletResponse}
+     */
+    @RequestMapping(value = "/currentunitroles/{unitCode}", method = RequestMethod.GET)
+    public void listCurrentUnitRole(@PathVariable String unitCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+        JSONArray ja = sysUnitRoleManager.listCurrentUnitRoles(unitCode, pageDesc);
+        ResponseMapData resData = new ResponseMapData();
+        resData.addResponseData(BaseController.OBJLIST, ja);
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
+        JsonResultUtils.writeResponseDataAsJson(resData, response);
+    }
+
+    /**
      * 返回一条用户角色关联信息
      * @param roleCode 角色代码
      * @param unitCode 用户代码
      * @param response HttpServletResponse
      */
-    @RequestMapping(value = "/{roleCode}/{unitCode}", method = RequestMethod.GET)
-    public void getUserRole(@PathVariable String roleCode, @PathVariable String unitCode, HttpServletResponse response) {
-
-        UnitRole unitRole = sysUnitRoleManager.getUnitRoleById(unitCode,roleCode);
-        if (null == unitRole) {
-            JsonResultUtils.writeErrorMessageJson("当前机构中无此角色", response);
-            return;
-        }
-        JsonResultUtils.writeSingleDataJson(
-            DictionaryMapUtils.objectToJSON(unitRole), response);
-    }
+//    @RequestMapping(value = "/{roleCode}/{unitCode}", method = RequestMethod.GET)
+//    public void getUserRole(@PathVariable String roleCode, @PathVariable String unitCode, HttpServletResponse response) {
+//
+//        UnitRole unitRole = sysUnitRoleManager.getUnitRoleById(unitCode,roleCode);
+//        if (null == unitRole) {
+//            JsonResultUtils.writeErrorMessageJson("当前机构中无此角色", response);
+//            return;
+//        }
+//        JsonResultUtils.writeSingleDataJson(
+//            DictionaryMapUtils.objectToJSON(unitRole), response);
+//    }
 
 
 

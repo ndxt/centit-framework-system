@@ -22,6 +22,7 @@ import com.centit.support.json.JsonPropertyUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -472,5 +473,16 @@ public class UnitInfoController extends BaseController {
 //       OperationLogCenter.logNewObject(request,optId, roleInfo.getRoleCode(), OperationLog.P_OPT_LOG_METHOD_U,
 //               "更新机构权限",roleInfo);
        /*********log*********/
+    }
+
+    @GetMapping(value = "/validroles")
+    public void listUnitAndPublicRole(HttpServletRequest request, HttpServletResponse response) {
+
+        String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
+        Map<String, Object> filterMap = new HashMap<>(4);
+        filterMap.put("publicUnitRole", currentUnitCode);
+        filterMap.put("isValid", "T");
+        List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap);
+        JsonResultUtils.writeSingleDataJson(roleInfos, response);
     }
 }

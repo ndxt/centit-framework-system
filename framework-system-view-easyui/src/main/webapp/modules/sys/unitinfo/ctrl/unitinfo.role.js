@@ -1,6 +1,7 @@
 define(function (require) {
   var Config = require('config');
   var Page = require('core/page');
+  var Mustache = require('plugins/mustache.min');
 
   var UnitInfoRoleAdd = require('../ctrl/unitinfo.role.add');
   var UnitInfoRoleEdit = require('../ctrl/unitinfo.role.edit');
@@ -19,7 +20,7 @@ define(function (require) {
     this.load = function (panel, data) {
       panel.find('table').cdatagrid({
         controller: _self,
-        url: Config.ContextPath + 'system/unitrole/unitroles/' + data.unitCode
+        url: Mustache.render(this.$findUp('queryCurrentUnitRoleUrl'), data)
       })
     };
 

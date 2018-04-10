@@ -13,6 +13,13 @@ public interface SysUnitRoleManager {
 
     JSONArray listUnitRoles(String unitCode,PageDesc pageDesc);
 
+    /**
+     * 根据机构 该机构关联角色
+     * @param unitCode 机构代码
+     * @param pageDesc 分页
+     */
+    JSONArray listCurrentUnitRoles(String unitCode, PageDesc pageDesc);
+
     JSONArray listRoleUnits(String roleCode,PageDesc pageDesc);
 
     /**
