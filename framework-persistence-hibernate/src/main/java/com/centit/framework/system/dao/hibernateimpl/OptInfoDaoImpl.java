@@ -5,6 +5,7 @@ import com.centit.framework.hibernate.dao.BaseDaoImpl;
 import com.centit.framework.hibernate.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.OptInfoDao;
 import com.centit.framework.system.po.*;
+import com.centit.support.database.orm.OrmDaoUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -159,6 +160,15 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     @Override
     public void updateOptInfo(OptInfo optInfo){
         super.updateObject(optInfo);
+    }
+
+    @Override
+    public List<FVUserOptMoudleList> listUserAllSubMenu(String userCode, String optType){
+        String hql = "FROM FVUserOptMoudleList where userCode=? and opttype = ? ORDER BY orderind";
+        // + " ORDER BY preoptid, formcode";
+        List<FVUserOptMoudleList> ls = (List<FVUserOptMoudleList>) DatabaseOptUtils.findObjectsByHql
+            (this, hql,new Object[]{userCode, optType});
+        return ls;
     }
 
 }

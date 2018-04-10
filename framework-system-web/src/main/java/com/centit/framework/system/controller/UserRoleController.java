@@ -3,12 +3,15 @@ package com.centit.framework.system.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
+import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.RoleInfo;
+import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
 import com.centit.framework.system.service.SysRoleManager;
+import com.centit.framework.system.service.SysUnitManager;
 import com.centit.framework.system.service.SysUserRoleManager;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
@@ -45,6 +48,9 @@ public class UserRoleController extends BaseController {
     @Resource
     @NotNull
     private SysUserRoleManager sysUserRoleManager;
+
+    @Resource
+    private SysUnitManager sysUnitManager;
 
     /**
      * 系统日志中记录
@@ -141,6 +147,24 @@ public class UserRoleController extends BaseController {
     public void listUsersByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("roleCode", roleCode);
+        listObject(filterMap, pageDesc, response);
+    }
+
+    /**
+     * 通过角色代码获取用户
+     *
+     * @param roleCode 角色代码
+     * @param pageDesc PageDesc
+     * @param request  {@link HttpServletRequest}
+     * @param response  {@link HttpServletResponse}
+     */
+    @RequestMapping(value = "/rolecurrentusers/{roleCode}", method = RequestMethod.GET)
+    public void listCurrentUsersByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+        String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
+        UnitInfo currentUnitInfo = sysUnitManager.getObjectById(currentUnitCode);
+        Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
+        filterMap.put("roleCode", roleCode);
+        filterMap.put("unitPath", currentUnitInfo.getUnitPath());
         listObject(filterMap, pageDesc, response);
     }
 

@@ -30,7 +30,7 @@ define(function (require) {
       var table = panel.find('table');
       table.cdatagrid({
         controller: _self,
-        url: Mustache.render(this.$findUp('roleInfoUsersUrl'), data),
+        url: Mustache.render(this.$findUp('roleInfoUsersUrl'), data)
       })
     };
   });

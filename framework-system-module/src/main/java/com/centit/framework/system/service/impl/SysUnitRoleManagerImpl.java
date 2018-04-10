@@ -79,4 +79,30 @@ public class SysUnitRoleManagerImpl implements SysUnitRoleManager {
     public void mergeUnitRole(UnitRole unitRole) {
         unitRoleDao.mergeUnitRole(unitRole);
     }
+
+    @Override
+    @Transactional
+    public JSONArray listRoleSubUnits(String roleCode, String unitPathPrefix, PageDesc pageDesc) {
+        Map<String, Object> filterMap = new HashMap<>(4);
+        filterMap.put("roleCode", roleCode);
+        filterMap.put("unitPathPrefix", unitPathPrefix);
+        List<UnitRole> unitRoles = unitRoleDao.pageQuery(
+            QueryParameterPrepare.makeMybatisOrderByParam(
+                QueryParameterPrepare.prepPageParams(
+                    filterMap,pageDesc,unitRoleDao.pageCount(filterMap)),UnitRole.class));
+        return DictionaryMapUtils.objectsToJSONArray(unitRoles);
+    }
+
+    @Override
+    @Transactional
+    public JSONArray listCurrentUnitRoles(String unitCode, PageDesc pageDesc){
+        Map<String, Object> filterMap = new HashMap<>(4);
+        filterMap.put("unitCode", unitCode);
+        filterMap.put("currentUnitCode", unitCode);
+        List<UnitRole> unitRoles = unitRoleDao.pageQuery(
+            QueryParameterPrepare.makeMybatisOrderByParam(
+                QueryParameterPrepare.prepPageParams(
+                    filterMap,pageDesc,unitRoleDao.pageCount(filterMap)),UnitRole.class));
+        return DictionaryMapUtils.objectsToJSONArray(unitRoles);
+    }
 }

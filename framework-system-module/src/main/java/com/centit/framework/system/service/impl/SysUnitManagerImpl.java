@@ -111,11 +111,10 @@ public class SysUnitManagerImpl implements SysUnitManager {
         String oldUnitPath = unitinfo.getUnitPath();
          List<UnitInfo> subUnits = unitInfoDao.listSubUnitsByUnitPaht(oldUnitPath);
         int noupl = oldUnitPath.length();
+        //子机构
         for(UnitInfo ui : subUnits){
-            if(unitinfo.getUnitCode().equals(ui.getParentUnit())) {
-              ui.setParentUnit("0");
-            }
-            ui.setParentUnit(ui.getUnitPath().substring(noupl));
+            ui.setParentUnit(unitinfo.getParentUnit());
+            ui.setUnitPath(unitinfo.getUnitPath());
             unitInfoDao.updateUnit(ui);
         }
 
@@ -149,9 +148,9 @@ public class SysUnitManagerImpl implements SysUnitManager {
         UnitInfo parentUnit = unitInfoDao.getObjectById(unitinfo.getParentUnit());
 
         if (parentUnit == null) {
-          unitinfo.setUnitPath("/" + unitinfo.getUnitCode());
+          unitinfo.setUnitPath("/" + unitinfo.getUnitCode() + "/");
         } else {
-          unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitCode());
+          unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitCode() + "/");
         }
 
         unitInfoDao.saveNewObject(unitinfo);
@@ -179,15 +178,16 @@ public class SysUnitManagerImpl implements SysUnitManager {
     @Transactional
     public void updateUnitInfo(UnitInfo unitinfo){
         UnitInfo dbUnitInfo = unitInfoDao.getObjectById(unitinfo.getUnitCode());
-        String oldParentUnit = dbUnitInfo.getParentUnit();
         String oldUnitPath = dbUnitInfo.getUnitPath();
         BeanUtils.copyProperties(unitinfo, dbUnitInfo, new String[]{"unitCode"});
-        if(!StringUtils.equals(oldParentUnit, unitinfo.getParentUnit())){
+        if(!StringUtils.equals(dbUnitInfo.getParentUnit(), unitinfo.getParentUnit())){
             UnitInfo parentUnit = unitInfoDao.getObjectById(unitinfo.getParentUnit());
-            if(parentUnit==null)
-                unitinfo.setUnitPath("/"+unitinfo.getUnitCode());
-            else
-                unitinfo.setUnitPath(parentUnit.getUnitPath()+"/"+unitinfo.getUnitCode());
+            if(parentUnit==null) {
+                unitinfo.setUnitPath("/"+unitinfo.getUnitCode()+"/");
+            }
+            else {
+                unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitCode() + "/");
+            }
             List<UnitInfo> subUnits = unitInfoDao.listSubUnitsByUnitPaht(oldUnitPath);
             int noupl = oldUnitPath.length();
             for(UnitInfo ui : subUnits){
@@ -278,12 +278,21 @@ public class SysUnitManagerImpl implements SysUnitManager {
 
     @Override
     @Transactional
-    public List<UnitInfo> listAllSubUnits(String unitCode){
+    public List<UnitInfo> listAllSubUnits(String unitCode) {
 
-      UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
-      if(unitInfo != null) {
+        UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
         return unitInfoDao.listSubUnitsByUnitPaht(unitInfo.getUnitPath());
-      }
-      return null;
+    }
+
+    /**
+     * 查询启用状态的下级机构
+     * @param unitCode 当前机构代码
+     */
+    public List<UnitInfo> listValidSubUnits(String unitCode){
+        Map<String, Object> filterMap = new HashMap<>(4);
+        UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
+        filterMap.put("unitPath", unitInfo.getUnitPath());
+        filterMap.put("isValid", "T");
+        return unitInfoDao.listObjects(filterMap);
     }
 }

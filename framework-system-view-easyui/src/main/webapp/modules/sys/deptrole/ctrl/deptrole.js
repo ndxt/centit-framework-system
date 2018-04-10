@@ -5,9 +5,17 @@ define(function(require) {
 
 	return RoleController.extend(function() {
 
-	  // 部门角色只查询主部门下的角色
+	  // 部门角色只查询当前部门下的角色
     var loginUser = Cache.get('loginuser');
-    this.queryRoleUrl = Config.ContextPath + "system/roleinfo/unit/" + loginUser.userInfo.primaryUnit;
+    this.queryRoleUrl = Config.ContextPath + "system/roleinfo/currentunit";
+    //部门所有权限
+    this.allPowerUrl = Config.ContextPath + 'system/optinfo/unitpoweropts/'+loginUser.userInfo.primaryUnit;
+    //部门机构
+    this.queryUnitUrl = Config.ContextPath + 'system/unitinfo/';
+    //角色机构
+    this.queryRoleUnitUrl = Config.ContextPath + "system/unitrole/rolesubunits/{{roleCode}}";
+    //角色用户
+    this.roleInfoUsersUrl = Config.ContextPath + 'system/userrole/rolecurrentusers/{{roleCode}}';
 
     this.validateRoleNameWhenAdd = Config.ContextPath + 'system/roleinfo/isunitroleunique/' + loginUser.userInfo.primaryUnit + '/{{roleName}}';
 
@@ -19,10 +27,21 @@ define(function(require) {
       ctrl.object.roleType = 'D';
     };
 
-    // 修改用户机构下拉框初始化
+    // 修改角色机构下拉框初始化
     this.initUnitCombotree = function (input) {
       input.combotree({
-        url: 'system/unitinfo/subunits'
+        url: 'system/unitinfo/validsubunits'
+      });
+    };
+    //修改角色用户下拉框初始化
+    this.initUserCombobox = function (input) {
+      input.combobox({
+        url: 'system/unitinfo/currentusers/T',
+        valueField: 'userCode',
+        textField: 'userName',
+        loadFilter: function(data) {
+          return data.objList ? data.objList : data;
+        }
       });
     };
 

@@ -64,4 +64,11 @@ public interface OptInfoManager{
 
      List<OptInfo> getFunctionsByRoleCode(String roleCode);
 
+    /**
+     * 查询用户全部权限
+     * @param userCode 用户代码
+     * @return
+     */
+     List<OptInfo> listUserAllPower(String userCode, boolean asAdmin);
+
 }

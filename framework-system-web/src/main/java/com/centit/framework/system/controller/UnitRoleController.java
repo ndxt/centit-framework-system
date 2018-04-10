@@ -1,11 +1,15 @@
 package com.centit.framework.system.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
+import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.operationlog.RecordOperationLog;
+import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UnitRole;
+import com.centit.framework.system.service.SysUnitManager;
 import com.centit.framework.system.service.SysUnitRoleManager;
 import com.centit.support.database.utils.PageDesc;
 import org.springframework.stereotype.Controller;
@@ -19,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,6 +37,9 @@ public class UnitRoleController extends BaseController {
     @Resource
     @NotNull
     private SysUnitRoleManager sysUnitRoleManager;
+
+    @Resource
+    private SysUnitManager sysUnitManager;
 
     /**
      * 系统日志中记录
@@ -59,6 +68,29 @@ public class UnitRoleController extends BaseController {
     }
 
     /**
+     * 通过角色代码获取机构
+     *
+     * @param roleCode 角色代码
+     * @param pageDesc PageDesc
+     * //param request  {@link HttpServletRequest}
+     * @param response  {@link HttpServletResponse}
+     */
+    @RequestMapping(value = "/rolesubunits/{roleCode}", method = RequestMethod.GET)
+    public void listSubUnitByRole(@PathVariable String roleCode, PageDesc pageDesc,
+                                  HttpServletResponse response) {
+
+        String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
+        UnitInfo currentUnit = sysUnitManager.getObjectById(currentUnitCode);
+        String unitPathPrefix = currentUnit.getUnitPath();
+
+        ResponseMapData resData = new ResponseMapData();
+        resData.addResponseData(OBJLIST, sysUnitRoleManager.listRoleSubUnits(roleCode, unitPathPrefix,pageDesc));
+        resData.addResponseData(PAGE_DESC, pageDesc);
+
+        JsonResultUtils.writeResponseDataAsJson(resData, response);
+    }
+
+    /**
      * 通过机构代码获取角色
      *
      * @param unitCode 机构代码
@@ -75,22 +107,39 @@ public class UnitRoleController extends BaseController {
     }
 
     /**
+     * 通过机构代码获取本机构角色
+     *
+     * @param unitCode 机构代码
+     * @param pageDesc PageDesc
+     * @param request  {@link HttpServletRequest}
+     * @param response  {@link HttpServletResponse}
+     */
+    @RequestMapping(value = "/currentunitroles/{unitCode}", method = RequestMethod.GET)
+    public void listCurrentUnitRole(@PathVariable String unitCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+        JSONArray ja = sysUnitRoleManager.listCurrentUnitRoles(unitCode, pageDesc);
+        ResponseMapData resData = new ResponseMapData();
+        resData.addResponseData(BaseController.OBJLIST, ja);
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
+        JsonResultUtils.writeResponseDataAsJson(resData, response);
+    }
+
+    /**
      * 返回一条用户角色关联信息
      * @param roleCode 角色代码
      * @param unitCode 用户代码
      * @param response HttpServletResponse
      */
-    @RequestMapping(value = "/{roleCode}/{unitCode}", method = RequestMethod.GET)
-    public void getUserRole(@PathVariable String roleCode, @PathVariable String unitCode, HttpServletResponse response) {
-
-        UnitRole unitRole = sysUnitRoleManager.getUnitRoleById(unitCode,roleCode);
-        if (null == unitRole) {
-            JsonResultUtils.writeErrorMessageJson("当前机构中无此角色", response);
-            return;
-        }
-        JsonResultUtils.writeSingleDataJson(
-            DictionaryMapUtils.objectToJSON(unitRole), response);
-    }
+//    @RequestMapping(value = "/{roleCode}/{unitCode}", method = RequestMethod.GET)
+//    public void getUserRole(@PathVariable String roleCode, @PathVariable String unitCode, HttpServletResponse response) {
+//
+//        UnitRole unitRole = sysUnitRoleManager.getUnitRoleById(unitCode,roleCode);
+//        if (null == unitRole) {
+//            JsonResultUtils.writeErrorMessageJson("当前机构中无此角色", response);
+//            return;
+//        }
+//        JsonResultUtils.writeSingleDataJson(
+//            DictionaryMapUtils.objectToJSON(unitRole), response);
+//    }
 
 
 

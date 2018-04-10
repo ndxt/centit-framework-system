@@ -25,6 +25,8 @@ define(function (require) {
 
     this.queryUnitUserUrl = 'system/cp/alluser/T';
 
+    this.queryCurrentUnitRoleUrl = Config.ContextPath + 'system/unitrole/unitroles/{{unitCode}}';
+
     this.beforeSearch = function() {
       this.currentUnit = null;
     };

@@ -13,6 +13,8 @@ define(function(require) {
 		]);
 		// @override
 		this.load = function(panel, data) {
+
+		  var allPowerUrl = this.$findUp("allPowerUrl");
 			var tree = panel.find('ul');
 			Core.ajax(Config.ContextPath + 'system/roleinfo/' + data.roleCode, {
 				method: 'get'
@@ -22,7 +24,7 @@ define(function(require) {
 					return obj.optCode;
 				});
 
-				_createOptInfoTree(tree, powers,data.rolePowers);
+				_createOptInfoTree(tree, allPowerUrl, powers,data.rolePowers);
 			});
 		};
 
@@ -62,8 +64,8 @@ define(function(require) {
 			return false;
 		};
 		// 创建选择操作权限树
-		var _createOptInfoTree = function(tree, powers,rolePower) {
-			Core.ajax(Config.ContextPath + 'system/optinfo/poweropts?field=id&field=iconCls&field=text&field=optMethods&field=children', {
+		var _createOptInfoTree = function(tree,allPowerUrl, powers,rolePower) {
+			Core.ajax(allPowerUrl, {
 				method: 'get'}).then(function(data) {
 				var dataMap=new Map();
 				Utils.walkTree(data, function(obj) {

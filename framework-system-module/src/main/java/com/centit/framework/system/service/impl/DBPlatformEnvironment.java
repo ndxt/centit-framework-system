@@ -634,7 +634,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         userInfoDao.updateUser(ui);
     }
 
-    private static List<OptInfo> getMenuFuncs(List<OptInfo> preOpts, List<FVUserOptMoudleList> ls) {
+    public static List<OptInfo> getMenuFuncs(List<OptInfo> preOpts, List<FVUserOptMoudleList> ls) {
         boolean isNeeds[] = new boolean[preOpts.size()];
         for (int i = 0; i < preOpts.size(); i++) {
             isNeeds[i] = false;

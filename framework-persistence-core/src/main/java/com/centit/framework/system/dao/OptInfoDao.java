@@ -73,6 +73,13 @@ public interface OptInfoDao {
      List<FVUserOptMoudleList> getMenuFuncByUserID(String userCode, String optType);
 
     /**
+     * 查询用户拥有的所有叶子菜单
+     * @param userCode 用户代码
+     * @param optType 菜单类型
+     */
+    List<FVUserOptMoudleList> listUserAllSubMenu(String userCode, String optType);
+
+    /**
      * 查询有子菜单 的菜单（opt_url=...）
      * @return 菜单列表
      */

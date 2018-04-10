@@ -24,6 +24,9 @@
         <if test="unitCode != null  and unitCode != ''  ">
             and u.UNIT_CODE = #{unitCode}
         </if>
+        <if test="unitPathPrefix != null  and unitPathPrefix != ''  ">
+            and u.UNIT_CODE in (select UNIT_CODE from f_unitinfo where UNIT_PATH like concat(#{unitPathPrefix}, '%'))
+        </if>
     </sql>
 
     <!-- 查询核心SQL -->

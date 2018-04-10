@@ -3,6 +3,7 @@ package com.centit.framework.system.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
+import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.model.basedata.IUserUnit;
@@ -101,21 +102,24 @@ public class RoleInfoController extends BaseController {
     }
 
     /**
-     * 查询所有 某部门角色
-     * @param field field[]
-     * @param unitCode unitCode
+     * 查询所有 当前部门角色
      * @param pageDesc PageDesc
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
-    @GetMapping(value = "/unit/{unitCode}")
-    public void listUnitAndPublicRole(String[] field,@PathVariable String unitCode,PageDesc pageDesc,
-                                      HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
-        filterMap.put("publicUnitRole", unitCode);
-        List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
-        writeRoleListToResponse(roleInfos,field,pageDesc,response );
+    @GetMapping(value = "/currentunit")
+    public void listUnitAndPublicRole(PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
 
+        String currentUnit = WebOptUtils.getLoginUser().getCurrentUnitCode();
+        Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
+        filterMap.put("publicUnitRole", currentUnit);
+        List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
+
+        ResponseMapData respData = new ResponseMapData();
+        respData.addResponseData(BaseController.OBJLIST, roleInfos);
+        respData.addResponseData(BaseController.PAGE_DESC, pageDesc);
+        JsonResultUtils.writeResponseDataAsJson(respData, response,
+            JsonPropertyUtils.getExcludePropPreFilter(RoleInfo.class, "rolePowers","userRoles"));
     }
 
     /**

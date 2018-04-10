@@ -412,7 +412,8 @@ public class OptInfoController extends BaseController {
 
     @RequestMapping(value = "/userpoweropts/{userCode}", method = RequestMethod.GET)
     public void listUserOpts(@PathVariable String userCode, HttpServletResponse response) {
-        List<OptInfo> optInfos = (List<OptInfo>) platformEnvironment.listUserMenuOptInfos(userCode, false);
+//        List<OptInfo> optInfos = (List<OptInfo>) platformEnvironment.listUserMenuOptInfos(userCode, false);
+        List<OptInfo> optInfos = optInfoManager.listUserAllPower(userCode, false);
         optInfos = optInfoManager.listObjectFormatTree(optInfos, true);
         JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(optInfos), response);
     }

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
+import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.operationlog.RecordOperationLog;
@@ -21,6 +22,7 @@ import com.centit.support.json.JsonPropertyUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -110,7 +112,6 @@ public class UnitInfoController extends BaseController {
 
     /**
      * 查询所有子机构信息
-     *
      * @param id    String parentUnit 父类机构
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
@@ -118,7 +119,7 @@ public class UnitInfoController extends BaseController {
     @RequestMapping(value = "/subunits",method = RequestMethod.GET)
     public void listSub(String id, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
-        UserInfo user=sysUserMag.getObjectById(super.getLoginUserCode(request));
+        String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
 
         String unitName = StringBaseOpt.castObjectToString(searchColumn.get("unitName"));
 
@@ -132,9 +133,9 @@ public class UnitInfoController extends BaseController {
             if (StringUtils.isNotBlank(id)) {
               filterMap.put("parentUnit", id);
             }else{
-              filterMap.put("parentUnit", StringUtils.isNotBlank(id) ? id : user.getPrimaryUnit());
+              filterMap.put("parentUnit", StringUtils.isNotBlank(id) ? id : currentUnitCode);
             }
-            List<UnitInfo>  listObjects= sysUnitManager.listAllSubUnits(user.getPrimaryUnit());
+            List<UnitInfo>  listObjects= sysUnitManager.listAllSubUnits(currentUnitCode);
 
           JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
           for(Object o : ja){
@@ -149,6 +150,31 @@ public class UnitInfoController extends BaseController {
           JsonResultUtils.writeSingleDataJson(ja, response, null);
         }
       }
+
+    /**
+     * 查询 当前机构 子机构
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
+     */
+    @RequestMapping(value = "/validsubunits",method = RequestMethod.GET)
+    public void listValidSubUnit(HttpServletRequest request, HttpServletResponse response) {
+
+        String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
+        List<UnitInfo>  listObjects= sysUnitManager.listValidSubUnits(currentUnitCode);
+
+        JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
+        for(Object o : ja){
+            ((JSONObject)o).put("state", "open");
+            ((JSONObject)o).put("id", ((JSONObject) o).getString("unitCode"));
+            ((JSONObject)o).put("text", ((JSONObject) o).getString("unitName"));
+        }
+        ja = ListOpt.srotAsTreeAndToJSON(ja, (p, c) ->
+        StringUtils.equals(
+          ((JSONObject)p).getString("unitCode"),
+          ((JSONObject)c).getString("parentUnit")),
+            "children");
+        JsonResultUtils.writeSingleDataJson(ja, response, null);
+    }
 
     /**
      * 查询单个机构信息
@@ -180,7 +206,7 @@ public class UnitInfoController extends BaseController {
 
         List<UserUnit> userUnits = sysUserUnitManager.listUnitUsersByUnitCode(unitCode);
         if(userUnits != null && userUnits.size() != 0){
-          JsonResultUtils.writeErrorMessageJson("该机构包含组织信息，不能删除！", response);
+          JsonResultUtils.writeErrorMessageJson("该机构包含用户信息，不能删除！", response);
           return;
         }
         sysUnitManager.deleteUnitInfo(unitInfo);
@@ -256,7 +282,7 @@ public class UnitInfoController extends BaseController {
             }
             List<UserUnit> userUnits = sysUserUnitManager.listUnitUsersByUnitCode(unitCode);
             if(userUnits != null && userUnits.size() != 0){
-              JsonResultUtils.writeErrorMessageJson("该机构包含组织信息，不能设为禁用！", response);
+              JsonResultUtils.writeErrorMessageJson("该机构包含用户信息，不能设为禁用！", response);
               return;
             }
         }
@@ -331,17 +357,17 @@ public class UnitInfoController extends BaseController {
     /**
      * 当前机构下所有用户
      *
-     * @param unitCode 机构代码
      * @param pageDesc 分页信息
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
-    @RequestMapping(value = "/{unitCode}/users", method = RequestMethod.GET)
-    public void listUnitUsers(@PathVariable String unitCode, PageDesc pageDesc,
-                              HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/currentunit/users", method = RequestMethod.GET)
+    public void listUnitUsers(PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+
+        String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
 
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
-        searchColumn.put("unitCode", unitCode);
+        searchColumn.put("unitCode", currentUnitCode);
 
         List<UserInfo> listObjects = sysUserMag.listObjects(searchColumn, pageDesc);
 
@@ -373,9 +399,10 @@ public class UnitInfoController extends BaseController {
     public void listAllUsersByCurrentUser(@PathVariable String state, HttpServletRequest request, HttpServletResponse response) {
         CentitUserDetails userInfo =  getLoginUser(request);
         String unitCode = userInfo.getCurrentUnitCode();
+        UnitInfo currentUnitInfo = sysUnitManager.getObjectById(unitCode);
 
         Map<String, Object> filterMap = new HashMap<>(4);
-        filterMap.put("unitCode", unitCode);
+        filterMap.put("unitPath", currentUnitInfo.getUnitPath());
         filterMap.put("isValid", state);
         List<UserInfo> listObjects = sysUserMag.listObjects(filterMap);
 
@@ -446,5 +473,16 @@ public class UnitInfoController extends BaseController {
 //       OperationLogCenter.logNewObject(request,optId, roleInfo.getRoleCode(), OperationLog.P_OPT_LOG_METHOD_U,
 //               "更新机构权限",roleInfo);
        /*********log*********/
+    }
+
+    @GetMapping(value = "/validroles")
+    public void listUnitAndPublicRole(HttpServletRequest request, HttpServletResponse response) {
+
+        String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
+        Map<String, Object> filterMap = new HashMap<>(4);
+        filterMap.put("publicUnitRole", currentUnitCode);
+        filterMap.put("isValid", "T");
+        List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap);
+        JsonResultUtils.writeSingleDataJson(roleInfos, response);
     }
 }
