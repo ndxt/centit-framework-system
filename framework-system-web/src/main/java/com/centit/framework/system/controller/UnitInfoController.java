@@ -1,5 +1,6 @@
 package com.centit.framework.system.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.common.JsonResultUtils;
@@ -11,10 +12,7 @@ import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.security.model.CentitUserDetails;
 import com.centit.framework.system.po.*;
-import com.centit.framework.system.service.SysRoleManager;
-import com.centit.framework.system.service.SysUnitManager;
-import com.centit.framework.system.service.SysUserManager;
-import com.centit.framework.system.service.SysUserUnitManager;
+import com.centit.framework.system.service.*;
 import com.centit.support.algorithm.ListOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
@@ -60,6 +58,10 @@ public class UnitInfoController extends BaseController {
     @Resource
     @NotNull
     private SysRoleManager sysRoleManager;
+
+    @Resource
+    @NotNull
+    private SysUnitRoleManager sysUnitRoleManager;
 
     /**
      * 系统日志中记录
@@ -206,10 +208,18 @@ public class UnitInfoController extends BaseController {
 
         List<UserUnit> userUnits = sysUserUnitManager.listUnitUsersByUnitCode(unitCode);
         if(userUnits != null && userUnits.size() != 0){
-          JsonResultUtils.writeErrorMessageJson("该机构包含用户信息，不能删除！", response);
+          JsonResultUtils.writeErrorMessageJson("该机构存在关联用户，不能删除！", response);
           return;
         }
         sysUnitManager.deleteUnitInfo(unitInfo);
+        //删除unitrole关系表
+        JSONArray unitRoles = sysUnitRoleManager.listUnitRoles(unitCode,new PageDesc());
+        if (unitRoles != null && unitRoles.size()>0){
+            for (Object obj : unitRoles){
+                sysUnitRoleManager.deleteUnitRole(unitCode,
+                    JSONObject.toJavaObject((JSON) DictionaryMapUtils.objectToJSON(obj),UnitRole.class).getRoleCode());
+            }
+        }
 
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
@@ -234,6 +244,15 @@ public class UnitInfoController extends BaseController {
             JsonResultUtils.writeErrorMessageJson(
                     ResponseData.ERROR_FIELD_INPUT_CONFLICT,
                     "机构名"+unitInfo.getUnitName()+"已存在，请更换！", response);
+            return;
+        }
+        HashMap<String,Object> map = new HashMap();
+        map.put("unitWord",unitInfo.getUnitWord());
+        List<UnitInfo> unitInfos = sysUnitManager.listObjects(map);
+        if (unitInfos != null && unitInfos.size()>0){
+            JsonResultUtils.writeErrorMessageJson(
+                ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                "机构编码"+unitInfo.getUnitWord()+"已存在，请更换！", response);
             return;
         }
       while (!sysUnitManager.isUniqueOrder(unitInfo)){
@@ -274,6 +293,19 @@ public class UnitInfoController extends BaseController {
                     "机构名"+unitInfo.getUnitName()+"已存在，请更换！", response);
             return;
         }
+
+        HashMap<String,Object> map = new HashMap();
+        map.put("unitWord",unitInfo.getUnitWord());
+        List<UnitInfo> unitInfos = sysUnitManager.listObjects(map);
+        if (unitInfos != null && unitInfos.size()>0){
+            if (!unitCode.equals(unitInfos.get(0).getUnitCode())){
+                JsonResultUtils.writeErrorMessageJson(
+                    ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                    "机构编码"+unitInfo.getUnitWord()+"已存在，请更换！", response);
+                return;
+            }
+        }
+
         if("F".equals(unitInfo.getIsValid())){
             List<UnitInfo> units = sysUnitManager.listValidSubUnit(unitCode);
             if(units != null && units.size() != 0){
@@ -282,7 +314,7 @@ public class UnitInfoController extends BaseController {
             }
             List<UserUnit> userUnits = sysUserUnitManager.listUnitUsersByUnitCode(unitCode);
             if(userUnits != null && userUnits.size() != 0){
-              JsonResultUtils.writeErrorMessageJson("该机构包含用户信息，不能设为禁用！", response);
+              JsonResultUtils.writeErrorMessageJson("该机构存在关联用户，不能设为禁用！", response);
               return;
             }
         }

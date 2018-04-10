@@ -77,7 +77,7 @@ public class DataDictionaryManagerImpl implements
                 }
             }
         }
-        if(dbOptList != null) {
+        if(dbOptList.getLeft() != null) {
             for (DataDictionary dp : dbOptList.getLeft()) {
                 //if ((isAdmin || !"F".equals(dp.getDataStyle()))) {
                     dictionaryDao.saveNewObject(dp);
