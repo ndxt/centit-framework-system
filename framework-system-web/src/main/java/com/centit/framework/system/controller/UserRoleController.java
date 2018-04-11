@@ -125,13 +125,8 @@ public class UserRoleController extends BaseController {
     public void listRolesByUser(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("userCode", userCode);
-        //String type = request.getParameter("type");
-        /*if("S".equals(type)){
-            filterMap.put("NP_userRoleType", true);
-        }else if("D".equals(type)){
-            filterMap.put("NP_unitRoleType", true);
+        filterMap.put("roleValid","T");
 
-        }*/
         listObject(filterMap, pageDesc, response);
     }
 
@@ -147,6 +142,7 @@ public class UserRoleController extends BaseController {
     public void listUsersByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("roleCode", roleCode);
+        filterMap.put("userValid", "T");
         listObject(filterMap, pageDesc, response);
     }
 
@@ -165,14 +161,17 @@ public class UserRoleController extends BaseController {
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("roleCode", roleCode);
         filterMap.put("unitPath", currentUnitInfo.getUnitPath());
+        filterMap.put("userValid", "T");
         listObject(filterMap, pageDesc, response);
     }
 
-    @RequestMapping(value = "/userunitroles/{unitCode}/{userCode}", method = RequestMethod.GET)
-    public void listUserUnitRoles(@PathVariable String unitCode,@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/usercurrentroles/{userCode}", method = RequestMethod.GET)
+    public void listUserUnitRoles(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
       Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
+      String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
       filterMap.put("userCode", userCode);
-      filterMap.put("roleUnitCode", unitCode);
+      filterMap.put("roleUnitCode", currentUnitCode);
+      filterMap.put("roleValid", "T");
       listObject(filterMap, pageDesc, response);
     }
 

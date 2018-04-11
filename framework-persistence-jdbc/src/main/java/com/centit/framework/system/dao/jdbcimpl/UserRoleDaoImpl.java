@@ -30,7 +30,7 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
             filterField.put("userCode", CodeBook.EQUAL_HQL_ID);
             filterField.put("roleName", CodeBook.LIKE_HQL_ID);
             filterField.put("roleUnitCode", "ROLE_CODE in (select ro.ROLE_CODE from f_roleinfo ro " +
-                    "where (ro.ROLE_TYPE = 'P' or (ro.ROLE_TYPE = 'D' and ro.UNIT_CODE = :unitCode))");
+                    "where (ro.ROLE_TYPE = 'P' or (ro.ROLE_TYPE = 'D' and ro.UNIT_CODE = :roleUnitCode)))");
             filterField.put("unitCode", "USER_CODE in (select uu.USER_CODE from F_USERUNIT uu where uu.UNIT_CODE = :unitCode)");
             filterField.put("userCode_isValid", "userCode in (select us.USER_CODE from f_userinfo us " +
                     "where us.IS_VALID = :userCode_isValid)");
@@ -38,7 +38,12 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
             filterField.put("(like)userName", "userCode in (select us.USER_CODE from f_userinfo us " +
                     "where us.USER_NAME like :userName)");
             filterField.put("(STARTWITH)unitPath", "userCode in (select us.USER_CODE from f_userunit us where us.UNIT_CODE in " +
-                "                    (select un.UNIT_CODE from f_unitinfo un where un.UNIT_PATH like :unitPath))");
+                "(select un.UNIT_CODE from f_unitinfo un where un.UNIT_PATH like :unitPath))");
+
+            filterField.put("userValid", "userCode in (select us.USER_CODE from f_userinfo us " +
+                "where us.IS_VALID = :userValid)");
+            filterField.put("roleValid", "roleCode in (select us.ROLE_CODE from f_roleinfo us " +
+                "where us.IS_VALID = :roleValid)");
         }
         return filterField;
     }

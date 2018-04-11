@@ -103,6 +103,9 @@ define(function (require) {
         Core.ajax(Config.ContextPath + this.url + "update/" + data.catalogCode, {
           data: data,
           method: 'post'
+        }).then(function(){
+          require('loaders/cache/loader.dictionary').loadAll(
+            [{id:data.catalogCode, url:Mustache.render('system/cp/dictionary/{{catalogCode}}', data)}]);
         }).then(closeCallback);
 
       }

@@ -11,6 +11,8 @@ import java.util.Map;
  */
 public interface SysUnitRoleManager {
 
+    JSONArray listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
+
     JSONArray listUnitRoles(String unitCode,PageDesc pageDesc);
 
     /**

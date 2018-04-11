@@ -12,6 +12,8 @@ define(function (require) {
     // 修改用户角色链接
     this.queryRoleUrl = 'system/roleinfo/listRoles/D';
 
+    this.userInfoRoles = Config.ContextPath + 'system/userrole/usercurrentroles/{{userCode}}';
+
     // 修改用户机构下拉框初始化
     this.initUnitCombotree = function (input) {
       input.combotree({

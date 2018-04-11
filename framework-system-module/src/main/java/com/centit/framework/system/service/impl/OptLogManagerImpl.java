@@ -97,9 +97,10 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
     @Transactional(propagation=Propagation.REQUIRED)
     public JSONArray listObjectsAsJson( String[] fields,
             Map<String, Object> filterMap, PageDesc pageDesc){
-
+        //filterMap.put(CodeBook.TABLE_SORT_FIELD, "optTime");
+        //filterMap.put("optId", new String[]{"login","admin","optTime"});
         return DictionaryMapUtils.objectsToJSONArray(
-                    optLogDao.pageQuery(
+                    optLogDao.pageQuery/*ByPDSql*/(
                         QueryParameterPrepare.makeMybatisOrderByParam(
                             QueryParameterPrepare.prepPageParams(filterMap,pageDesc,
                                 optLogDao.pageCount(filterMap)),OptLog.class)));

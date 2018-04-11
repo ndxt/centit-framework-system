@@ -84,29 +84,30 @@ public class OptInfoManagerImpl implements OptInfoManager {
             OptMethod createDef = new OptMethod();
             createDef.setOptCode(optMethodDao.getNextOptCode());
             createDef.setOptId(optInfo.getOptId());
-            createDef.setOptName("新建");
-            createDef.setOptUrl("/");
-            createDef.setOptReq("C");
-            createDef.setOptDesc("新建（系统默认）");
+            createDef.setOptName("查看");
+            createDef.setOptMethod("search");
+            createDef.setOptUrl("/changeme");
+            createDef.setOptReq("CRUD");
+            createDef.setOptDesc("查看（系统默认）");
             optMethodDao.saveNewObject(createDef);
 
-            OptMethod updateDef = new OptMethod();
-            updateDef.setOptCode(optMethodDao.getNextOptCode());
-            updateDef.setOptId(optInfo.getOptId());
-            updateDef.setOptName("编辑");
-            updateDef.setOptUrl("/*");
-            updateDef.setOptReq("U");
-            updateDef.setOptDesc("编辑（系统默认）");
-            optMethodDao.saveNewObject(updateDef);
-
-            OptMethod deleteDef = new OptMethod();
-            deleteDef.setOptCode(optMethodDao.getNextOptCode());
-            deleteDef.setOptId(optInfo.getOptId());
-            deleteDef.setOptName("删除");
-            deleteDef.setOptUrl("/*");
-            deleteDef.setOptReq("D");
-            deleteDef.setOptDesc("删除（系统默认）");
-            optMethodDao.saveNewObject(deleteDef);
+//            OptMethod updateDef = new OptMethod();
+//            updateDef.setOptCode(optMethodDao.getNextOptCode());
+//            updateDef.setOptId(optInfo.getOptId());
+//            updateDef.setOptName("编辑");
+//            updateDef.setOptUrl("/*");
+//            updateDef.setOptReq("U");
+//            updateDef.setOptDesc("编辑（系统默认）");
+//            optMethodDao.saveNewObject(updateDef);
+//
+//            OptMethod deleteDef = new OptMethod();
+//            deleteDef.setOptCode(optMethodDao.getNextOptCode());
+//            deleteDef.setOptId(optInfo.getOptId());
+//            deleteDef.setOptName("删除");
+//            deleteDef.setOptUrl("/*");
+//            deleteDef.setOptReq("D");
+//            deleteDef.setOptDesc("删除（系统默认）");
+//            optMethodDao.saveNewObject(deleteDef);
         }
     }
 

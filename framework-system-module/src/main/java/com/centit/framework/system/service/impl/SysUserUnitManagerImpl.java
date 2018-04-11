@@ -239,6 +239,7 @@ public class SysUserUnitManagerImpl
         UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
         if(unitInfo != null){
             map.put("unitPath", unitInfo.getUnitPath());
+            map.put("isValid", "T");
             return userUnitDao.querySubUserUnits(
                 QueryParameterPrepare.makeMybatisOrderByParam(
               QueryParameterPrepare.prepPageParams(map,pageDesc,userUnitDao.countSubUserUnits(map)),UserUnit.class));

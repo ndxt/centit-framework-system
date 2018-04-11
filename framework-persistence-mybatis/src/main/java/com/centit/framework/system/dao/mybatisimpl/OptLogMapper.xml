@@ -33,9 +33,7 @@
         <if test="optTimeEnd != null  and optTimeEnd != ''  ">
             and u.OPT_TIME <![CDATA[<= ]]> to_date(#{optTimeEnd},'yyyy-mm-dd')+1
         </if>
-        <if test="optId != null  and optId != ''  ">
-            and u.OPT_ID like '%'|| #{optId}||'%'
-        </if>
+
         <if test="optCode != null  and optCode != ''  ">
             and u.OPT_CODE like '%'|| #{optCode}||'%'
         </if>
@@ -85,7 +83,7 @@
             and u.OPT_METHOD like concat('%', #{optMethod}, '%')
         </if>
         <if test="optId != null  and optId != ''  ">
-            and u.OPT_ID = #{optId}
+            and u.OPT_ID in ( #{optId} )
         </if>
     </sql>
 
@@ -105,9 +103,7 @@
         <if test="optTimeEnd != null  and optTimeEnd != ''  ">
             and u.OPT_TIME <![CDATA[<= ]]> date_sub(str_to_date(#{optTimeEnd},'%Y-%m-%d'),INTERVAL -1 DAY)
         </if>
-        <if test="optId != null  and optId != ''  ">
-            and u.OPT_ID like concat('%', #{optId}, '%')
-        </if>
+
         <if test="optCode != null  and optCode != ''  ">
             and u.OPT_CODE like concat('%', #{optCode}, '%')
         </if>
@@ -126,9 +122,7 @@
     </sql>
 
     <!-- 查询核心SQL -->
-    <sql id="coreSql">
-        <![CDATA[
-            select u.LOG_ID,
+    <sql id="coreSql"><![CDATA[ select u.LOG_ID,
                    u.LOG_LEVEL,
                    u.USER_CODE,
                    u.OPT_TIME,
@@ -138,9 +132,7 @@
                    u.OPT_CONTENT,
                    u.NEW_VALUE,
                    u.OLD_VALUE
-            from F_OPT_LOG u
-        ]]>
-    </sql>
+            from F_OPT_LOG u ]]></sql>
 
     <!--分页计数 -->
     <select id="pageCount" parameterType="map" resultType="int">
@@ -154,7 +146,7 @@
     </select>
 
     <!--分页查询 -->
-    <select id="pageQuery" parameterType="map" resultMap="OptLog">
+    <!--<select id="pageQuery" parameterType="map" resultMap="OptLog">
         <include refid="com.centit.framework.mybatis.dao.BaseDao.pageBegin" />
         <include refid="coreSql" />
         <where>
@@ -165,6 +157,41 @@
         </if>
 
         <include refid="com.centit.framework.mybatis.dao.BaseDao.pageEnd" />
+    </select>
+
+    <select id="pageQueryByPDSql" parameterType="map" resultMap="OptLog">
+        <include refid="com.centit.framework.mybatis.dao.BaseDao.pageBeginByPDSql" />
+        <include refid="coreSql" />
+        where 1=1 [ :logId | and u.LOG_ID = :logId ]
+        [ :(like)logLevel | and u.LOG_LEVEL like :logLevel]
+        [ :userCode | and u.USER_CODE = :userCode]
+        [ :(date)optTimeBegin | and u.OPT_TIME >= :optTimeBegin]
+        [ :(nextday)optTimeEnd | and u.OPT_TIME <![CDATA[<= ]]> :optTimeEnd]
+        [ :optId | and u.OPT_ID in (:optId)]
+        [ :optCode | and u.OPT_CODE = :optCode]
+        [ :(like)optContent | and u.OPT_CONTENT :optContent]
+        [ :(like)oldValue| and u.OLD_VALUE like :oldValue]
+        [ :(like)optMethod| and u.OPT_METHOD like :optMethod]
+        [ :(INPLACE)mybatisOrderBy | order by :mybatisOrderBy]
+        <include refid="com.centit.framework.mybatis.dao.BaseDao.pageEndByPDSql" />
+    </select>-->
+
+    <select id="pageQuery" parameterType="map" resultMap="OptLog">
+        /* parameter driver sql */
+        <include refid="com.centit.framework.mybatis.dao.BaseDao.pageBeginByPDSql" />
+        <include refid="coreSql" />
+        where 1=1 [ :logId | and u.LOG_ID = :logId ]
+        [ :(like)logLevel | and u.LOG_LEVEL like :logLevel]
+        [ :userCode | and u.USER_CODE = :userCode]
+        [ :(date)optTimeBegin | and u.OPT_TIME >= :optTimeBegin]
+        [ :(nextday)optTimeEnd | and u.OPT_TIME <![CDATA[<= ]]> :optTimeEnd]
+        [ :optId | and u.OPT_ID in (:optId)]
+        [ :optCode | and u.OPT_CODE = :optCode]
+        [ :(like)optContent | and u.OPT_CONTENT :optContent]
+        [ :(like)oldValue| and u.OLD_VALUE like :oldValue]
+        [ :(like)optMethod| and u.OPT_METHOD like :optMethod]
+        [ :(INPLACE)mybatisOrderBy | order by :mybatisOrderBy]
+        <include refid="com.centit.framework.mybatis.dao.BaseDao.pageEndByPDSql" />
     </select>
     <!--分页查询结束 -->
 
