@@ -8,8 +8,12 @@ define(function (require) {
   return RoleInfoAdd.extend(function () {
     var _self = this;
 
-    this.renderButton = function(btn, row) {
+    this.selfDefButton = function (row) {
       return 'F' !== row.roleType;
+    };
+
+    this.renderButton = function(btn, row) {
+      return this.$findUp('selfDefButton')(row);
     };
 
     this.validateRoleNameWhenEdit = Config.ContextPath + 'system/roleinfo/issysroleunique/{{roleName}}/{{roleCode}}';

@@ -8,6 +8,14 @@ define(function(require) {
 
 	var RoleInfoOperate = Page.extend(function() {
 		var _self = this;
+    this.selfDefButton = function (row) {
+      return true;
+    };
+
+    this.renderButton = function(btn, row) {
+      return this.$findUp('selfDefButton')(row);
+    };
+
 		this.injecte([
 			RoleInfoPower
 		]);

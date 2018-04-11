@@ -7,9 +7,13 @@ define(function (require) {
   // 删除数据字典
   var RoleInfoRemove = Page.extend(function () {
 
-    this.renderButton = function (btn, data) {
-      return canRemoveRole(data) && 'F' !== data.roleType;
-    }
+    this.selfDefButton = function (row) {
+      return canRemoveRole(row) && 'F' !== row.roleType;
+    };
+
+    this.renderButton = function(btn, row) {
+      return this.$findUp('selfDefButton')(row);
+    };
 
     // @override
     this.submit = function (table, data) {

@@ -45,6 +45,10 @@ define(function(require) {
       });
     };
 
+    this.selfDefButton = function (row) {
+      return 'P' !== row.roleType;
+    };
+
 	});
 
 });
