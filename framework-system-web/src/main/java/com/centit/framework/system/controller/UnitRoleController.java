@@ -169,6 +169,11 @@ public class UnitRoleController extends BaseController {
     @RequestMapping(method = RequestMethod.POST)
     @RecordOperationLog(content="用户{userInfo.userCode}给机构{arg1}赋予权限{arg0.roleCode}")
     public void create(@Valid UnitRole unitRole,@Valid String[] unitCode, HttpServletResponse response) {
+        if (sysUnitRoleManager.getUnitRoleById(unitRole.getUnitCode(),unitRole.getRoleCode()) != null){
+            JsonResultUtils.writeErrorMessageJson("该角色已经关联此机构", response);
+            return;
+        }
+
         unitRole.setCreateDate(new Date());
         if(unitCode!=null && unitCode.length>0){
             for(String u: unitCode){

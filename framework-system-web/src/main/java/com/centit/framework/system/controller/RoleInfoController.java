@@ -97,6 +97,7 @@ public class RoleInfoController extends BaseController {
 
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("NP_GLOBAL", "true");
+        filterMap.put("isValid", "T");
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
         writeRoleListToResponse(roleInfos,field,pageDesc,response );
     }
@@ -228,6 +229,7 @@ public class RoleInfoController extends BaseController {
             }
         }
         //roleInfo.setUnitCode("G");
+        roleInfo.setCreator(WebOptUtils.getLoginUserName(request));
         roleInfo.setCreateDate(new Date());
         sysRoleManager.saveNewRoleInfo(roleInfo);
       //刷新缓存

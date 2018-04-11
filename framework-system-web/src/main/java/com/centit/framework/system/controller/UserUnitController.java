@@ -204,6 +204,16 @@ public class UserUnitController extends BaseController {
     @RecordOperationLog(content = "新增用户机构关联信息")
     public void create(@Valid UserUnit userUnit,HttpServletRequest request, HttpServletResponse response) {
 
+        HashMap<String,Object> map = new HashMap();
+        map.put("unitCode",userUnit.getUnitCode());
+        map.put("userRank",userUnit.getUserRank());
+        map.put("userCode",userUnit.getUserCode());
+        List<UserUnit> list = sysUserUnitManager.listObjects(map,new PageDesc());
+        if (list != null && list.size()>0){
+            JsonResultUtils.writeErrorMessageJson("该机构职务已存在", response);
+            return;
+        }
+
         userUnit.setCreator(getLoginUserCode(request));
         sysUserUnitManager.saveNewUserUnit(userUnit);
 
