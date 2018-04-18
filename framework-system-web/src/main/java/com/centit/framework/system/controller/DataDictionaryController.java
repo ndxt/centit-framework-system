@@ -48,7 +48,7 @@ public class DataDictionaryController extends BaseController {
     public static final String U = "U";
     public static final String T = "T";
 
-    @Value("${sys.multi_lang}")
+    @Value("${app.local.multiLang}")
     private boolean multiLang;
 
     @Resource
