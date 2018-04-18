@@ -9,6 +9,7 @@ import com.centit.framework.system.po.OptLog;
 import com.centit.support.database.utils.PersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,7 +87,7 @@ public class OptLogDaoImpl extends BaseDaoImpl<OptLog, Long> implements OptLogDa
 
         try {
             DatabaseOptUtils.doExecuteSql(this, hql, objects.toArray(new Object[objects.size()]));
-        } catch (SQLException e) {
+        } catch (DataAccessException e) {
             throw new PersistenceException(e);
         }
 

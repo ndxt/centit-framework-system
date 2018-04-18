@@ -7,10 +7,12 @@ import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UserInfoDao;
 import com.centit.framework.system.po.FVUserOptList;
 import com.centit.framework.system.po.UserInfo;
+import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.database.utils.QueryUtils;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -140,48 +142,29 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
     public int isLoginNameExist(String userCode, String loginName){
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.LOGINNAME = ?";
-        try {
-            return DatabaseOptUtils.doExecuteSql(this, sql,
-                    new Object[]{userCode, loginName});
-        }catch(SQLException e){
-            logger.error(e.getMessage(), e);
-        }
-        return -1;
+        return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
+                    new Object[]{userCode, loginName}));
     }
     public int isCellPhoneExist(String userCode, String loginName){
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.REGCELLPHONE = ?";
-        try {
-            return DatabaseOptUtils.doExecuteSql(this, sql,
-                    new Object[]{userCode, loginName});
-        }catch(SQLException e){
-            logger.error(e.getMessage(), e);
-        }
-        return -1;
+        return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
+                    new Object[]{userCode, loginName}));
     }
     public int isEmailExist(String userCode, String loginName){
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.REGEMAIL = ?";
-        try {
-            return DatabaseOptUtils.doExecuteSql(this, sql,
-                    new Object[]{userCode, loginName});
-        }catch(SQLException e){
-            logger.error(e.getMessage(), e);
-        }
-        return -1;
+        return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
+                    new Object[]{userCode, loginName}));
     }
 
     public int isAnyOneExist(String userCode, String loginName,String regPhone,String regEmail) {
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USER_CODE != ? and " +
                 "(t.LOGIN_NAME = ? or t.REG_CELL_PHONE= ? or t.Reg_Email = ?)";
-        try {
-            return DatabaseOptUtils.doExecuteSql(this, sql,
-                    new Object[]{userCode, loginName, regPhone, regEmail});
-        }catch(SQLException e){
-            logger.error(e.getMessage(), e);
-        }
-        return -1;
+        return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
+                    new Object[]{userCode, loginName, regPhone, regEmail}));
+
     }
 
     @Override
