@@ -2,6 +2,7 @@ package com.centit.framework.system.security;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.centit.framework.model.basedata.IUserUnit;
+import com.centit.framework.security.SecurityContextUtils;
 import com.centit.framework.security.model.CentitSecurityMetadata;
 import com.centit.framework.security.model.CentitUserDetails;
 import com.centit.framework.system.po.RoleInfo;
@@ -140,10 +141,18 @@ public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Seriali
       if (this.userRoles.size() < 1)
         return;
 
-      for (RoleInfo role : this.userRoles) {
-          arrayAuths.add(new SimpleGrantedAuthority(CentitSecurityMetadata.ROLE_PREFIX
-              + StringUtils.trim(role.getRoleCode())));
-      }
+        boolean havePublicRole = false;
+        for (RoleInfo role : this.userRoles) {
+            arrayAuths.add(new SimpleGrantedAuthority(CentitSecurityMetadata.ROLE_PREFIX
+                + StringUtils.trim(role.getRoleCode())));
+            if(SecurityContextUtils.PUBLIC_ROLE_CODE.equalsIgnoreCase(role.getRoleCode())){
+                havePublicRole = true;
+            }
+        }
+        if(!havePublicRole){
+            arrayAuths.add(new SimpleGrantedAuthority(CentitSecurityMetadata.ROLE_PREFIX
+                + SecurityContextUtils.PUBLIC_ROLE_CODE));
+        }
       //排序便于后面比较
       Collections.sort(arrayAuths,Comparator.comparing(GrantedAuthority::getAuthority));
       //lastUpdateRoleTime = new Date(System.currentTimeMillis());
