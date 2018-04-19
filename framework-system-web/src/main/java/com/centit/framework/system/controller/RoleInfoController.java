@@ -6,6 +6,7 @@ import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.controller.BaseController;
+import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.IUserUnit;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.*;
@@ -36,6 +37,9 @@ public class RoleInfoController extends BaseController {
     @Resource
     @NotNull
     private SysRoleManager sysRoleManager;
+
+    @Resource
+    protected PlatformEnvironment platformEnvironment;
 
     @Resource
     @NotNull
@@ -233,7 +237,7 @@ public class RoleInfoController extends BaseController {
         roleInfo.setCreateDate(new Date());
         sysRoleManager.saveNewRoleInfo(roleInfo);
       //刷新缓存
-        sysRoleManager.loadRoleSecurityMetadata();
+        platformEnvironment.reloadSecurityMetadata();//loadRoleSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
 
         /*********log*********/
@@ -272,8 +276,8 @@ public class RoleInfoController extends BaseController {
         dbRoleInfo.getRolePowers().add(rolePower);
 
         sysRoleManager.updateRoleInfo(dbRoleInfo);
-      //刷新缓存
-        sysRoleManager.loadRoleSecurityMetadata();
+        //刷新缓存
+        platformEnvironment.reloadSecurityMetadata();//sysRoleManager.loadRoleSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
 //        OperationLogCenter.logNewObject(request,optId, rolePower.getOptCode(),
@@ -308,7 +312,7 @@ public class RoleInfoController extends BaseController {
         dbRoleInfo.getRolePowers().remove(rolePower);
         sysRoleManager.updateRoleInfo(dbRoleInfo);
         //刷新缓存
-        sysRoleManager.loadRoleSecurityMetadata();
+        platformEnvironment.reloadSecurityMetadata();//sysRoleManager.loadRoleSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
 //        OperationLogCenter.logDeleteObject(request,optId,rolePower.getOptCode(),
@@ -387,7 +391,7 @@ public class RoleInfoController extends BaseController {
         List<RolePower> oldRolePowers = sysRoleManager.updateRolePower(dbRoleInfo);
         oldRoleInfo.setRolePowers(oldRolePowers);
 
-        sysRoleManager.loadRoleSecurityMetadata();
+        platformEnvironment.reloadSecurityMetadata();//sysRoleManager.loadRoleSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
 
         /*********log*********/

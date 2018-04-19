@@ -193,9 +193,8 @@ public class OptInfoController extends BaseController {
         if (parentOpt == null)
             optInfo.setPreOptId("0");
         optInfoManager.saveNewOptInfo(optInfo);
-
         //刷新缓存
-        sysRoleManager.loadRoleSecurityMetadata();
+        platformEnvironment.reloadSecurityMetadata();//sysRoleManager.loadRoleSecurityMetadata();
 
         JsonResultUtils.writeSingleDataJson(optInfo, response);
         /*********log*********/
@@ -308,7 +307,7 @@ public class OptInfoController extends BaseController {
 //    oldValue.setOptMethods(old.get("methods"));
 //    oldValue.setDataScopes(old.get("scopes"));
         //刷新缓存
-        sysRoleManager.loadRoleSecurityMetadata();
+        platformEnvironment.reloadSecurityMetadata();//sysRoleManager.loadRoleSecurityMetadata();
         /*********log*********/
 //    OperationLogCenter.logUpdateObject(request, this.optId, dbOptInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_U,
 //      "更新操作权限" + dbOptInfo.getOptId(), dbOptInfo, oldValue);
@@ -331,7 +330,7 @@ public class OptInfoController extends BaseController {
 
         optInfoManager.deleteOptInfo(dboptInfo);
         //刷新缓存
-        sysRoleManager.loadRoleSecurityMetadata();
+        platformEnvironment.reloadSecurityMetadata();//sysRoleManager.loadRoleSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
 //    OperationLogCenter.logDeleteObject(request, this.optId, dboptInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_D,

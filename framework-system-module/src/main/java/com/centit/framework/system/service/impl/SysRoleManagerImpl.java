@@ -3,8 +3,6 @@ package com.centit.framework.system.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.core.dao.QueryParameterPrepare;
-import com.centit.framework.security.model.CentitSecurityMetadata;
-import com.centit.framework.security.model.OptTreeNode;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysRoleManager;
@@ -20,15 +18,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.security.access.ConfigAttribute;
-import org.springframework.security.access.SecurityConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service("sysRoleManager")
 public class SysRoleManagerImpl implements SysRoleManager {
@@ -55,39 +54,6 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @NotNull
     private UserRoleDao userRoleDao;
 
-    @Override
-    @Transactional(readOnly=true)
-    public void loadRoleSecurityMetadata() {
-        CentitSecurityMetadata.optMethodRoleMap.clear();
-        List<RolePower> rplist = listAllRolePowers();
-        if(rplist==null || rplist.size()==0)
-            return;
-        for(RolePower rp: rplist ){
-            List<ConfigAttribute/*roleCode*/> roles = CentitSecurityMetadata.optMethodRoleMap.get(rp.getOptCode());
-            if(roles == null){
-                roles = new ArrayList<>();
-            }
-            roles.add(new SecurityConfig(CentitSecurityMetadata.ROLE_PREFIX + StringUtils.trim(rp.getRoleCode())));
-            CentitSecurityMetadata.optMethodRoleMap.put(rp.getOptCode(), roles);
-        }
-        //将操作和角色对应关系中的角色排序，便于权限判断中的比较
-        CentitSecurityMetadata.sortOptMethodRoleMap();
-
-        List<OptMethodUrlMap> oulist = listAllOptMethodUrlMap();
-        CentitSecurityMetadata.optTreeNode.setChildList(null);
-        CentitSecurityMetadata.optTreeNode.setOptCode(null);
-        for(OptMethodUrlMap ou:oulist){
-            List<List<String>> sOpt = CentitSecurityMetadata.parseUrl(ou.getOptDefUrl() ,ou.getOptReq());
-
-            for(List<String> surls : sOpt){
-                OptTreeNode opt = CentitSecurityMetadata.optTreeNode;
-                for(String surl : surls)
-                    opt = opt.setChildPath(surl);
-                opt.setOptCode(ou.getOptCode());
-            }
-        }
-        //CentitSecurityMetadata.optTreeNode.printTreeNode();
-    }
     // 各种角色代码获得该角色的操作权限 1对多
     @Transactional
     public List<RolePower> getRolePowers(String rolecode) {

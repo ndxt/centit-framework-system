@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.DataDictionaryDao;
 import com.centit.framework.system.dao.UserSettingDao;
-import com.centit.framework.system.po.DataCatalog;
 import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.UserSetting;
 import com.centit.framework.system.po.UserSettingId;
@@ -14,12 +13,14 @@ import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserSettingManagerImpl implements UserSettingManager {

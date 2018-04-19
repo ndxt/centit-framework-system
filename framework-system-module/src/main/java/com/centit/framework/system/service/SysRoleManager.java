@@ -24,8 +24,6 @@ public interface SysRoleManager{
 
     List<VOptTree> getVOptTreeList();// 获取菜单TREE
 
-    void loadRoleSecurityMetadata();
-
     Serializable saveNewRoleInfo(RoleInfo o);
 
     void updateRoleInfo(RoleInfo o);

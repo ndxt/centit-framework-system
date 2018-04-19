@@ -9,6 +9,7 @@ import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.DictionaryMapUtils;
+import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.security.model.CentitUserDetails;
 import com.centit.framework.system.po.*;
@@ -63,6 +64,8 @@ public class UnitInfoController extends BaseController {
     @NotNull
     private SysUnitRoleManager sysUnitRoleManager;
 
+    @Resource
+    private PlatformEnvironment platformEnvironment;
     /**
      * 系统日志中记录
      * @return 业务标识ID
@@ -499,7 +502,7 @@ public class UnitInfoController extends BaseController {
 
        roleInfo.addAllRolePowers(rolePowers);
        sysRoleManager.updateRolePower(roleInfo);
-       sysRoleManager.loadRoleSecurityMetadata();
+       platformEnvironment.reloadSecurityMetadata();//sysRoleManager.loadRoleSecurityMetadata();
        JsonResultUtils.writeBlankJson(response);
        /*********log*********/
 //       OperationLogCenter.logNewObject(request,optId, roleInfo.getRoleCode(), OperationLog.P_OPT_LOG_METHOD_U,

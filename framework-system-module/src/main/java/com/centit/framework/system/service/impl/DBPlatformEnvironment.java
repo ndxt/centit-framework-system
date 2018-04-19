@@ -173,7 +173,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         CentitSecurityMetadata.optTreeNode.setChildList(null);
         CentitSecurityMetadata.optTreeNode.setOptCode(null);
         for(OptMethodUrlMap ou:oulist){
-            List<List<String>> sOpt = CentitSecurityMetadata.parseUrl(ou.getOptDefUrl() ,ou.getOptReq());
+            List<List<String>> sOpt = CentitSecurityMetadata.parsePowerDefineUrl(ou.getOptDefUrl() ,ou.getOptReq());
 
             for(List<String> surls : sOpt){
                 OptTreeNode opt = CentitSecurityMetadata.optTreeNode;
@@ -182,6 +182,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                 opt.setOptCode(ou.getOptCode());
             }
         }
+
+        CentitSecurityMetadata.confirmLoginCasMustBeAuthed();
+
         return true;
     }
 

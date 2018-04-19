@@ -3,7 +3,6 @@ package com.centit.framework.system.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.common.ObjectException;
-
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.security.model.CentitPasswordEncoder;
 import com.centit.framework.system.dao.UserInfoDao;
