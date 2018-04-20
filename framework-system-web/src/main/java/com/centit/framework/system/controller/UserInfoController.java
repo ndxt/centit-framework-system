@@ -16,6 +16,7 @@ import com.centit.framework.system.service.UserSettingManager;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -205,6 +206,11 @@ public class UserInfoController extends BaseController {
     public void getUserInfo(@PathVariable String userCode, HttpServletResponse response) {
         UserInfo userInfo = sysUserManager.getObjectById(userCode);
         UserUnit userUnit = sysUserUnitManager.getPrimaryUnitByUserCode(userCode);
+        //针对输入框类型做的反转译
+        userInfo.setUserCode(StringEscapeUtils.unescapeHtml4(userInfo.getUserCode()));
+        userInfo.setUserName(StringEscapeUtils.unescapeHtml4(userInfo.getUserName()));
+        userInfo.setUserDesc(StringEscapeUtils.unescapeHtml4(userInfo.getUserDesc()));
+
         ResponseMapData responseData = new ResponseMapData();
         responseData.addResponseData("userInfo", userInfo);
         responseData.addResponseData("userUnit", userUnit);
