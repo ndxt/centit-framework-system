@@ -165,7 +165,7 @@ public class SysUserManagerImpl implements SysUserManager {
         return userInfoDao.isAnyOneExist(userCode, loginName, regPhone, regEmail) > 0;
     }
 
-    @Value("${framework.userinfo.id.generator}")
+    @Value("${framework.userinfo.id.generator:}")
     protected String userIdFormat;
 
     @Override

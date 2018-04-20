@@ -121,7 +121,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
         unitInfoDao.deleteObjectById(unitinfo.getUnitCode());
     }
 
-    @Value("${framework.unitinfo.id.generator}")
+    @Value("${framework.unitinfo.id.generator:}")
     protected String userIdFormat;
 
     @Override
