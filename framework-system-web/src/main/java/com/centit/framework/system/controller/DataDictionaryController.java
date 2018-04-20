@@ -111,6 +111,18 @@ public class DataDictionaryController extends BaseController {
     }
 
     /**
+     * catalogName是否已存在
+     *
+     * @param catalogName catalogName
+     * @param response {@link HttpServletResponse}
+     */
+    @RequestMapping(value = "/existcatalogname/{catalogName}", method = {RequestMethod.GET})
+    public void isExistsCatalogName(@PathVariable String catalogName, HttpServletResponse response) {
+        int count = dataDictionaryManager.existCatalogName(catalogName);
+        JsonResultUtils.writeOriginalObject(count, response);
+    }
+
+    /**
      * dataCode是否已存在
      *
      * @param catalogCode catalogCode

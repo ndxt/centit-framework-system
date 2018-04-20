@@ -129,7 +129,7 @@ public class UnitRoleController extends BaseController {
     public void listCurrentUnitRole(@PathVariable String unitCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = new HashMap<>(4);
         filterMap.put("unitCode", unitCode);
-        filterMap.put("currentUnitCode", unitCode);
+//        filterMap.put("currentUnitCode", unitCode);
         filterMap.put("roleValid", "T");
 
         JSONArray ja = sysUnitRoleManager.listObjects(filterMap, pageDesc);

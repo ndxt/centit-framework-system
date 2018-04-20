@@ -374,7 +374,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     public void setLoginName(String loginname) {
         if(loginname==null)
             return;
-        this.loginName = loginname.toLowerCase();
+        this.loginName = loginname;
     }
 
     public Date getActiveTime() {

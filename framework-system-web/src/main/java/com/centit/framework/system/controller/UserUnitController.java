@@ -210,7 +210,7 @@ public class UserUnitController extends BaseController {
         map.put("userCode",userUnit.getUserCode());
         List<UserUnit> list = sysUserUnitManager.listObjects(map,new PageDesc());
         if (list != null && list.size()>0){
-            JsonResultUtils.writeErrorMessageJson("该机构职务已存在", response);
+            JsonResultUtils.writeErrorMessageJson("该用户已存在", response);
             return;
         }
 

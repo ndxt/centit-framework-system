@@ -12,6 +12,8 @@ public interface DataDictionaryManager {
 
     DataCatalog getObjectById(String catalogCode);
 
+    int existCatalogName(String catalogName);
+
     void saveNewObject(DataCatalog dataCatalog);
 
     void updateCatalog(DataCatalog dataCatalog);

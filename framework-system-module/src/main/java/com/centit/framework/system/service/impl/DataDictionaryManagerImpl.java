@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -195,6 +196,14 @@ public class DataDictionaryManagerImpl implements
     @Transactional
     public DataCatalog getObjectById(String catalogCode) {
         return dataCatalogDao.getObjectById(catalogCode);
+    }
+
+    @Override
+    @Transactional
+    public int existCatalogName(String catalogName) {
+        HashMap<String,Object> map = new HashMap();
+        map.put("catalogName",catalogName);
+        return dataCatalogDao.pageCount(map);
     }
 
 
