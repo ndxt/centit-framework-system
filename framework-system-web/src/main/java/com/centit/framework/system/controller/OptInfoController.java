@@ -12,7 +12,6 @@ import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.service.OptInfoManager;
 import com.centit.framework.system.service.OptMethodManager;
-import com.centit.framework.system.service.SysRoleManager;
 import com.centit.support.json.JsonPropertyUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +25,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -39,10 +37,6 @@ public class OptInfoController extends BaseController {
 
     @Resource
     private OptMethodManager optMethodManager;
-
-    @Resource
-    @NotNull
-    private SysRoleManager sysRoleManager;
 
     @Resource
     private PlatformEnvironment platformEnvironment;
@@ -77,8 +71,7 @@ public class OptInfoController extends BaseController {
 
         for (OptInfo opt : listObjects) {
             //if("...".equals(opt.getOptRoute()))
-            opt.setState(optInfoManager.hasChildren(opt.getOptId()) ?
-                "closed" : "open");
+            opt.setState(optInfoManager.hasChildren(opt.getOptId()) ? "closed" : "open");
         }
         JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(listObjects), response);
     }
@@ -98,30 +91,6 @@ public class OptInfoController extends BaseController {
                 "optMethods", "optMethods"
             ), (jsonObject, obj) -> jsonObject.put("external", !("D".equals(obj.getPageType()))));
     }
-
-    /**
-     * 查询所有系统业务
-     *
-     * @param field    需要显示的字段
-     * @param struct   True根据父子节点排序的树形结构，False，排序的列表结构
-     * @param request  HttpServletRequest
-     * @param response HttpServletResponse
-     */
-    @RequestMapping(method = RequestMethod.GET)
-    public void listAll(String[] field, boolean struct, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
-        List<OptInfo> listObjects = optInfoManager.listObjects(searchColumn);
-
-        if (struct) {
-            listObjects = optInfoManager.listObjectFormatTree(listObjects, false);
-        }
-        if (ArrayUtils.isNotEmpty(field))
-            JsonResultUtils.writeSingleDataJson(listObjects, response,
-                JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
-        else
-            JsonResultUtils.writeSingleDataJson(listObjects, response);
-    }
-
 
     /**
      * 查询所有需要通过权限管理的业务

@@ -14,7 +14,7 @@ import java.util.Map;
 public interface OptInfoDao {
 
     /**
-     * 查询所有机构列表
+     * 查询所有菜单
      * @return List &lt;UserInfo&gt;
      */
     List<OptInfo> listObjectsAll();
@@ -70,14 +70,14 @@ public interface OptInfoDao {
      * @param optType 菜单类型
      * @return List&lt;FVUserOptMoudleList&gt;
      */
-     List<FVUserOptMoudleList> getMenuFuncByUserID(String userCode, String optType);
+     List<OptInfo> getMenuFuncByUserID(String userCode, String optType);
 
     /**
      * 查询用户拥有的所有叶子菜单
      * @param userCode 用户代码
      * @param optType 菜单类型
      */
-    List<FVUserOptMoudleList> listUserAllSubMenu(String userCode, String optType);
+    List<OptInfo> listUserAllSubMenu(String userCode, String optType);
 
     /**
      * 查询有子菜单 的菜单（opt_url=...）

@@ -423,7 +423,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
     public List<OptInfo> listUserAllPower(String userCode, boolean asAdmin){
         List<OptInfo> preOpts = optInfoDao.getMenuFuncByOptUrl();
         String optType = asAdmin ? "S" : "O";
-        List<FVUserOptMoudleList> ls = optInfoDao.listUserAllSubMenu(userCode, optType);
+        List<OptInfo> ls = optInfoDao.listUserAllSubMenu(userCode, optType);
         List<OptInfo> menuFunsByUser = DBPlatformEnvironment.getMenuFuncs(preOpts,  ls);
         return menuFunsByUser;
     }

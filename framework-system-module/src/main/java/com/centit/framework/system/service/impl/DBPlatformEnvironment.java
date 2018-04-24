@@ -266,7 +266,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         if (superOptId!=null && parentOpt!=null){
             return parentOpt.getChildren();
         }else {
-          return parentMenu;
+          return Collections.emptyList();
         }
     }
 
@@ -276,7 +276,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
         List<OptInfo> preOpts = optInfoDao.getMenuFuncByOptUrl();
         String optType = asAdmin ? "S" : "O";
-        List<FVUserOptMoudleList> ls = optInfoDao.getMenuFuncByUserID(userCode, optType);
+        List<OptInfo> ls = optInfoDao.getMenuFuncByUserID(userCode, optType);
         List<OptInfo> menuFunsByUser = getMenuFuncs(preOpts,  ls);
         return formatMenuTree(menuFunsByUser,null);
     }
@@ -286,7 +286,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     public List<OptInfo> listUserMenuOptInfosUnderSuperOptId(String userCode, String superOptId,boolean asAdmin) {
         List<OptInfo> preOpts=optInfoDao.getMenuFuncByOptUrl();
         String optType = asAdmin ? "S" : "O";
-        List<FVUserOptMoudleList> ls=optInfoDao.getMenuFuncByUserID(userCode, optType);
+        List<OptInfo> ls=optInfoDao.getMenuFuncByUserID(userCode, optType);
         List<OptInfo> menuFunsByUser = getMenuFuncs(preOpts,  ls);
         return formatMenuTree(menuFunsByUser,superOptId);
     }
@@ -637,14 +637,14 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         userInfoDao.updateUser(ui);
     }
 
-    public static List<OptInfo> getMenuFuncs(List<OptInfo> preOpts, List<FVUserOptMoudleList> ls) {
+    public static List<OptInfo> getMenuFuncs(List<OptInfo> preOpts, List<OptInfo> ls) {
         boolean isNeeds[] = new boolean[preOpts.size()];
         for (int i = 0; i < preOpts.size(); i++) {
             isNeeds[i] = false;
         }
         List<OptInfo> opts = new ArrayList<>();
 
-        for (FVUserOptMoudleList opm : ls) {
+        /*for (FVUserOptMoudleList opm : ls) {
             OptInfo opt = new OptInfo();
             opt.setFormCode(opm.getFormcode());
             opt.setImgIndex(opm.getImgindex());
@@ -658,7 +658,8 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             opt.setPreOptId(opm.getPreoptid());
             opt.setTopOptId(opm.getTopoptid());
             opt.setPageType(opm.getPageType());
-            opt.setOptRoute(opm.getOptRoute());
+            opt.setOptRoute(opm.getOptRoute());*/
+        for(OptInfo opt : ls){
 
             opts.add(opt);
             for (int i = 0; i < preOpts.size(); i++) {

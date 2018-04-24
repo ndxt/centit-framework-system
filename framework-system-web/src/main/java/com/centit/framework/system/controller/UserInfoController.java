@@ -208,6 +208,9 @@ public class UserInfoController extends BaseController {
         UserUnit userUnit = sysUserUnitManager.getPrimaryUnitByUserCode(userCode);
         //针对输入框类型做的反转译
         userInfo.setUserCode(StringEscapeUtils.unescapeHtml4(userInfo.getUserCode()));
+        userInfo.setLoginName(StringEscapeUtils.unescapeHtml4(userInfo.getLoginName()));
+        userInfo.setUserWord(StringEscapeUtils.unescapeHtml4(userInfo.getUserWord()));
+        userInfo.setEnglishName(StringEscapeUtils.unescapeHtml4(userInfo.getEnglishName()));
         userInfo.setUserName(StringEscapeUtils.unescapeHtml4(userInfo.getUserName()));
         userInfo.setUserDesc(StringEscapeUtils.unescapeHtml4(userInfo.getUserDesc()));
 

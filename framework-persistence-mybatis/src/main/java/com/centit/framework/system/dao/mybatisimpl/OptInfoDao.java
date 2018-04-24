@@ -12,7 +12,7 @@ public interface OptInfoDao
     extends com.centit.framework.system.dao.OptInfoDao {
 
     @Override
-    List<FVUserOptMoudleList> getMenuFuncByUserID(@Param("userCode") String userCode, @Param("optType") String optType);
+    List<OptInfo> getMenuFuncByUserID(@Param("userCode") String userCode, @Param("optType") String optType);
 
     @Override
     List<String> listUserDataPowerByOptMethod(@Param("userCode") String userCode,

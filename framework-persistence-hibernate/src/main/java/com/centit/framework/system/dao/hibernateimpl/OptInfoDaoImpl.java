@@ -44,11 +44,11 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
 
     @SuppressWarnings("unchecked")
     @Transactional
-    public List<FVUserOptMoudleList> getMenuFuncByUserID(String userCode, String optType) {
+    public List<OptInfo> getMenuFuncByUserID(String userCode, String optType) {
 
         String hql = "FROM FVUserOptMoudleList where isintoolbar='Y' and userCode=? and opttype = ? ORDER BY orderind";
         // + " ORDER BY preoptid, formcode";
-        List<FVUserOptMoudleList> ls = (List<FVUserOptMoudleList>) DatabaseOptUtils.findObjectsByHql
+        List<OptInfo> ls = (List<OptInfo>) DatabaseOptUtils.findObjectsByHql
                 (this, hql,new Object[]{userCode, optType});
         return ls;
     }
@@ -73,7 +73,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     }
 
 
-    @SuppressWarnings("unchecked")
+    /*@SuppressWarnings("unchecked")
     @Transactional
     public List<OptInfo> getFunctionsByUserAndSuperFunctionId(String userID, String superFunctionId) {
         String[] params = null;
@@ -101,9 +101,9 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
         }
 
         return opts;
-    }
+    }*/
 
-    @SuppressWarnings("unchecked")
+/*    @SuppressWarnings("unchecked")
     @Transactional
     public List<OptMethod> getMethodByUserAndOptid(String userCode, String optid) {
         String[] params = null;
@@ -122,7 +122,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
             methods.add(method);
         }
         return methods;
-    }
+    }*/
 
     @SuppressWarnings("unchecked")
     @Transactional
@@ -138,9 +138,9 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
                 "select count(1) as hasChildren from OptInfo where preOptId = ?",optId);
     }
 
-    public List<OptInfo> listObjectsByCon(String condition){
+ /*   public List<OptInfo> listObjectsByCon(String condition){
         return this.listObjects("From OptInfo where "+condition);
-    }
+    }*/
 
     public List<OptInfo> listObjectByParentOptid(String optId){
         return this.listObjects("From OptInfo where preOptId = ?", optId);
@@ -163,10 +163,10 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     }
 
     @Override
-    public List<FVUserOptMoudleList> listUserAllSubMenu(String userCode, String optType){
+    public List<OptInfo> listUserAllSubMenu(String userCode, String optType){
         String hql = "FROM FVUserOptMoudleList where userCode=? and opttype = ? ORDER BY orderind";
         // + " ORDER BY preoptid, formcode";
-        List<FVUserOptMoudleList> ls = (List<FVUserOptMoudleList>) DatabaseOptUtils.findObjectsByHql
+        List<OptInfo> ls = (List<OptInfo>) DatabaseOptUtils.findObjectsByHql
             (this, hql,new Object[]{userCode, optType});
         return ls;
     }

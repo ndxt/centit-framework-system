@@ -46,21 +46,36 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     @Override
     @SuppressWarnings("unchecked")
     @Transactional
-    public List<FVUserOptMoudleList> getMenuFuncByUserID(String userCode, String optType) {
+    public List<OptInfo> getMenuFuncByUserID(String userCode, String optType) {
 
-        String querySql = "select OPT_ID, USER_CODE, OPT_NAME, PRE_OPT_ID, FORM_CODE,"+
+        String querySql = "SELECT DISTINCT a.USER_CODE,d.Opt_ID,d.Opt_Name,d.Pre_Opt_ID,d.Form_Code,d.opt_url,d.opt_Route," +
+            "d.Msg_No,d.Msg_Prm,d.Is_In_ToolBar,d.Img_Index,d.Top_Opt_ID,d.Order_Ind,d.Page_Type,d.Opt_Type,d.flow_code," +
+            "d.icon,d.height,d.width,d.update_date,d.create_date,d.creator,d.updator " +
+            "FROM f_v_userroles a " +
+            "JOIN f_rolepower b ON a.ROLE_CODE = b.ROLE_CODE " +
+            "JOIN f_optdef c ON b.OPT_CODE = c.OPT_CODE " +
+            "JOIN f_optinfo d ON c.Opt_ID = d.Opt_ID " +
+            "WHERE d.opt_url <> '...' " +
+            "and d.IS_IN_TOOLBAR = 'Y' " +
+            "and a.USER_CODE = ? "+
+            "and d.OPT_TYPE = ? "+
+            "order by d.ORDER_IND ";
+
+
+
+      /*  String querySql = "select OPT_ID, USER_CODE, OPT_NAME, PRE_OPT_ID, FORM_CODE,"+
                 "OPT_URL, OPT_ROUTE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, " +
                 "TOP_OPT_ID, ORDER_IND, PAGE_TYPE "+
                 "from F_V_USEROPTMOUDLELIST "+
                 "where IS_IN_TOOLBAR = 'Y' "+
                 "and USER_CODE = ? "+
                 "and OPT_TYPE = ? "+
-                "order by ORDER_IND ";
+                "order by ORDER_IND ";*/
 
         return getJdbcTemplate().execute(
-                (ConnectionCallback<List<FVUserOptMoudleList>>) conn ->
+                (ConnectionCallback<List<OptInfo>>) conn ->
                         OrmDaoUtils.queryObjectsByParamsSql(conn, querySql ,
-                                new Object[]{userCode, optType}, FVUserOptMoudleList.class));
+                                new Object[]{userCode, optType}, OptInfo.class));
 
     }
 
@@ -73,34 +88,6 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
             "where USER_CODE = ? and OPT_ID = ? and OPT_METHOD = ?";
         return this.getJdbcTemplate().queryForList(sql,
                 new Object[]{userCode, optId, optMethod} ,String.class);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Transactional
-    public List<OptInfo> getFunctionsByUserAndSuperFunctionId(String userID, String superFunctionId) {
-
-        String sql = "select OPT_ID, PRE_OPT_ID, OPT_NAME, OPT_TYPE, FORM_CODE, " +
-                "OPT_ROUTE, OPT_URL, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, " +
-                "TOP_OPT_ID, PAGE_TYPE,ORDER_IND " +
-                "from F_V_USEROPTMOUDLELIST " +
-                "where USERCODE= :userCode and" +
-                " TOP_OPT_ID=:topOptId ORDER BY PRE_OPT_ID, ORDER_IND";
-        return super.listObjectsBySql(sql,
-                QueryUtils.createSqlParamsMap("userCode",userID,"topOptId",superFunctionId));
-    }
-
-    @SuppressWarnings("unchecked")
-    @Transactional
-    public List<OptMethod> getMethodByUserAndOptid(String userCode, String optid) {
-        String querySql = "select USER_CODE, OPT_CODE, OPT_NAME, OPT_ID, OPT_METHOD " +
-                "from F_V_USEROPTLIST " +
-                "where USER_CODE= ? and OPT_ID = ?";
-
-        return getJdbcTemplate().execute(
-                (ConnectionCallback<List<OptMethod>>) conn ->
-                        OrmDaoUtils.queryObjectsByParamsSql(conn, querySql ,
-                                new Object[]{userCode, optid}, OptMethod.class));
-
     }
 
     @SuppressWarnings("unchecked")
@@ -157,19 +144,32 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     }
 
     @Override
-    public List<FVUserOptMoudleList> listUserAllSubMenu(String userCode, String optType){
-        String querySql = "select OPT_ID, USER_CODE, OPT_NAME, PRE_OPT_ID, FORM_CODE,"+
+    public List<OptInfo> listUserAllSubMenu(String userCode, String optType){
+        String querySql = "SELECT DISTINCT a.USER_CODE,d.Opt_ID,d.Opt_Name,d.Pre_Opt_ID,d.Form_Code,d.opt_url,d.opt_Route," +
+            "d.Msg_No,d.Msg_Prm,d.Is_In_ToolBar,d.Img_Index,d.Top_Opt_ID,d.Order_Ind,d.Page_Type,d.Opt_Type,d.flow_code," +
+            "d.icon,d.height,d.width,d.update_date,d.create_date,d.creator,d.updator " +
+            "FROM f_v_userroles a " +
+            "JOIN f_rolepower b ON a.ROLE_CODE = b.ROLE_CODE " +
+            "JOIN f_optdef c ON b.OPT_CODE = c.OPT_CODE " +
+            "JOIN f_optinfo d ON c.Opt_ID = d.Opt_ID " +
+            "WHERE d.opt_url <> '...' " +
+            "and a.USER_CODE = ? "+
+            "and d.OPT_TYPE = ? "+
+            "order by d.ORDER_IND ";
+
+
+       /* String querySql = "select OPT_ID, USER_CODE, OPT_NAME, PRE_OPT_ID, FORM_CODE,"+
             "OPT_URL, OPT_ROUTE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, " +
             "TOP_OPT_ID, ORDER_IND, PAGE_TYPE "+
             "from F_V_USEROPTMOUDLELIST "+
             "where USER_CODE = ? "+
             "and OPT_TYPE = ? "+
             "order by ORDER_IND ";
-
+*/
         return getJdbcTemplate().execute(
-            (ConnectionCallback<List<FVUserOptMoudleList>>) conn ->
+            (ConnectionCallback<List<OptInfo>>) conn ->
                 OrmDaoUtils.queryObjectsByParamsSql(conn, querySql ,
-                    new Object[]{userCode, optType}, FVUserOptMoudleList.class));
+                    new Object[]{userCode, optType}, OptInfo.class));
     }
 
 }

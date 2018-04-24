@@ -1,10 +1,7 @@
 package com.centit.framework.system.config;
 
 import com.centit.framework.model.adapter.PlatformEnvironment;
-import com.centit.framework.security.model.CentitSessionRegistry;
-import com.centit.framework.security.model.CentitUserDetailsService;
-import com.centit.framework.security.model.MemorySessionRegistryImpl;
-import com.centit.framework.security.model.StandardPasswordEncoderImpl;
+import com.centit.framework.security.model.*;
 import com.centit.framework.system.security.DaoUserDetailsService;
 import com.centit.framework.system.service.impl.DBPlatformEnvironment;
 import net.sf.ehcache.CacheManager;
@@ -49,8 +46,8 @@ public class SystemBeanConfig implements EnvironmentAware {
     }
 
     @Bean("passwordEncoder")
-    public StandardPasswordEncoderImpl passwordEncoder() {
-        return  new StandardPasswordEncoderImpl();
+    public CentitPasswordEncoderImpl passwordEncoder() {
+        return  new CentitPasswordEncoderImpl();
     }
 
     @Bean
