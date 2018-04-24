@@ -155,10 +155,10 @@ INSERT INTO f_optdef (opt_code, opt_id, opt_name, opt_method, opt_url, opt_desc,
 
 -- 初始化角色信息
 insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
-values ('DEPLOY', '实施人员','G','T', '实施人员角色', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
+values ('deploy', '实施人员','G','T', '实施人员角色', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
 
 insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
-values ('SYSADMIN', '系统管理员','G', 'T', '所有系统配置功能', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
+values ('sysadmin', '系统管理员','G', 'T', '所有系统配置功能', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
 
 insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
 values ('anonymous', '匿名角色','F', 'T', '匿名用户角色', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
@@ -173,40 +173,15 @@ insert into F_ROLEPOWER (ROLE_CODE, OPT_CODE, UPDATE_DATE, CREATE_DATE, OPT_SCOP
 values ('public', '1000080', str_to_date('11-04-2016 10:21:17', '%d-%m-%Y %H:%i:%s'), str_to_date('11-04-2016 10:21:17', '%d-%m-%Y %H:%i:%s'), '','u0000000','u0000000');
 
 
-/**
-insert into f_optdef (opt_code,opt_id,opt_name,opt_method,opt_desc,
-			is_in_workflow,UPDATE_DATE,create_date,opt_url,opt_req,CREATOR,UPDATOR)
-select  sequence_nextval('S_OPTDEFCODE'),opt_id , '查看', 'list',  '查看',
-		'F',now(),now(),'/','R' ,CREATOR,UPDATOR
-		from f_optinfo  where opt_id not in (select opt_id from f_optdef );
-*/
 
 insert into F_ROLEPOWER(role_code,opt_code,update_Date,create_date,opt_scope_codes,CREATOR,UPDATOR)
-	select 'SYSADMIN',opt_code,now(),now(),'',CREATOR,UPDATOR from f_optdef ;
+	select 'sysadmin',opt_code,now(),now(),'',CREATOR,UPDATOR from f_optdef ;
 
 insert into F_USERROLE (USER_CODE, ROLE_CODE, OBTAIN_DATE,
 			SECEDE_DATE, CHANGE_DESC, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('u0000000', 'SYSADMIN', STR_TO_DATE('23-05-2012','%d-%m-%Y'),
+values ('u0000000', 'sysadmin', STR_TO_DATE('23-05-2012','%d-%m-%Y'),
 	STR_TO_DATE('01-10-2020', '%d-%m-%Y'),'' ,now(), now(),'u0000000','u0000000');
-	
-/*update F_ROLEINFO
-set ROLE_CODE = substring(ROLE_CODE, 3)
-where ROLE_CODE like 'G-%';
 
-update F_ROLEPOWER
-set ROLE_CODE = substring(ROLE_CODE, 3)
-where ROLE_CODE like 'G-%';
-
-update F_USERROLE
-set ROLE_CODE = substring(ROLE_CODE, 3)
-where ROLE_CODE like 'G-%';
-
-update F_ROLEINFO
-set ROLE_TYPE = 'G';
-
-update F_ROLEINFO
-set ROLE_TYPE = 'F'
-where ROLE_CODE = 'public' or ROLE_CODE = 'anonymous' or ROLE_CODE = 'forbidden';*/
 
 commit;
 
