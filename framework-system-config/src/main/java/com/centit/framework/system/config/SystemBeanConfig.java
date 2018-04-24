@@ -22,6 +22,8 @@ import org.springframework.dao.annotation.PersistenceExceptionTranslationPostPro
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
+import javax.annotation.Resource;
+
 @PropertySource("classpath:system.properties")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableCaching(proxyTargetClass = true)
@@ -29,9 +31,12 @@ public class SystemBeanConfig implements EnvironmentAware {
 
     private Environment env;
 
+    @Resource
     @Override
-    public void setEnvironment(final Environment environment) {
-        this.env = environment;
+    public void setEnvironment(Environment environment) {
+        if(environment!=null) {
+            this.env = environment;
+        }
     }
 
     /**
