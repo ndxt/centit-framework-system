@@ -69,7 +69,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
         return rolePowerDao.listObjects(filterMap);
     }
 
-    @Value("${framework.roleinfo.id.generator}")
+    @Value("${framework.roleinfo.id.generator:}")
     protected String roleIdFormat;
 
     @Override
