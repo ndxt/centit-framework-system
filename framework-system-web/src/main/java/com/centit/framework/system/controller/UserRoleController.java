@@ -15,6 +15,7 @@ import com.centit.framework.system.service.SysUnitManager;
 import com.centit.framework.system.service.SysUserRoleManager;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -141,6 +142,10 @@ public class UserRoleController extends BaseController {
     @RequestMapping(value = "/roleusers/{roleCode}", method = RequestMethod.GET)
     public void listUsersByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
+        //特殊字符转义
+        if (filterMap.get("userName") != null){
+            filterMap.put("userName", StringEscapeUtils.escapeHtml4(filterMap.get("userName").toString()));
+        }
         filterMap.put("roleCode", roleCode);
         filterMap.put("userValid", "T");
         listObject(filterMap, pageDesc, response);

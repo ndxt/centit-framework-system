@@ -69,6 +69,10 @@ public class UserInfoController extends BaseController {
     public void list(String[] field, PageDesc pageDesc, String _search,
                      HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
+        //特殊字符转义
+        if (searchColumn.get("userName") != null){
+            searchColumn.put("userName",StringEscapeUtils.escapeHtml4(searchColumn.get("userName").toString()));
+        }
         List<UserInfo> listObjects = null;
         if (Boolean.parseBoolean(_search)) {
             listObjects = sysUserManager.listObjects(searchColumn);
