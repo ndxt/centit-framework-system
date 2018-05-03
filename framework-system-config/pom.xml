@@ -17,16 +17,16 @@
     <dependencies>
 
         <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>${ehcache.version}</version>
+            <groupId>com.centit.framework</groupId>
+            <artifactId>framework-system-module</artifactId>
+            <version>${version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.centit.framework</groupId>
-            <artifactId>framework-system-module</artifactId>
-            <version>${centit.framework.version}</version>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>

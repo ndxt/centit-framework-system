@@ -2,27 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>centit-framework-dependencies</artifactId>
+        <groupId>com.centit.framework</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <centit.framework.version>4.1-SNAPSHOT</centit.framework.version>
-        <centit.persistence.version>1.1-SNAPSHOT</centit.persistence.version>
-
-        <centit.ui.version>3.1.0</centit.ui.version>
-        <jdk.version>1.8</jdk.version>
-
-        <spring.version>4.3.14.RELEASE</spring.version>
-        <hibernate.validator.version>5.3.6.Final</hibernate.validator.version>
-        <persistence-api.version>2.2</persistence-api.version>
-        <servlet-api.version>3.1.0</servlet-api.version>
-        <ehcache.version>2.10.4</ehcache.version>
-        <commons-codec.version>1.10</commons-codec.version>
-
-        <ojdbc6.version>11.2.0.4</ojdbc6.version>
-        <junit.version>4.12</junit.version>
-        <mysql.version>5.1.9</mysql.version>
-    </properties>
-
     <groupId>com.centit.framework</groupId>
     <artifactId>framework-system-parent</artifactId>
     <packaging>pom</packaging>
@@ -31,6 +17,12 @@
     <description>设计了一套兼容基础用户、组织机构和功能权限、数据权限体系的系统维护页面，作为公司内部研发的基础平台。
     </description>
     <url>https://github.com/ndxt/centit-framework-system</url>
+
+    <properties>
+        <centit.framework.version>4.1-SNAPSHOT</centit.framework.version>
+        <centit.persistence.version>1.1-SNAPSHOT</centit.persistence.version>
+        <centit.ui.version>3.1.0</centit.ui.version>
+    </properties>
 
     <licenses>
         <license>
@@ -99,26 +91,6 @@
         <module>framework-system-config</module>
         <module>framework-system-web</module>
     </modules>
-
-    <!-- mvn deploy -DpomFile=pom.xml -->
-    <distributionManagement>
-        <repository>
-            <id>ossrh</id>
-            <name>sonatype-releases</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-        </repository>
-        <!--<repository>
-            <id>centit-releases</id>
-            <name>centit-release</name>
-            <url>http://nexus.centit.com:8081/nexus/content/repositories/centit-releases/</url>
-        </repository>-->
-
-        <snapshotRepository>
-            <id>centit-snapshots</id>
-            <name>centit-snapshots</name>
-            <url>http://nexus.centit.com:8081/nexus/content/repositories/centit-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <build>
         <plugins>
