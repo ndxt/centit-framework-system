@@ -12,6 +12,7 @@ import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.database.utils.QueryUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
@@ -143,19 +144,19 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.LOGINNAME = ?";
         return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
-                    new Object[]{userCode, loginName}));
+                    new Object[]{userCode, loginName.toLowerCase()}));
     }
-    public int isCellPhoneExist(String userCode, String loginName){
+    public int isCellPhoneExist(String userCode, String cellPhone){
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.REGCELLPHONE = ?";
         return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
-                    new Object[]{userCode, loginName}));
+                    new Object[]{userCode, cellPhone}));
     }
-    public int isEmailExist(String userCode, String loginName){
+    public int isEmailExist(String userCode, String email){
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.REGEMAIL = ?";
         return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
-                    new Object[]{userCode, loginName}));
+                    new Object[]{userCode, email}));
     }
 
     public int isAnyOneExist(String userCode, String loginName,String regPhone,String regEmail) {
@@ -163,7 +164,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
                 "where t.USER_CODE != ? and " +
                 "(t.LOGIN_NAME = ? or t.REG_CELL_PHONE= ? or t.Reg_Email = ?)";
         return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
-                    new Object[]{userCode, loginName, regPhone, regEmail}));
+                    new Object[]{userCode, loginName.toLowerCase() , regPhone, regEmail}));
 
     }
 
@@ -171,4 +172,5 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
     public void updateUser(UserInfo userInfo){
         super.updateObject(userInfo);
     }
+
 }
