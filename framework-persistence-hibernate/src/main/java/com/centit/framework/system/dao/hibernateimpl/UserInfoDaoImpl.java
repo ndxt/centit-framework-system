@@ -32,7 +32,8 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
             hasExist = DatabaseOptUtils.getSingleIntByHql(this, hql);
         }
 
-        hql = "SELECT COUNT(*) FROM UserInfo WHERE loginName = " + QueryUtils.buildStringForQuery(loginName);
+        hql = "SELECT COUNT(*) FROM UserInfo WHERE loginName = " +
+            QueryUtils.buildStringForQuery(StringUtils.lowerCase(loginName));
 
         if (StringUtils.isNotBlank(userCode)) {
             hql += " AND userCode <> " + QueryUtils.buildStringForQuery(userCode);
@@ -200,7 +201,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.LOGINNAME = ?";
         Object obj  = DatabaseOptUtils.getSingleObjectBySql(this, sql,
-                new Object[]{userCode, loginName} );
+                new Object[]{userCode, StringUtils.lowerCase(loginName)} );
         Integer uc = NumberBaseOpt.castObjectToInteger(obj);
         return uc;
     }
@@ -227,7 +228,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
                 "(t.LOGINNAME = ? or t.REGCELLPHONE= ? or t.REGEMAIL = ?)";
         Object obj = DatabaseOptUtils.getSingleObjectBySql(this, sql,
                 new Object[]{StringUtils.isBlank(userCode) ? "null" : userCode,
-                        StringUtils.isBlank(loginName) ? "null" : loginName,
+                        StringUtils.isBlank(loginName) ? "null" : StringUtils.lowerCase(loginName),
                         StringUtils.isBlank(regPhone) ? "null" : regPhone,
                         StringUtils.isBlank(regEmail) ? "null" : regEmail});
         return NumberBaseOpt.castObjectToInteger(obj);
@@ -239,3 +240,4 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
     }
 
 }
+

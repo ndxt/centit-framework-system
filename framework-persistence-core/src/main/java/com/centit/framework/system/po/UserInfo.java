@@ -7,6 +7,7 @@ import com.centit.support.database.orm.GeneratorCondition;
 import com.centit.support.database.orm.GeneratorTime;
 import com.centit.support.database.orm.GeneratorType;
 import com.centit.support.database.orm.ValueGenerator;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -237,11 +238,11 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
             this.loginTimes = logintimes;
             this.activeTime = activeime;
             this.loginIp = loginip;
-            this.loginName = loginname;
+            this.setLoginName(loginname);
             this.addrbookId = addrbookid;
             // userUnits=null;
             primaryUnit = null;
-            }
+    }
 
 
     public UserInfo(String userCode, String userpin,String usertype, String userstate,
@@ -257,7 +258,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         this.loginTimes = logintimes;
         this.activeTime = activeime;
         this.loginIp = loginip;
-        this.loginName = loginname;
+        this.setLoginName(loginname);
         this.addrbookId = addrbookid;
         this.userTag = usertag;
         this.englishName = englishname;
@@ -374,7 +375,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     public void setLoginName(String loginname) {
         if(loginname==null)
             return;
-        this.loginName = loginname;
+        this.loginName = StringUtils.lowerCase(loginname);
     }
 
     public Date getActiveTime() {
