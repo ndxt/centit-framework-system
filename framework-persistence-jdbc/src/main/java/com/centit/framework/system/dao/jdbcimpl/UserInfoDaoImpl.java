@@ -101,7 +101,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
     @Transactional
     public UserInfo getUserByLoginName(String loginName) {
         return super.getObjectByProperties(QueryUtils.createSqlParamsMap(
-                "loginName",loginName.toLowerCase()));
+                "loginName",loginName));
     }
 
     @Transactional
