@@ -21,6 +21,7 @@ import java.util.Map;
 
 @Repository("userInfoDao")
 public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements UserInfoDao {
+
     @Transactional
     public int checkIfUserExists(String userCode, String loginName) {
         long hasExist = 0L;
@@ -203,19 +204,19 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
         Integer uc = NumberBaseOpt.castObjectToInteger(obj);
         return uc;
     }
-    public int isCellPhoneExist(String userCode, String loginName){
+    public int isCellPhoneExist(String userCode, String cellPhone){
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.REGCELLPHONE = ?";
         Object obj  = DatabaseOptUtils.getSingleObjectBySql(this, sql,
-                new Object[]{userCode, loginName} );
+                new Object[]{userCode, cellPhone} );
         Integer uc = NumberBaseOpt.castObjectToInteger(obj);
         return uc;
     }
-    public int isEmailExist(String userCode, String loginName){
+    public int isEmailExist(String userCode, String email){
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.REGEMAIL = ?";
         Object obj  = DatabaseOptUtils.getSingleObjectBySql(this, sql,
-                new Object[]{userCode, loginName} );
+                new Object[]{userCode, email} );
         Integer uc = NumberBaseOpt.castObjectToInteger(obj);
         return uc;
     }
@@ -236,4 +237,5 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
     public void updateUser(UserInfo userInfo){
       super.updateObject(userInfo);
     }
+
 }

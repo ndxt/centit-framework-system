@@ -12,12 +12,10 @@ import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.database.utils.QueryUtils;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -145,17 +143,17 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
         return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
                     new Object[]{userCode, loginName}));
     }
-    public int isCellPhoneExist(String userCode, String loginName){
+    public int isCellPhoneExist(String userCode, String cellPhone){
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.REGCELLPHONE = ?";
         return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
-                    new Object[]{userCode, loginName}));
+                    new Object[]{userCode, cellPhone}));
     }
-    public int isEmailExist(String userCode, String loginName){
+    public int isEmailExist(String userCode, String email){
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.REGEMAIL = ?";
         return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
-                    new Object[]{userCode, loginName}));
+                    new Object[]{userCode, email}));
     }
 
     public int isAnyOneExist(String userCode, String loginName,String regPhone,String regEmail) {
@@ -171,4 +169,5 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
     public void updateUser(UserInfo userInfo){
         super.updateObject(userInfo);
     }
+
 }
