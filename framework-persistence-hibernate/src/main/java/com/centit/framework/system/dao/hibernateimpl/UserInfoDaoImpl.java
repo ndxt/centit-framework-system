@@ -22,29 +22,6 @@ import java.util.Map;
 @Repository("userInfoDao")
 public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements UserInfoDao {
 
-    @Transactional
-    public int checkIfUserExists(String userCode, String loginName) {
-        long hasExist = 0L;
-        String hql;
-
-        if (StringUtils.isNotBlank(userCode)) {
-            hql = "SELECT COUNT(*) FROM UserInfo WHERE userCode = " + QueryUtils.buildStringForQuery(userCode);
-            hasExist = DatabaseOptUtils.getSingleIntByHql(this, hql);
-        }
-
-        hql = "SELECT COUNT(*) FROM UserInfo WHERE loginName = " +
-            QueryUtils.buildStringForQuery(StringUtils.lowerCase(loginName));
-
-        if (StringUtils.isNotBlank(userCode)) {
-            hql += " AND userCode <> " + QueryUtils.buildStringForQuery(userCode);
-        }
-        long size = DatabaseOptUtils.getSingleIntByHql(this, hql);
-        if (size >= 1) {
-            throw new ObjectException("登录名：" + loginName + " 已存在!!!");
-        }
-
-        return (int)hasExist;
-    }
 
     public Map<String, String> getFilterField() {
         if (filterField == null) {
@@ -201,7 +178,8 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.LOGINNAME = ?";
         Object obj  = DatabaseOptUtils.getSingleObjectBySql(this, sql,
-                new Object[]{userCode, StringUtils.lowerCase(loginName)} );
+                new Object[]{StringUtils.isBlank(userCode)? " ":userCode, loginName} );
+
         Integer uc = NumberBaseOpt.castObjectToInteger(obj);
         return uc;
     }
@@ -209,7 +187,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.REGCELLPHONE = ?";
         Object obj  = DatabaseOptUtils.getSingleObjectBySql(this, sql,
-                new Object[]{userCode, cellPhone} );
+                new Object[]{StringUtils.isBlank(userCode)? " ":userCode, cellPhone} );
         Integer uc = NumberBaseOpt.castObjectToInteger(obj);
         return uc;
     }
@@ -217,7 +195,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.REGEMAIL = ?";
         Object obj  = DatabaseOptUtils.getSingleObjectBySql(this, sql,
-                new Object[]{userCode, email} );
+                new Object[]{StringUtils.isBlank(userCode)? " ":userCode, email} );
         Integer uc = NumberBaseOpt.castObjectToInteger(obj);
         return uc;
     }
@@ -228,7 +206,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
                 "(t.LOGINNAME = ? or t.REGCELLPHONE= ? or t.REGEMAIL = ?)";
         Object obj = DatabaseOptUtils.getSingleObjectBySql(this, sql,
                 new Object[]{StringUtils.isBlank(userCode) ? "null" : userCode,
-                        StringUtils.isBlank(loginName) ? "null" : StringUtils.lowerCase(loginName),
+                        StringUtils.isBlank(loginName) ? "null" :loginName,
                         StringUtils.isBlank(regPhone) ? "null" : regPhone,
                         StringUtils.isBlank(regEmail) ? "null" : regEmail});
 

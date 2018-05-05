@@ -548,10 +548,27 @@
         </if>
     </select>
 
-    <select id="checkIfUserExists" parameterType="map" resultType="Long">
+    <select id="isAnyOneExist" parameterType="map" resultType="Integer">
         select count(1) from userinfo
         where user_Code != #{userCode}
-        and (loginName=#{loginName} or REG_CELL_PHONE=#{regCellPhone} or REG_EMAIL=#{regEmail})
+        and ( loginName=#{loginName} or REG_CELL_PHONE=#{regCellPhone} or REG_EMAIL=#{regEmail} )
+    </select>
+
+
+    <select id="isLoginNameExist" parameterType="map" resultType="Integer">
+        select count(1) from userinfo
+        where user_Code != #{userCode} and loginName=#{loginName}
+    </select>
+
+    <select id="isCellPhoneExist" parameterType="map" resultType="Integer">
+        select count(1) from userinfo
+        where user_Code != #{userCode} and REG_CELL_PHONE=#{regCellPhone}
+    </select>
+
+
+    <select id="isEmailExist" parameterType="map" resultType="Integer">
+        select count(1) from userinfo
+        where user_Code != #{userCode} and REG_EMAIL=#{regEmail}
     </select>
 
 </mapper>

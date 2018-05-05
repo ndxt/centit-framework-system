@@ -162,7 +162,6 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
                 "(t.LOGIN_NAME = ? or t.REG_CELL_PHONE= ? or t.Reg_Email = ?)";
         return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
                     new Object[]{userCode, loginName, regPhone, regEmail}));
-
     }
 
     @Override
