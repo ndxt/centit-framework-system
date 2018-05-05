@@ -2,7 +2,6 @@ package com.centit.framework.system.dao;
 
 import com.centit.framework.system.po.UserSetting;
 import com.centit.framework.system.po.UserSettingId;
-import com.centit.support.database.utils.PageDesc;
 
 import java.util.List;
 import java.util.Map;
