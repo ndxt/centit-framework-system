@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.centit.framework</groupId>
-    <version>4.1-SNAPSHOT</version>
+    <version>4.1.1805</version>
     <artifactId>framework-system-demo</artifactId>
     <packaging>war</packaging>
     <name>com.centit.framework:framework-system-demo</name>

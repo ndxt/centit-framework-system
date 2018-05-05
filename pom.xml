@@ -12,7 +12,7 @@
     <groupId>com.centit.framework</groupId>
     <artifactId>framework-system-parent</artifactId>
     <packaging>pom</packaging>
-    <version>4.1-SNAPSHOT</version>
+    <version>4.1.1805</version>
     <name>com.centit.framework:framework-system-parent</name>
     <description>设计了一套兼容基础用户、组织机构和功能权限、数据权限体系的系统维护页面，作为公司内部研发的基础平台。
     </description>
