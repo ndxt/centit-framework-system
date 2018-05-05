@@ -218,7 +218,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         this.userCode = userCode;
         this.isValid = userstate;
         this.userName = username;
-        this.setLoginName(loginname);
+        this.loginName = loginname;
         this.userUnits = null;
         this.primaryUnit = null;
         //this.userType = "U";
@@ -241,7 +241,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
             this.addrbookId = addrbookid;
             // userUnits=null;
             primaryUnit = null;
-            }
+    }
 
 
     public UserInfo(String userCode, String userpin,String usertype, String userstate,

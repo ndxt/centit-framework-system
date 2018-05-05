@@ -12,12 +12,10 @@ import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.database.utils.QueryUtils;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -171,4 +169,5 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
     public void updateUser(UserInfo userInfo){
         super.updateObject(userInfo);
     }
+
 }
