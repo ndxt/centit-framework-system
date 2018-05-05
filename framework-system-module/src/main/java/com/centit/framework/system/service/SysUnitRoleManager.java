@@ -19,6 +19,7 @@ public interface SysUnitRoleManager {
      * 根据机构 该机构关联角色
      * @param unitCode 机构代码
      * @param pageDesc 分页
+     * @return 查询结果
      */
     JSONArray listCurrentUnitRoles(String unitCode, PageDesc pageDesc);
 
@@ -29,6 +30,7 @@ public interface SysUnitRoleManager {
      * @param roleCode 角色代码
      * @param unitPathPrefix 机构路径前缀
      * @param pageDesc 分页
+     * @return 查询结果
      */
     JSONArray listRoleSubUnits(String roleCode, String unitPathPrefix, PageDesc pageDesc);
 

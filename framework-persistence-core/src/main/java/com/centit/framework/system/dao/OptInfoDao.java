@@ -76,6 +76,7 @@ public interface OptInfoDao {
      * 查询用户拥有的所有叶子菜单
      * @param userCode 用户代码
      * @param optType 菜单类型
+     * @return List<OptInfo>
      */
     List<OptInfo> listUserAllSubMenu(String userCode, String optType);
 

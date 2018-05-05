@@ -82,9 +82,9 @@ public class UserSettingManagerImpl implements UserSettingManager {
 
     /**
      * 查询用户个人设置
-     * @param searchColumn
-     * @param pageDesc
-     * @return
+     * @param searchColumn 查询条件
+     * @param pageDesc 分页信息
+     * @return 查询结果
      */
     @Override
     public JSONArray listObjects(Map<String, Object> searchColumn, PageDesc pageDesc) {

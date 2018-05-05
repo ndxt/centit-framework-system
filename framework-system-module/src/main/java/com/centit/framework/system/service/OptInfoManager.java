@@ -67,7 +67,8 @@ public interface OptInfoManager{
     /**
      * 查询用户全部权限
      * @param userCode 用户代码
-     * @return
+     * @param asAdmin 是否作为管理员
+     * @return List OptInfo
      */
      List<OptInfo> listUserAllPower(String userCode, boolean asAdmin);
 

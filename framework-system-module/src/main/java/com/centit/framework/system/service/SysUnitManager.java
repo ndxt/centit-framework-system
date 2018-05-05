@@ -52,6 +52,7 @@ public interface SysUnitManager{
     /**
      * 查询启用状态的下级机构
      * @param unitCode 当前机构代码
+     * @return List UnitInfo
      */
     List<UnitInfo> listValidSubUnits(String unitCode);
 
