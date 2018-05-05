@@ -145,17 +145,17 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
         return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
                     new Object[]{userCode, loginName}));
     }
-    public int isCellPhoneExist(String userCode, String loginName){
+    public int isCellPhoneExist(String userCode, String cellPhone){
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.REGCELLPHONE = ?";
         return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
-                    new Object[]{userCode, loginName}));
+                    new Object[]{userCode, cellPhone}));
     }
-    public int isEmailExist(String userCode, String loginName){
+    public int isEmailExist(String userCode, String email){
         String sql = "select count(*) as usersCount from F_USERINFO t " +
                 "where t.USERCODE <> ? and t.REGEMAIL = ?";
         return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
-                    new Object[]{userCode, loginName}));
+                    new Object[]{userCode, email}));
     }
 
     public int isAnyOneExist(String userCode, String loginName,String regPhone,String regEmail) {
