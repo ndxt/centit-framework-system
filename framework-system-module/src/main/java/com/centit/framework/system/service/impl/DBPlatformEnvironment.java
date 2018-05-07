@@ -238,19 +238,14 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     /**
      * 将菜单列表组装为树状
      * @param optInfos 菜单列表
-     * @param superOptId 顶级菜单ID 不为空时返回该菜单的下级菜单
      * @return 树状菜单列表
      */
-    private List<OptInfo> formatMenuTree(List<OptInfo> optInfos,String... superOptId) {
+    private List<OptInfo> formatMenuTree(List<OptInfo> optInfos) {
         Iterator<OptInfo> menus = optInfos.iterator();
-        OptInfo parentOpt = null;
 
         List<OptInfo> parentMenu = new ArrayList<>();
         while (menus.hasNext()) {
             OptInfo optInfo = menus.next();
-            if (superOptId!=null && ArrayUtils.contains(superOptId, optInfo.getOptId())) {
-                parentOpt=optInfo;
-            }
             boolean getParent = false;
             for (OptInfo opt : optInfos) {
                 if (opt.getOptId().equals(optInfo.getPreOptId())) {
@@ -263,7 +258,35 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
               parentMenu.add(optInfo);
             }
         }
-        if (superOptId!=null && parentOpt!=null){
+        return parentMenu;
+    }
+
+    /**
+     * 将菜单列表组装为树状
+     * @param optInfos 菜单列表
+     * @param superOptId 顶级菜单ID 不为空时返回该菜单的下级菜单
+     * @return 树状菜单列表
+     */
+    private List<OptInfo> formatMenuTree(List<OptInfo> optInfos,String superOptId) {
+        if (StringUtils.isEmpty(superOptId)){
+            return Collections.emptyList();
+        }
+
+        Iterator<OptInfo> menus = optInfos.iterator();
+        OptInfo parentOpt = null;
+
+        while (menus.hasNext()) {
+            OptInfo optInfo = menus.next();
+            if (StringUtils.equals(superOptId, optInfo.getOptId())) {
+                parentOpt=optInfo;
+            }
+            for (OptInfo opt : optInfos) {
+                if (opt.getOptId().equals(optInfo.getPreOptId())) {
+                    opt.addChild(optInfo);
+                }
+            }
+        }
+        if (parentOpt!=null){
             return parentOpt.getChildren();
         }else {
           return Collections.emptyList();
@@ -278,7 +301,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         String optType = asAdmin ? "S" : "O";
         List<OptInfo> ls = optInfoDao.getMenuFuncByUserID(userCode, optType);
         List<OptInfo> menuFunsByUser = getMenuFuncs(preOpts,  ls);
-        return formatMenuTree(menuFunsByUser,null);
+        return formatMenuTree(menuFunsByUser);
     }
 
     @Override
