@@ -289,7 +289,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         if (parentOpt!=null){
             return parentOpt.getChildren();
         }else {
-          return Collections.emptyList();
+            return Collections.emptyList();
         }
     }
 
