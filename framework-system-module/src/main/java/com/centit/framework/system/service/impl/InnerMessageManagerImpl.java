@@ -6,11 +6,12 @@ import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.model.adapter.MessageSender;
 import com.centit.framework.model.basedata.IUnitInfo;
 import com.centit.framework.model.basedata.IUserInfo;
+import com.centit.framework.model.basedata.NoticeMessage;
 import com.centit.framework.system.dao.InnerMsgDao;
 import com.centit.framework.system.dao.InnerMsgRecipientDao;
 import com.centit.framework.system.po.InnerMsg;
 import com.centit.framework.system.po.InnerMsgRecipient;
-import com.centit.framework.system.service.InnerMsgRecipientManager;
+import com.centit.framework.system.service.InnerMessageManager;
 import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,9 @@ import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
-@Service("innerMsgRecipientManager")
-public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, MessageSender {
+@Transactional
+@Service
+public class InnerMessageManagerImpl implements InnerMessageManager, MessageSender {
 
     @Resource
     @NotNull
@@ -48,7 +50,7 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
      */
     @Override
     @Transactional
-    public void sendMsg(InnerMsgRecipient recipient, String sysUserCode) {
+    public void sendInnerMsg(InnerMsgRecipient recipient, String sysUserCode) {
         String receive = recipient.getReceive();
         String receives[] = StringUtils.split(receive, ",");
         InnerMsg msg = recipient.getMInnerMsg();
@@ -83,7 +85,7 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
             for (String userCode : receives) {
                 InnerMsgRecipient innerMsgRecipient  = new InnerMsgRecipient();
                 innerMsgRecipient.setId(innerMsgRecipientDao.getNextKey());
-                innerMsgRecipient.copyNOtNUllProperties(recipient);
+                innerMsgRecipient.copyNotNullProperties(recipient);
                 innerMsgRecipient.setReceive(userCode);
                 innerMsgRecipientDao.saveNewObject(innerMsgRecipient);
                 //DataPushSocketServer.pushMessage(userCode, "你有新邮件：" + recipient.getMsgTitle());
@@ -98,7 +100,7 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
      */
     @Override
     @Transactional
-    public List<InnerMsgRecipient> getExchangeMsgs(String sender, String receiver) {
+    public List<InnerMsgRecipient> getExchangeMsgRecipients(String sender, String receiver) {
         Map<String, String> map = new HashMap<>();
         map.put("sender", sender);
         map.put("receiver", receiver);
@@ -144,10 +146,10 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
         }
     }
 
+
     @Override
-    //返回消息持有者数量
     @Transactional
-    public void deleteOneRecipientById(String id) {
+    public void deleteMsgRecipientById(String id) {
         InnerMsgRecipient re = innerMsgRecipientDao.getObjectById(id);
         re.setMsgState("D");
         innerMsgRecipientDao.updateInnerMsgRecipient(re);
@@ -172,18 +174,14 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
      */
     @Override
     @Transactional
-    public String sendMessage(String sender, String receiver,
-                              String msgSubject, String msgContent, String optId,
-                              String optMethod, String optTag) {
-        InnerMsg msg = new InnerMsg(sender, msgSubject, msgContent);
+    public String sendMessage(String sender, String receiver, NoticeMessage message) {
+        InnerMsg msg = new InnerMsg();
+        msg.copyFromNoticeMessage(message);
         msg.setSendDate(new Date());
         msg.setMsgType("P");
         msg.setMailType("O");
         msg.setMsgState("U");
-        msg.setOptId(optId);
         msg.setReceiveName(CodeRepositoryUtil.getUserInfoByCode(receiver).getUserName());
-        msg.setOptMethod(optMethod);
-        msg.setOptTag(optTag);
         InnerMsgRecipient recipient = new InnerMsgRecipient();
         recipient.setMInnerMsg(msg);
         recipient.setReplyMsgCode(0);
@@ -195,22 +193,14 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
         return "OK";
     }
 
-    @Override
-    @Transactional
-    public String sendMessage(String sender, String receiver,
-                              String msgSubject, String msgContent) {
-        return sendMessage(sender, receiver,
-                msgSubject, msgContent, "msg",
-                "sender", "");
-    }
 
     @Override
-    public List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap) {
+    public List<InnerMsgRecipient> listMsgRecipients(Map<String, Object> filterMap) {
         return innerMsgRecipientDao.listObjects(filterMap);
     }
 
     @Override
-    public List<InnerMsgRecipient> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
+    public List<InnerMsgRecipient> listMsgRecipients(Map<String, Object> filterMap, PageDesc pageDesc) {
         return innerMsgRecipientDao.pageQuery(
             QueryParameterPrepare.makeMybatisOrderByParam(
                 QueryParameterPrepare.prepPageParams(
@@ -218,12 +208,12 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
     }
 
     @Override
-    public InnerMsgRecipient getObjectById(String id) {
+    public InnerMsgRecipient getMsgRecipientById(String id) {
         return innerMsgRecipientDao.getObjectById(id);
     }
 
     @Override
-    public List<InnerMsgRecipient> listObjectsCascade(Map<String, Object> filterMap){
+    public List<InnerMsgRecipient> listMsgRecipientsCascade(Map<String, Object> filterMap){
 //       return innerMsgRecipientDao.listObjectsCascade(filterMap);
         List<InnerMsgRecipient> recipients = innerMsgRecipientDao.listObjects(filterMap);
         for(InnerMsgRecipient recipient : recipients){
@@ -232,7 +222,7 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
         return recipients;
     }
     @Override
-    public List<InnerMsgRecipient> listObjectsCascade(Map<String, Object> filterMap, PageDesc pageDesc){
+    public List<InnerMsgRecipient> listMsgRecipientsCascade(Map<String, Object> filterMap, PageDesc pageDesc){
         List<InnerMsgRecipient> recipients =
             innerMsgRecipientDao.pageQuery(
                 QueryParameterPrepare.makeMybatisOrderByParam(
@@ -243,4 +233,36 @@ public class InnerMsgRecipientManagerImpl implements InnerMsgRecipientManager, M
         }
         return recipients;
     }
+
+    @Override
+    public void updateInnerMsg(InnerMsg msg) {
+        innerMsgDao.updateInnerMsg(msg);
+    }
+
+
+    @Override
+    public void deleteInnerMsgById(String msgCode) {
+        InnerMsg msg= innerMsgDao.getObjectById(msgCode);
+        msg.setMsgState("D");
+        innerMsgDao.updateInnerMsg(msg);
+    }
+
+    @Override
+    public List<InnerMsg> listInnerMsgs(Map<String, Object> filterMap) {
+        return innerMsgDao.listObjects(filterMap);
+    }
+
+    @Override
+    public List<InnerMsg> listInnerMsgs(Map<String, Object> filterMap, PageDesc pageDesc) {
+        return innerMsgDao.pageQuery(
+            QueryParameterPrepare.makeMybatisOrderByParam(
+                QueryParameterPrepare.prepPageParams(filterMap,pageDesc,innerMsgDao.pageCount(filterMap)),
+                InnerMsg.class));
+    }
+
+    @Override
+    public InnerMsg getInnerMsgById(String msgCode) {
+        return innerMsgDao.getObjectById(msgCode);
+    }
+
 }

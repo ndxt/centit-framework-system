@@ -494,7 +494,7 @@ create table M_InnerMsg
    Sender               varchar2(128),
    Send_Date            date,
    Msg_Title            varchar2(128),
-   Msg_Type             char(1) ,
+   Msg_Type             varchar2(16) ,
    Mail_Type            char(1) ,
    Mail_UnDel_Type      char(1),
    Receive_Name         varchar2(2048) ,

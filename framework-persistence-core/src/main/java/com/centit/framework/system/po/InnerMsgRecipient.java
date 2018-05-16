@@ -189,7 +189,7 @@ public class InnerMsgRecipient implements Serializable{
         this.setMInnerMsg(other.getMInnerMsg());
     }
 
-    public void copyNOtNUllProperties(InnerMsgRecipient other){
+    public void copyNotNullProperties(InnerMsgRecipient other){
         if(!Objects.isNull(other.getMsgCode())) {
             this.setMsgCode(other.getMsgCode());
         }
@@ -213,18 +213,5 @@ public class InnerMsgRecipient implements Serializable{
         }
     }
 
-    public String getMsgTypeText(){
-        switch(getMInnerMsg() == null ? "Other" : getMInnerMsg().getMsgType()){
-            case("P"):{
-                return "个人消息";
-            }
-            case("A"):{
-                return "公告";
-            }
-            default:{
-                return "其他";
-            }
-        }
-    }
 
 }

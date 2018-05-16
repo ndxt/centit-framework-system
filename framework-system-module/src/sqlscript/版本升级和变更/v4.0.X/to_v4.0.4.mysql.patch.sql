@@ -50,3 +50,4 @@ insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, 
 values ('userSettingKey', 'LOCAL_LANG', null, null, 'T', '语言', 'S', '设置用户语言', null, null, null);
 
 
+alter table M_InnerMsg MODIFY COLUMN MSG_TYPE varchar(16);

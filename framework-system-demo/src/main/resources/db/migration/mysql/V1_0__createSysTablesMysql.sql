@@ -660,7 +660,7 @@ create table M_InnerMsg
    Sender               varchar(128),
    Send_Date            datetime,
    Msg_Title            varchar(128),
-   Msg_Type             char(1) comment 'P= 个人为消息  A= 机构为公告（通知）
+   Msg_Type             varchar(16) comment 'P= 个人为消息  A= 机构为公告（通知）
             M=邮件',
    Mail_Type            char(1) comment 'I=收件箱
             O=发件箱

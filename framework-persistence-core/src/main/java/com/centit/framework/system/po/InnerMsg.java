@@ -2,6 +2,7 @@ package com.centit.framework.system.po;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.centit.framework.core.dao.DictionaryMap;
+import com.centit.framework.model.basedata.NoticeMessage;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "M_INNERMSG")
-public class InnerMsg implements  Serializable{
+public class InnerMsg implements Serializable{
 
     /**
      * 内部消息管理，这些消息会在页面上主动弹出
@@ -55,7 +56,7 @@ public class InnerMsg implements  Serializable{
      * 消息类别：P=个人为消息   A=机构为公告  M=消息
      */
     @Column(name = "MSG_TYPE")
-    @Length(max = 1, message = "字段长度必须为{max}")
+    @Length(max = 16, message = "字段长度必须为{max}")
     private String msgType;
 
     /**
@@ -264,6 +265,7 @@ public class InnerMsg implements  Serializable{
         this.optMethod = optMethod;
     }
 
+
     public String getOptTag() {
         return optTag;
     }
@@ -272,17 +274,85 @@ public class InnerMsg implements  Serializable{
         this.optTag = optTag;
     }
 
-    public String getMsgTypeText(){
-        switch(getMsgType()){
-            case("P"):{
-                return "个人消息";
-            }
-            case("A"):{
-                return "公告";
-            }
-            default:{
-                return "其他";
-            }
+    public InnerMsg copy(InnerMsg other){
+        this.emailId = other.getEmailId();
+        this.holdUsers = other.getHoldUsers();
+        this.mailType = other.getMailType();
+        this.mailUnDelType = other.getMailUnDelType();
+        this.msgCode = other.getMsgCode();
+        this.msgContent = other.getMsgContent();
+        this.msgState = other.getMsgState();
+        this.msgTitle = other.getMsgTitle();
+        this.msgType = other.getMsgType();
+        this.optId = other.getOptId();
+        this.optMethod = other.getOptMethod();
+        this.optTag = other.getOptTag();
+        this.receiveName = other.getReceiveName();
+        this.sendDate = other.getSendDate();
+        this.sender = other.getSender();
+        this.recipients = other.getRecipients();
+        return this;
+    }
+
+    public InnerMsg copyNotNullProperties(InnerMsg other){
+        if(other.getEmailId() != null) {
+            this.emailId = other.getEmailId();
         }
+        if(other.getHoldUsers() != null) {
+            this.holdUsers = other.getHoldUsers();
+        }
+        if(other.getMailType() != null) {
+            this.mailType = other.getMailType();
+        }
+        if(other.getMailUnDelType() != null) {
+            this.mailUnDelType = other.getMailUnDelType();
+        }
+        if(other.getMsgCode() != null) {
+            this.msgCode = other.getMsgCode();
+        }
+        if(other.getMsgContent() != null) {
+            this.msgContent = other.getMsgContent();
+        }
+        if(other.getMsgState() != null) {
+            this.msgState = other.getMsgState();
+        }
+        if(other.getMsgTitle() != null) {
+            this.msgTitle = other.getMsgTitle();
+        }
+        if(other.getMsgType() != null) {
+            this.msgType = other.getMsgType();
+        }
+        if(other.getOptId() != null) {
+            this.optId = other.getOptId();
+        }
+        if(other.getOptMethod() != null) {
+            this.optMethod = other.getOptMethod();
+        }
+        if(other.getOptTag() != null) {
+            this.optTag = other.getOptTag();
+        }
+        if(other.getReceiveName() != null) {
+            this.receiveName = other.getReceiveName();
+        }
+        if(other.getSendDate() != null) {
+            this.sendDate = other.getSendDate();
+        }
+        if(other.getSender() != null) {
+            this.sender = other.getSender();
+        }
+        if(other.getRecipients() != null) {
+            this.recipients = other.getRecipients();
+        }
+        return this;
+    }
+
+    public InnerMsg copyFromNoticeMessage(NoticeMessage other){
+        this.msgContent = other.getMsgContent();
+        this.msgTitle = other.getMsgSubject();
+        this.msgType = other.getMsgType();
+        this.optId = other.getOptId();
+        this.optMethod = other.getOptMethod();
+        this.optTag = other.getOptTag();
+        return this;
     }
 }

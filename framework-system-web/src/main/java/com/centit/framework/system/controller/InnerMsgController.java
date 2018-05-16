@@ -10,8 +10,7 @@ import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.system.po.InnerMsg;
 import com.centit.framework.system.po.InnerMsgRecipient;
-import com.centit.framework.system.service.InnerMsgManager;
-import com.centit.framework.system.service.InnerMsgRecipientManager;
+import com.centit.framework.system.service.InnerMessageManager;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -35,12 +34,10 @@ import java.util.Map;
 @Controller
 @RequestMapping("/innermsg")
 public class InnerMsgController extends BaseController {
-    @Resource
-    public InnerMsgRecipientManager innerMsgRecipientManager;
 
-    @Resource(name="innerMessageManager")
+    @Resource
     @NotNull
-    public InnerMsgManager innerMsgManager;
+    public InnerMessageManager innerMessageManager;
 
     public String getOptId() {
       return  "InnerMsg";
@@ -59,7 +56,7 @@ public class InnerMsgController extends BaseController {
         if (StringUtils.isBlank(receive)) {
             searchColumn.put("receive", WebOptUtils.getLoginUser(request).getUserInfo().getUserCode());
         }
-        List<InnerMsgRecipient> listObjects  = innerMsgRecipientManager.listObjectsCascade(searchColumn, pageDesc);
+        List<InnerMsgRecipient> listObjects  = innerMessageManager.listMsgRecipientsCascade(searchColumn, pageDesc);
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
         resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
@@ -74,7 +71,7 @@ public class InnerMsgController extends BaseController {
     @RequestMapping(value = "/unreadMsgCount", method = { RequestMethod.GET })
     public void unreadMsgCount(HttpServletRequest request, HttpServletResponse response) {
         String currUser = WebOptUtils.getLoginUser(request).getUserInfo().getUserCode();
-        long unreadMsg = innerMsgRecipientManager.getUnreadMessageCount(currUser);
+        long unreadMsg = innerMessageManager.getUnreadMessageCount(currUser);
         JsonResultUtils.writeSingleDataJson(unreadMsg, response);
     }
     /**
@@ -92,7 +89,7 @@ public class InnerMsgController extends BaseController {
             searchColumn.put("sender", WebOptUtils.getLoginUser(request).getUserInfo().getUserCode());
         }
 
-        List<InnerMsg> listObjects = innerMsgManager.listObjects(searchColumn,pageDesc);
+        List<InnerMsg> listObjects = innerMessageManager.listInnerMsgs(searchColumn,pageDesc);
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
         resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
@@ -116,7 +113,7 @@ public class InnerMsgController extends BaseController {
      */
     @RequestMapping(value = "/{msgCode}", method = { RequestMethod.GET })
     public void getInnerMsg(@PathVariable String msgCode, HttpServletResponse response) {
-        InnerMsgRecipient msgCopy = innerMsgRecipientManager.getObjectById(msgCode);
+        InnerMsgRecipient msgCopy = innerMessageManager.getMsgRecipientById(msgCode);
         JsonResultUtils.writeSingleDataJson(msgCopy, response);
     }
 
@@ -132,7 +129,7 @@ public class InnerMsgController extends BaseController {
             HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
         searchColumn.put("msgType", "A");
-        List<InnerMsg> listObjects = innerMsgManager.listObjects(searchColumn,pageDesc);
+        List<InnerMsg> listObjects = innerMessageManager.listInnerMsgs(searchColumn,pageDesc);
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
         resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
@@ -158,7 +155,7 @@ public class InnerMsgController extends BaseController {
         if (null == innerMsg.getSendDate()) {
             innerMsg.setSendDate(new Date());
         }
-        innerMsgRecipientManager.noticeByUnitCode(unitCode,innerMsg);
+        innerMessageManager.noticeByUnitCode(unitCode,innerMsg);
         JsonResultUtils.writeSuccessJson(response);
     }
 
@@ -172,7 +169,7 @@ public class InnerMsgController extends BaseController {
     @RequestMapping(value = "/sendMsg", method = { RequestMethod.POST })
     public void sendMsg(@Valid InnerMsgRecipient recipient,HttpServletRequest request,
             HttpServletResponse response) {
-        innerMsgRecipientManager.sendMsg(recipient,this.getLoginUser(request).getUserInfo().getUserCode());
+        innerMessageManager.sendInnerMsg(recipient,this.getLoginUser(request).getUserInfo().getUserCode());
         //DataPushSocketServer.pushMessage(recipient.getReceive(), "你有新邮件："+ recipient.getMsgTitle());
         JsonResultUtils.writeSingleDataJson(recipient, response);
     }
@@ -200,12 +197,12 @@ public class InnerMsgController extends BaseController {
     @RequestMapping(value = "/{msgCode}", method = { RequestMethod.PUT })
     public void mergInnerMsg(@Valid InnerMsg msg, @PathVariable String msgCode,
             HttpServletResponse response) {
-        InnerMsg msgCopy = innerMsgManager.getObjectById(msgCode);
+        InnerMsg msgCopy = innerMessageManager.getInnerMsgById(msgCode);
         if (null == msgCopy) {
             JsonResultUtils.writeErrorMessageJson("当前机构中无此信息", response);
             return;
         }
-        innerMsgManager.updateInnerMsg(msg);
+        innerMessageManager.updateInnerMsg(msg);
         // 需要返回msg的msgCode给前端recipient保存用
         JsonResultUtils.writeSingleDataJson(msg, response);
     }
@@ -219,13 +216,12 @@ public class InnerMsgController extends BaseController {
     @RequestMapping(value = "recipient/{id}", method = { RequestMethod.PUT })
     public void mergInnerMsgRecipient(@Valid InnerMsgRecipient recipient,
             @PathVariable String id, HttpServletResponse response) {
-        InnerMsgRecipient recipientCopy = innerMsgRecipientManager
-                .getObjectById(id);
+        InnerMsgRecipient recipientCopy =innerMessageManager.getMsgRecipientById(id);
         if (null == recipientCopy) {
             JsonResultUtils.writeErrorMessageJson("当前机构中无此信息", response);
             return;
         }
-        innerMsgRecipientManager.updateRecipient(recipient);
+        innerMessageManager.updateRecipient(recipient);
         // 需要返回msg的msgCode给前端recipient保存用
         JsonResultUtils.writeSingleDataJson(recipient, response);
     }
@@ -238,7 +234,7 @@ public class InnerMsgController extends BaseController {
     @RequestMapping(value = "/{msgCode}", method = { RequestMethod.DELETE })
     public void deleteMsg(@PathVariable String msgCode,
             HttpServletResponse response) {
-        innerMsgManager.deleteMsgById(msgCode);
+        innerMessageManager.deleteInnerMsgById(msgCode);
         JsonResultUtils.writeBlankJson(response);
     }
 
@@ -253,7 +249,7 @@ public class InnerMsgController extends BaseController {
              HttpServletRequest request,HttpServletResponse response) {
         /*InnerMsgRecipient recipient = innerMsgRecipientManager
                 .getObjectById(id);*/
-        innerMsgRecipientManager.deleteOneRecipientById(id);;
+        innerMessageManager.deleteMsgRecipientById(id);;
         JsonResultUtils.writeBlankJson(response);
         //(request, optId, optTag, optMethod, optContent, oldObject);
         OperationLogCenter.logDeleteObject(request, "recipient", id ,OperationLog.P_OPT_LOG_METHOD_D,
@@ -271,8 +267,8 @@ public class InnerMsgController extends BaseController {
     @RequestMapping(value = "/{sender}/{receiver}", method = { RequestMethod.GET })
     public void getMsgExchanges(@PathVariable String sender,
             @PathVariable String receiver, HttpServletResponse response) {
-        List<InnerMsgRecipient> recipientlist = innerMsgRecipientManager
-                .getExchangeMsgs(sender, receiver);
+        List<InnerMsgRecipient> recipientlist = innerMessageManager
+                .getExchangeMsgRecipients(sender, receiver);
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(BaseController.OBJLIST, recipientlist);
         JsonResultUtils.writeResponseDataAsJson(resData, response);
