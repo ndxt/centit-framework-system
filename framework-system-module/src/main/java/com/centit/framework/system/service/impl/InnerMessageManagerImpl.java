@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Transactional
-@Service
+@Service("innerMessageManager")
 public class InnerMessageManagerImpl implements InnerMessageManager, MessageSender {
 
     @Resource
