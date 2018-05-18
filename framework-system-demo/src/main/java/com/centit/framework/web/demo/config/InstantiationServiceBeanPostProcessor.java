@@ -36,6 +36,7 @@ public class InstantiationServiceBeanPostProcessor implements ApplicationListene
 
         if(innerMessageManager!=null) {
             notificationCenter.registerMessageSender("innerMsg", innerMessageManager);
+            notificationCenter.appointDefaultSendType("innerMsg");
         }
         if(optLogManager!=null) {
             OperationLogCenter.registerOperationLogWriter(optLogManager);
