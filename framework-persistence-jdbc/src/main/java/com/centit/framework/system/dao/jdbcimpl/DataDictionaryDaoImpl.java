@@ -5,15 +5,10 @@ import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.system.dao.DataDictionaryDao;
 import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.DataDictionaryId;
-import com.centit.support.algorithm.StringBaseOpt;
-import com.centit.support.database.utils.DatabaseAccess;
-import com.centit.support.database.utils.PersistenceException;
 import com.centit.support.database.utils.QueryUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

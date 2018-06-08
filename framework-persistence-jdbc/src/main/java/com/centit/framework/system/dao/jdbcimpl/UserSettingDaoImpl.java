@@ -1,6 +1,5 @@
 package com.centit.framework.system.dao.jdbcimpl;
 
-import com.centit.framework.common.ObjectException;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
@@ -14,8 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -20,10 +20,6 @@ drop index ind_Tag_ID;
 
 drop table F_OPT_LOG  ;
 
-drop table F_OptFlowNoInfo  ;
-
-drop table F_OptFlowNoPool  ;
-
 drop table F_OptInfo  ;
 
 drop table F_OptInfoData  ;
@@ -356,36 +352,6 @@ alter table F_OPT_LOG
 create index ind_Tag_ID on F_OPT_LOG (
    optTag ASC
 );
-
-/*==============================================================*/
-/* Table: F_OptFlowNoInfo                                       */
-/*==============================================================*/
-create table F_OptFlowNoInfo  (
-   OwnerCode            VARCHAR(8)                     not null,
-   CodeCode             VARCHAR(16)                    not null,
-   CodeDate             TIMESTAMP                           default sysdate not null,
-   CurNo                decimal(6,0)                    default 1 not null,
-   LastCodeDate         TIMESTAMP,
-   CreateDate           TIMESTAMP,
-   LastModifyDate       TIMESTAMP
-);
-
-alter table F_OptFlowNoInfo
-   add constraint PK_F_OPTFLOWNOINFO primary key (OwnerCode, CodeDate, CodeCode);
-
-/*==============================================================*/
-/* Table: F_OptFlowNoPool                                       */
-/*==============================================================*/
-create table F_OptFlowNoPool  (
-   OwnerCode            VARCHAR(8)                     not null,
-   CodeCode             VARCHAR(16)                    not null,
-   CodeDate             TIMESTAMP                           default sysdate not null,
-   CurNo                decimal(6,0)                    default 1 not null,
-   CreateDate           TIMESTAMP
-);
-
-alter table F_OptFlowNoPool
-   add constraint PK_F_OPTFLOWNOPOOL primary key (OwnerCode, CodeDate, CodeCode, CurNo);
 
 /*==============================================================*/
 /* Table: F_OptInfo                                             */

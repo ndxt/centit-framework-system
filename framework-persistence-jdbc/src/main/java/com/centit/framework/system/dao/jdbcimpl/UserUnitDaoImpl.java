@@ -6,7 +6,6 @@ import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.po.UserUnit;
-import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.PageDesc;
@@ -17,7 +16,6 @@ import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

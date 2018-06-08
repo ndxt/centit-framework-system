@@ -1,6 +1,5 @@
 package com.centit.framework.system.dao.hibernateimpl;
 
-import com.centit.framework.common.ObjectException;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.hibernate.dao.BaseDaoImpl;

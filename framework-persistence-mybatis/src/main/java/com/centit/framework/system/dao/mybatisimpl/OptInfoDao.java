@@ -1,6 +1,5 @@
 package com.centit.framework.system.dao.mybatisimpl;
 
-import com.centit.framework.system.po.FVUserOptMoudleList;
 import com.centit.framework.system.po.OptInfo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

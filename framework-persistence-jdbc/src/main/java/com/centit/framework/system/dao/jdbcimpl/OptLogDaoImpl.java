@@ -13,7 +13,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.*;
 
 @Repository("optLogDao")
