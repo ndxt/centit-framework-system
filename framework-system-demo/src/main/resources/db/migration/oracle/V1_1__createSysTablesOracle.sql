@@ -10,68 +10,6 @@ create sequence S_RECIPIENT ;
 create sequence S_ADDRESSID ;
 create sequence S_ROLECODE;
 
-create table F_ADDRESS_BOOK
-(
-   ADDRBOOKID           number(10,0) not null,
-   BodyType             varchar2(2) not null ,
-   BodyCode             varchar2(16) not null ,
-   representation       varchar2(200),
-   UnitName             varchar2(200),
-   DeptName             varchar2(100),
-   RankName             varchar2(50),
-   Email                varchar2(60),
-   Email2               varchar2(60),
-   Email3               varchar2(60),
-   HomePage             varchar2(100),
-   QQ                   varchar2(20),
-   MSN                  varchar2(60),
-   wangwang             varchar2(20),
-   buzPhone             varchar2(20),
-   buzphone2            varchar2(20),
-   buzfax               varchar2(20),
-   assiphone            varchar2(20),
-   callbacphone         varchar2(20),
-   carphone             varchar2(20),
-   unitphone            varchar2(20),
-   homephone            varchar2(20),
-   homephone2           varchar2(20),
-   homephone3           varchar2(20),
-   homefax              varchar2(20),
-   mobilephone          varchar2(20),
-   mobilephone2         varchar2(20),
-   mobilephone3         varchar2(20),
-   unitzip              varchar2(8),
-   unitProvince         varchar2(20),
-   unitCity             varchar2(20),
-   unitDistrict         varchar2(20),
-   unitStreet           varchar2(20),
-   unitAddress          varchar2(60),
-   homezip              varchar2(8),
-   homeProvince         varchar2(20),
-   homeCity             varchar2(20),
-   homeDistrict         varchar2(20),
-   homeStreet           varchar2(20),
-   homeAddress          varchar2(60),
-   home2zip             varchar2(8),
-   home2Province        varchar2(20),
-   home2City            varchar2(20),
-   home2District        varchar2(20),
-   home2Street          varchar2(20),
-   home2Address         varchar2(60),
-   inuseAddress         varchar2(1)  ,
-   SearchString         varchar2(1000)  ,
-   memo                 varchar2(500),
-   LastModifyDate       date,
-   CreateDate           date
-);
-comment on column F_ADDRESS_BOOK.BodyType is '用户/个人/单位';
-comment on column F_ADDRESS_BOOK.BodyCode is ' 用户/个人/单位 编号';
-comment on column F_ADDRESS_BOOK.inuseAddress is '单位/住宅/住宅2';
-comment on column F_ADDRESS_BOOK.SearchString is '前面各个字段的中文首字母，数字 连接的串';
-comment on  table F_ADDRESS_BOOK is '系统中维持一个统一的通讯录 模块，主要目的是为了以后做 统一的接口，比如：';
-
-alter table F_ADDRESS_BOOK add primary key (ADDRBOOKID);
-
 create table F_DATACATALOG
 (
    CATALOG_CODE         varchar2(16) not null,

@@ -4,8 +4,6 @@
 /*==============================================================*/
 
 
-drop table F_ADDRESS_BOOK cascade constraints;
-
 drop table F_DATACATALOG cascade constraints;
 
 drop table F_DATADICTIONARY cascade constraints;
@@ -88,86 +86,6 @@ create sequence s_unitcode;
 create sequence s_user_unit_id;
 
 create sequence s_usercode;
-
-/*==============================================================*/
-/* Table: F_ADDRESS_BOOK                                        */
-/*==============================================================*/
-create table F_ADDRESS_BOOK  (
-   ADDRBOOKID           NUMBER(10,0)                    not null,
-   BodyType             VARCHAR2(2)                     not null,
-   BodyCode             VARCHAR2(16)                    not null,
-   representation       VARCHAR2(200),
-   UnitName             VARCHAR2(200),
-   DeptName             VARCHAR2(100),
-   RankName             VARCHAR2(50),
-   Email                VARCHAR2(60),
-   Email2               VARCHAR2(60),
-   Email3               VARCHAR2(60),
-   HomePage             VARCHAR2(100),
-   QQ                   VARCHAR2(20),
-   MSN                  VARCHAR2(60),
-   wangwang             VARCHAR2(20),
-   buzPhone             VARCHAR2(20),
-   buzphone2            VARCHAR2(20),
-   buzfax               VARCHAR2(20),
-   assiphone            VARCHAR2(20),
-   callbacphone         VARCHAR2(20),
-   carphone             VARCHAR2(20),
-   unitphone            VARCHAR2(20),
-   homephone            VARCHAR2(20),
-   homephone2           VARCHAR2(20),
-   homephone3           VARCHAR2(20),
-   homefax              VARCHAR2(20),
-   mobilephone          VARCHAR2(20),
-   mobilephone2         VARCHAR2(20),
-   mobilephone3         VARCHAR2(20),
-   unitzip              VARCHAR2(8),
-   unitProvince         VARCHAR2(20),
-   unitCity             VARCHAR2(20),
-   unitDistrict         VARCHAR2(20),
-   unitStreet           VARCHAR2(20),
-   unitAddress          VARCHAR2(60),
-   homezip              VARCHAR2(8),
-   homeProvince         VARCHAR2(20),
-   homeCity             VARCHAR2(20),
-   homeDistrict         VARCHAR2(20),
-   homeStreet           VARCHAR2(20),
-   homeAddress          VARCHAR2(60),
-   home2zip             VARCHAR2(8),
-   home2Province        VARCHAR2(20),
-   home2City            VARCHAR2(20),
-   home2District        VARCHAR2(20),
-   home2Street          VARCHAR2(20),
-   home2Address         VARCHAR2(60),
-   inuseAddress         VARCHAR2(1),
-   SearchString         VARCHAR2(1000),
-   memo                 VARCHAR2(500),
-   LastModifyDate       DATE,
-   CreateDate           DATE
-);
-
-comment on table F_ADDRESS_BOOK is
-'系统中维持一个统一的通讯录 模块，主要目的是为了以后做 统一的接口，
-
-比如：
-      语音电话，短信平台等等
-
-字段设计参照的Outlook的联系人';
-
-comment on column F_ADDRESS_BOOK.BodyType is
-'用户/个人/单位';
-
-comment on column F_ADDRESS_BOOK.BodyCode is
-'用户/个人/单位 编号';
-
-comment on column F_ADDRESS_BOOK.inuseAddress is
-'单位/住宅/住宅2';
-
-comment on column F_ADDRESS_BOOK.SearchString is
-'前面各个字段的中文首字母，数字 连接的串';
-
-alter table F_ADDRESS_BOOK
-   add constraint PK_F_ADDRESS_BOOK primary key (ADDRBOOKID);
 
 /*==============================================================*/
 /* Table: F_DATACATALOG                                         */

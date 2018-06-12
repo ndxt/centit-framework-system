@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * OptMethod entity.
  *
- * @author codefan@hotmail.com
+ * @author codefan@codefan.com
  */
 @Entity
 @Table(name = "F_OPTDEF")

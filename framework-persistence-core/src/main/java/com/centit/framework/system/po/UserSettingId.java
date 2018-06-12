@@ -7,9 +7,9 @@ import javax.persistence.Embeddable;
 
 
 /**
- * FAddressBook entity.
+ * UserSetting Id.
  *
- * @author codefan@hotmail.com
+ * @author codefan@codefan.com
  */
 @Embeddable
 public class UserSettingId implements java.io.Serializable {
