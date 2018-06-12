@@ -20,9 +20,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * FAddressBook entity.
+ * DataCatalog entity.
  *
- * @author codefan@hotmail.com
+ * @author codefan@codefan.com
  */
 @Entity
 @Table(name = "F_DATACATALOG")

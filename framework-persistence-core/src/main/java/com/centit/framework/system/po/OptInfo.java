@@ -13,9 +13,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * FAddressBook entity.
+ * OptInfo entity.
  *
- * @author codefan@hotmail.com
+ * @author codefan@codefan.com
  */
 // 业务模块表
 @Entity

@@ -12,9 +12,9 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
- * FAddressBook entity.
+ * OptDataScope entity.
  *
- * @author codefan@hotmail.com
+ * @author codefan@codefan.com
  */
 @Entity
 @Table(name = "F_OPTDATASCOPE")

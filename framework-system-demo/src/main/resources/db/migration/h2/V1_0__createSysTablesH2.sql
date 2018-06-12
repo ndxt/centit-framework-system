@@ -1,6 +1,4 @@
 
-drop table if exists F_ADDRESS_BOOK;
-
 drop table if exists F_DATACATALOG;
 
 drop table if exists F_DATADICTIONARY;
@@ -55,67 +53,6 @@ drop table if exists M_InnerMsg_Recipient;
 drop table if exists M_MsgAnnex;
 
 drop table if exists P_TASK_LIST;
-
-/*==============================================================*/
-/* Table: F_ADDRESS_BOOK                                        */
-/*==============================================================*/
-create table F_ADDRESS_BOOK
-(
-   ADDRBOOKID           numeric(10,0) not null,
-   BodyType             varchar(2) not null comment '用户/个人/单位',
-   BodyCode             varchar(16) not null comment '用户/个人/单位 编号',
-   representation       varchar(200),
-   UnitName             varchar(200),
-   DeptName             varchar(100),
-   RankName             varchar(50),
-   Email                varchar(60),
-   Email2               varchar(60),
-   Email3               varchar(60),
-   HomePage             varchar(100),
-   QQ                   varchar(20),
-   MSN                  varchar(60),
-   wangwang             varchar(20),
-   buzPhone             varchar(20),
-   buzphone2            varchar(20),
-   buzfax               varchar(20),
-   assiphone            varchar(20),
-   callbacphone         varchar(20),
-   carphone             varchar(20),
-   unitphone            varchar(20),
-   homephone            varchar(20),
-   homephone2           varchar(20),
-   homephone3           varchar(20),
-   homefax              varchar(20),
-   mobilephone          varchar(20),
-   mobilephone2         varchar(20),
-   mobilephone3         varchar(20),
-   unitzip              varchar(8),
-   unitProvince         varchar(20),
-   unitCity             varchar(20),
-   unitDistrict         varchar(20),
-   unitStreet           varchar(20),
-   unitAddress          varchar(60),
-   homezip              varchar(8),
-   homeProvince         varchar(20),
-   homeCity             varchar(20),
-   homeDistrict         varchar(20),
-   homeStreet           varchar(20),
-   homeAddress          varchar(60),
-   home2zip             varchar(8),
-   home2Province        varchar(20),
-   home2City            varchar(20),
-   home2District        varchar(20),
-   home2Street          varchar(20),
-   home2Address         varchar(60),
-   inuseAddress         varchar(1) comment '单位/住宅/住宅2',
-   SearchString         varchar(1000) comment '前面各个字段的中文首字母，数字 连接的串',
-   memo                 varchar(500),
-   LastModifyDate       datetime,
-   CreateDate           datetime
-);
-
-alter table F_ADDRESS_BOOK
-   add primary key (ADDRBOOKID);
 
 /*==============================================================*/
 /* Table: F_DATACATALOG                                         */

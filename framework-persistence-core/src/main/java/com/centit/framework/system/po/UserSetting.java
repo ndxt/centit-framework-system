@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * create by scaffold
  *
- * @author codefan@hotmail.com
+ * @author codefan@codefan.com
  */
 @Entity
 @Table(name = "F_USERSETTING")
