@@ -788,6 +788,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             for(Pair<OptMethod, OptMethod> p : triple.getMiddle()){
                 OptMethod oldMethod = p.getLeft();
                 OptMethod newMethod = p.getRight();
+                newMethod.setOptCode(oldMethod.getOptCode());
                 oldMethod.copy(newMethod);
                 optMethodDao.updateOptMethod(oldMethod);
             }
