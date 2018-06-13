@@ -32,8 +32,6 @@ INSERT INTO f_datacatalog (catalog_code, catalog_name, catalog_style, catalog_ty
 INSERT INTO f_datacatalog (catalog_code, catalog_name, catalog_style, catalog_type, catalog_desc, field_desc, update_date, create_date, opt_id, need_cache, creator, updator) VALUES ('YesOrNo', '是否', 'F', 'L', '', '{\"dataCode\":{\"value\":\"编码\",\"isUse\":\"T\"},\"dataValue\":{\"value\":\"数值\",\"isUse\":\"T\"},\"extraCode\":{\"value\":\"扩展编码\",\"isUse\":\"F\"},\"extraCode2\":{\"value\":\"排序\",\"isUse\":\"F\"},\"dataTag\":{\"value\":\"数据标记\",\"isUse\":\"F\"},\"dataDesc\":{\"value\":\"数据描述\",\"isUse\":\"T\"}}', null, null, 'SYS_CONFIG', '1', 'u0000000', 'u0000000');
 
 
-
-
 INSERT INTO f_datadictionary (catalog_code, data_code, extra_code, extra_code2, data_tag, data_value, data_style, data_desc, last_modify_date, create_date, data_order) VALUES ('CatalogStyle', 'F', null, null, 'T', '框架固有', 'F', '任何地方都不允许编辑，只能有开发人员给出更新脚本添加、更改和删除', null, null, '0');
 INSERT INTO f_datadictionary (catalog_code, data_code, extra_code, extra_code2, data_tag, data_value, data_style, data_desc, last_modify_date, create_date, data_order) VALUES ('CatalogStyle', 'G', null, null, 'T', '国标', 'F', '这个暂时不考虑可以在字典类别中进行描述', null, null, '1');
 INSERT INTO f_datadictionary (catalog_code, data_code, extra_code, extra_code2, data_tag, data_value, data_style, data_desc, last_modify_date, create_date, data_order) VALUES ('CatalogStyle', 'S', null, null, 'T', '系统参数', 'F', '实施人员可以在实施入口对数据字典的类别和字典条目进行CRUD操作', null, null, '2');

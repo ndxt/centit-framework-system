@@ -102,9 +102,6 @@ INSERT INTO f_optinfo (opt_id, opt_name, pre_opt_id, opt_route, opt_url, form_co
 INSERT INTO f_optinfo (opt_id, opt_name, pre_opt_id, opt_route, opt_url, form_code, opt_type, msg_no, msg_prm, is_in_toolbar, img_index, top_opt_id, order_ind, flow_code, page_type, icon, height, width, update_date, create_date, creator, updator) VALUES ('USERUNIT', '用户机构', 'ORGMAG', '/modules/sys/userunit.html', '/system/userunit', null, 'O', null, null, 'N', null, null, null, null, 'D', null, null, null, null, null, 'u0000000', 'u0000000');
 
 
-
-
-
 INSERT INTO f_optdef (opt_code, opt_id, opt_name, opt_method, opt_url, opt_desc, opt_order, is_in_workflow, update_date, create_date, opt_req, creator, updator) VALUES ('1', 'DEPLOY', '查看', 'list', '/*', '查看', null, 'F', null, null, 'R', 'u0000000', 'u0000000');
 INSERT INTO f_optdef (opt_code, opt_id, opt_name, opt_method, opt_url, opt_desc, opt_order, is_in_workflow, update_date, create_date, opt_req, creator, updator) VALUES ('10', 'SYS_CONFIG', '查看', 'list', '/*', '查看', null, 'F', null, null, 'R', 'u0000000', 'u0000000');
 INSERT INTO f_optdef (opt_code, opt_id, opt_name, opt_method, opt_url, opt_desc, opt_order, is_in_workflow, update_date, create_date, opt_req, creator, updator) VALUES ('1000001', 'UNITMAG', '编辑机构', 'update', '/*', '更新机构', null, 'F', null, null, 'U', 'u0000000', 'u0000000');
@@ -177,7 +174,7 @@ insert into F_ROLEPOWER (ROLE_CODE, OPT_CODE, UPDATE_DATE, CREATE_DATE, OPT_SCOP
 values ('public', '1000080', parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), parsedatetime('25-02-2016', 'dd-MM-yyyy','en'), '','u0000000','u0000000');
 
 
-//sequence_nextval('S_OPTDEFCODE')
+-- sequence_nextval('S_OPTDEFCODE')
 
 
 insert into F_ROLEPOWER(role_code,opt_code,update_Date,create_date,opt_scope_codes,CREATOR,UPDATOR)
@@ -188,3 +185,4 @@ insert into F_USERROLE (USER_CODE, ROLE_CODE, OBTAIN_DATE,
 values ('u0000000', 'sysadmin', parsedatetime('23-05-2012','dd-MM-yyyy','en'),
 	parsedatetime('01-10-2020', 'dd-MM-yyyy','en'),'' ,today(), today(),'u0000000','u0000000');
 
+update f_optinfo set opt_type='O' where opt_type='S';
