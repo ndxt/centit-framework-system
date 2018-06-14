@@ -200,8 +200,8 @@ public class SysUserManagerImpl implements SysUserManager {
 //                userUnitDao.saveNewObject(uu);
 //            }
 //        }
-        if(null!=userInfo.listUserRoles()){
-            for(UserRole ur:userInfo.listUserRoles()){
+        if(null!=userInfo.getUserRoles()){
+            for(UserRole ur:userInfo.getUserRoles()){
                 userRoleDao.saveNewObject(ur);
             }
         }
