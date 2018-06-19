@@ -477,7 +477,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         this.userType = other.getUserType();
         this.userTag = other.getUserTag();
         this.englishName =other.getEnglishName();
-        this.replaceUserRoles(other.listUserRoles());
+        this.replaceUserRoles(other.getUserRoles());
         this.replaceUserUnits(other.getUserUnits());
         this.creator=other.creator;
         this.updator=other.updator;
@@ -550,8 +550,8 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
             this.userOrder = other.getUserOrder();
         if (other.regCellPhone != null)
             this.regCellPhone = other.getRegCellPhone();
-        if (other.listUserRoles() != null)
-            this.replaceUserRoles(other.listUserRoles());
+        if (other.getUserRoles() != null)
+            this.replaceUserRoles(other.getUserRoles());
         if(other.getUserUnits()!=null)
             this.replaceUserUnits(other.getUserUnits());
         if (other.getCreator() != null)
@@ -601,8 +601,16 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     }
 
     public List<UserRole> listUserRoles() {
-        if(null==userRoles)
-            userRoles=new ArrayList<UserRole>();
+        if(userRoles == null) {
+            userRoles = new ArrayList<>();
+        }
+        return userRoles;
+    }
+
+    public List<UserRole> getUserRoles(){
+        if(userRoles == null) {
+            userRoles = new ArrayList<>();
+        }
         return userRoles;
     }
 
@@ -622,11 +630,11 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
 
     private void addUserRole(UserRole userrole) {
         userrole.setUserCode(this.userCode);
-        this.listUserRoles().add(userrole);
+        this.getUserRoles().add(userrole);
     }
 
     private void removeUserRole(UserRole odt) {
-        this.listUserRoles().remove(odt);
+        this.getUserRoles().remove(odt);
 
     }
     /**
@@ -648,7 +656,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         //delete
         boolean found = false;
         Set<UserRole> oldObjs = new HashSet<UserRole>();
-        oldObjs.addAll(listUserRoles());
+        oldObjs.addAll(getUserRoles());
 
         for(Iterator<UserRole> it=oldObjs.iterator(); it.hasNext();){
             UserRole odt = it.next();
@@ -666,8 +674,8 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         //insert or update
         for(UserRole newdt :newObjs){
             found = false;
-            for(Iterator<UserRole> it=listUserRoles().iterator();
-             it.hasNext();){
+            for(Iterator<UserRole> it = getUserRoles().iterator();
+                it.hasNext();){
                 UserRole odt = it.next();
                 if(odt.getId().equals( newdt.getId())){
                     odt.copy(newdt);

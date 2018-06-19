@@ -121,8 +121,8 @@ public class UserInfoController extends BaseController {
                 uu.setUserCode(userInfo.getUserCode());
             }
         }
-        if(null!=userInfo.listUserRoles()){
-            for(UserRole ur:userInfo.listUserRoles()){
+        if(null!=userInfo.getUserRoles()){
+            for(UserRole ur:userInfo.getUserRoles()){
                 ur.setUserCode(userInfo.getUserCode());
             }
         }
@@ -169,7 +169,7 @@ public class UserInfoController extends BaseController {
         if(oldValue.getUserUnits().size() == 0){
             oldValue.setUserUnits(null);
         }
-        if(oldValue.listUserRoles().size() == 0){
+        if(oldValue.getUserRoles().size() == 0){
             oldValue.setUserRoles(null);
         }
 
