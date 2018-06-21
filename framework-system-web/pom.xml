@@ -32,7 +32,7 @@
         <dependency>
             <groupId>com.centit.framework</groupId>
             <artifactId>framework-system-module</artifactId>
-            <version>${centit.framework.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- server runtime library -->
