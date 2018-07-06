@@ -7,6 +7,7 @@ import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.network.HttpExecutor;
+import com.centit.support.network.HttpExecutorContext;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.config.Lookup;
@@ -46,11 +47,10 @@ public class TestFromPost {
             ui.setUserCode("test");
             ui.setUserName("hello");
             ui.setLoginName("guest");
-            CloseableHttpClient httpClient = HttpClients.createDefault();
-             String s = HttpExecutor.jsonPost(httpClient,
+            String s = HttpExecutor.jsonPost(HttpExecutorContext.create(),
                      "http://codefanbook:8180/framework-sys-module/service/testJson",JSON.parseObject(
                              JSON.toJSONString(ui)) );
-             System.out.println(s);
+            System.out.println(s);
         }  catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,17 +75,17 @@ public class TestFromPost {
                     setDefaultCookieSpecRegistry(cookieSpecRegistry).build(); //createDefault();
 
 
-           String s = HttpExecutor.simpleGet(httpClient, null,
+           String s = HttpExecutor.simpleGet(HttpExecutorContext.create(httpClient),
                     "http://codefanbook:8180/TestSession/TestSession",(String)null);
 
             System.out.println(s);
 
-            s = HttpExecutor.simpleGet(httpClient, null,
+            s = HttpExecutor.simpleGet(HttpExecutorContext.create(httpClient),
                     "http://codefanbook:8180/TestSession/TestSession",(String)null);
 
             System.out.println(s);
 
-            s = HttpExecutor.simpleGet(httpClient, null,
+            s = HttpExecutor.simpleGet(HttpExecutorContext.create(httpClient),
                     "http://codefanbook:8180/TestSession/TestSession",(String)null);
 
             System.out.println(s);
@@ -111,7 +111,7 @@ public class TestFromPost {
             params.put("password", "000000");
             params.put("remember", "true");
 
-            String s = HttpExecutor.formPost(httpClient,context,
+            String s = HttpExecutor.formPost(HttpExecutorContext.create(httpClient).context(context),
                     "http://codefanbook:8180/framework-sys-module/j_spring_security_check?ajax=true",
                     params,true);
             System.out.println(s);
@@ -133,12 +133,12 @@ public class TestFromPost {
             //String jsessionid = rj.getDataAsScalarObject(String.class);
             //context.setAttribute("JSESSIONID", jsessionid);
 
-            s = HttpExecutor.simpleGet(httpClient,context,
+            s = HttpExecutor.simpleGet(HttpExecutorContext.create(httpClient).context(context),
                     "http://codefanbook:8180/framework-sys-module/system/currentuser",(String)null);
 
             System.out.println(s);
 
-            s = HttpExecutor.simpleGet(httpClient,context,
+            s = HttpExecutor.simpleGet(HttpExecutorContext.create(httpClient).context(context),
                     "http://codefanbook:8180/framework-sys-module/system/currentuser",(String)null);
 
             System.out.println(s);
@@ -159,11 +159,10 @@ public class TestFromPost {
     }
 
     public static void testFormParams2(){
-        CloseableHttpClient client = HttpClients.createDefault();
 
         try {
 
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            List<NameValuePair> params = new ArrayList<>();
             params.add( new BasicNameValuePair("optDates",
                     DatetimeOpt.convertDatetimeToString(DatetimeOpt.currentUtilDate())));
             params.add( new BasicNameValuePair("optDates",
@@ -171,7 +170,7 @@ public class TestFromPost {
             params.add( new BasicNameValuePair("optDates",
                     DatetimeOpt.convertDatetimeToString(DatetimeOpt.addDays( DatetimeOpt.currentUtilDate(),10))));
 
-            String s = HttpExecutor.formPost(client, null,
+            String s = HttpExecutor.formPost(HttpExecutorContext.create(),
                     "https://codefanbook:8543/centit/system/roleinfo/testRole", params,true);
 
             System.out.println(s);
@@ -183,13 +182,13 @@ public class TestFromPost {
 
     public static void testFormParams(){
         RoleInfo roleinfo = new RoleInfo();
-        
+
         roleinfo.setIsValid("T");
         roleinfo.setRoleCode("testRole");
         roleinfo.setCreateDate(DatetimeOpt.currentUtilDate());
         roleinfo.setRoleDesc("测试表单提交");
         roleinfo.setRoleName("RoleName");
-        Map<String,Object> extDatas = new HashMap<String,Object>();
+        Map<String,Object> extDatas = new HashMap<>();
         extDatas.put("roleInfo", roleinfo);
         extDatas.put("optCodes", new String[]{"hello","world!"});
         extDatas.put("optDates", new String[]{
@@ -198,7 +197,7 @@ public class TestFromPost {
                 DatetimeOpt.convertDatetimeToString(DatetimeOpt.addDays( DatetimeOpt.currentUtilDate(),15))});
         extDatas.put("optLongs", new Long[]{1l,2l,3l,4l});
         try {
-            HttpExecutor.multiFormPost(HttpClients.createDefault(), null, 
+            HttpExecutor.multiFormPost(HttpExecutorContext.create(),
                     "http://codefanbook:8180/centit/system/roleinfo/testRole", roleinfo,extDatas,true);
         } catch (Exception e) {
             logger.error(e.getMessage(),e);// e.printStackTrace();

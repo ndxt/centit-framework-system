@@ -36,15 +36,6 @@ public class SystemBeanConfig implements EnvironmentAware {
         }
     }
 
-    /**
-     * 配置事务异常封装
-     * @return PersistenceExceptionTranslationPostProcessor
-     */
-    @Bean
-    public PersistenceExceptionTranslationPostProcessor persistenceExceptionTranslationPostProcessor() {
-        return new PersistenceExceptionTranslationPostProcessor();
-    }
-
     @Bean
     public AutowiredAnnotationBeanPostProcessor autowiredAnnotationBeanPostProcessor() {
         return new AutowiredAnnotationBeanPostProcessor();
