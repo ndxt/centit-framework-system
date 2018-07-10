@@ -37,8 +37,9 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     @Override
     @Transactional
     public List<OptInfo> getMenuFuncByOptUrl(){
-        String hql1 = "where OPT_URL='...' order by ORDER_IND ";
-        return super.listObjectsByFilter(hql1,(Object[]) null);
+//        String hql1 = "where OPT_URL='...' order by ORDER_IND ";
+        String sql = "where Opt_ID in (select Pre_Opt_ID from f_optinfo group by Pre_Opt_ID)";
+        return super.listObjectsByFilter(sql,(Object[]) null);
     }
 
     @Override
@@ -53,7 +54,9 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
             "JOIN f_rolepower b ON a.ROLE_CODE = b.ROLE_CODE " +
             "JOIN f_optdef c ON b.OPT_CODE = c.OPT_CODE " +
             "JOIN f_optinfo d ON c.Opt_ID = d.Opt_ID " +
-            "WHERE d.opt_url <> '...' " +
+            "WHERE " +
+//            "d.opt_url <> '...' " +
+            "d.Opt_ID not in (select Pre_Opt_ID from f_optinfo group by Pre_Opt_ID) " +
             "and d.IS_IN_TOOLBAR = 'Y' " +
             "and a.USER_CODE = ? "+
             "and d.OPT_TYPE = ? "+
@@ -150,7 +153,9 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
             "JOIN f_rolepower b ON a.ROLE_CODE = b.ROLE_CODE " +
             "JOIN f_optdef c ON b.OPT_CODE = c.OPT_CODE " +
             "JOIN f_optinfo d ON c.Opt_ID = d.Opt_ID " +
-            "WHERE d.opt_url <> '...' " +
+            "WHERE " +
+//            "d.opt_url <> '...' " +
+            "d.Opt_ID not in (select Pre_Opt_ID from f_optinfo group by Pre_Opt_ID) " +
             "and a.USER_CODE = ? "+
             "and d.OPT_TYPE = ? "+
             "order by d.ORDER_IND ";

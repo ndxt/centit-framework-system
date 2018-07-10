@@ -62,11 +62,11 @@ public class OptInfoManagerImpl implements OptInfoManager {
         // 父级url必须设成...
         OptInfo parentOpt = optInfoDao.getObjectById(optInfo.getPreOptId());
         if (null != parentOpt) {
-            if(!"...".equals(parentOpt.getOptRoute()) || !"...".equals(parentOpt.getOptUrl())){
+           /* if(!"...".equals(parentOpt.getOptRoute()) || !"...".equals(parentOpt.getOptUrl())){
                 parentOpt.setOptRoute("...");
                 parentOpt.setOptUrl("...");
                 optInfoDao.updateOptInfo(parentOpt);
-            }
+            }*/
         }else{
             optInfo.setPreOptId("0");
         }
@@ -90,24 +90,6 @@ public class OptInfoManagerImpl implements OptInfoManager {
             createDef.setOptReq("CRUD");
             createDef.setOptDesc("查看（系统默认）");
             optMethodDao.saveNewObject(createDef);
-
-//            OptMethod updateDef = new OptMethod();
-//            updateDef.setOptCode(optMethodDao.getNextOptCode());
-//            updateDef.setOptId(optInfo.getOptId());
-//            updateDef.setOptName("编辑");
-//            updateDef.setOptUrl("/*");
-//            updateDef.setOptReq("U");
-//            updateDef.setOptDesc("编辑（系统默认）");
-//            optMethodDao.saveNewObject(updateDef);
-//
-//            OptMethod deleteDef = new OptMethod();
-//            deleteDef.setOptCode(optMethodDao.getNextOptCode());
-//            deleteDef.setOptId(optInfo.getOptId());
-//            deleteDef.setOptName("删除");
-//            deleteDef.setOptUrl("/*");
-//            deleteDef.setOptReq("D");
-//            deleteDef.setOptDesc("删除（系统默认）");
-//            optMethodDao.saveNewObject(deleteDef);
         }
     }
 
@@ -346,17 +328,6 @@ public class OptInfoManagerImpl implements OptInfoManager {
         List<OptInfo> roleOptInfos = new ArrayList<OptInfo>();
         roleOptInfos.addAll(roleOpts);
         return roleOptInfos;
-    }
-
-    @Override
-    @Transactional
-    public List<OptInfo> getFunctionsByRoleCode(String unitRoleCode) {
-//        String hql="From OptInfo where (optId in "
-//                    + "(Select optId From OptMethod where optCode in"
-//                    +     " (select id.optCode from RolePower  where id.roleCode=?) )) "
-//                + "and (optType='S' or optType='O')";
-//        return optInfoDao.listObjectsByRoleCode(unitRoleCode );//zou_wy
-        return new ArrayList<>();
     }
 
     @Override
