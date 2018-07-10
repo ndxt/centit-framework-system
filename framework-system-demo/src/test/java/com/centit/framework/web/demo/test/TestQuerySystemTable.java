@@ -32,7 +32,7 @@ public class TestQuerySystemTable {
 //        UserInfoDaoImpl userInfoDao = new UserInfoDaoImpl();
 //
 //        userInfoDao.setDataSource(getDataSource());
-//        Map<String,Object> filterMap = QueryUtils.createSqlParamsMap("unitCode","U00001");
+//        Map<String,Object> filterMap = Collections.createHashMap("unitCode","U00001");
 //        PageDesc page = new PageDesc();//1,20,userInfoDao.pageCount(filterMap ) );
 //
 //        Map<String, Object> pageQureyMap =
