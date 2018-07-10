@@ -62,8 +62,6 @@ public interface OptInfoManager{
 
      OptInfo getOptInfoById(String optId);
 
-     List<OptInfo> getFunctionsByRoleCode(String roleCode);
-
     /**
      * 查询用户全部权限
      * @param userCode 用户代码
