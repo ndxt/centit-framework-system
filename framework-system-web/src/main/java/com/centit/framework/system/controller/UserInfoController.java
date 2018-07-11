@@ -71,7 +71,8 @@ public class UserInfoController extends BaseController {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
         //特殊字符转义
         if (searchColumn.get("userName") != null){
-            searchColumn.put("userName",StringEscapeUtils.escapeHtml4(searchColumn.get("userName").toString()));
+            searchColumn.put("likeUserOrLoginName",StringEscapeUtils.escapeHtml4(searchColumn.get("userName").toString()));
+            searchColumn.remove("userName");
         }
         List<UserInfo> listObjects = null;
         if (Boolean.parseBoolean(_search)) {

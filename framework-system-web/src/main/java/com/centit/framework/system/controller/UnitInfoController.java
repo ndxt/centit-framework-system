@@ -19,6 +19,7 @@ import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -403,6 +404,12 @@ public class UnitInfoController extends BaseController {
 
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
         searchColumn.put("unitCode", currentUnitCode);
+
+        //特殊字符转义
+        if (searchColumn.get("userName") != null){
+            searchColumn.put("likeUserOrLoginName", StringEscapeUtils.escapeHtml4(searchColumn.get("userName").toString()));
+            searchColumn.remove("userName");
+        }
 
         List<UserInfo> listObjects = sysUserMag.listObjects(searchColumn, pageDesc);
 

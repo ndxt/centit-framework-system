@@ -35,6 +35,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
             filterField.put("USERTAG", CodeBook.EQUAL_HQL_ID);
             filterField.put("USERWORD", CodeBook.EQUAL_HQL_ID);
 
+            filterField.put("(like)likeUserOrLoginName","(User_Name LIKE :likeUserOrLoginName OR LOGIN_NAME LIKE :likeUserOrLoginName)");
             filterField.put("byUnderUnit", "userCode in " +
                     "(select  id.userCode from UserUnit where id.unitCode = :byUnderUnit) ");
 

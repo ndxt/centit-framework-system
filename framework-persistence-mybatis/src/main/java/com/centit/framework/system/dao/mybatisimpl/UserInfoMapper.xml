@@ -46,6 +46,9 @@
         <if test="userName != null  and userName != ''  ">
             and u.USER_NAME like '%'|| #{userName}||'%'
         </if>
+        <if test="likeUserOrLoginName != null  and likeUserOrLoginName != '' ">
+            and ((u.USER_NAME like '%'|| #{likeUserOrLoginName} ||'%') OR (u.LOGIN_NAME like '%'|| #{likeUserOrLoginName} ||'%'))
+        </if>
         <if test="isValid != null  and isValid != ''  ">
             and u.IS_VALID = #{isValid}
         </if>
@@ -91,6 +94,9 @@
         <if test="userName != null  and userName != ''  ">
             and u.USER_NAME like concat('%', #{userName}, '%')
         </if>
+        <if test="likeUserOrLoginName != null  and likeUserOrLoginName != '' ">
+            and (u.USER_NAME like concat('%', #{likeUserOrLoginName}, '%') OR u.LOGIN_NAME like concat('%', #{likeUserOrLoginName}, '%'))
+        </if>
         <if test="isValid != null  and isValid != ''  ">
             and u.IS_VALID = #{isValid}
         </if>
@@ -135,6 +141,9 @@
         </if>
         <if test="userName != null  and userName != ''  ">
             and u.USER_NAME like concat('%', #{userName}, '%')
+        </if>
+        <if test="likeUserOrLoginName != null  and likeUserOrLoginName != '' ">
+            and (u.USER_NAME like concat('%', #{likeUserOrLoginName}, '%') OR u.LOGIN_NAME like concat('%', #{likeUserOrLoginName}, '%'))
         </if>
         <if test="isValid != null  and isValid != ''  ">
             and u.IS_VALID = #{isValid}
