@@ -48,8 +48,6 @@ public interface OptInfoManager{
 
      void saveNewOptInfo(OptInfo optinfo);
 
-     void updateOptInfoProperties(OptInfo optinfo);
-
      void updateOptInfo(OptInfo optinfo);
 
      void updateOperationPower(OptInfo optInfo);
@@ -57,8 +55,6 @@ public interface OptInfoManager{
      void deleteOptInfo(OptInfo optinfo);
 
      void deleteOptInfoById(String optId);
-
-    // void deleteOptInfoByIdCascade(String optId);
 
      OptInfo getOptInfoById(String optId);
 
