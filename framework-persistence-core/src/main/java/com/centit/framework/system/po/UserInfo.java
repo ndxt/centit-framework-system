@@ -7,6 +7,7 @@ import com.centit.support.database.orm.GeneratorCondition;
 import com.centit.support.database.orm.GeneratorTime;
 import com.centit.support.database.orm.GeneratorType;
 import com.centit.support.database.orm.ValueGenerator;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -358,6 +359,9 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     }
 
     public String getLoginIp() {
+        if(StringUtils.isNotBlank(this.loginIp)){
+            return this.loginIp.replace("0:0:0:0:0:0:0:1","127.0.0.1");
+        }
         return this.loginIp;
     }
 

@@ -148,7 +148,7 @@ public class OptInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(method = {RequestMethod.POST})
-    @RecordOperationLog(content = "新增菜单")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}新增菜单")
     public void createOptInfo(@Valid OptInfo optInfo, HttpServletRequest request, HttpServletResponse response) {
 
         if (StringUtils.isBlank(optInfo.getOptRoute())) {
@@ -194,7 +194,7 @@ public class OptInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{optId}", method = {RequestMethod.PUT})
-    @RecordOperationLog(content = "更新菜单")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}更新菜单")
     public void edit(@PathVariable String optId, @Valid OptInfo optInfo,
                      HttpServletRequest request, HttpServletResponse response) {
 
@@ -242,7 +242,7 @@ public class OptInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/editpower{optId}", method = {RequestMethod.PUT})
-    @RecordOperationLog(content = "更新操作权限")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}更新操作权限")
     public void editPower(@PathVariable String optId, @Valid OptInfo optInfo,
                           HttpServletRequest request, HttpServletResponse response) {
 
@@ -293,7 +293,7 @@ public class OptInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{optId}", method = {RequestMethod.DELETE})
-    @RecordOperationLog(content = "删除菜单")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}删除菜单")
     public void delete(@PathVariable String optId, HttpServletRequest request, HttpServletResponse response) {
         OptInfo dboptInfo = optInfoManager.getObjectById(optId);
 

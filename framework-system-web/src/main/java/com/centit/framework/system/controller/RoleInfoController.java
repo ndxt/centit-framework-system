@@ -218,7 +218,7 @@ public class RoleInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(method = RequestMethod.POST)
-    @RecordOperationLog(content = "新增角色")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}新增角色")
     public void createGlobalRole(@Valid RoleInfo roleInfo,HttpServletRequest request, HttpServletResponse response) {
         String roleType = roleInfo.getRoleType();
         if(StringUtils.isBlank(roleType)){
@@ -255,7 +255,7 @@ public class RoleInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/addopt/{roleCode}/{optCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "给角色添加权限")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}给角色添加权限")
     public void addOptToRole(@PathVariable String roleCode, @PathVariable String optCode,
             HttpServletRequest request,HttpServletResponse response) {
 
@@ -293,7 +293,7 @@ public class RoleInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/delopt/{roleCode}/{optCode}", method = RequestMethod.DELETE)
-    @RecordOperationLog(content = "删除角色权限")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}删除角色权限")
     public void deleteOptFormRole(@PathVariable String roleCode, @PathVariable String optCode,
             HttpServletRequest request, HttpServletResponse response) {
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
@@ -329,7 +329,7 @@ public class RoleInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{roleCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "更新角色")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}更新角色")
     public void edit(@PathVariable String roleCode, @Valid RoleInfo roleInfo,
                      HttpServletRequest request, HttpServletResponse response) {
 
@@ -361,7 +361,7 @@ public class RoleInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/power/{roleCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "更新角色权限")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}更新角色权限")
     public void updateRolePower(@PathVariable String roleCode, RoleInfo roleInfo,
                      HttpServletRequest request, HttpServletResponse response) {
 
@@ -454,7 +454,7 @@ public class RoleInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{roleCode}", method = RequestMethod.DELETE)
-    @RecordOperationLog(content = "删除角色")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}删除角色")
     public void deleteRole(@PathVariable String roleCode, HttpServletResponse response) {
         if(StringUtils.equalsAny(roleCode,
           "public", "anonymous", "forbidden")){

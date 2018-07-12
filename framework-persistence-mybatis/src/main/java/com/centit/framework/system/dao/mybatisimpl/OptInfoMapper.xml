@@ -445,7 +445,7 @@
     </select>
 
     <select id="getMenuFuncByUserID" parameterType="map"
-    resultType="com.centit.framework.system.po.FVUserOptMoudleList">
+    resultType="com.centit.framework.system.po.OptInfo">
         select OPT_ID,
                USER_CODE,
                OPT_NAME,
@@ -469,7 +469,7 @@
     </select>
 
     <select id="listUserAllSubMenu" parameterType="map"
-    resultType="com.centit.framework.system.po.FVUserOptMoudleList">
+    resultType="com.centit.framework.system.po.OptInfo">
         select OPT_ID,
                USER_CODE,
                OPT_NAME,
