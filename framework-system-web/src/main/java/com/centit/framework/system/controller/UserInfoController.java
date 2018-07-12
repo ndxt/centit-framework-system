@@ -106,7 +106,7 @@ public class UserInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(method = RequestMethod.POST)
-    @RecordOperationLog(content = "新增用户")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}新增用户")
     public void create(@Valid UserInfo userInfo, UserUnit userUnit,
                        HttpServletRequest request, HttpServletResponse response) {
 
@@ -146,7 +146,7 @@ public class UserInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{userCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "更新用户信息")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}更新用户信息")
     public void edit(@PathVariable String userCode, @Valid UserInfo userInfo, UserUnit userUnit,
                      HttpServletRequest request, HttpServletResponse response) {
 
@@ -274,7 +274,7 @@ public class UserInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/change/{userCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "更新用户密码")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}更新用户密码")
     public void changePwd(@PathVariable String userCode, String password, String newPassword,
             HttpServletRequest request,HttpServletResponse response) {
 
@@ -294,7 +294,7 @@ public class UserInfoController extends BaseController {
      * @param response {@link HttpServletResponse}
      */
     @RequestMapping(value = "/changePwd/{userCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "强制更新用户密码")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}强制更新用户密码")
     public void forceChangePwd(@PathVariable String userCode,
                                HttpServletRequest request,HttpServletResponse response) {
         String newPassword = request.getParameter("newPassword");
@@ -325,7 +325,7 @@ public class UserInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/reset", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "重置用户密码")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}重置用户密码")
     public void resetBatchPwd(String[] userCodes, HttpServletResponse response) {
         if (ArrayUtils.isEmpty(userCodes)) {
             JsonResultUtils.writeErrorMessageJson("用户代码集合为空", response);
@@ -346,7 +346,7 @@ public class UserInfoController extends BaseController {
      * @param response {@link HttpServletResponse}
      */
     @RequestMapping(value="/{userCodes}",method=RequestMethod.DELETE)
-    @RecordOperationLog(content = "删除用户")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}删除用户")
     public  void deleteUser(@PathVariable String[] userCodes,HttpServletRequest request,HttpServletResponse response){
         for(String userCode : userCodes) {
             UserInfo userInfo = sysUserManager.getObjectById(userCode);
