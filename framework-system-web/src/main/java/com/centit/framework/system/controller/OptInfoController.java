@@ -8,6 +8,7 @@ import com.centit.framework.common.ViewDataTransform;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.operationlog.RecordOperationLog;
+import com.centit.framework.security.model.CentitSecurityMetadata;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.service.OptInfoManager;
@@ -152,7 +153,7 @@ public class OptInfoController extends BaseController {
 
         optInfoManager.saveNewOptInfo(optInfo);
         //刷新缓存
-        platformEnvironment.reloadSecurityMetadata();
+        CentitSecurityMetadata.evictAllCache();
 
         JsonResultUtils.writeSingleDataJson(optInfo, response);
     }
@@ -239,7 +240,7 @@ public class OptInfoController extends BaseController {
         dbOptInfo.addAllDataScopes(optInfo.getDataScopes());
         optInfoManager.updateOperationPower(dbOptInfo);
         //刷新缓存
-        platformEnvironment.reloadSecurityMetadata();
+        CentitSecurityMetadata.evictAllCache();
 
         JsonResultUtils.writeSuccessJson(response);
     }
@@ -258,7 +259,7 @@ public class OptInfoController extends BaseController {
 
         optInfoManager.deleteOptInfo(dboptInfo);
         //刷新缓存
-        platformEnvironment.reloadSecurityMetadata();
+        CentitSecurityMetadata.evictAllCache();
         JsonResultUtils.writeBlankJson(response);
     }
 

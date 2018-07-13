@@ -34,6 +34,6 @@ public abstract class EntityManagerWithDataPowerImpl{
         DataPowerFilter dpf = createDataPowerFilter(userCode);
         //dpf.setSourceDatas(sourceData);
         QueryAndNamedParams hql = dpf.makeHQL("T className" , filters, false);
-        return baseDao.listObjects(hql.getHql(),hql.getParams());
+        return baseDao.listObjectsAll(hql.getHql(),hql.getParams());
     }*/
 }

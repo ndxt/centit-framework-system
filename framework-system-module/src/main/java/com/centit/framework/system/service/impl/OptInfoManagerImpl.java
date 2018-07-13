@@ -49,7 +49,6 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @CacheEvict(value="OptInfo",allEntries = true)
     @Transactional
     public void saveNewOptInfo(OptInfo optInfo){
-
         //同步菜单上下级显示与否
         syncState(optInfo);
         OptInfo parentOpt = optInfoDao.getObjectById(optInfo.getPreOptId());

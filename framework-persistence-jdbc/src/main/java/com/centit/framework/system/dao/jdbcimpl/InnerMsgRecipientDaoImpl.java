@@ -85,7 +85,7 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
 
     /*@Override
     public List<InnerMsgRecipient> listObjectsCascade(Map<String, Object> filterMap){
-        List<InnerMsgRecipient> recipients = listObjects(filterMap);
+        List<InnerMsgRecipient> recipients = listObjectsAll(filterMap);
         for(InnerMsgRecipient recipient : recipients){
             DatabaseOptUtils.getObjectCascadeById(inn)
         }

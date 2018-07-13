@@ -139,7 +139,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     }
 
  /*   public List<OptInfo> listObjectsByCon(String condition){
-        return this.listObjects("From OptInfo where "+condition);
+        return this.listObjectsAll("From OptInfo where "+condition);
     }*/
 
     public List<OptInfo> listObjectByParentOptid(String optId){

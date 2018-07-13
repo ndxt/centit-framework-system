@@ -11,6 +11,7 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.operationlog.RecordOperationLog;
+import com.centit.framework.security.model.CentitSecurityMetadata;
 import com.centit.framework.security.model.CentitUserDetails;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.*;
@@ -499,22 +500,23 @@ public class UnitInfoController extends BaseController {
 
         List<RolePower> rolePowers = new ArrayList<>();
         //为空时更新RoleInfo中字段数据
-       if (ArrayUtils.isNotEmpty(optCodesArray)) {
-           for (String optCode : optCodesArray) {
-               if(StringUtils.isNotBlank(optCode)) {
-                 rolePowers.add(new RolePower(new RolePowerId(roleInfo.getRoleCode(), optCode)));
-               }
-           }
-       }
+        if (ArrayUtils.isNotEmpty(optCodesArray)) {
+            for (String optCode : optCodesArray) {
+                if(StringUtils.isNotBlank(optCode)) {
+                    rolePowers.add(new RolePower(new RolePowerId(roleInfo.getRoleCode(), optCode)));
+                }
+            }
+        }
 
-       roleInfo.addAllRolePowers(rolePowers);
-       sysRoleManager.updateRolePower(roleInfo);
-       platformEnvironment.reloadSecurityMetadata();//sysRoleManager.loadRoleSecurityMetadata();
-       JsonResultUtils.writeBlankJson(response);
-       /*********log*********/
+        roleInfo.addAllRolePowers(rolePowers);
+        sysRoleManager.updateRolePower(roleInfo);
+        CentitSecurityMetadata.evictAllCache();
+        //sysRoleManager.loadRoleSecurityMetadata();
+        JsonResultUtils.writeBlankJson(response);
+        /*********log*********/
 //       OperationLogCenter.logNewObject(request,optId, roleInfo.getRoleCode(), OperationLog.P_OPT_LOG_METHOD_U,
 //               "更新机构权限",roleInfo);
-       /*********log*********/
+        /*********log*********/
     }
 
     @GetMapping(value = "/validroles")

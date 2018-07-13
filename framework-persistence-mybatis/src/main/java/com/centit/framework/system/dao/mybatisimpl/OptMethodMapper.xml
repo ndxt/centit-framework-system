@@ -256,7 +256,7 @@
     </delete>
     <!--删除记录 结束 -->
 
-    <select id="listObjects" parameterType="map"  resultMap="OptMethod">
+    <select id="listObjectsAll" parameterType="map"  resultMap="OptMethod">
         <include refid="coreSql" />
     </select>
 

@@ -107,7 +107,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
 
     @Transactional
     public List<OptMethod> listAllOptMethods() {
-         return optMethodDao.listObjects();
+         return optMethodDao.listObjectsAll();
     }
 
     private List<OptMethodUrlMap> listAllOptMethodUrlMap() {

@@ -16,6 +16,16 @@ import java.util.Map;
 @Repository("optMethodDao")
 public class OptMethodDaoImpl extends BaseDaoImpl<OptMethod, String> implements OptMethodDao {
 
+    /**
+     * 查询全部操作
+     *
+     * @return List&lt;OptMethod&gt;
+     */
+    @Override
+    public List<OptMethod> listObjectsAll() {
+        return super.listObjects();
+    }
+
     @Override
     public OptMethod getObjectById(String optCode) {
         return super.getObjectById(optCode);

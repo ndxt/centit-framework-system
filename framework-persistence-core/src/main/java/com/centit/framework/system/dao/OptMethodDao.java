@@ -16,7 +16,7 @@ public interface OptMethodDao {
      * 查询全部操作
      * @return List&lt;OptMethod&gt;
      */
-    List<OptMethod> listObjects();
+    List<OptMethod> listObjectsAll();
 
     /**
      * 根据Id查询操作

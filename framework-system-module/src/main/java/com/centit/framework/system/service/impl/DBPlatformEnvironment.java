@@ -4,8 +4,6 @@ import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.*;
 import com.centit.framework.security.model.CentitPasswordEncoder;
-import com.centit.framework.security.model.CentitSecurityMetadata;
-import com.centit.framework.security.model.OptTreeNode;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.security.CentitUserDetailsImpl;
@@ -18,9 +16,6 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.access.ConfigAttribute;
-import org.springframework.security.access.SecurityConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -135,61 +130,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         this.rolePowerDao = rolePowerDao;
     }
 
-    /**
-     * 刷新数据字典
-     *
-     * @return  boolean 刷新数据字典
-     */
     @Override
-    public boolean reloadDictionary() {
-        return false;
-    }
-
-    /**
-     * 刷新权限相关的元数据
-     *
-     * @return boolean 刷新权限相关的元数据
-     */
-    @Override
-    @Transactional(readOnly=true)
-    public boolean reloadSecurityMetadata() {
-        CentitSecurityMetadata.optMethodRoleMap.clear();
-        List<RolePower> rplist = rolePowerDao.listObjectsAll();
-        if(rplist==null || rplist.size()==0)
-            return false;
-        for(RolePower rp: rplist ){
-            List<ConfigAttribute/*roleCode*/> roles = CentitSecurityMetadata.optMethodRoleMap.get(rp.getOptCode());
-            if(roles == null){
-                roles = new ArrayList</*roleCode*/>();
-            }
-            roles.add(new SecurityConfig(CentitSecurityMetadata.ROLE_PREFIX + StringUtils.trim(rp.getRoleCode())));
-            CentitSecurityMetadata.optMethodRoleMap.put(rp.getOptCode(), roles);
-        }
-        //将操作和角色对应关系中的角色排序，便于权限判断中的比较
-        CentitSecurityMetadata.sortOptMethodRoleMap();
-
-        List<OptMethodUrlMap> oulist = optInfoDao.listAllOptMethodUrlMap();
-        CentitSecurityMetadata.optTreeNode.setChildList(null);
-        CentitSecurityMetadata.optTreeNode.setOptCode(null);
-        for(OptMethodUrlMap ou:oulist){
-            List<List<String>> sOpt = CentitSecurityMetadata.parsePowerDefineUrl(ou.getOptDefUrl() ,ou.getOptReq());
-
-            for(List<String> surls : sOpt){
-                OptTreeNode opt = CentitSecurityMetadata.optTreeNode;
-                for(String surl : surls)
-                    opt = opt.setChildPath(surl);
-                opt.setOptCode(ou.getOptCode());
-            }
-        }
-
-        CentitSecurityMetadata.confirmLoginCasMustBeAuthed();
-
-        return true;
-    }
-
-    @Override
-    public List<UserSetting> getAllSettings(){
-        return userSettingDao.getAllSettings();
+    public List<UserSetting> listUserSettings(String userCode){
+        return userSettingDao.getUserSettingsByCode(userCode);
     }
 
     @Override
@@ -313,17 +256,6 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         return formatMenuTree(menuFunsByUser,superOptId);
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<FVUserRoles> listUserRolesByUserCode(String userCode) {
-        return userRoleDao.listUserRolesByUserCode(userCode);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<UserInfo> listRoleUserByRoleCode(String roleCode) {
-      return userInfoDao.listUsersByRoleCode(roleCode);
-    }
 
     @Override
     @Transactional(readOnly = true)
@@ -350,24 +282,6 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public UserInfo getUserInfoByUserCode(String userCode) {
-        return userInfoDao.getUserByCode(userCode);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public UserInfo getUserInfoByLoginName(String loginName) {
-        return userInfoDao.getUserByLoginName(loginName);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public IUnitInfo getUnitInfoByUnitCode(String unitCode) {
-        return unitInfoDao.getObjectById(unitCode);
-    }
-
-    @Override
     @Transactional
     public void changeUserPassword(String userCode, String userPassword) {
         UserInfo user = userInfoDao.getUserByCode(userCode);
@@ -384,21 +298,18 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
-    @Cacheable(value = "UserInfo",key = "'userList'" )
     @Transactional(readOnly = true)
     public List<UserInfo> listAllUsers() {
         return userInfoDao.listObjects();
     }
 
     @Override
-    @Cacheable(value="UnitInfo",key="'unitList'")
     @Transactional(readOnly = true)
     public List<UnitInfo> listAllUnits() {
         return unitInfoDao.listObjects();
     }
 
     @Override
-    @Cacheable(value="AllUserUnits",key="'allUserUnits'")
     @Transactional(readOnly = true)
     public List<UserUnit> listAllUserUnits() {
         return userUnitDao.listObjectsAll();
@@ -424,144 +335,46 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value="UserUnits",key="#userCode")
     public List<UserUnit> listUserUnits(String userCode) {
         return fetchUserUnitXzRank(userUnitDao.listUserUnitsByUserCode(userCode));
     }
 
     @Override
-    @Cacheable(value="UnitUsers",key="#unitCode")
     @Transactional(readOnly = true)
     public List<UserUnit> listUnitUsers(String unitCode) {
       return fetchUserUnitXzRank(userUnitDao.listUnitUsersByUnitCode(unitCode));
     }
 
     @Override
-    @Transactional(readOnly = true)
-    @Cacheable(value="RoleInfo",key="'roleCodeMap'")
-    public Map<String, RoleInfo> getRoleRepo() {
-        Map<String, RoleInfo> roleReop = new HashMap<>();
-        List<RoleInfo> roleList = roleInfoDao.listObjectsAll();
-        if(roleList!=null)
-            for (Iterator<RoleInfo> it = roleList.iterator(); it.hasNext(); ) {
-                RoleInfo roleinfo = it.next();
-                roleReop.put(roleinfo.getRoleCode(), roleinfo);
-            }
-        return roleReop;
+    public List<? extends IRoleInfo> listAllRoleInfo() {
+        return roleInfoDao.listObjectsAll();
     }
 
     @Override
-    @Cacheable(value="OptInfo",key="'optIdMap'")
-    @Transactional(readOnly = true)
-    public Map<String, OptInfo> getOptInfoRepo() {
-        Map<String, OptInfo> optRepo = new HashMap<>();
-        List<OptInfo> optList = optInfoDao.listObjectsAll();
-        if (optList != null) {
-            for (OptInfo optinfo : optList) {
-                optRepo.put(optinfo.getOptId(), optinfo);
-            }
-        }
-
-        return optRepo;
+    public List<? extends IRolePower> listAllRolePower() {
+        return rolePowerDao.listObjectsAll();
     }
 
     @Override
-    @Transactional(readOnly = true)
-    @Cacheable(value="OptInfo",key="'optCodeMap'")
-    public Map<String, OptMethod> getOptMethodRepo() {
-        Map<String, OptMethod> powerRepo = new HashMap<>();
-
-        List<OptMethod> optdefList = optMethodDao.listObjects();
-        if(optdefList!=null){
-            for (Iterator<OptMethod> it = optdefList.iterator(); it.hasNext(); ) {
-                OptMethod optdef = it.next();
-                powerRepo.put(optdef.getOptCode(), optdef);
-            }
-        }
-        return powerRepo;
+    public List<? extends IOptInfo> listAllOptInfo() {
+        return optInfoDao.listObjectsAll();
     }
 
     @Override
-    @Cacheable(value = "DataDictionary",key="'CatalogCode'")
+    public List<? extends IOptMethod> listAllOptMethod() {
+        return optMethodDao.listObjectsAll();
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<DataCatalog> listAllDataCatalogs() {
         return dataCatalogDao.listObjects();
     }
 
     @Override
-    @Cacheable(value = "DataDictionary",key="#catalogCode")
     @Transactional(readOnly = true)
     public List<DataDictionary> listDataDictionaries(String catalogCode) {
         return dataDictionaryDao.listDataDictionary(catalogCode);
-    }
-
-    @Override
-    @Cacheable(value="UnitInfo",key="'unitCodeMap'")
-    @Transactional(readOnly = true)
-    public Map<String,UnitInfo> getUnitRepo() {
-        Map<String, UnitInfo> unitRepo = new HashMap<>();
-        List<UnitInfo> unitList = unitInfoDao.listObjects();
-        if (unitList != null){
-            for (UnitInfo unitinfo : unitList) {
-                unitRepo.put(unitinfo.getUnitCode(), unitinfo);
-            }
-        }
-        /**
-         * 计算所有机构的子机构。只计算启动的机构
-         */
-        for (Map.Entry<String, UnitInfo> ent : unitRepo.entrySet()) {
-            UnitInfo u = ent.getValue();
-            String sParentUnit = u.getParentUnit();
-            if ("T".equals(u.getIsValid())
-                    && (sParentUnit != null && (!"".equals(sParentUnit)) && (!"0".equals(sParentUnit)))) {
-                UnitInfo pU = unitRepo.get(sParentUnit);
-                if (pU != null)
-                    pU.getSubUnits().add(u);
-            }
-        }
-
-        return unitRepo;
-    }
-
-    @Override
-    @Cacheable(value = "UserInfo",key = "'userCodeMap'" )
-    @Transactional(readOnly = true)
-    public Map<String,UserInfo> getUserRepo() {
-        Map<String, UserInfo> userInfoMap = new HashMap<>();
-        List<UserInfo> users = userInfoDao.listObjects();
-        if(users!=null){
-            for (UserInfo userInfo : users) {
-                userInfoMap.put(userInfo.getUserCode(), userInfo);
-            }
-        }
-        return userInfoMap;
-    }
-
-    @Override
-    @Cacheable(value = "UserInfo",key = "'loginNameMap'")
-    @Transactional(readOnly = true)
-    public Map<String, ? extends IUserInfo> getLoginNameRepo() {
-        Map<String, UserInfo> userInfoMap = new HashMap<>();
-        List<UserInfo> users = userInfoDao.listObjects();
-        if(users!=null){
-            for (UserInfo userInfo : users) {
-                userInfoMap.put(userInfo.getLoginName(), userInfo);
-            }
-        }
-        return userInfoMap;
-    }
-
-    @Override
-    @Cacheable(value="UnitInfo",key="'depNoMap'")
-    @Transactional(readOnly = true)
-    public Map<String, ? extends IUnitInfo> getDepNoRepo() {
-        Map<String, UnitInfo> depNo = new HashMap<>();
-        List<UnitInfo> unitList = unitInfoDao.listObjects();
-        if (unitList != null)
-            for (UnitInfo unitinfo : unitList) {
-                depNo.put(unitinfo.getDepNo(), unitinfo);
-            }
-        return depNo;
     }
 
     //@Transactional
@@ -665,24 +478,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             isNeeds[i] = false;
         }
         List<OptInfo> opts = new ArrayList<>();
-
-        /*for (FVUserOptMoudleList opm : ls) {
-            OptInfo opt = new OptInfo();
-            opt.setFormCode(opm.getFormcode());
-            opt.setImgIndex(opm.getImgindex());
-            opt.setIsInToolbar(opm.getIsintoolbar());
-            opt.setMsgNo(opm.getMsgno());
-            opt.setMsgPrm(opm.getMsgprm());
-            opt.setOptId(opm.getOptid());
-            opt.setOptType(opm.getOpttype());
-            opt.setOptName(opm.getOptname());
-            opt.setOptUrl(opm.getOpturl());
-            opt.setPreOptId(opm.getPreoptid());
-            opt.setTopOptId(opm.getTopoptid());
-            opt.setPageType(opm.getPageType());
-            opt.setOptRoute(opm.getOptRoute());*/
         for(OptInfo opt : ls){
-
             opts.add(opt);
             for (int i = 0; i < preOpts.size(); i++) {
                 if (opt.getPreOptId() != null && opt.getPreOptId().equals(preOpts.get(i).getOptId())) {
@@ -702,9 +498,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         boolean isNeeds2[] = new boolean[preOpts.size()];
         while (true) {
             int nestedMenu = 0;
-            for (int i = 0; i < preOpts.size(); i++)
+            for (int i = 0; i < preOpts.size(); i++) {
                 isNeeds2[i] = false;
-
+            }
             for (int i = 0; i < needAdd.size(); i++) {
                 for (int j = 0; j < preOpts.size(); j++) {
                     if (!isNeeds[j] && needAdd.get(i).getPreOptId() != null

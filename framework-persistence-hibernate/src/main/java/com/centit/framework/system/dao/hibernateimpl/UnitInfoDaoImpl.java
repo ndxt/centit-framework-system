@@ -105,7 +105,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     public List<UnitInfo> listSubUnits(String unitCode){
         return super.listObjectByProperty("parentUnit", unitCode);
         /*String hql = "from UnitInfo where parentUnit = ?";
-        return listObjects(hql,
+        return listObjectsAll(hql,
             new Object[]{unitCode,unitCode});*/
     }
 

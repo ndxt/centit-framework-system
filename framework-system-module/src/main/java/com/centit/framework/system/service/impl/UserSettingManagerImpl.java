@@ -56,7 +56,7 @@ public class UserSettingManagerImpl implements UserSettingManager {
 //        Map<String, Object> map = new HashMap<>();
 //        map.put("catalogCode", "userSettingKey");
 //        map.put("dataCode", userSetting.getParamCode());
-//        DataDictionary dictionary = dataDictionaryDao.listObjects(map).get(0);
+//        DataDictionary dictionary = dataDictionaryDao.listObjectsAll(map).get(0);
 //        userSetting.setOptId(dictionary.getExtraCode());
         userSetting.setCreateDate(new Date());
         userSettingDao.saveNewUserSetting(userSetting);

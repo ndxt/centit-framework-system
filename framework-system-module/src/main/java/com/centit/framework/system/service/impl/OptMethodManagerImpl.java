@@ -49,7 +49,7 @@ public class OptMethodManagerImpl implements OptMethodManager {
 
     @Override
     public List<OptMethod> listObjects() {
-        return optMethodDao.listObjects();
+        return optMethodDao.listObjectsAll();
     }
 
     @Override
