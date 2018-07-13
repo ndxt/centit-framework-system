@@ -212,7 +212,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
     public List<UserUnit> querySubUserUnits(Map<String, Object> pageQueryMap) {
         String hql = "from UserUnit where 1=1 " +
           "[:(STARTWITH)unitPath | and unitCode in (select unitCode from UnitInfo where unitPath like :unitPath)]"+
-          "[:(like)userName | and userCode in (select userCode from UserInfo where userName like :userName)]";
+          "[:(like)userName | and userCode in (select userCode from UserInfo where userName like :userName or loginName like :userName)]";
 
         int startPos = 0;
       int maxSize = 0;

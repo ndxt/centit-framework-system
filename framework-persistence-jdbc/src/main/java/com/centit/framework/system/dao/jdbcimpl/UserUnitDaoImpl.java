@@ -187,7 +187,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
           "UPDATE_DATE, CREATE_DATE, CREATOR, UPDATOR " +
           "FROM F_USERUNIT WHERE 1=1 " +
           "[:(STARTWITH)unitPath | and UNIT_CODE IN (select UNIT_CODE from f_unitinfo where UNIT_PATH like :unitPath)]"+
-          "[:(like)userName | and USER_CODE in (select USER_CODE from f_userinfo where USER_NAME like :userName)]" +
+          "[:(like)userName | and USER_CODE in (select USER_CODE from f_userinfo where USER_NAME like :userName or LOGIN_NAME like :userName)]" +
           "[:isValid | and USER_CODE in (select us.USER_CODE from f_userinfo us where us.IS_VALID = :isValid)]";
         PageDesc pageDesc = QueryParameterPrepare.fetckPageDescParams(pageQueryMap);
 

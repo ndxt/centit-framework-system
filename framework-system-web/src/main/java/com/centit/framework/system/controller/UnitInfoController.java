@@ -19,6 +19,7 @@ import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -201,7 +202,7 @@ public class UnitInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{unitCode}", method = {RequestMethod.DELETE})
-    @RecordOperationLog(content = "删除机构")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}删除机构")
     public void delete(@PathVariable String unitCode,HttpServletRequest request, HttpServletResponse response) {
         UnitInfo unitInfo = sysUnitManager.getObjectById(unitCode);
         if(unitInfo==null){
@@ -240,7 +241,7 @@ public class UnitInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(method = RequestMethod.POST)
-    @RecordOperationLog(content = "新增机构")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}新增机构")
     public void create(@Valid UnitInfo unitInfo, HttpServletRequest request,HttpServletResponse response) {
 
         if(!sysUnitManager.isUniqueName(unitInfo)){
@@ -281,7 +282,7 @@ public class UnitInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{unitCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "更新机构")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}更新机构")
     public void edit(@PathVariable String unitCode, @Valid UnitInfo unitInfo,
             HttpServletRequest request,HttpServletResponse response) {
 
@@ -344,7 +345,7 @@ public class UnitInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{unitCode}/status/{statusValue}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "更新机构状态")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}更新机构状态")
     public void changeStatus(@PathVariable String unitCode, @PathVariable String statusValue,
             HttpServletRequest request,HttpServletResponse response) {
         UnitInfo dbUnitInfo = sysUnitManager.getObjectById(unitCode);
@@ -403,6 +404,12 @@ public class UnitInfoController extends BaseController {
 
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
         searchColumn.put("unitCode", currentUnitCode);
+
+        //特殊字符转义
+        if (searchColumn.get("userName") != null){
+            searchColumn.put("likeUserOrLoginName", StringEscapeUtils.escapeHtml4(searchColumn.get("userName").toString()));
+            searchColumn.remove("userName");
+        }
 
         List<UserInfo> listObjects = sysUserMag.listObjects(searchColumn, pageDesc);
 
@@ -471,7 +478,7 @@ public class UnitInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/unit/saveopts/{unitCode}",method = RequestMethod.POST)
-    @RecordOperationLog(content = "更新机构权限")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}更新机构权限")
     public void setUnitPowers(@PathVariable String unitCode, String optCodes,
                               HttpServletRequest request,HttpServletResponse response) {
         String[] optCodesArray = optCodes.split(",");

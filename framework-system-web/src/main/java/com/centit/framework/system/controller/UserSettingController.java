@@ -161,7 +161,7 @@ public class UserSettingController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(method = {RequestMethod.POST})
-    @RecordOperationLog(content = "更新用户设置参数")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}更新用户设置参数")
     public void editUserSetting(@Valid UserSetting userSetting, HttpServletResponse response) {
 
         boolean isDefaultValue = userSetting.isDefaultValue();
@@ -181,7 +181,7 @@ public class UserSettingController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "updatedefault", method = {RequestMethod.POST})
-    @RecordOperationLog(content = "更新当前用户设置参数")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}更新当前用户设置参数")
     public void editDefaultSetting(@Valid UserSetting userSetting, HttpServletResponse response) {
 
         UserSetting dbSetting = userSettingManager.getUserSetting(userSetting.getUserCode(), userSetting.getParamCode());
@@ -202,7 +202,7 @@ public class UserSettingController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{paramCode}", method = {RequestMethod.DELETE})
-    @RecordOperationLog(content = "删除用户设置参数")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}删除用户设置参数")
     public void deleteUserSetting(@PathVariable String paramCode,
                                   HttpServletRequest request, HttpServletResponse response) {
         UserSetting dbUserSetting=userSettingManager.getObjectById(
@@ -222,7 +222,7 @@ public class UserSettingController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value="/{userCode}/{paramCode}", method = {RequestMethod.DELETE})
-    @RecordOperationLog(content = "删除用户设置参数")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}删除用户设置参数")
     public void delete(@PathVariable String userCode, @PathVariable String paramCode,
                        HttpServletResponse response) {
         UserSetting userSetting = userSettingManager.getUserSetting(userCode, paramCode);
@@ -242,7 +242,7 @@ public class UserSettingController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value="/deletedefault/{paramCode}", method = {RequestMethod.DELETE})
-    @RecordOperationLog(content = "删除用户设置参数")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}删除用户设置参数")
     public void deleteDefault(@PathVariable String paramCode, HttpServletResponse response) {
 
         UserSetting userSetting = userSettingManager.getUserSetting("default", paramCode);

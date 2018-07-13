@@ -40,13 +40,6 @@ public class OptInfoManagerImpl implements OptInfoManager {
     private RolePowerDao rolePowerDao;
 
     @Override
-    @CacheEvict(value="OptInfo",allEntries = true)
-    @Transactional
-    public void updateOptInfoProperties(OptInfo optinfo){
-        optInfoDao.updateOptInfo(optinfo);
-    }
-
-    @Override
     @Transactional
     public boolean hasChildren(String optId){
         return optInfoDao.countChildrenSum(optId) > 0;
@@ -57,16 +50,10 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Transactional
     public void saveNewOptInfo(OptInfo optInfo){
 
+        //同步菜单上下级显示与否
         syncState(optInfo);
-        // 父级url必须设成...
         OptInfo parentOpt = optInfoDao.getObjectById(optInfo.getPreOptId());
-        if (null != parentOpt) {
-           /* if(!"...".equals(parentOpt.getOptRoute()) || !"...".equals(parentOpt.getOptUrl())){
-                parentOpt.setOptRoute("...");
-                parentOpt.setOptUrl("...");
-                optInfoDao.updateOptInfo(parentOpt);
-            }*/
-        }else{
+        if (parentOpt == null) {
             optInfo.setPreOptId("0");
         }
 

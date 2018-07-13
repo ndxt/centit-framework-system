@@ -70,7 +70,6 @@ public class OptInfoController extends BaseController {
         List<OptInfo> listObjects = optInfoManager.listObjects(searchColumn);
 
         for (OptInfo opt : listObjects) {
-            //if("...".equals(opt.getOptRoute()))
             opt.setState(optInfoManager.hasChildren(opt.getOptId()) ? "closed" : "open");
         }
         JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(listObjects), response);
@@ -148,28 +147,14 @@ public class OptInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(method = {RequestMethod.POST})
-    @RecordOperationLog(content = "新增菜单")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}新增菜单")
     public void createOptInfo(@Valid OptInfo optInfo, HttpServletRequest request, HttpServletResponse response) {
 
-        if (StringUtils.isBlank(optInfo.getOptRoute())) {
-            optInfo.setOptRoute("...");
-        }
-        // 解决问题新增菜单没有url
-        if (StringUtils.isBlank(optInfo.getOptUrl()) || "...".equals(optInfo.getOptUrl())) {
-            optInfo.setOptUrl(optInfo.getOptRoute());
-        }
-        OptInfo parentOpt = optInfoManager.getOptInfoById(optInfo.getPreOptId());
-        if (parentOpt == null)
-            optInfo.setPreOptId("0");
         optInfoManager.saveNewOptInfo(optInfo);
         //刷新缓存
-        platformEnvironment.reloadSecurityMetadata();//sysRoleManager.loadRoleSecurityMetadata();
+        platformEnvironment.reloadSecurityMetadata();
 
         JsonResultUtils.writeSingleDataJson(optInfo, response);
-        /*********log*********/
-//    OperationLogCenter.logNewObject(request, optId, optInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_C,
-//      "新增业务菜单", optInfo);
-        /*********log*********/
     }
 
     /**
@@ -194,7 +179,7 @@ public class OptInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{optId}", method = {RequestMethod.PUT})
-    @RecordOperationLog(content = "更新菜单")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}更新菜单")
     public void edit(@PathVariable String optId, @Valid OptInfo optInfo,
                      HttpServletRequest request, HttpServletResponse response) {
 
@@ -211,24 +196,8 @@ public class OptInfoController extends BaseController {
             }
         }
 
-        if (!optInfoManager.hasChildren(optId)) {
-            if (StringUtils.isBlank(optInfo.getOptUrl()) || "...".equals(optInfo.getOptUrl())) {
-                optInfo.setOptUrl(optInfo.getOptRoute());
-            }
-        }
-
-        /*********log*********/
-//      OptInfo oldValue = new OptInfo();
-//      BeanUtils.copyProperties(dbOptInfo, oldValue);
-        /*********log*********/
-
-        BeanUtils.copyProperties(optInfo, dbOptInfo, "optMethods", "dataScopes");
 
         optInfoManager.updateOptInfo(dbOptInfo);
-        /*********log*********/
-//      OperationLogCenter.logUpdateObject(request, this.optId, dbOptInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_U,
-//        "更新业务菜单" + dbOptInfo.getOptId(), dbOptInfo, oldValue);
-        /*********log*********/
 
         JsonResultUtils.writeSingleDataJson(dbOptInfo, response);
     }
@@ -242,7 +211,7 @@ public class OptInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/editpower{optId}", method = {RequestMethod.PUT})
-    @RecordOperationLog(content = "更新操作权限")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}更新操作权限")
     public void editPower(@PathVariable String optId, @Valid OptInfo optInfo,
                           HttpServletRequest request, HttpServletResponse response) {
 
@@ -258,10 +227,6 @@ public class OptInfoController extends BaseController {
                 optInfo.setPreOptId(dbOptInfo.getPreOptId());
             }
         }
-        /*********log*********/
-//    OptInfo oldValue = new OptInfo();
-//    BeanUtils.copyProperties(dbOptInfo, oldValue);
-        /*********log*********/
 
         for (OptMethod optDef : optInfo.getOptMethods()) {
             if (StringUtils.isBlank(optDef.getOptCode())) {
@@ -273,14 +238,8 @@ public class OptInfoController extends BaseController {
         dbOptInfo.addAllOptMethods(optInfo.getOptMethods());
         dbOptInfo.addAllDataScopes(optInfo.getDataScopes());
         optInfoManager.updateOperationPower(dbOptInfo);
-//    oldValue.setOptMethods(old.get("methods"));
-//    oldValue.setDataScopes(old.get("scopes"));
         //刷新缓存
-        platformEnvironment.reloadSecurityMetadata();//sysRoleManager.loadRoleSecurityMetadata();
-        /*********log*********/
-//    OperationLogCenter.logUpdateObject(request, this.optId, dbOptInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_U,
-//      "更新操作权限" + dbOptInfo.getOptId(), dbOptInfo, oldValue);
-        /*********log*********/
+        platformEnvironment.reloadSecurityMetadata();
 
         JsonResultUtils.writeSuccessJson(response);
     }
@@ -293,18 +252,14 @@ public class OptInfoController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{optId}", method = {RequestMethod.DELETE})
-    @RecordOperationLog(content = "删除菜单")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}删除菜单")
     public void delete(@PathVariable String optId, HttpServletRequest request, HttpServletResponse response) {
         OptInfo dboptInfo = optInfoManager.getObjectById(optId);
 
         optInfoManager.deleteOptInfo(dboptInfo);
         //刷新缓存
-        platformEnvironment.reloadSecurityMetadata();//sysRoleManager.loadRoleSecurityMetadata();
+        platformEnvironment.reloadSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
-        /*********log*********/
-//    OperationLogCenter.logDeleteObject(request, this.optId, dboptInfo.getOptId(), OperationLog.P_OPT_LOG_METHOD_D,
-//      "删除业务菜单", dboptInfo);
-        /*********log*********/
     }
 
     /**

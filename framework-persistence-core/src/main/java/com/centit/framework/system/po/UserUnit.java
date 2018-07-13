@@ -1,7 +1,9 @@
 package com.centit.framework.system.po;
 
+import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.core.po.EntityWithTimestamp;
+import com.centit.framework.model.basedata.IUserInfo;
 import com.centit.framework.model.basedata.IUserUnit;
 import com.centit.support.database.orm.GeneratorCondition;
 import com.centit.support.database.orm.GeneratorTime;
@@ -315,4 +317,18 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
           this.updateDate = lastModifyDate;
     }
     //结束
+
+    public String getLoginName() {
+        String userCode = getUserCode();
+
+        if (null != userCode) {
+            IUserInfo user = CodeRepositoryUtil.getUserInfoByCode(userCode);
+
+            if (null != user) {
+                return user.getLoginName();
+            }
+        }
+
+        return null;
+    }
 }

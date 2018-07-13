@@ -353,7 +353,7 @@
                 and k.UNIT_PATH like concat(#{unitPath}, '%')
             </if>
             <if test="userName != null and userName != ''">
-                and u.USER_CODE in (select USER_CODE from F_USERINFO where USER_NAME like '%' || #{userName} || '%')
+                and u.USER_CODE in (select USER_CODE from F_USERINFO where USER_NAME like '%' || #{userName} || '%' or LOGIN_NAME like '%' || #{userName} || '%')
             </if>
         </where>
         <if test="pageDesc != null">
@@ -370,7 +370,7 @@
                 and k.UNIT_PATH like concat(#{unitPath}, '%')
             </if>
             <if test="userName != null and userName != ''">
-                and u.USER_CODE in (select USER_CODE from F_USERINFO where USER_NAME like concat('%',#{userName},'%'))
+                and u.USER_CODE in (select USER_CODE from F_USERINFO where USER_NAME like concat('%',#{userName},'%') or LOGIN_NAME like concat('%',#{userName},'%'))
             </if>
         </where>
         <if test="pageDesc != null">
@@ -387,7 +387,7 @@
                 and k.UNIT_PATH like concat(#{unitPath}, '%')
             </if>
             <if test="userName != null and userName != ''">
-                and u.USER_CODE in (select USER_CODE from F_USERINFO where USER_NAME like concat('%',#{userName},'%'))
+                and u.USER_CODE in (select USER_CODE from F_USERINFO where USER_NAME like concat('%',#{userName},'%') or LOGIN_NAME like concat('%',#{userName},'%'))
             </if>
         </where>
         <if test="pageDesc != null">

@@ -201,7 +201,7 @@ public class UserUnitController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(method = RequestMethod.POST)
-    @RecordOperationLog(content = "新增用户机构关联信息")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}新增用户机构关联信息")
     public void create(@Valid UserUnit userUnit,HttpServletRequest request, HttpServletResponse response) {
 
         HashMap<String,Object> map = new HashMap();
@@ -233,7 +233,7 @@ public class UserUnitController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{userunitid}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "更新用户机构关联信息")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}更新用户机构关联信息")
     public void edit(@PathVariable String userunitid, @Valid UserUnit userUnit,
                      HttpServletRequest request, HttpServletResponse response) {
 
@@ -267,7 +267,7 @@ public class UserUnitController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{userunitid}", method = RequestMethod.DELETE)
-    @RecordOperationLog(content = "删除用户机构关联信息")
+    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}删除用户机构关联信息")
     public void delete(@PathVariable String userunitid,
                        HttpServletRequest request, HttpServletResponse response) {
         UserUnit dbUserUnit = sysUserUnitManager.getObjectById(userunitid);
