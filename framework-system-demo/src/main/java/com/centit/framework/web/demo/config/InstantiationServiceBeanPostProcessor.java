@@ -1,5 +1,6 @@
 package com.centit.framework.web.demo.config;
 
+import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.model.adapter.MessageSender;
 import com.centit.framework.model.adapter.NotificationCenter;
@@ -32,7 +33,7 @@ public class InstantiationServiceBeanPostProcessor implements ApplicationListene
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event)
     {
-        platformEnvironment.reloadSecurityMetadata();
+        CodeRepositoryCache.setPlatformEnvironment(platformEnvironment);
 
         if(innerMessageManager!=null) {
             notificationCenter.registerMessageSender("innerMsg", innerMessageManager);
