@@ -21,10 +21,9 @@ import java.util.Map;
 @Repository("userInfoDao")
 public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements UserInfoDao {
 
-
     public Map<String, String> getFilterField() {
         if (filterField == null) {
-            filterField = new HashMap<String, String>();
+            filterField = new HashMap<>();
             filterField.put(CodeRepositoryUtil.USER_CODE, CodeBook.LIKE_HQL_ID);
             filterField.put("USERCODE_EQ", CodeBook.EQUAL_HQL_ID);
             filterField.put("USERNAME", CodeBook.LIKE_HQL_ID);
@@ -36,23 +35,19 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
             filterField.put("USERWORD", CodeBook.EQUAL_HQL_ID);
 
             filterField.put("byUnderUnit", "userCode in " +
-                    "(select  id.userCode from UserUnit where id.unitCode = :byUnderUnit) ");
-
+                    "(select id.userCode from UserUnit where id.unitCode = :byUnderUnit)");
             filterField.put("queryByUnit", "userCode in " +
-                    "(select  id.userCode from UserUnit where id.unitCode = :queryByUnit) ");
+                    "(select id.userCode from UserUnit where id.unitCode = :queryByUnit)");
             filterField.put("roleCode", "userCode in " +
-                  "(select  v.id.userCode from FVUserRoles v where v.id.roleCode = :roleCode) ");
-
+                  "(select v.id.userCode from FVUserRoles v where v.id.roleCode = :roleCode)");
             filterField.put("queryByGW", "userCode in " +
-                    "(select  id.userCode from UserUnit where id.userStation = :queryByGW)");
+                    "(select id.userCode from UserUnit where id.userStation = :queryByGW)");
             filterField.put("queryByXZ", "userCode in " +
-                    "(select  id.userCode from UserUnit where id.userRank = :queryByXZ)");
+                    "(select id.userCode from UserUnit where id.userRank = :queryByXZ)");
             filterField.put("queryByRole", "userCode in " +
                     "(select r.id.userCode from UserRole r, RoleInfo i " +
                     "where r.id.roleCode = :queryByRole and r.id.roleCode = i.roleCode and i.isValid = 'T')");
-
             filterField.put(CodeBook.ORDER_BY_HQL_ID, "userOrder asc");
-
             filterField.put("unitCode", "userCode in (select userCode from UserUnit where unitCode in " +
                     "(select unitCode from UnitInfo where unitCode = :unitCode or parentUnit = :unitCode))");
         }
@@ -75,12 +70,6 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
                 (this,hql, (Object[]) params);
         return ls;
     }
-    /*
-     * public FUserinfo loginUser(String userName, String password) { return
-     * (FUserinfo) getHibernateTemplate().find(
-     * "FROM FUserinfo WHERE username = ? AND userpin = ? ", new Object[] {
-     * userName, password }).get(0); }
-     */
 
     @Transactional
     public List<UserInfo> listUnderUnit(Map<String, Object> filterMap) {

@@ -14,7 +14,7 @@ import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.security.model.CentitUserDetails;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.*;
-import com.centit.support.algorithm.ListOpt;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
@@ -95,7 +95,7 @@ public class UnitInfoController extends BaseController {
             List<UnitInfo> listObjects= sysUnitManager.listObjects(searchColumn);
             JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
             if(struct){
-                ja = ListOpt.srotAsTreeAndToJSON(ja, (p, c) ->
+                ja = CollectionsOpt.srotAsTreeAndToJSON(ja, (p, c) ->
                                 StringUtils.equals(
                                         ((JSONObject)p).getString("unitCode"),
                                         ((JSONObject)c).getString("parentUnit")), "children");
@@ -148,7 +148,7 @@ public class UnitInfoController extends BaseController {
             ((JSONObject)o).put("id", ((JSONObject) o).getString("unitCode"));
             ((JSONObject)o).put("text", ((JSONObject) o).getString("unitName"));
           }
-          ja = ListOpt.srotAsTreeAndToJSON(ja, (p, c) ->
+          ja = CollectionsOpt.srotAsTreeAndToJSON(ja, (p, c) ->
             StringUtils.equals(
               ((JSONObject)p).getString("unitCode"),
               ((JSONObject)c).getString("parentUnit")), "children");
@@ -173,7 +173,7 @@ public class UnitInfoController extends BaseController {
             ((JSONObject)o).put("id", ((JSONObject) o).getString("unitCode"));
             ((JSONObject)o).put("text", ((JSONObject) o).getString("unitName"));
         }
-        ja = ListOpt.srotAsTreeAndToJSON(ja, (p, c) ->
+        ja = CollectionsOpt.srotAsTreeAndToJSON(ja, (p, c) ->
         StringUtils.equals(
           ((JSONObject)p).getString("unitCode"),
           ((JSONObject)c).getString("parentUnit")),

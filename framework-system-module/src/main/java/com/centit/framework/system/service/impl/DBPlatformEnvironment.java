@@ -9,10 +9,9 @@ import com.centit.framework.security.model.OptTreeNode;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.security.CentitUserDetailsImpl;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.DatetimeOpt;
-import com.centit.support.algorithm.ListOpt;
 import com.centit.support.algorithm.StringRegularOpt;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -736,7 +735,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         }
         return opts;
         /*
-        ListOpt.sortAsTree(opts, new ListOpt.ParentChild<OptInfo>() {
+        CollectionsOpt.sortAsTree(opts, new CollectionsOpt.ParentChild<OptInfo>() {
             @Override
             public boolean parentAndChild(OptInfo p, OptInfo c) {
                 return p.getOptId().equals(c.getPreOptId());
@@ -770,7 +769,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             }
             dbMethods.addAll(optMethodDao.listOptMethodByOptID(optInfo.getOptId()));
         }
-        Triple<List<OptMethod>, List<Pair<OptMethod, OptMethod>>, List<OptMethod>> triple = ListOpt.compareTwoList(
+        Triple<List<OptMethod>, List<Pair<OptMethod, OptMethod>>, List<OptMethod>> triple = CollectionsOpt.compareTwoList(
             dbMethods, (List<OptMethod>)optMethods,
             (o1, o2) -> StringUtils.compare(o1.getOptId()+o1.getOptMethod(), o2.getOptId()+o2.getOptMethod()));
         //新增

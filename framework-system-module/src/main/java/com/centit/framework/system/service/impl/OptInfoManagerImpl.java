@@ -4,12 +4,11 @@ import com.centit.framework.system.dao.OptDataScopeDao;
 import com.centit.framework.system.dao.OptInfoDao;
 import com.centit.framework.system.dao.OptMethodDao;
 import com.centit.framework.system.dao.RolePowerDao;
-import com.centit.framework.system.po.FVUserOptMoudleList;
 import com.centit.framework.system.po.OptDataScope;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.service.OptInfoManager;
-import com.centit.support.algorithm.ListOpt;
+import com.centit.support.algorithm.CollectionsOpt;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.cache.annotation.CacheEvict;
@@ -121,7 +120,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
         List<OptMethod> oldOptMethods = optMethodDao.listOptMethodByOptID(optInfo.getOptId());
 
         Triple<List<OptMethod>, List<Pair<OptMethod,OptMethod>>, List<OptMethod>> compareMethod =
-            ListOpt.compareTwoList(oldOptMethods, newOptMethods, Comparator.comparing(OptMethod::getOptId));
+            CollectionsOpt.compareTwoList(oldOptMethods, newOptMethods, Comparator.comparing(OptMethod::getOptId));
 
         if(compareMethod.getRight() != null) {
             for (OptMethod optMethod : compareMethod.getRight()) {
@@ -153,7 +152,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
         List<OptDataScope> oldDataScopes = dataScopeDao.getDataScopeByOptID(optInfo.getOptId());
 
         Triple<List<OptDataScope>, List<Pair<OptDataScope, OptDataScope>>, List<OptDataScope>> compareScope =
-              ListOpt.compareTwoList(oldDataScopes, newDataScopes, Comparator.comparing(OptDataScope::getOptId));
+              CollectionsOpt.compareTwoList(oldDataScopes, newDataScopes, Comparator.comparing(OptDataScope::getOptId));
 
         if(compareScope.getRight() != null){
             for(OptDataScope optDataScope : compareScope.getRight()){

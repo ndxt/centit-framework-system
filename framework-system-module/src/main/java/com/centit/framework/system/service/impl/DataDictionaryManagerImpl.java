@@ -7,7 +7,7 @@ import com.centit.framework.system.po.DataCatalog;
 import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.DataDictionaryId;
 import com.centit.framework.system.service.DataDictionaryManager;
-import com.centit.support.algorithm.ListOpt;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -68,7 +68,7 @@ public class DataDictionaryManagerImpl implements
          List<DataDictionary> oldData = dictionaryDao.listDataDictionary(dataCatalog.getCatalogCode());
         List<DataDictionary> newData = dataCatalog.getDataDictionaries();
         Triple<List<DataDictionary>, List<Pair<DataDictionary,DataDictionary>>, List<DataDictionary>>
-            dbOptList = ListOpt.compareTwoList(oldData, newData,
+            dbOptList = CollectionsOpt.compareTwoList(oldData, newData,
                   Comparator.comparing(DataDictionary::getDataCode));
 
          if(dbOptList.getRight()!=null){

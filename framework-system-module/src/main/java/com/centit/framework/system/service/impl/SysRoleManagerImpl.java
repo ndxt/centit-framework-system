@@ -6,7 +6,7 @@ import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysRoleManager;
-import com.centit.support.algorithm.ListOpt;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
@@ -140,7 +140,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
         }
 
         Triple<List<RolePower>, List<Pair<RolePower,RolePower>>, List<RolePower>>
-            forUpdate =  ListOpt.compareTwoList(rps, newRPs, Comparator.comparing(RolePower::getOptCode));
+            forUpdate =  CollectionsOpt.compareTwoList(rps, newRPs, Comparator.comparing(RolePower::getOptCode));
 
         if( forUpdate.getRight() != null){
             for(RolePower rp : forUpdate.getRight()){
