@@ -1,9 +1,9 @@
 package com.centit.framework.system.service.impl;
 
+import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.system.dao.OptMethodDao;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.service.OptMethodManager;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,22 +20,10 @@ public class OptMethodManagerImpl implements OptMethodManager {
     protected OptMethodDao optMethodDao;
 
     @Override
-    @CacheEvict(value="OptInfo",allEntries = true)
     public void updateOptMethod(OptMethod o) {
         optMethodDao.updateOptMethod(o);
+        CodeRepositoryCache.evictCache("OptMethod");
     }
-
-    /*private OptMethod getObject(OptMethod object) {
-        if (object == null)
-            return null;
-        OptMethod newObj = baseDao.getObjectById(object.getOptCode());
-        if (newObj == null) {
-            newObj = object;
-            newObj.setOptCode(baseDao.getNextOptCode());
-        }
-        return newObj;
-    }
-    */
 
     @Override
     public List<OptMethod> listOptMethodByOptID(String sOptID) {
@@ -60,12 +48,14 @@ public class OptMethodManagerImpl implements OptMethodManager {
     @Override
     public void deleteObjectById(String optCode) {
         optMethodDao.deleteObjectById(optCode);
+        CodeRepositoryCache.evictCache("OptMethod");
     }
 
     @Override
     public String saveNewObject(OptMethod optMethod) {
-         optMethodDao.saveNewObject(optMethod);
-         return optMethod.getOptCode();
+        optMethodDao.saveNewObject(optMethod);
+        CodeRepositoryCache.evictCache("OptMethod");
+        return optMethod.getOptCode();
     }
 
 }

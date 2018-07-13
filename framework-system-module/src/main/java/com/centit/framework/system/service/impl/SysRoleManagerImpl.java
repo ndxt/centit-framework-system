@@ -2,6 +2,7 @@ package com.centit.framework.system.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
@@ -17,7 +18,6 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,7 +73,6 @@ public class SysRoleManagerImpl implements SysRoleManager {
     protected String roleIdFormat;
 
     @Override
-    @CacheEvict(value="RoleInfo",key="'roleCodeMap'")
     @Transactional
     public Serializable saveNewRoleInfo(RoleInfo o){
         if(StringUtils.isBlank(o.getRoleCode())) {
@@ -91,6 +90,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
             o.setRoleCode(roleCode);
         }
         roleInfoDao.saveNewObject(o);
+        CodeRepositoryCache.evictCache("RoleInfo");
         return o.getRoleCode();
     }
 
@@ -115,26 +115,23 @@ public class SysRoleManagerImpl implements SysRoleManager {
     }
 
     @Override
-    @CacheEvict(value="RoleInfo",allEntries = true)
     @Transactional
     public void updateRoleInfo(RoleInfo o) {
         roleInfoDao.updateRole(o);
+        CodeRepositoryCache.evictCache("RoleInfo");
     }
 
     @Override
-    @CacheEvict(value="RoleInfo",allEntries = true)
     @Transactional
     public List<RolePower> updateRolePower(RoleInfo o) {
         roleInfoDao.updateRole(o);
         List<RolePower> newRPs = o.getRolePowers();
-
         List<RolePower> rps = rolePowerDao.listRolePowersByRoleCode(o.getRoleCode());
 
         if(newRPs == null || newRPs.size()<1) {
           rolePowerDao.deleteRolePowersByRoleCode(o.getRoleCode());
           return rps;
         }
-
         for(RolePower rp : newRPs){
             rp.setRoleCode(o.getRoleCode());
         }
@@ -171,16 +168,16 @@ public class SysRoleManagerImpl implements SysRoleManager {
                 rolePowerDao.updateRolePower(oldRolePower);
             }
         }
+        CodeRepositoryCache.evictCache("RoleInfo");
         return rps;
     }
 
     @Override
-    @CacheEvict(value="RoleInfo",allEntries = true)
     @Transactional
     public void deleteRoleInfo(String roleCode){
         rolePowerDao.deleteRolePowersByRoleCode(roleCode);
         roleInfoDao.deleteObjectById(roleCode);
-
+        CodeRepositoryCache.evictCache("RoleInfo");
     }
 
     @Override
@@ -195,7 +192,6 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Override
     @Transactional
     public List<RoleInfo> listObjects(Map<String, Object> filterMap) {
-
         return roleInfoDao.listObjects(filterMap);
     }
 
@@ -210,7 +206,6 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Override
     @Transactional
     public RoleInfo getObjectById(String roleCode) {
-
         return roleInfoDao.getObjectById(roleCode);
     }
 

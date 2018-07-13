@@ -3,6 +3,7 @@ package com.centit.framework.system.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.common.ObjectException;
+import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.security.model.CentitPasswordEncoder;
 import com.centit.framework.system.dao.UserInfoDao;
@@ -18,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -169,7 +169,6 @@ public class SysUserManagerImpl implements SysUserManager {
     protected String userIdFormat;
 
     @Override
-    @CacheEvict(value ={"UserInfo","UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
     @Transactional
     public void saveNewUserInfo(UserInfo userInfo, UserUnit userUnit){
         String userCode = userInfoDao.getNextKey();
@@ -205,49 +204,33 @@ public class SysUserManagerImpl implements SysUserManager {
                 userRoleDao.saveNewObject(ur);
             }
         }
+        CodeRepositoryCache.evictCache("UserInfo");
+        CodeRepositoryCache.evictCache("UserUnit");
     }
 
 
     @Override
-    @CacheEvict(value ={"UserInfo","UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
     @Transactional
     public void updateUserInfo(UserInfo userinfo){
-
         userInfoDao.updateUser(userinfo);
-
-        /*List<UserUnit> oldUserUnits = userUnitDao.listUserUnitsByUserCode(userinfo.getUserCode());
-         if(oldUserUnits!=null){
-            for(UserUnit uu: oldUserUnits ){
-                if(null ==userinfo.getUserUnits() ||
-                        ! userinfo.getUserUnits().contains(uu)){
-                    userUnitDao.deleteObject(uu);
-                }
-            }
-        }
-
-        if(userinfo.getUserUnits() !=null){
-            for(UserUnit uu: userinfo.getUserUnits() ){
-                 userUnitDao.updateOptMethod(uu);
-            }
-        }
-
-        */
+        CodeRepositoryCache.evictCache("UserInfo");
     }
 
     @Override
-    @CacheEvict(value ="UserInfo",allEntries = true)
     @Transactional
     public void updateUserProperities(UserInfo userinfo){
         userInfoDao.updateUser(userinfo);
+        CodeRepositoryCache.evictCache("UserInfo");
     }
 
     @Override
-    @CacheEvict(value ={"UserInfo","UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
     @Transactional
     public void deleteUserInfo(String userCode){
         userUnitDao.deleteUserUnitByUser(userCode);
         userRoleDao.deleteByUserId(userCode);
         userInfoDao.deleteObjectById(userCode);
+        CodeRepositoryCache.evictCache("UserInfo");
+        CodeRepositoryCache.evictCache("UserUnit");
     }
 
     @Override

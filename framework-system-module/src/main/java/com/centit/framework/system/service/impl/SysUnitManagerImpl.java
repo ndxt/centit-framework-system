@@ -2,6 +2,7 @@ package com.centit.framework.system.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.UnitInfoDao;
 import com.centit.framework.system.dao.UserUnitDao;
@@ -14,9 +15,7 @@ import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -93,7 +92,6 @@ public class SysUnitManagerImpl implements SysUnitManager {
     }
 
     @Override
-    @CacheEvict(value = "UnitInfo",allEntries = true)
     @Transactional
     public void changeStatus(String unitCode, String isValid) {
         List<UnitInfo> allSubUnits = listAllSubUnits(unitCode);
@@ -101,16 +99,15 @@ public class SysUnitManagerImpl implements SysUnitManager {
             subUnit.setIsValid(isValid);
             unitInfoDao.updateUnit(subUnit);
         }
+        CodeRepositoryCache.evictCache("UnitInfo");
     }
 
 
     @Override
-    @CacheEvict(value = {"UnitInfo","UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
     @Transactional
     public void deleteUnitInfo(UnitInfo unitinfo){
         String oldUnitPath = unitinfo.getUnitPath();
-         List<UnitInfo> subUnits = unitInfoDao.listSubUnitsByUnitPaht(oldUnitPath);
-        int noupl = oldUnitPath.length();
+        List<UnitInfo> subUnits = unitInfoDao.listSubUnitsByUnitPaht(oldUnitPath);
         //子机构
         for(UnitInfo ui : subUnits){
             ui.setParentUnit(unitinfo.getParentUnit());
@@ -119,13 +116,13 @@ public class SysUnitManagerImpl implements SysUnitManager {
         }
 
         unitInfoDao.deleteObjectById(unitinfo.getUnitCode());
+        CodeRepositoryCache.evictCache("UnitInfo");
     }
 
     @Value("${framework.unitinfo.id.generator:}")
     protected String userIdFormat;
 
     @Override
-    @CacheEvict(value = "UnitInfo",allEntries = true)
     @Transactional
     public String saveNewUnitInfo(UnitInfo unitinfo){
         String unitCode = unitInfoDao.getNextKey();
@@ -143,7 +140,6 @@ public class SysUnitManagerImpl implements SysUnitManager {
             }
         }
 
-
         unitinfo.setUnitCode(unitCode);
         UnitInfo parentUnit = unitInfoDao.getObjectById(unitinfo.getParentUnit());
 
@@ -154,6 +150,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
         }
 
         unitInfoDao.saveNewObject(unitinfo);
+        CodeRepositoryCache.evictCache("UnitInfo");
         return unitinfo.getUnitCode();
     }
 
@@ -170,16 +167,17 @@ public class SysUnitManagerImpl implements SysUnitManager {
     public boolean isUniqueOrder(UnitInfo unitInfo){
         Integer exists = unitInfoDao.isExistsUnitByParentAndOrder(
             unitInfo.getParentUnit(), unitInfo.getUnitOrder());
-        return exists == null ? true : exists<1;
+        return exists == null || exists < 1;
     }
 
     @Override
-    @CacheEvict(value = "UnitInfo",allEntries = true)
     @Transactional
     public void updateUnitInfo(UnitInfo unitinfo){
         UnitInfo dbUnitInfo = unitInfoDao.getObjectById(unitinfo.getUnitCode());
         String oldUnitPath = dbUnitInfo.getUnitPath();
-        BeanUtils.copyProperties(unitinfo, dbUnitInfo, new String[]{"unitCode"});
+
+        dbUnitInfo.copyNotNullProperty(unitinfo);
+
         if(!StringUtils.equals(dbUnitInfo.getParentUnit(), unitinfo.getParentUnit())){
             UnitInfo parentUnit = unitInfoDao.getObjectById(unitinfo.getParentUnit());
             if(parentUnit==null) {
@@ -196,6 +194,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
             }
         }
         unitInfoDao.updateUnit(dbUnitInfo);
+        CodeRepositoryCache.evictCache("UnitInfo");
     }
 
     @Override

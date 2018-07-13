@@ -1,5 +1,6 @@
 package com.centit.framework.system.service.impl;
 
+import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.model.basedata.IDataDictionary;
@@ -13,7 +14,6 @@ import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -119,7 +119,6 @@ public class SysUserUnitManagerImpl
     }
 
     @Override
-    @CacheEvict(value ={"UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
     public String saveNewUserUnit(UserUnit userunit) {
         // 一对多模式, 删除主机构    多对多，将当前主机构设置为非主机构
         if (! isMultiToMulti()) {
@@ -153,6 +152,7 @@ public class SysUserUnitManagerImpl
         addUserRoleWhenNotExist(userunit.getUserCode(),dd.getExtraCode2(), userRoles);
         dd = CodeRepositoryUtil.getDataPiece("RankType",userunit.getUserRank());
         addUserRoleWhenNotExist(userunit.getUserCode(),dd.getExtraCode2(), userRoles);
+        CodeRepositoryCache.evictCache("UserUnit");
         return userunit.getUserUnitId();
     }
 
@@ -178,7 +178,6 @@ public class SysUserUnitManagerImpl
     }
 
     @Override
-    @CacheEvict(value ={"UnitUsers","UserUnits","AllUserUnits"},allEntries = true)
     public void updateUserUnit(UserUnit userunit) {
         if ("T".equals(userunit.getIsPrimary())) {
             UserUnit origPrimUnit=userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode());
@@ -193,8 +192,8 @@ public class SysUserUnitManagerImpl
                 userInfoDao.updateUser(user);
             }
         }
-       userUnitDao.updateObject(userunit);
-//        userUnitDao.updateObject(userunit);
+        userUnitDao.updateObject(userunit);
+        CodeRepositoryCache.evictCache("UserUnit");
     }
 
     @Override

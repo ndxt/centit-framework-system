@@ -50,23 +50,18 @@ public class UserSettingManagerImpl implements UserSettingManager {
     }
 
     @Override
-//    @CacheEvict(value ={"UserInfo","UserSetting"},allEntries = true)
     @Transactional
     public void saveNewUserSetting(UserSetting userSetting){
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("catalogCode", "userSettingKey");
-//        map.put("dataCode", userSetting.getParamCode());
-//        DataDictionary dictionary = dataDictionaryDao.listObjectsAll(map).get(0);
-//        userSetting.setOptId(dictionary.getExtraCode());
         userSetting.setCreateDate(new Date());
         userSettingDao.saveNewUserSetting(userSetting);
     }
+
     @Override
-//    @CacheEvict(value ={"UserInfo","UserSetting"},allEntries = true)
     @Transactional
     public void updateUserSetting(UserSetting userSetting){
         userSettingDao.updateObject(userSetting);
     }
+
     @Override
     @Transactional
     public void saveUserSetting(String userCode,String paramCode,String paramName,String paramValue,String optId){
@@ -160,7 +155,6 @@ public class UserSettingManagerImpl implements UserSettingManager {
     @Override
     public void deleteObject(UserSetting userSetting) {
         userSettingDao.deleteObject(userSetting);
-
     }
 
 }

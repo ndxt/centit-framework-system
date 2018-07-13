@@ -1,5 +1,6 @@
 package com.centit.framework.system.service.impl;
 
+import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.DataCatalogDao;
 import com.centit.framework.system.dao.DataDictionaryDao;
@@ -14,7 +15,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,12 +60,9 @@ public class DataDictionaryManagerImpl implements
 
     @Override
     @Transactional
-    @CacheEvict(value = "DataDictionary",key="#dataCatalog.catalogCode")
     public List<DataDictionary> saveCatalogIncludeDataPiece(DataCatalog dataCatalog,boolean isAdmin){
-
 //        dataCatalogDao.updateOptMethod(dataCatalog);
-
-         List<DataDictionary> oldData = dictionaryDao.listDataDictionary(dataCatalog.getCatalogCode());
+        List<DataDictionary> oldData = dictionaryDao.listDataDictionary(dataCatalog.getCatalogCode());
         List<DataDictionary> newData = dataCatalog.getDataDictionaries();
         Triple<List<DataDictionary>, List<Pair<DataDictionary,DataDictionary>>, List<DataDictionary>>
             dbOptList = CollectionsOpt.compareTwoList(oldData, newData,
@@ -101,37 +98,31 @@ public class DataDictionaryManagerImpl implements
                 dictionaryDao.updateDictionary(oldD);
             }
         }
+        CodeRepositoryCache.evictCache("DataCatalog");
+        CodeRepositoryCache.evictCache("DataDictionary", dataCatalog.getCatalogCode());
         return oldData;
     }
 
     @Override
     @Transactional
-    @CacheEvict(value = "DataDictionary",key="#catalogCode")
     public void deleteDataDictionary(String catalogCode){
         dictionaryDao.deleteDictionary(catalogCode);
         dataCatalogDao.deleteObjectById(catalogCode);
+        CodeRepositoryCache.evictCache("DataDictionary", catalogCode);
     }
-
 
     @Override
     @Transactional(propagation=Propagation.REQUIRED)
-    @CacheEvict(value = "DataDictionary",key="#dd.catalogCode")
     public void deleteDataDictionaryPiece(DataDictionaryId dd) {
-        //DataCatalog datacatalog = baseDao.getObjectById(dd.getCatalogCode());
-        //datacatalog.setIsUpload("0");
-        //baseDao.saveObject(datacatalog);
         dictionaryDao.deleteObjectById(dd);
+        CodeRepositoryCache.evictCache("DataDictionary", dd.getCatalogCode());
     }
 
     @Override
     @Transactional(propagation=Propagation.REQUIRED)
-    @CacheEvict(value = "DataDictionary",key="#dd.catalogCode")
     public void saveDataDictionaryPiece(DataDictionary dd) {
-        //DataCatalog datacatalog = baseDao.getObjectById(dd.getCatalogCode());
-        // datacatalog.setIsUpload("0");
-        //datacatalog.setLastModifyDate(lastModifyDate);
-        //baseDao.saveObject(datacatalog);
         dictionaryDao.updateDictionary(dd);
+        CodeRepositoryCache.evictCache("DataDictionary", dd.getCatalogCode());
     }
 
     public String[] getFieldsDesc(String sDesc, String sType) {

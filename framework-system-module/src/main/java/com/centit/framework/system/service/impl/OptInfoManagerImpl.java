@@ -1,5 +1,6 @@
 package com.centit.framework.system.service.impl;
 
+import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.system.dao.OptDataScopeDao;
 import com.centit.framework.system.dao.OptInfoDao;
 import com.centit.framework.system.dao.OptMethodDao;
@@ -11,7 +12,6 @@ import com.centit.framework.system.service.OptInfoManager;
 import com.centit.support.algorithm.CollectionsOpt;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +46,6 @@ public class OptInfoManagerImpl implements OptInfoManager {
     }
 
     @Override
-    @CacheEvict(value="OptInfo",allEntries = true)
     @Transactional
     public void saveNewOptInfo(OptInfo optInfo){
         //同步菜单上下级显示与否
@@ -76,22 +75,20 @@ public class OptInfoManagerImpl implements OptInfoManager {
             createDef.setOptDesc("查看（系统默认）");
             optMethodDao.saveNewObject(createDef);
         }
+
+        CodeRepositoryCache.evictCache("OptInfo");
     }
 
 
     @Override
-    @CacheEvict(value="OptInfo",allEntries = true)
     @Transactional
     public void updateOptInfo(OptInfo optInfo) {
-
         syncState(optInfo);
-
         optInfoDao.updateOptInfo(optInfo);
-
+        CodeRepositoryCache.evictCache("OptInfo");
     }
 
     @Override
-    @CacheEvict(value="OptInfo",allEntries = true)
     @Transactional
     public void updateOperationPower(OptInfo optInfo) {
 
@@ -160,6 +157,8 @@ public class OptInfoManagerImpl implements OptInfoManager {
                 dataScopeDao.updateOptDataScope(pair.getLeft());
             }
         }
+
+        CodeRepositoryCache.evictCache("OptInfo");
     }
 
     @Transactional
@@ -173,19 +172,19 @@ public class OptInfoManagerImpl implements OptInfoManager {
     }
 
     @Override
-    @CacheEvict(value="OptInfo",allEntries = true)
     @Transactional
     public void deleteOptInfoById(String optId) {
         dataScopeDao.deleteDataScopeOfOptID(optId);
         optMethodDao.deleteOptMethodsByOptID(optId);
         optInfoDao.deleteObjectById(optId);
+        CodeRepositoryCache.evictCache("OptInfo");
     }
 
     @Override
-    @CacheEvict(value = "OptInfo", allEntries = true)
     @Transactional
     public void deleteOptInfo(OptInfo optinfo){
         deleteOptInfoById(optinfo.getOptId());
+        CodeRepositoryCache.evictCache("OptInfo");
     }
 
     @Override
