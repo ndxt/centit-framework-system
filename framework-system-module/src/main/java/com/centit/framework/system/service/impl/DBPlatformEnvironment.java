@@ -346,21 +346,25 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<? extends IRoleInfo> listAllRoleInfo() {
         return roleInfoDao.listObjectsAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<? extends IRolePower> listAllRolePower() {
         return rolePowerDao.listObjectsAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<? extends IOptInfo> listAllOptInfo() {
         return optInfoDao.listObjectsAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<? extends IOptMethod> listAllOptMethod() {
         return optMethodDao.listObjectsAll();
     }

@@ -78,10 +78,8 @@ public class SysUnitManagerImpl implements SysUnitManager {
         return newObj;
     }
 
-
-
-
     @Override
+    @Transactional
     public List<UserInfo> getUnitUsers(String unitCode) {
         return unitInfoDao.listUnitUsers(unitCode);
     }
@@ -276,7 +274,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<UnitInfo> listAllSubUnits(String unitCode) {
 
         UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
@@ -287,6 +285,8 @@ public class SysUnitManagerImpl implements SysUnitManager {
      * 查询启用状态的下级机构
      * @param unitCode 当前机构代码
      */
+    @Override
+    @Transactional(readOnly = true)
     public List<UnitInfo> listValidSubUnits(String unitCode){
         Map<String, Object> filterMap = new HashMap<>(4);
         UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);

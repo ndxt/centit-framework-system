@@ -50,7 +50,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     }
 
     @SuppressWarnings("unchecked")
-    @Transactional(propagation=Propagation.MANDATORY)
+    @Transactional
     public List<UserInfo> listUnitUsers(String unitCode) {
         String sql = "select a.* " +
                 "from F_USERINFO a join F_USERUNIT b on(a.USERCODE=b.USERCODE) " +
@@ -93,7 +93,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     }
 
     @Override
-    @Transactional(propagation=Propagation.MANDATORY)
+    @Transactional
     public List<UnitInfo> listSubUnitsByUnitPaht(String unitPath){
         return listObjects(QueryUtils.createSqlParamsMap("unitPath", unitPath+"%" ));
     }

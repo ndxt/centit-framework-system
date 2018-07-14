@@ -44,7 +44,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     }
 
     @SuppressWarnings("unchecked")
-    @Transactional(propagation=Propagation.MANDATORY)
+    @Transactional
     public List<UserInfo> listUnitUsers(String unitCode) {
         String sSqlsen = "select a.* " +
                 "from F_USERINFO a join F_USERUNIT b on(a.USERCODE=b.USERCODE) " +
