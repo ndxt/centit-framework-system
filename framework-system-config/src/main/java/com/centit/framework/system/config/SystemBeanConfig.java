@@ -8,7 +8,6 @@ import com.centit.framework.security.model.StandardPasswordEncoderImpl;
 import com.centit.framework.system.security.DaoUserDetailsService;
 import com.centit.framework.system.service.impl.DBPlatformEnvironment;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -21,7 +20,6 @@ import javax.annotation.Resource;
 
 @PropertySource("classpath:system.properties")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-@EnableCaching(proxyTargetClass = true)
 public class SystemBeanConfig implements EnvironmentAware {
 
     private Environment env;

@@ -5,7 +5,6 @@ import com.centit.framework.components.impl.TextOperationLogWriterImpl;
 import com.centit.framework.config.InitialWebRuntimeEnvironment;
 import com.centit.framework.config.SpringSecurityCasConfig;
 import com.centit.framework.config.SpringSecurityDaoConfig;
-
 import com.centit.framework.jdbc.config.JdbcConfig;
 import com.centit.framework.model.adapter.NotificationCenter;
 import com.centit.framework.model.adapter.OperationLogWriter;
@@ -20,8 +19,9 @@ import org.springframework.context.annotation.*;
         SystemBeanConfig.class,
         SpringSecurityDaoConfig.class,
         SpringSecurityCasConfig.class})
-@ComponentScan(basePackages = {"com.centit","com.otherpackage"},
-        excludeFilters = @ComponentScan.Filter(value = org.springframework.stereotype.Controller.class))
+@ComponentScan(basePackages = {"com.centit", "com.otherpackage"},
+        excludeFilters = @ComponentScan.Filter(
+            value = org.springframework.stereotype.Controller.class))
 public class ServiceConfig {
 
     @Bean
