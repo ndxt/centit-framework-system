@@ -152,9 +152,6 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     // 用户的主机构，只有在数据字典中有效
 
     @Transient
-    private List<UserUnit> userUnits;
-
-    @Transient
     @JSONField(serialize=false)
     private List<UserRole> userRoles;
 
@@ -200,7 +197,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
      * default constructor
      */
     public UserInfo() {
-        userUnits = null;
+        //userUnits = null;
         primaryUnit = null;
         userRoles = null;
 
@@ -220,7 +217,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         this.isValid = userstate;
         this.userName = username;
         this.loginName = loginname;
-        this.userUnits = null;
+        //this.userUnits = null;
         this.primaryUnit = null;
         //this.userType = "U";
         userRoles = null;
@@ -482,7 +479,6 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         this.userTag = other.getUserTag();
         this.englishName =other.getEnglishName();
         this.replaceUserRoles(other.getUserRoles());
-        this.replaceUserUnits(other.getUserUnits());
         this.creator=other.creator;
         this.updator=other.updator;
         this.createDate =other.getCreateDate();
@@ -556,8 +552,6 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
             this.regCellPhone = other.getRegCellPhone();
         if (other.getUserRoles() != null)
             this.replaceUserRoles(other.getUserRoles());
-        if(other.getUserUnits()!=null)
-            this.replaceUserUnits(other.getUserUnits());
         if (other.getCreator() != null)
             this.creator =other.getCreator();
         if (other.getUpdator() != null)
@@ -593,17 +587,6 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         this.userOrder = userorder;
     }
 
-    @Override
-    public List<UserUnit> getUserUnits() {
-        if (userUnits == null)
-            userUnits = new ArrayList<>();
-        return userUnits;
-    }
-
-    public void setUserUnits(List<UserUnit> userUnits) {
-        this.userUnits = userUnits;
-    }
-
     public List<UserRole> listUserRoles() {
         if(userRoles == null) {
             userRoles = new ArrayList<>();
@@ -622,15 +605,6 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         this.userRoles = userRoles;
     }
 
-    private void addUserUnit(UserUnit userunit) {
-        this.getUserUnits().add(userunit);
-
-    }
-
-    private void removeUserUnit(UserUnit odt) {
-        this.getUserUnits().remove(odt);
-
-    }
 
     private void addUserRole(UserRole userrole) {
         userrole.setUserCode(this.userCode);
@@ -691,55 +665,4 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
                 addUserRole(newdt);
         }
     }
-     /**
-     * 替换子类对象数组，这个函数主要是考虑hibernate中的对象的状态，以避免对象状态不一致的问题
-     *
-     * @param userUnits Collection UserUnit
-     */
-    public void replaceUserUnits(Collection<UserUnit> userUnits) {
-        if(userUnits==null)
-            return;
-        List<UserUnit> newObjs = new ArrayList<UserUnit>();
-        for(UserUnit p :userUnits){
-            if(p==null)
-                continue;
-            UserUnit newdt = new UserUnit();
-            newdt.copyNotNullProperty(p);
-            newObjs.add(newdt);
-        }
-        //delete
-        boolean found = false;
-        Set<UserUnit> oldObjs = new HashSet<UserUnit>();
-        oldObjs.addAll(getUserUnits());
-
-        for(Iterator<UserUnit> it=oldObjs.iterator(); it.hasNext();){
-            UserUnit odt = it.next();
-            found = false;
-            for(UserUnit newdt :newObjs){
-                if(odt.getUserUnitId().equals( newdt.getUserUnitId())){
-                    found = true;
-                    break;
-                }
-            }
-            if(! found)
-                removeUserUnit(odt);
-        }
-        oldObjs.clear();
-        //insert or update
-        for(UserUnit newdt :newObjs){
-            found = false;
-            for(Iterator<UserUnit> it=getUserUnits().iterator();
-             it.hasNext();){
-                UserUnit odt = it.next();
-                if(odt.getUserUnitId().equals( newdt.getUserUnitId())){
-                    odt.copy(newdt);
-                    found = true;
-                    break;
-                }
-            }
-            if(! found)
-                addUserUnit(newdt);
-        }
-    }
-
 }

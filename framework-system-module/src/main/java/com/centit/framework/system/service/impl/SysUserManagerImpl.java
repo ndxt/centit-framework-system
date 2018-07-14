@@ -194,16 +194,13 @@ public class SysUserManagerImpl implements SysUserManager {
         userUnit.setUnitCode(userInfo.getPrimaryUnit());
         userUnit.setIsPrimary("T");
         userUnitDao.saveNewObject(userUnit);
-//        if(null!=userInfo.getUserUnits()){
-//            for(UserUnit uu:userInfo.getUserUnits()){
-//                userUnitDao.saveNewObject(uu);
-//            }
-//        }
+
         if(null!=userInfo.getUserRoles()){
             for(UserRole ur:userInfo.getUserRoles()){
                 userRoleDao.saveNewObject(ur);
             }
         }
+
         CodeRepositoryCache.evictCache("UserInfo");
         CodeRepositoryCache.evictCache("UserUnit");
     }

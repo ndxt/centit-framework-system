@@ -117,18 +117,16 @@ public class UserInfoController extends BaseController {
                      "登录名"+userInfo.getLoginName()+"已存在，请更换！", response);
              return;
         }
-        if(null!=userInfo.getUserUnits()){
-            for(UserUnit uu:userInfo.getUserUnits()){
-                uu.setUserCode(userInfo.getUserCode());
-            }
-        }
+
         if(null!=userInfo.getUserRoles()){
             for(UserRole ur:userInfo.getUserRoles()){
                 ur.setUserCode(userInfo.getUserCode());
             }
         }
         userUnit.setCreator(getLoginUserCode(request));
+        userUnit.setUserCode(userInfo.getUserCode());
         sysUserManager.saveNewUserInfo(userInfo,userUnit);
+
         JsonResultUtils.writeSingleDataJson(userInfo, response);
 
 
@@ -167,9 +165,6 @@ public class UserInfoController extends BaseController {
 //        }
         UserInfo oldValue= new UserInfo();
         oldValue.copy(dbUserInfo);
-        if(oldValue.getUserUnits().size() == 0){
-            oldValue.setUserUnits(null);
-        }
         if(oldValue.getUserRoles().size() == 0){
             oldValue.setUserRoles(null);
         }

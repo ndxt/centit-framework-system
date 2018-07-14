@@ -384,8 +384,8 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     //@Transactional
     private CentitUserDetailsImpl fillUserDetailsField(UserInfo userinfo){
         List<UserUnit> usun = userUnitDao.listUserUnitsByUserCode(userinfo.getUserCode());
-        userinfo.setUserUnits(usun);
         CentitUserDetailsImpl sysuser = new CentitUserDetailsImpl(userinfo);
+        sysuser.setUserUnits(usun);
         for(UserUnit uu :usun){
             if("T".equals(uu.getIsPrimary())){
                 sysuser.setCurrentStationId(uu.getUserUnitId());

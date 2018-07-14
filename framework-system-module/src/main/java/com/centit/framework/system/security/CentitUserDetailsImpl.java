@@ -37,12 +37,11 @@ public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Seriali
     private Map<String, String> userSettings;
     private Map<String, String> userOptList;
     private List<RoleInfo> userRoles;
+    private List<UserUnit> userUnits;
     // role
     // private Date lastUpdateRoleTime;
     @JSONField(serialize = false)
     private List<GrantedAuthority> arrayAuths;
-
-
 
     @JSONField(serialize = false)
     public String getUserCode(){
@@ -105,7 +104,7 @@ public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Seriali
     @JSONField(serialize = false)
     public UserUnit getCurrentStation() {
 
-        List<UserUnit> uus = getUserInfo().getUserUnits();
+        List<UserUnit> uus = this.getUserUnits();
         if (uus != null) {
             for (UserUnit uu : uus) {
                 if (StringUtils.equals(currentStationId, uu.getUserUnitId())) {
@@ -228,10 +227,7 @@ public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Seriali
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer();
-        sb.append("CentitUserDetail:");
-        sb.append(super.toString());
-        return sb.toString();
+        return "CentitUserDetail:" + super.toString();
     }
 
     @Override
@@ -279,4 +275,26 @@ public class CentitUserDetailsImpl implements CentitUserDetails, java.io.Seriali
     public String getName() {
         return this.userInfo.getLoginName();
     }
+
+    private void addUserUnit(UserUnit userunit) {
+        this.getUserUnits().add(userunit);
+
+    }
+
+    private void removeUserUnit(UserUnit odt) {
+        this.getUserUnits().remove(odt);
+
+    }
+
+    @Override
+    public List<UserUnit> getUserUnits() {
+        if (userUnits == null)
+            userUnits = new ArrayList<>();
+        return userUnits;
+    }
+
+    public void setUserUnits(List<UserUnit> userUnits) {
+        this.userUnits = userUnits;
+    }
+
 }

@@ -319,21 +319,6 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
     }
 
 
-    //Json格式化时循环引用，此方法返回值，不序列化
-    @JSONField(serialize = false)
-    @Override
-    public List<UserUnit> getUnitUsers() {
-        if (unitUsers == null) {
-          unitUsers = new ArrayList<UserUnit>();
-        }
-        return unitUsers;
-    }
-
-    public void setSubUserUnits(List<UserUnit> SUs) {
-        this.unitUsers = SUs;
-    }
-
-
     public void copy(UnitInfo other) {
         this.unitCode = other.getUnitCode();
         this.parentUnit = other.getParentUnit();
@@ -469,7 +454,6 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         this.depNo = depNo;
     }
 
-    @Override
     @JSONField(name="children")
     public List<UnitInfo> getSubUnits() {
         if(subUnits==null) {
