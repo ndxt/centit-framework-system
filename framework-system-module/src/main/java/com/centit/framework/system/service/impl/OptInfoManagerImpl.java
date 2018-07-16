@@ -75,8 +75,8 @@ public class OptInfoManagerImpl implements OptInfoManager {
             createDef.setOptDesc("查看（系统默认）");
             optMethodDao.saveNewObject(createDef);
         }
-
         CodeRepositoryCache.evictCache("OptInfo");
+        CodeRepositoryCache.evictCache("OptMethod");
     }
 
 
@@ -159,6 +159,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
         }
 
         CodeRepositoryCache.evictCache("OptInfo");
+        CodeRepositoryCache.evictCache("OptMethod");
     }
 
     @Transactional
@@ -184,7 +185,6 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Transactional
     public void deleteOptInfo(OptInfo optinfo){
         deleteOptInfoById(optinfo.getOptId());
-        CodeRepositoryCache.evictCache("OptInfo");
     }
 
     @Override

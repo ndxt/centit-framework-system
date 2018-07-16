@@ -11,7 +11,6 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.operationlog.RecordOperationLog;
-import com.centit.framework.security.model.CentitSecurityMetadata;
 import com.centit.framework.security.model.CentitUserDetails;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.*;
@@ -510,7 +509,6 @@ public class UnitInfoController extends BaseController {
 
         roleInfo.addAllRolePowers(rolePowers);
         sysRoleManager.updateRolePower(roleInfo);
-        CentitSecurityMetadata.evictAllCache();
         //sysRoleManager.loadRoleSecurityMetadata();
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/

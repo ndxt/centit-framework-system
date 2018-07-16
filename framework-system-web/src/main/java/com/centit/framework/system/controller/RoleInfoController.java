@@ -9,7 +9,6 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.IUserUnit;
 import com.centit.framework.operationlog.RecordOperationLog;
-import com.centit.framework.security.model.CentitSecurityMetadata;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.OptMethodManager;
 import com.centit.framework.system.service.SysRoleManager;
@@ -238,9 +237,7 @@ public class RoleInfoController extends BaseController {
         roleInfo.setCreateDate(new Date());
         sysRoleManager.saveNewRoleInfo(roleInfo);
       //刷新缓存
-        CentitSecurityMetadata.evictAllCache();
         JsonResultUtils.writeBlankJson(response);
-
         /*********log*********/
 //        OperationLogCenter.logNewObject(request,optId,roleInfo.getRoleCode(),
 //                OperationLog.P_OPT_LOG_METHOD_C, "新增角色" ,roleInfo);
@@ -277,8 +274,7 @@ public class RoleInfoController extends BaseController {
         dbRoleInfo.getRolePowers().add(rolePower);
 
         sysRoleManager.updateRoleInfo(dbRoleInfo);
-        //刷新缓存
-        CentitSecurityMetadata.evictAllCache();
+
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
 //        OperationLogCenter.logNewObject(request,optId, rolePower.getOptCode(),
@@ -313,7 +309,6 @@ public class RoleInfoController extends BaseController {
         dbRoleInfo.getRolePowers().remove(rolePower);
         sysRoleManager.updateRoleInfo(dbRoleInfo);
         //刷新缓存
-        CentitSecurityMetadata.evictAllCache();
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
 //        OperationLogCenter.logDeleteObject(request,optId,rolePower.getOptCode(),
@@ -391,8 +386,6 @@ public class RoleInfoController extends BaseController {
         dbRoleInfo.setRolePowers(roleInfo.getRolePowers());
         List<RolePower> oldRolePowers = sysRoleManager.updateRolePower(dbRoleInfo);
         oldRoleInfo.setRolePowers(oldRolePowers);
-
-        CentitSecurityMetadata.evictAllCache();
         JsonResultUtils.writeBlankJson(response);
         /*********log*********/
 //        OperationLogCenter.logUpdateObject(request,optId, roleCode, OperationLog.P_OPT_LOG_METHOD_U,

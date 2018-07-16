@@ -119,6 +119,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
     public void updateRoleInfo(RoleInfo o) {
         roleInfoDao.updateRole(o);
         CodeRepositoryCache.evictCache("RoleInfo");
+        CodeRepositoryCache.evictCache("RolePower");
     }
 
     @Override
@@ -169,6 +170,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
             }
         }
         CodeRepositoryCache.evictCache("RoleInfo");
+        CodeRepositoryCache.evictCache("RolePower");
         return rps;
     }
 
