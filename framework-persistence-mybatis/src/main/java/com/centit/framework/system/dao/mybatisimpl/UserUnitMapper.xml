@@ -24,25 +24,25 @@
         <if test="userCode_isValid != null  and userCode_isValid != ''  ">
             and u.USER_CODE in (select USER_CODE from F_USERINFO where IS_VALID =#{userCode_isValid})
         </if>
-        <if test="unitCode != null  and unitCode != ''  ">
+        <if test="unitCode != null  and unitCode != '' ">
             and u.UNIT_CODE = #{unitCode}
         </if>
-        <if test="userStation != null  and userStation != ''  ">
+        <if test="userStation != null  and userStation != '' ">
             and u.USER_STATION  = #{userStation}
         </if>
-        <if test="unitRank != null  and unitRank != ''  ">
-            and u.UNIT_RANK  = #{unitRank}
+        <if test="userRank != null  and userRank != '' ">
+            and u.USER_RANK  = #{userRank}
         </if>
-        <if test="userCode != null  and userCode != ''  ">
+        <if test="userCode != null  and userCode != '' ">
             and u.USER_CODE  = #{userCode}
         </if>
-        <if test="isPrimary != null  and isPrimary != ''  ">
+        <if test="isPrimary != null  and isPrimary != '' ">
             and u.IS_PRIMARY  = #{isPrimary}
         </if>
-        <if test="unitName != null  and unitName != ''  ">
+        <if test="unitName != null  and unitName != '' ">
             and k.UNIT_NAME like '%'|| #{unitName}||'%'
         </if>
-        <if test="userName != null  and userName != ''  ">
+        <if test="userName != null  and userName != '' ">
             and u.USER_CODE in (select USER_CODE from F_USERINFO where USER_NAME like '%'|| #{userName}||'%')
         </if>
     </sql>
@@ -57,8 +57,8 @@
         <if test="userStation != null  and userStation != ''  ">
             and u.USER_STATION  = #{userStation}
         </if>
-        <if test="unitRank != null  and unitRank != ''  ">
-            and u.UNIT_RANK  = #{unitRank}
+        <if test="userRank != null  and userRank != ''  ">
+            and u.USER_RANK  = #{userRank}
         </if>
         <if test="userCode != null  and userCode != ''  ">
             and u.USER_CODE  = #{userCode}
@@ -84,8 +84,8 @@
         <if test="userStation != null  and userStation != ''  ">
             and u.USER_STATION  = #{userStation}
         </if>
-        <if test="unitRank != null  and unitRank != ''  ">
-            and u.UNIT_RANK  = #{unitRank}
+        <if test="userRank != null  and userRank != ''  ">
+            and u.USER_RANK  = #{userRank}
         </if>
         <if test="userCode != null  and userCode != ''  ">
             and u.USER_CODE  = #{userCode}

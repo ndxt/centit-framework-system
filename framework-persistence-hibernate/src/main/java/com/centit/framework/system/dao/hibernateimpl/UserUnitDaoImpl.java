@@ -30,7 +30,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
 //                    "(unitCode = :unitCode or unitCode in (select unitCode from UnitInfo where parentUnit = :unitCode))");
             filterField.put("unitCode", CodeBook.EQUAL_HQL_ID);
             filterField.put("userStation", "userStation = :userStation");
-            filterField.put("unitRank", "userRank = :unitRank");
+            filterField.put("userRank", "userRank = :userRank");
             filterField.put("userCode", "userCode = :userCode");
             filterField.put("isPrimary", CodeBook.EQUAL_HQL_ID);
             filterField.put("unitName", CodeBook.LIKE_HQL_ID);

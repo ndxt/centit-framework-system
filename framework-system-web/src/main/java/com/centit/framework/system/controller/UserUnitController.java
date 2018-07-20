@@ -207,6 +207,7 @@ public class UserUnitController extends BaseController {
         HashMap<String,Object> map = new HashMap();
         map.put("unitCode",userUnit.getUnitCode());
         map.put("userRank",userUnit.getUserRank());
+        map.put("userStation",userUnit.getUserStation());
         map.put("userCode",userUnit.getUserCode());
         List<UserUnit> list = sysUserUnitManager.listObjects(map,new PageDesc());
         if (list != null && list.size()>0){
