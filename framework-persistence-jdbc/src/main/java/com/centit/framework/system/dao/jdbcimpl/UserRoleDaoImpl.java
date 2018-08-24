@@ -129,7 +129,7 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
         "where 1=1 [:roleCode | and u.ROLE_CODE = :roleCode] " +
         "[:userCode | and u.USER_CODE = :userCode]" +
         "[:obtainType | and u.OBTAIN_TYPE = :obtainType] ";
-      PageDesc pageDesc = QueryParameterPrepare.fetckPageDescParams(pageQureyMap);
+      PageDesc pageDesc = QueryParameterPrepare.fetchPageDescParams(pageQureyMap);
       QueryAndNamedParams qap = QueryUtils.translateQuery(querySql, pageQureyMap);
       return jdbcTemplate.execute(
            (ConnectionCallback<List<FVUserRoles>>) conn -> OrmDaoUtils
