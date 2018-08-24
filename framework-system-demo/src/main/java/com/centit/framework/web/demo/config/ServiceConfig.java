@@ -15,13 +15,13 @@ import org.springframework.context.annotation.*;
  * Created by codefan on 17-7-18.
  */
 @Configuration
-@Import({JdbcConfig.class,
-        SystemBeanConfig.class,
-        SpringSecurityDaoConfig.class,
-        SpringSecurityCasConfig.class})
 @ComponentScan(basePackages = {"com.centit", "com.otherpackage"},
-        excludeFilters = @ComponentScan.Filter(
-            value = org.springframework.stereotype.Controller.class))
+    excludeFilters = @ComponentScan.Filter(
+        value = org.springframework.stereotype.Controller.class))
+@Import({SystemBeanConfig.class,
+    SpringSecurityCasConfig.class,
+    SpringSecurityDaoConfig.class,
+    JdbcConfig.class})
 public class ServiceConfig {
 
     @Bean
@@ -43,7 +43,7 @@ public class ServiceConfig {
     @Bean
     @Lazy(value = false)
     public OperationLogWriter operationLogWriter() {
-        TextOperationLogWriterImpl  operationLog =  new TextOperationLogWriterImpl();
+        TextOperationLogWriterImpl operationLog =  new TextOperationLogWriterImpl();
         operationLog.init();
         return operationLog;
     }

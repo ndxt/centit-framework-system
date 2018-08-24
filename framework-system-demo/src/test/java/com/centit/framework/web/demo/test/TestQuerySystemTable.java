@@ -3,8 +3,10 @@ package com.centit.framework.web.demo.test;
 import com.centit.framework.common.SysParametersUtils;
 import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.algorithm.StringRegularOpt;
+import com.centit.framework.web.demo.config.ServiceConfig;
 import org.apache.commons.dbcp2.BasicDataSource;
 
+import java.lang.annotation.Annotation;
 import java.util.Properties;
 
 /**
@@ -29,6 +31,8 @@ public class TestQuerySystemTable {
     }
 
     public static void main(String[] args) {
+        Annotation[] annotations = ServiceConfig.class.getAnnotations();
+        System.out.println(annotations.length);
 //        UserInfoDaoImpl userInfoDao = new UserInfoDaoImpl();
 //
 //        userInfoDao.setDataSource(getDataSource());
