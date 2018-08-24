@@ -557,14 +557,15 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             if(StringUtils.isEmpty(optInfo.getPreOptId())){
                 optInfo.setPreOptId("0");
             }
-            optInfo.setCreateDate(new Date());
             optInfo.setOptType("O");//普通业务
             optInfo.setCreator("import");//外部导入
             OptInfo dbOptInfo = optInfoDao.getObjectById(optInfo.getOptId());
             if(dbOptInfo == null) {
+                optInfo.setCreateDate(new Date());
                 optInfoDao.saveNewObject(optInfo);
             }else{
                 dbOptInfo.copy(optInfo);
+                dbOptInfo.setUpdateDate(new Date());
                 optInfoDao.updateOptInfo(dbOptInfo);
             }
             dbMethods.addAll(optMethodDao.listOptMethodByOptID(optInfo.getOptId()));
