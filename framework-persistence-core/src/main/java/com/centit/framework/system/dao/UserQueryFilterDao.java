@@ -8,16 +8,16 @@ import java.util.Map;
 
 /**
  * UserQueryFilterDao  Repository.
- * create by scaffold 2016-02-29 
+ * create by scaffold 2016-02-29
  * @author codefan@sina.com
- * 用户自定义过滤条件表null   
+ * 用户自定义过滤条件表null
 */
 
 public interface UserQueryFilterDao {
 
     void deleteObject(UserQueryFilter userQueryFilter);
 
-    void mergeObject(UserQueryFilter userQueryFilter);
+    void mergeUserFilter(UserQueryFilter userQueryFilter);
 
     void saveNewObject(UserQueryFilter userQueryFilter);
 

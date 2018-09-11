@@ -49,7 +49,7 @@ public interface OptLogDao  {
      * @param o 日志对象
      */
     //设置主键 DatabaseOptUtils.getNextLongSequence(this, "S_SYS_LOG"));
-    void mergeObject(OptLog o);
+    void mergeOptLog(OptLog o);
 
     /**
      * 根据开始

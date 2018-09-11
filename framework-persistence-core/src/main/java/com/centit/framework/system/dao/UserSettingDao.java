@@ -77,7 +77,7 @@ public interface UserSettingDao {
     * 更新个人设置
     * @param userSetting 个人设置对象
     */
-    void updateObject(UserSetting userSetting);
+    void updateUserSetting(UserSetting userSetting);
 
     /**
      *  根据用户代码,key查value

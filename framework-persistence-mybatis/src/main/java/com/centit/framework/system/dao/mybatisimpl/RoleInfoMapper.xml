@@ -300,7 +300,7 @@
     <!--更新单据 end -->
 
     <!--Merge单据 start -->
-    <update id="mergeObject" databaseId="oracle" parameterType="com.centit.framework.system.po.RoleInfo" timeout="2000">
+    <update id="mergeRoleInfo" databaseId="oracle" parameterType="com.centit.framework.system.po.RoleInfo" timeout="2000">
         merge into F_ROLEINFO t
         using ( select #{roleCode} as ROLE_CODE  from dual) t1
         on(t.ROLE_CODE = t1.ROLE_CODE)
@@ -313,12 +313,12 @@
         where ROLE_CODE=#{roleCode}
     </update>
 
-    <update id="mergeObject" databaseId="mysql" parameterType="com.centit.framework.system.po.RoleInfo" timeout="2000">
+    <update id="mergeRoleInfo" databaseId="mysql" parameterType="com.centit.framework.system.po.RoleInfo" timeout="2000">
         replace into F_ROLEINFO
         <include refid="insertSql" />
     </update>
 
-    <update id="mergeObject" databaseId="h2" parameterType="com.centit.framework.system.po.RoleInfo" timeout="2000">
+    <update id="mergeRoleInfo" databaseId="h2" parameterType="com.centit.framework.system.po.RoleInfo" timeout="2000">
         replace into F_ROLEINFO
         <include refid="insertSql" />
     </update>

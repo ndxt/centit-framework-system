@@ -171,7 +171,7 @@
     <!--更新单据 end -->
 
     <!--Merge单据 start -->
-    <update id="mergeObject" parameterType="com.centit.framework.system.po.InnerMsgRecipient" >
+    <update id="mergeInnerMsgRecipient" parameterType="com.centit.framework.system.po.InnerMsgRecipient" >
         merge into M_InnerMsg_Recipient t
         using ( select #{id} as ID  from dual) t1
         on(t.ID = t1.ID)

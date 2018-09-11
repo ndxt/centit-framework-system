@@ -66,7 +66,7 @@ public class QueryFilterConditionManagerImpl implements QueryFilterConditionMana
     @Override
     @Transactional
     public void mergeObject(QueryFilterCondition userQueryFilter) {
-        queryFilterConditionDao.mergeObject(userQueryFilter);
+        queryFilterConditionDao.mergeFilterCondition(userQueryFilter);
     }
 
 

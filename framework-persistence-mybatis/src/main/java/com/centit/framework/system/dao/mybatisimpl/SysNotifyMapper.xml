@@ -145,7 +145,7 @@
     <!--更新单据 end -->
 
     <!--Merge单据 start -->
-    <update id="mergeObject" parameterType="com.centit.framework.system.po.RolePower" timeout="2000">
+    <update id="mergeSysNotify" databaseId="oracle" parameterType="com.centit.framework.system.po.SysNotify" timeout="2000">
         merge into F_SYS_NOTIFY t
         using ( select #{notifyId} as NOTIFY_ID  from dual) t1
         on(t.NOTIFY_ID = t1.NOTIFY_ID)
@@ -156,6 +156,16 @@
         update
         <include refid="updSql" />
         where NOTIFY_ID=#{notifyId}
+    </update>
+
+    <update id="mergeSysNotify" databaseId="mysql" parameterType="com.centit.framework.system.po.SysNotify" timeout="2000">
+        replace into F_ROLEPOWER
+        <include refid="insertSql" />
+    </update>
+
+    <update id="mergeSysNotify" databaseId="h2" parameterType="com.centit.framework.system.po.SysNotify" timeout="2000">
+        replace into F_ROLEPOWER
+        <include refid="insertSql" />
     </update>
     <!--Merge单据 end -->
 

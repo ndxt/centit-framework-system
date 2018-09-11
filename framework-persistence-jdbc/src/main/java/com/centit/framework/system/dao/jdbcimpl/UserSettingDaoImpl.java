@@ -18,7 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 @Repository("userSettingDao")
-public class UserSettingDaoImpl extends BaseDaoImpl<UserSetting, UserSettingId> implements UserSettingDao {
+public class UserSettingDaoImpl extends BaseDaoImpl<UserSetting, UserSettingId>
+    implements UserSettingDao {
 
     public static final Logger logger = LoggerFactory.getLogger(UserSettingDaoImpl.class);
 
@@ -66,6 +67,16 @@ public class UserSettingDaoImpl extends BaseDaoImpl<UserSetting, UserSettingId> 
     @Transactional
     public void saveNewUserSetting(UserSetting us){
         super.saveNewObject(us);
+    }
+
+    /**
+     * 更新个人设置
+     *
+     * @param userSetting 个人设置对象
+     */
+    @Override
+    public void updateUserSetting(UserSetting userSetting) {
+        super.updateObject(userSetting);
     }
 
     @Override

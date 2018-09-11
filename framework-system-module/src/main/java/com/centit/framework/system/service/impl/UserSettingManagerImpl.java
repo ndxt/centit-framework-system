@@ -59,7 +59,7 @@ public class UserSettingManagerImpl implements UserSettingManager {
     @Override
     @Transactional
     public void updateUserSetting(UserSetting userSetting){
-        userSettingDao.updateObject(userSetting);
+        userSettingDao.updateUserSetting(userSetting);
     }
 
     @Override

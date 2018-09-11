@@ -42,7 +42,7 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
     public void mergeObject(UserRole dbUserRole, UserRole userRole) {
         userRoleDao.deleteObject(dbUserRole);
 
-        userRoleDao.mergeObject(userRole);
+        userRoleDao.mergeUserRole(userRole);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
 
     @Override
     public void mergeObject(UserRole dbUserRole) {
-        userRoleDao.mergeObject(dbUserRole);
+        userRoleDao.mergeUserRole(dbUserRole);
     }
 
     @Override

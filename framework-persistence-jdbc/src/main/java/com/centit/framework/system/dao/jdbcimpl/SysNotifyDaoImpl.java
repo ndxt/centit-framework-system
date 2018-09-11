@@ -25,7 +25,7 @@ public class SysNotifyDaoImpl extends BaseDaoImpl<SysNotify, Long> implements Sy
 
     @Override
     @Transactional
-    public void mergeObject(SysNotify o) {
+    public void mergeSysNotify(SysNotify o) {
         if (null == o.getNotifyId()) {
             o.setNotifyId(DatabaseOptUtils.getSequenceNextValue(this, "S_MSGCODE"));
         }

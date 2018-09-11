@@ -148,7 +148,7 @@
     <!--更新单据 end -->
 
     <!--Merge单据 start -->
-    <update id="mergeObject" databaseId="oracle" parameterType="com.centit.framework.system.po.OptDataScope">
+    <update id="mergeDataScope" databaseId="oracle" parameterType="com.centit.framework.system.po.OptDataScope">
         merge into F_OPTDATASCOPE t
         using ( select #{optScopeCode} as OPT_SCOPE_CODE from dual) t1
         on(t.OPT_SCOPE_CODE = t1.OPT_SCOPE_CODE)
@@ -161,12 +161,12 @@
         where OPT_SCOPE_CODE=#{optScopeCode}
     </update>
 
-    <update id="mergeObject" databaseId="mysql" parameterType="com.centit.framework.system.po.OptDataScope">
+    <update id="mergeDataScope" databaseId="mysql" parameterType="com.centit.framework.system.po.OptDataScope">
         replace into F_OPTDATASCOPE
         <include refid="insertSql" />
     </update>
 
-    <update id="mergeObject" databaseId="h2" parameterType="com.centit.framework.system.po.OptDataScope">
+    <update id="mergeDataScope" databaseId="h2" parameterType="com.centit.framework.system.po.OptDataScope">
         replace into F_OPTDATASCOPE
         <include refid="insertSql" />
     </update>

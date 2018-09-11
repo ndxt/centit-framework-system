@@ -66,6 +66,11 @@ public class QueryFilterConditionDaoImpl extends BaseDaoImpl<QueryFilterConditio
     }
 
     @Override
+    public void mergeFilterCondition(QueryFilterCondition userQueryFilter) {
+        super.mergeObject(userQueryFilter);
+    }
+
+    @Override
     public void saveNewQueryFilterCondition(QueryFilterCondition queryFilterCondition){
         super.saveNewObject(queryFilterCondition);
     }

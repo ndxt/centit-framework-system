@@ -137,7 +137,7 @@ public class SysUserUnitManagerImpl
             if(origPrimUnit!=null){
                 origPrimUnit.setIsPrimary("F");
                 //userunit.setIsPrimary("T");
-                userUnitDao.updateObject(origPrimUnit);
+                userUnitDao.updateUserUnit(origPrimUnit);
             }
             UserInfo user=userInfoDao.getUserByCode(userunit.getUserCode());
             if(user != null) {
@@ -184,7 +184,7 @@ public class SysUserUnitManagerImpl
             if(origPrimUnit!=null && ! origPrimUnit.getUserUnitId().equals(userunit.getUserUnitId())){
                 origPrimUnit.setIsPrimary("F");
                 userunit.setIsPrimary("T");
-                userUnitDao.updateObject(origPrimUnit);
+                userUnitDao.updateUserUnit(origPrimUnit);
             }
             UserInfo user=userInfoDao.getUserByCode(userunit.getUserCode());
             if(user != null) {
@@ -192,7 +192,7 @@ public class SysUserUnitManagerImpl
                 userInfoDao.updateUser(user);
             }
         }
-        userUnitDao.updateObject(userunit);
+        userUnitDao.updateUserUnit(userunit);
         CodeRepositoryCache.evictCache("UserUnit");
     }
 

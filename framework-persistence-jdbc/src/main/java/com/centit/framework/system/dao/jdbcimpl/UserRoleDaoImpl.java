@@ -21,7 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 @Repository("userRoleDao")
-public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implements UserRoleDao {
+public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId>
+    implements UserRoleDao {
 
     public Map<String, String> getFilterField() {
         if (filterField == null) {
@@ -165,5 +166,15 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
     @Override
     public void updateUserRole(UserRole userRole){
         super.updateObject(userRole);
+    }
+
+    /**
+     * 合并
+     *
+     * @param dbUserRole 用户角色
+     */
+    @Override
+    public void mergeUserRole(UserRole dbUserRole) {
+        super.mergeObject(dbUserRole);
     }
 }

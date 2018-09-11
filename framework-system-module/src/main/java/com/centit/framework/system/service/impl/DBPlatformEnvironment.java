@@ -171,7 +171,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                     userSettingDao.saveNewUserSetting(us);
                 }else {
                     us.copyNotNullProperty(userSetting);
-                    userSettingDao.updateObject(us);
+                    userSettingDao.updateUserSetting(us);
                 }
             }
         }

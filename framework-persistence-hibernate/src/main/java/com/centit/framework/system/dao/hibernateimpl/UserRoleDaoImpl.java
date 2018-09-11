@@ -117,4 +117,13 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
     public void updateUserRole(UserRole userRole){
       super.updateObject(userRole);
     }
+
+    /**
+     * 合并
+     * @param dbUserRole 用户角色
+     */
+    @Override
+    public void mergeUserRole(UserRole dbUserRole) {
+        super.mergeObject(dbUserRole);
+    }
 }

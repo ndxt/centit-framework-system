@@ -43,6 +43,16 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         return filterField;
     }
 
+    /**
+     * 更新
+     *
+     * @param userUnit 用户机构
+     */
+    @Override
+    public void updateUserUnit(UserUnit userUnit) {
+        super.updateObject(userUnit);
+    }
+
     @Override
     @Transactional
     public List<UserUnit> listUserUnitsByUserCode(String userId) {

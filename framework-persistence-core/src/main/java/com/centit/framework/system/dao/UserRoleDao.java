@@ -48,7 +48,7 @@ public interface UserRoleDao {
      * 合并
      * @param dbUserRole 用户角色
      */
-    void mergeObject(UserRole dbUserRole);
+    void mergeUserRole(UserRole dbUserRole);
 
     /**
     * 删除

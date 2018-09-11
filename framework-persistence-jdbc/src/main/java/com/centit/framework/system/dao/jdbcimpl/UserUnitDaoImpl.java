@@ -57,6 +57,16 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         return super.getObjectById(userUnitId);
     }
 
+    /**
+     * 更新
+     *
+     * @param userUnit 用户机构
+     */
+    @Override
+    public void updateUserUnit(UserUnit userUnit) {
+        super.updateObject(userUnit);
+    }
+
     @Override
     @Transactional
     public void deleteObjectById(String userUnitId) {
@@ -205,4 +215,6 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
             .queryObjectsByNamedParamsSql(conn, qap.getQuery(), qap.getParams(), (Class<UserUnit>) getPoClass(),
               pageDesc.getRowStart(), pageDesc.getPageSize()));
     }
+
+
 }

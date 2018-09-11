@@ -25,7 +25,7 @@ public interface QueryFilterConditionDao {
 
     QueryFilterCondition getObjectById(Long filterNo);
 
-    void mergeObject(QueryFilterCondition userQueryFilter);
+    void mergeFilterCondition(QueryFilterCondition userQueryFilter);
 
     void deleteObjectById(Long filterNo);
 

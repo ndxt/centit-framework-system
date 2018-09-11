@@ -234,7 +234,7 @@
             </if>
         </set>
     </sql>
-    <update id="updateObject" parameterType="com.centit.framework.system.po.UserUnit" timeout="2000">
+    <update id="updateUserUnit" parameterType="com.centit.framework.system.po.UserUnit" timeout="2000">
         update F_USERUNIT
         <include refid="updSql" />
         where  USER_UNIT_ID=#{userUnitId}
@@ -242,7 +242,7 @@
     <!--更新单据 end -->
 
     <!--Merge单据 start -->
-    <update id="mergeObject" databaseId="oracle" parameterType="com.centit.framework.system.po.UserUnit" timeout="2000">
+    <update id="mergeUserUnit" databaseId="oracle" parameterType="com.centit.framework.system.po.UserUnit" timeout="2000">
         merge into F_USERUNIT t
         using ( select #{userUnitId} as USER_UNIT_ID    from dual) t1
         on(t.USER_UNIT_ID = t1.USER_UNIT_ID )
@@ -255,12 +255,12 @@
         where USER_UNIT_ID=#{userUnitId}
     </update>
 
-    <update id="mergeObject" databaseId="mysql" parameterType="com.centit.framework.system.po.UserUnit" timeout="2000">
+    <update id="mergeUserUnit" databaseId="mysql" parameterType="com.centit.framework.system.po.UserUnit" timeout="2000">
         replace into F_USERUNIT
         <include refid="insertSql" />
     </update>
 
-    <update id="mergeObject" databaseId="h2" parameterType="com.centit.framework.system.po.UserUnit" timeout="2000">
+    <update id="mergeUserUnit" databaseId="h2" parameterType="com.centit.framework.system.po.UserUnit" timeout="2000">
         replace into F_USERUNIT
         <include refid="insertSql" />
     </update>

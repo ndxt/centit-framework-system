@@ -24,7 +24,8 @@ import java.util.Map;
 */
 
 @Repository("userQueryFilterDao")
-public class UserQueryFilterDaoImpl extends BaseDaoImpl<UserQueryFilter,Long> implements UserQueryFilterDao {
+public class UserQueryFilterDaoImpl extends BaseDaoImpl<UserQueryFilter,Long>
+    implements UserQueryFilterDao {
     public static final Logger logger = LoggerFactory.getLogger(UserQueryFilterDaoImpl.class);
 
     @Override
@@ -38,6 +39,11 @@ public class UserQueryFilterDaoImpl extends BaseDaoImpl<UserQueryFilter,Long> im
             filterField.put("filterValue" , CodeBook.EQUAL_HQL_ID);
         }
         return filterField;
+    }
+
+    @Override
+    public void mergeUserFilter(UserQueryFilter userQueryFilter) {
+        this.mergeObject(userQueryFilter);
     }
 
     @Override

@@ -74,13 +74,13 @@ public class UserQueryFilterManagerImpl implements UserQueryFilterManager{
             for(int i=1;i<filters.size();i++){
                  dbFilter = filters.get(i);
                  dbFilter.setIsDefault("F");
-                 userQueryFilterDao.mergeObject(dbFilter);
+                 userQueryFilterDao.mergeUserFilter(dbFilter);
             }
             dbFilter = filters.get(0);
             dbFilter.setFilterName( userQueryFilter.getFilterName());
             dbFilter.setFilterValue(userQueryFilter.getFilterValue());
             userQueryFilter.setCreateDate(DatetimeOpt.currentUtilDate());
-            userQueryFilterDao.mergeObject(dbFilter);
+            userQueryFilterDao.mergeUserFilter(dbFilter);
             return dbFilter.getFilterNo();
         }
 
@@ -122,7 +122,7 @@ public class UserQueryFilterManagerImpl implements UserQueryFilterManager{
 
     @Override
     public void mergeObject(UserQueryFilter userQueryFilter) {
-        userQueryFilterDao.mergeObject(userQueryFilter);
+        userQueryFilterDao.mergeUserFilter(userQueryFilter);
     }
 
     @Override

@@ -56,7 +56,7 @@ public interface UserUnitDao {
     * 更新
     * @param userUnit 用户机构
     */
-    void updateObject(UserUnit userUnit);
+    void updateUserUnit(UserUnit userUnit);
 
     /**
     * 根据Id删除

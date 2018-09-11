@@ -46,6 +46,11 @@ public class UserQueryFilterDaoImpl extends BaseDaoImpl<UserQueryFilter,java.lan
         return filterField;
     }
 
+    @Override
+    public void mergeUserFilter(UserQueryFilter userQueryFilter) {
+        super.mergeObject(userQueryFilter);
+    }
+
     @Transactional
     public List<UserQueryFilter> listUserQueryFilterByModle(String userCode,String modelCode){
         return super.listObjects("From UserQueryFilter where userCode = ? and modleCode = ? "
