@@ -194,7 +194,7 @@ public class OptInfoController extends BaseController {
             }
         }
 
-
+        BeanUtils.copyProperties(optInfo, dbOptInfo, "optMethods", "dataScopes");
         optInfoManager.updateOptInfo(dbOptInfo);
 
         JsonResultUtils.writeSingleDataJson(dbOptInfo, response);
