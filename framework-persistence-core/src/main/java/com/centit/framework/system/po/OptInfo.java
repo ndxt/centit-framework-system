@@ -376,6 +376,8 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
         this.creator=other.creator;
         this.updator=other.updator;
         this.updateDate=other.updateDate;
+        this.state = other.getState();
+        this.createDate = other.getCreateDate();
     }
 
     public void copyNotNullProperty(OptInfo other) {
@@ -421,6 +423,10 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
             this.updator =other.getUpdator();
         if (other.getUpdateDate() != null)
             this.updateDate =other.getUpdateDate();
+        if (other.getState() != null)
+            this.state = other.getState();
+        if (other.getCreateDate() != null)
+            this.createDate = other.getCreateDate();
     }
 
     public void clearProperties() {
@@ -441,6 +447,8 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
         this.height = null;
         this.width = null;
         this.optRoute = null;
+        this.state = null;
+        this.createDate = null;
     }
 
     public List<OptInfo> getChildren() {

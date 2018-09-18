@@ -194,7 +194,8 @@ public class OptInfoController extends BaseController {
             }
         }
 
-        BeanUtils.copyProperties(optInfo, dbOptInfo, "optMethods", "dataScopes");
+        dbOptInfo.copyNotNullProperty(optInfo);
+        //BeanUtils.copyProperties(optInfo, dbOptInfo, "optMethods", "dataScopes");
         optInfoManager.updateOptInfo(dbOptInfo);
 
         JsonResultUtils.writeSingleDataJson(dbOptInfo, response);
@@ -231,7 +232,8 @@ public class OptInfoController extends BaseController {
                 optDef.setOptCode(optMethodManager.getNextOptCode());
             }
         }
-        BeanUtils.copyProperties(optInfo, dbOptInfo, "optMethods", "dataScopes");
+
+        dbOptInfo.copyNotNullProperty(optInfo);
 
         dbOptInfo.addAllOptMethods(optInfo.getOptMethods());
         dbOptInfo.addAllDataScopes(optInfo.getDataScopes());
@@ -305,10 +307,12 @@ public class OptInfoController extends BaseController {
 
         OptMethod dbOptDef = optMethodManager.getObjectById(optCode);
         if (null == dbOptDef) {
-            optDef.setOptId(optId);
-            optMethodManager.updateOptMethod(optDef);
+            JsonResultUtils.writeSingleErrorDataJson(
+                ResponseData.ERROR_INTERNAL_SERVER_ERROR,
+                "数据库不匹配", "数据库中不存在optCode为" + optCode + "的操作信息。", response);
+            return;
         } else {
-            BeanUtils.copyProperties(optInfo, dbOptDef, new String[]{"optInfo"});
+            dbOptDef.copy(optDef);
             optMethodManager.updateOptMethod(dbOptDef);
         }
 
