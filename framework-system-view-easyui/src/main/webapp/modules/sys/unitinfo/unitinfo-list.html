@@ -26,13 +26,14 @@
           data-options="method: 'get',idField: 'unitCode',treeField: 'unitName', showFooter: true,toolbar:'.temp-toolbar'">
           <thead frozen="true">
           <tr>
-            <th id="f@number" data-options="field:'unitCode',editor:'text'" hidden="true">编号</th>
+            <!--<th id="f@number" data-options="field:'unitCode',editor:'text'" hidden="true">编号</th>-->
             <th id="f@name" data-options="field:'unitName',editor:'text'" width="150">名称</th>
           </tr>
           </thead>
           <thead>
           <tr>
-            <th id="f@encoding" data-options="field:'unitWord',editor:'text'" width="80" align="center">编码</th>
+            <th id="f@number" data-options="field:'unitCode',editor:'text'" width="80">编号code</th>
+            <th id="f@encoding" data-options="field:'unitWord',editor:'text'" width="80" align="center">自定义编码</th>
             <th id="" data-options="field:'unitOrder',editor:'text'" width="50" align="center" sortable="true">排序</th>
             <th id="f@describe" data-options="field:'unitDesc',editor:'text'" width="330">描述</th>
           </tr>
