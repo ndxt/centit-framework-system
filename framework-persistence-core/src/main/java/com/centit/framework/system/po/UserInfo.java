@@ -81,14 +81,6 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     @Temporal(TemporalType.DATE)
     private Date pwdExpiredTime; // 密码失效时间
 
-    @Column(name = "LOGIN_IP")
-    @Length(max = 16, message = "字段长度不能大于{max}")
-    private String loginIp; // 登录地址
-
-    @Column(name = "ADDRBOOK_ID")
-    @Range(min = 1, max = 999999999, message = "字段不能小于{min}大于{max}")
-    private Long addrbookId; // 通讯id
-
     @Column(name = "REG_EMAIL")
     @Email(message = "Email格式不正确")
     @Length(max = 60, message = "字段长度不能大于{max}")
@@ -118,6 +110,13 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     @Column(name = "USER_ORDER")
     @Range(max = 99999,min=1, message = "字段不能小于{min}或大于{max}")
     private Long userOrder; // 用户排序
+
+    /**
+     * 顶级机构，用于帐套
+     */
+    @Column(name = "TOP_UNIT")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    private String topUnit; // 顶级机构，用于帐套
 
     @Column(name = "PRIMARY_UNIT")
     private String primaryUnit;
@@ -225,7 +224,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
 
     public UserInfo(String userCode, String userpin,String usertype, String userstate,
             String loginname, String username, String userdesc,
-            Long logintimes, Date activeime, String loginip, Long addrbookid) {
+            Long logintimes, Date activeime, String topUnit) {
             this.userCode = userCode;
             this.userPin = userpin;
             this.isValid = userstate;
@@ -234,9 +233,8 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
             this.userDesc = userdesc;
             this.loginTimes = logintimes;
             this.activeTime = activeime;
-            this.loginIp = loginip;
+            this.topUnit = topUnit;
             this.loginName = loginname;
-            this.addrbookId = addrbookid;
             // userUnits=null;
             primaryUnit = null;
     }
@@ -245,7 +243,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     public UserInfo(String userCode, String userpin,String usertype, String userstate,
                     String loginname, String username, String userdesc,
                     String usertag, String englishname,
-                    Long logintimes, Date activeime, String loginip, Long addrbookid) {
+                    Long logintimes, Date activeime, String topUnit) {
         this.userCode = userCode;
         this.userPin = userpin;
         this.isValid = userstate;
@@ -254,9 +252,8 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         this.userDesc = userdesc;
         this.loginTimes = logintimes;
         this.activeTime = activeime;
-        this.loginIp = loginip;
+        this.topUnit = topUnit;
         this.loginName = loginname;
-        this.addrbookId = addrbookid;
         this.userTag = usertag;
         this.englishName = englishname;
         // userUnits=null;
@@ -355,15 +352,12 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         this.loginTimes = logintimes;
     }
 
-    public String getLoginIp() {
-        if(StringUtils.isNotBlank(this.loginIp)){
-            return this.loginIp.replace("0:0:0:0:0:0:0:1","127.0.0.1");
-        }
-        return this.loginIp;
+    public String getTopUnit() {
+        return this.topUnit;
     }
 
-    public void setLoginIp(String loginip) {
-        this.loginIp = loginip;
+    public void setTopUnit(String topUnit) {
+        this.topUnit = topUnit;
     }
 
     public String getLoginName() {
@@ -392,14 +386,6 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
 
     public void setUserNamePinyin(String usernamepinyin) {
         this.userNamePinyin = usernamepinyin;
-    }
-
-    public Long getAddrbookId() {
-        return addrbookId;
-    }
-
-    public void setAddrbookId(Long addrbookid) {
-        this.addrbookId = addrbookid;
     }
 
     public void setRegEmail(String regEmail) {
@@ -470,8 +456,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         this.primaryUnit=other.getPrimaryUnit();
         this.loginTimes = other.getLoginTimes();
         this.activeTime = other.getActiveTime();
-        this.loginIp = other.getLoginIp();
-        this.addrbookId = other.getAddrbookId();
+        this.topUnit = other.getTopUnit();
         this.regEmail = other.getRegEmail();
         this.regCellPhone = other.getRegCellPhone();
         this.userOrder = other.getUserOrder();
@@ -534,10 +519,8 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
             this.loginTimes = other.getLoginTimes();
         if (other.getActiveTime() != null)
             this.activeTime = other.getActiveTime();
-        if (other.getLoginIp() != null)
-            this.loginIp = other.getLoginIp();
-        if (other.getAddrbookId() != null)
-            this.addrbookId = other.getAddrbookId();
+        if (other.getTopUnit() != null)
+            this.topUnit = other.getTopUnit();
         if (other.getIdCardNo() != null)
             this.idCardNo = other.getIdCardNo();
         if (other.getRegEmail() != null)
@@ -569,8 +552,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         this.userDesc = null;
         this.loginTimes = null;
         this.activeTime = null;
-        this.loginIp = null;
-        this.addrbookId = null;
+        this.topUnit = null;
         this.primaryUnit=null;
         this.regEmail = null;
         this.userType = null;

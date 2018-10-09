@@ -49,10 +49,10 @@ create table F_DATADICTIONARY
    Create_Date          date,
    DATA_ORDER           number(6,0)
 );
-comment on column F_DATADICTIONARY.EXTRA_CODE is  '树型字典的父类代码' ;
-comment on column F_DATADICTIONARY.DATA_TAG is    'N正常，D已停用，用户可以自解释这个字段';
-comment on column F_DATADICTIONARY.DATA_STYLE is   'F : 框架固有的 U:用户 S：系统  G国标' ;
-  comment on table F_DATADICTIONARY is'数据字典：存放一些常量数据 比如出物提示信息，还有一些 代码与名称的对应表，比如 状态，角色名，头衔 等等';
+comment on column F_DATADICTIONARY.EXTRA_CODE is '树型字典的父类代码' ;
+comment on column F_DATADICTIONARY.DATA_TAG is 'N正常，D已停用，用户可以自解释这个字段';
+comment on column F_DATADICTIONARY.DATA_STYLE is 'F : 框架固有的 U:用户 S：系统  G国标' ;
+comment on table F_DATADICTIONARY is'数据字典：存放一些常量数据 比如出物提示信息，还有一些 代码与名称的对应表，比如 状态，角色名，头衔 等等';
 
 alter table F_DATADICTIONARY add primary key (CATALOG_CODE, DATA_CODE);
 
@@ -240,7 +240,6 @@ create table F_UNITINFO
    english_Name         varchar2(300),
    dep_no               varchar2(100)  ,
    UNIT_DESC            varchar2(256),
-   ADDRBOOK_ID          number(10,0),
    UNIT_SHORT_NAME      varchar2(32),
    unit_Word            varchar2(100),
    unit_Grade           number(4,0),
@@ -271,8 +270,7 @@ create table F_USERINFO
    USER_DESC            varchar2(256),
    Login_Times          number(6,0),
    Active_Time          date,
-   Login_IP             varchar2(16),
-   ADDRBOOK_ID          number(10,0),
+   TOP_UNIT             varchar(32),
    Reg_Email            varchar2(60) ,
    USER_PWD             varchar2(20) ,
    pwd_Expired_Time     date,

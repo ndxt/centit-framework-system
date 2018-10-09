@@ -76,10 +76,6 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
     @Length(max = 256, message = "字段长度不能大于{max}")
     private String unitDesc; // 机构描述
 
-    @Column(name = "ADDRBOOK_ID")
-    @Range(max = 999999999, message = "通讯主键不能大于{max}")
-    private Long addrbookId; // 通讯主体id
-
     @Column(name = "UNIT_ORDER")
     @Range(max = 9999,min=1, message = "排序号不能大于{max}或小于{min}")
     private Long unitOrder; // 机构排序
@@ -174,7 +170,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
 
     public UnitInfo(String unitcode, String parentunit, String unittype,
                     String isvalid, String unitname, String unitshortname, String unitword,
-                    String unitdesc, Long addrbookid, Long grade, Long unitorder, String depno,
+                    String unitdesc, Long grade, Long unitorder, String depno,
                     Date createDate, Date lastModifyDate) {
         super();
         this.unitCode = unitcode;
@@ -185,7 +181,6 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         this.unitShortName = unitshortname;
         this.unitWord = unitword;
         this.unitDesc = unitdesc;
-        this.addrbookId = addrbookid;
         this.unitGrade = grade;
         this.unitOrder = unitorder;
         this.depNo = depno;
@@ -193,7 +188,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
 
     public UnitInfo(String unitcode, String parentunit, String unittype,
                     String unitstate, String unitname, String unitdesc,
-                    Long addrbookid, String unitshortname, String depno,
+                    String unitshortname, String depno,
                     String unittag, String englishname,String unitword, Long unitgrade) {
         this.unitCode = unitcode;
         this.parentUnit = parentunit;
@@ -201,7 +196,6 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         this.isValid = unitstate;
         this.unitName = unitname;
         this.unitDesc = unitdesc;
-        this.addrbookId = addrbookid;
         this.unitShortName = unitshortname;
         this.depNo = depno;
         this.unitWord = unitword;
@@ -292,14 +286,6 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         this.unitDesc = unitdesc;
     }
 
-    public Long getAddrbookId() {
-        return addrbookId;
-    }
-
-    public void setAddrbookId(Long addrbookid) {
-        this.addrbookId = addrbookid;
-    }
-
     public Date getCreateDate() {
         return createDate;
     }
@@ -329,7 +315,6 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         this.englishName = other.getEnglishName();
         this.unitShortName = other.getUnitShortName();
         this.unitDesc = other.getUnitDesc();
-        this.addrbookId = other.getAddrbookId();
         this.unitOrder = other.getUnitOrder();
         this.depNo = other.getDepNo();
         this.unitWord = other.getUnitWord();
@@ -361,9 +346,6 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         }
         if (other.getUnitDesc() != null) {
           this.unitDesc = other.getUnitDesc();
-        }
-        if (other.getAddrbookId() != null) {
-          this.addrbookId = other.getAddrbookId();
         }
         if (other.getUnitShortName() != null) {
           this.unitShortName = other.getUnitShortName();
