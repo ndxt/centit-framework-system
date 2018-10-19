@@ -413,8 +413,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         Map<String, String> userOptList = new HashMap<String, String>();
         if (uoptlist != null) {
             for (FVUserOptList opt : uoptlist){
-                if(!StringUtils.isBlank(opt.getOptMethod()))
+                if(!StringUtils.isBlank(opt.getOptMethod())) {
                     userOptList.put(opt.getOptId() + "-" + opt.getOptMethod(), opt.getOptMethod());
+                }
             }
         }
         // ServletActionContext.getRequest().getSession().setAttribute("userOptList",
