@@ -14,6 +14,7 @@ public class TestCaseController extends BaseController {
 
     @GetMapping("/lsh/{dateCode}")
     public ResponseData getLsh(@PathVariable String dateCode){
+        //this.getLoginUser()
         return ResponseSingleData.makeResponseData( "hello: " + dateCode);
     }
 }

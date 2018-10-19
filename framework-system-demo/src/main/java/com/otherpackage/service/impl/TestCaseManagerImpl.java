@@ -37,13 +37,33 @@ public class TestCaseManagerImpl implements TestCaseManager {
         DataPowerFilter dataPowerFilter = generalService.createUserDataPowerFilter(ud);
         // 将当前查询参数（一般是前台输入的参数）添加到这个用户信息中
         dataPowerFilter.addSourceData(filterMap);
-        // 获取用户权限范围过滤条件，getOptId() 获取当前业务ID， optCode为当前业务操作代码
+        // 获取用户权限范围过滤条件，getOptId() 获取当前业务ID，  query为当前业务操作代码optCode
         List<String> filters = generalService.listUserDataFiltersByOptIDAndMethod(
-            ud.getUserCode(), getOptId(), "optCode");
+            ud.getUserCode(), getOptId(), "query");
         return DictionaryMapUtils.mapJsonArray( // 数据字典翻译工作
             this.testCaseDao.listObjectsAsJson( // 执行数据驱动查询
                 dataPowerFilter.getSourceData(),// 当前用户相关参数（已包括查询信息）
                 filters,                        // 用户数据范围权限过滤条件
                 pageDesc), TestCase.class);
+    }
+
+    /**
+     * 保存 新对象
+     * @param ud 当前用户信息， 在Controller中可以通过 getLoginUser() 获取
+     * @param testCase 新的对象
+     * @return 返回是否保存成功
+     */
+    @Override
+    public boolean saveNewCase(CentitUserDetails ud, TestCase testCase){
+        // 创建当权用户信息相关的上下文
+        DataPowerFilter dataPowerFilter = generalService.createUserDataPowerFilter(ud);
+        // 获取用户权限范围过滤条件，getOptId() 获取当前业务ID，  saveNew 为当前业务操作代码optCode
+        List<String> filters = generalService.listUserDataFiltersByOptIDAndMethod(
+            ud.getUserCode(), getOptId(), "saveNew");
+        boolean passed = dataPowerFilter.checkObject(testCase, filters);
+        if(passed){
+            this.testCaseDao.saveNewObject(testCase);
+        }
+        return passed;
     }
 }
