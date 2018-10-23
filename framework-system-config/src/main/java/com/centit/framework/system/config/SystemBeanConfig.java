@@ -4,7 +4,6 @@ import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.security.model.CentitSessionRegistry;
 import com.centit.framework.security.model.CentitUserDetailsService;
 import com.centit.framework.security.model.MemorySessionRegistryImpl;
-import com.centit.framework.security.model.StandardPasswordEncoderImpl;
 import com.centit.framework.system.security.DaoUserDetailsService;
 import com.centit.framework.system.service.impl.DBPlatformEnvironment;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
