@@ -8,6 +8,7 @@ import com.centit.framework.config.SpringSecurityDaoConfig;
 import com.centit.framework.jdbc.config.JdbcConfig;
 import com.centit.framework.model.adapter.NotificationCenter;
 import com.centit.framework.model.adapter.OperationLogWriter;
+import com.centit.framework.security.model.StandardPasswordEncoderImpl;
 import com.centit.framework.system.config.SystemBeanConfig;
 import org.springframework.context.annotation.*;
 
@@ -30,6 +31,14 @@ public class ServiceConfig {
         InitialWebRuntimeEnvironment initialWebRuntimeEnvironment = new InitialWebRuntimeEnvironment();
         initialWebRuntimeEnvironment.initialEnvironment();
         return initialWebRuntimeEnvironment;
+    }
+    /**
+     * 这个bean必须要有
+     * @return CentitPasswordEncoder 密码加密算法
+     */
+    @Bean("passwordEncoder")
+    public StandardPasswordEncoderImpl passwordEncoder() {
+        return  new StandardPasswordEncoderImpl();
     }
 
     @Bean

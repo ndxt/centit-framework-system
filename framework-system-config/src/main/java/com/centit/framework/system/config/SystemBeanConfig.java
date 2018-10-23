@@ -37,10 +37,12 @@ public class SystemBeanConfig implements EnvironmentAware {
         return new AutowiredAnnotationBeanPostProcessor();
     }
 
+/*  这bean从框架中移除，由开发人员自行定义
     @Bean("passwordEncoder")
     public StandardPasswordEncoderImpl passwordEncoder() {
         return  new StandardPasswordEncoderImpl();
     }
+*/
 
     @Bean
     public PlatformEnvironment platformEnvironment(){
