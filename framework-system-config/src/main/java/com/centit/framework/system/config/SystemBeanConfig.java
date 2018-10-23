@@ -1,7 +1,6 @@
 package com.centit.framework.system.config;
 
 import com.centit.framework.model.adapter.PlatformEnvironment;
-import com.centit.framework.security.model.CentitSessionRegistry;
 import com.centit.framework.security.model.CentitUserDetailsService;
 import com.centit.framework.security.model.MemorySessionRegistryImpl;
 import com.centit.framework.system.security.DaoUserDetailsService;
@@ -12,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
@@ -61,7 +61,7 @@ public class SystemBeanConfig implements EnvironmentAware {
     }
 
     @Bean
-    public CentitSessionRegistry centitSessionRegistry(){
+    public SessionRegistry sessionRegistry(){
         return new MemorySessionRegistryImpl();
     }
 
