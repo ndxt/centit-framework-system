@@ -2,7 +2,6 @@ package com.centit.framework.system.config;
 
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.security.model.CentitUserDetailsService;
-import com.centit.framework.security.model.MemorySessionRegistryImpl;
 import com.centit.framework.system.security.DaoUserDetailsService;
 import com.centit.framework.system.service.impl.DBPlatformEnvironment;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
@@ -11,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
@@ -59,11 +57,11 @@ public class SystemBeanConfig implements EnvironmentAware {
     public CsrfTokenRepository csrfTokenRepository() {
         return new HttpSessionCsrfTokenRepository();
     }
-
-    @Bean
+    // 这bean从框架中移除，由开发人员自行定义; 可以定义不同的策略
+    /*@Bean
     public SessionRegistry sessionRegistry(){
         return new MemorySessionRegistryImpl();
-    }
+    }*/
 
     /*
      * 缓存配置信息
