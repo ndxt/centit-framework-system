@@ -52,8 +52,7 @@ create table F_DATACATALOG
    CATALOG_CODE         varchar(16) not null,
    CATALOG_NAME         varchar(64) not null,
    CATALOG_STYLE        char(1) not null comment 'F : 框架固有的 U:用户 S：系统  G国标',
-   CATALOG_TYPE         char(1) not null comment 'T：树状表格 L:列表
-            ',
+   CATALOG_TYPE         char(1) not null comment 'T：树状表格 L:列表',
    CATALOG_DESC         varchar(256),
    Field_Desc           varchar(1024) comment '字段描述，不同字段用分号隔开',
    update_Date          datetime,
@@ -195,8 +194,7 @@ create table F_QUERY_FILTER_CONDITION
    Param_Type           varchar(8) comment '参数类型：S 字符串，L 数字， N 有小数点数据， D 日期， T 时间戳， Y 年， M 月',
    Default_Value        varchar(100),
    Filter_Sql           varchar(200) comment '过滤语句，将会拼装到sql语句中',
-   Select_Data_type     char(1) not null default 'N' comment '数据下拉框内容； N ：没有， D 数据字典, S 通过sql语句获得， J json数据直接获取
-            ',
+   Select_Data_type     char(1) not null default 'N' comment '数据下拉框内容； N ：没有， D 数据字典, S 通过sql语句获得， J json数据直接获取 ',
    Select_Data_Catalog  varchar(64) comment '数据字典',
    Select_SQL           varchar(1000) comment '有两个返回字段的sql语句',
    Select_JSON          varchar(2000) comment 'KEY,Value数值对，JSON格式'
@@ -564,7 +562,7 @@ seqname varchar(100) not null primary key,
 -- v_hi_unitinfo视图脚本
 
 CREATE OR REPLACE VIEW v_hi_unitinfo AS
-SELECT a.unit_code AS top_unit_code,  b.unit_code,b.unit_type, b.parent_unit, b.is_valid,     b.unit_name,b.unit_desc,b.unit_short_name,b.addrbook_id,b.unit_order,b.dep_no,
+SELECT a.unit_code AS top_unit_code,  b.unit_code,b.unit_type, b.parent_unit, b.is_valid, b.unit_name,b.unit_desc,b.unit_short_name,b.unit_order,b.dep_no,
        b.unit_word,b.unit_grade,
        LENGTH(b.Unit_Path)- LENGTH(REPLACE(b.Unit_Path,'/','')) - LENGTH(a.Unit_Path) + LENGTH(REPLACE(a.Unit_Path,'/',''))+1  AS hi_level,
        substr(b.Unit_Path ,  LENGTH(a.Unit_Path)+1) AS Unit_Path
