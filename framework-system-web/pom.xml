@@ -13,20 +13,11 @@
     <name>com.centit.framework:framework-system-web</name>
     <packaging>jar</packaging>
     <description>定义了一组和core兼容的表结构，并用mybatis实现了表的增删改查</description>
-
     <dependencies>
-
         <dependency>
             <groupId>com.centit.framework</groupId>
             <artifactId>framework-core-web</artifactId>
             <version>${centit.framework.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>javax.persistence-api</artifactId>
-            <version>${persistence-api.version}</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -35,6 +26,18 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>${persistence-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- server runtime library -->
         <dependency>
             <groupId>com.sun</groupId>

@@ -15,6 +15,10 @@ import com.centit.framework.system.service.SysUserUnitManager;
 import com.centit.framework.system.service.UserSettingManager;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +37,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Api(value="框架中用户管理接口，包括用户的增删改查",
+    tags= "用户管理接口")
 @Controller
 @RequestMapping("/userinfo")
 public class UserInfoController extends BaseController {
@@ -65,6 +71,20 @@ public class UserInfoController extends BaseController {
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="用户信息分页查询",notes="查询用户信息")
+    @ApiImplicitParams({@ApiImplicitParam(
+        name = "filterMap", value="过滤条件",
+        required=true, paramType = "query", dataType= "Map"
+    ),@ApiImplicitParam(
+        name = "pageDesc", value="分页信息",
+        required=true, paramType = "query", dataType= "Map"
+    ),@ApiImplicitParam(
+        name = "_search", value="强制关闭分页查询",
+        required= false, paramType = "query", dataType= "Boolean"
+    ),@ApiImplicitParam(
+        name = "field", value="过滤返回的字段信息",
+        required= false, paramType = "query", dataType= "String[]"
+    )})
     @RequestMapping(method = RequestMethod.GET)
     public void list(String[] field, PageDesc pageDesc, String _search,
                      HttpServletRequest request, HttpServletResponse response) {
