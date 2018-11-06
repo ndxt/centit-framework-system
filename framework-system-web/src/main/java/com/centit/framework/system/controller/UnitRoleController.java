@@ -166,7 +166,7 @@ public class UnitRoleController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(method = RequestMethod.POST)
-    @RecordOperationLog(content="操作IP地址:{userInfo.loginIp},用户{userInfo.userName}给机构{arg1}赋予权限{arg0.roleCode}")
+    @RecordOperationLog(content="操作IP地址:{loginIp},用户{userInfo.userName}给机构{arg1}赋予权限{arg0.roleCode}")
     public void create(@Valid UnitRole unitRole,@Valid String[] unitCode, HttpServletResponse response) {
         if (sysUnitRoleManager.getUnitRoleById(unitRole.getUnitCode(),unitRole.getRoleCode()) != null){
             JsonResultUtils.writeErrorMessageJson("该角色已经关联此机构", response);
@@ -203,7 +203,7 @@ public class UnitRoleController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{roleCode}/{unitCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content="操作IP地址:{userInfo.loginIp},用户{userInfo.userName}修改机构角色关联信息")
+    @RecordOperationLog(content="操作IP地址:{loginIp},用户{userInfo.userName}修改机构角色关联信息")
     public void edit(@PathVariable String roleCode, @PathVariable String unitCode, @Valid UnitRole unitRole,
                      HttpServletRequest request, HttpServletResponse response) {
         UnitRole dbUnitRole = sysUnitRoleManager.getUnitRoleById(unitCode,roleCode);
@@ -229,7 +229,7 @@ public class UnitRoleController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{roleCode}/{unitCodes}", method = RequestMethod.DELETE)
-    @RecordOperationLog(content="操作IP地址:{userInfo.loginIp},用户{userInfo.userName}删除机构{arg1}角色{arg0.roleCode}")
+    @RecordOperationLog(content="操作IP地址:{loginIp},用户{userInfo.userName}删除机构{arg1}角色{arg0.roleCode}")
     public void delete(@PathVariable String roleCode, @PathVariable String unitCodes,
                        HttpServletRequest request, HttpServletResponse response) {
 

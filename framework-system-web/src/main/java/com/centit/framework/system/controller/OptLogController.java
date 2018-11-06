@@ -82,7 +82,7 @@ public class OptLogController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/{logId}", method = {RequestMethod.DELETE})
-    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}删除日志")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{userInfo.userName}删除日志")
     public void deleteOne(@PathVariable Long logId, HttpServletRequest request, HttpServletResponse response) {
         OptLog optLog = optLogManager.getObjectById(logId);
         optLogManager.deleteObjectById(logId);
@@ -102,7 +102,7 @@ public class OptLogController extends BaseController {
      * @param request  HttpServletRequest
      */
     @RequestMapping(value = "/deleteMany", method = RequestMethod.DELETE)
-    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}删除日志")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{userInfo.userName}删除日志")
     public void deleteMany(Long[] logIds, HttpServletRequest request, HttpServletResponse response) {
         /*for(Long logId : logIds) {
             OptLog optLog = optLogManager.getObjectById(logId);
@@ -124,7 +124,7 @@ public class OptLogController extends BaseController {
      * @param response HttpServletResponse
      */
     @RequestMapping(value = "/delete", method = {RequestMethod.DELETE})
-    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}删除日志")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{userInfo.userName}删除日志")
     public void deleteByTime(Date begin, Date end, HttpServletResponse response) {
         optLogManager.delete(begin, end);
 

@@ -146,7 +146,7 @@ public class DataDictionaryController extends BaseController {
      * @param response {@link HttpServletResponse}
      */
     @RequestMapping(method = {RequestMethod.POST})
-    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}新增字典类别")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{userInfo.userName}新增字典类别")
     public void createCatalog(@Valid DataCatalog dataCatalog, HttpServletRequest request,HttpServletResponse response) {
         if(isLoginAsAdmin(request)){
             dataCatalog.setCatalogStyle("S");
@@ -171,7 +171,7 @@ public class DataDictionaryController extends BaseController {
      * @param response    {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{catalogCode}", method = {RequestMethod.PUT})
-    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}更新字典类别")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{userInfo.userName}更新字典类别")
     public void updateCatalog(@PathVariable String catalogCode, @Valid DataCatalog dataCatalog,
                               HttpServletRequest request,HttpServletResponse response) {
 
@@ -218,7 +218,7 @@ public class DataDictionaryController extends BaseController {
      * @param response    {@link HttpServletResponse}
      */
     @RequestMapping(value = "update/{catalogCode}", method = {RequestMethod.PUT})
-    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}更新字典目录明细")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{userInfo.userName}更新字典目录明细")
     public void updateDictionary(@PathVariable String catalogCode, @Valid DataCatalog dataCatalog,
                               HttpServletRequest request,HttpServletResponse response) {
 
@@ -259,7 +259,7 @@ public class DataDictionaryController extends BaseController {
      * @param response       {@link HttpServletResponse}
      */
     @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}", method = {RequestMethod.PUT})
-    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}新增数据字典")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{userInfo.userName}新增数据字典")
     public void createDictionary(@PathVariable String catalogCode, @PathVariable String dataCode,
                                @Valid DataDictionary dataDictionary,
                                HttpServletRequest request,HttpServletResponse response) {
@@ -293,7 +293,7 @@ public class DataDictionaryController extends BaseController {
      * @param response       {@link HttpServletResponse}
      */
     @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}", method = {RequestMethod.POST})
-    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}更新数据字典")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{userInfo.userName}更新数据字典")
     public void editDictionary(@PathVariable String catalogCode, @PathVariable String dataCode,
                                @Valid DataDictionary dataDictionary,
                                HttpServletRequest request,HttpServletResponse response) {
@@ -438,7 +438,7 @@ public class DataDictionaryController extends BaseController {
      * @param response {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{catalogCode}", method = RequestMethod.DELETE)
-    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}删除字典目录")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{userInfo.userName}删除字典目录")
     public void deleteCatalog(@PathVariable String catalogCode,
             HttpServletRequest request,HttpServletResponse response) {
         DataCatalog dataCatalog = dataDictionaryManager.getObjectById(catalogCode);
@@ -462,7 +462,7 @@ public class DataDictionaryController extends BaseController {
      * @param response {@link HttpServletResponse}
      */
     @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}", method = RequestMethod.DELETE)
-    @RecordOperationLog(content = "操作IP地址:{userInfo.loginIp},用户{userInfo.userName}删除数据字典")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{userInfo.userName}删除数据字典")
     public void deleteDictionary(@PathVariable String catalogCode, @PathVariable String dataCode,
             HttpServletRequest request,HttpServletResponse response) {
         DataCatalog dataCatalog = dataDictionaryManager.getObjectById(catalogCode);
