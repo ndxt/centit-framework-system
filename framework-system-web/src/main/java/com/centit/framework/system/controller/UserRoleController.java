@@ -217,7 +217,7 @@ public class UserRoleController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(method = RequestMethod.POST)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{userInfo.userName}新增用户角色关联信息")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增用户角色关联信息")
     public void create(@Valid UserRole userRole,@Valid String[] userCode, HttpServletRequest request, HttpServletResponse response) {
         userRole.setCreateDate(new Date());
         if(userCode!=null && userCode.length>0){
@@ -249,7 +249,7 @@ public class UserRoleController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{roleCode}/{userCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{userInfo.userName}更新用户角色信息")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新用户角色信息")
     public void edit(@PathVariable String roleCode, @PathVariable String userCode, @Valid UserRole userRole,
                      HttpServletRequest request, HttpServletResponse response) {
         UserRole dbUserRole = sysUserRoleManager.getObjectById(new UserRoleId(userCode,roleCode));
@@ -277,7 +277,7 @@ public class UserRoleController extends BaseController {
      * @param response  {@link HttpServletResponse}
      */
     @RequestMapping(value = "/{roleCode}/{userCodes}", method = RequestMethod.DELETE)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{userInfo.userName}删除用户角色关联信息")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户角色关联信息")
     public void delete(@PathVariable String roleCode, @PathVariable String userCodes,
                        HttpServletRequest request, HttpServletResponse response) {
 
@@ -302,7 +302,7 @@ public class UserRoleController extends BaseController {
      * @param request  HttpServletRequest
      */
     @RequestMapping(value = "/ban/{roleCode}/{userCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{userInfo.userName}删除用户角色关联信息")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户角色关联信息")
     public void ban(@PathVariable String roleCode, @PathVariable String userCode,
                         HttpServletRequest request, HttpServletResponse response) {
         UserRoleId a=new UserRoleId(userCode,roleCode);
