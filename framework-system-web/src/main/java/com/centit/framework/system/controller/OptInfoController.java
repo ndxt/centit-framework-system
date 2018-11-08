@@ -5,14 +5,21 @@ import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.ViewDataTransform;
+import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.core.controller.BaseController;
+import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.service.OptInfoManager;
 import com.centit.framework.system.service.OptMethodManager;
+import com.centit.support.common.ParamName;
 import com.centit.support.json.JsonPropertyUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -31,6 +38,8 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/optinfo")
+@Api(value="系统业务维护接口",
+    tags= "系统业务维护接口")
 public class OptInfoController extends BaseController {
     @Resource
     private OptInfoManager optInfoManager;
@@ -141,18 +150,20 @@ public class OptInfoController extends BaseController {
 
     /**
      * 新增菜单
-     *
-     * @param optInfo  OptInfo
-     * @param request  HttpServletRequest
-     * @param response HttpServletResponse
+     * @param optInfo  业务菜单信息
      */
+    @ApiOperation(value="新建系统业务菜单",notes="新建系统业务菜单。")
+    @ApiImplicitParams(@ApiImplicitParam(
+        name = "optInfo", value="业务菜系信息",
+        required=true, paramType = "body", dataTypeClass= OptInfo.class
+    ))
     @RequestMapping(method = {RequestMethod.POST})
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增菜单")
-    public void createOptInfo(@Valid OptInfo optInfo, HttpServletRequest request, HttpServletResponse response) {
-
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增{optInfo.optName}菜单")
+    @WrapUpResponseBody
+    public OptInfo createOptInfo(@ParamName("optInfo") @Valid OptInfo optInfo) {
         optInfoManager.saveNewOptInfo(optInfo);
-        //刷新缓存
-        JsonResultUtils.writeSingleDataJson(optInfo, response);
+        CodeRepositoryCache.evictCache("OptInfo");
+        return optInfo;
     }
 
     /**
