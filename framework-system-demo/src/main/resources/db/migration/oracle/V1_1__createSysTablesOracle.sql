@@ -3,15 +3,15 @@
 /*==============================================================*/
 create sequence S_Filter_No;
 create sequence s_notify_id;
-create sequence s_optdefcode ;
+create sequence s_optdefcode INCREMENT BY 1 start with 1001000;
 create sequence s_sys_log;
-create sequence s_unitcode;
-create sequence s_user_unit_id;
-create sequence s_usercode;
+create sequence s_unitcode  INCREMENT BY 1  start with 10;
+create sequence s_user_unit_id INCREMENT BY 1 start with 10;
+create sequence s_usercode INCREMENT BY 1 start with 10;
 create sequence S_MSGCODE ;
 create sequence S_RECIPIENT ;
 create sequence S_ADDRESSID ;
-create sequence S_ROLECODE;
+create sequence S_ROLECODE INCREMENT BY 1 start with 10;
 
 create table F_DATACATALOG
 (

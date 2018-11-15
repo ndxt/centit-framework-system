@@ -18,23 +18,22 @@ INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
 ('S_RECIPIENT', 0, 1);
 
 INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
-('S_UNITCODE', 0, 1);
+('S_UNITCODE', 10, 1);
 
 INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
-('S_USERCODE', 0, 1);
+('S_USERCODE', 10, 1);
 
 INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
-('S_USER_UNIT_ID', 0, 1);
+('S_USER_UNIT_ID', 10, 1);
 
 INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
-('S_OPTDEFCODE', 0, 1);
+('S_OPTDEFCODE', 1001000, 1);
 
 INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
 ('S_SYS_LOG', 0, 1);
 
 INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
-  ('S_ROLECODE', 0, 1);
-
+('S_ROLECODE', 10, 1);
 
 drop table if exists F_DATACATALOG;
 

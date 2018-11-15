@@ -651,15 +651,15 @@ create sequence S_FILTER_NO;
 
 create sequence S_NOTIFY_ID;
 
-create sequence S_OPTDEFCODE start with 1100000 INCREMENT BY 1;
+create sequence S_OPTDEFCODE start with 1001000 INCREMENT BY 1;
 
 create sequence S_SYS_LOG;
 
-create sequence S_UNITCODE;
+create sequence S_UNITCODE start with 10 INCREMENT BY 1;
 
-create sequence S_USER_UNIT_ID;
+create sequence S_USER_UNIT_ID start with 10 INCREMENT BY 1;
 
-create sequence S_USERCODE;
+create sequence S_USERCODE start with 10 INCREMENT BY 1;
 
-create sequence S_ROLECODE;
+create sequence S_ROLECODE start with 10 INCREMENT BY 1;
 
