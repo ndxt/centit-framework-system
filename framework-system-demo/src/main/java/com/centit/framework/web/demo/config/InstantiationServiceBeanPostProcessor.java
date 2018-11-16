@@ -6,6 +6,7 @@ import com.centit.framework.model.adapter.MessageSender;
 import com.centit.framework.model.adapter.NotificationCenter;
 import com.centit.framework.model.adapter.OperationLogWriter;
 import com.centit.framework.model.adapter.PlatformEnvironment;
+import com.centit.framework.system.service.impl.InnerMessageManagerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -24,7 +25,7 @@ public class InstantiationServiceBeanPostProcessor implements ApplicationListene
     private OperationLogWriter optLogManager;
 
     @Autowired(required = false)
-    private MessageSender innerMessageManager;
+    private InnerMessageManagerImpl innerMessageManager;
 
     @Autowired
     @NotNull
