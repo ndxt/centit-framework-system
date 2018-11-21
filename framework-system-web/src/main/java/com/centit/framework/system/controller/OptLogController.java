@@ -9,7 +9,12 @@ import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.OptLog;
 import com.centit.framework.system.service.OptLogManager;
 import com.centit.support.database.utils.PageDesc;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +27,7 @@ import java.util.Date;
 import java.util.Map;
 
 @Controller
+@Api(value="系统日志维护接口", tags= "系统日志操作接口")
 @RequestMapping("/optlog")
 public class OptLogController extends BaseController {
 
@@ -46,7 +52,16 @@ public class OptLogController extends BaseController {
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
-    @RequestMapping
+    @ApiOperation(value="查询系统日志列表",notes="查询系统日志列表。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "field", value="指需要显示的属性名",
+            allowMultiple=true, paramType = "query", dataType= "String"),
+        @ApiImplicitParam(
+            name = "pageDesc", value="分页对象",
+            paramType = "body", dataTypeClass= PageDesc.class)
+    })
+    @GetMapping
     public void list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
 
@@ -65,6 +80,10 @@ public class OptLogController extends BaseController {
      * @param logId    logId
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="查询单条日志",notes="根据日志id查询单条日志。")
+    @ApiImplicitParam(
+        name = "logId", value="日志id",
+        required=true, paramType = "query", dataType= "Long")
     @RequestMapping(value = "/{logId}", method = {RequestMethod.GET})
     public void getOptLogById(@PathVariable Long logId, HttpServletResponse response) {
         OptLog dbOptLog = optLogManager.getObjectById(logId);
@@ -81,6 +100,10 @@ public class OptLogController extends BaseController {
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="删除单条系统日志",notes="根据日志id删除单条日志。")
+    @ApiImplicitParam(
+        name = "logId", value="日志id",
+        required=true, paramType = "query", dataType= "Long")
     @RequestMapping(value = "/{logId}", method = {RequestMethod.DELETE})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除日志")
     public void deleteOne(@PathVariable Long logId, HttpServletRequest request, HttpServletResponse response) {
@@ -101,6 +124,10 @@ public class OptLogController extends BaseController {
      * @param response HttpServletResponse
      * @param request  HttpServletRequest
      */
+    @ApiOperation(value="删除多条系统日志",notes="删除多条系统日志。")
+    @ApiImplicitParam(
+        name = "logIds", value="数组格式，多个日志ID",required = true,
+        allowMultiple=true, paramType = "query", dataType= "Long")
     @RequestMapping(value = "/deleteMany", method = RequestMethod.DELETE)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除日志")
     public void deleteMany(Long[] logIds, HttpServletRequest request, HttpServletResponse response) {
@@ -123,6 +150,15 @@ public class OptLogController extends BaseController {
      * @param end      Date
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="删除某时段之前的系统日志",notes="删除某时段之前的系统日志。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "begin", value="开始时间点(参数为时间还未实现)",
+            paramType = "query", dataType= "Date"),
+        @ApiImplicitParam(
+            name = "end", value="结束时间点",
+            paramType = "query", dataTypeClass= Date.class)
+    })
     @RequestMapping(value = "/delete", method = {RequestMethod.DELETE})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除日志")
     public void deleteByTime(Date begin, Date end, HttpServletResponse response) {

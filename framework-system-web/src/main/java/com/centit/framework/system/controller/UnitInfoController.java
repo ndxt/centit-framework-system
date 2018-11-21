@@ -18,6 +18,10 @@ import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -43,6 +47,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("/unitinfo")
+@Api(value="系统机构管理操作接口", tags= "系统机构管理操作接口")
 public class UnitInfoController extends BaseController {
 
     @Resource
@@ -78,11 +83,20 @@ public class UnitInfoController extends BaseController {
     /**
      * 查询所有机构信息
      *
-     * @param struct    boolean
-     * @param id        id
+     * @param struct    是否需要树形结构
+     * @param id        父机构ID
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="查询所有机构信息",notes="查询所有机构信息。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "struct", value="指需要显示的属性名",
+            paramType = "query", dataType= "Boolean"),
+        @ApiImplicitParam(
+            name = "id", value="父机构ID",
+            paramType = "query", dataType= "String")
+    })
     @RequestMapping(method = RequestMethod.GET)
     public void list(boolean struct, String id,
                      HttpServletRequest request,
@@ -122,6 +136,10 @@ public class UnitInfoController extends BaseController {
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="查询所有子机构信息",notes="查询所有子机构信息。")
+    @ApiImplicitParam(
+        name = "id", value="父机构ID",
+        paramType = "query", dataType= "String")
     @RequestMapping(value = "/subunits",method = RequestMethod.GET)
     public void listSub(String id, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
@@ -162,6 +180,7 @@ public class UnitInfoController extends BaseController {
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="查询 当前机构 子机构",notes="查询 当前机构 子机构。")
     @RequestMapping(value = "/validsubunits",method = RequestMethod.GET)
     public void listValidSubUnit(HttpServletRequest request, HttpServletResponse response) {
 
@@ -188,6 +207,10 @@ public class UnitInfoController extends BaseController {
      * @param unitCode 机构代码
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="查询单个机构信息",notes="根据机构ID查询单个机构信息。")
+    @ApiImplicitParam(
+        name = "unitCode", value="机构ID",
+        paramType = "query", dataType= "String")
     @RequestMapping(value = "/{unitCode}", method = RequestMethod.GET)
     public void getUnitInfo(@PathVariable String unitCode, HttpServletResponse response) {
         UnitInfo unitInfo = sysUnitManager.getObjectById(unitCode);
@@ -201,6 +224,10 @@ public class UnitInfoController extends BaseController {
      * @param unitCode unitCode
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="删除机构信息",notes="根据机构ID删除机构信息。")
+    @ApiImplicitParam(
+        name = "unitCode", value="机构ID",
+        paramType = "query", dataType= "String")
     @RequestMapping(value = "/{unitCode}", method = {RequestMethod.DELETE})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除机构")
     public void delete(@PathVariable String unitCode,HttpServletRequest request, HttpServletResponse response) {
@@ -240,6 +267,10 @@ public class UnitInfoController extends BaseController {
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="新建机构",notes="新建一个机构。")
+    @ApiImplicitParam(
+        name = "unitInfo", value="json格式，机构信息对象",
+        paramType = "body", dataTypeClass = UnitInfo.class)
     @RequestMapping(method = RequestMethod.POST)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增机构")
     public void create(@Valid UnitInfo unitInfo, HttpServletRequest request,HttpServletResponse response) {
@@ -281,6 +312,15 @@ public class UnitInfoController extends BaseController {
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="更新机构信息",notes="更新机构信息。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "unitCode", value="机构代码",
+            paramType = "path", dataType = "String"),
+        @ApiImplicitParam(
+            name = "unitInfo", value="json格式，机构信息对象",
+            paramType = "body", dataTypeClass = UnitInfo.class)
+    })
     @RequestMapping(value = "/{unitCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新机构")
     public void edit(@PathVariable String unitCode, @Valid UnitInfo unitInfo,
@@ -344,6 +384,15 @@ public class UnitInfoController extends BaseController {
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="更新机构及子机构的状态",notes="更新机构及子机构的状态。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "unitCode", value="机构代码",
+            required = true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "statusValue", value="状态码 T:可用 或 F:禁用",
+            required = true, paramType = "path", dataType= "String")
+    })
     @RequestMapping(value = "/{unitCode}/status/{statusValue}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新机构状态")
     public void changeStatus(@PathVariable String unitCode, @PathVariable String statusValue,
@@ -380,6 +429,15 @@ public class UnitInfoController extends BaseController {
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="获取单个机构下属子机构",notes="获取单个机构下属子机构。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "unitCode", value="机构代码",
+            required = true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "field", value="需要显示的字段",
+            allowMultiple = true, paramType = "query", dataType= "String")
+    })
     @RequestMapping(value = "/{unitCode}/children", method = RequestMethod.GET)
     public void listChildren(@PathVariable String unitCode, String[] field, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
@@ -397,7 +455,11 @@ public class UnitInfoController extends BaseController {
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="当前机构下所有用户",notes="当前机构下所有用户。")
     @RequestMapping(value = "/currentunit/users", method = RequestMethod.GET)
+    @ApiImplicitParam(
+        name = "pageDesc", value="json格式，分页对象信息",
+        paramType = "body", dataTypeClass = PageDesc.class)
     public void listUnitUsers(PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
 
         String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
@@ -420,6 +482,15 @@ public class UnitInfoController extends BaseController {
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
 
+    /**
+     * 获取机构下所有可用的用户
+     * @param unitCode 机构代码
+     * @param response HttpServletResponse
+     */
+    @ApiOperation(value="获取机构下所有可用的用户",notes="获取机构下所有可用的用户。")
+    @ApiImplicitParam(
+        name = "unitCode", value="机构代码",
+        required = true, paramType = "path", dataType= "String")
     @RequestMapping(value = "/{unitCode}/validusers", method = RequestMethod.GET)
     public void listUnitAllUsers(@PathVariable String unitCode, HttpServletResponse response) {
 
@@ -431,12 +502,16 @@ public class UnitInfoController extends BaseController {
         JsonResultUtils.writeSingleDataJson(listObjects, response);
     }
 
-  /**
-   * 获取当前用户所在机构下所有用户
-   * @param state 是否启用 T|F
-   * @param request HttpServletRequest
-   * @param response {@link HttpServletResponse}
-   */
+    /**
+     * 获取当前用户所在机构下所有用户
+     * @param state 是否启用 T|F
+     * @param request HttpServletRequest
+     * @param response {@link HttpServletResponse}
+     */
+    @ApiOperation(value="获取机构下所有可用的用户",notes="获取机构下所有可用的用户。")
+    @ApiImplicitParam(
+        name = "state", value="是否启用 T:启用 | F:禁用",
+        required = true, paramType = "path", dataType= "String")
     @RequestMapping(value = "/currentusers/{state}", method = RequestMethod.GET)
     public void listAllUsersByCurrentUser(@PathVariable String state, HttpServletRequest request, HttpServletResponse response) {
         CentitUserDetails userInfo =  getLoginUser(request);
@@ -454,9 +529,13 @@ public class UnitInfoController extends BaseController {
     /**
      * 当前机构下用户
      *
-     * @param userunitid    机构代码
+     * @param userunitid 用户机构代码
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="当前机构下用户",notes="当前机构下用户。")
+    @ApiImplicitParam(
+        name = "userunitid", value="用户机构代码",
+        required = true, paramType = "path", dataType= "String")
     @RequestMapping(value = "/unitusers/{userunitid}", method = RequestMethod.GET)
     public void getUnitUser(@PathVariable String userunitid,  HttpServletResponse response) {
         UserUnit userUnit = sysUserUnitManager.getObjectById(userunitid);
@@ -471,12 +550,21 @@ public class UnitInfoController extends BaseController {
     }
 
     /**
-     * 将权限付给部门
+     * 将权限赋给部门
      * @param unitCode 机构代码
      * @param optCodes 操作权限代码 以，隔开
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="将权限赋给部门",notes="将权限赋给部门。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "unitCode", value="机构代码",
+            required = true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "optCodes", value="操作权限代码 以，隔开",
+            required = true, paramType = "query", dataType= "String")
+    })
     @RequestMapping(value = "/unit/saveopts/{unitCode}",method = RequestMethod.POST)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新机构权限")
     public void setUnitPowers(@PathVariable String unitCode, String optCodes,
@@ -517,6 +605,12 @@ public class UnitInfoController extends BaseController {
         /*********log*********/
     }
 
+    /**
+     * 当前机构下所有可用的角色
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     */
+    @ApiOperation(value="当前机构下所有可用的角色",notes="当前机构下所有可用的角色。")
     @GetMapping(value = "/validroles")
     public void listUnitAndPublicRole(HttpServletRequest request, HttpServletResponse response) {
 

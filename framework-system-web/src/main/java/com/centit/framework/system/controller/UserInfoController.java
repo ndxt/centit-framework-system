@@ -7,6 +7,7 @@ import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.security.model.CentitUserDetails;
+import com.centit.framework.system.po.UnitRole;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserUnit;
@@ -37,8 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Api(value="框架中用户管理接口，包括用户的增删改查",
-    tags= "用户管理接口")
+@Api(value="框架中用户管理接口，包括用户的增删改查", tags= "用户管理操作接口")
 @Controller
 @RequestMapping("/userinfo")
 public class UserInfoController extends BaseController {
@@ -76,14 +76,14 @@ public class UserInfoController extends BaseController {
         name = "filterMap", value="过滤条件",
         required=true, paramType = "query", dataType= "Map"
     ),@ApiImplicitParam(
-        name = "pageDesc", value="分页信息",
-        required=true, paramType = "query", dataType= "Map"
+        name = "pageDesc", value="json格式的分页信息",
+        required=true, paramType = "body", dataTypeClass = PageDesc.class
     ),@ApiImplicitParam(
         name = "_search", value="强制关闭分页查询",
         required= false, paramType = "query", dataType= "Boolean"
     ),@ApiImplicitParam(
         name = "field", value="过滤返回的字段信息",
-        required= false, paramType = "query", dataType= "String[]"
+        allowMultiple= true, paramType = "query", dataType= "String"
     )})
     @RequestMapping(method = RequestMethod.GET)
     public void list(String[] field, PageDesc pageDesc, String _search,
@@ -125,6 +125,15 @@ public class UserInfoController extends BaseController {
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="新增用户",notes="新增用户。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "userInfo", value="json格式，用户对象信息",
+            paramType = "body", dataTypeClass= UserInfo.class),
+        @ApiImplicitParam(
+            name = "userUnit", value="json格式，用户机构对象信息",
+            paramType = "body", dataTypeClass= UserUnit.class)
+    })
     @RequestMapping(method = RequestMethod.POST)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增用户")
     public void create(@Valid UserInfo userInfo, UserUnit userUnit,
@@ -163,6 +172,18 @@ public class UserInfoController extends BaseController {
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="更新用户信息",notes="更新用户信息。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "userCode", value="用户代码",required = true,
+            paramType = "path", dataType = "String"),
+        @ApiImplicitParam(
+            name = "userInfo", value="json格式，用户对象信息",
+            paramType = "body", dataTypeClass= UserInfo.class),
+        @ApiImplicitParam(
+            name = "userUnit", value="json格式，用户机构对象信息",
+            paramType = "body", dataTypeClass= UserUnit.class)
+    })
     @RequestMapping(value = "/{userCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新用户信息")
     public void edit(@PathVariable String userCode, @Valid UserInfo userInfo, UserUnit userUnit,
@@ -209,6 +230,7 @@ public class UserInfoController extends BaseController {
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="当前登录用户信息",notes="当前登录用户信息。")
     @RequestMapping(value = "/current", method = RequestMethod.GET)
     public void getCurrentUserInfo(HttpServletRequest request, HttpServletResponse response) {
         CentitUserDetails userDetails = super.getLoginUser(request);
@@ -222,6 +244,10 @@ public class UserInfoController extends BaseController {
      * @param userCode 用户代码
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="获取单个用户信息",notes="根据用户代码获取单个用户信息。")
+    @ApiImplicitParam(
+        name = "userCode", value="用户代码",
+        paramType = "path", dataType = "String")
     @RequestMapping(value = "/{userCode}", method = RequestMethod.GET)
     public void getUserInfo(@PathVariable String userCode, HttpServletResponse response) {
         UserInfo userInfo = sysUserManager.getObjectById(userCode);
@@ -251,6 +277,21 @@ public class UserInfoController extends BaseController {
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="当前登录名是否已存在",notes="当前登录名是否已存在。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "userCode", value="用户代码",
+            paramType = "query", dataType = "String"),
+        @ApiImplicitParam(
+            name = "loginName", value="登录名",
+            paramType = "query", dataType = "String"),
+        @ApiImplicitParam(
+            name = "regPhone", value="手机号",
+            paramType = "query", dataType = "String"),
+        @ApiImplicitParam(
+            name = "regEmail", value="邮箱",
+            paramType = "query", dataType = "String")
+    })
     @RequestMapping(value = "/exists", method = RequestMethod.GET)
     public void isAnyExist(HttpServletRequest request,HttpServletResponse response){
         String userCode = request.getParameter("userCode");
@@ -263,7 +304,7 @@ public class UserInfoController extends BaseController {
                         userCode,  loginName, regPhone, regEmail), response);
     }
 
-     /**
+    /**
      * 当前登录名是否已存在
      *
      * @param loginName 登录名
@@ -271,6 +312,10 @@ public class UserInfoController extends BaseController {
      * @param response HttpServletResponse
      * @throws IOException IOException
      */
+    @ApiOperation(value="当前登录名是否已存在",notes="当前登录名是否已存在。")
+    @ApiImplicitParam(
+        name = "loginName", value="登录名",required = true,
+        paramType = "path", dataType = "String")
     @RequestMapping(value = "/exists/{loginName}", method = RequestMethod.GET)
     public void isExists(@PathVariable String loginName,
             HttpServletRequest request,HttpServletResponse response) throws IOException {
@@ -288,6 +333,18 @@ public class UserInfoController extends BaseController {
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="更新用户密码",notes="更新用户密码。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "userCode", value="用户代码",required = true,
+            paramType = "path", dataType = "String"),
+        @ApiImplicitParam(
+            name = "password", value="旧密码",required = true,
+            paramType = "query", dataType = "String"),
+        @ApiImplicitParam(
+            name = "newPassword", value="新密码",required = true,
+            paramType = "query", dataType = "String")
+    })
     @RequestMapping(value = "/change/{userCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新用户密码")
     public void changePwd(@PathVariable String userCode, String password, String newPassword,
@@ -308,6 +365,10 @@ public class UserInfoController extends BaseController {
      * @param request {@link HttpServletRequest}
      * @param response {@link HttpServletResponse}
      */
+    @ApiOperation(value="强制更新用户密码",notes="强制更新用户密码。")
+    @ApiImplicitParam(
+        name = "userCode", value="用户代码",required = true,
+        paramType = "path", dataType = "String")
     @RequestMapping(value = "/changePwd/{userCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}强制更新用户密码")
     public void forceChangePwd(@PathVariable String userCode,
@@ -325,6 +386,22 @@ public class UserInfoController extends BaseController {
         /*********log*********/
     }
 
+    /**
+     * 检查用户密码是否可以修改
+     * @param userCode 用户代码
+     * @param oldPassword 旧密码
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     */
+    @ApiOperation(value="检查用户密码是否可以修改",notes="检查用户密码是否可以修改。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "userCode", value="用户代码",required = true,
+            paramType = "path", dataType = "String"),
+        @ApiImplicitParam(
+            name = "oldPassword", value="旧密码",required = true,
+            paramType = "path", dataType = "String")
+    })
     @RequestMapping(value = "/canchange/{userCode}/{oldPassword}", method = RequestMethod.GET)
     public void canChangePwd(@PathVariable String userCode,@PathVariable String oldPassword,
                              HttpServletRequest request,HttpServletResponse response) {
@@ -339,6 +416,10 @@ public class UserInfoController extends BaseController {
      * @param userCodes 用户代码集合
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="批量重置密码",notes="批量重置密码。")
+    @ApiImplicitParam(
+        name = "userCodes", value="用户代码集合(数组)",allowMultiple = true,
+        paramType = "path", dataType = "String")
     @RequestMapping(value = "/reset", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}重置用户密码")
     public void resetBatchPwd(String[] userCodes, HttpServletResponse response) {
@@ -360,6 +441,10 @@ public class UserInfoController extends BaseController {
      * @param request {@link HttpServletRequest}
      * @param response {@link HttpServletResponse}
      */
+    @ApiOperation(value="批量删除用户",notes="批量删除用户。")
+    @ApiImplicitParam(
+        name = "userCodes", value="用户代码集合(数组)",allowMultiple = true,
+        required = true, paramType = "path", dataType = "String")
     @RequestMapping(value="/{userCodes}",method=RequestMethod.DELETE)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户")
     public  void deleteUser(@PathVariable String[] userCodes,HttpServletRequest request,HttpServletResponse response){

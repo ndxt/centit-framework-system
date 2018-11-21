@@ -2,6 +2,8 @@ package com.centit.framework.system.po;
 
 import com.centit.framework.model.basedata.IUserSetting;
 import com.centit.support.algorithm.DatetimeOpt;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -15,6 +17,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "F_USERSETTING")
+@ApiModel(value="系统用户设置对象",description="系统用户设置对象 UserSetting")
 public class UserSetting implements IUserSetting,java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -26,6 +29,7 @@ public class UserSetting implements IUserSetting,java.io.Serializable {
     @Column(name = "PARAM_VALUE")
     @NotBlank(message = "不能为空")
     @Length(max = 2000, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "参数值 不能为空",name = "paramValue",required = true)
     private String paramValue;
 
     /**
@@ -33,12 +37,14 @@ public class UserSetting implements IUserSetting,java.io.Serializable {
      */
     @Column(name = "OPT_ID")
     @Length(max = 16, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "业务ID",name = "optId")
     private String optId;
     /**
      * 参数中文名称
      */
     @Column(name = "PARAM_NAME")
     @Length(max = 200, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "参数中文名称",name = "paramName")
     private String paramName;
     /**
      * 创建时间

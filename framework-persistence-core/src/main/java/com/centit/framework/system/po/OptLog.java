@@ -2,6 +2,8 @@ package com.centit.framework.system.po;
 
 import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.model.basedata.OperationLog;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -14,6 +16,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "F_OPT_LOG")
+@ApiModel(value="系统操作日志对象",description="系统操作日志对象 OptLog")
 public class OptLog implements java.io.Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -31,6 +34,7 @@ public class OptLog implements java.io.Serializable {
     @Column(name = "LOG_LEVEL")
     @NotBlank(message = "字段不能为空")
     @Length(max = 2, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "日志级别 使用常量LEVEL_INFO和LEVEL_ERROR表示 默认级别为LEVEL_INFO",name = "logLevel")
     private String logLevel = OperationLog.LEVEL_INFO;
 
 
@@ -38,6 +42,7 @@ public class OptLog implements java.io.Serializable {
     @NotBlank(message = "字段不能为空")
     @Length(max = 8, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="userName",value="userCode")
+    @ApiModelProperty(value = "用户代码",name = "userCode",required = true)
     private String userCode;
 
     @OrderBy("desc")

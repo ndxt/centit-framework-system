@@ -1,6 +1,8 @@
 package com.centit.framework.system.po;
 
 import com.centit.framework.core.dao.DictionaryMap;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -12,6 +14,7 @@ import java.util.Objects;
 //M_InnerMsg_Recipient
 @Entity
 @Table(name="M_INNERMSG_RECIPIENT")
+@ApiModel(value="接受者信息",description="接受者信息对象InnerMsgRecipient")
 public class InnerMsgRecipient implements Serializable{
 
     /**
@@ -23,6 +26,7 @@ public class InnerMsgRecipient implements Serializable{
     @Column(name="ID")
     //@GeneratedValue(generator = "assignedGenerator")
 //    @ValueGenerator(strategy = GeneratorType.SEQUENCE, value = "S_RECIPIENT")
+    @ApiModelProperty(value = "接收人主键",name = "id",required = true)
     private String id;
 
     /**
@@ -38,6 +42,7 @@ public class InnerMsgRecipient implements Serializable{
     @NotBlank
     @Length(max = 2048, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="receiverName",value="userCode")
+    @ApiModelProperty(value = "接收人编号",name = "receive",required = true)
     private String receive;
 
     /**

@@ -9,6 +9,8 @@ import com.centit.support.database.orm.GeneratorCondition;
 import com.centit.support.database.orm.GeneratorTime;
 import com.centit.support.database.orm.GeneratorType;
 import com.centit.support.database.orm.ValueGenerator;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -23,6 +25,7 @@ import java.util.Date;
 // 用户所属机构表
 @Entity
 @Table(name = "F_USERUNIT")
+@ApiModel(value="系统用户机构对象",description="系统用户机构对象 UserUnit")
 public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Serializable {
 
     // Fields
@@ -32,24 +35,29 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
     @Column(name = "USER_UNIT_ID")
     //@GeneratedValue(generator = "assignedGenerator")
     @Length(max = 64)
+    @ApiModelProperty(value = "用户机构ID",name = "userUnitId")
     private String userUnitId;
 
     @Column(name = "UNIT_CODE")
     @DictionaryMap(fieldName="unitName",value="unitCode")
+    @ApiModelProperty(value = "机构代码",name = "unitCode")
     private String unitCode; // 机构代码
 
     @Column(name = "USER_CODE")
     @DictionaryMap(fieldName="userName",value="userCode")
+    @ApiModelProperty(value = "用户代码",name = "userCode")
     private String userCode; // 用户代码
 
     @Column(name = "USER_STATION")
     @Length(max = 32, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="userStationText",value="StationType")
+    @ApiModelProperty(value = "岗位",name = "userStation")
     private String userStation; // 岗位
 
     @Column(name = "USER_RANK")
     @Length(max = 32, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="userRankText",value="RankType")
+    @ApiModelProperty(value = "职务",name = "userRank")
     private String userRank; // 职务
 
     @Column(name = "RANK_MEMO")

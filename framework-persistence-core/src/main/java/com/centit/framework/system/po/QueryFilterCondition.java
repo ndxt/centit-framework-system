@@ -1,5 +1,7 @@
 package com.centit.framework.system.po;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -15,6 +17,7 @@ import java.util.Date;
 */
 @Entity
 @Table(name = "F_QUERY_FILTER_CONDITION")
+@ApiModel(value="系统内置查询方式",description="系统内置查询方式对象 QueryFilterCondition")
 public class QueryFilterCondition implements java.io.Serializable {
     private static final long serialVersionUID =  1L;
 
@@ -24,6 +27,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     @Id
     @Column(name = "CONDITION_NO")
     //@GeneratedValue(generator = "assignedGenerator")
+    @ApiModelProperty(value = "过滤条件序号",name = "conditionNo")
     private Long conditionNo;
 
     /**
@@ -32,6 +36,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     @Column(name = "TABLE_CLASS_NAME")
     @NotBlank(message = "字段不能为空")
     @Length(max = 64, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "数据库表代码或者po的类名",name = "tableClassName",required = true)
     private String  tableClassName;
     /**
      * 参数名 参数名
@@ -39,6 +44,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     @Column(name = "PARAM_NAME")
     @NotBlank(message = "字段不能为空")
     @Length(max = 64, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "参数名 字段不能为空",name = "paramName",required = true)
     private String  paramName;
     /**
      * 参数提示 参数输入框提示
@@ -46,6 +52,7 @@ public class QueryFilterCondition implements java.io.Serializable {
     @Column(name = "PARAM_LABEL")
     @NotBlank(message = "字段不能为空")
     @Length(max = 120, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "参数输入框提示 字段不能为空",name = "paramLabel",required = true)
     private String  paramLabel;
     /**
      * 参数类型 参数类型：S 字符串，L 数字， N 有小数点数据， D 日期， T 时间戳， Y 年， M 月
@@ -71,7 +78,8 @@ public class QueryFilterCondition implements java.io.Serializable {
      */
     @Column(name = "SELECT_DATA_TYPE")
     @NotBlank(message = "字段不能为空")
-    @Length(max = 0, message = "字段长度不能大于{max}")
+    @Length(max = 1, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "参考类型 数据下拉框内容；N ：没有，D 数据字典, S 通过sql语句获得，J json数据直接获取",name = "selectDataType",required = true)
     private String  selectDataType;
     /**
      * 数据字典类别 数据字典

@@ -13,6 +13,7 @@ import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.DataDictionaryId;
 import com.centit.framework.system.service.DataDictionaryManager;
 import com.centit.support.database.utils.PageDesc;
+import io.swagger.annotations.*;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -22,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,6 +43,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/dictionary")
+@Api(tags= "框架数据字典操作接口",value = "框架数据字典接口")
 public class DataDictionaryController extends BaseController {
 
     public static final String F = "F";
@@ -61,11 +64,20 @@ public class DataDictionaryController extends BaseController {
     /**
      * 查询所有字典目录列表
      *
-     * @param field    只需要的属性名
+     * @param field    指需要的属性名
      * @param pageDesc 分页信息
      * @param request  {@link HttpServletRequest}
      * @param response {@link HttpServletResponse}
      */
+    @ApiOperation(value="查询所有字典目录列表",notes="查询所有字典目录列表。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "field", value="指需要显示的属性名",
+            allowMultiple=true, paramType = "query", dataType= "String"),
+        @ApiImplicitParam(
+            name = "pageDesc", value="分页对象",
+            paramType = "body", dataTypeClass= PageDesc.class)
+    })
     @RequestMapping(method = RequestMethod.GET)
     public void list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
@@ -90,6 +102,11 @@ public class DataDictionaryController extends BaseController {
      * @param catalogCode DataCatalog主键
      * @param response    {@link HttpServletResponse}
      */
+    @ApiOperation(value="查询单个字典目录",notes="根据数据字典类别代码查询单个字典目录。")
+    @ApiImplicitParam(
+        name = "catalogCode", value="数据字典的类别代码",
+        required= true, paramType = "path", dataType= "String"
+    )
     @RequestMapping(value = "/{catalogCode}", method = {RequestMethod.GET})
     public void getCatalog(@PathVariable String catalogCode, HttpServletResponse response) {
 
@@ -104,6 +121,11 @@ public class DataDictionaryController extends BaseController {
      * @param catalogCode catalogCode
      * @param response {@link HttpServletResponse}
      */
+    @ApiOperation(value="根据数据字典类别代码查询字典是否存在",notes="根据数据字典类别代码查询字典是否存在。")
+    @ApiImplicitParam(
+        name = "catalogCode", value="数据字典的类别代码",
+        required= true, paramType = "path", dataType= "String"
+    )
     @RequestMapping(value = "/notexists/{catalogCode}", method = {RequestMethod.GET})
     public void isNotExistsCatalogCode(@PathVariable String catalogCode, HttpServletResponse response) {
         DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
@@ -116,6 +138,11 @@ public class DataDictionaryController extends BaseController {
      * @param catalogName catalogName
      * @param response {@link HttpServletResponse}
      */
+    @ApiOperation(value="根据数据字典名字代码查询字典是否存在",notes="根据数据字典名字代码查询字典是否存在。")
+    @ApiImplicitParam(
+        name = "catalogName", value="数据字典的类别名字",
+        required= true, paramType = "path", dataType= "String"
+    )
     @RequestMapping(value = "/existcatalogname/{catalogName}", method = {RequestMethod.GET})
     public void isExistsCatalogName(@PathVariable String catalogName, HttpServletResponse response) {
         int count = dataDictionaryManager.existCatalogName(catalogName);
@@ -129,6 +156,14 @@ public class DataDictionaryController extends BaseController {
      * @param dataCode dataCode
      * @param response {@link HttpServletResponse}
      */
+    @ApiOperation(value="校验数据代码是否存在",notes="根据数据字典类别代码和数据代码判断字典是否存在")
+    @ApiImplicitParams({@ApiImplicitParam(
+        name = "catalogCode", value="数据字典的类别代码",
+        required=true, paramType = "path", dataType= "String"
+    ),@ApiImplicitParam(
+        name = "dataCode", value="数据字典的数据代码",
+        required= true, paramType = "path", dataType= "String"
+    )})
     @RequestMapping(value = "/notexists/dictionary/{catalogCode}/{dataCode}", method = {RequestMethod.GET})
     public void isNotExistsDataCode(@PathVariable String catalogCode, @PathVariable String dataCode,
                                     HttpServletResponse response) {
@@ -145,6 +180,8 @@ public class DataDictionaryController extends BaseController {
      * @param request {@link HttpServletRequest}
      * @param response {@link HttpServletResponse}
      */
+    @ApiOperation(value="新增字典类别",notes="新增字典类别")
+    @ApiParam(name="dataCatalog",value="新增字典类别,输入框有提示的都是必填项",required=true)
     @RequestMapping(method = {RequestMethod.POST})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增字典类别")
     public void createCatalog(@Valid DataCatalog dataCatalog, HttpServletRequest request,HttpServletResponse response) {
@@ -170,6 +207,12 @@ public class DataDictionaryController extends BaseController {
      * @param request    {@link HttpServletRequest}
      * @param response    {@link HttpServletResponse}
      */
+    @ApiOperation(value="更新字典类别",notes="更新字典类别信息")
+    @ApiImplicitParam(
+        name = "catalogCode", value="数据字典的类别代码",
+        required=true, paramType = "path", dataType= "String"
+    )
+    @ApiParam(name="dataCatalog",value="更新字典类别新的对象信息",required=true)
     @RequestMapping(value = "/{catalogCode}", method = {RequestMethod.PUT})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新字典类别")
     public void updateCatalog(@PathVariable String catalogCode, @Valid DataCatalog dataCatalog,
@@ -217,6 +260,12 @@ public class DataDictionaryController extends BaseController {
      * @param request    {@link HttpServletRequest}
      * @param response    {@link HttpServletResponse}
      */
+    @ApiOperation(value="更新字典目录明细",notes="更新字典目录明细，目录明显对象就是dataDictionaries[]里面的属性组成")
+    @ApiImplicitParam(
+        name = "catalogCode", value="数据字典的类别代码",
+        required=true, paramType = "path", dataType= "String"
+    )
+    @ApiParam(name="dataCatalog",value="更新字典类别新的对象信息",required=true)
     @RequestMapping(value = "update/{catalogCode}", method = {RequestMethod.PUT})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新字典目录明细")
     public void updateDictionary(@PathVariable String catalogCode, @Valid DataCatalog dataCatalog,
@@ -258,6 +307,18 @@ public class DataDictionaryController extends BaseController {
      * @param request {@link HttpServletRequest}
      * @param response       {@link HttpServletResponse}
      */
+    @ApiOperation(value="新增某个字典目录里的字典明细",notes="新增某个字典目录里的字典明细")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "catalogCode", value="数据字典的类别代码",
+            required=true, paramType = "path", dataType= "String"
+        ),
+        @ApiImplicitParam(
+            name = "dataCode", value="数据字典的明细代码",
+            required=true, paramType = "path", dataType= "String"
+        )
+    })
+    @ApiParam(name="dataDictionary",value="字典明细的对象信息",required=true)
     @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}", method = {RequestMethod.PUT})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增数据字典")
     public void createDictionary(@PathVariable String catalogCode, @PathVariable String dataCode,
@@ -292,6 +353,18 @@ public class DataDictionaryController extends BaseController {
      * @param request {@link HttpServletRequest}
      * @param response       {@link HttpServletResponse}
      */
+    @ApiOperation(value="更新某个字典目录里的字典明细",notes="更新某个字典目录里的字典明细")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "catalogCode", value="数据字典的类别代码",
+            required=true, paramType = "path", dataType= "String"
+        ),
+        @ApiImplicitParam(
+            name = "dataCode", value="数据字典的明细代码",
+            required=true, paramType = "path", dataType= "String"
+        )
+    })
+    @ApiParam(name="dataDictionary",value="字典明细的对象信息",required=true)
     @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}", method = {RequestMethod.POST})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新数据字典")
     public void editDictionary(@PathVariable String catalogCode, @PathVariable String dataCode,
@@ -437,6 +510,11 @@ public class DataDictionaryController extends BaseController {
      * @param request  {@link HttpServletRequest}
      * @param response {@link HttpServletResponse}
      */
+    @ApiOperation(value="根据数据字典目录代码删除字典目录",notes="根据数据字典目录代码删除字典目录。")
+    @ApiImplicitParam(
+        name = "catalogCode", value="数据字典目录代码",
+        required= true, paramType = "path", dataType= "String"
+    )
     @RequestMapping(value = "/{catalogCode}", method = RequestMethod.DELETE)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除字典目录")
     public void deleteCatalog(@PathVariable String catalogCode,
@@ -461,6 +539,17 @@ public class DataDictionaryController extends BaseController {
      * @param request  {@link HttpServletRequest}
      * @param response {@link HttpServletResponse}
      */
+    @ApiOperation(value="删除字典明细",notes="根据字典类别和字典明细代码删除字典明细")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "catalogCode", value="数据字典的类别代码",
+            required=true, paramType = "path", dataType= "String"
+        ),
+        @ApiImplicitParam(
+            name = "dataCode", value="数据字典的明细代码",
+            required=true, paramType = "path", dataType= "String"
+        )
+    })
     @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}", method = RequestMethod.DELETE)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除数据字典")
     public void deleteDictionary(@PathVariable String catalogCode, @PathVariable String dataCode,
@@ -480,13 +569,32 @@ public class DataDictionaryController extends BaseController {
         /*****************log************************/
     }
 
-
+    /**
+     * 获取字典的所有明细信息
+     * @param catalogCode 数据字典的类别代码
+     * @param response HttpServletResponse
+     */
+    @ApiOperation(value="获取字典的所有明细信息",notes="根据字典类别代码获取字典的所以明细信息")
+    @ApiImplicitParam(
+        name = "catalogCode", value="数据字典的类别代码",
+        required=true, paramType = "path", dataType= "String"
+    )
     @RequestMapping(value = "/dictionaryPiece/{catalogCode}", method = {RequestMethod.GET})
     public void getDataDictionary(@PathVariable String catalogCode, HttpServletResponse response) {
         List<DataDictionary> datas = dataDictionaryManager.getDataDictionary(catalogCode);
         JsonResultUtils.writeSingleDataJson(datas, response);
     }
 
+    /**
+     * 获取字典的详细信息
+     * @param catalogCode 数据字典的类别代码
+     * @param response HttpServletResponse
+     */
+    @ApiOperation(value="获取字典的详细信息",notes="根据字典类别代码获取字典的详细信息")
+    @ApiImplicitParam(
+        name = "catalogCode", value="数据字典的类别代码",
+        required=true, paramType = "path", dataType= "String"
+    )
     @RequestMapping(value = "/editDictionary/{catalogCode}", method = {RequestMethod.GET})
     public void getDataDictionaryDetail(@PathVariable String catalogCode, HttpServletResponse response) {
         List<DataDictionary> datas = dataDictionaryManager.getDataDictionary(catalogCode);
@@ -497,12 +605,22 @@ public class DataDictionaryController extends BaseController {
         JsonResultUtils.writeSingleDataJson(datas, response);
     }
 
+    /**
+     * 获取所以字典目录信息
+     * @param response HttpServletResponse
+     */
+    @ApiOperation(value="获取所以字典目录信息",notes="获取所以字典目录信息")
     @RequestMapping(value = "/allCatalog", method = {RequestMethod.GET})
     public void getAllCatalog(HttpServletResponse response) {
         List<DataCatalog> catalogs = dataDictionaryManager.listAllDataCatalog();
         JsonResultUtils.writeSingleDataJson(catalogs, response);
     }
 
+    /**
+     * 获取所以字典目录信息及对应的所以字典明细信息
+     * @param response HttpServletResponse
+     */
+    @ApiOperation(value="获取所以字典目录信息及对应的所以字典明细信息",notes="获取所以字典目录信息及对应的所以字典明细信息")
     @RequestMapping(value = "/wholeDictionary", method = {RequestMethod.GET})
     public void getWholeDictionary(HttpServletResponse response) {
         List<DataCatalog> catalogs = dataDictionaryManager.listAllDataCatalog();
@@ -514,7 +632,11 @@ public class DataDictionaryController extends BaseController {
         JsonResultUtils.writeResponseDataAsJson(resData,response);
     }
 
-    @RequestMapping("/dictionaryprop")
+    /**
+     * 将字典明细信息导入到Properties文件
+     */
+    @ApiOperation(value="将字典明细信息导入到Properties文件",notes="将字典明细信息导入到Properties文件")
+    @GetMapping("/dictionaryprop")
     public ResponseEntity<byte[]> downloadProperties() throws IOException{
         List<DataDictionary> dictionarys = dataDictionaryManager.getWholeDictionary();
         ByteArrayOutputStream out = new  ByteArrayOutputStream();

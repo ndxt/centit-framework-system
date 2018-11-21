@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IDataDictionary;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -23,6 +25,7 @@ import java.util.Date;
 //数据字典表
 @Entity
 @Table(name = "F_DATADICTIONARY")
+@ApiModel(value="数据字典对象",description="数据字典类别对象DataDictionary")
 public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java.io.Serializable {
 
     // Fields
@@ -41,11 +44,13 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
     @Column(name = "DATA_TAG")
     @NotBlank(message = "字段不能为空")
     @Length(max = 1, message = "字段长度必须为{max}")
+    @ApiModelProperty(value = "标志符字段不能为空，长度为1",name = "dataTag",required = true)
     private String dataTag; // 标志符
 
     @Column(name = "DATA_VALUE")
     @NotBlank(message = "字段不能为空")
     @Length(max = 2048, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "数据值字段不能为空，字段长度不能大于2048",name = "dataValue",required = true)
     private String dataValue; // 数据值
 
     @Transient
@@ -55,6 +60,7 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
     @NotNull(message = "字段不能为空")
     @Length(max = 1, message = "字段长度必须为{max}")
     @Pattern(regexp = "[SUF]", message = "字段只能填写F,S,U")
+    @ApiModelProperty(value = "数据值字段不能为空，字段长度不能大于1，字段只能填写F,S,U",name = "dataStyle",required = true)
     private String dataStyle; // 属性
 
     @OrderBy

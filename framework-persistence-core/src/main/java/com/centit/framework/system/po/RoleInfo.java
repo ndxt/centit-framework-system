@@ -2,6 +2,8 @@ package com.centit.framework.system.po;
 
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IRoleInfo;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.util.CollectionUtils;
@@ -20,6 +22,7 @@ import java.util.List;
 // 角色信息表
 @Entity
 @Table(name = "F_ROLEINFO")
+@ApiModel(value="系统角色信息对象",description="系统角色信息对象 RoleInfo")
 public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializable{
 
     // Fields
@@ -28,16 +31,19 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
     @Id
     @Column(name = "ROLE_CODE")
     //@GeneratedValue(generator = "assignedGenerator")
+    @ApiModelProperty(value = "角色代码,可以选择不填后台自动生成",name = "roleCode")
     private String roleCode; // 角色代码
 
     @Column(name = "ROLE_NAME")
     @Length(max = 300, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "角色名称",name = "roleName",required = true)
     private String roleName; // 角色名称
 
     @Column(name = "IS_VALID")
     @NotBlank(message = "字段不能为空")
     @Length(max = 1, message = "字段长度必须为{max}")
     @Pattern(regexp = "[TFA]", message = "字段值必须是T或F,A为新建可以删除")
+    @ApiModelProperty(value = "是否生效 T:生效 F:失效 A:新建可以删除",name = "isValid",required = true)
     private String isValid; // 是否生效
 
     /**
@@ -50,6 +56,7 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
      */
     @Column(name = "ROLE_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
+    @ApiModelProperty(value = "角色的类别 F:系统内置的 G:全局的 P:公用的 D:部门（机构）特有的角色 I:项目角色 W:工作流角色",name = "roleType",required = true)
     private String roleType; // 角色类别
 
     @Column(name = "UNIT_CODE")

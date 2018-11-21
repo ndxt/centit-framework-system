@@ -1,5 +1,7 @@
 package com.centit.framework.system.po;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -13,6 +15,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "F_SYS_NOTIFY")
+@ApiModel(value="系统通知信息对象",description="系统通知信息对象 SysNotify")
 public class SysNotify implements Serializable {
 
     /**
@@ -30,13 +33,15 @@ public class SysNotify implements Serializable {
     @Column(name = "Notify_Sender")
     @Length(max = 100, message = "字段长度不能大于{max}")
     @NotBlank
+    @ApiModelProperty(value = "发送人",name = "notifySender",required = true)
     private String notifySender;
     /**
-     * 发送人
+     * 接收人
      */
     @Column(name = "Notify_Receiver")
     @Length(max = 100, message = "字段长度不能大于{max}")
     @NotBlank
+    @ApiModelProperty(value = "接收人",name = "notifyReceiver",required = true)
     private String notifyReceiver;
     /**
      * 主题
@@ -44,12 +49,14 @@ public class SysNotify implements Serializable {
     @Column(name = "Msg_Subject")
     @Length(max = 200, message = "字段长度不能大于{max}")
     @NotBlank
+    @ApiModelProperty(value = "主题",name = "msgSubject",required = true)
     private String msgSubject;
     /**
      * 内容
      */
     @Column(name = "Msg_Content")
     @Length(max = 2000, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "内容",name = "msgContent",required = true)
     private String msgContent;
     /**
      * 通知方式
@@ -57,6 +64,7 @@ public class SysNotify implements Serializable {
     @Column(name = "notice_Type")
     @Length(max = 100, message = "字段长度不能大于{max}")
     @NotBlank
+    @ApiModelProperty(value = "通知方式",name = "notifyType",required = true)
     private String notifyType;
     /**
      * 发送状态

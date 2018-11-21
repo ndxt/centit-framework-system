@@ -7,6 +7,8 @@ import com.centit.support.database.orm.GeneratorCondition;
 import com.centit.support.database.orm.GeneratorTime;
 import com.centit.support.database.orm.GeneratorType;
 import com.centit.support.database.orm.ValueGenerator;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -26,6 +28,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "F_DATACATALOG")
+@ApiModel(value="数据字典类别对象",description="数据字典类别对象DataCatalog")
 public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Serializable{
     private static final long serialVersionUID = 1L;
 
@@ -34,6 +37,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
      */
     @Id
     @Column(name = "CATALOG_CODE")
+    @ApiModelProperty(value = "类别代码",name = "catalogCode",required = true)
     private String catalogCode;
 
     /**
@@ -41,6 +45,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
      */
     @Column(name = "CATALOG_NAME")
     @Length(max = 64, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "类别名称",name = "catalogName",required = true)
     private String catalogName;
 
     /**
@@ -50,15 +55,17 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
     @NotBlank(message = "字段不能为空")
     @Length(max = 1, message = "字段长度必须为{max}")
     @Pattern(regexp = "[SUF]", message = "字段只能填写F,S,U")
+    @ApiModelProperty(value = "类别状态 字段只能填写F,S,U",name = "catalogStyle",required = true)
     private String catalogStyle;
 
     /**
-     * 类别形式 F S U
+     * 类别形式 L或T
      */
     @Column(name = "CATALOG_TYPE")
     @NotBlank(message = "字段不能为空")
     @Length(max = 1, message = "字段长度必须为{max}")
     @Pattern(regexp = "[LT]", message = "字段只能填写L或T")
+    @ApiModelProperty(value = "字段只能填写L或T",name = "catalogType",required = true)
     private String catalogType;
 
     /**
@@ -82,6 +89,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
     @NotBlank(message = "字段不能为空")
     @Length(max = 1, message = "字段长度必须为{max}")
     // 默认值为1如何设置？
+    @ApiModelProperty(value = "是否需要缓存，字段不能为空可以默认设置为1",name = "needCache",required = true)
     private String needCache;
 
     @Column(name = "OPT_ID")

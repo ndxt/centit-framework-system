@@ -3,6 +3,8 @@ package com.centit.framework.system.po;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.model.basedata.NoticeMessage;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -13,6 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "M_INNERMSG")
+@ApiModel(value="消息对象",description="消息对象InnerMsg")
 public class InnerMsg implements Serializable{
 
     /**
@@ -24,6 +27,7 @@ public class InnerMsg implements Serializable{
      */
     @Id
     @Column(name="MSG_CODE")
+    @ApiModelProperty(value = "消息编号",name = "msgCode",required = true)
     //@GeneratedValue(generator = "assignedGenerator")
 //    @ValueGenerator(strategy = GeneratorType.SEQUENCE, value = "S_MSGCODE")
     private String msgCode;
@@ -35,6 +39,7 @@ public class InnerMsg implements Serializable{
     @NotBlank
     @Length(max = 128, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="senderName",value="userCode")
+    @ApiModelProperty(value = "发送人",name = "sender",required = true)
     private String sender;
 
     /**

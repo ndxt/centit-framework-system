@@ -2,6 +2,8 @@ package com.centit.framework.system.po;
 
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IOptInfo;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
@@ -20,12 +22,14 @@ import java.util.List;
 // 业务模块表
 @Entity
 @Table(name = "F_OPTINFO")
+@ApiModel(value="业务菜单对象",description="业务菜单对象 OptInfo")
 public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializable{
     private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "OPT_ID")
     //@GeneratedValue(generator = "assignedGenerator")
+    @ApiModelProperty(value = "业务菜单编号",name = "optId",required = true)
     private String optId; // 业务编号
 
     @OrderBy
@@ -36,12 +40,14 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     @Column(name = "OPT_NAME")
     @NotBlank(message = "字段不能为空")
     @Length(max = 100, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "业务菜单名称，字段长度不能大于100",name = "optName",required = true)
     private String optName; // 业务名称
     /**
      * S:实施业务, O:普通业务, W:流程业务, I:项目业务
      */
     @Column(name = "OPT_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
+    @ApiModelProperty(value = "业务类别 S:实施业务, O:普通业务, W:流程业务, I:项目业务",name = "optType")
     private String optType; // 业务类别
 
     @Column(name = "FORM_CODE")
@@ -86,6 +92,7 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
 
     @Column(name = "PAGE_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
+    @ApiModelProperty(value = "页面打开方式 D: DIV I： iFrame",name = "pageType",required = true)
     private String pageType; // 页面打开方式 D: DIV I： iFrame
 
     @OrderBy

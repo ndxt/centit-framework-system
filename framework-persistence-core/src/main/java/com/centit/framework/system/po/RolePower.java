@@ -3,6 +3,7 @@ package com.centit.framework.system.po;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IRolePower;
 import com.centit.support.algorithm.DatetimeOpt;
+import io.swagger.annotations.ApiModel;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ import java.util.Date;
 // 角色操作权限表
 @Entity
 @Table(name = "F_ROLEPOWER")
+@ApiModel(value="系统角色操作权限对象",description="系统角色操作权限对象 RolePower")
 public class RolePower implements IRolePower, EntityWithTimestamp, java.io.Serializable{
 
     // Fields

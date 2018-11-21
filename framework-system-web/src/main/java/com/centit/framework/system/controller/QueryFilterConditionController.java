@@ -7,6 +7,10 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.system.po.QueryFilterCondition;
 import com.centit.framework.system.service.QueryFilterConditionManager;
 import com.centit.support.database.utils.PageDesc;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +31,7 @@ import java.util.Map;
 
 
 @Controller
+@Api(value="系统内置查询方式接口", tags= "系统内置查询方式操作接口")
 @RequestMapping("/queryfiltercondition")
 public class QueryFilterConditionController  extends BaseController {
     //private static final Logger logger = LoggerFactory.getLogger(QueryFilterConditionController.class);
@@ -49,6 +54,15 @@ public class QueryFilterConditionController  extends BaseController {
      * @param request  {@link HttpServletRequest}
      * @param response {@link HttpServletResponse}
      */
+    @ApiOperation(value="查询所有",notes="查询所有 系统内置查询方式  列表。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "field", value="指需要显示的属性名",
+            allowMultiple=true, paramType = "query", dataType= "String"),
+        @ApiImplicitParam(
+            name = "pageDesc", value="分页对象",
+            paramType = "body", dataTypeClass= PageDesc.class)
+    })
     @RequestMapping(method = RequestMethod.GET)
     public void list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
@@ -73,6 +87,10 @@ public class QueryFilterConditionController  extends BaseController {
      * @param conditionNo  CONDITION_NO
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="查询单个",notes="查询单个 系统内置查询方式。")
+    @ApiImplicitParam(
+        name = "conditionNo", value="条件编号",
+        paramType = "path", dataType= "Long")
     @RequestMapping(value = "/{conditionNo}", method = {RequestMethod.GET})
     public void getQueryFilterCondition(@PathVariable Long conditionNo, HttpServletResponse response) {
 
@@ -88,6 +106,10 @@ public class QueryFilterConditionController  extends BaseController {
      * @param queryFilterCondition  {@link QueryFilterCondition}
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="新增 系统内置查询方式",notes="新增 系统内置查询方式。")
+    @ApiImplicitParam(
+        name = "queryFilterCondition", value="查询对象",required = true,
+        paramType = "body", dataTypeClass = QueryFilterCondition.class)
     @RequestMapping(method = {RequestMethod.POST})
     public void createQueryFilterCondition(@Valid QueryFilterCondition queryFilterCondition, HttpServletResponse response) {
         Serializable pk = queryFilterConditionMag.saveNewObject(queryFilterCondition);
@@ -100,6 +122,10 @@ public class QueryFilterConditionController  extends BaseController {
      * @param conditionNo  CONDITION_NO
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="删除单个  系统内置查询方式",notes="删除单个  系统内置查询方式。")
+    @ApiImplicitParam(
+        name = "conditionNo", value="条件编号",required = true,
+        paramType = "path", dataType= "Long")
     @RequestMapping(value = "/{conditionNo}", method = {RequestMethod.DELETE})
     public void deleteQueryFilterCondition(@PathVariable Long conditionNo, HttpServletResponse response) {
 
@@ -115,6 +141,15 @@ public class QueryFilterConditionController  extends BaseController {
      * @param queryFilterCondition  {@link QueryFilterCondition}
      * @param response    {@link HttpServletResponse}
      */
+    @ApiOperation(value="新增或保存 系统内置查询方式",notes="新增或保存 系统内置查询方式。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "conditionNo", value="条件编号",
+            required = true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "queryFilterCondition", value="分页对象",
+            paramType = "body", dataTypeClass= QueryFilterCondition.class)
+    })
     @RequestMapping(value = "/{conditionNo}", method = {RequestMethod.PUT})
     public void updateQueryFilterCondition(@PathVariable Long conditionNo,
         @Valid QueryFilterCondition queryFilterCondition, HttpServletResponse response) {

@@ -1,5 +1,7 @@
 package com.centit.framework.system.po;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -13,6 +15,7 @@ import java.util.Date;
 */
 @Entity
 @Table(name = "F_USER_QUERY_FILTER")
+@ApiModel(value="用户自定义过滤条件对象",description="用户自定义过滤条件对象 UserQueryFilter")
 public class UserQueryFilter implements java.io.Serializable {
     private static final long serialVersionUID =  1L;
 
@@ -26,6 +29,7 @@ public class UserQueryFilter implements java.io.Serializable {
 
     @Column(name = "USER_CODE")
     @NotBlank(message = "字段不能为空")
+    @ApiModelProperty(value = "用户代码",name = "userCode",required = true)
     private String userCode;// 用户代码
 
     /**
@@ -34,6 +38,7 @@ public class UserQueryFilter implements java.io.Serializable {
     @Column(name = "MODLE_CODE")
     @NotBlank(message = "字段不能为空")
     @Length(max = 64, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "所属模块编码 开发人员自行定义，单不能重复，建议用系统的模块名加上当前的操作方法",name = "modleCode",required = true)
     private String  modleCode;
     /**
      * 筛选器名称 用户自行定义的名称
@@ -41,6 +46,7 @@ public class UserQueryFilter implements java.io.Serializable {
     @Column(name = "FILTER_NAME")
     @NotBlank(message = "字段不能为空")
     @Length(max = 64, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "筛选器名称 用户自行定义的名称",name = "filterName",required = true)
     private String  filterName;
     /**
      * 条件变量名 变量值，json格式，对应一个map
@@ -48,6 +54,7 @@ public class UserQueryFilter implements java.io.Serializable {
     @Column(name = "FILTER_VALUE")
     @NotBlank(message = "字段不能为空")
     @Length(max = 3200, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "条件变量名 变量值，json格式，对应一个map",name = "filterValue",required = true)
     private String  filterValue;
 
     @Column(name = "IS_DEFAULT")

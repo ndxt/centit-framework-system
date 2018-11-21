@@ -11,6 +11,10 @@ import com.centit.framework.system.po.UnitRole;
 import com.centit.framework.system.service.SysUnitManager;
 import com.centit.framework.system.service.SysUnitRoleManager;
 import com.centit.support.database.utils.PageDesc;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +36,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/unitrole")
+@Api(value="系统机构角色操作接口", tags= "系统机构角色操作接口")
 public class UnitRoleController extends BaseController {
     @Resource
     @NotNull
@@ -56,6 +61,15 @@ public class UnitRoleController extends BaseController {
      * //param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="通过角色代码获取机构",notes="通过角色代码获取机构。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "roleCode", value="角色代码",
+            paramType = "path", dataType = "String"),
+        @ApiImplicitParam(
+            name = "pageDesc", value="json格式，分页对象信息",
+            paramType = "body", dataTypeClass = PageDesc.class)
+    })
     @RequestMapping(value = "/roleunits/{roleCode}", method = RequestMethod.GET)
     //@RecordOperationLog(content="用户",appendRequest = true )
     public void listUsersByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletResponse response) {
@@ -70,13 +84,22 @@ public class UnitRoleController extends BaseController {
     }
 
     /**
-     * 通过角色代码获取机构
+     * 通过角色代码获取当前登陆者所在机构下的所有子机构
      *
      * @param roleCode 角色代码
      * @param pageDesc PageDesc
      * //param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="通过角色代码获取当前登陆者所在机构下的所有子机构",notes="通过角色代码获取当前登陆者所在机构下的所有子机构。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "roleCode", value="角色代码",
+            paramType = "path", dataType = "String"),
+        @ApiImplicitParam(
+            name = "pageDesc", value="json格式，分页对象信息",
+            paramType = "body", dataTypeClass = PageDesc.class)
+    })
     @RequestMapping(value = "/rolesubunits/{roleCode}", method = RequestMethod.GET)
     public void listSubUnitByRole(@PathVariable String roleCode, PageDesc pageDesc,
                                   HttpServletResponse response) {
@@ -104,6 +127,15 @@ public class UnitRoleController extends BaseController {
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="通过机构代码获取角色",notes="通过机构代码获取角色。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "unitCode", value="机构代码",
+            paramType = "path", dataType = "String"),
+        @ApiImplicitParam(
+            name = "pageDesc", value="json格式，分页对象信息",
+            paramType = "body", dataTypeClass = PageDesc.class)
+    })
     @RequestMapping(value = "/unitroles/{unitCode}", method = RequestMethod.GET)
     public void listRolesByUser(@PathVariable String unitCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = new HashMap<>();
@@ -124,6 +156,15 @@ public class UnitRoleController extends BaseController {
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="通过机构代码获取本机构角色",notes="通过机构代码获取本机构角色。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "unitCode", value="机构代码",
+            paramType = "path", dataType = "String"),
+        @ApiImplicitParam(
+            name = "pageDesc", value="json格式，分页对象信息",
+            paramType = "body", dataTypeClass = PageDesc.class)
+    })
     @RequestMapping(value = "/currentunitroles/{unitCode}", method = RequestMethod.GET)
     public void listCurrentUnitRole(@PathVariable String unitCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = new HashMap<>(4);
@@ -165,6 +206,15 @@ public class UnitRoleController extends BaseController {
      *  param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="创建用户角色关联信息",notes="创建用户角色关联信息。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "unitRole", value="json格式，机构角色对象信息",
+            paramType = "body", dataTypeClass= UnitRole.class),
+        @ApiImplicitParam(
+            name = "unitCode", value="机构代码（数组）",
+            allowMultiple=true, paramType = "query", dataType= "String")
+    })
     @RequestMapping(method = RequestMethod.POST)
     @RecordOperationLog(content="操作IP地址:{loginIp},用户{loginUser.userName}给机构{arg1}赋予权限{arg0.roleCode}")
     public void create(@Valid UnitRole unitRole,@Valid String[] unitCode, HttpServletResponse response) {
@@ -202,6 +252,18 @@ public class UnitRoleController extends BaseController {
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="更新机构角色关联信息",notes="更新机构角色关联信息。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "roleCode", value="角色代码",
+            required = true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "unitCode", value="机构代码",
+            required = true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "unitRole", value="json格式，机构角色对象信息",
+            paramType = "body", dataTypeClass= UnitRole.class)
+    })
     @RequestMapping(value = "/{roleCode}/{unitCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content="操作IP地址:{loginIp},用户{loginUser.userName}修改机构角色关联信息")
     public void edit(@PathVariable String roleCode, @PathVariable String unitCode, @Valid UnitRole unitRole,
@@ -228,6 +290,15 @@ public class UnitRoleController extends BaseController {
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="删除机构角色关联信息",notes="根据角色代码和机构代码（机构代码可以是多个）删除机构角色关联信息。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "roleCode", value="角色代码",
+            required = true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "unitCodes", value="机构代码（数组）",
+            allowMultiple = true, paramType = "path", dataType= "String")
+    })
     @RequestMapping(value = "/{roleCode}/{unitCodes}", method = RequestMethod.DELETE)
     @RecordOperationLog(content="操作IP地址:{loginIp},用户{loginUser.userName}删除机构{arg1}角色{arg0.roleCode}")
     public void delete(@PathVariable String roleCode, @PathVariable String unitCodes,

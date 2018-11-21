@@ -9,6 +9,10 @@ import com.centit.framework.system.service.UserQueryFilterManager;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +36,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/userqueryfilter")
+@Api(value="用户自定义过滤条件操作。", tags= "用户自定义过滤条件操作接口")
 public class UserQueryFilterController  extends BaseController {
     //private static final Logger logger = LoggerFactory.getLogger(UserQueryFilterController.class);
     public String getOptId() {
@@ -53,6 +58,14 @@ public class UserQueryFilterController  extends BaseController {
      * @param request  {@link HttpServletRequest}
      * @param response {@link HttpServletResponse}
      */
+    @ApiOperation(value="查询所有 用户自定义过滤条件",notes="查询所有 用户自定义过滤条件")
+    @ApiImplicitParams({@ApiImplicitParam(
+        name = "field", value="过滤返回的字段信息",
+        allowMultiple= true, paramType = "query", dataType= "String"
+    ),@ApiImplicitParam(
+        name = "pageDesc", value="json格式的分页信息",
+        required=true, paramType = "body", dataTypeClass = PageDesc.class
+    )})
     @RequestMapping(method = RequestMethod.GET)
     public void list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
@@ -80,6 +93,10 @@ public class UserQueryFilterController  extends BaseController {
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="查找用户某个模块的所有过滤器",notes="查找用户某个模块的所有过滤器")
+    @ApiImplicitParam(
+        name = "modelCode", value="模块代码",
+        required=true, paramType = "path", dataType= "String")
     @RequestMapping(value = "/list/{modelCode}", method = {RequestMethod.GET})
     public void listUserQueryFilter(@PathVariable String modelCode, HttpServletRequest request, HttpServletResponse response) {
 
@@ -90,11 +107,15 @@ public class UserQueryFilterController  extends BaseController {
         JsonResultUtils.writeSingleDataJson(userFilters, response);
     }
     /**
-     * 查询单个  用户自定义过滤条件表
+     * 查询单个 用户自定义过滤条件
 
-     * @param filterNo  FILTER_NO
+     * @param filterNo  过滤条件序号
      * @param response    {@link HttpServletResponse}
      */
+    @ApiOperation(value="查询单个用户自定义过滤条件",notes="查询单个用户自定义过滤条件")
+    @ApiImplicitParam(
+        name = "filterNo", value="过滤条件序号",
+        required=true, paramType = "path", dataType= "String")
     @RequestMapping(value = "/{filterNo}", method = {RequestMethod.GET})
     public void getUserQueryFilter(@PathVariable Long filterNo, HttpServletResponse response) {
 
@@ -111,6 +132,10 @@ public class UserQueryFilterController  extends BaseController {
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="查询单个用户自定义过滤条件新增 用户自定义过滤条件",notes="新增 用户自定义过滤条件")
+    @ApiImplicitParam(
+        name = "userQueryFilter", value="json格式的过滤条件对象",
+        required=true, paramType = "body", dataTypeClass = UserQueryFilter.class)
     @RequestMapping(method = {RequestMethod.POST})
     public void createUserQueryFilter(
             @Valid UserQueryFilter userQueryFilter,
@@ -129,11 +154,20 @@ public class UserQueryFilterController  extends BaseController {
     /**
     * 保存用户最新查看筛选器
     *
-    * @param modelCode  modelCode
+    * @param modelCode  所属模块编码
     * @param userQueryFilter  {@link UserQueryFilter}
     * @param request  {@link HttpServletRequest}
     * @param response  {@link HttpServletResponse}
     */
+    @ApiOperation(value="保存用户最新查看筛选器",notes="保存用户最新查看筛选器")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "modelCode", value="所属模块编码",
+            required=true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "userQueryFilter", value="json格式的过滤条件对象",
+            required=true, paramType = "body", dataTypeClass = UserQueryFilter.class)
+    })
    @RequestMapping(value = "/default/{modelCode}", method = {RequestMethod.POST,RequestMethod.PUT})
    public void createUserDefaultFilter(@PathVariable String modelCode,
            @Valid UserQueryFilter userQueryFilter,
@@ -152,10 +186,14 @@ public class UserQueryFilterController  extends BaseController {
    /**
     * 保存用户最新查看筛选器
     *
-    * @param modelCode  modelCode
+    * @param modelCode  所属模块编码
     * @param request  {@link HttpServletRequest}
     * @param response  {@link HttpServletResponse}
     */
+   @ApiOperation(value="保存用户最新查看筛选器",notes="保存用户最新查看筛选器")
+   @ApiImplicitParam(
+       name = "modelCode", value="所属模块编码",
+       required=true, paramType = "path", dataType= "String")
    @RequestMapping(value = "/default/{modelCode}", method = {RequestMethod.GET})
    public void getUserDefaultFilter(@PathVariable String modelCode,
            HttpServletRequest request,HttpServletResponse response) {
@@ -167,11 +205,15 @@ public class UserQueryFilterController  extends BaseController {
 
 
     /**
-     * 删除单个  用户自定义过滤条件表
+     * 删除单个 用户自定义过滤条件表
 
      * @param filterNo  FILTER_NO
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="删除单个 用户自定义过滤条件表",notes="删除单个 用户自定义过滤条件表")
+    @ApiImplicitParam(
+        name = "filterNo", value="过滤条件序号",
+        required=true, paramType = "path", dataType= "String")
     @RequestMapping(value = "/{filterNo}", method = {RequestMethod.DELETE})
     public void deleteUserQueryFilter(@PathVariable Long filterNo, HttpServletResponse response) {
 
@@ -189,6 +231,15 @@ public class UserQueryFilterController  extends BaseController {
      * @param userQueryFilter  {@link UserQueryFilter}
      * @param response    {@link HttpServletResponse}
      */
+    @ApiOperation(value="新增或保存 用户自定义过滤条件表",notes="新增或保存 用户自定义过滤条件表")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "filterNo", value="过滤条件序号",
+            required=true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "userQueryFilter", value="json格式的过滤条件对象",
+            required=true, paramType = "body", dataTypeClass = UserQueryFilter.class)
+    })
     @RequestMapping(value = "/{filterNo}", method = {RequestMethod.PUT})
     public void updateUserQueryFilter(@PathVariable Long filterNo,
         @Valid UserQueryFilter userQueryFilter, HttpServletResponse response) {

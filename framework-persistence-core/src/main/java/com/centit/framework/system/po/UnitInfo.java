@@ -8,6 +8,8 @@ import com.centit.support.database.orm.GeneratorCondition;
 import com.centit.support.database.orm.GeneratorTime;
 import com.centit.support.database.orm.GeneratorType;
 import com.centit.support.database.orm.ValueGenerator;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
@@ -27,6 +29,7 @@ import java.util.List;
 // 机构信息表
 @Entity
 @Table(name = "F_UNITINFO")
+@ApiModel(value="系统机构信息对象",description="系统机构信息对象 UnitInfo")
 public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializable{
     // Fields
     private static final long serialVersionUID = -2538006375160615889L;
@@ -34,30 +37,36 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
     @Id
     @Column(name = "UNIT_CODE")
     //@GeneratedValue(generator = "assignedGenerator")
+    @ApiModelProperty(value = "机构代码",name = "unitCode")
     private String unitCode; // 机构代码
 
     @Column(name = "PARENT_UNIT")
     @Length(max = 32, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="parentUnitName",value="unitCode")
+    @ApiModelProperty(value = "上级机构代码",name = "parentUnit")
     private String parentUnit; // 上级机构代码
 
     @Column(name = "UNIT_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
     @DictionaryMap(fieldName="unitTypeText",value="UnitType")
+    @ApiModelProperty(value = "机构类别",name = "unitType")
     private String unitType; // 机构类别
 
     @Column(name = "IS_VALID")
     @NotBlank(message = "字段不能为空")
     @Pattern(regexp = "[TFA]", message = "字段值必须是T或F,A为新建可以删除")
+    @ApiModelProperty(value = "是否生效 T:生效 F:失效 A:新建可以删除",name = "isValid",required = true)
     private String isValid; // 状态
 
     @Column(name = "UNIT_NAME")
     @NotBlank(message = "字段不能为空")
     @Length(max = 300, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "机构名称",name = "unitName",required = true)
     private String unitName;// 机构名称
 
     @Column(name = "ENGLISH_NAME")
     @Length(max = 300, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "机构英文名称",name = "englishName",required = true)
     private String englishName;// 机构英文名称
 
     @Column(name = "UNIT_SHORT_NAME")
@@ -66,6 +75,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
 
     @Column(name = "UNIT_WORD")
     @Length(max = 100, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "机构自定义编码",name = "unitWord")
     private String unitWord;//机构自定义编码
 
     @Column(name = "UNIT_TAG")
@@ -74,6 +84,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
 
     @Column(name = "UNIT_DESC")
     @Length(max = 256, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "机构描述",name = "unitDesc")
     private String unitDesc; // 机构描述
 
     @Column(name = "UNIT_ORDER")
@@ -88,7 +99,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
     @Length(max = 100, message = "字段长度不能大于{max}")
     private String depNo;
 
-    @Column(name = "UNIT_PATH")// 机构编码
+    @Column(name = "UNIT_PATH")// 机构路径
     @Length(max = 1000, message = "字段长度不能大于{max}")
     private String unitPath;
 

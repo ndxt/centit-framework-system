@@ -7,6 +7,8 @@ import com.centit.support.database.orm.GeneratorCondition;
 import com.centit.support.database.orm.GeneratorTime;
 import com.centit.support.database.orm.GeneratorType;
 import com.centit.support.database.orm.ValueGenerator;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
@@ -25,6 +27,7 @@ import java.util.*;
 // 系统用户信息表
 @Entity
 @Table(name = "F_USERINFO")
+@ApiModel(value="系统用户信息对象",description="系统用户信息对象 UserInfo")
 public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Serializable{
     // Fields
     private static final long serialVersionUID = -1753127177790732963L;
@@ -32,17 +35,20 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     @Id
     @Column(name = "USER_CODE")
     //@GeneratedValue(generator = "assignedGenerator")
+    @ApiModelProperty(value = "用户代码",name = "userCode")
     private String userCode; // 用户代码
 
     //密码不参与返回序列化
     @JSONField(serialize = false)
     @Column(name = "USER_PIN")
     @Length(max = 100, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "用户密码",name = "userPin")
     private String userPin; // 用户密码
 
     @Column(name = "IS_VALID")
     @NotBlank(message = "字段不能为空")
     @Pattern(regexp = "[TFA]", message = "字段值必须是T或F,A为新建可以删除")
+    @ApiModelProperty(value = "是否生效 T:生效 F:失效 A:新建可以删除",name = "isValid",required = true)
     private String isValid; // 状态
 
     /**
@@ -50,20 +56,24 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
      */
     @Column(name = "USER_TYPE")
     @Length(max = 1, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "G发布任务/R接收任务/S系统管理",name = "userType")
     private String userType; // 用户类别
 
     @Column(name = "LOGIN_NAME")
     @NotBlank(message = "字段不能为空")
     @Length(max = 100, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "用户登录名 字段不能为空",name = "loginName",required = true)
     private String loginName; // 用户登录名
 
     @Column(name = "USER_NAME")
     @NotBlank(message = "字段不能为空")
     @Length(max = 300, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "用户姓名 字段不能为空",name = "userName",required = true)
     private String userName; // 用户姓名
 
     @Column(name = "ENGLISH_NAME")
     @Length(max = 300, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "用户英文姓名",name = "englishName")
     private String englishName;// 用户英文姓名
 
     @Column(name = "USER_DESC")

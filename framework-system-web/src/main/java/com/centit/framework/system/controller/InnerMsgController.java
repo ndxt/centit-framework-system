@@ -13,6 +13,7 @@ import com.centit.framework.system.po.InnerMsgRecipient;
 import com.centit.framework.system.service.InnerMessageManager;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
+import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/innermsg")
+@Api(tags= "内部消息、公告操作接口",value = "内部消息、公告接口维护")
 public class InnerMsgController extends BaseController {
 
     @Resource
@@ -48,6 +50,7 @@ public class InnerMsgController extends BaseController {
      * @param request   HttpServletRequest
      * @param response  HttpServletResponse
      */
+    @ApiOperation(value="查询收件箱",notes="查询收件箱。")
     @RequestMapping(value = "/inbox", method = { RequestMethod.GET })
     public void listInbox(PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
@@ -68,6 +71,7 @@ public class InnerMsgController extends BaseController {
      * @param request {@link HttpServletRequest}
      * @param response {@link HttpServletResponse}
      */
+    @ApiOperation(value="未读消息数量",notes="未读消息数量。")
     @RequestMapping(value = "/unreadMsgCount", method = { RequestMethod.GET })
     public void unreadMsgCount(HttpServletRequest request, HttpServletResponse response) {
         String currUser = WebOptUtils.getLoginUser(request).getUserInfo().getUserCode();
@@ -80,6 +84,7 @@ public class InnerMsgController extends BaseController {
      * @param request    HttpServletRequest
      * @param response   HttpServletResponse
      */
+    @ApiOperation(value="查询发件箱",notes="查询发件箱。")
     @RequestMapping(value = "/outbox", method = { RequestMethod.GET })
     public void listOutbox(PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
@@ -100,6 +105,7 @@ public class InnerMsgController extends BaseController {
      * 是否有发公告权限
      * @param response   HttpServletResponse
      */
+    @ApiOperation(value="是否有发公告权限",notes="是否有发公告权限。")
     @RequestMapping(value = "/cangivenotify", method = { RequestMethod.GET })
     public void cangivenotify(HttpServletResponse response) {
         boolean s = CodeRepositoryUtil.checkUserOptPower("MSGMAG", "givenotify");
@@ -111,6 +117,10 @@ public class InnerMsgController extends BaseController {
      * @param msgCode   msgCode
      * @param response   HttpServletResponse
      */
+    @ApiOperation(value="是否有发公告权限",notes="是否有发公告权限。")
+    @ApiImplicitParam(
+        name = "msgCode", value="消息代码",
+        required= true, paramType = "path", dataType= "String")
     @RequestMapping(value = "/{msgCode}", method = { RequestMethod.GET })
     public void getInnerMsg(@PathVariable String msgCode, HttpServletResponse response) {
         InnerMsgRecipient msgCopy = innerMessageManager.getMsgRecipientById(msgCode);
@@ -124,6 +134,11 @@ public class InnerMsgController extends BaseController {
      * @param request     HttpServletRequest
      * @param response    HttpServletResponse
      */
+    @ApiOperation(value="公告列表",notes="公告列表。")
+    @ApiImplicitParam(
+        name = "field", value="显示结果中只需要显示的字段",
+        allowMultiple=true, paramType = "query", dataType= "String")
+    @ApiParam(name="pageDesc",value="分页对象")
     @RequestMapping(value = "/notice", method = { RequestMethod.GET })
     public void listnotify(String[] field, PageDesc pageDesc,
             HttpServletRequest request, HttpServletResponse response) {
@@ -145,6 +160,11 @@ public class InnerMsgController extends BaseController {
      * @param response HttpServletResponse
      * @throws Exception  Exception
      */
+    @ApiOperation(value="群发消息",notes="按部门发公告，会匹配该部门以及所有子部门的用户，群发消息。")
+    @ApiImplicitParam(
+        name = "unitCode", value="机构代码",
+        required= true, paramType = "path", dataType= "String")
+    @ApiParam(name="innerMsg",value="群发的对象信息",required=true)
     @RequestMapping(value = "/notify/{unitCode}", method = { RequestMethod.POST })
     public void noticeByUnit(@PathVariable String unitCode,@Valid InnerMsg innerMsg,HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -166,6 +186,8 @@ public class InnerMsgController extends BaseController {
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="发送或群发消息",notes="发送或群发消息。")
+    @ApiParam(name="recipient",value="接收的消息对象",required=true)
     @RequestMapping(value = "/sendMsg", method = { RequestMethod.POST })
     public void sendMsg(@Valid InnerMsgRecipient recipient,HttpServletRequest request,
             HttpServletResponse response) {
@@ -181,6 +203,7 @@ public class InnerMsgController extends BaseController {
      * @param request HttpServletReqeust
      * @param response  HttpServletResponse
      */
+    @ApiOperation(value="获取当前登录用户",notes="获取当前登录用户。")
     @RequestMapping(value = "/loginuser", method = { RequestMethod.GET })
     public void getLoginUserCode(HttpServletResponse response,
             HttpServletRequest request) {
@@ -194,6 +217,15 @@ public class InnerMsgController extends BaseController {
      * @param msgCode  消息编号
      * @param response  HttpServletResponse
      */
+    @ApiOperation(value="更新消息内容",notes="更新消息内容。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "msgCode", value="消息代码",
+            required= true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "msg", value="json格式，更新的消息对象",
+            required= true, paramType = "body", dataTypeClass = InnerMsg.class)
+    })
     @RequestMapping(value = "/{msgCode}", method = { RequestMethod.PUT })
     public void mergInnerMsg(@Valid InnerMsg msg, @PathVariable String msgCode,
             HttpServletResponse response) {
@@ -213,6 +245,15 @@ public class InnerMsgController extends BaseController {
      * @param id 接收者信息编号
      * @param response  HttpServletResponse
      */
+    @ApiOperation(value="更新接受者信息",notes="更新接受者信息。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "id", value="接收者信息编号",
+            required= true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "recipient", value="json格式，更新的接受者信息对象",
+            required= true, paramType = "body", dataTypeClass = InnerMsgRecipient.class)
+    })
     @RequestMapping(value = "recipient/{id}", method = { RequestMethod.PUT })
     public void mergInnerMsgRecipient(@Valid InnerMsgRecipient recipient,
             @PathVariable String id, HttpServletResponse response) {
@@ -231,6 +272,10 @@ public class InnerMsgController extends BaseController {
      * @param msgCode 消息编号
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="删除消息",notes="删除消息,并没有删除该条记录，而是把msgState字段标记为D。")
+    @ApiImplicitParam(
+        name = "msgCode", value="信息编号",
+        required= true, paramType = "path", dataType= "String")
     @RequestMapping(value = "/{msgCode}", method = { RequestMethod.DELETE })
     public void deleteMsg(@PathVariable String msgCode,
             HttpServletResponse response) {
@@ -244,6 +289,10 @@ public class InnerMsgController extends BaseController {
      * @param request  HttpServletRequest
      * @param response  HttpServletResponse
      */
+    @ApiOperation(value="删除接受者信息",notes="删除接受者信息,并没有删除该条记录，而是把msgState字段标记为D。")
+    @ApiImplicitParam(
+        name = "id", value="接受者信息编号",
+        required= true, paramType = "path", dataType= "String")
     @RequestMapping(value = "/recipient/{id}", method = { RequestMethod.DELETE })
     public void deleteRecipient(@PathVariable String id,
              HttpServletRequest request,HttpServletResponse response) {
@@ -264,6 +313,15 @@ public class InnerMsgController extends BaseController {
      * @param receiver 用户2
      * @param response  HttpServletResponse
      */
+    @ApiOperation(value="往来消息列表",notes="获取发送者和接受者往来消息列表")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "sender", value="发送者id",
+            required= true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "receiver", value="接收者id",
+            required= true, paramType = "path", dataType= "String")
+    })
     @RequestMapping(value = "/{sender}/{receiver}", method = { RequestMethod.GET })
     public void getMsgExchanges(@PathVariable String sender,
             @PathVariable String receiver, HttpServletResponse response) {

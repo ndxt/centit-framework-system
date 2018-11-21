@@ -38,8 +38,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/optinfo")
-@Api(value="系统业务维护接口",
-    tags= "系统业务维护接口")
+@Api(value="系统业务菜单维护接口", tags= "系统业务菜单操作接口")
 public class OptInfoController extends BaseController {
     @Resource
     private OptInfoManager optInfoManager;
@@ -66,6 +65,10 @@ public class OptInfoController extends BaseController {
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="查询所有系统业务",notes="根据某个父级系统业务id查询下面的所有系统业务。")
+    @ApiImplicitParam(
+        name = "id", value="父级系统业务id",
+        paramType = "query", dataType= "String")
     @RequestMapping(value = "/sub", method = RequestMethod.GET)
     public void listFromParent(String id, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
@@ -105,6 +108,7 @@ public class OptInfoController extends BaseController {
      *
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="查询所有需要通过权限管理的业务",notes="查询所有需要通过权限管理的业务。")
     @RequestMapping(value = "/poweropts", method = RequestMethod.GET)
     public void listPowerOpts(HttpServletResponse response) {
         List<OptInfo> listObjects = optInfoManager.listSysAndOptPowerOpts();
@@ -119,6 +123,10 @@ public class OptInfoController extends BaseController {
      * @param field    需要显示的字段
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="查询所有项目权限管理的业务",notes="查询所有项目权限管理的业务。")
+    @ApiImplicitParam(
+        name = "field", value="需要显示的字段",
+        allowMultiple = true, paramType = "query", dataType= "String")
     @RequestMapping(value = "/itempoweropts", method = RequestMethod.GET)
     public void listItemPowerOpts(String[] field, HttpServletResponse response) {
         List<OptInfo> listObjects = optInfoManager.listItemPowerOpts();
@@ -139,6 +147,15 @@ public class OptInfoController extends BaseController {
      * @param unitCode unitCode
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="查询某个部门权限的业务",notes="查询某个部门权限的业务。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "unitCode", value="机构编码",
+            required = true, paramType = "query", dataType= "String"),
+        @ApiImplicitParam(
+            name = "field", value="需要显示的字段",
+            allowMultiple = true, paramType = "query", dataType= "String")
+    })
     @RequestMapping(value = "/unitpoweropts/{unitCode}", method = RequestMethod.GET)
     public void listUnitPowerOpts(@PathVariable String unitCode, String[] field,
                                   HttpServletResponse response) {
@@ -173,6 +190,10 @@ public class OptInfoController extends BaseController {
      * @param response HttpServletResponse
      * @throws IOException IOException
      */
+    @ApiOperation(value="检查业务菜单是否存在",notes="根据菜单id检查业务菜单是否存在。")
+    @ApiImplicitParam(
+        name = "optId", value="业务菜单id",
+        required = true, paramType = "path", dataType= "String")
     @RequestMapping(value = "/notexists/{optId}", method = {RequestMethod.GET})
     public void isNotExists(@PathVariable String optId, HttpServletResponse response) throws IOException {
         OptInfo optInfo = optInfoManager.getObjectById(optId);
@@ -187,6 +208,15 @@ public class OptInfoController extends BaseController {
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="查询某个部门权限的业务",notes="查询某个部门权限的业务。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "optId", value="菜单id",
+            required = true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "optInfo", value="更新的菜单对象",
+            required = true, paramType = "body", dataTypeClass= OptInfo.class)
+    })
     @RequestMapping(value = "/{optId}", method = {RequestMethod.PUT})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新菜单")
     public void edit(@PathVariable String optId, @Valid OptInfo optInfo,
@@ -220,6 +250,15 @@ public class OptInfoController extends BaseController {
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="更新操作权限",notes="更新操作权限。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "optId", value="菜单id",
+            required = true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "optInfo", value="更新的菜单对象",
+            required = true, paramType = "body", dataTypeClass= OptInfo.class)
+    })
     @RequestMapping(value = "/editpower{optId}", method = {RequestMethod.PUT})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新操作权限")
     public void editPower(@PathVariable String optId, @Valid OptInfo optInfo,
@@ -259,6 +298,10 @@ public class OptInfoController extends BaseController {
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="删除菜单",notes="删除菜单。")
+    @ApiImplicitParam(
+        name = "optId", value="菜单id",
+        required = true, paramType = "path", dataType= "String")
     @RequestMapping(value = "/{optId}", method = {RequestMethod.DELETE})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除菜单")
     public void delete(@PathVariable String optId, HttpServletRequest request, HttpServletResponse response) {
@@ -275,6 +318,10 @@ public class OptInfoController extends BaseController {
      * @param optId    主键
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="查询单条数据",notes="根据菜单id查询单条数据。")
+    @ApiImplicitParam(
+        name = "optId", value="菜单id",
+        required = true, paramType = "path", dataType= "String")
     @RequestMapping(value = "/{optId}", method = {RequestMethod.GET})
     public void getOptInfoById(@PathVariable String optId, HttpServletResponse response) {
         OptInfo dbOptInfo = optInfoManager.getOptInfoById(optId);
@@ -287,6 +334,7 @@ public class OptInfoController extends BaseController {
      *
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="获取菜单的下个主键",notes="获取菜单的下个主键。")
     @RequestMapping(value = "/nextOptCode", method = RequestMethod.GET)
     public void getNextOptCode(HttpServletResponse response) {
         String optCode = optMethodManager.getNextOptCode();
@@ -305,6 +353,18 @@ public class OptInfoController extends BaseController {
      * @param optDef   OptMethod
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="新建或更新业务操作",notes="新建或更新业务操作。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "optId", value="菜单id",
+            required = true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "optCode", value="菜单英文代码",
+            required = true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "optDef", value="更新的菜单操作方法对象",
+            required = true, paramType = "body", dataTypeClass= OptMethod.class)
+    })
     @RequestMapping(value = "/{optId}/{optCode}", method = {RequestMethod.POST, RequestMethod.PUT})
     public void optDefEdit(@PathVariable String optId, @PathVariable String optCode, @Valid OptMethod optDef,
                            HttpServletResponse response) {
@@ -330,18 +390,37 @@ public class OptInfoController extends BaseController {
         JsonResultUtils.writeSuccessJson(response);
     }
 
+    /**
+     * 获取所有的业务菜单
+     * @param response HttpServletResponse
+     */
+    @ApiOperation(value="获取所有的业务菜单",notes="获取所有的业务菜单。")
     @RequestMapping(value = "/allOptInfo", method = RequestMethod.GET)
     public void loadAllOptInfo(HttpServletResponse response) {
         List<OptInfo> optInfos = optInfoManager.listObjects();
         JsonResultUtils.writeSingleDataJson(optInfos, response);
     }
 
+    /**
+     * 获取所有的操作方法
+     * @param response HttpServletResponse
+     */
+    @ApiOperation(value="获取所有的操作方法",notes="获取所有的操作方法。")
     @RequestMapping(value = "/allOptMethod", method = RequestMethod.GET)
     public void loadAllOptMethod(HttpServletResponse response) {
         List<OptMethod> optDefs = optMethodManager.listObjects();
         JsonResultUtils.writeSingleDataJson(optDefs, response);
     }
 
+    /**
+     * 获取用户的操作方法
+     * @param userCode 用户ID
+     * @param response HttpServletResponse
+     */
+    @ApiOperation(value="查询单条数据",notes="根据菜单id查询单条数据。")
+    @ApiImplicitParam(
+        name = "userCode", value="用户id",
+        required = true, paramType = "path", dataType= "String")
     @RequestMapping(value = "/userpoweropts/{userCode}", method = RequestMethod.GET)
     public void listUserOpts(@PathVariable String userCode, HttpServletResponse response) {
 //        List<OptInfo> optInfos = (List<OptInfo>) platformEnvironment.listUserMenuOptInfos(userCode, false);

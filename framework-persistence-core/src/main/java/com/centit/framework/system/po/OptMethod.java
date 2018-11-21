@@ -3,6 +3,8 @@ package com.centit.framework.system.po;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IOptDataScope;
 import com.centit.framework.model.basedata.IOptMethod;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
@@ -16,16 +18,19 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "F_OPTDEF")
+@ApiModel(value="操作方法对象",description="操作方法对象 OptMethod")
 public class OptMethod implements IOptMethod,EntityWithTimestamp, java.io.Serializable{
     private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "OPT_CODE")
     //@GeneratedValue(generator = "assignedGenerator")
+    @ApiModelProperty(value = "操作代码",name = "optCode")
     private String optCode;// 操作代码
 
     @Column(name = "OPT_NAME")
     @Length(max = 100, message = "字段长度必须小于{max}")
+    @ApiModelProperty(value = "操作名称",name = "optName")
     private String optName; // 操作名称
 
     @Column(name = "OPT_ID")
@@ -33,10 +38,12 @@ public class OptMethod implements IOptMethod,EntityWithTimestamp, java.io.Serial
 
     @Column(name = "OPT_METHOD")
     @Length(max = 50, message = "字段长度必须小于{max}")
+    @ApiModelProperty(value = "操作方法",name = "optMethod")
     private String optMethod;// 操作方法
 
     @Column(name = "OPT_DESC")
     @Length(max = 256, message = "字段长度必须小于{max}")
+    @ApiModelProperty(value = "操作说明",name = "optDesc")
     private String optDesc; // 操作说明
 
     @Column(name = "IS_IN_WORKFLOW")

@@ -15,6 +15,10 @@ import com.centit.framework.system.service.SysUnitManager;
 import com.centit.framework.system.service.SysUserRoleManager;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +44,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/userrole")
+@Api(value="用户角色关联操作，此操作是双向操作。", tags= "用户角色关联操作接口")
 public class UserRoleController extends BaseController {
 
     @Resource
@@ -62,7 +67,20 @@ public class UserRoleController extends BaseController {
         return  "USERROLE";
     }
 
-    //INHERITED
+    /**
+     * 通过继承得到的用户
+     * @param roleCode 角色代码
+     * @param pageDesc 分页信息
+     * @param response HttpServletResponse
+     */
+    @ApiOperation(value="通过继承得到的用户",notes="通过继承得到的用户")
+    @ApiImplicitParams({@ApiImplicitParam(
+        name = "roleCode", value="角色代码",
+        required=true, paramType = "path", dataType= "String"
+    ),@ApiImplicitParam(
+        name = "pageDesc", value="json格式的分页对象信息",
+        paramType = "body", dataTypeClass = PageDesc.class
+    )})
     @RequestMapping(value = "/roleusersinherited/{roleCode}", method = RequestMethod.GET)
     public void listUserRoleSInherited(@PathVariable String roleCode, PageDesc pageDesc, HttpServletResponse response) {
         Map<String, Object> filterMap = new HashMap<>(8);
@@ -75,6 +93,20 @@ public class UserRoleController extends BaseController {
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
 
+    /**
+     * 通过继承得到的角色
+     * @param userCode 用户代码
+     * @param pageDesc 分页信息
+     * @param response HttpServletResponse
+     */
+    @ApiOperation(value="通过继承得到的角色",notes="通过继承得到的角色信息")
+    @ApiImplicitParams({@ApiImplicitParam(
+        name = "userCode", value="用户代码",
+        required=true, paramType = "path", dataType= "String"
+    ),@ApiImplicitParam(
+        name = "pageDesc", value="json格式的分页对象信息",
+        paramType = "body", dataTypeClass = PageDesc.class
+    )})
     @RequestMapping(value = "/userrolesinherited/{userCode}", method = RequestMethod.GET)
     public void listRoleUsersInherited(@PathVariable String userCode, PageDesc pageDesc, HttpServletResponse response) {
         Map<String, Object> filterMap = new HashMap<>(8);
@@ -87,6 +119,20 @@ public class UserRoleController extends BaseController {
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
 
+    /**
+     * 获取用户的所有角色信息
+     * @param userCode 用户代码
+     * @param pageDesc 分页信息
+     * @param response HttpServletResponse
+     */
+    @ApiOperation(value="获取用户的所有角色信息",notes="获取用户的所有角色信息")
+    @ApiImplicitParams({@ApiImplicitParam(
+        name = "userCode", value="用户代码",
+        required=true, paramType = "path", dataType= "String"
+    ),@ApiImplicitParam(
+        name = "pageDesc", value="json格式的分页对象信息",
+        paramType = "body", dataTypeClass = PageDesc.class
+    )})
     @RequestMapping(value = "/userrolesall/{userCode}", method = RequestMethod.GET)
     public void listRoleUsersAll(@PathVariable String userCode, PageDesc pageDesc, HttpServletResponse response) {
         Map<String, Object> filterMap = new HashMap<>(8);
@@ -115,13 +161,21 @@ public class UserRoleController extends BaseController {
         JsonResultUtils.writeResponseDataAsJson(resData, response, JsonPropertyUtils.getExcludePropPreFilter(excludes));
     }
     /**
-     * 通过用户代码获取角色
+     * 通过用户代码获取可用的所有用户角色
      *
      * @param userCode 用户代码
      * @param pageDesc PageDesc
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="通过用户代码获取可用的所有用户角色",notes="通过用户代码获取可用的所有用户角色")
+    @ApiImplicitParams({@ApiImplicitParam(
+        name = "userCode", value="用户代码",
+        required=true, paramType = "path", dataType= "String"
+    ),@ApiImplicitParam(
+        name = "pageDesc", value="json格式的分页对象信息",
+        paramType = "body", dataTypeClass = PageDesc.class
+    )})
     @RequestMapping(value = "/userroles/{userCode}", method = RequestMethod.GET)
     public void listRolesByUser(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
@@ -134,11 +188,19 @@ public class UserRoleController extends BaseController {
     /**
      * 通过角色代码获取用户
      *
-     * @param roleCode 角色代码
+     * @param roleCode 通过角色代码获取用户
      * @param pageDesc PageDesc
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="通过角色代码获取用户",notes="通过角色代码获取可用的用户")
+    @ApiImplicitParams({@ApiImplicitParam(
+        name = "roleCode", value="角色代码",
+        required=true, paramType = "path", dataType= "String"
+    ),@ApiImplicitParam(
+        name = "pageDesc", value="json格式的分页对象信息",
+        paramType = "body", dataTypeClass = PageDesc.class
+    )})
     @RequestMapping(value = "/roleusers/{roleCode}", method = RequestMethod.GET)
     public void listUsersByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
@@ -152,13 +214,21 @@ public class UserRoleController extends BaseController {
     }
 
     /**
-     * 通过角色代码获取用户
+     * 通过角色代码获取当前机构下的所有可用的用户
      *
      * @param roleCode 角色代码
      * @param pageDesc PageDesc
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="通过角色代码获取当前机构下的所有可用的用户",notes="通过角色代码获取当前机构下的所有可用的用户")
+    @ApiImplicitParams({@ApiImplicitParam(
+        name = "roleCode", value="角色代码",
+        required=true, paramType = "path", dataType= "String"
+    ),@ApiImplicitParam(
+        name = "pageDesc", value="json格式的分页对象信息",
+        paramType = "body", dataTypeClass = PageDesc.class
+    )})
     @RequestMapping(value = "/rolecurrentusers/{roleCode}", method = RequestMethod.GET)
     public void listCurrentUsersByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
@@ -170,6 +240,22 @@ public class UserRoleController extends BaseController {
         listObject(filterMap, pageDesc, response);
     }
 
+    /**
+     * 通过用户代码获取当前机构下的所有可用的角色
+     *
+     * @param userCode 用户代码
+     * @param pageDesc PageDesc
+     * @param request  {@link HttpServletRequest}
+     * @param response  {@link HttpServletResponse}
+     */
+    @ApiOperation(value="通过用户代码获取当前机构下的所有可用的角色",notes="通过用户代码获取当前机构下的所有可用的角色")
+    @ApiImplicitParams({@ApiImplicitParam(
+        name = "userCode", value="用户代码",
+        required=true, paramType = "path", dataType= "String"
+    ),@ApiImplicitParam(
+        name = "pageDesc", value="json格式的分页对象信息",
+        paramType = "body", dataTypeClass = PageDesc.class
+    )})
     @RequestMapping(value = "/usercurrentroles/{userCode}", method = RequestMethod.GET)
     public void listUserUnitRoles(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
       Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
@@ -180,6 +266,25 @@ public class UserRoleController extends BaseController {
       listObject(filterMap, pageDesc, response);
     }
 
+    /**
+     * 根据机构代码和角色代码获取用户
+     * @param unitCode 机构代码
+     * @param roleCode 角色代码
+     * @param pageDesc 分页对象
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     */
+    @ApiOperation(value="根据机构代码和角色代码获取用户",notes="根据机构代码和角色代码获取用户")
+    @ApiImplicitParams({@ApiImplicitParam(
+        name = "unitCode", value="机构代码",
+        required=true, paramType = "path", dataType= "String"
+    ),@ApiImplicitParam(
+        name = "roleCode", value="角色代码",
+        required=true, paramType = "path", dataType= "String"
+    ),@ApiImplicitParam(
+        name = "pageDesc", value="json格式的分页对象信息",
+        paramType = "body", dataTypeClass = PageDesc.class
+    )})
     @RequestMapping(value = "/unitroleusers/{unitCode}/{roleCode}", method = RequestMethod.GET)
     public void listUnitRoleUsers(@PathVariable String unitCode,@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         RoleInfo role = sysRoleManager.getObjectById(roleCode);
@@ -196,6 +301,14 @@ public class UserRoleController extends BaseController {
      * @param userCode 用户代码
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="返回一条用户角色关联信息",notes="根据用户代码和角色代码获取用户角色关联信息")
+    @ApiImplicitParams({@ApiImplicitParam(
+        name = "roleCode", value="角色代码",
+        required=true, paramType = "path", dataType= "String"
+    ),@ApiImplicitParam(
+        name = "userCode", value="用户代码",
+        required=true, paramType = "path", dataType= "String"
+    )})
     @RequestMapping(value = "/{roleCode}/{userCode}", method = RequestMethod.GET)
     public void getUserRole(@PathVariable String roleCode, @PathVariable String userCode, HttpServletResponse response) {
 
@@ -216,6 +329,14 @@ public class UserRoleController extends BaseController {
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="创建用户角色关联信息",notes="创建用户角色关联信息")
+    @ApiImplicitParams({@ApiImplicitParam(
+        name = "userRole", value="json格式的用户角色对象信息",
+        required=true, paramType = "body", dataTypeClass = UserRole.class
+    ),@ApiImplicitParam(
+        name = "userCode", value="用户代码集合（数组）",
+        allowMultiple=true, paramType = "query", dataType= "String"
+    )})
     @RequestMapping(method = RequestMethod.POST)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增用户角色关联信息")
     public void create(@Valid UserRole userRole,@Valid String[] userCode, HttpServletRequest request, HttpServletResponse response) {
@@ -248,6 +369,17 @@ public class UserRoleController extends BaseController {
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="更新用户角色关联信息",notes="更新用户角色关联信息")
+    @ApiImplicitParams({@ApiImplicitParam(
+        name = "roleCode", value="角色代码",
+        required=true, paramType = "path", dataType= "String"
+    ),@ApiImplicitParam(
+        name = "userCode", value="用户代码",
+        required=true, paramType = "path", dataType= "String"
+    ),@ApiImplicitParam(
+        name = "userRole", value="json格式的用户角色对象信息",
+        required=true, paramType = "body", dataTypeClass = UserRole.class
+    )})
     @RequestMapping(value = "/{roleCode}/{userCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新用户角色信息")
     public void edit(@PathVariable String roleCode, @PathVariable String userCode, @Valid UserRole userRole,
@@ -270,12 +402,20 @@ public class UserRoleController extends BaseController {
     }
 
     /**
-     * 删除用户角色关联信息
+     * 删除多个用户角色关联信息
      * @param roleCode 角色代码
      * @param userCodes 用户代码
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="删除多个用户角色关联信息",notes="删除多个用户角色关联信息")
+    @ApiImplicitParams({@ApiImplicitParam(
+        name = "roleCode", value="角色代码",
+        required=true, paramType = "path", dataType= "String"
+    ),@ApiImplicitParam(
+        name = "userCodes", value="用户代码,多个用户使用逗号分隔",
+        required=true, paramType = "path", dataType= "String"
+    )})
     @RequestMapping(value = "/{roleCode}/{userCodes}", method = RequestMethod.DELETE)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户角色关联信息")
     public void delete(@PathVariable String roleCode, @PathVariable String userCodes,
@@ -295,12 +435,20 @@ public class UserRoleController extends BaseController {
     }
 
     /**
-     * 删除用户角色关联信息
+     * 删除单个用户角色关联信息
      * @param roleCode 角色代码
      * @param userCode 用户代码
      * @param response  {@link HttpServletResponse}
      * @param request  HttpServletRequest
      */
+    @ApiOperation(value="删除单个用户角色关联信息",notes="删除单个用户角色关联信息")
+    @ApiImplicitParams({@ApiImplicitParam(
+        name = "roleCode", value="角色代码",
+        required=true, paramType = "path", dataType= "String"
+    ),@ApiImplicitParam(
+        name = "userCode", value="用户代码",
+        required=true, paramType = "path", dataType= "String"
+    )})
     @RequestMapping(value = "/ban/{roleCode}/{userCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户角色关联信息")
     public void ban(@PathVariable String roleCode, @PathVariable String userCode,

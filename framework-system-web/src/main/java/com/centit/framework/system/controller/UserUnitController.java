@@ -15,6 +15,10 @@ import com.centit.framework.system.po.UserUnit;
 import com.centit.framework.system.service.SysUserManager;
 import com.centit.framework.system.service.SysUserUnitManager;
 import com.centit.support.database.utils.PageDesc;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +45,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/userunit")
+@Api(value="用户机构关联操作，此操作是双向操作，用户可在用户管理中新增或更新自身所在机构，机构可在机构管理中新增或更新机构内用户。", tags= "用户机构关联操作接口")
 public class UserUnitController extends BaseController {
     @Resource
     @NotNull
@@ -64,6 +69,10 @@ public class UserUnitController extends BaseController {
      * @param state    A或空，返回所有机构人员信息。T，返回未禁用的机构人员信息
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="机构人员树形信息",notes="机构人员树形信息。")
+    @ApiImplicitParam(
+        name = "state", value="A或空，返回所有机构人员信息。T，返回未禁用的机构人员信息",
+        paramType = "path", dataType= "String")
     @RequestMapping(method = RequestMethod.GET)
     public void list(String state, HttpServletResponse response) {
         List<Map<String, Object>> listObjects = new ArrayList<>();
@@ -103,6 +112,15 @@ public class UserUnitController extends BaseController {
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="通过机构代码获取机构及其子机构下用户组",notes="通过机构代码获取机构及其子机构下用户组。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "unitCode", value="机构代码",
+            required = true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "pageDesc", value="json格式的分页对象信息",
+            paramType = "body", dataTypeClass= PageDesc.class)
+    })
     @RequestMapping(value = "/unitusers/{unitCode}", method = RequestMethod.GET)
     public void listUsersByUnit(@PathVariable String unitCode, PageDesc pageDesc,
                                 HttpServletRequest request, HttpServletResponse response) {
@@ -126,6 +144,15 @@ public class UserUnitController extends BaseController {
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="通过用户代码获取用户所在机构",notes="通过用户代码获取用户所在机构。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "userCode", value="用户代码",
+            required = true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "pageDesc", value="json格式的分页对象信息",
+            paramType = "body", dataTypeClass= PageDesc.class)
+    })
     @RequestMapping(value = "/userunits/{userCode}", method = RequestMethod.GET)
     public void listUnitsByUser(@PathVariable String userCode, PageDesc pageDesc,
                                 HttpServletRequest request, HttpServletResponse response) {
@@ -157,11 +184,15 @@ public class UserUnitController extends BaseController {
 
 
     /**
-     * 返回一条用户机构关联信息
+     * 根据用户机构关联对象的ID获取一条用户机构关联信息
      *
      * @param userunitid    userunitid
      * @param response    HttpServletResponse
      */
+    @ApiOperation(value="根据用户机构关联对象的ID获取一条用户机构关联信息",notes="根据用户机构关联对象的ID获取一条用户机构关联信息。")
+    @ApiImplicitParam(
+        name = "userunitid", value="用户机构ID",
+        required=true, paramType = "path", dataType= "String")
     @RequestMapping(value = "/{userunitid}", method = RequestMethod.GET)
     public void getUserUnitById(@PathVariable String userunitid, HttpServletResponse response) {
         UserUnit userUnit = sysUserUnitManager.getObjectById(userunitid);
@@ -175,12 +206,21 @@ public class UserUnitController extends BaseController {
     }
 
     /**
-     * 返回一组用户机构关联信息
+     * 根据用户代码和机构代码获取一组用户机构关联信息
      *
      * @param unitCode 机构代码
      * @param userCode 用户代码
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="根据用户代码和机构代码获取一组用户机构关联信息",notes="根据用户代码和机构代码获取一组用户机构关联信息。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "unitCode", value="机构代码",
+            required = true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "userCode", value="用户代码",
+            required = true, paramType = "path", dataType= "String")
+    })
     @RequestMapping(value = "/{unitCode}/{userCode}", method = RequestMethod.GET)
     public void getUserUnit(@PathVariable String unitCode, @PathVariable String userCode, HttpServletResponse response) {
         List<UserUnit> userUnits = sysUserUnitManager.listObjectByUserUnit(userCode, unitCode);
@@ -200,6 +240,10 @@ public class UserUnitController extends BaseController {
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="创建用户机构关联信息",notes="创建用户机构关联信息。")
+    @ApiImplicitParam(
+        name = "userUnit", value="json格式的用户机构关联对象信息", required = true,
+        paramType = "body", dataTypeClass= UserUnit.class)
     @RequestMapping(method = RequestMethod.POST)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增用户机构关联信息")
     public void create(@Valid UserUnit userUnit,HttpServletRequest request, HttpServletResponse response) {
@@ -233,6 +277,15 @@ public class UserUnitController extends BaseController {
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="更新机构用户信息",notes="根据用户机构代码更新机构用户信息。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "userunitid", value="用户机构代码",
+            required = true, paramType = "path", dataType= "String"),
+        @ApiImplicitParam(
+            name = "userUnit", value="json格式的用户机构关联对象信息", required = true,
+            paramType = "body", dataTypeClass= UserUnit.class)
+    })
     @RequestMapping(value = "/{userunitid}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新用户机构关联信息")
     public void edit(@PathVariable String userunitid, @Valid UserUnit userUnit,
@@ -267,6 +320,10 @@ public class UserUnitController extends BaseController {
      * @param request  {@link HttpServletRequest}
      * @param response  {@link HttpServletResponse}
      */
+    @ApiOperation(value="删除用户机构关联信息",notes="根据用户机构代码 删除用户机构关联信息。")
+    @ApiImplicitParam(
+        name = "userunitid", value="用户机构代码",
+        required = true, paramType = "path", dataType= "String")
     @RequestMapping(value = "/{userunitid}", method = RequestMethod.DELETE)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户机构关联信息")
     public void delete(@PathVariable String userunitid,

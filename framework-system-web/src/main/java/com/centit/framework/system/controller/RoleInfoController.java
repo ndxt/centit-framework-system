@@ -16,6 +16,10 @@ import com.centit.framework.system.service.SysUnitRoleManager;
 import com.centit.framework.system.service.SysUserRoleManager;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -33,6 +37,7 @@ import java.util.*;
 
 @Controller
 @RequestMapping("/roleinfo")
+@Api(value="系统角色操作接口", tags= "系统角色操作接口")
 public class RoleInfoController extends BaseController {
     @Resource
     @NotNull
@@ -81,6 +86,15 @@ public class RoleInfoController extends BaseController {
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="查询所有系统角色",notes="查询所有系统角色。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "field", value="指需要显示的属性名",
+            allowMultiple=true, paramType = "query", dataType= "String"),
+        @ApiImplicitParam(
+            name = "pageDesc", value="json格式的分页对象信息",
+            paramType = "body", dataTypeClass= PageDesc.class)
+    })
     @RequestMapping(value = "/all",method = RequestMethod.GET)
     public void listAllRole(String[] field,PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
@@ -90,12 +104,21 @@ public class RoleInfoController extends BaseController {
     }
 
     /**
-     * 查询所有系统角色
+     * 查询所有可用的系统角色
      * @param field field[]
      * @param pageDesc PageDesc
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="查询所有可用的系统角色",notes="查询所有可用的系统角色。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "field", value="指需要显示的属性名",
+            allowMultiple=true, paramType = "query", dataType= "String"),
+        @ApiImplicitParam(
+            name = "pageDesc", value="分页对象",
+            paramType = "body", dataTypeClass= PageDesc.class)
+    })
     @RequestMapping(value = "/global", method = RequestMethod.GET)
     public void listGlobalAndPublicRole(String[] field,PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
 
@@ -112,6 +135,10 @@ public class RoleInfoController extends BaseController {
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="查询所有 当前部门角色",notes="查询所有 当前部门角色。")
+    @ApiImplicitParam(
+        name = "pageDesc", value="分页对象",
+        paramType = "body", dataTypeClass= PageDesc.class)
     @GetMapping(value = "/currentunit")
     public void listUnitAndPublicRole(PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
 
@@ -128,12 +155,21 @@ public class RoleInfoController extends BaseController {
     }
 
     /**
-     * 查询所有某部门部门角色
+     * 查询所有某部门的部门角色
      * @param field field[]
      * @param pageDesc PageDesc
      * @param request  HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="查询所有某部门的部门角色",notes="查询所有某部门的部门角色。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "field", value="指需要显示的属性名",
+            allowMultiple=true, paramType = "query", dataType= "String"),
+        @ApiImplicitParam(
+            name = "pageDesc", value="分页对象",
+            paramType = "body", dataTypeClass= PageDesc.class)
+    })
     @RequestMapping(value = "/item", method = RequestMethod.GET)
     public void listItemRole(String[] field,PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
@@ -159,6 +195,10 @@ public class RoleInfoController extends BaseController {
      * @param roleCode 角色代码
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="根据角色代码获取角色操作定义信息",notes="根据角色代码获取角色操作定义信息。")
+    @ApiImplicitParam(
+        name = "roleCode", value="角色代码",
+        required=true, paramType = "path", dataType= "String")
     @RequestMapping(value = "/power/role/{roleCode}", method = RequestMethod.GET)
     public void getRolePowerByRoleCode(@PathVariable String roleCode, HttpServletResponse response) {
         List<RolePower> rolePowers = sysRoleManager.getRolePowers(roleCode);
@@ -173,6 +213,10 @@ public class RoleInfoController extends BaseController {
      * @param defCode  操作定义代码
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="根据操作定义代码获取角色信息",notes="根据操作定义代码获取角色信息。")
+    @ApiImplicitParam(
+        name = "defCode", value="操作定义代码",
+        required=true, paramType = "path", dataType= "String")
     @RequestMapping(value = "/power/defCode/{defCode}", method = RequestMethod.GET)
     public void getRolePowerByOptCode(@PathVariable String defCode, HttpServletResponse response) {
 
@@ -184,9 +228,13 @@ public class RoleInfoController extends BaseController {
     /**
      * 根据业务代码获取角色信息
      *
-     * @param optId  操作定义代码
+     * @param optId  业务菜单代码
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="根据操作定义代码获取角色信息",notes="根据操作定义代码获取角色信息。")
+    @ApiImplicitParam(
+        name = "optId", value="业务菜单代码",
+        required=true, paramType = "path", dataType= "String")
     @RequestMapping(value = "/power/optCode/{optId}", method = RequestMethod.GET)
     public void getRolePowerByOptId(@PathVariable String optId, HttpServletResponse response) {
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
@@ -217,6 +265,10 @@ public class RoleInfoController extends BaseController {
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="根据操作定义代码获取角色信息",notes="根据操作定义代码获取角色信息。")
+    @ApiImplicitParam(
+        name = "roleInfo", value="json格式，系统角色对象",
+        required = true, paramType = "body", dataTypeClass = RoleInfo.class)
     @RequestMapping(method = RequestMethod.POST)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增角色")
     public void createGlobalRole(@Valid RoleInfo roleInfo,HttpServletRequest request, HttpServletResponse response) {
@@ -252,6 +304,15 @@ public class RoleInfoController extends BaseController {
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="从操作定义反向添加角色代码",notes="从操作定义反向添加角色代码。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "roleCode", value="角色代码",
+            required = true, paramType = "path", dataType = "String"),
+        @ApiImplicitParam(
+            name = "optCode", value="操作定义",
+            required = true, paramType = "path", dataType = "String")
+    })
     @RequestMapping(value = "/addopt/{roleCode}/{optCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}给角色添加权限")
     public void addOptToRole(@PathVariable String roleCode, @PathVariable String optCode,
@@ -289,6 +350,15 @@ public class RoleInfoController extends BaseController {
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="从操作定义反向删除角色代码",notes="从操作定义反向删除角色代码。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "roleCode", value="角色代码",
+            required = true, paramType = "path", dataType = "String"),
+        @ApiImplicitParam(
+            name = "optCode", value="操作定义",
+            required = true, paramType = "path", dataType = "String")
+    })
     @RequestMapping(value = "/delopt/{roleCode}/{optCode}", method = RequestMethod.DELETE)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除角色权限")
     public void deleteOptFormRole(@PathVariable String roleCode, @PathVariable String optCode,
@@ -324,6 +394,15 @@ public class RoleInfoController extends BaseController {
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="更新系统角色",notes="更新系统角色。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "roleCode", value="角色代码",
+            required = true, paramType = "path", dataType = "String"),
+        @ApiImplicitParam(
+            name = "roleInfo", value="json格式，角色修改的对象信息",
+            required = true, paramType = "path", dataTypeClass = RoleInfo.class)
+    })
     @RequestMapping(value = "/{roleCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新角色")
     public void edit(@PathVariable String roleCode, @Valid RoleInfo roleInfo,
@@ -356,6 +435,15 @@ public class RoleInfoController extends BaseController {
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="更新系统角色权限",notes="更新系统角色权限。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "roleCode", value="角色代码",
+            required = true, paramType = "path", dataType = "String"),
+        @ApiImplicitParam(
+            name = "roleInfo", value="json格式，含有系统角色权限的角色对象信息",
+            required = true, paramType = "path", dataTypeClass = RoleInfo.class)
+    })
     @RequestMapping(value = "/power/{roleCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新角色权限")
     public void updateRolePower(@PathVariable String roleCode, RoleInfo roleInfo,
@@ -398,6 +486,10 @@ public class RoleInfoController extends BaseController {
      * @param roleName 角色名称
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="新增判断角色名称是否存在",notes="新增系统角色 判断名称是否存在。")
+    @ApiImplicitParam(
+        name = "roleName", value="角色名称",
+        required = true, paramType = "path", dataType = "String")
     @GetMapping(value = "/issysroleunique/{roleName}")
     public void isSysRoleNotExist(@PathVariable String roleName, HttpServletResponse response){
         JsonResultUtils.writeOriginalObject(sysRoleManager.judgeSysRoleNameExist(roleName,null, null), response);
@@ -409,6 +501,15 @@ public class RoleInfoController extends BaseController {
      * @param roleCode 角色代码
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="更新判断角色名称是否存在",notes="更新系统角色 判断名称是否存在。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "roleName", value="角色名称",
+            required = true, paramType = "path", dataType = "String"),
+        @ApiImplicitParam(
+            name = "roleCode", value="角色代码",
+            required = true, paramType = "path", dataType = "String")
+    })
     @GetMapping(value = "/issysroleunique/{roleName}/{roleCode}")
     public void isSysRoleUnique(@PathVariable String roleName,
                                 @PathVariable String roleCode, HttpServletResponse response){
@@ -421,6 +522,15 @@ public class RoleInfoController extends BaseController {
      * @param roleName 角色名称
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="新增部门角色 判断名称是否存在",notes="新增部门角色 判断名称是否存在。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "unitCode", value="机构代码",
+            required = true, paramType = "path", dataType = "String"),
+        @ApiImplicitParam(
+            name = "roleName", value="角色名称",
+            required = true, paramType = "path", dataType = "String")
+    })
     @GetMapping(value = "/isunitroleunique/{unitCode}/{roleName}")
     public void isUnitRoleNotExist(@PathVariable String unitCode,
                                    @PathVariable String roleName, HttpServletResponse response){
@@ -434,6 +544,18 @@ public class RoleInfoController extends BaseController {
      * @param roleCode 角色代码
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="更新部门角色 判断名称是否存在",notes="更新部门角色 判断名称是否存在。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "unitCode", value="机构代码",
+            required = true, paramType = "path", dataType = "String"),
+        @ApiImplicitParam(
+            name = "roleName", value="角色名称",
+            required = true, paramType = "path", dataType = "String"),
+        @ApiImplicitParam(
+            name = "roleCode", value="角色代码",
+            required = true, paramType = "path", dataType = "String")
+    })
     @GetMapping(value = "/isunitroleunique/{unitCode}/{roleName}/{roleCode}")
     public void isUnitRoleUnique(@PathVariable String unitCode, @PathVariable String roleName,
                                  @PathVariable String roleCode, HttpServletResponse response){
@@ -443,9 +565,12 @@ public class RoleInfoController extends BaseController {
     /**
      * 从操作定义反向删除角色代码
      * @param roleCode 角色代码
-     * //param request HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="从操作定义反向删除角色代码",notes="从操作定义反向删除角色代码。")
+    @ApiImplicitParam(
+        name = "roleCode", value="角色代码",
+        required = true, paramType = "path", dataType = "String")
     @RequestMapping(value = "/{roleCode}", method = RequestMethod.DELETE)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除角色")
     public void deleteRole(@PathVariable String roleCode, HttpServletResponse response) {
@@ -484,6 +609,10 @@ public class RoleInfoController extends BaseController {
      * @param roleCode 角色代码
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="获取单个角色信息",notes="根据角色代码获取单个角色信息。")
+    @ApiImplicitParam(
+        name = "roleCode", value="角色代码",
+        required = true, paramType = "path", dataType = "String")
     @RequestMapping(value = "/{roleCode}", method = RequestMethod.GET)
     public void findRoleInfo(@PathVariable String roleCode, HttpServletResponse response) {
         RoleInfo roleInfo = sysRoleManager.getRoleInfo(roleCode);
@@ -502,6 +631,10 @@ public class RoleInfoController extends BaseController {
      * @param unitCode 机构代码
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="获取机构权限",notes="根据机构代码获取机构权限。")
+    @ApiImplicitParam(
+        name = "unitCode", value="机构代码",
+        required = true, paramType = "path", dataType = "String")
     @RequestMapping(value = "/power/unit/{unitCode}", method = RequestMethod.GET)
     public void getUnitInfoPower(@PathVariable String unitCode, HttpServletResponse response) {
 
@@ -520,6 +653,15 @@ public class RoleInfoController extends BaseController {
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
+    @ApiOperation(value="对角色信息进行模糊搜索",notes="对角色信息进行模糊搜索，适用于带搜索条件的下拉框。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "type", value="搜索条件",
+            required = true, paramType = "path", dataType = "String"),
+        @ApiImplicitParam(
+            name = "field", value="需要搜索的字段，如为空，默认，roleCode,roleName",
+            allowMultiple = true, paramType = "query", dataType = "String")
+    })
     @RequestMapping(value = "/listRoles/{type}", method = RequestMethod.GET)
     public void listRoles(@PathVariable String type, String[] field, HttpServletRequest request,HttpServletResponse response) {
         if (ArrayUtils.isEmpty(field)) {

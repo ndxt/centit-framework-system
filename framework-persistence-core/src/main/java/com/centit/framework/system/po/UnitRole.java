@@ -2,6 +2,7 @@ package com.centit.framework.system.po;
 
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IUnitRole;
+import io.swagger.annotations.ApiModel;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import java.util.Date;
 // 用户角色设定
 @Entity
 @Table(name = "F_UNITROLE")
+@ApiModel(value="系统机构角色对象",description="系统机构角色对象 UnitRole")
 public class UnitRole implements IUnitRole, EntityWithTimestamp, java.io.Serializable {
 
     // Fields

@@ -35,7 +35,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
             filterField.put("UNITTAG", CodeBook.EQUAL_HQL_ID);
             filterField.put("unitWord", CodeBook.EQUAL_HQL_ID);
             filterField.put("parentUnit", CodeBook.EQUAL_HQL_ID);
-            filterField.put("NP_TOPUnit", "(parentUnit is null or parentUnit='0')");
+            filterField.put("NP_TOPUnit", "(parentUnit is null or parentUnit='0' or parentUnit='')");
             filterField.put(CodeBook.ORDER_BY_HQL_ID, " unitOrder, unitCode ");
             filterField.put("(STARTWITH)unitPath", CodeBook.LIKE_HQL_ID);
         }
