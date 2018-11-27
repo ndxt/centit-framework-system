@@ -70,8 +70,6 @@ INSERT INTO f_datadictionary (catalog_code, data_code, extra_code, extra_code2, 
 INSERT INTO f_datadictionary (catalog_code, data_code, extra_code, extra_code2, data_tag, data_value, data_style, data_desc, last_modify_date, create_date, data_order) VALUES ('YesOrNo', 'F', null, null, 'N', '否', 'F', '', null, null, '2');
 INSERT INTO f_datadictionary (catalog_code, data_code, extra_code, extra_code2, data_tag, data_value, data_style, data_desc, last_modify_date, create_date, data_order) VALUES ('YesOrNo', 'T', null, null, 'N', '是', 'F', '', null, null, '1');
 
-
-
 INSERT INTO f_optdatascope (opt_scope_code, opt_id, scope_name, filter_condition, scope_memo, filter_group) VALUES ('117', 'USERMAG', '维护本部门用户', '[F_USERINFO.UNITCODE] = {currentStation.unitCode :currUnit}', '维护本部门数据库', 'G');
 INSERT INTO f_optdatascope (opt_scope_code, opt_id, scope_name, filter_condition, scope_memo, filter_group) VALUES ('118', 'USERMAG', '所有用户', 'all', '维护全部用户', 'G');
 
@@ -84,6 +82,7 @@ INSERT INTO f_optinfo (opt_id, opt_name, pre_opt_id, opt_route, opt_url, form_co
 INSERT INTO f_optinfo (opt_id, opt_name, pre_opt_id, opt_route, opt_url, form_code, opt_type, msg_no, msg_prm, is_in_toolbar, img_index, top_opt_id, order_ind, flow_code, page_type, icon, height, width, update_date, create_date, creator, updator) VALUES ('DICTSET', '数据字典管理', 'DEPLOY', 'modules/sys/dictionary/dictionary.admin.html', '/system/dictionary', null, 'S', null, null, 'Y', null, null, '0', null, 'D', 'icon-base icon-base-gear', null, null, '2016-02-18 17:48:18', null, 'u0000000', 'u0000000');
 INSERT INTO f_optinfo (opt_id, opt_name, pre_opt_id, opt_route, opt_url, form_code, opt_type, msg_no, msg_prm, is_in_toolbar, img_index, top_opt_id, order_ind, flow_code, page_type, icon, height, width, update_date, create_date, creator, updator) VALUES ('DICTSET_M', '数据字典', 'SYS_CONFIG', 'modules/sys/dictionary/dictionary.html', '/system/dictionary', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null, '2016-01-30 19:53:38', '2014-12-23 14:04:59', 'u0000000', 'u0000000');
 INSERT INTO f_optinfo (opt_id, opt_name, pre_opt_id, opt_route, opt_url, form_code, opt_type, msg_no, msg_prm, is_in_toolbar, img_index, top_opt_id, order_ind, flow_code, page_type, icon, height, width, update_date, create_date, creator, updator) VALUES ('LOGINCAS', 'CAS登录入口', '0', '/system/mainframe/logincas', '/system/mainframe', null, 'O', null, null, 'N', null, null, null, null, 'D', '', null, null, '2016-04-07 15:06:08', null, 'u0000000', 'u0000000');
+
 INSERT INTO f_optinfo (opt_id, opt_name, pre_opt_id, opt_route, opt_url, form_code, opt_type, msg_no, msg_prm, is_in_toolbar, img_index, top_opt_id, order_ind, flow_code, page_type, icon, height, width, update_date, create_date, creator, updator) VALUES ('OPTINFO', '系统业务', 'DEPLOY', 'modules/sys/optinfo/optinfo.html', '/system/optinfo', null, 'S', null, null, 'Y', null, null, '4', null, 'D', '', null, null, '2016-01-30 19:50:37', null, 'u0000000', 'u0000000');
 INSERT INTO f_optinfo (opt_id, opt_name, pre_opt_id, opt_route, opt_url, form_code, opt_type, msg_no, msg_prm, is_in_toolbar, img_index, top_opt_id, order_ind, flow_code, page_type, icon, height, width, update_date, create_date, creator, updator) VALUES ('OPTLOG', '系统日志', 'DEPLOY', 'modules/sys/loginfo/loginfo.admin.html', '/system/optlog', null, 'S', null, null, 'Y', null, null, null, null, 'D', 'icon-ok', null, null, null, null, 'u0000000', 'u0000000');
 INSERT INTO f_optinfo (opt_id, opt_name, pre_opt_id, opt_route, opt_url, form_code, opt_type, msg_no, msg_prm, is_in_toolbar, img_index, top_opt_id, order_ind, flow_code, page_type, icon, height, width, update_date, create_date, creator, updator) VALUES ('OPT_LOG_QUERY', '系统日志', 'SYS_CONFIG', 'modules/sys/loginfo/loginfo.html', '/system/optlog', null, 'O', null, null, 'Y', null, null, null, null, 'D', null, null, null, '2015-11-27 11:19:09', null, 'u0000000', 'u0000000');
@@ -125,6 +124,8 @@ INSERT INTO f_optdef (opt_code, opt_id, opt_name, opt_method, opt_url, opt_desc,
 INSERT INTO f_optdef (opt_code, opt_id, opt_name, opt_method, opt_url, opt_desc, opt_order, is_in_workflow, update_date, create_date, opt_req, creator, updator) VALUES ('1000072', 'USERMAG', '更新用户', null, '/*', '更新用户', null, null, '2016-02-18 17:46:44', null, 'U', 'u0000000', 'u0000000');
 INSERT INTO f_optdef (opt_code, opt_id, opt_name, opt_method, opt_url, opt_desc, opt_order, is_in_workflow, update_date, create_date, opt_req, creator, updator) VALUES ('1000073', 'USERMAG', '删除用户', null, '/*', '删除用户', null, null, '2016-02-18 17:46:44', null, 'D', 'u0000000', 'u0000000');
 INSERT INTO f_optdef (opt_code, opt_id, opt_name, opt_method, opt_url, opt_desc, opt_order, is_in_workflow, update_date, create_date, opt_req, creator, updator) VALUES ('1000080', 'LOGINCAS', 'CAS登录入口', null, '/logincas', null, null, null, null, null, 'RCU', 'u0000000', 'u0000000');
+INSERT INTO f_optdef (opt_code, opt_id, opt_name, opt_method, opt_url, opt_desc, opt_order, is_in_workflow, update_date, create_date, opt_req, creator, updator) VALUES ('1000080', 'getMenu', '获取菜单', null, '/menu', null, null, null, null, null, 'R', 'u0000000', 'u0000000');
+
 INSERT INTO f_optdef (opt_code, opt_id, opt_name, opt_method, opt_url, opt_desc, opt_order, is_in_workflow, update_date, create_date, opt_req, creator, updator) VALUES ('120', 'OPTLOG', '删除日志', 'delete', '/*', '删除日志', null, null, null, null, 'D', null, null);
 INSERT INTO f_optdef (opt_code, opt_id, opt_name, opt_method, opt_url, opt_desc, opt_order, is_in_workflow, update_date, create_date, opt_req, creator, updator) VALUES ('124', 'OPTINFO', '新增', 'create', '/', '新建菜单（顶级和下级）', null, null, null, null, 'C', null, null);
 INSERT INTO f_optdef (opt_code, opt_id, opt_name, opt_method, opt_url, opt_desc, opt_order, is_in_workflow, update_date, create_date, opt_req, creator, updator) VALUES ('125', 'OPTINFO', '删除', 'delete', '/*', '删除菜单', null, null, null, null, 'D', null, null);
@@ -146,7 +147,6 @@ INSERT INTO f_optdef (opt_code, opt_id, opt_name, opt_method, opt_url, opt_desc,
 
 -- 用户、角色、权限初始化
 
-
 -- 初始化角色信息
 insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
 values ('deploy', '实施人员','G','T', '实施人员角色', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
@@ -165,6 +165,8 @@ values ('forbidden', '禁用的功能','F', 'T', '这个角色不能赋给任何
 
 insert into F_ROLEPOWER (ROLE_CODE, OPT_CODE, UPDATE_DATE, CREATE_DATE, OPT_SCOPE_CODES,CREATOR,UPDATOR)
 values ('public', '1000080', str_to_date('11-04-2016 10:21:17', '%d-%m-%Y %H:%i:%s'), str_to_date('11-04-2016 10:21:17', '%d-%m-%Y %H:%i:%s'), '','u0000000','u0000000');
+insert into F_ROLEPOWER (ROLE_CODE, OPT_CODE, UPDATE_DATE, CREATE_DATE, OPT_SCOPE_CODES,CREATOR,UPDATOR)
+values ('public', '1000081', str_to_date('11-04-2016 10:21:17', '%d-%m-%Y %H:%i:%s'), str_to_date('11-04-2016 10:21:17', '%d-%m-%Y %H:%i:%s'), '','u0000000','u0000000');
 
 
 insert into F_ROLEPOWER(role_code,opt_code,update_Date,create_date,opt_scope_codes,CREATOR,UPDATOR)
