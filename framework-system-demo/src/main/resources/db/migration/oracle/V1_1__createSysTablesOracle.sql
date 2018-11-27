@@ -10,7 +10,6 @@ create sequence s_user_unit_id INCREMENT BY 1 start with 10;
 create sequence s_usercode INCREMENT BY 1 start with 10;
 create sequence S_MSGCODE ;
 create sequence S_RECIPIENT ;
-create sequence S_ADDRESSID ;
 create sequence S_ROLECODE INCREMENT BY 1 start with 10;
 
 create table F_DATACATALOG
