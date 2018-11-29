@@ -160,8 +160,4 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
         super.updateObject(unitInfo);
     }
 
-    @Override
-    public void saveNewObject(UnitInfo unitInfo) {
-        super.saveNewObject(unitInfo);
-    }
 }

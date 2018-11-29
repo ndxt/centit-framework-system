@@ -25,7 +25,6 @@ import java.util.Map;
 @Repository("rolePowerDao")
 public class RolePowerDaoImpl extends BaseDaoImpl<RolePower, RolePowerId> implements RolePowerDao {
 
-
     public Map<String, String> getFilterField() {
         if (filterField == null) {
             filterField = new HashMap<>();

@@ -179,8 +179,4 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId>
         super.mergeObject(dbUserRole);
     }
 
-    @Override
-    public void saveNewObject(UserRole dbUserRole) {
-        super.saveNewObject(dbUserRole);
-    }
 }

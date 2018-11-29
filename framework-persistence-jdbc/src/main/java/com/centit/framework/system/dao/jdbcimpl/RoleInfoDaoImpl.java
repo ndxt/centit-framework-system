@@ -118,8 +118,4 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
         super.updateObject(roleInfo);
     }
 
-    @Override
-    public void saveNewObject(RoleInfo roleInfo) {
-        super.saveNewObject(roleInfo);
-    }
 }

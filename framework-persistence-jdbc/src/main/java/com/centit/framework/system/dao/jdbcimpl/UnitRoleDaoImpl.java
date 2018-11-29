@@ -71,8 +71,4 @@ public class UnitRoleDaoImpl extends BaseDaoImpl<UnitRole, UnitRoleId> implement
         return super.listObjects(CollectionsOpt.createHashMap("roleCode",roleCode));
     }
 
-    @Override
-    public void saveNewObject(UnitRole dbUnitRole) {
-        super.saveNewObject(dbUnitRole);
-    }
 }

@@ -170,8 +170,4 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
         super.updateObject(userInfo);
     }
 
-    @Override
-    public void saveNewObject(UserInfo userInfo) {
-        super.saveNewObject(userInfo);
-    }
 }

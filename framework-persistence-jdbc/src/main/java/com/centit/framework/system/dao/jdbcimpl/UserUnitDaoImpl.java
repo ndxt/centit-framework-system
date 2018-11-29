@@ -217,8 +217,4 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
               pageDesc.getRowStart(), pageDesc.getPageSize()));
     }
 
-    @Override
-    public void saveNewObject(UserUnit userUnit) {
-        super.saveNewObject(userUnit);
-    }
 }
