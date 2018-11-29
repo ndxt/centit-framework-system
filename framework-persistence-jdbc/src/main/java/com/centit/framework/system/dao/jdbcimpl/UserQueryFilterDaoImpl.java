@@ -72,6 +72,11 @@ public class UserQueryFilterDaoImpl extends BaseDaoImpl<UserQueryFilter,Long>
 
     }
 
+    @Override
+    public void saveNewObject(UserQueryFilter userQueryFilter) {
+        super.saveNewObject(userQueryFilter);
+    }
+
     @Transactional
     public Long getNextKey() {
         return DatabaseOptUtils.getSequenceNextValue(this, "S_FILTER_NO");

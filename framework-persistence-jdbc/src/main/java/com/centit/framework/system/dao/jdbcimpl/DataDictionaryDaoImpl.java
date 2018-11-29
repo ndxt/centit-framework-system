@@ -66,4 +66,8 @@ public class DataDictionaryDaoImpl extends BaseDaoImpl<DataDictionary, DataDicti
         super.updateObject(dataDictionary);
     }
 
+    @Override
+    public void saveNewObject(DataDictionary dataDictionary) {
+        super.saveNewObject(dataDictionary);
+    }
 }

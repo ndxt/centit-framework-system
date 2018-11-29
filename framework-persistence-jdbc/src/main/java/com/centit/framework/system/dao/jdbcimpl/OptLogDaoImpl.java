@@ -92,4 +92,8 @@ public class OptLogDaoImpl extends BaseDaoImpl<OptLog, Long> implements OptLogDa
 
     }
 
+    @Override
+    public void saveNewObject(OptLog o) {
+        super.saveNewObject(o);
+    }
 }
