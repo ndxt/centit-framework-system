@@ -117,4 +117,9 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
     public void updateRole(RoleInfo roleInfo){
         super.updateObject(roleInfo);
     }
+
+    @Override
+    public void saveNewObject(RoleInfo roleInfo) {
+        super.saveNewObject(roleInfo);
+    }
 }

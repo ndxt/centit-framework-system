@@ -57,4 +57,8 @@ public class DataCatalogDaoImpl extends BaseDaoImpl<DataCatalog, String> impleme
         super.updateObject(dataCatalog);
     }
 
+    @Override
+    public void saveNewObject(DataCatalog dataCatalog) {
+        super.saveNewObject(dataCatalog);
+    }
 }

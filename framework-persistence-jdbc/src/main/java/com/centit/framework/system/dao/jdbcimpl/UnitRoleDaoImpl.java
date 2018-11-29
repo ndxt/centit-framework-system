@@ -71,4 +71,8 @@ public class UnitRoleDaoImpl extends BaseDaoImpl<UnitRole, UnitRoleId> implement
         return super.listObjects(QueryUtils.createSqlParamsMap("roleCode",roleCode));
     }
 
+    @Override
+    public void saveNewObject(UnitRole dbUnitRole) {
+        super.saveNewObject(dbUnitRole);
+    }
 }

@@ -77,4 +77,8 @@ public class OptMethodDaoImpl extends BaseDaoImpl<OptMethod, String> implements 
         super.updateObject(optMethod);
     }
 
+    @Override
+    public void saveNewObject(OptMethod optMethod) {
+        super.saveNewObject(optMethod);
+    }
 }

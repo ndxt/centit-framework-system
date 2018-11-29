@@ -175,4 +175,8 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
                     new Object[]{userCode, optType}, OptInfo.class));
     }
 
+    @Override
+    public void saveNewObject(OptInfo optInfo) {
+        super.saveNewObject(optInfo);
+    }
 }

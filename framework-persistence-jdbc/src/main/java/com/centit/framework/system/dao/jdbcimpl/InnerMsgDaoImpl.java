@@ -60,4 +60,9 @@ public class InnerMsgDaoImpl extends BaseDaoImpl<InnerMsg, String> implements In
         return StringBaseOpt.objectToString(
             DatabaseOptUtils.getSequenceNextValue(this, "S_MSGCODE"));
     }
+
+    @Override
+    public void saveNewObject(InnerMsg innerMsg) {
+        super.saveNewObject(innerMsg);
+    }
 }
