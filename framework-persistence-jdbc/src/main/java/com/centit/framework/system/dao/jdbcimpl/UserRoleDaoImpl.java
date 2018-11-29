@@ -7,6 +7,7 @@ import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.po.FVUserRoles;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.database.utils.QueryAndNamedParams;
@@ -52,13 +53,13 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId>
     @Override
     @Transactional
     public List<UserRole> listUserRoles(String userCode) {
-        return super.listObjects(QueryUtils.createSqlParamsMap("userCode",userCode));
+        return super.listObjects(CollectionsOpt.createHashMap("userCode",userCode));
     }
 
     @Override
     @Transactional
     public List<UserRole> listRoleUsers(String roleCode) {
-        return super.listObjects(QueryUtils.createSqlParamsMap("roleCode",roleCode));
+        return super.listObjects(CollectionsOpt.createHashMap("roleCode",roleCode));
     }
 
     @Override
@@ -76,13 +77,13 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId>
     @Override
     @Transactional
     public void deleteByRoleId(String roid) {
-        super.deleteObjectsByProperties(QueryUtils.createSqlParamsMap("roleCode",roid));
+        super.deleteObjectsByProperties(CollectionsOpt.createHashMap("roleCode",roid));
     }
 
     @Override
     @Transactional
     public void deleteByUserId(String usid) {
-        super.deleteObjectsByProperties(QueryUtils.createSqlParamsMap("userCode",usid));
+        super.deleteObjectsByProperties(CollectionsOpt.createHashMap("userCode",usid));
     }
 
     @Override
@@ -92,7 +93,7 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId>
         return getJdbcTemplate().execute(
           (ConnectionCallback<List<FVUserRoles>>) conn ->
             OrmDaoUtils.listObjectsByProperties(conn,
-              QueryUtils.createSqlParamsMap("userCode",userCode) ,
+              CollectionsOpt.createHashMap("userCode",userCode) ,
               FVUserRoles.class));
     }
 
@@ -104,7 +105,7 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId>
       return getJdbcTemplate().execute(
         (ConnectionCallback<List<FVUserRoles>>) conn ->
           OrmDaoUtils.listObjectsByProperties(conn,
-            QueryUtils.createSqlParamsMap("roleCode",roleCode) ,
+            CollectionsOpt.createHashMap("roleCode",roleCode) ,
             FVUserRoles.class));
     }
 
@@ -142,7 +143,7 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId>
     @Transactional
     public void deleteByRoleCodeAndUserCode(String roleCode,String userCode) {
         super.deleteObjectsByProperties(
-                QueryUtils.createSqlParamsMap("userCode",userCode,"roleCode",roleCode));
+                CollectionsOpt.createHashMap("userCode",userCode,"roleCode",roleCode));
     }
 
     @Transactional
@@ -155,7 +156,7 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId>
         String hql = "FROM UserRole ur where ur.id.userCode=? and ur.id.roleCode = ? " +
              "ORDER BY obtainDate";
 
-        List<UserRole> urlt = listObjectsBySql(sql, QueryUtils.createSqlParamsMap(
+        List<UserRole> urlt = listObjectsBySql(sql, CollectionsOpt.createHashMap(
                 "userCode", userCode, "roleCode", rolecode));
         if (CollectionUtils.isEmpty(urlt)) {
             return null;

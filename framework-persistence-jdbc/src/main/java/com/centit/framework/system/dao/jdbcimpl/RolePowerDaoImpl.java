@@ -5,7 +5,7 @@ import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.system.dao.RolePowerDao;
 import com.centit.framework.system.po.RolePower;
 import com.centit.framework.system.po.RolePowerId;
-import com.centit.support.database.utils.QueryUtils;
+import com.centit.support.algorithm.CollectionsOpt;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,12 +43,12 @@ public class RolePowerDaoImpl extends BaseDaoImpl<RolePower, RolePowerId> implem
 
     @Transactional
     public void deleteRolePowersByRoleCode(String roleCode) {
-        super.deleteObjectsByProperties(QueryUtils.createSqlParamsMap("roleCode",roleCode));
+        super.deleteObjectsByProperties(CollectionsOpt.createHashMap("roleCode",roleCode));
     }
 
     @Transactional
     public void deleteRolePowersByOptCode(String optCode) {
-        super.deleteObjectsByProperties(QueryUtils.createSqlParamsMap("optCode",optCode));
+        super.deleteObjectsByProperties(CollectionsOpt.createHashMap("optCode",optCode));
     }
 
 

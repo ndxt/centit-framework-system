@@ -14,7 +14,6 @@ import java.util.Map;
 @Repository("dataCatalogDao")
 public class DataCatalogDaoImpl extends BaseDaoImpl<DataCatalog, String> implements DataCatalogDao{
 
-
     @Override
     public Map<String, String> getFilterField() {
         if (filterField == null) {

@@ -5,7 +5,7 @@ import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UserQueryFilterDao;
 import com.centit.framework.system.po.UserQueryFilter;
-import com.centit.support.database.utils.QueryUtils;
+import com.centit.support.algorithm.CollectionsOpt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -68,7 +68,7 @@ public class UserQueryFilterDaoImpl extends BaseDaoImpl<UserQueryFilter,Long>
     @Transactional
     public UserQueryFilter getUserDefaultFilterByModle(String userCode,String modelCode){
         return super.getObjectByProperties(
-                QueryUtils.createSqlParamsMap("userCode",userCode,"modelCode",modelCode ));
+                CollectionsOpt.createHashMap("userCode",userCode,"modelCode",modelCode ));
 
     }
 

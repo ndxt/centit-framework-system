@@ -6,6 +6,7 @@ import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.po.UserUnit;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.PageDesc;
@@ -94,7 +95,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
     @Override
     @Transactional
     public List<UserUnit> listObjectByUserUnit(String userCode,String unitCode){
-        List<UserUnit> ls = listObjectsByProperties(QueryUtils.createSqlParamsMap(
+        List<UserUnit> ls = listObjectsByProperties(CollectionsOpt.createHashMap(
                 "userCode", userCode,"unitCode",unitCode));
         /*
          * for (FUserunit usun : ls) {
@@ -130,7 +131,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
     @Override
     @Transactional
     public UserUnit getPrimaryUnitByUserId(String userId) {
-        List<UserUnit> list = super.listObjectsByProperties(QueryUtils.createSqlParamsMap(
+        List<UserUnit> list = super.listObjectsByProperties(CollectionsOpt.createHashMap(
                 "userCode", userId,"isPrimary","T"));
         if (list != null && list.size()>0) {
             return list.get(0);
@@ -160,10 +161,10 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         List<UserUnit> ls = null;
         if (unitCode != null && !"".equals(unitCode)) {
             if ("gw".equals(roleType)) {
-              ls = listObjectsByProperties(QueryUtils.createSqlParamsMap(
+              ls = listObjectsByProperties(CollectionsOpt.createHashMap(
                 "unitCode", unitCode, "userStation", roleCode));
             } else if ("xz".equals(roleType)) {
-              ls = listObjectsByProperties(QueryUtils.createSqlParamsMap(
+              ls = listObjectsByProperties(CollectionsOpt.createHashMap(
                 "unitCode", unitCode, "userRank", roleCode));
             }
         } else {

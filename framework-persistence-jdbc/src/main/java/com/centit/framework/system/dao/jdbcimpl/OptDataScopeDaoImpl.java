@@ -5,7 +5,7 @@ import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.OptDataScopeDao;
 import com.centit.framework.system.po.OptDataScope;
-import com.centit.support.database.utils.QueryUtils;
+import com.centit.support.algorithm.CollectionsOpt;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,14 +33,14 @@ public class OptDataScopeDaoImpl extends BaseDaoImpl<OptDataScope, String> imple
     public int getOptDataScopeSumByOptID(String sOptID) {
 
         return this.pageCount(
-                QueryUtils.createSqlParamsMap("optId", sOptID));
+                CollectionsOpt.createHashMap("optId", sOptID));
     }
 
 
     @Transactional
     public void deleteDataScopeOfOptID(String sOptID) {
         this.deleteObjectsByProperties(
-                QueryUtils.createSqlParamsMap("optId", sOptID));
+                CollectionsOpt.createHashMap("optId", sOptID));
     }
 
 
@@ -55,7 +55,7 @@ public class OptDataScopeDaoImpl extends BaseDaoImpl<OptDataScope, String> imple
     public List<String> listDataFiltersByIds(Collection<String> scopeCodes) {
         List<OptDataScope> objs    = this.listObjectsByFilter(
                 "WHERE OPT_SCOPE_CODE in (:optScopeCode)",
-                QueryUtils.createSqlParamsMap("optScopeCode", scopeCodes));
+                CollectionsOpt.createHashMap("optScopeCode", scopeCodes));
         if(objs==null)
             return null;
         List<String> filters = new ArrayList<>();

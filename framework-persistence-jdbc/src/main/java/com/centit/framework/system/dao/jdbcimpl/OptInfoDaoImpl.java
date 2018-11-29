@@ -5,8 +5,8 @@ import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.system.dao.OptInfoDao;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethodUrlMap;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
-import com.centit.support.database.utils.QueryUtils;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,7 +106,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
 
 
     public int countChildrenSum(String optId){
-        return pageCount(QueryUtils.createSqlParamsMap("preOptId",optId) );
+        return pageCount(CollectionsOpt.createHashMap("preOptId",optId) );
     }
 
     @Override

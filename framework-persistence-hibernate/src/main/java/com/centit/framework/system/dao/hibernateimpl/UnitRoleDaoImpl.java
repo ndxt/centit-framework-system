@@ -4,7 +4,6 @@ import com.centit.framework.hibernate.dao.BaseDaoImpl;
 import com.centit.framework.system.dao.UnitRoleDao;
 import com.centit.framework.system.po.UnitRole;
 import com.centit.framework.system.po.UnitRoleId;
-import com.centit.support.database.utils.QueryUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,13 +62,13 @@ public class UnitRoleDaoImpl extends BaseDaoImpl<UnitRole, UnitRoleId> implement
     @Override
     @Transactional
     public List<UnitRole> listUnitRolesByUnitCode(String unitCode){
-        return super.listObjects(QueryUtils.createSqlParamsMap("unitCode",unitCode));
+        return super.listObjects(CollectionsOpt.createHashMap("unitCode",unitCode));
     }
 
     @Override
     @Transactional
     public List<UnitRole> listUnitRolesByRoleCode(String roleCode){
-        return super.listObjects(QueryUtils.createSqlParamsMap("roleCode",roleCode));
+        return super.listObjects(CollectionsOpt.createHashMap("roleCode",roleCode));
     }
 
 }

@@ -5,7 +5,7 @@ import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.OptMethodDao;
 import com.centit.framework.system.po.OptMethod;
-import com.centit.support.database.utils.QueryUtils;
+import com.centit.support.algorithm.CollectionsOpt;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,7 +50,7 @@ public class OptMethodDaoImpl extends BaseDaoImpl<OptMethod, String> implements 
 
     @Transactional
     public void deleteOptMethodsByOptID(String sOptID) {
-        deleteObjectsByProperties(QueryUtils.createSqlParamsMap("optId", sOptID));
+        deleteObjectsByProperties(CollectionsOpt.createHashMap("optId", sOptID));
     }
 
 

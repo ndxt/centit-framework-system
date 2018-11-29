@@ -148,7 +148,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
                     String optCode = rp.getOptCode();
                     String unitCode = rp.getRoleCode().substring(2);
                     List<RoleInfo> roleInfos = roleInfoDao.listObjects(
-                        QueryUtils.createSqlParamsMap("unitCode", unitCode, "roleType", "D"));
+                        CollectionsOpt.createHashMap("unitCode", unitCode, "roleType", "D"));
                     for(RoleInfo roleInfo : roleInfos){
                         rolePowerDao.deleteObjectById(new RolePowerId(roleInfo.getRoleCode(), optCode));
                     }
@@ -215,7 +215,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Transactional
     public int countRoleUserSum(String roleCode){
 //        return roleInfoDao.countRoleUserSum(roleCode);
-        return userRoleDao.pageCount(QueryUtils.createSqlParamsMap("roleCode",roleCode));
+        return userRoleDao.pageCount(CollectionsOpt.createHashMap("roleCode",roleCode));
     }
 
     @Override

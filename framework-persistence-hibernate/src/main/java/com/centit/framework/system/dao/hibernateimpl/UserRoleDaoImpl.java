@@ -41,13 +41,13 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
     @Override
     @Transactional
     public List<UserRole> listUserRoles(String userCode) {
-        return super.listObjects(QueryUtils.createSqlParamsMap("userCode",userCode));
+        return super.listObjects(CollectionsOpt.createHashMap("userCode",userCode));
     }
 
     @Override
     @Transactional
     public List<UserRole> listRoleUsers(String roleCode) {
-        return super.listObjects(QueryUtils.createSqlParamsMap("roleCode",roleCode));
+        return super.listObjects(CollectionsOpt.createHashMap("roleCode",roleCode));
     }
 
     @Override

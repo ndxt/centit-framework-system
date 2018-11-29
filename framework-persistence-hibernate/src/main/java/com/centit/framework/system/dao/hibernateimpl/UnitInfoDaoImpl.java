@@ -7,7 +7,6 @@ import com.centit.framework.system.dao.UnitInfoDao;
 import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.support.algorithm.NumberBaseOpt;
-import com.centit.support.database.utils.QueryUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -154,7 +153,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
           "from UnitInfo u  " +
           "where u.unitOrder = :unitOrder and u.parentUnit = :parentUnit ";
 
-       Object object = DatabaseOptUtils.getSingleObjectByHql( this, sql, QueryUtils.createSqlParamsMap(
+       Object object = DatabaseOptUtils.getSingleObjectByHql( this, sql, CollectionsOpt.createHashMap(
           "unitOrder", unitOrder, "parentUnit", parentUnit));
 
 

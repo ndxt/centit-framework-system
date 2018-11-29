@@ -5,7 +5,7 @@ import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.system.dao.DataDictionaryDao;
 import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.DataDictionaryId;
-import com.centit.support.database.utils.QueryUtils;
+import com.centit.support.algorithm.CollectionsOpt;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,7 +58,7 @@ public class DataDictionaryDaoImpl extends BaseDaoImpl<DataDictionary, DataDicti
     @Transactional
     public void deleteDictionary(String catalog) {
         deleteObjectsByProperties(
-                QueryUtils.createSqlParamsMap( "catalogCode", catalog));
+                CollectionsOpt.createHashMap( "catalogCode", catalog));
     }
 
     @Override

@@ -7,9 +7,9 @@ import com.centit.framework.hibernate.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UserInfoDao;
 import com.centit.framework.system.po.FVUserOptList;
 import com.centit.framework.system.po.UserInfo;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.database.utils.PageDesc;
-import com.centit.support.database.utils.QueryUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -160,7 +160,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
 
   @Override
   public List<UserInfo> listUsersByRoleCode(String roleCode) {
-    return  this.listObjects(QueryUtils.createSqlParamsMap("roleCode",roleCode));
+    return  this.listObjects(CollectionsOpt.createHashMap("roleCode",roleCode));
   }
 
   public int isLoginNameExist(String userCode, String loginName){

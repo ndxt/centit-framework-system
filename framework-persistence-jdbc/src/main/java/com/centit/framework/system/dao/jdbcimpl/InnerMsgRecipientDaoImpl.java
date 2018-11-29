@@ -5,9 +5,9 @@ import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.InnerMsgRecipientDao;
 import com.centit.framework.system.po.InnerMsgRecipient;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.algorithm.StringBaseOpt;
-import com.centit.support.database.utils.QueryUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,7 +74,7 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
     }
 
     public List<InnerMsgRecipient> listUnreadMessage(String userCode){
-        return listObjectsByProperties(QueryUtils.createSqlParamsMap(
+        return listObjectsByProperties(CollectionsOpt.createHashMap(
                 "receive", userCode,"msgState","U"));
     }
 

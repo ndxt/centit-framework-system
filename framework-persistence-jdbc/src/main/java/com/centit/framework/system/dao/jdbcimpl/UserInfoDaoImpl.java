@@ -7,11 +7,11 @@ import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UserInfoDao;
 import com.centit.framework.system.po.FVUserOptList;
 import com.centit.framework.system.po.UserInfo;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.PageDesc;
-import com.centit.support.database.utils.QueryUtils;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,33 +99,33 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
 
     @Transactional
     public UserInfo getUserByLoginName(String loginName) {
-        return super.getObjectByProperties(QueryUtils.createSqlParamsMap(
+        return super.getObjectByProperties(CollectionsOpt.createHashMap(
                 "loginName",loginName));
     }
 
     @Transactional
     public UserInfo getUserByRegEmail(String regEmail) {
-        return super.getObjectByProperties(QueryUtils.createSqlParamsMap("regEmail", regEmail));
+        return super.getObjectByProperties(CollectionsOpt.createHashMap("regEmail", regEmail));
     }
 
     @Transactional
     public UserInfo getUserByRegCellPhone(String regCellPhone) {
-        return super.getObjectByProperties(QueryUtils.createSqlParamsMap("regCellPhone", regCellPhone));
+        return super.getObjectByProperties(CollectionsOpt.createHashMap("regCellPhone", regCellPhone));
     }
 
     @Transactional
     public UserInfo getUserByTag(String userTag) {
-        return super.getObjectByProperties(QueryUtils.createSqlParamsMap("userTag", userTag));
+        return super.getObjectByProperties(CollectionsOpt.createHashMap("userTag", userTag));
     }
 
     @Transactional
     public UserInfo getUserByUserWord(String userWord) {
-        return super.getObjectByProperties(QueryUtils.createSqlParamsMap("userWord", userWord));
+        return super.getObjectByProperties(CollectionsOpt.createHashMap("userWord", userWord));
     }
 
     @Transactional
     public UserInfo getUserByIdCardNo(String idCardNo){
-        return super.getObjectByProperties(QueryUtils.createSqlParamsMap("idCardNo", idCardNo));
+        return super.getObjectByProperties(CollectionsOpt.createHashMap("idCardNo", idCardNo));
     }
 
     @Override
@@ -135,7 +135,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
 
     @Override
     public List<UserInfo> listUsersByRoleCode(String roleCode) {
-        return super.listObjects(QueryUtils.createSqlParamsMap("roleCode", roleCode) );
+        return super.listObjects(CollectionsOpt.createHashMap("roleCode", roleCode) );
     }
 
     public int isLoginNameExist(String userCode, String loginName){

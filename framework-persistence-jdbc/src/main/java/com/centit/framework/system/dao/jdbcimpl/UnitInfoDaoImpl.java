@@ -6,15 +6,14 @@ import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UnitInfoDao;
 import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserInfo;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
-import com.centit.support.database.utils.QueryUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
@@ -79,12 +78,12 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
 
     @Transactional
     public UnitInfo getUnitByTag(String unitTag) {
-        return super.getObjectByProperties(QueryUtils.createSqlParamsMap("unitTag", unitTag));
+        return super.getObjectByProperties(CollectionsOpt.createHashMap("unitTag", unitTag));
     }
 
     @Transactional
     public UnitInfo getUnitByWord(String unitWord) {
-        return super.getObjectByProperties(QueryUtils.createSqlParamsMap("unitWord", unitWord));
+        return super.getObjectByProperties(CollectionsOpt.createHashMap("unitWord", unitWord));
     }
 
     @Transactional
@@ -95,7 +94,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     @Override
     @Transactional
     public List<UnitInfo> listSubUnitsByUnitPaht(String unitPath){
-        return listObjects(QueryUtils.createSqlParamsMap("unitPath", unitPath+"%" ));
+        return listObjects(CollectionsOpt.createHashMap("unitPath", unitPath+"%" ));
     }
 
     @Override
@@ -128,7 +127,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
                 "from F_UNITINFO u " +
                 "where u.UNIT_NAME = :unitName and u.PARENT_UNIT = :parentUnit and u.UNIT_CODE <> :unitCode";
 
-        List<UnitInfo> list = listObjectsBySql(sql, QueryUtils.createSqlParamsMap(
+        List<UnitInfo> list = listObjectsBySql(sql, CollectionsOpt.createHashMap(
                 "unitName", unitName, "parentUnit", parentCode, "unitCode", unitCode));
 
         if(list == null || list.size() == 0){
@@ -149,7 +148,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
           "from F_UNITINFO u " +
           "where u.UNIT_ORDER = :unitOrder and u.PARENT_UNIT = :parentUnit ";
 
-        Object object = DatabaseOptUtils.getScalarObjectQuery(this, sql, QueryUtils.createSqlParamsMap(
+        Object object = DatabaseOptUtils.getScalarObjectQuery(this, sql, CollectionsOpt.createHashMap(
           "unitOrder", unitOrder, "parentUnit", parentUnit));
 
 
