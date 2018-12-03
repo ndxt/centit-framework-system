@@ -1,5 +1,6 @@
 package com.centit.framework.system.po;
 
+import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IOptInfo;
 import io.swagger.annotations.ApiModel;
@@ -48,6 +49,7 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     @Column(name = "OPT_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
     @ApiModelProperty(value = "业务类别 S:实施业务, O:普通业务, W:流程业务, I:项目业务",name = "optType")
+    @DictionaryMap(fieldName = "optTypeText", value = "OptType")
     private String optType; // 业务类别
 
     @Column(name = "FORM_CODE")

@@ -1,6 +1,7 @@
 package com.centit.framework.system.po;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IUserInfo;
 import com.centit.support.database.orm.GeneratorCondition;
@@ -129,6 +130,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
     private String topUnit; // 顶级机构，用于帐套
 
     @Column(name = "PRIMARY_UNIT")
+    @DictionaryMap(fieldName = "primaryUnitName", value = "unitCode")
     private String primaryUnit;
 
     @Column(name = "CREATE_DATE", nullable = false)

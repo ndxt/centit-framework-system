@@ -1,5 +1,6 @@
 package com.centit.framework.system.po;
 
+import com.centit.framework.core.dao.DictionaryMap;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
@@ -30,6 +31,7 @@ public class UserQueryFilter implements java.io.Serializable {
     @Column(name = "USER_CODE")
     @NotBlank(message = "字段不能为空")
     @ApiModelProperty(value = "用户代码",name = "userCode",required = true)
+    @DictionaryMap(fieldName = "userName", value = "userCode")
     private String userCode;// 用户代码
 
     /**

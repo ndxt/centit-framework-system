@@ -1,5 +1,6 @@
 package com.centit.framework.system.po;
 
+import com.centit.framework.core.dao.DictionaryMap;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Column;
@@ -18,6 +19,7 @@ public class UserSettingId implements java.io.Serializable {
      * 用户代码
      */
     @Column(name = "USER_CODE")
+    @DictionaryMap(fieldName = "userName", value = "userCode")
     private String userCode;
 
     /**
