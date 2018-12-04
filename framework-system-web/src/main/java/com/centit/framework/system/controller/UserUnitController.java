@@ -3,12 +3,10 @@ package com.centit.framework.system.controller;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.components.CodeRepositoryUtil;
-import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.model.basedata.IUnitInfo;
 import com.centit.framework.model.basedata.IUserInfo;
-import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserUnit;
@@ -170,18 +168,6 @@ public class UserUnitController extends BaseController {
 
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
-
-
-    protected void listObject(Map<String, Object> filterMap, PageDesc pageDesc, HttpServletResponse response) {
-        List<UserUnit> listObjects = sysUserUnitManager.listObjects(filterMap, pageDesc);
-
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-
-        JsonResultUtils.writeResponseDataAsJson(resData, response);
-    }
-
 
     /**
      * 根据用户机构关联对象的ID获取一条用户机构关联信息

@@ -6,6 +6,7 @@ import com.centit.framework.hibernate.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.UnitInfoDao;
 import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserInfo;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.NumberBaseOpt;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

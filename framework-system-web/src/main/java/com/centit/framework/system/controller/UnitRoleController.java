@@ -77,8 +77,8 @@ public class UnitRoleController extends BaseController {
         filterMap.put("roleCode",roleCode);
         filterMap.put("unitValid", "T");
       ResponseMapData resData = new ResponseMapData();
-      resData.addResponseData(BaseController.OBJLIST, sysUnitRoleManager.listObjects(filterMap,pageDesc));
-      resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
+      resData.addResponseData(OBJLIST, sysUnitRoleManager.listObjects(filterMap,pageDesc));
+      resData.addResponseData(PAGE_DESC, pageDesc);
 
       JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
@@ -143,8 +143,8 @@ public class UnitRoleController extends BaseController {
         filterMap.put("roleValid", "T");
 
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, sysUnitRoleManager.listObjects(filterMap,pageDesc));
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
+        resData.addResponseData(OBJLIST, sysUnitRoleManager.listObjects(filterMap,pageDesc));
+        resData.addResponseData(PAGE_DESC, pageDesc);
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
 
@@ -174,30 +174,10 @@ public class UnitRoleController extends BaseController {
 
         JSONArray ja = sysUnitRoleManager.listObjects(filterMap, pageDesc);
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, ja);
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
+        resData.addResponseData(OBJLIST, ja);
+        resData.addResponseData(PAGE_DESC, pageDesc);
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }
-
-    /**
-     * 返回一条用户角色关联信息
-     * @param roleCode 角色代码
-     * @param unitCode 用户代码
-     * @param response HttpServletResponse
-     */
-//    @RequestMapping(value = "/{roleCode}/{unitCode}", method = RequestMethod.GET)
-//    public void getUserRole(@PathVariable String roleCode, @PathVariable String unitCode, HttpServletResponse response) {
-//
-//        UnitRole unitRole = sysUnitRoleManager.getUnitRoleById(unitCode,roleCode);
-//        if (null == unitRole) {
-//            JsonResultUtils.writeErrorMessageJson("当前机构中无此角色", response);
-//            return;
-//        }
-//        JsonResultUtils.writeSingleDataJson(
-//            DictionaryMapUtils.objectToJSON(unitRole), response);
-//    }
-
-
 
     /**
      * 创建用户角色关联信息
@@ -242,7 +222,6 @@ public class UnitRoleController extends BaseController {
                 //OperationLog.P_OPT_LOG_METHOD_C, "新增用户角色关联" , unitCodes);
         /*********log*********/
     }
-
 
     /**
      * 更新机构角色关联信息

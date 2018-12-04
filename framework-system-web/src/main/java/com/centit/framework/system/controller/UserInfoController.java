@@ -1,13 +1,14 @@
 package com.centit.framework.system.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
+import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.security.model.CentitUserDetails;
-import com.centit.framework.system.po.UnitRole;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserUnit;
@@ -101,6 +102,7 @@ public class UserInfoController extends BaseController {
         } else {
             listObjects = sysUserManager.listObjects(searchColumn, pageDesc);
         }
+        JSONArray jsonArr = DictionaryMapUtils.objectsToJSONArray(listObjects);
 
         SimplePropertyPreFilter simplePropertyPreFilter = null;
         if (ArrayUtils.isNotEmpty(field)) {
@@ -112,7 +114,7 @@ public class UserInfoController extends BaseController {
         }
 
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, listObjects);
+        resData.addResponseData(BaseController.OBJLIST, jsonArr);
         resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
 
         JsonResultUtils.writeResponseDataAsJson(resData, response, simplePropertyPreFilter);
@@ -260,9 +262,11 @@ public class UserInfoController extends BaseController {
         userInfo.setUserName(StringEscapeUtils.unescapeHtml4(userInfo.getUserName()));
         userInfo.setUserDesc(StringEscapeUtils.unescapeHtml4(userInfo.getUserDesc()));
 
+        Object userJson = DictionaryMapUtils.objectToJSON(userInfo);
+        Object userUnitJson = DictionaryMapUtils.objectToJSON(userUnit);
         ResponseMapData responseData = new ResponseMapData();
-        responseData.addResponseData("userInfo", userInfo);
-        responseData.addResponseData("userUnit", userUnit);
+        responseData.addResponseData("userInfo", userJson);
+        responseData.addResponseData("userUnit", userUnitJson);
 
         Map<Class<?>, String[]> excludes  =new HashMap<>();
         excludes.put(UserUnit.class,new String[]{"userInfo"});

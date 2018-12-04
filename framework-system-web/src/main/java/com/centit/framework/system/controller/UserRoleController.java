@@ -5,6 +5,7 @@ import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
+import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.UnitInfo;
@@ -88,7 +89,7 @@ public class UserRoleController extends BaseController {
         filterMap.put("obtainType","I");
         JSONArray listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, listObjects);
+        resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
         resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
         JsonResultUtils.writeResponseDataAsJson(resData, response);
     }

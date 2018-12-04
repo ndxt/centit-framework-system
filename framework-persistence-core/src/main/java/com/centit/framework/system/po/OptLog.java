@@ -57,7 +57,7 @@ public class OptLog implements java.io.Serializable {
     @Column(name = "OPT_ID")
     @NotBlank(message = "字段不能为空")
     @Length(max = 64, message = "字段长度不能大于{max}")
-    @DictionaryMap(fieldName="optIdText",value="optId")
+    @DictionaryMap(fieldName="optName",value="optId")
     private String optId;
 
     /**

@@ -5,6 +5,7 @@ import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.dao.CodeBook;
+import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.OptLog;
 import com.centit.framework.system.service.OptLogManager;
@@ -90,7 +91,7 @@ public class OptLogController extends BaseController {
         if (null == dbOptLog) {
             JsonResultUtils.writeErrorMessageJson("日志信息不存在", response);
         }
-        JsonResultUtils.writeSingleDataJson(dbOptLog, response);
+        JsonResultUtils.writeSingleDataJson(DictionaryMapUtils.objectToJSON(dbOptLog), response);
     }
 
     /**
