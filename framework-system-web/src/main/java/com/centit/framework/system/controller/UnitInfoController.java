@@ -624,34 +624,66 @@ public class UnitInfoController extends BaseController {
     }
 
     /**
-     * 部门编码是否唯一
+     * 验证部门编码可用性
      * @param depNo 部门编码
-     * @return true-唯一；false-不唯一
+     * @return true-可用（唯一）；false-不可用（已存在同名）
      */
-    @ApiOperation(value = "验证部门编码可用性")
+    @ApiOperation(value = "验证部门编码可用性-新增",notes = "true-可用（唯一）；false-不可用（已存在同名）")
     @ApiImplicitParams(value = {
         @ApiImplicitParam(name = "depNo", value = "部门编码", required = true),
     })
     @GetMapping(value = "/depNo_usability")
     @WrapUpResponseBody
-    public boolean isDepNoExists(String depNo){
+    public boolean isDepNoUnique(String depNo){
         return sysUnitManager.isDepNoUnique(depNo, null);
     }
 
     /**
-     * 部门编码是否唯一
+     * 验证部门编码可用性
      * @param unitCode 部门代码
      * @param depNo 部门编码
-     * @return true-唯一；false-不唯一
+     * @return true-可用（唯一）；false-不可用（已存在同名）
      */
-    @ApiOperation(value = "验证部门编码可用性")
+    @ApiOperation(value = "验证部门编码可用性-编辑", notes = "notes = true-可用（唯一）；false-不可用（已存在同名）")
     @ApiImplicitParams(value = {
         @ApiImplicitParam(name = "depNo", value = "部门编码", required = true),
         @ApiImplicitParam(name = "unitCode", value = "部门Code(主键)", required = true),
     })
     @GetMapping(value = "/{unitCode}/depNo_usability")
     @WrapUpResponseBody
-    public boolean isDepNoExists(@PathVariable String unitCode, String depNo){
+    public boolean isDepNoUnique(@PathVariable String unitCode, String depNo){
         return sysUnitManager.isDepNoUnique(depNo, unitCode);
     }
+    /**
+     * 验证部门自定义编码可用性
+     * @param unitWord 部门自定义编码
+     * @return true-可用（唯一）；false-不可用（已存在同名）
+     */
+    @ApiOperation(value = "验证部门自定义编码可用性-新增",notes = "true-可用（唯一）；false-不可用（已存在同名）")
+    @ApiImplicitParams(value = {
+        @ApiImplicitParam(name = "unitWord", value = "部门自定义编码", required = true),
+    })
+    @GetMapping(value = "/unitWord_usability")
+    @WrapUpResponseBody
+    public boolean isUnitWordUnique(String unitWord){
+        return sysUnitManager.isUnitWordUnique(unitWord, null);
+    }
+
+    /**
+     * 验证部门自定义编码可用性
+     * @param unitCode 部门Code
+     * @param unitWord 部门自定义编码
+     * @return true-可用（唯一）；false-不可用（已存在同名）
+     */
+    @ApiOperation(value = "验证部门自定义编码可用性-编辑", notes = "notes = true-可用（唯一）；false-不可用（已存在同名）")
+    @ApiImplicitParams(value = {
+        @ApiImplicitParam(name = "unitWord", value = "部门自定义编码", required = true),
+        @ApiImplicitParam(name = "unitCode", value = "部门Code(主键)", required = true),
+    })
+    @GetMapping(value = "/{unitCode}/unitWord_usability")
+    @WrapUpResponseBody
+    public boolean isUnitWordUnique(@PathVariable String unitCode, String unitWord){
+        return sysUnitManager.isUnitWordUnique(unitWord, unitCode);
+    }
+
 }

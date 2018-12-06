@@ -302,4 +302,12 @@ public class SysUnitManagerImpl implements SysUnitManager {
         List<UnitInfo> list = unitInfoDao.listObjects(filterMap);
         return list == null || list.size() == 0 || (unitCode != null && unitCode.equals(list.get(0).getUnitCode()));
     }
+
+    @Override
+    public boolean isUnitWordUnique(String unitWord, String unitCode) {
+        Map<String, Object> filterMap = new HashMap<>(2);
+        filterMap.put("unitWord", unitWord);
+        List<UnitInfo> list = unitInfoDao.listObjects(filterMap);
+        return list == null || list.size() == 0 || (unitCode != null && unitCode.equals(list.get(0).getUnitCode()));
+    }
 }
