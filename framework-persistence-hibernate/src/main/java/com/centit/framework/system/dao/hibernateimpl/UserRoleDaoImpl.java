@@ -7,6 +7,7 @@ import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.po.FVUserRoles;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.database.utils.QueryAndNamedParams;
 import com.centit.support.database.utils.QueryUtils;
