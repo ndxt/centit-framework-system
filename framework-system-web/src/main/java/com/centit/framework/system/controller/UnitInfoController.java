@@ -644,7 +644,7 @@ public class UnitInfoController extends BaseController {
      * @param depNo 部门编码
      * @return true-可用（唯一）；false-不可用（已存在同名）
      */
-    @ApiOperation(value = "验证部门编码可用性-编辑", notes = "notes = true-可用（唯一）；false-不可用（已存在同名）")
+    @ApiOperation(value = "验证部门编码可用性-编辑", notes = "true-可用（唯一）；false-不可用（已存在同名）")
     @ApiImplicitParams(value = {
         @ApiImplicitParam(name = "depNo", value = "部门编码", required = true),
         @ApiImplicitParam(name = "unitCode", value = "部门Code(主键)", required = true),
@@ -675,7 +675,7 @@ public class UnitInfoController extends BaseController {
      * @param unitWord 部门自定义编码
      * @return true-可用（唯一）；false-不可用（已存在同名）
      */
-    @ApiOperation(value = "验证部门自定义编码可用性-编辑", notes = "notes = true-可用（唯一）；false-不可用（已存在同名）")
+    @ApiOperation(value = "验证部门自定义编码可用性-编辑", notes = "true-可用（唯一）；false-不可用（已存在同名）")
     @ApiImplicitParams(value = {
         @ApiImplicitParam(name = "unitWord", value = "部门自定义编码", required = true),
         @ApiImplicitParam(name = "unitCode", value = "部门Code(主键)", required = true),
