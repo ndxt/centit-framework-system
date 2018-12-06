@@ -294,4 +294,12 @@ public class SysUnitManagerImpl implements SysUnitManager {
         filterMap.put("isValid", "T");
         return unitInfoDao.listObjects(filterMap);
     }
+
+    @Override
+    public boolean isDepNoUnique(String depNo, String unitCode) {
+        Map<String, Object> filterMap = new HashMap<>(2);
+        filterMap.put("depNo", depNo);
+        List<UnitInfo> list = unitInfoDao.listObjects(filterMap);
+        return list == null || list.size() == 0 || (unitCode != null && unitCode.equals(list.get(0).getUnitCode()));
+    }
 }

@@ -8,6 +8,7 @@ import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
+import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.operationlog.RecordOperationLog;
@@ -620,5 +621,37 @@ public class UnitInfoController extends BaseController {
         filterMap.put("isValid", "T");
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap);
         JsonResultUtils.writeSingleDataJson(roleInfos, response);
+    }
+
+    /**
+     * 部门编码是否唯一
+     * @param depNo 部门编码
+     * @return true-唯一；false-不唯一
+     */
+    @ApiOperation(value = "验证部门编码可用性")
+    @ApiImplicitParams(value = {
+        @ApiImplicitParam(name = "depNo", value = "部门编码", required = true),
+    })
+    @GetMapping(value = "/depNo_usability")
+    @WrapUpResponseBody
+    public boolean isDepNoExists(String depNo){
+        return sysUnitManager.isDepNoUnique(depNo, null);
+    }
+
+    /**
+     * 部门编码是否唯一
+     * @param unitCode 部门代码
+     * @param depNo 部门编码
+     * @return true-唯一；false-不唯一
+     */
+    @ApiOperation(value = "验证部门编码可用性")
+    @ApiImplicitParams(value = {
+        @ApiImplicitParam(name = "depNo", value = "部门编码", required = true),
+        @ApiImplicitParam(name = "unitCode", value = "部门Code(主键)", required = true),
+    })
+    @GetMapping(value = "/{unitCode}/depNo_usability")
+    @WrapUpResponseBody
+    public boolean isDepNoExists(@PathVariable String unitCode, String depNo){
+        return sysUnitManager.isDepNoUnique(depNo, unitCode);
     }
 }

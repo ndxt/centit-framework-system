@@ -56,4 +56,12 @@ public interface SysUnitManager{
      */
     List<UnitInfo> listValidSubUnits(String unitCode);
 
+    /**
+     * 部门编码是否唯一
+     * @param depNo 部门编码
+     * @param unitCode 部门代码
+     * @return true-唯一;false-不唯一
+     */
+    boolean isDepNoUnique(String depNo, String unitCode);
+
 }
