@@ -1,9 +1,10 @@
 package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.JSONArray;
-import com.centit.framework.common.JsonResultUtils;
+import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
+import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.system.po.QueryFilterCondition;
 import com.centit.framework.system.service.QueryFilterConditionManager;
 import com.centit.support.database.utils.PageDesc;
@@ -18,26 +19,28 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.Map;
+
 /**
  * QueryFilterCondition  Controller.
  * create by scaffold 2016-03-01
+ *
  * @author codefan@sina.com
  * 系统内置查询方式null
-*/
+ */
 
 
 @Controller
-@Api(value="系统内置查询方式接口", tags= "系统内置查询方式操作接口")
+@Api(value = "系统内置查询方式接口", tags = "系统内置查询方式操作接口")
 @RequestMapping("/queryfiltercondition")
-public class QueryFilterConditionController  extends BaseController {
+public class QueryFilterConditionController extends BaseController {
     //private static final Logger logger = LoggerFactory.getLogger(QueryFilterConditionController.class);
     public String getOptId() {
-      return  "QueryFilter";
+        return "QueryFilter";
     }
+
     @Resource
     private QueryFilterConditionManager queryFilterConditionMag;
     /*public void setQueryFilterConditionMag(QueryFilterConditionManager basemgr)
@@ -50,124 +53,116 @@ public class QueryFilterConditionController  extends BaseController {
      * 查询所有   系统内置查询方式  列表
      *
      * @param field    json中只保存需要的属性名
-     * @param pageDesc  分页信息
+     * @param pageDesc 分页信息
      * @param request  {@link HttpServletRequest}
-     * @param response {@link HttpServletResponse}
      */
-    @ApiOperation(value="查询所有",notes="查询所有 系统内置查询方式  列表。")
+    @ApiOperation(value = "查询所有", notes = "查询所有 系统内置查询方式  列表。")
     @ApiImplicitParams({
         @ApiImplicitParam(
-            name = "field", value="指需要显示的属性名",
-            allowMultiple=true, paramType = "query", dataType= "String"),
+            name = "field", value = "指需要显示的属性名",
+            allowMultiple = true, paramType = "query", dataType = "String"),
         @ApiImplicitParam(
-            name = "pageDesc", value="分页对象",
-            paramType = "body", dataTypeClass= PageDesc.class)
+            name = "pageDesc", value = "分页对象",
+            paramType = "body", dataTypeClass = PageDesc.class)
     })
     @RequestMapping(method = RequestMethod.GET)
-    public void list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+    @WrapUpResponseBody
+    public ResponseData list(String[] field, PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
 
-        JSONArray listObjects = queryFilterConditionMag.listQueryFilterConditionsAsJson(field,searchColumn, pageDesc);
+        JSONArray listObjects = queryFilterConditionMag.listQueryFilterConditionsAsJson(field, searchColumn, pageDesc);
 
         if (null == pageDesc) {
-            JsonResultUtils.writeSingleDataJson(listObjects, response);
-            return;
+            return ResponseData.makeResponseData(listObjects);
         }
 
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(BaseController.OBJLIST, listObjects);
         resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-
-        JsonResultUtils.writeResponseDataAsJson(resData, response);
+        return resData;
     }
 
     /**
      * 查询单个  系统内置查询方式
-
-     * @param conditionNo  CONDITION_NO
-     * @param response HttpServletResponse
+     *
+     * @param conditionNo CONDITION_NO
      */
-    @ApiOperation(value="查询单个",notes="查询单个 系统内置查询方式。")
+    @ApiOperation(value = "查询单个", notes = "查询单个 系统内置查询方式。")
     @ApiImplicitParam(
-        name = "conditionNo", value="条件编号",
-        paramType = "path", dataType= "Long")
+        name = "conditionNo", value = "条件编号",
+        paramType = "path", dataType = "Long")
     @RequestMapping(value = "/{conditionNo}", method = {RequestMethod.GET})
-    public void getQueryFilterCondition(@PathVariable Long conditionNo, HttpServletResponse response) {
+    @WrapUpResponseBody
+    public ResponseData getQueryFilterCondition(@PathVariable Long conditionNo) {
 
         QueryFilterCondition queryFilterCondition =
-                queryFilterConditionMag.getObjectById( conditionNo);
-
-        JsonResultUtils.writeSingleDataJson(queryFilterCondition, response);
+            queryFilterConditionMag.getObjectById(conditionNo);
+        return ResponseData.makeResponseData(queryFilterCondition);
     }
 
     /**
      * 新增 系统内置查询方式
      *
-     * @param queryFilterCondition  {@link QueryFilterCondition}
-     * @param response HttpServletResponse
+     * @param queryFilterCondition {@link QueryFilterCondition}
      */
-    @ApiOperation(value="新增 系统内置查询方式",notes="新增 系统内置查询方式。")
+    @ApiOperation(value = "新增 系统内置查询方式", notes = "新增 系统内置查询方式。")
     @ApiImplicitParam(
-        name = "queryFilterCondition", value="查询对象",required = true,
+        name = "queryFilterCondition", value = "查询对象", required = true,
         paramType = "body", dataTypeClass = QueryFilterCondition.class)
     @RequestMapping(method = {RequestMethod.POST})
-    public void createQueryFilterCondition(@Valid QueryFilterCondition queryFilterCondition, HttpServletResponse response) {
+    @WrapUpResponseBody
+    public ResponseData createQueryFilterCondition(@Valid QueryFilterCondition queryFilterCondition) {
         Serializable pk = queryFilterConditionMag.saveNewObject(queryFilterCondition);
-        JsonResultUtils.writeSingleDataJson(pk,response);
+        return ResponseData.makeResponseData(pk);
     }
 
     /**
      * 删除单个  系统内置查询方式
-
-     * @param conditionNo  CONDITION_NO
-     * @param response HttpServletResponse
+     *
+     * @param conditionNo CONDITION_NO
      */
-    @ApiOperation(value="删除单个  系统内置查询方式",notes="删除单个  系统内置查询方式。")
+    @ApiOperation(value = "删除单个  系统内置查询方式", notes = "删除单个  系统内置查询方式。")
     @ApiImplicitParam(
-        name = "conditionNo", value="条件编号",required = true,
-        paramType = "path", dataType= "Long")
+        name = "conditionNo", value = "条件编号", required = true,
+        paramType = "path", dataType = "Long")
     @RequestMapping(value = "/{conditionNo}", method = {RequestMethod.DELETE})
-    public void deleteQueryFilterCondition(@PathVariable Long conditionNo, HttpServletResponse response) {
+    @WrapUpResponseBody
+    public ResponseData deleteQueryFilterCondition(@PathVariable Long conditionNo) {
 
-        queryFilterConditionMag.deleteObjectById( conditionNo);
-
-        JsonResultUtils.writeBlankJson(response);
+        queryFilterConditionMag.deleteObjectById(conditionNo);
+        return ResponseData.makeSuccessResponse();
     }
 
     /**
      * 新增或保存 系统内置查询方式
-
-     * @param conditionNo  CONDITION_NO
-     * @param queryFilterCondition  {@link QueryFilterCondition}
-     * @param response    {@link HttpServletResponse}
+     *
+     * @param conditionNo          CONDITION_NO
+     * @param queryFilterCondition {@link QueryFilterCondition}
      */
-    @ApiOperation(value="新增或保存 系统内置查询方式",notes="新增或保存 系统内置查询方式。")
+    @ApiOperation(value = "新增或保存 系统内置查询方式", notes = "新增或保存 系统内置查询方式。")
     @ApiImplicitParams({
         @ApiImplicitParam(
-            name = "conditionNo", value="条件编号",
-            required = true, paramType = "path", dataType= "String"),
+            name = "conditionNo", value = "条件编号",
+            required = true, paramType = "path", dataType = "String"),
         @ApiImplicitParam(
-            name = "queryFilterCondition", value="分页对象",
-            paramType = "body", dataTypeClass= QueryFilterCondition.class)
+            name = "queryFilterCondition", value = "分页对象",
+            paramType = "body", dataTypeClass = QueryFilterCondition.class)
     })
     @RequestMapping(value = "/{conditionNo}", method = {RequestMethod.PUT})
-    public void updateQueryFilterCondition(@PathVariable Long conditionNo,
-        @Valid QueryFilterCondition queryFilterCondition, HttpServletResponse response) {
+    @WrapUpResponseBody
+    public ResponseData updateQueryFilterCondition(@PathVariable Long conditionNo,
+                                                   @Valid QueryFilterCondition queryFilterCondition) {
 
-
-        QueryFilterCondition dbQueryFilterCondition  =
-                queryFilterConditionMag.getObjectById( conditionNo);
-
-
+        QueryFilterCondition dbQueryFilterCondition =
+            queryFilterConditionMag.getObjectById(conditionNo);
 
         if (null != queryFilterCondition) {
             dbQueryFilterCondition.copy(queryFilterCondition);
             queryFilterConditionMag.mergeObject(dbQueryFilterCondition);
         } else {
-            JsonResultUtils.writeErrorMessageJson("当前对象不存在", response);
-            return;
+            return ResponseData.makeErrorMessage("当前对象不存在");
         }
 
-        JsonResultUtils.writeBlankJson(response);
+        return ResponseData.makeSuccessResponse();
     }
 }

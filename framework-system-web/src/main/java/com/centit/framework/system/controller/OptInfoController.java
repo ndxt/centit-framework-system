@@ -1,12 +1,12 @@
 package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.JSONArray;
-import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.ViewDataTransform;
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.core.controller.BaseController;
+import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.operationlog.RecordOperationLog;
@@ -37,7 +37,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/optinfo")
-@Api(value="系统业务菜单维护接口", tags= "系统业务菜单操作接口")
+@Api(value = "系统业务菜单维护接口", tags = "系统业务菜单操作接口")
 public class OptInfoController extends BaseController {
     @Resource
     private OptInfoManager optInfoManager;
@@ -50,6 +50,7 @@ public class OptInfoController extends BaseController {
 
     /**
      * 系统日志中记录
+     *
      * @return 业务标识ID
      */
     //private String optId = "OPTINFO";//CodeRepositoryUtil.getCode("OPTID", "optInfo");
@@ -60,16 +61,16 @@ public class OptInfoController extends BaseController {
     /**
      * 查询所有系统业务
      *
-     * @param id       父id
-     * @param request  HttpServletRequest
-     * @param response HttpServletResponse
+     * @param id      父id
+     * @param request HttpServletRequest
      */
-    @ApiOperation(value="查询所有系统业务",notes="根据某个父级系统业务id查询下面的所有系统业务。")
+    @ApiOperation(value = "查询所有系统业务", notes = "根据某个父级系统业务id查询下面的所有系统业务。")
     @ApiImplicitParam(
-        name = "id", value="父级系统业务id",
-        paramType = "query", dataType= "String")
+        name = "id", value = "父级系统业务id",
+        paramType = "query", dataType = "String")
     @RequestMapping(value = "/sub", method = RequestMethod.GET)
-    public void listFromParent(String id, HttpServletRequest request, HttpServletResponse response) {
+    @WrapUpResponseBody
+    public ResponseData listFromParent(String id, HttpServletRequest request) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
 
         if (StringUtils.isNotBlank(id)) {
@@ -83,7 +84,7 @@ public class OptInfoController extends BaseController {
         for (OptInfo opt : listObjects) {
             opt.setState(optInfoManager.hasChildren(opt.getOptId()) ? "closed" : "open");
         }
-        JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(listObjects), response);
+        return ResponseData.makeResponseData(makeMenuFuncsJson(listObjects));
     }
 
     private JSONArray makeMenuFuncsJson(List<OptInfo> menuFunsByUser) {
@@ -107,35 +108,39 @@ public class OptInfoController extends BaseController {
      *
      * @param response HttpServletResponse
      */
-    @ApiOperation(value="查询所有需要通过权限管理的业务",notes="查询所有需要通过权限管理的业务。")
+    @ApiOperation(value = "查询所有需要通过权限管理的业务", notes = "查询所有需要通过权限管理的业务。")
     @RequestMapping(value = "/poweropts", method = RequestMethod.GET)
-    public void listPowerOpts(HttpServletResponse response) {
+    @WrapUpResponseBody
+    public ResponseData listPowerOpts(HttpServletResponse response) {
         List<OptInfo> listObjects = optInfoManager.listSysAndOptPowerOpts();
         listObjects = optInfoManager.listObjectFormatTree(listObjects, true);
-        JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(listObjects), response);
+        return ResponseData.makeResponseData(listObjects);
     }
 
 
     /**
      * 查询所有项目权限管理的业务
      *
-     * @param field    需要显示的字段
-     * @param response HttpServletResponse
+     * @param field 需要显示的字段
      */
-    @ApiOperation(value="查询所有项目权限管理的业务",notes="查询所有项目权限管理的业务。")
+    @ApiOperation(value = "查询所有项目权限管理的业务", notes = "查询所有项目权限管理的业务。")
     @ApiImplicitParam(
-        name = "field", value="需要显示的字段",
-        allowMultiple = true, paramType = "query", dataType= "String")
+        name = "field", value = "需要显示的字段",
+        allowMultiple = true, paramType = "query", dataType = "String")
     @RequestMapping(value = "/itempoweropts", method = RequestMethod.GET)
-    public void listItemPowerOpts(String[] field, HttpServletResponse response) {
+    @WrapUpResponseBody
+    public ResponseData listItemPowerOpts(String[] field) {
         List<OptInfo> listObjects = optInfoManager.listItemPowerOpts();
         listObjects = optInfoManager.listObjectFormatTree(listObjects, true);
 
-        if (ArrayUtils.isNotEmpty(field))
-            JsonResultUtils.writeSingleDataJson(listObjects, response,
-                JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
-        else
-            JsonResultUtils.writeSingleDataJson(listObjects, response);
+        ResponseMapData resData = new ResponseMapData();
+        if (ArrayUtils.isNotEmpty(field)) {
+            resData.addResponseData(BaseController.OBJLIST, listObjects);
+            resData.toJSONString(JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
+            return ResponseData.makeResponseData(resData.getResponseData(BaseController.OBJLIST));
+        } else {
+            return ResponseData.makeResponseData(listObjects);
+        }
     }
 
 
@@ -144,34 +149,34 @@ public class OptInfoController extends BaseController {
      *
      * @param field    需要显示的字段
      * @param unitCode unitCode
-     * @param response HttpServletResponse
      */
-    @ApiOperation(value="查询某个部门权限的业务",notes="查询某个部门权限的业务。")
+    @ApiOperation(value = "查询某个部门权限的业务", notes = "查询某个部门权限的业务。")
     @ApiImplicitParams({
         @ApiImplicitParam(
-            name = "unitCode", value="机构编码",
-            required = true, paramType = "query", dataType= "String"),
+            name = "unitCode", value = "机构编码",
+            required = true, paramType = "query", dataType = "String"),
         @ApiImplicitParam(
-            name = "field", value="需要显示的字段",
-            allowMultiple = true, paramType = "query", dataType= "String")
+            name = "field", value = "需要显示的字段",
+            allowMultiple = true, paramType = "query", dataType = "String")
     })
     @RequestMapping(value = "/unitpoweropts/{unitCode}", method = RequestMethod.GET)
-    public void listUnitPowerOpts(@PathVariable String unitCode, String[] field,
-                                  HttpServletResponse response) {
+    @WrapUpResponseBody
+    public ResponseData listUnitPowerOpts(@PathVariable String unitCode, String[] field) {
         List<OptInfo> listObjects = optInfoManager.listOptWithPowerUnderUnit(unitCode);
         listObjects = optInfoManager.listObjectFormatTree(listObjects, false);
 
-        JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(listObjects), response);
+        return ResponseData.makeResponseData(makeMenuFuncsJson(listObjects));
     }
 
     /**
      * 新增菜单
-     * @param optInfo  业务菜单信息
+     *
+     * @param optInfo 业务菜单信息
      */
-    @ApiOperation(value="新建系统业务菜单",notes="新建系统业务菜单。")
+    @ApiOperation(value = "新建系统业务菜单", notes = "新建系统业务菜单。")
     @ApiImplicitParams(@ApiImplicitParam(
-        name = "optInfo", value="业务菜系信息",
-        required=true, paramType = "body", dataTypeClass= OptInfo.class
+        name = "optInfo", value = "业务菜系信息",
+        required = true, paramType = "body", dataTypeClass = OptInfo.class
     ))
     @RequestMapping(method = {RequestMethod.POST})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增{optInfo.optName}菜单")
@@ -185,46 +190,44 @@ public class OptInfoController extends BaseController {
     /**
      * optId是否已存在
      *
-     * @param optId    optId
-     * @param response HttpServletResponse
+     * @param optId optId
      * @throws IOException IOException
      */
-    @ApiOperation(value="检查业务菜单是否存在",notes="根据菜单id检查业务菜单是否存在。")
+    @ApiOperation(value = "检查业务菜单是否存在", notes = "根据菜单id检查业务菜单是否存在。")
     @ApiImplicitParam(
-        name = "optId", value="业务菜单id",
-        required = true, paramType = "path", dataType= "String")
+        name = "optId", value = "业务菜单id",
+        required = true, paramType = "path", dataType = "String")
     @RequestMapping(value = "/notexists/{optId}", method = {RequestMethod.GET})
-    public void isNotExists(@PathVariable String optId, HttpServletResponse response) throws IOException {
+    @WrapUpResponseBody(contentType = WrapUpContentType.RAW)
+    public boolean isNotExists(@PathVariable String optId) throws IOException {
         OptInfo optInfo = optInfoManager.getObjectById(optId);
-        JsonResultUtils.writeOriginalObject(null == optInfo, response);
+//        JsonResultUtils.writeOriginalObject(null == optInfo, response);
+        return null == optInfo;
     }
 
     /**
      * 更新菜单
      *
-     * @param optId    主键
-     * @param optInfo  OptInfo
-     * @param request  HttpServletRequest
-     * @param response HttpServletResponse
+     * @param optId   主键
+     * @param optInfo OptInfo
      */
-    @ApiOperation(value="查询某个部门权限的业务",notes="查询某个部门权限的业务。")
+    @ApiOperation(value = "查询某个部门权限的业务", notes = "查询某个部门权限的业务。")
     @ApiImplicitParams({
         @ApiImplicitParam(
-            name = "optId", value="菜单id",
-            required = true, paramType = "path", dataType= "String"),
+            name = "optId", value = "菜单id",
+            required = true, paramType = "path", dataType = "String"),
         @ApiImplicitParam(
-            name = "optInfo", value="更新的菜单对象",
-            required = true, paramType = "body", dataTypeClass= OptInfo.class)
+            name = "optInfo", value = "更新的菜单对象",
+            required = true, paramType = "body", dataTypeClass = OptInfo.class)
     })
     @RequestMapping(value = "/{optId}", method = {RequestMethod.PUT})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新菜单")
-    public void edit(@PathVariable String optId, @Valid OptInfo optInfo,
-                     HttpServletRequest request, HttpServletResponse response) {
+    @WrapUpResponseBody
+    public ResponseData edit(@PathVariable String optId, @Valid OptInfo optInfo) {
 
         OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
         if (null == dbOptInfo) {
-            JsonResultUtils.writeErrorMessageJson("当前对象不存在", response);
-            return;
+            return ResponseData.makeErrorMessage("当前对象不存在");
         }
 
         if (!StringUtils.equals(dbOptInfo.getPreOptId(), optInfo.getPreOptId())) {
@@ -238,35 +241,32 @@ public class OptInfoController extends BaseController {
         //BeanUtils.copyProperties(optInfo, dbOptInfo, "optMethods", "dataScopes");
         optInfoManager.updateOptInfo(dbOptInfo);
 
-        JsonResultUtils.writeSingleDataJson(dbOptInfo, response);
+        return ResponseData.makeResponseData(dbOptInfo);
     }
 
     /**
      * 更新操作权限
      *
-     * @param optId    主键
-     * @param optInfo  OptInfo
-     * @param request  HttpServletRequest
-     * @param response HttpServletResponse
+     * @param optId   主键
+     * @param optInfo OptInfo
      */
-    @ApiOperation(value="更新操作权限",notes="更新操作权限。")
+    @ApiOperation(value = "更新操作权限", notes = "更新操作权限。")
     @ApiImplicitParams({
         @ApiImplicitParam(
-            name = "optId", value="菜单id",
-            required = true, paramType = "path", dataType= "String"),
+            name = "optId", value = "菜单id",
+            required = true, paramType = "path", dataType = "String"),
         @ApiImplicitParam(
-            name = "optInfo", value="更新的菜单对象",
-            required = true, paramType = "body", dataTypeClass= OptInfo.class)
+            name = "optInfo", value = "更新的菜单对象",
+            required = true, paramType = "body", dataTypeClass = OptInfo.class)
     })
     @RequestMapping(value = "/editpower{optId}", method = {RequestMethod.PUT})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新操作权限")
-    public void editPower(@PathVariable String optId, @Valid OptInfo optInfo,
-                          HttpServletRequest request, HttpServletResponse response) {
+    @WrapUpResponseBody
+    public ResponseData editPower(@PathVariable String optId, @Valid OptInfo optInfo) {
 
         OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
         if (null == dbOptInfo) {
-            JsonResultUtils.writeErrorMessageJson("当前对象不存在", response);
-            return;
+            return ResponseData.makeErrorMessage("当前对象不存在");
         }
 
         if (!StringUtils.equals(dbOptInfo.getPreOptId(), optInfo.getPreOptId())) {
@@ -287,145 +287,135 @@ public class OptInfoController extends BaseController {
         dbOptInfo.addAllOptMethods(optInfo.getOptMethods());
         dbOptInfo.addAllDataScopes(optInfo.getDataScopes());
         optInfoManager.updateOperationPower(dbOptInfo);
-        JsonResultUtils.writeSuccessJson(response);
+        return ResponseData.makeSuccessResponse();
     }
 
     /**
      * 删除菜单
      *
-     * @param optId    主键
-     * @param request  HttpServletRequest
-     * @param response HttpServletResponse
+     * @param optId 主键
      */
-    @ApiOperation(value="删除菜单",notes="删除菜单。")
+    @ApiOperation(value = "删除菜单", notes = "删除菜单。")
     @ApiImplicitParam(
-        name = "optId", value="菜单id",
-        required = true, paramType = "path", dataType= "String")
+        name = "optId", value = "菜单id",
+        required = true, paramType = "path", dataType = "String")
     @RequestMapping(value = "/{optId}", method = {RequestMethod.DELETE})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除菜单")
-    public void delete(@PathVariable String optId, HttpServletRequest request, HttpServletResponse response) {
+    @WrapUpResponseBody
+    public ResponseData delete(@PathVariable String optId) {
         OptInfo dboptInfo = optInfoManager.getObjectById(optId);
-
         optInfoManager.deleteOptInfo(dboptInfo);
-
-        JsonResultUtils.writeBlankJson(response);
+        return ResponseData.makeSuccessResponse();
     }
 
     /**
      * 查询单条数据
      *
-     * @param optId    主键
-     * @param response HttpServletResponse
+     * @param optId 主键
      */
-    @ApiOperation(value="查询单条数据",notes="根据菜单id查询单条数据。")
+    @ApiOperation(value = "查询单条数据", notes = "根据菜单id查询单条数据。")
     @ApiImplicitParam(
-        name = "optId", value="菜单id",
-        required = true, paramType = "path", dataType= "String")
+        name = "optId", value = "菜单id",
+        required = true, paramType = "path", dataType = "String")
     @RequestMapping(value = "/{optId}", method = {RequestMethod.GET})
-    public void getOptInfoById(@PathVariable String optId, HttpServletResponse response) {
+    @WrapUpResponseBody
+    public ResponseData getOptInfoById(@PathVariable String optId) {
         OptInfo dbOptInfo = optInfoManager.getOptInfoById(optId);
-
-        JsonResultUtils.writeSingleDataJson(dbOptInfo, response);
+        return ResponseData.makeResponseData(dbOptInfo);
     }
 
     /**
      * 新增页面时获取OptDef主键
-     *
-     * @param response HttpServletResponse
      */
-    @ApiOperation(value="获取菜单的下个主键",notes="获取菜单的下个主键。")
+    @ApiOperation(value = "获取菜单的下个主键", notes = "获取菜单的下个主键。")
     @RequestMapping(value = "/nextOptCode", method = RequestMethod.GET)
-    public void getNextOptCode(HttpServletResponse response) {
+    @WrapUpResponseBody
+    public ResponseData getNextOptCode() {
         String optCode = optMethodManager.getNextOptCode();
 
         ResponseMapData responseData = new ResponseMapData();
         responseData.addResponseData("optCode", optCode);
-
-        JsonResultUtils.writeResponseDataAsJson(responseData, response);
+        return responseData;
     }
 
     /**
      * 新建或更新业务操作
      *
-     * @param optId    主键
-     * @param optCode  optCode
-     * @param optDef   OptMethod
-     * @param response HttpServletResponse
+     * @param optId   主键
+     * @param optCode optCode
+     * @param optDef  OptMethod
      */
-    @ApiOperation(value="新建或更新业务操作",notes="新建或更新业务操作。")
+    @ApiOperation(value = "新建或更新业务操作", notes = "新建或更新业务操作。")
     @ApiImplicitParams({
         @ApiImplicitParam(
-            name = "optId", value="菜单id",
-            required = true, paramType = "path", dataType= "String"),
+            name = "optId", value = "菜单id",
+            required = true, paramType = "path", dataType = "String"),
         @ApiImplicitParam(
-            name = "optCode", value="菜单英文代码",
-            required = true, paramType = "path", dataType= "String"),
+            name = "optCode", value = "菜单英文代码",
+            required = true, paramType = "path", dataType = "String"),
         @ApiImplicitParam(
-            name = "optDef", value="更新的菜单操作方法对象",
-            required = true, paramType = "body", dataTypeClass= OptMethod.class)
+            name = "optDef", value = "更新的菜单操作方法对象",
+            required = true, paramType = "body", dataTypeClass = OptMethod.class)
     })
     @RequestMapping(value = "/{optId}/{optCode}", method = {RequestMethod.POST, RequestMethod.PUT})
-    public void optDefEdit(@PathVariable String optId, @PathVariable String optCode, @Valid OptMethod optDef,
-                           HttpServletResponse response) {
+    @WrapUpResponseBody
+    public ResponseData optDefEdit(@PathVariable String optId, @PathVariable String optCode, @Valid OptMethod optDef) {
         OptInfo optInfo = optInfoManager.getObjectById(optId);
         if (null == optInfo) {
-            JsonResultUtils.writeSingleErrorDataJson(
-                ResponseData.ERROR_INTERNAL_SERVER_ERROR,
-                "数据库不匹配", "数据库中不存在optId为" + optId + "的业务信息。", response);
-            return;
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_INTERNAL_SERVER_ERROR,
+                "数据库不匹配,数据库中不存在optId为" + optId + "的业务信息。");
         }
 
         OptMethod dbOptDef = optMethodManager.getObjectById(optCode);
         if (null == dbOptDef) {
-            JsonResultUtils.writeSingleErrorDataJson(
-                ResponseData.ERROR_INTERNAL_SERVER_ERROR,
-                "数据库不匹配", "数据库中不存在optCode为" + optCode + "的操作信息。", response);
-            return;
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_INTERNAL_SERVER_ERROR,
+                "数据库不匹配, 数据库中不存在optCode为" + optCode + "的操作信息。");
         } else {
             dbOptDef.copy(optDef);
             optMethodManager.updateOptMethod(dbOptDef);
         }
 
-        JsonResultUtils.writeSuccessJson(response);
+        return ResponseData.makeSuccessResponse();
     }
 
     /**
      * 获取所有的业务菜单
-     * @param response HttpServletResponse
      */
-    @ApiOperation(value="获取所有的业务菜单",notes="获取所有的业务菜单。")
+    @ApiOperation(value = "获取所有的业务菜单", notes = "获取所有的业务菜单。")
     @RequestMapping(value = "/allOptInfo", method = RequestMethod.GET)
-    public void loadAllOptInfo(HttpServletResponse response) {
+    @WrapUpResponseBody
+    public ResponseData loadAllOptInfo() {
         List<OptInfo> optInfos = optInfoManager.listObjects();
-        JsonResultUtils.writeSingleDataJson(optInfos, response);
+        return ResponseData.makeResponseData(optInfos);
     }
 
     /**
      * 获取所有的操作方法
-     * @param response HttpServletResponse
      */
-    @ApiOperation(value="获取所有的操作方法",notes="获取所有的操作方法。")
+    @ApiOperation(value = "获取所有的操作方法", notes = "获取所有的操作方法。")
     @RequestMapping(value = "/allOptMethod", method = RequestMethod.GET)
-    public void loadAllOptMethod(HttpServletResponse response) {
+    @WrapUpResponseBody
+    public ResponseData loadAllOptMethod() {
         List<OptMethod> optDefs = optMethodManager.listObjects();
-        JsonResultUtils.writeSingleDataJson(optDefs, response);
+        return ResponseData.makeResponseData(optDefs);
     }
 
     /**
      * 获取用户的操作方法
+     *
      * @param userCode 用户ID
-     * @param response HttpServletResponse
      */
-    @ApiOperation(value="查询单条数据",notes="根据菜单id查询单条数据。")
+    @ApiOperation(value = "查询单条数据", notes = "根据菜单id查询单条数据。")
     @ApiImplicitParam(
-        name = "userCode", value="用户id",
-        required = true, paramType = "path", dataType= "String")
+        name = "userCode", value = "用户id",
+        required = true, paramType = "path", dataType = "String")
     @RequestMapping(value = "/userpoweropts/{userCode}", method = RequestMethod.GET)
-    public void listUserOpts(@PathVariable String userCode, HttpServletResponse response) {
+    @WrapUpResponseBody
+    public ResponseData listUserOpts(@PathVariable String userCode) {
 //        List<OptInfo> optInfos = (List<OptInfo>) platformEnvironment.listUserMenuOptInfos(userCode, false);
         List<OptInfo> optInfos = optInfoManager.listUserAllPower(userCode, false);
         optInfos = optInfoManager.listObjectFormatTree(optInfos, true);
-        JsonResultUtils.writeSingleDataJson(makeMenuFuncsJson(optInfos), response);
+        return ResponseData.makeResponseData(makeMenuFuncsJson(optInfos));
     }
 
 }
