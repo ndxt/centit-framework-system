@@ -241,4 +241,15 @@ public class SysUserUnitManagerImpl
         }
         return null;
     }
+
+    public List<UserUnit> listUserUnitsUnderUnitByUserCode(String userCode, String unitCode, PageDesc pageDesc){
+        UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
+        Map<String, Object> map = new HashMap<>(5);
+        map.put("userCode", userCode);
+        map.put("unitPath", unitInfo.getUnitPath());
+        map.put("unitIsValid", "T");
+        return userUnitDao.querySubUserUnits(
+            QueryParameterPrepare.makeMybatisOrderByParam(
+                QueryParameterPrepare.prepPageParams(map, pageDesc, userUnitDao.countSubUserUnits(map)), UserUnit.class));
+    }
 }

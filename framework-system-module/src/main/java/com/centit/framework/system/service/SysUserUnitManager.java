@@ -43,4 +43,6 @@ public interface SysUserUnitManager{
    */
     List<UserUnit> listSubUsersByUnitCode(String unitCode, Map<String, Object> map, PageDesc pageDesc);
 
+    List<UserUnit> listUserUnitsUnderUnitByUserCode(String userCode, String unitCode, PageDesc pageDesc);
+
 }
