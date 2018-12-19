@@ -22,6 +22,12 @@
         </dependency>
 
         <dependency>
+          <groupId>com.centit.framework</groupId>
+          <artifactId>centit-persistence-datapower</artifactId>
+          <version>${centit.persistence.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
         </dependency>
