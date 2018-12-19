@@ -196,21 +196,13 @@ public class UserInfoController extends BaseController {
         if (null == dbUserInfo) {
             return ResponseData.makeErrorMessage("当前用户不存在");
         }
-        //删除旧主机构
-//        if(!dbUserInfo.getPrimaryUnit().equals(userInfo.getPrimaryUnit())){
+
         sysUserUnitManager.deletePrimaryUnitByUserCode(userCode);
         userUnit.setUserCode(userInfo.getUserCode());
         userUnit.setUnitCode(userInfo.getPrimaryUnit());
         userUnit.setIsPrimary("T");
         userUnit.setCreator(getLoginUserCode(request));
         sysUserUnitManager.saveNewUserUnit(userUnit);
-
-//        }
-        UserInfo oldValue = new UserInfo();
-        oldValue.copy(dbUserInfo);
-        if (oldValue.getUserRoles().size() == 0) {
-            oldValue.setUserRoles(null);
-        }
 
         if (StringUtils.isBlank(userInfo.getUserPin())) {
             userInfo.setUserPin(dbUserInfo.getUserPin());
@@ -219,10 +211,6 @@ public class UserInfoController extends BaseController {
         sysUserManager.updateUserInfo(userInfo);
         return ResponseData.makeSuccessResponse();
 
-        /*********log*********/
-        //OperationLogCenter.logUpdateObject(request,optId, userCode, OperationLog.P_OPT_LOG_METHOD_U,
-        //       "更新用户信息", userInfo, oldValue);
-        /*********log*********/
     }
 
     /**

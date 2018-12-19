@@ -263,6 +263,7 @@ public class UserRoleController extends BaseController {
         paramType = "body", dataTypeClass = PageDesc.class
     )})
     @RequestMapping(value = "/usercurrentroles/{userCode}", method = RequestMethod.GET)
+    @WrapUpResponseBody
     public ResponseData listUserUnitRoles(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
