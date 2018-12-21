@@ -120,7 +120,7 @@ public class UserRoleController extends BaseController {
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(BaseController.OBJLIST, listObjects);
         resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-        return ResponseData.makeResponseData(resData);
+        return resData;
     }
 
     /**
