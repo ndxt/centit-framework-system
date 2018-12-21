@@ -222,7 +222,10 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
     public List<UserUnit> querySubUserUnits(Map<String, Object> pageQueryMap) {
         String hql = "from UserUnit where 1=1 " +
           "[:(STARTWITH)unitPath | and unitCode in (select unitCode from UnitInfo where unitPath like :unitPath)]"+
-          "[:(like)userName | and userCode in (select userCode from UserInfo where userName like :userName or loginName like :userName)]";
+          "[:(like)userName | and userCode in (select userCode from UserInfo where userName like :userName or loginName like :userName)]"+
+          "[:isValid | and USER_CODE in (select us.USER_CODE from f_userinfo us where us.IS_VALID = :isValid)]"+
+          "[:userCode | and USER_CODE = :userCode]"+
+          "[:unitIsValid | and UNIT_CODE IN (select UNIT_CODE from f_unitinfo where IS_VALID = :unitIsValid)]";
 
         int startPos = 0;
       int maxSize = 0;

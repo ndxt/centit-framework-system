@@ -2,6 +2,7 @@ package com.centit.framework.system.controller;
 
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
+import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
@@ -9,6 +10,7 @@ import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.model.basedata.IUnitInfo;
 import com.centit.framework.model.basedata.IUserInfo;
 import com.centit.framework.operationlog.RecordOperationLog;
+import com.centit.framework.security.model.CentitUserDetails;
 import com.centit.framework.system.po.UserUnit;
 import com.centit.framework.system.service.SysUserManager;
 import com.centit.framework.system.service.SysUserUnitManager;
@@ -19,6 +21,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -163,6 +166,25 @@ public class UserUnitController extends BaseController {
 
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
+        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
+
+        return resData;
+    }
+
+    @ApiOperation(value = "获取用户所在机构列表（在当前用户可见范围内）")
+    @ApiImplicitParam(name = "userCode", value = "用户代码")
+    @GetMapping(value = "/usercurrentunits/{userCode}")
+    @WrapUpResponseBody
+    public ResponseData listUserUnitsUnderUnitByUserCode(@PathVariable String userCode, PageDesc pageDesc){
+        CentitUserDetails currentUser = WebOptUtils.getLoginUser();
+        if(currentUser == null){
+            return ResponseData.makeErrorMessage("未登录");
+        }
+        String currentUnitCode = currentUser.getCurrentUnitCode();
+
+        List<UserUnit> userUnits = sysUserUnitManager.listUserUnitsUnderUnitByUserCode(userCode, currentUnitCode, pageDesc);
+        ResponseMapData resData = new ResponseMapData();
+        resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(userUnits));
         resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
 
         return resData;

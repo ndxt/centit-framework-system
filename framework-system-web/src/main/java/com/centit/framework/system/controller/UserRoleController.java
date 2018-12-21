@@ -120,7 +120,7 @@ public class UserRoleController extends BaseController {
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData(BaseController.OBJLIST, listObjects);
         resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-        return ResponseData.makeResponseData(resData);
+        return resData;
     }
 
     /**
@@ -263,6 +263,7 @@ public class UserRoleController extends BaseController {
         paramType = "body", dataTypeClass = PageDesc.class
     )})
     @RequestMapping(value = "/usercurrentroles/{userCode}", method = RequestMethod.GET)
+    @WrapUpResponseBody
     public ResponseData listUserUnitRoles(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
