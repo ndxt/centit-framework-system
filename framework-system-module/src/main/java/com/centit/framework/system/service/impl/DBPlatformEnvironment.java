@@ -389,7 +389,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         List<UserUnit> usun = userUnitDao.listUserUnitsByUserCode(userinfo.getUserCode());
         JsonCentitUserDetails sysuser = new JsonCentitUserDetails();
         sysuser.setUserInfo((JSONObject) JSON.toJSON(userinfo));
-
+        sysuser.getUserInfo().put("userPin", userinfo.getUserPin());
         sysuser.setUserUnits((JSONArray) JSON.toJSON(usun));
         for(UserUnit uu :usun){
             if("T".equals(uu.getIsPrimary())){
