@@ -102,7 +102,7 @@ public  class GeneralServiceImpl implements GeneralService {
         dpf.addSourceData("currentStation", userDetails.getCurrentStation());
         //当前用户主机构信息
         dpf.addSourceData("primaryUnit", CodeRepositoryUtil
-                .getUnitInfoByCode(userDetails.getUserInfo().getPrimaryUnit()));
+                .getUnitInfoByCode(userDetails.getUserInfo().getString("primaryUnit")));
         //当前用户所有机构关联关系信息
         List<? extends IUserUnit>  userUnits = CodeRepositoryUtil
               .listUserUnits(userDetails.getUserCode());

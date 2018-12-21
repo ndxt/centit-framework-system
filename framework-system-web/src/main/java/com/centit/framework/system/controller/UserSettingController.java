@@ -1,5 +1,6 @@
 package com.centit.framework.system.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.common.ResponseData;
@@ -65,8 +66,8 @@ public class UserSettingController extends BaseController {
     @WrapUpResponseBody
     public ResponseData list(PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
-        UserInfo userInfo = (UserInfo) getLoginUser(request).getUserInfo();
-        searchColumn.put(CodeRepositoryUtil.USER_CODE, userInfo.getUserCode());
+
+        searchColumn.put(CodeRepositoryUtil.USER_CODE,  getLoginUser(request).getUserCode());
 
         JSONArray listObjects = userSettingManager.listObjects(searchColumn, pageDesc);
 

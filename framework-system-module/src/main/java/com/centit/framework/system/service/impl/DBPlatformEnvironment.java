@@ -1,12 +1,15 @@
 package com.centit.framework.system.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.*;
 import com.centit.framework.security.model.CentitPasswordEncoder;
+import com.centit.framework.security.model.JsonCentitUserDetails;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
-import com.centit.framework.system.security.CentitUserDetailsImpl;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.StringRegularOpt;
@@ -382,10 +385,12 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     //@Transactional
-    private CentitUserDetailsImpl fillUserDetailsField(UserInfo userinfo){
+    private JsonCentitUserDetails fillUserDetailsField(UserInfo userinfo){
         List<UserUnit> usun = userUnitDao.listUserUnitsByUserCode(userinfo.getUserCode());
-        CentitUserDetailsImpl sysuser = new CentitUserDetailsImpl(userinfo);
-        sysuser.setUserUnits(usun);
+        JsonCentitUserDetails sysuser = new JsonCentitUserDetails();
+        sysuser.setUserInfo((JSONObject) JSON.toJSON(userinfo));
+
+        sysuser.setUserUnits((JSONArray) JSON.toJSON(usun));
         for(UserUnit uu :usun){
             if("T".equals(uu.getIsPrimary())){
                 sysuser.setCurrentStationId(uu.getUserUnitId());
@@ -408,7 +413,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
          }
         //add  end
         //sysuser.setUserFuncs(functionDao.getMenuFuncByUserID(sysuser.getUserCode()));
-        sysuser.setAuthoritiesByRoles(roles);
+        sysuser.setAuthoritiesByRoles((JSONArray) JSON.toJSON(roles));
         List<FVUserOptList> uoptlist = userInfoDao.getAllOptMethodByUser(userinfo.getUserCode());
         Map<String, String> userOptList = new HashMap<String, String>();
         if (uoptlist != null) {
@@ -432,7 +437,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional
-    public CentitUserDetailsImpl loadUserDetailsByLoginName(String loginName) {
+    public JsonCentitUserDetails loadUserDetailsByLoginName(String loginName) {
          UserInfo userinfo = userInfoDao.getUserByLoginName(loginName);
          if(userinfo==null)
              return null;
@@ -441,7 +446,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional
-    public CentitUserDetailsImpl loadUserDetailsByUserCode(String userCode) {
+    public JsonCentitUserDetails loadUserDetailsByUserCode(String userCode) {
          UserInfo userinfo = userInfoDao.getUserByCode(userCode);
          if(userinfo==null)
              return null;
@@ -450,7 +455,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional
-    public CentitUserDetailsImpl loadUserDetailsByRegEmail(String regEmail) {
+    public JsonCentitUserDetails loadUserDetailsByRegEmail(String regEmail) {
         UserInfo userinfo = userInfoDao.getUserByRegEmail(regEmail);
            if(userinfo==null)
                 return null;
@@ -459,7 +464,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional
-    public CentitUserDetailsImpl loadUserDetailsByRegCellPhone(String regCellPhone) {
+    public JsonCentitUserDetails loadUserDetailsByRegCellPhone(String regCellPhone) {
         UserInfo userinfo = userInfoDao.getUserByRegCellPhone(regCellPhone);
            if(userinfo==null) {
              return null;

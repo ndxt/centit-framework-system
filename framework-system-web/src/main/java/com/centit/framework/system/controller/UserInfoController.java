@@ -235,7 +235,7 @@ public class UserInfoController extends BaseController {
     @WrapUpResponseBody
     public ResponseData getCurrentUserInfo(HttpServletRequest request) {
         CentitUserDetails userDetails = super.getLoginUser(request);
-        UserInfo userinfo = sysUserManager.getObjectById(userDetails.getUserInfo().getUserCode());
+        UserInfo userinfo = sysUserManager.getObjectById(userDetails.getUserCode());
         return ResponseData.makeResponseData(userinfo);
     }
 

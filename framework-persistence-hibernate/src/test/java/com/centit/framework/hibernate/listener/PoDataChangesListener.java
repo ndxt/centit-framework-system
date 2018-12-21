@@ -155,7 +155,7 @@ public class PoDataChangesListener implements PreInsertEventListener,
         CentitUserDetails loginUser = WebOptUtils.getLoginUser(RequestThreadLocal
                 .getHttpThreadWrapper().getRequest());
         // return "操作用户 " + ((FUserinfo)loginUser).getLoginname() + " " ;
-        return loginUser == null ? "" : loginUser.getUserInfo().getUserCode();
+        return loginUser == null ? "" : loginUser.getUserCode();
     }
 
 
