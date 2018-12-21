@@ -1,6 +1,5 @@
 package com.centit.framework.system.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.common.ResponseData;
@@ -308,33 +307,4 @@ public class UserSettingController extends BaseController {
         }
         return ResponseData.makeSuccessResponse();
     }
-
-
-    /*
-     * 导出当前用户下的所有参数设置
-     *
-     * @param request
-     * @param response
-     */
-    /*@RequestMapping(value = "/export", method = RequestMethod.GET)
-    public void export(HttpServletRequest request, HttpServletResponse response) {
-        UserInfo userInfo = (UserInfo) getLoginUser(request);
-        Map<String, Object> searchColumn = new HashMap<>();
-        searchColumn.put(CodeRepositoryUtil.USER_CODE, userInfo.getUserCode());
-
-        List<UserSetting> listObjectsAll = userSettingManager.listObjectsAll(searchColumn);
-
-        String[] header = new String[]{"参数中文名称", "参数代码", "参数值", "创建时间"};
-        String[] property = new String[]{"paramName", "paramCode", "paramValue", "createDate"};
-
-
-        InputStream generateExcel = ExportExcelUtil.generateExcel(listObjectsAll, header, property);
-
-        try {
-            WebOptUtils.download(generateExcel, "用户参数信息.xls", response);
-        } catch (IOException e) {
-            throw new ObjectException(e.getMessage());
-        }
-
-    }*/
 }
