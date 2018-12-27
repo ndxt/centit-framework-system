@@ -259,7 +259,7 @@ public class OptInfoController extends BaseController {
             name = "optInfo", value = "更新的菜单对象",
             required = true, paramType = "body", dataTypeClass = OptInfo.class)
     })
-    @RequestMapping(value = "/editpower{optId}", method = {RequestMethod.PUT})
+    @RequestMapping(value = "/editpower/{optId}", method = {RequestMethod.PUT})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新操作权限")
     @WrapUpResponseBody
     public ResponseData editPower(@PathVariable String optId, @Valid OptInfo optInfo) {
