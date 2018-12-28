@@ -56,6 +56,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
     @Length(max = 1, message = "字段长度必须为{max}")
     @Pattern(regexp = "[SUF]", message = "字段只能填写F,S,U")
     @ApiModelProperty(value = "类别状态 字段只能填写F,S,U",name = "catalogStyle",required = true)
+    @DictionaryMap(fieldName = "catalogStyleText", value = "CatalogStyle")
     private String catalogStyle;
 
     /**
@@ -66,6 +67,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
     @Length(max = 1, message = "字段长度必须为{max}")
     @Pattern(regexp = "[LT]", message = "字段只能填写L或T")
     @ApiModelProperty(value = "字段只能填写L或T",name = "catalogType",required = true)
+    @DictionaryMap(fieldName = "catalogType", value = "CatalogType")
     private String catalogType;
 
     /**

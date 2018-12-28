@@ -3,6 +3,7 @@ package com.centit.framework.system.po;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IDataDictionary;
 import io.swagger.annotations.ApiModel;
@@ -61,6 +62,7 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
     @Length(max = 1, message = "字段长度必须为{max}")
     @Pattern(regexp = "[SUF]", message = "字段只能填写F,S,U")
     @ApiModelProperty(value = "数据值字段不能为空，字段长度不能大于1，字段只能填写F,S,U",name = "dataStyle",required = true)
+    @DictionaryMap(fieldName = "dataStyle", value = "CatalogStyleText")
     private String dataStyle; // 属性
 
     @OrderBy
