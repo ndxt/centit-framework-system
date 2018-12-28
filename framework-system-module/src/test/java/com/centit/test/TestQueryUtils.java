@@ -1,7 +1,7 @@
 package com.centit.test;
 
 import com.centit.support.algorithm.StringBaseOpt;
-import com.centit.support.common.KeyValuePair;
+import com.centit.support.common.LeftRightPair;
 import com.centit.support.database.utils.QueryAndNamedParams;
 import com.centit.support.database.utils.QueryUtils;
 
@@ -21,20 +21,20 @@ public class TestQueryUtils {
         }
     }
 
-    public static void printDictionaryMap(Map<String,KeyValuePair<String,String>> m) {
+    public static void printDictionaryMap(Map<String,LeftRightPair<String,String>> m) {
 
-        for(Map.Entry<String, KeyValuePair<String,String>>ent : m.entrySet()){
+        for(Map.Entry<String, LeftRightPair<String,String>>ent : m.entrySet()){
             System.out.print(ent.getKey());
             System.out.print("----");
-            System.out.print(String.valueOf(ent.getValue().getKey()));
+            System.out.print(String.valueOf(ent.getValue().getLeft()));
             System.out.print("----");
-            System.out.println(String.valueOf(ent.getValue().getValue()));
+            System.out.println(String.valueOf(ent.getValue().getRight()));
         }
     }
 
 
     public static void testCreateDictionaryMap() {
-//         Map<String,KeyValuePair<String,String>> m =
+//         Map<String,LeftRightPair<String,String>> m =
 //                 SysDaoOptUtils.createDictionaryMapBuilder("F1", "V1", "D1")
 //            .addDictionaryDesc("F2", "V2", "D2")
 //            .addDictionaryDesc("F3", "V3", "D3").create();
