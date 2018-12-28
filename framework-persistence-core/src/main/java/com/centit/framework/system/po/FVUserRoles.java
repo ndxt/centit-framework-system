@@ -1,5 +1,6 @@
 package com.centit.framework.system.po;
 
+import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.model.basedata.IRoleInfo;
 import com.centit.framework.model.basedata.IUserRole;
 import org.hibernate.validator.constraints.Length;
@@ -34,6 +35,7 @@ public class FVUserRoles implements IUserRole, IRoleInfo, Serializable {
     private String obtainType;//
 
     @Column(name = "INHERITED_FROM")
+    @DictionaryMap(fieldName = "inheritedFromText", value = "unitCode")
     private String inheritedFrom;
 
 
