@@ -16,6 +16,7 @@ import com.centit.framework.system.service.OptMethodManager;
 import com.centit.framework.system.service.SysRoleManager;
 import com.centit.framework.system.service.SysUnitRoleManager;
 import com.centit.framework.system.service.SysUserRoleManager;
+import com.centit.support.common.LeftRightPair;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
 import io.swagger.annotations.Api;
@@ -98,12 +99,12 @@ public class RoleInfoController extends BaseController {
             paramType = "body", dataTypeClass = PageDesc.class)
     })
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    @WrapUpResponseBody
-    public ResponseData listAllRole(String[] field, PageDesc pageDesc, HttpServletRequest request) {
+    @WrapUpResponseBody(contentType = WrapUpContentType.MAP_DICT_PAGE_QUERY)
+    public LeftRightPair<List<RoleInfo>,PageDesc> listAllRole(String[] field, PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("NP_ALL", "true");
-        List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
-        return writeRoleListToResponse(roleInfos, field, pageDesc);
+        List<RoleInfo> list = sysRoleManager.listObjects(filterMap, pageDesc);
+        return new LeftRightPair<>(list, pageDesc);
     }
 
     /**
@@ -144,19 +145,14 @@ public class RoleInfoController extends BaseController {
         name = "pageDesc", value = "分页对象",
         paramType = "body", dataTypeClass = PageDesc.class)
     @GetMapping(value = "/currentunit")
-    @WrapUpResponseBody
-    public ResponseData listUnitAndPublicRole(PageDesc pageDesc, HttpServletRequest request) {
+    @WrapUpResponseBody(contentType = WrapUpContentType.MAP_DICT_PAGE_QUERY)
+    public LeftRightPair<List<RoleInfo>, PageDesc> listUnitAndPublicRole(PageDesc pageDesc, HttpServletRequest request) {
 
         String currentUnit = WebOptUtils.getLoginUser().getCurrentUnitCode();
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("publicUnitRole", currentUnit);
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
-
-        ResponseMapData respData = new ResponseMapData();
-        respData.addResponseData(BaseController.OBJLIST, roleInfos);
-        respData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-        respData.toJSONString(JsonPropertyUtils.getExcludePropPreFilter(RoleInfo.class, "rolePowers", "userRoles"));
-        return respData;
+        return new LeftRightPair<>(roleInfos, pageDesc);
     }
 
     /**
@@ -598,14 +594,9 @@ public class RoleInfoController extends BaseController {
         name = "roleCode", value = "角色代码",
         required = true, paramType = "path", dataType = "String")
     @RequestMapping(value = "/{roleCode}", method = RequestMethod.GET)
-    @WrapUpResponseBody
-    public ResponseData findRoleInfo(@PathVariable String roleCode) {
-        RoleInfo roleInfo = sysRoleManager.getRoleInfo(roleCode);
-        if (null == roleInfo) {
-            return ResponseData.makeErrorMessage("角色信息不存在");
-        }
-
-        return ResponseData.makeResponseData(roleInfo);
+    @WrapUpResponseBody(contentType = WrapUpContentType.MAP_DICT)
+    public RoleInfo findRoleInfo(@PathVariable String roleCode) {
+        return sysRoleManager.getRoleInfo(roleCode);
     }
 
     /**
