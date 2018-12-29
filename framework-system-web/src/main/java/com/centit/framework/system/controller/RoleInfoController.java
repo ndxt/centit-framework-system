@@ -8,6 +8,7 @@ import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
+import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.IUserUnit;
 import com.centit.framework.operationlog.RecordOperationLog;
@@ -16,7 +17,6 @@ import com.centit.framework.system.service.OptMethodManager;
 import com.centit.framework.system.service.SysRoleManager;
 import com.centit.framework.system.service.SysUnitRoleManager;
 import com.centit.framework.system.service.SysUserRoleManager;
-import com.centit.support.common.LeftRightPair;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
 import io.swagger.annotations.Api;
@@ -85,7 +85,6 @@ public class RoleInfoController extends BaseController {
     /**
      * 查询所有系统角色
      *
-     * @param field    field[]
      * @param pageDesc PageDesc
      * @param request  HttpServletRequest
      */
@@ -99,12 +98,12 @@ public class RoleInfoController extends BaseController {
             paramType = "body", dataTypeClass = PageDesc.class)
     })
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    @WrapUpResponseBody(contentType = WrapUpContentType.MAP_DICT_PAGE_QUERY)
-    public LeftRightPair<List<RoleInfo>,PageDesc> listAllRole(String[] field, PageDesc pageDesc, HttpServletRequest request) {
+    @WrapUpResponseBody()
+    public PageQueryResult<RoleInfo> listAllRole(PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("NP_ALL", "true");
         List<RoleInfo> list = sysRoleManager.listObjects(filterMap, pageDesc);
-        return new LeftRightPair<>(list, pageDesc);
+        return PageQueryResult.createResultMapDict(list, pageDesc);
     }
 
     /**
@@ -145,14 +144,14 @@ public class RoleInfoController extends BaseController {
         name = "pageDesc", value = "分页对象",
         paramType = "body", dataTypeClass = PageDesc.class)
     @GetMapping(value = "/currentunit")
-    @WrapUpResponseBody(contentType = WrapUpContentType.MAP_DICT_PAGE_QUERY)
-    public LeftRightPair<List<RoleInfo>, PageDesc> listUnitAndPublicRole(PageDesc pageDesc, HttpServletRequest request) {
+    @WrapUpResponseBody()
+    public PageQueryResult<RoleInfo> listUnitAndPublicRole(PageDesc pageDesc, HttpServletRequest request) {
 
         String currentUnit = WebOptUtils.getLoginUser().getCurrentUnitCode();
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("publicUnitRole", currentUnit);
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
-        return new LeftRightPair<>(roleInfos, pageDesc);
+        return PageQueryResult.createResultMapDict(roleInfos, pageDesc);
     }
 
     /**
