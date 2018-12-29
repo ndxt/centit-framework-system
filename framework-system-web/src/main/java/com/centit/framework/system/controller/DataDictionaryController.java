@@ -182,26 +182,28 @@ public class DataDictionaryController extends BaseController {
      *
      * @param dataCatalog {@link DataCatalog}
      * @param request     {@link HttpServletRequest}
-     * @param response    {@link HttpServletResponse}
      */
     @ApiOperation(value = "新增字典类别", notes = "新增字典类别")
     @ApiParam(name = "dataCatalog", value = "新增字典类别,输入框有提示的都是必填项", required = true)
     @RequestMapping(method = {RequestMethod.POST})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增字典类别")
     @WrapUpResponseBody
-    public ResponseData createCatalog(@Valid DataCatalog dataCatalog, HttpServletRequest request, HttpServletResponse response) {
-        if (isLoginAsAdmin(request)) {
+    public void createCatalog(@Valid DataCatalog dataCatalog, HttpServletRequest request) {
+        boolean isAdmin = isLoginAsAdmin(request);
+        if (isAdmin) {
             dataCatalog.setCatalogStyle("S");
         } else {
             dataCatalog.setCatalogStyle("U");
         }
         dataDictionaryManager.saveNewObject(dataCatalog);
-        return ResponseData.makeSuccessResponse();
-
-        /*******************log****************************/
-//        OperationLogCenter.logNewObject(request, optId, dataCatalog.getCatalogCode(), OperationLog.P_OPT_LOG_METHOD_C,
-//                "新增数据字典目录", dataCatalog);
-        /*******************log****************************/
+        if(dataCatalog.getDataDictionaries() != null && dataCatalog.getDataDictionaries().size() > 0){
+            for (DataDictionary d : dataCatalog.getDataDictionaries()) {
+                if (StringUtils.isBlank(d.getDataStyle())) {
+                    d.setDataStyle(isAdmin ? "S" : "U");
+                }
+            }
+            dataDictionaryManager.saveCatalogIncludeDataPiece(dataCatalog, isAdmin);
+        }
     }
 
     /**
