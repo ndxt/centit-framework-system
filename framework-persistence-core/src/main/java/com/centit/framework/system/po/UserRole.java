@@ -67,6 +67,9 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
     private Date  updateDate;
     //结束
 
+    /**
+     * 获得类型 从哪获得角色
+     */
     @Transient
     private String obtainType;
 

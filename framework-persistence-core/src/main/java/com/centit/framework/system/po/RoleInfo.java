@@ -1,5 +1,6 @@
 package com.centit.framework.system.po;
 
+import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IRoleInfo;
 import io.swagger.annotations.ApiModel;
@@ -57,6 +58,7 @@ public class RoleInfo implements IRoleInfo,EntityWithTimestamp, java.io.Serializ
     @Column(name = "ROLE_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
     @ApiModelProperty(value = "角色的类别 F:系统内置的 G:全局的 P:公用的 D:部门（机构）特有的角色 I:项目角色 W:工作流角色",name = "roleType",required = true)
+    @DictionaryMap(fieldName = "roleTypeText", value = "RoleType")
     private String roleType; // 角色类别
 
     @Column(name = "UNIT_CODE")
