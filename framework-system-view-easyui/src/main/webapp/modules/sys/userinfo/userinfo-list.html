@@ -25,7 +25,7 @@
 
           <div class="search-actions">
             <a class="easyui-linkbutton btn-search" iconCls="icon-search">搜索</a>
-            <a class="easyui-linkbutton btn-reset" iconcls="icon-reload">重置</a>
+            <a class="easyui-linkbutton btn-reset" iconcls="icon-reload" onclick="resetRadio()">重置</a>
           </div>
         </form>
       </div>
@@ -75,4 +75,11 @@
     </div>
   </div>
 </div>
+<script>
+  function resetRadio() {
+    setTimeout(function () {
+      $(".defaultChecked").prop('checked','true')
+    },10)
+  }
+</script>
 
