@@ -7,6 +7,7 @@ define(function (require) {
   var DictionaryItemAdd = require('../ctrl/dictionary.item.add');
   var DictionaryItemRemove = require('../ctrl/dictionary.item.remove');
   var FilterDictionay = require('core/filter/filter.dictionary');
+  var Mustache = require('plugins/mustache.min');
 
   // 数据字典明细
   return DictionaryAdd.extend(function () {
