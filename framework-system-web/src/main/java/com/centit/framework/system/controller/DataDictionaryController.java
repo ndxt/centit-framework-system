@@ -200,6 +200,7 @@ public class DataDictionaryController extends BaseController {
             for (DataDictionary d : dataCatalog.getDataDictionaries()) {
                 if (StringUtils.isBlank(d.getDataStyle())) {
                     d.setDataStyle(isAdmin ? "S" : "U");
+                    d.setCatalogCode(dataCatalog.getCatalogCode());
                 }
             }
             dataDictionaryManager.saveCatalogIncludeDataPiece(dataCatalog, isAdmin);
