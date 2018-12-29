@@ -1,6 +1,7 @@
 package com.centit.framework.system.po;
 
 import com.centit.framework.components.CodeRepositoryUtil;
+import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IUserInfo;
 import com.centit.framework.model.basedata.IUserRole;
@@ -75,6 +76,10 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
 
     @Transient
     private String inheritedFrom;
+
+    @Transient
+    @DictionaryMap(fieldName = "userPrimatyUnitText", value = "unitCode")
+    private String userPrimaryUnit;
 
     @Override
     public String getObtainType() {
@@ -153,7 +158,10 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
         return null;
     }
 
-    // Property accessors
+    public void setUserPrimaryUnit(String userPrimaryUnit) {
+        this.userPrimaryUnit = userPrimaryUnit;
+    }
+// Property accessors
 
     public UserRoleId getId() {
         return this.id;
