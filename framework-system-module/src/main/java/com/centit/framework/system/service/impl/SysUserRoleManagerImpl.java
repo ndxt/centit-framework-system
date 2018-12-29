@@ -90,12 +90,11 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
 
     @Override
     @Transactional
-    public JSONArray pageQueryUserRole(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return DictionaryMapUtils.objectsToJSONArray(
-            userRoleDao.pageQueryUserRole(
+    public List<FVUserRoles> pageQueryUserRole(Map<String, Object> filterMap, PageDesc pageDesc) {
+        return userRoleDao.pageQueryUserRole(
                 QueryParameterPrepare.makeMybatisOrderByParam(
                     QueryParameterPrepare.prepPageParams(
-                        filterMap,pageDesc,userRoleDao.pageCountUserRole(filterMap)),FVUserRoles.class)));
+                        filterMap,pageDesc,userRoleDao.pageCountUserRole(filterMap)),FVUserRoles.class));
     }
 
     /**

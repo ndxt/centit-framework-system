@@ -7,11 +7,9 @@ import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.DictionaryMapUtils;
+import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.operationlog.RecordOperationLog;
-import com.centit.framework.system.po.RoleInfo;
-import com.centit.framework.system.po.UnitInfo;
-import com.centit.framework.system.po.UserRole;
-import com.centit.framework.system.po.UserRoleId;
+import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysRoleManager;
 import com.centit.framework.system.service.SysUnitManager;
 import com.centit.framework.system.service.SysUserRoleManager;
@@ -33,16 +31,12 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: sx
- * Date: 14-11-27
- * Time: 上午10:16
  * 用户角色关联操作，此操作是双向操作。
  */
-
 @Controller
 @RequestMapping("/userrole")
 @Api(value = "用户角色关联操作，此操作是双向操作。", tags = "用户角色关联操作接口")
@@ -61,39 +55,30 @@ public class UserRoleController extends BaseController {
 
     /**
      * 系统日志中记录
-     *
      * @return 业务标识ID
      */
-    //private String optId = "USERROLE";//CodeRepositoryUtil.getCode("OPTID", "userRole");
     public String getOptId() {
         return "USERROLE";
     }
 
     /**
      * 通过继承得到的用户
-     *
      * @param roleCode 角色代码
      * @param pageDesc 分页信息
      */
     @ApiOperation(value = "通过继承得到的用户", notes = "通过继承得到的用户")
-    @ApiImplicitParams({@ApiImplicitParam(
-        name = "roleCode", value = "角色代码",
-        required = true, paramType = "path", dataType = "String"
-    ), @ApiImplicitParam(
-        name = "pageDesc", value = "json格式的分页对象信息",
-        paramType = "body", dataTypeClass = PageDesc.class
-    )})
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "roleCode", value = "角色代码", required = true, paramType = "path"),
+        @ApiImplicitParam(name = "pageDesc", value = "json格式的分页对象信息", paramType = "body", dataTypeClass = PageDesc.class)
+    })
     @RequestMapping(value = "/roleusersinherited/{roleCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData listUserRoleSInherited(@PathVariable String roleCode, PageDesc pageDesc) {
+    public PageQueryResult<FVUserRoles> listUserRoleSInherited(@PathVariable String roleCode, PageDesc pageDesc) {
         Map<String, Object> filterMap = new HashMap<>(8);
         filterMap.put("roleCode", roleCode);
         filterMap.put("obtainType", "I");
-        JSONArray listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-        return resData;
+        List<FVUserRoles> listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
+        return PageQueryResult.createResultMapDict(listObjects, pageDesc);
     }
 
     /**
@@ -112,15 +97,12 @@ public class UserRoleController extends BaseController {
     )})
     @RequestMapping(value = "/userrolesinherited/{userCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData listRoleUsersInherited(@PathVariable String userCode, PageDesc pageDesc) {
+    public PageQueryResult<FVUserRoles> listRoleUsersInherited(@PathVariable String userCode, PageDesc pageDesc) {
         Map<String, Object> filterMap = new HashMap<>(8);
         filterMap.put("userCode", userCode);
         filterMap.put("obtainType", "I");
-        JSONArray listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, listObjects);
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-        return resData;
+        List<FVUserRoles> listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
+        return PageQueryResult.createResultMapDict(listObjects, pageDesc);
     }
 
     /**
@@ -139,14 +121,11 @@ public class UserRoleController extends BaseController {
     )})
     @RequestMapping(value = "/userrolesall/{userCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData listRoleUsersAll(@PathVariable String userCode, PageDesc pageDesc) {
+    public PageQueryResult<FVUserRoles> listRoleUsersAll(@PathVariable String userCode, PageDesc pageDesc) {
         Map<String, Object> filterMap = new HashMap<>(8);
         filterMap.put("userCode", userCode);
-        JSONArray listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, listObjects);
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-        return resData;
+        List<FVUserRoles> listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
+        return PageQueryResult.createResultMapDict(listObjects, pageDesc);
     }
 
     /**

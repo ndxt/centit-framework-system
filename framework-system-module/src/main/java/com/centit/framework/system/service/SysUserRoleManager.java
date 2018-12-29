@@ -72,5 +72,5 @@ public interface SysUserRoleManager{
      * @param pageDesc 分页信息
      * @return 角色列表
      */
-    JSONArray pageQueryUserRole( Map<String, Object> filterMap, PageDesc pageDesc);
+    List<FVUserRoles> pageQueryUserRole( Map<String, Object> filterMap, PageDesc pageDesc);
 }

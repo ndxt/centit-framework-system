@@ -105,16 +105,14 @@ public class OptInfoController extends BaseController {
 
     /**
      * 查询所有需要通过权限管理的业务
-     *
-     * @param response HttpServletResponse
      */
     @ApiOperation(value = "查询所有需要通过权限管理的业务", notes = "查询所有需要通过权限管理的业务。")
     @RequestMapping(value = "/poweropts", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData listPowerOpts(HttpServletResponse response) {
+    public JSONArray listPowerOpts() {
         List<OptInfo> listObjects = optInfoManager.listSysAndOptPowerOpts();
         listObjects = optInfoManager.listObjectFormatTree(listObjects, true);
-        return ResponseData.makeResponseData(listObjects);
+        return makeMenuFuncsJson(listObjects);
     }
 
 

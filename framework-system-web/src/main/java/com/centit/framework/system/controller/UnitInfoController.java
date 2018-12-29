@@ -7,6 +7,7 @@ import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
+import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.model.adapter.PlatformEnvironment;
@@ -74,7 +75,6 @@ public class UnitInfoController extends BaseController {
      *
      * @return 业务标识ID
      */
-    //private String optId = "UNITMAG";// CodeRepositoryUtil.getCode("OPTID", "unitInfo");
     public String getOptId() {
         return "UNITMAG";
     }
@@ -88,17 +88,12 @@ public class UnitInfoController extends BaseController {
      */
     @ApiOperation(value = "查询所有机构信息", notes = "查询所有机构信息。")
     @ApiImplicitParams({
-        @ApiImplicitParam(
-            name = "struct", value = "指需要显示的属性名",
-            paramType = "query", dataType = "Boolean"),
-        @ApiImplicitParam(
-            name = "id", value = "父机构ID",
-            paramType = "query", dataType = "String")
+        @ApiImplicitParam(name = "struct", value = "指需要显示的属性名", paramType = "query", dataType = "Boolean"),
+        @ApiImplicitParam(name = "id", value = "父机构ID", paramType = "query", dataType = "String")
     })
     @RequestMapping(method = RequestMethod.GET)
     @WrapUpResponseBody
     public ResponseData list(boolean struct, String id, HttpServletRequest request) {
-
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
         String unitName = (String) searchColumn.get("unitName");
 
@@ -208,11 +203,9 @@ public class UnitInfoController extends BaseController {
         name = "unitCode", value = "机构ID",
         paramType = "query", dataType = "String")
     @RequestMapping(value = "/{unitCode}", method = RequestMethod.GET)
-    @WrapUpResponseBody
-    public ResponseData getUnitInfo(@PathVariable String unitCode) {
-        UnitInfo unitInfo = sysUnitManager.getObjectById(unitCode);
-
-        return ResponseData.makeResponseData(unitInfo);
+    @WrapUpResponseBody(contentType = WrapUpContentType.MAP_DICT)
+    public UnitInfo getUnitInfo(@PathVariable String unitCode) {
+        return sysUnitManager.getObjectById(unitCode);
     }
 
     /**
