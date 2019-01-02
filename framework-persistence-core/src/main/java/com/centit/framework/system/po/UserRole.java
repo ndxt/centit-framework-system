@@ -78,7 +78,7 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
     private String inheritedFrom;
 
     @Transient
-    @DictionaryMap(fieldName = "userPrimatyUnitText", value = "unitCode")
+    @DictionaryMap(fieldName = "userPrimaryUnitText", value = "unitCode")
     private String userPrimaryUnit;
 
     @Override
