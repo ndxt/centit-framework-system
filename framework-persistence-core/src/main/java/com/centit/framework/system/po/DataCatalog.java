@@ -11,11 +11,11 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,7 +66,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
     @NotBlank(message = "字段不能为空")
     @Length(max = 1, message = "字段长度必须为{max}")
     @Pattern(regexp = "[LT]", message = "字段只能填写L或T")
-    @ApiModelProperty(value = "字段只能填写L或T",name = "catalogType",required = true)
+    @ApiModelProperty(value = "字段只能填写L(列表)或T(树)",name = "catalogType",required = true)
     @DictionaryMap(fieldName = "catalogTypeText", value = "CatalogType")
     private String catalogType;
 
@@ -102,7 +102,6 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
     @Column(name = "CREATE_DATE", nullable = false)
     protected Date createDate;
 
-    //创建人、更新人、更新时间
     /**
      * CREATOR(创建人) 创建人
      */
@@ -122,12 +121,10 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
     @ValueGenerator(strategy = GeneratorType.FUNCTION, occasion = GeneratorTime.ALWAYS,
             condition = GeneratorCondition.ALWAYS, value="today()" )
     private Date  updateDate;
-    //结束
 
     @Transient
     private List<DataDictionary> dataDictionaries;
 
-    // Constructors
     /** default constructor */
     /**
      * minimal constructor

@@ -258,12 +258,11 @@ public class DataDictionaryController extends BaseController {
     }
 
     /**
-     * 更新字典目录明细
+     * 更新字典目录及明细
      *
      * @param catalogCode DataCatalog主键
      * @param dataCatalog {@link DataCatalog}
      * @param request     {@link HttpServletRequest}
-     * @param response    {@link HttpServletResponse}
      */
     @ApiOperation(value = "更新字典目录明细", notes = "更新字典目录明细，目录明显对象就是dataDictionaries[]里面的属性组成")
     @ApiImplicitParam(
@@ -271,36 +270,29 @@ public class DataDictionaryController extends BaseController {
         required = true, paramType = "path", dataType = "String"
     )
     @ApiParam(name = "dataCatalog", value = "更新字典类别新的对象信息", required = true)
-    @RequestMapping(value = "update/{catalogCode}", method = {RequestMethod.PUT})
+    @RequestMapping(value = "/update/{catalogCode}", method = {RequestMethod.PUT})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新字典目录明细")
     @WrapUpResponseBody
     public ResponseData updateDictionary(@PathVariable String catalogCode, @Valid DataCatalog dataCatalog,
-                                         HttpServletRequest request, HttpServletResponse response) {
+                                         HttpServletRequest request) {
 
         DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
 
         if (null == dbDataCatalog) {
             return ResponseData.makeErrorMessage("当前对象不存在");
         }
-        DataCatalog oldValue = new DataCatalog();
-        BeanUtils.copyProperties(dbDataCatalog, oldValue);
         boolean isAdmin = isLoginAsAdmin(request);
-        String datastyle = isAdmin ? "S" : "U";
+        String dataStyle = isAdmin ? "S" : "U";
         for (DataDictionary d : dataCatalog.getDataDictionaries()) {
             if (StringUtils.isBlank(d.getDataStyle())) {
-                d.setDataStyle(datastyle);
+                d.setDataStyle(dataStyle);
             }
         }
         dbDataCatalog.addAllDataPiece(dataCatalog.getDataDictionaries());
-        List<DataDictionary> oldDictionaries = dataDictionaryManager.saveCatalogIncludeDataPiece(dbDataCatalog, isAdmin);
-        oldValue.setDataDictionaries(oldDictionaries);
+        dataDictionaryManager.updateCatalog(dataCatalog);
+        dataDictionaryManager.saveCatalogIncludeDataPiece(dbDataCatalog, isAdmin);
 
         return ResponseData.makeSuccessResponse();
-
-        /***********************log*****************************/
-//        OperationLogCenter.logUpdateObject(request, optId, catalogCode, OperationLog.P_OPT_LOG_METHOD_U,
-//                "更新数据字典明细", dbDataCatalog, oldValue);
-        /***********************log*****************************/
     }
 
     /**
