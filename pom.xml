@@ -6,7 +6,7 @@
     <parent>
         <artifactId>centit-framework-dependencies</artifactId>
         <groupId>com.centit.framework</groupId>
-        <version>1.1.1811</version>
+        <version>1.1.1812</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.centit.framework</groupId>
@@ -19,8 +19,8 @@
     <url>https://github.com/ndxt/centit-framework-system</url>
 
     <properties>
-        <centit.framework.version>4.4-SNAPSHOT</centit.framework.version>
-        <centit.persistence.version>1.1-SNAPSHOT</centit.persistence.version>
+        <centit.framework.version>4.4.1812</centit.framework.version>
+        <centit.persistence.version>1.1.1812</centit.persistence.version>
         <centit.ui.version>3.1.1809</centit.ui.version>
     </properties>
 
@@ -147,7 +147,7 @@
             </plugin>
 
             <!-- GPG自动签名的插件-->
-            <!--<plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
@@ -161,8 +161,8 @@
                     </execution>
                 </executions>
             </plugin>
-           &lt;!&ndash;  sonatype release :
-                mvn nexus-staging:release&ndash;&gt;
+           <!--  sonatype release :
+                mvn nexus-staging:release-->
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -173,7 +173,7 @@
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
-            </plugin>-->
+            </plugin>
         </plugins>
     </build>
 </project>
