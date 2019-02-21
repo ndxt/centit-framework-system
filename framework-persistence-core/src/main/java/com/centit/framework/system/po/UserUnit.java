@@ -325,18 +325,4 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
           this.updateDate = lastModifyDate;
     }
     //结束
-
-    public String getLoginName() {
-        String userCode = getUserCode();
-
-        if (null != userCode) {
-            IUserInfo user = CodeRepositoryUtil.getUserInfoByCode(userCode);
-
-            if (null != user) {
-                return user.getLoginName();
-            }
-        }
-
-        return null;
-    }
 }

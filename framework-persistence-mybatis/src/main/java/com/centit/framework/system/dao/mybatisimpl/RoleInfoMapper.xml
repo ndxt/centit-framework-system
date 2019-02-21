@@ -16,13 +16,6 @@
         <result property="updateDate" column="UPDATE_DATE" />
     </resultMap>
 
-    <resultMap type="com.centit.framework.system.po.VOptTree" id="VoptTree">
-        <result property="menu_id" column="MENU_ID" />
-        <result property="parent_id" column="PARENT_ID" />
-        <result property="menu_name" column="MENU_NAME" />
-        <result property="orderInd" column="ORDER_IND" />
-    </resultMap>
-
     <select id="getNextKey" databaseId="oracle" resultType="String">
         select to_char(S_ROLECODE.nextval) from dual
     </select>
@@ -341,10 +334,6 @@
 
     <select id="listObjectsAll" resultMap="RoleInfo">
         <include refid="coreSql" />
-    </select>
-
-    <select id="getVOptTreeList" resultMap="VoptTree">
-        select MENU_ID,PARENT_ID,MENU_NAME,ORDER_IND from V_OPT_TREE
     </select>
 
     <select id="listRoleOptMethods" resultType="java.util.HashMap" parameterType="String">

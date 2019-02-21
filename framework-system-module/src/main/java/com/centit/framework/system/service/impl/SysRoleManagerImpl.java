@@ -94,12 +94,6 @@ public class SysRoleManagerImpl implements SysRoleManager {
         return o.getRoleCode();
     }
 
-    // 获取菜单TREE
-    @Transactional
-    public List<VOptTree> getVOptTreeList() {
-        return roleInfoDao.getVOptTreeList();
-    }
-
     @Transactional
     public List<RolePower> listAllRolePowers() {
         return rolePowerDao.listObjectsAll();

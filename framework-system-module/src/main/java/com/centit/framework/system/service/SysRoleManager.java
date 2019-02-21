@@ -3,7 +3,6 @@ package com.centit.framework.system.service;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.RolePower;
-import com.centit.framework.system.po.VOptTree;
 import com.centit.support.database.utils.PageDesc;
 
 import java.io.Serializable;
@@ -21,8 +20,6 @@ public interface SysRoleManager{
     List<RolePower> getRolePowers(String rolecode); // 角色操作权限
 
     List<RolePower> getRolePowersByDefCode(String optCode);
-
-    List<VOptTree> getVOptTreeList();// 获取菜单TREE
 
     Serializable saveNewRoleInfo(RoleInfo o);
 

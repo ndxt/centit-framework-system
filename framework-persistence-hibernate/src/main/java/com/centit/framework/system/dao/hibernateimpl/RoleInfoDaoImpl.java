@@ -5,7 +5,6 @@ import com.centit.framework.hibernate.dao.BaseDaoImpl;
 import com.centit.framework.hibernate.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.RoleInfoDao;
 import com.centit.framework.system.po.RoleInfo;
-import com.centit.framework.system.po.VOptTree;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,13 +19,6 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
     public String getNextKey() {
         return DatabaseOptUtils.getNextValueOfSequence(
           this, "S_ROLECODE");
-    }
-
-    @SuppressWarnings("unchecked")
-    @Transactional
-    public List<VOptTree> getVOptTreeList() {
-        return (List<VOptTree>)DatabaseOptUtils.findObjectsByHql
-                (this,"FROM VOptTree");
     }
 
     public Map<String, String> getFilterField() {

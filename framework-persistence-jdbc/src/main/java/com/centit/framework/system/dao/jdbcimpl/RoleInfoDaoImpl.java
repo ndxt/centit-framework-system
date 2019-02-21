@@ -5,11 +5,8 @@ import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.RoleInfoDao;
 import com.centit.framework.system.po.RoleInfo;
-import com.centit.framework.system.po.VOptTree;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;
-import com.centit.support.database.orm.OrmDaoUtils;
-import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,15 +67,6 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
         if(roles!=null && roles.size()>0)
             return roles.get(0);
         return null;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Transactional
-    public List<VOptTree> getVOptTreeList() {
-
-        return getJdbcTemplate().execute(
-                (ConnectionCallback<List<VOptTree>>) conn ->
-                        OrmDaoUtils.listAllObjects(conn,  VOptTree.class));
     }
 
     @SuppressWarnings("unchecked")

@@ -1,7 +1,6 @@
 package com.centit.framework.system.dao;
 
 import com.centit.framework.system.po.RoleInfo;
-import com.centit.framework.system.po.VOptTree;
 
 import java.util.List;
 import java.util.Map;
@@ -77,12 +76,6 @@ public interface RoleInfoDao {
      * @return RoleInfo
      */
     RoleInfo getRoleByCodeOrName(String roleCodeOrName);
-
-    /**
-     * 查询菜单树
-     * @return List &lt;VOptTree&gt;
-     */
-    List<VOptTree> getVOptTreeList();
 
     /**
      * 根据角色Id查询操作定义

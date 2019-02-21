@@ -269,34 +269,34 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
           return this.creator;
       }
 
-      public void setCreator(String creator) {
-          this.creator = creator;
-      }
-
-      public String getUpdator() {
-          return this.updator;
-      }
-
-      public void setUpdator(String updator) {
-          this.updator = updator;
-      }
-
-      public Date getUpdateDate() {
-          return updateDate;
-      }
-
-      public void setUpdateDate(Date updateDate) {
-          this.updateDate = updateDate;
-      }
-
-      @Override
-      public Date getLastModifyDate() {
-          return updateDate;
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
-      @Override
-      public void setLastModifyDate(Date lastModifyDate) {
-          this.updateDate = lastModifyDate;
+    public String getUpdator() {
+        return this.updator;
+    }
+
+    public void setUpdator(String updator) {
+        this.updator = updator;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    @Override
+    public Date getLastModifyDate() {
+        return updateDate;
+  }
+
+    @Override
+    public void setLastModifyDate(Date lastModifyDate) {
+        this.updateDate = lastModifyDate;
     }
     //结束
 }
