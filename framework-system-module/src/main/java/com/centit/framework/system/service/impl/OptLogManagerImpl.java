@@ -84,7 +84,7 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
     @Override
     @Transactional(propagation=Propagation.REQUIRED)
     public void save(List<OperationLog> optLogs) {
-        List<OptLog> optlogs = new ArrayList<OptLog>();
+        List<OptLog> optlogs = new ArrayList<>(optLogs.size()+1);
         for(OperationLog ol : optLogs){
             OptLog optlog = new OptLog();
             optlog.copy(ol);

@@ -24,6 +24,10 @@ public class InstantiationServiceBeanPostProcessor implements ApplicationListene
     @Autowired(required = false)
     private OperationLogWriter optLogManager;
 
+    /*@Autowired(required = false)
+    private OperationLogWriter operationLogWriter;
+    */
+
     @Autowired(required = false)
     private InnerMessageManagerImpl innerMessageManager;
 
@@ -43,6 +47,10 @@ public class InstantiationServiceBeanPostProcessor implements ApplicationListene
         if(optLogManager!=null) {
             OperationLogCenter.registerOperationLogWriter(optLogManager);
         }
+        /*if(operationLogWriter!=null) {
+            OperationLogCenter.registerOperationLogWriter(operationLogWriter);
+        }*/
+
     }
 
 }
