@@ -19,8 +19,8 @@
     <url>https://github.com/ndxt/centit-framework-system</url>
 
     <properties>
-        <centit.framework.version>4.4.1812</centit.framework.version>
-        <centit.persistence.version>1.1.1812</centit.persistence.version>
+        <centit.framework.version>4.4-SNAPSHOT</centit.framework.version>
+        <centit.persistence.version>1.1-SNAPSHOT</centit.persistence.version>
         <centit.ui.version>3.1.1809</centit.ui.version>
     </properties>
 
