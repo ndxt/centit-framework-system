@@ -89,6 +89,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
 
     @Column(name = "UNIT_ORDER")
     @Range(max = 9999,min=1, message = "排序号不能大于{max}或小于{min}")
+    @OrderBy
     private Long unitOrder; // 机构排序
 
     @Column(name = "UNIT_GRADE")
