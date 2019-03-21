@@ -147,7 +147,7 @@ public class RoleInfoController extends BaseController {
     @WrapUpResponseBody()
     public PageQueryResult<RoleInfo> listUnitAndPublicRole(PageDesc pageDesc, HttpServletRequest request) {
 
-        String currentUnit = WebOptUtils.getLoginUser().getCurrentUnitCode();
+        String currentUnit = WebOptUtils.getLoginUser(request).getCurrentUnitCode();
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("publicUnitRole", currentUnit);
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);

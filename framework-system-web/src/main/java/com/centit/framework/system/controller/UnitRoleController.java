@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -100,9 +101,9 @@ public class UnitRoleController extends BaseController {
     })
     @RequestMapping(value = "/rolesubunits/{roleCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData listSubUnitByRole(@PathVariable String roleCode, PageDesc pageDesc) {
+    public ResponseData listSubUnitByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request) {
 
-        String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
+        String currentUnitCode = WebOptUtils.getLoginUser(request).getCurrentUnitCode();
         UnitInfo currentUnit = sysUnitManager.getObjectById(currentUnitCode);
         String unitPathPrefix = currentUnit.getUnitPath();
         Map<String, Object> filterMap = new HashMap<>(4);

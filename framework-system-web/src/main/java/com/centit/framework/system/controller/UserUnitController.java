@@ -175,8 +175,8 @@ public class UserUnitController extends BaseController {
     @ApiImplicitParam(name = "userCode", value = "用户代码")
     @GetMapping(value = "/usercurrentunits/{userCode}")
     @WrapUpResponseBody
-    public ResponseData listUserUnitsUnderUnitByUserCode(@PathVariable String userCode, PageDesc pageDesc){
-        CentitUserDetails currentUser = WebOptUtils.getLoginUser();
+    public ResponseData listUserUnitsUnderUnitByUserCode(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request){
+        CentitUserDetails currentUser = WebOptUtils.getLoginUser(request);
         if(currentUser == null){
             return ResponseData.makeErrorMessage("未登录");
         }

@@ -136,7 +136,7 @@ public class UnitInfoController extends BaseController {
     @WrapUpResponseBody
     public ResponseData listSub(String id, HttpServletRequest request) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
-        String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
+        String currentUnitCode = WebOptUtils.getLoginUser(request).getCurrentUnitCode();
 
         String unitName = StringBaseOpt.castObjectToString(searchColumn.get("unitName"));
 
@@ -168,15 +168,15 @@ public class UnitInfoController extends BaseController {
         }
     }
 
-    /**
+    /*
      * 查询 当前机构 子机构
      */
     @ApiOperation(value = "查询 当前机构 子机构", notes = "查询 当前机构 子机构。")
     @RequestMapping(value = "/validsubunits", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData listValidSubUnit() {
+    public ResponseData listValidSubUnit(HttpServletRequest request) {
 
-        String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
+        String currentUnitCode = WebOptUtils.getLoginUser(request).getCurrentUnitCode();
         List<UnitInfo> listObjects = sysUnitManager.listValidSubUnits(currentUnitCode);
 
         JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
@@ -431,7 +431,7 @@ public class UnitInfoController extends BaseController {
     @WrapUpResponseBody
     public ResponseData listUnitUsers(PageDesc pageDesc, HttpServletRequest request) {
 
-        String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
+        String currentUnitCode = WebOptUtils.getLoginUser(request).getCurrentUnitCode();
 
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
         searchColumn.put("unitCode", currentUnitCode);
@@ -572,15 +572,15 @@ public class UnitInfoController extends BaseController {
         /*********log*********/
     }
 
-    /**
+    /*
      * 当前机构下所有可用的角色
      */
     @ApiOperation(value = "当前机构下所有可用的角色", notes = "当前机构下所有可用的角色。")
     @GetMapping(value = "/validroles")
     @WrapUpResponseBody
-    public ResponseData listUnitAndPublicRole() {
+    public ResponseData listUnitAndPublicRole(HttpServletRequest request) {
 
-        String currentUnitCode = WebOptUtils.getLoginUser().getCurrentUnitCode();
+        String currentUnitCode = WebOptUtils.getLoginUser(request).getCurrentUnitCode();
         Map<String, Object> filterMap = new HashMap<>(4);
         filterMap.put("publicUnitRole", currentUnitCode);
         filterMap.put("isValid", "T");
