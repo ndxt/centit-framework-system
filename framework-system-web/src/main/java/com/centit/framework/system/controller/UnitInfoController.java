@@ -153,7 +153,7 @@ public class UnitInfoController extends BaseController {
             } else {
                 filterMap.put("parentUnit", StringUtils.isNotBlank(id) ? id : currentUnitCode);
             }
-            List<UnitInfo> listObjects = sysUnitManager.listAllSubUnits(currentUnitCode);
+            List<UnitInfo> listObjects = sysUnitManager.listAllSubUnits(id);
 
             JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
             for (Object o : ja) {
