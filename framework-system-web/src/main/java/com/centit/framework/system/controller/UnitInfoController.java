@@ -138,7 +138,8 @@ public class UnitInfoController extends BaseController {
     public ResponseData listSub(String id, HttpServletRequest request) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
         String currentUnitCode = WebOptUtils.getLoginUser(request).getCurrentUnitCode();
-
+        if ("".equals(id))
+            id = currentUnitCode;
         String unitName = StringBaseOpt.castObjectToString(searchColumn.get("unitName"));
 
         if (StringUtils.isNotBlank(unitName) && StringUtils.isBlank(id)) {
