@@ -278,11 +278,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
     public List<UnitInfo> listAllSubUnits(String unitCode) {
 
         UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
-        if (unitInfo != null) {
-            return  unitInfoDao.listSubUnitsByUnitPaht(unitInfo.getUnitPath());
-        } else {
-            return null;
-        }
+        return  unitInfoDao.listSubUnitsByUnitPaht(unitInfo != null ? unitInfo.getUnitPath() : null);
     }
 
     /**
