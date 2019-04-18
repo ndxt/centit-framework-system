@@ -8,10 +8,12 @@ import com.centit.framework.system.dao.UserInfoDao;
 import com.centit.framework.system.po.FVUserOptList;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.support.algorithm.CollectionsOpt;
+import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.PageDesc;
+import com.centit.support.database.utils.QueryUtils;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,24 @@ import java.util.Map;
 
 @Repository("userInfoDao")
 public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements UserInfoDao {
+
+    // 将F_V_USERROLES试图提出增加条件查询提高性能
+    private static final String currentDateTime = QueryUtils.buildDatetimeStringForQuery(DatetimeOpt.currentUtilDate());
+    private static final String f_v_userroles_sql = "select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'D' as OBTAIN_TYPE, " +
+        "b.ROLE_TYPE, b.UNIT_CODE,b.ROLE_DESC, b.CREATE_DATE, b.UPDATE_DATE ,a.USER_CODE, null as INHERITED_FROM " +
+        "from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE) " +
+        "where a.OBTAIN_DATE <= " + currentDateTime +
+        " and (a.SECEDE_DATE is null or a.SECEDE_DATE > " + currentDateTime +
+        " ) and b.IS_VALID='T' and b.ROLE_CODE = :roleCode " +
+        "union " +
+        "select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'I' as OBTAIN_TYPE, b.ROLE_TYPE, b.UNIT_CODE, " +
+        "b.ROLE_DESC, b.CREATE_DATE, b.UPDATE_DATE ,c.USER_CODE, a.UNIT_CODE as INHERITED_FROM " +
+        "from F_UNITROLE a join F_ROLEINFO b on (a.ROLE_CODE = b.ROLE_CODE) " +
+        "JOIN F_USERUNIT c on( a.UNIT_CODE = c.UNIT_CODE) " +
+        "where a.OBTAIN_DATE <= " + currentDateTime +
+        " and (a.SECEDE_DATE is null or a.SECEDE_DATE > " + currentDateTime +
+        " )" +
+        " and b.IS_VALID='T' and a.ROLE_CODE = :roleCode ";
 
     public Map<String, String> getFilterField() {
         if (filterField == null) {
@@ -40,7 +60,7 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
             filterField.put("byUnderUnit", "userCode in " +
                     "(select us.USER_CODE from f_userunit us where us.UNIT_CODE = :byUnderUnit ) ");
             filterField.put("roleCode", "USER_CODE in " +
-                "(select v.USER_CODE from F_V_USERROLES v where v.ROLE_CODE = :roleCode) ");
+                "(select v.USER_CODE from ( " + f_v_userroles_sql + " ) v where v.ROLE_CODE = :roleCode) ");
             filterField.put("queryByUnit", "userCode in " +
                     "(select us.USER_CODE from f_userunit us where us.UNIT_CODE = :queryByUnit ) ");
             filterField.put("queryByGW", "userCode in " +
