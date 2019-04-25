@@ -189,7 +189,7 @@ public class UserInfoController extends BaseController {
     @RequestMapping(value = "/{userCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新用户信息")
     @WrapUpResponseBody
-    public ResponseData edit(@PathVariable String userCode, @Valid UserInfo userInfo, UserUnit userUnit,
+    public ResponseData updateUserInfo(@PathVariable String userCode, @Valid UserInfo userInfo, UserUnit userUnit,
                              HttpServletRequest request) {
 
         UserInfo dbUserInfo = sysUserManager.getObjectById(userCode);
