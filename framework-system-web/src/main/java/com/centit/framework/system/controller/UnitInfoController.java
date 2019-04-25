@@ -3,6 +3,7 @@ package com.centit.framework.system.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
@@ -444,8 +445,10 @@ public class UnitInfoController extends BaseController {
 
         List<UserInfo> listObjects = sysUserMag.listObjects(searchColumn, pageDesc);
 
+        JSONArray jsonArr = DictionaryMapUtils.objectsToJSONArray(listObjects);
+
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, listObjects);
+        resData.addResponseData(BaseController.OBJLIST, jsonArr);
         resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
 
         return resData;
