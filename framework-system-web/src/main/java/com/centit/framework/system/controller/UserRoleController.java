@@ -216,7 +216,7 @@ public class UserRoleController extends BaseController {
     @RequestMapping(value = "/rolecurrentusers/{roleCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
     public ResponseData listCurrentUsersByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request) {
-        String currentUnitCode = WebOptUtils.getLoginUser(request).getCurrentUnitCode();
+        String currentUnitCode = WebOptUtils.getCurrentUnitCode(request);
         UnitInfo currentUnitInfo = sysUnitManager.getObjectById(currentUnitCode);
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("roleCode", roleCode);
@@ -244,7 +244,7 @@ public class UserRoleController extends BaseController {
     @WrapUpResponseBody
     public ResponseData listUserUnitRoles(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
-        String currentUnitCode = WebOptUtils.getLoginUser(request).getCurrentUnitCode();
+        String currentUnitCode = WebOptUtils.getCurrentUnitCode(request);
         filterMap.put("userCode", userCode);
         filterMap.put("roleUnitCode", currentUnitCode);
         filterMap.put("roleValid", "T");

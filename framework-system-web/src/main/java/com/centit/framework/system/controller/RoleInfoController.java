@@ -147,7 +147,7 @@ public class RoleInfoController extends BaseController {
     @WrapUpResponseBody()
     public PageQueryResult<RoleInfo> listUnitAndPublicRole(PageDesc pageDesc, HttpServletRequest request) {
 
-        String currentUnit = WebOptUtils.getLoginUser(request).getCurrentUnitCode();
+        String currentUnit = WebOptUtils.getCurrentUnitCode(request);
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("publicUnitRole", currentUnit);
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
@@ -276,11 +276,11 @@ public class RoleInfoController extends BaseController {
             if (StringUtils.isBlank(roleInfo.getUnitCode())) {
                 //JsonResultUtils.writeErrorMessageJson("机构角色必须指定所属机构。",response);
                 //return;
-                roleInfo.setUnitCode(super.getLoginUser(request).getCurrentUnitCode());
+                roleInfo.setUnitCode(WebOptUtils.getCurrentUnitCode(request));
             }
         }
         //roleInfo.setUnitCode("G");
-        roleInfo.setCreator(WebOptUtils.getLoginUserName(request));
+        roleInfo.setCreator(WebOptUtils.getCurrentUserCode(request));
         roleInfo.setCreateDate(new Date());
         sysRoleManager.saveNewRoleInfo(roleInfo);
         //刷新缓存
@@ -436,7 +436,7 @@ public class RoleInfoController extends BaseController {
         if (null == dbRoleInfo) {
             return ResponseData.makeErrorMessage("角色信息不存在");
         }
-//        String  userCode = getLoginUserCode(request);
+//        String  userCode = WebOptUtils.getCurrentUserCode(request);
 
 
 //        List<RolePower> oldPowers = dbRoleInfo.getRolePowers();
@@ -645,7 +645,7 @@ public class RoleInfoController extends BaseController {
             filterMap.put("NP_unitCode", true);
 
         } else if ("D".equals(type)) {
-            IUserUnit unit = CodeRepositoryUtil.getUserPrimaryUnit(super.getLoginUserCode(request));
+            IUserUnit unit = CodeRepositoryUtil.getUserPrimaryUnit(WebOptUtils.getCurrentUserCode(request));
             if (unit != null) {
                 filterMap.put("publicUnitRole", unit.getUnitCode());
             } else {

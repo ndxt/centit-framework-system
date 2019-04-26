@@ -4,11 +4,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
+import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
+import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.operationlog.RecordOperationLog;
-import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserSetting;
 import com.centit.framework.system.po.UserSettingId;
 import com.centit.framework.system.service.UserSettingManager;
@@ -63,18 +64,11 @@ public class UserSettingController extends BaseController {
         paramType = "body", dataTypeClass = PageDesc.class)
     @GetMapping
     @WrapUpResponseBody
-    public ResponseData list(PageDesc pageDesc, HttpServletRequest request) {
+    public PageQueryResult<Object> list(PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
-
-        searchColumn.put(CodeRepositoryUtil.USER_CODE,  getLoginUser(request).getUserCode());
-
+        searchColumn.put(CodeRepositoryUtil.USER_CODE, WebOptUtils.getCurrentUserCode(request));
         JSONArray listObjects = userSettingManager.listObjects(searchColumn, pageDesc);
-
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, listObjects);
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-
-        return resData;
+        return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
     /**
@@ -145,8 +139,8 @@ public class UserSettingController extends BaseController {
     @WrapUpResponseBody
     public ResponseData listAll(String[] field, HttpServletRequest request) {
         Map<String, Object> searchColumn = new HashMap<>();
-        UserInfo userInfo = (UserInfo) getLoginUser(request);
-        searchColumn.put(CodeRepositoryUtil.USER_CODE, userInfo.getUserCode());
+        String userCode = WebOptUtils.getCurrentUserCode(request);
+        searchColumn.put(CodeRepositoryUtil.USER_CODE, userCode);
 
         List<UserSetting> listObjects = userSettingManager.listObjects(searchColumn);
 
@@ -174,7 +168,7 @@ public class UserSettingController extends BaseController {
     @RequestMapping(value = "/{paramCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
     public ResponseData getUserSetting(@PathVariable String paramCode, HttpServletRequest request) {
-        UserSettingId id = new UserSettingId(super.getLoginUserCode(request), paramCode);
+        UserSettingId id = new UserSettingId(WebOptUtils.getCurrentUserCode(request), paramCode);
 
         UserSetting userSetting = userSettingManager.getObjectById(id);
         if (null != userSetting) {
@@ -200,7 +194,7 @@ public class UserSettingController extends BaseController {
 
         boolean isDefaultValue = userSetting.isDefaultValue();
         if (isDefaultValue) {
-//            userSetting.setUserCode(WebOptUtils.getLoginUser(request).getUserCode());
+//            userSetting.setUserCode(WebOptUtils.getCurrentUserCode(request));
             userSettingManager.saveNewUserSetting(userSetting);
         } else {
             userSettingManager.updateUserSetting(userSetting);
@@ -247,7 +241,7 @@ public class UserSettingController extends BaseController {
     @WrapUpResponseBody
     public ResponseData deleteUserSetting(@PathVariable String paramCode, HttpServletRequest request) {
         UserSetting dbUserSetting = userSettingManager.getObjectById(
-            new UserSettingId(super.getLoginUserCode(request), paramCode));
+            new UserSettingId(WebOptUtils.getCurrentUserCode(request), paramCode));
         userSettingManager.deleteObject(dbUserSetting);
         return ResponseData.makeSuccessResponse();
         /*********log*********/

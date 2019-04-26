@@ -65,7 +65,7 @@ public class InnerMsgController extends BaseController {
 
         String receive = (String) searchColumn.get("receive");
         if (StringUtils.isBlank(receive)) {
-            searchColumn.put("receive", WebOptUtils.getLoginUser(request).getUserCode());
+            searchColumn.put("receive", WebOptUtils.getCurrentUserCode(request));
         }
         List<InnerMsgRecipient> listObjects = innerMessageManager.listMsgRecipientsCascade(searchColumn, pageDesc);
         ResponseMapData resData = new ResponseMapData();
@@ -83,7 +83,7 @@ public class InnerMsgController extends BaseController {
     @RequestMapping(value = "/unreadMsgCount", method = {RequestMethod.GET})
     @WrapUpResponseBody
     public ResponseData unreadMsgCount(HttpServletRequest request) {
-        String currUser = WebOptUtils.getLoginUser(request).getUserCode();
+        String currUser = WebOptUtils.getCurrentUserCode(request);
         long unreadMsg = innerMessageManager.getUnreadMessageCount(currUser);
         return ResponseData.makeResponseData(unreadMsg);
     }
@@ -105,7 +105,7 @@ public class InnerMsgController extends BaseController {
 
         String sender = (String) searchColumn.get("sender");
         if (StringUtils.isBlank(sender)) {
-            searchColumn.put("sender", WebOptUtils.getLoginUser(request).getUserCode());
+            searchColumn.put("sender", WebOptUtils.getCurrentUserCode(request));
         }
 
         List<InnerMsg> listObjects = innerMessageManager.listInnerMsgs(searchColumn, pageDesc);
@@ -191,7 +191,7 @@ public class InnerMsgController extends BaseController {
     public ResponseData noticeByUnit(@PathVariable String unitCode, @Valid InnerMsg innerMsg, HttpServletRequest request) throws Exception {
 
         if (!StringUtils.isNotBlank(innerMsg.getSender())) {
-            innerMsg.setSender(WebOptUtils.getLoginUser(request).getUserCode());
+            innerMsg.setSender(WebOptUtils.getCurrentUserCode(request));
             //innerMsg.setSenderName(WebOptUtils.getLoginUserName(request));
         }
         if (null == innerMsg.getSendDate()) {
@@ -213,7 +213,7 @@ public class InnerMsgController extends BaseController {
     @RequestMapping(value = "/sendMsg", method = {RequestMethod.POST})
     @WrapUpResponseBody
     public ResponseData sendMsg(@Valid InnerMsgRecipient recipient, HttpServletRequest request) {
-        innerMessageManager.sendInnerMsg(recipient, this.getLoginUser(request).getUserCode());
+        innerMessageManager.sendInnerMsg(recipient, WebOptUtils.getCurrentUserCode(request));
         //DataPushSocketServer.pushMessage(recipient.getReceive(), "你有新邮件："+ recipient.getMsgTitle());
         return ResponseData.makeResponseData(recipient);
     }
@@ -228,7 +228,7 @@ public class InnerMsgController extends BaseController {
     @RequestMapping(value = "/loginuser", method = {RequestMethod.GET})
     @WrapUpResponseBody
     public String getLoginUserCode(HttpServletRequest request) {
-        return this.getLoginUser(request).getUserCode();
+        return WebOptUtils.getCurrentUserCode(request);
     }
 
     /**

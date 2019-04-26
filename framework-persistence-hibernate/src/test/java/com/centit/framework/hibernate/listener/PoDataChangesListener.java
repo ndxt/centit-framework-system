@@ -145,17 +145,11 @@ public class PoDataChangesListener implements PreInsertEventListener,
                 oldvalues.append("}");
 
                 OperationLogCenter.logUpdateObject(
-                        getUserCode(), ClassUtils.getShortName(clazz), String.valueOf(id), type,optContent,
+                    WebOptUtils.getCurrentUserCode(RequestThreadLocal
+                        .getHttpThreadWrapper().getRequest()), ClassUtils.getShortName(clazz), String.valueOf(id), type,optContent,
                         values.toString(), oldvalues.toString());
             }
         }
-    }
-
-    private String getUserCode() {
-        CentitUserDetails loginUser = WebOptUtils.getLoginUser(RequestThreadLocal
-                .getHttpThreadWrapper().getRequest());
-        // return "操作用户 " + ((FUserinfo)loginUser).getLoginname() + " " ;
-        return loginUser == null ? "" : loginUser.getUserCode();
     }
 
 

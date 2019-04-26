@@ -1,5 +1,6 @@
 package com.centit.framework.system.controller;
 
+import com.centit.framework.common.ObjectException;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
@@ -7,6 +8,7 @@ import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.DictionaryMapUtils;
+import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.model.basedata.IUnitInfo;
 import com.centit.framework.model.basedata.IUserInfo;
 import com.centit.framework.operationlog.RecordOperationLog;
@@ -157,7 +159,7 @@ public class UserUnitController extends BaseController {
     @WrapUpResponseBody
     public ResponseData listUnitsByUser(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request) {
 
-//        UserInfo user = sysUserManager.getObjectById(this.getLoginUserCode(request));
+//        UserInfo user = sysUserManager.getObjectById(this.WebOptUtils.getCurrentUserCode(request));
         Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
         filterMap.put("userCode", userCode);
 //        filterMap.put("unitCode", user.getPrimaryUnit());
@@ -175,19 +177,14 @@ public class UserUnitController extends BaseController {
     @ApiImplicitParam(name = "userCode", value = "用户代码")
     @GetMapping(value = "/usercurrentunits/{userCode}")
     @WrapUpResponseBody
-    public ResponseData listUserUnitsUnderUnitByUserCode(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request){
-        CentitUserDetails currentUser = WebOptUtils.getLoginUser(request);
-        if(currentUser == null){
-            return ResponseData.makeErrorMessage("未登录");
+    public PageQueryResult<UserUnit> listUserUnitsUnderUnitByUserCode(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request){
+        String currentUnitCode  = WebOptUtils.getCurrentUnitCode(request);
+        if(StringUtils.isBlank(currentUnitCode )){
+            throw new ObjectException("未登录");
         }
-        String currentUnitCode = currentUser.getCurrentUnitCode();
 
         List<UserUnit> userUnits = sysUserUnitManager.listUserUnitsUnderUnitByUserCode(userCode, currentUnitCode, pageDesc);
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(userUnits));
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-
-        return resData;
+        return PageQueryResult.createResult(userUnits, pageDesc);
     }
 
     /**
@@ -261,7 +258,7 @@ public class UserUnitController extends BaseController {
             return ResponseData.makeErrorMessage("该用户已存在");
         }
 
-        userUnit.setCreator(getLoginUserCode(request));
+        userUnit.setCreator(WebOptUtils.getCurrentUserCode(request));
         sysUserUnitManager.saveNewUserUnit(userUnit);
 
         return ResponseData.makeSuccessResponse();
@@ -291,7 +288,7 @@ public class UserUnitController extends BaseController {
     @WrapUpResponseBody
     public ResponseData edit(@PathVariable String userunitid, @Valid UserUnit userUnit, HttpServletRequest request) {
 
-        userUnit.setUpdator(getLoginUserCode(request));
+        userUnit.setUpdator(WebOptUtils.getCurrentUserCode(request));
         UserUnit dbUserUnit = sysUserUnitManager.getObjectById(userunitid);
         if (null == dbUserUnit) {
             return ResponseData.makeErrorMessage("当前机构中无此用户");

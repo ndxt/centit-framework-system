@@ -4,12 +4,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
+import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.operationlog.RecordOperationLog;
-import com.centit.framework.security.model.CentitUserDetails;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserUnit;
@@ -155,7 +155,7 @@ public class UserInfoController extends BaseController {
                 ur.setUserCode(userInfo.getUserCode());
             }
         }
-        userUnit.setCreator(getLoginUserCode(request));
+        userUnit.setCreator(WebOptUtils.getCurrentUserCode(request));
         userUnit.setUserCode(userInfo.getUserCode());
         sysUserManager.saveNewUserInfo(userInfo, userUnit);
 
@@ -201,7 +201,7 @@ public class UserInfoController extends BaseController {
         userUnit.setUserCode(userInfo.getUserCode());
         userUnit.setUnitCode(userInfo.getPrimaryUnit());
         userUnit.setIsPrimary("T");
-        userUnit.setCreator(getLoginUserCode(request));
+        userUnit.setCreator(WebOptUtils.getCurrentUserCode(request));
         sysUserUnitManager.saveNewUserUnit(userUnit);
 
         if (StringUtils.isBlank(userInfo.getUserPin())) {
@@ -221,10 +221,12 @@ public class UserInfoController extends BaseController {
     @ApiOperation(value = "当前登录用户信息", notes = "当前登录用户信息。")
     @RequestMapping(value = "/current", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData getCurrentUserInfo(HttpServletRequest request) {
-        CentitUserDetails userDetails = super.getLoginUser(request);
-        UserInfo userinfo = sysUserManager.getObjectById(userDetails.getUserCode());
-        return ResponseData.makeResponseData(userinfo);
+    public UserInfo getCurrentUserInfo(HttpServletRequest request) {
+        String userCode = WebOptUtils.getCurrentUserCode(request);
+        if(StringUtils.isBlank(userCode)){
+            return null;
+        }
+        return sysUserManager.getObjectById(userCode);
     }
 
     /**

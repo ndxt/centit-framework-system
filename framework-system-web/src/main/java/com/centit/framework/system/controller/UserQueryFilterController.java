@@ -3,6 +3,7 @@ package com.centit.framework.system.controller;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
+import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.system.po.UserQueryFilter;
@@ -106,7 +107,7 @@ public class UserQueryFilterController extends BaseController {
     public ResponseData listUserQueryFilter(@PathVariable String modelCode, HttpServletRequest request) {
 
         List<UserQueryFilter> userFilters =
-            userQueryFilterMag.listUserQueryFilterByModle(super.getLoginUserCode(request), modelCode);
+            userQueryFilterMag.listUserQueryFilterByModle(WebOptUtils.getCurrentUserCode(request), modelCode);
         return ResponseData.makeResponseData(userFilters);
     }
 
@@ -146,7 +147,7 @@ public class UserQueryFilterController extends BaseController {
         userQueryFilter.setIsDefault("F");
 
         if (StringBaseOpt.isNvl(userQueryFilter.getUserCode()))
-            userQueryFilter.setUserCode(super.getLoginUserCode(request));
+            userQueryFilter.setUserCode(WebOptUtils.getCurrentUserCode(request));
         userQueryFilterMag.saveNewObject(userQueryFilter);
         return ResponseData.makeResponseData(userQueryFilter);
     }
@@ -177,7 +178,7 @@ public class UserQueryFilterController extends BaseController {
         userQueryFilter.setIsDefault("T");
         userQueryFilter.setModleCode(modelCode);
         if (StringBaseOpt.isNvl(userQueryFilter.getUserCode()))
-            userQueryFilter.setUserCode(super.getLoginUserCode(request));
+            userQueryFilter.setUserCode(WebOptUtils.getCurrentUserCode(request));
 
         Serializable pk = userQueryFilterMag.saveUserDefaultFilter(userQueryFilter);
         return ResponseData.makeResponseData(pk);
@@ -198,7 +199,7 @@ public class UserQueryFilterController extends BaseController {
     public ResponseData getUserDefaultFilter(@PathVariable String modelCode,
                                              HttpServletRequest request) {
         UserQueryFilter userQueryFilter =
-            userQueryFilterMag.getUserDefaultFilter(super.getLoginUserCode(request), modelCode);
+            userQueryFilterMag.getUserDefaultFilter(WebOptUtils.getCurrentUserCode(request), modelCode);
         return ResponseData.makeResponseData(userQueryFilter);
     }
 

@@ -103,7 +103,7 @@ public class UnitRoleController extends BaseController {
     @WrapUpResponseBody
     public ResponseData listSubUnitByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request) {
 
-        String currentUnitCode = WebOptUtils.getLoginUser(request).getCurrentUnitCode();
+        String currentUnitCode = WebOptUtils.getCurrentUnitCode(request);
         UnitInfo currentUnit = sysUnitManager.getObjectById(currentUnitCode);
         String unitPathPrefix = currentUnit.getUnitPath();
         Map<String, Object> filterMap = new HashMap<>(4);
