@@ -9,6 +9,7 @@ import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.DatetimeOpt;
+import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.database.utils.QueryAndNamedParams;
@@ -52,24 +53,31 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId>
     }
 
     // 将F_V_USERROLES试图提出增加条件查询提高性能
-    private static final String f_v_userroles_sql = "select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'D' as OBTAIN_TYPE, " +
-        "b.ROLE_TYPE, b.UNIT_CODE,b.ROLE_DESC, b.CREATE_DATE, b.UPDATE_DATE ,a.USER_CODE, null as INHERITED_FROM " +
+    //  b.CREATE_DATE, b.UPDATE_DATE
+    private static final String f_v_user_appoint_roles_sql =
+        "select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'D' as OBTAIN_TYPE, b.ROLE_TYPE, " +
+            " b.UNIT_CODE, b.ROLE_DESC, a.USER_CODE, null as INHERITED_FROM " +
         "from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE) " +
         "where [:currentDateTime | a.OBTAIN_DATE <=  :currentDateTime and] " +
-        "(a.SECEDE_DATE is null [:currentDateTime | or a.SECEDE_DATE > :currentDateTime]) " +
-        "and b.IS_VALID='T' " +
-        "[:userCode | and a.USER_CODE = :userCode] " +
-        "[:roleCode | and b.ROLE_CODE = :roleCode] " +
-        "union " +
-        "select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'I' as OBTAIN_TYPE, b.ROLE_TYPE, b.UNIT_CODE, " +
-        "b.ROLE_DESC, b.CREATE_DATE, b.UPDATE_DATE ,c.USER_CODE, a.UNIT_CODE as INHERITED_FROM " +
+            "(a.SECEDE_DATE is null [:currentDateTime | or a.SECEDE_DATE > :currentDateTime]) " +
+            "and b.IS_VALID='T' " +
+            "[:userCode | and a.USER_CODE = :userCode]" +
+            "[:(startwith)roleName | and b.ROLE_NAME like :roleName]" +
+            "[:roleCode | and a.ROLE_CODE = :roleCode]";
+
+    private static final String f_v_user_inherited_roles_sql =
+        "select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'I' as OBTAIN_TYPE, b.ROLE_TYPE, " +
+            "b.UNIT_CODE, b.ROLE_DESC, c.USER_CODE, a.UNIT_CODE as INHERITED_FROM " +
         "from F_UNITROLE a join F_ROLEINFO b on (a.ROLE_CODE = b.ROLE_CODE) " +
-        "JOIN F_USERUNIT c on( a.UNIT_CODE = c.UNIT_CODE) " +
+            "JOIN F_USERUNIT c on( a.UNIT_CODE = c.UNIT_CODE) " +
         "where [:currentDateTime | a.OBTAIN_DATE <=  :currentDateTime and] " +
-        "(a.SECEDE_DATE is null [:currentDateTime | or a.SECEDE_DATE > :currentDateTime]) " +
-        "and b.IS_VALID='T' " +
-        "[:userCode | and c.USER_CODE = :userCode] " +
-        "[:roleCode | and a.ROLE_CODE = :roleCode] ";
+            "(a.SECEDE_DATE is null [:currentDateTime | or a.SECEDE_DATE > :currentDateTime]) " +
+            "and b.IS_VALID='T' " +
+            "[:userCode | and c.USER_CODE = :userCode]" +
+            "[:(startwith)roleName | and b.ROLE_NAME like :roleName]" +
+            "[:roleCode | and a.ROLE_CODE = :roleCode]";
+    private static final String f_v_userroles_sql =
+        f_v_user_appoint_roles_sql + " union all " + f_v_user_inherited_roles_sql;
 
     @Override
     @Transactional
@@ -148,10 +156,16 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId>
     @Override
     @Transactional
     public int pageCountUserRole(Map<String, Object> filterDescMap) {
-        String sql = "select count(*) as cnt from (" + f_v_userroles_sql + ") u " +
-            "where 1=1 [:roleCode | and u.ROLE_CODE = :roleCode] " +
-            "[:userCode | and u.USER_CODE = :userCode]" +
-            "[:obtainType | and u.OBTAIN_TYPE = :obtainType] ";
+        String sql = "select count(*) as cnt from (" ;
+        String obtainType = StringBaseOpt.castObjectToString(filterDescMap.get("obtainType"));
+        if("D".equals(obtainType)){
+            sql = sql + f_v_user_appoint_roles_sql + ") u ";
+        } else if("I".equals(obtainType)){
+            sql = sql + f_v_user_inherited_roles_sql + ") u ";
+        } else{
+            sql = sql + f_v_userroles_sql + ") u ";
+        }
+
         filterDescMap.put("currentDateTime", DatetimeOpt.currentSqlDate());
         QueryAndNamedParams qap = QueryUtils.translateQuery(sql , filterDescMap);
         return jdbcTemplate.execute(
@@ -162,12 +176,15 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId>
     @Override
     @Transactional
     public List<FVUserRoles> pageQueryUserRole(Map<String, Object> pageQureyMap) {
-        String querySql = "select u.USER_CODE,u.ROLE_CODE,u.ROLE_NAME,u.IS_VALID,u.ROLE_DESC," +
-            " u.ROLE_TYPE,u.UNIT_CODE,u.OBTAIN_TYPE,u.INHERITED_FROM" +
-            " from (" + f_v_userroles_sql + ") u " +
-            "where 1=1 [:roleCode | and u.ROLE_CODE = :roleCode] " +
-            "[:userCode | and u.USER_CODE = :userCode]" +
-            "[:obtainType | and u.OBTAIN_TYPE = :obtainType] ";
+        String querySql;
+        String obtainType = StringBaseOpt.castObjectToString(pageQureyMap.get("obtainType"));
+        if("D".equals(obtainType)){
+            querySql =  f_v_user_appoint_roles_sql ;
+        } else if("I".equals(obtainType)){
+            querySql = f_v_user_inherited_roles_sql;
+        } else{
+            querySql = f_v_userroles_sql;
+        }
         pageQureyMap.put("currentDateTime", DatetimeOpt.currentSqlDate());
         PageDesc pageDesc = QueryParameterPrepare.fetchPageDescParams(pageQureyMap);
         QueryAndNamedParams qap = QueryUtils.translateQuery(querySql, pageQureyMap);
@@ -177,7 +194,6 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId>
                     pageDesc.getRowStart(), pageDesc.getPageSize()));
     }
 
-
     @Transactional
     public void deleteByRoleCodeAndUserCode(String roleCode,String userCode) {
         super.deleteObjectsByProperties(
@@ -186,10 +202,12 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId>
 
     @Transactional
     public UserRole getValidUserRole(String userCode, String rolecode) {
-        String sql = "select u.USER_CODE, u.ROLE_CODE, u.OBTAIN_DATE, u.CHANGE_DESC, u.CREATE_DATE, u.CREATOR, " +
-                "u.UPDATOR, u.UPDATE_DATE from F_USERROLE u " +
-                "where u.id.userCode=:userCode and u.id.roleCode = :roleCode " +
-                "ORDER BY obtainDate";
+        String sql =
+            "select u.USER_CODE, u.ROLE_CODE, u.OBTAIN_DATE, u.CHANGE_DESC, u.CREATE_DATE, " +
+                "u.CREATOR, u.UPDATOR, u.UPDATE_DATE " +
+            "from F_USERROLE u " +
+            "where u.id.userCode=:userCode and u.id.roleCode = :roleCode " +
+            "ORDER BY obtainDate";
 
         String hql = "FROM UserRole ur where ur.id.userCode=? and ur.id.roleCode = ? " +
              "ORDER BY obtainDate";
