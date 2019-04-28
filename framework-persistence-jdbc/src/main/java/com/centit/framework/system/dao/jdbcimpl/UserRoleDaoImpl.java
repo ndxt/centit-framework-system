@@ -209,9 +209,9 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId>
             "where u.id.userCode=:userCode and u.id.roleCode = :roleCode " +
             "ORDER BY obtainDate";
 
-        String hql = "FROM UserRole ur where ur.id.userCode=? and ur.id.roleCode = ? " +
+        /*String hql = "FROM UserRole ur where ur.id.userCode=? and ur.id.roleCode = ? " +
              "ORDER BY obtainDate";
-
+*/
         List<UserRole> urlt = listObjectsBySql(sql, CollectionsOpt.createHashMap(
                 "userCode", userCode, "roleCode", rolecode));
         if (CollectionUtils.isEmpty(urlt)) {
