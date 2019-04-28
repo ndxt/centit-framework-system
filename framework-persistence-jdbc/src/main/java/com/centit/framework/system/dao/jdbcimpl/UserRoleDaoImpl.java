@@ -118,7 +118,7 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId>
               FVUserRoles.class));*/
 
         Map<String,Object> map = CollectionsOpt.createHashMap("userCode",userCode,
-            "currentDateTime", DatetimeOpt.currentDatetime());
+            "currentDateTime", DatetimeOpt.currentSqlDate());
         QueryAndNamedParams qap = QueryUtils.translateQuery(f_v_userroles_sql, map);
         return jdbcTemplate.execute(
             (ConnectionCallback<List<FVUserRoles>>) conn -> OrmDaoUtils
@@ -138,7 +138,7 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId>
             FVUserRoles.class));*/
 
         Map<String,Object> map = CollectionsOpt.createHashMap("roleCode",roleCode,
-            "currentDateTime", DatetimeOpt.currentDatetime());
+            "currentDateTime", DatetimeOpt.currentSqlDate());
         QueryAndNamedParams qap = QueryUtils.translateQuery(f_v_userroles_sql, map);
         return jdbcTemplate.execute(
             (ConnectionCallback<List<FVUserRoles>>) conn -> OrmDaoUtils
@@ -152,7 +152,7 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId>
             "where 1=1 [:roleCode | and u.ROLE_CODE = :roleCode] " +
             "[:userCode | and u.USER_CODE = :userCode]" +
             "[:obtainType | and u.OBTAIN_TYPE = :obtainType] ";
-        filterDescMap.put("currentDateTime", DatetimeOpt.currentDatetime());
+        filterDescMap.put("currentDateTime", DatetimeOpt.currentSqlDate());
         QueryAndNamedParams qap = QueryUtils.translateQuery(sql , filterDescMap);
         return jdbcTemplate.execute(
             (ConnectionCallback<Integer>) conn ->
@@ -168,7 +168,7 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId>
             "where 1=1 [:roleCode | and u.ROLE_CODE = :roleCode] " +
             "[:userCode | and u.USER_CODE = :userCode]" +
             "[:obtainType | and u.OBTAIN_TYPE = :obtainType] ";
-        pageQureyMap.put("currentDateTime", DatetimeOpt.currentDatetime());
+        pageQureyMap.put("currentDateTime", DatetimeOpt.currentSqlDate());
         PageDesc pageDesc = QueryParameterPrepare.fetchPageDescParams(pageQureyMap);
         QueryAndNamedParams qap = QueryUtils.translateQuery(querySql, pageQureyMap);
         return jdbcTemplate.execute(
