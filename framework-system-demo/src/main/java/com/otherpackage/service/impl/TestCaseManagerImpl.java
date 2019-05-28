@@ -38,7 +38,7 @@ public class TestCaseManagerImpl implements TestCaseManager {
         // 将当前查询参数（一般是前台输入的参数）添加到这个用户信息中
         dataPowerFilter.addSourceData(filterMap);
         // 获取用户权限范围过滤条件，getOptId() 获取当前业务ID，  query为当前业务操作代码optCode
-        List<String> filters = generalService.listUserDataFiltersByOptIDAndMethod(
+        List<String> filters = generalService.listUserDataFiltersByOptIdAndMethod(
             ud.getUserCode(), getOptId(), "query");
         return DictionaryMapUtils.mapJsonArray( // 数据字典翻译工作
             this.testCaseDao.listObjectsAsJson( // 执行数据驱动查询
@@ -58,7 +58,7 @@ public class TestCaseManagerImpl implements TestCaseManager {
         // 创建当权用户信息相关的上下文
         DataPowerFilter dataPowerFilter = generalService.createUserDataPowerFilter(ud);
         // 获取用户权限范围过滤条件，getOptId() 获取当前业务ID，  saveNew 为当前业务操作代码optCode
-        List<String> filters = generalService.listUserDataFiltersByOptIDAndMethod(
+        List<String> filters = generalService.listUserDataFiltersByOptIdAndMethod(
             ud.getUserCode(), getOptId(), "saveNew");
         boolean passed = dataPowerFilter.checkObject(testCase, filters);
         if(passed){

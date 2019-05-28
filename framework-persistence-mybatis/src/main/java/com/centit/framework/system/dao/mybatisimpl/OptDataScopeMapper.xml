@@ -186,6 +186,10 @@
     </delete>
     <!--删除记录 结束 -->
 
+    <select id="listAllDataScope" resultMap="OptDataScope">
+        <include refid="coreSql" />
+    </select>
+
     <select id="getDataScopeByOptID" resultMap="OptDataScope" parameterType="String">
         <include refid="coreSql" />
         where OPT_ID =#{sOptID}

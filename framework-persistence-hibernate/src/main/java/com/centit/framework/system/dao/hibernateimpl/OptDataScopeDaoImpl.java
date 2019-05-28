@@ -18,6 +18,15 @@ public class OptDataScopeDaoImpl extends BaseDaoImpl<OptDataScope, String> imple
         return listObjects("FROM OptDataScope WHERE optId =?", sOptID);
     }
 
+    /**
+     * @return 所有的数据范围定义
+     */
+    @Override
+    @Transactional
+    public List<OptDataScope> listAllDataScope() {
+        return listObjects();
+    }
+
     @Transactional
     public int getOptDataScopeSumByOptID(String sOptID) {
         return Integer.valueOf(String.valueOf(DatabaseOptUtils.getSingleObjectByHql(this,

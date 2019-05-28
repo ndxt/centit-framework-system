@@ -15,20 +15,6 @@ import java.util.List;
  *
  */
 public interface GeneralService {
-
-    /**
-     * 获取用户某个模块的查询过滤器类别，这个类别不需要开发人员维护，框架统一维护。
-     * @param userCode userCode
-     * @param modelCode modelCode
-     * @return 用户某个模块的查询过滤器类别
-     */
-     UserQueryFilter getUserDefaultFilter(String userCode, String modelCode);
-    /**
-     * 获取用户某个模块默认查询过滤器
-     * @param filterNo filterNo
-     * @return 用户某个模块默认查询过滤器
-     */
-     UserQueryFilter getUserQueryFilter(Long filterNo);
     /**
      * 获得用户摸个功能方法的数据范围权限，返回null或者size==0表示拥有所有权限
      * @param sUserCode sUserCode
@@ -36,7 +22,7 @@ public interface GeneralService {
      * @param sOptMethod sOptMethod
      * @return 用户摸个功能方法的数据范围权限
      */
-     List<String> listUserDataFiltersByOptIDAndMethod
+     List<String> listUserDataFiltersByOptIdAndMethod
         (String sUserCode, String sOptid, String sOptMethod);
     /**
      * 创建用户数据范围过滤器，和上面的方法结合使用

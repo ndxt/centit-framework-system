@@ -19,10 +19,9 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
 import java.util.*;
 
 //@Service("platformEnvironment")
@@ -30,108 +29,47 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     public static final Logger logger = LoggerFactory.getLogger(DBPlatformEnvironment.class);
 
-    @Resource
+    @Autowired
     private CentitPasswordEncoder passwordEncoder;
 
-    public void setPasswordEncoder(CentitPasswordEncoder p){
-        this.passwordEncoder = p;
-    }
+    @Autowired
+    protected OptDataScopeDao dataScopeDao;
 
-    @Resource
-    @NotNull
+    @Autowired
     private UserSettingDao userSettingDao;
 
-    public void setUserSettingDao(UserSettingDao userSettingDao){
-        this.userSettingDao = userSettingDao;
-    }
-
-    @Resource
-    @NotNull
+    @Autowired
     private OptInfoDao optInfoDao;
 
-    public void setOptInfoDao(OptInfoDao optInfoDao){
-        this.optInfoDao = optInfoDao;
-    }
-
-    @Resource
-    @NotNull
+    @Autowired
     private UserInfoDao userInfoDao;
 
-    public void setUserInfoDao(UserInfoDao userInfoDao){
-        this.userInfoDao = userInfoDao;
-    }
-
-    @Resource
-    @NotNull
+    @Autowired
     private DataDictionaryDao dataDictionaryDao;
 
-    public void setDataDictionaryDao(DataDictionaryDao dataDictionaryDao){
-        this.dataDictionaryDao = dataDictionaryDao;
-    }
-
-    @Resource
-    @NotNull
+    @Autowired
     private DataCatalogDao dataCatalogDao;
 
-    public void setDataCatalogDao(DataCatalogDao dataCatalogDao){
-        this.dataCatalogDao = dataCatalogDao;
-    }
-
-    @Resource
-    @NotNull
+    @Autowired
     private UserUnitDao userUnitDao;
 
-    public void setUserUnitDao(UserUnitDao userUnitDao){
-        this.userUnitDao = userUnitDao;
-    }
-
-    @Resource
-    @NotNull
+    @Autowired
     private UnitInfoDao unitInfoDao;
 
-    public void setUnitInfoDao(UnitInfoDao unitInfoDao){
-        this.unitInfoDao = unitInfoDao;
-    }
-
-    @Resource
-    @NotNull
+    @Autowired
     private RoleInfoDao roleInfoDao;
 
-    public void setRoleInfoDao(RoleInfoDao roleInfoDao){
-        this.roleInfoDao = roleInfoDao;
-    }
-
-    @Resource
-    @NotNull
+    @Autowired
     private UserRoleDao userRoleDao;
 
-    public void setUserRoleDao(UserRoleDao userRoleDao){
-        this.userRoleDao = userRoleDao;
-    }
-
-    @Resource
-    @NotNull
+    @Autowired
     private UnitRoleDao unitRoleDao;
 
-    public void setUnitRoleDao(UnitRoleDao unitRoleDao){
-        this.unitRoleDao = unitRoleDao;
-    }
-
-    @Resource
-    @NotNull
+    @Autowired
     private OptMethodDao optMethodDao;
 
-    public void setOptMethodDao(OptMethodDao optMethodDao){
-        this.optMethodDao = optMethodDao;
-    }
-
-    @Resource
-    @NotNull
+    @Autowired
     private RolePowerDao rolePowerDao;
-
-    public void setRolePowerDao(RolePowerDao rolePowerDao){
-        this.rolePowerDao = rolePowerDao;
-    }
 
     @Override
     public List<UserSetting> listUserSettings(String userCode){
@@ -372,6 +310,14 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         return optMethodDao.listObjectsAll();
     }
 
+    /**
+     * @return 所有的数据范围定义表达式
+     */
+    @Override
+    public List<? extends IOptDataScope> listAllOptDataScope() {
+        return dataScopeDao.listAllDataScope();
+    }
+
     @Override
     @Transactional(readOnly = true)
     public List<DataCatalog> listAllDataCatalogs() {
@@ -605,5 +551,35 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                 optMethodDao.deleteObject(om);
             }
         }
+    }
+
+    /**
+     * 获得用户摸个功能方法的数据范围权限，返回null或者size==0表示拥有所有权限
+     *
+     * @param sUserCode  sUserCode
+     * @param sOptId     sOptid
+     * @param sOptMethod sOptMethod
+     * @return 用户摸个功能方法的数据范围权限
+     */
+    @Override
+    public List<String> listUserDataFiltersByOptIdAndMethod(String sUserCode, String sOptId, String sOptMethod) {
+        List<String> dataScopes = optInfoDao.listUserDataPowerByOptMethod(sUserCode, sOptId, sOptMethod);
+        if (dataScopes == null || dataScopes.size() == 0)
+            return null;
+        Set<String> scopeCodes = new HashSet<>();
+        for (String scopes : dataScopes) {
+            if (scopes == null || "null".equalsIgnoreCase(scopes)
+                || "all".equalsIgnoreCase(scopes))
+                return null;
+            String[] codes = scopes.split(",");
+            for (String code : codes) {
+                if (code != null && !"".equals(code.trim()))
+                    scopeCodes.add(code.trim());
+            }
+        }
+        if (scopeCodes.size() == 0)
+            return null;
+
+        return dataScopeDao.listDataFiltersByIds(scopeCodes);
     }
 }

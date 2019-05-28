@@ -37,6 +37,11 @@ public interface OptDataScopeDao {
      */
     List<OptDataScope> getDataScopeByOptID(String sOptID);
 
+
+    /**
+     * @return 所有的数据范围定义
+     */
+    List<OptDataScope> listAllDataScope();
     /**
      * 根据菜单Id查询数据范围数量
      * @param sOptID 菜单ID

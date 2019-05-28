@@ -30,7 +30,7 @@ public abstract class EntityManagerWithDataPowerImpl{
     @Resource
     private OptInfoManager optInfoManager;
     public List<T> listObjecesDemo(String userCode,String optid,String method){
-        List<String> filters = optInfoManager.listUserDataFiltersByOptIDAndMethod(userCode, optid, method);
+        List<String> filters = optInfoManager.listUserDataFiltersByOptIdAndMethod(userCode, optid, method);
         DataPowerFilter dpf = createDataPowerFilter(userCode);
         //dpf.setSourceDatas(sourceData);
         QueryAndNamedParams hql = dpf.makeHQL("T className" , filters, false);

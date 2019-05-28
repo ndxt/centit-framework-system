@@ -24,6 +24,15 @@ public class OptDataScopeDaoImpl extends BaseDaoImpl<OptDataScope, String> imple
         return filterField;
     }
 
+    /**
+     * @return 所有的数据范围定义
+     */
+    @Override
+    @Transactional
+    public List<OptDataScope> listAllDataScope() {
+        return listObjects();
+    }
+
     @Transactional
     public List<OptDataScope> getDataScopeByOptID(String sOptID) {
         return this.listObjectsByProperty("optId", sOptID);
@@ -53,7 +62,7 @@ public class OptDataScopeDaoImpl extends BaseDaoImpl<OptDataScope, String> imple
 
     @Transactional
     public List<String> listDataFiltersByIds(Collection<String> scopeCodes) {
-        List<OptDataScope> objs    = this.listObjectsByFilter(
+        List<OptDataScope> objs = this.listObjectsByFilter(
                 "WHERE OPT_SCOPE_CODE in (:optScopeCode)",
                 CollectionsOpt.createHashMap("optScopeCode", scopeCodes));
         if(objs==null)

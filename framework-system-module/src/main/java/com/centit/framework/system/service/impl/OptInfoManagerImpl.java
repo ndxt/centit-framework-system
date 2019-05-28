@@ -12,6 +12,7 @@ import com.centit.framework.system.service.OptInfoManager;
 import com.centit.support.algorithm.CollectionsOpt;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,27 +23,25 @@ import java.util.*;
 @Service("functionManager")
 public class OptInfoManagerImpl implements OptInfoManager {
 
-    @Resource
-    @NotNull
+    @Autowired
     private OptInfoDao optInfoDao;
 
-    @Resource(name = "optMethodDao")
-    @NotNull
+    @Autowired
     private OptMethodDao optMethodDao;
 
-
-    @Resource(name = "optDataScopeDao")
-    @NotNull
+    @Autowired
     private OptDataScopeDao dataScopeDao;
-
-    @Resource(name = "rolePowerDao")
-    @NotNull
-    private RolePowerDao rolePowerDao;
 
     @Override
     @Transactional
     public boolean hasChildren(String optId){
         return optInfoDao.countChildrenSum(optId) > 0;
+    }
+
+    @Override
+    @Transactional
+    public List<OptDataScope> listAllDataScope(){
+        return dataScopeDao.listAllDataScope();
     }
 
     @Override
@@ -211,9 +210,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Override
     @Transactional
     public List<String> listUserDataFiltersByOptIDAndMethod(String sUserCode, String sOptId, String sOptMethod){
-
         List<String> dataScopes = optInfoDao.listUserDataPowerByOptMethod(sUserCode, sOptId, sOptMethod);
-
         if(dataScopes==null || dataScopes.size()==0) {
           return null;
         }

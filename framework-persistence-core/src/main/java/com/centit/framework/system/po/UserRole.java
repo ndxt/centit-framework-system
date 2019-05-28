@@ -22,7 +22,6 @@ import java.util.Date;
 @Table(name = "F_USERROLE")
 @ApiModel(value="系统用户角色关联信息对象",description="系统用户角色关联信息对象 UserInfo")
 public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Serializable {
-
     // Fields
     // public final SimpleDateFormat sdfDate = new
     // SimpleDateFormat("yyyy-MM-dd");
