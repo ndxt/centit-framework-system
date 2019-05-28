@@ -36,7 +36,7 @@ public interface OptInfoManager {
      * @param sOptMethod 对应的方法名称
      * @return 过滤条件列表，null或者空位不过来
      */
-    List<String> listUserDataFiltersByOptIDAndMethod(String sUserCode, String sOptid, String sOptMethod);
+    List<String> listUserDataFiltersByOptIdAndMethod(String sUserCode, String sOptid, String sOptMethod);
 
     /**
      * 将数据转换为树形结构

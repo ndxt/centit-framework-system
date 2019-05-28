@@ -209,7 +209,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
      */
     @Override
     @Transactional
-    public List<String> listUserDataFiltersByOptIDAndMethod(String sUserCode, String sOptId, String sOptMethod){
+    public List<String> listUserDataFiltersByOptIdAndMethod(String sUserCode, String sOptId, String sOptMethod){
         List<String> dataScopes = optInfoDao.listUserDataPowerByOptMethod(sUserCode, sOptId, sOptMethod);
         if(dataScopes==null || dataScopes.size()==0) {
           return null;

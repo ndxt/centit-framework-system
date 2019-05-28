@@ -553,33 +553,4 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         }
     }
 
-    /**
-     * 获得用户摸个功能方法的数据范围权限，返回null或者size==0表示拥有所有权限
-     *
-     * @param sUserCode  sUserCode
-     * @param sOptId     sOptid
-     * @param sOptMethod sOptMethod
-     * @return 用户摸个功能方法的数据范围权限
-     */
-    @Override
-    public List<String> listUserDataFiltersByOptIdAndMethod(String sUserCode, String sOptId, String sOptMethod) {
-        List<String> dataScopes = optInfoDao.listUserDataPowerByOptMethod(sUserCode, sOptId, sOptMethod);
-        if (dataScopes == null || dataScopes.size() == 0)
-            return null;
-        Set<String> scopeCodes = new HashSet<>();
-        for (String scopes : dataScopes) {
-            if (scopes == null || "null".equalsIgnoreCase(scopes)
-                || "all".equalsIgnoreCase(scopes))
-                return null;
-            String[] codes = scopes.split(",");
-            for (String code : codes) {
-                if (code != null && !"".equals(code.trim()))
-                    scopeCodes.add(code.trim());
-            }
-        }
-        if (scopeCodes.size() == 0)
-            return null;
-
-        return dataScopeDao.listDataFiltersByIds(scopeCodes);
-    }
 }

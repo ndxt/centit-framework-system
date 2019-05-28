@@ -10,6 +10,7 @@ import com.centit.framework.system.dao.OptInfoDao;
 import com.centit.framework.system.dao.UserQueryFilterDao;
 import com.centit.framework.system.po.UserQueryFilter;
 import com.centit.framework.system.service.GeneralService;
+import com.centit.framework.system.service.OptInfoManager;
 import com.centit.support.algorithm.StringBaseOpt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ import java.util.*;
 public  class GeneralServiceImpl implements GeneralService {
 
     @Autowired
-    private PlatformEnvironment platformEnvironment;
+    private OptInfoManager optInfoManager;
 
     /**
      * 获取用户数据权限过滤器
@@ -35,7 +36,8 @@ public  class GeneralServiceImpl implements GeneralService {
     @Override
     @Transactional
     public List<String> listUserDataFiltersByOptIdAndMethod(String sUserCode, String sOptId, String sOptMethod) {
-        return platformEnvironment.listUserDataFiltersByOptIdAndMethod(sUserCode,sOptId,sOptMethod);
+        //CodeRepositoryUtil.listUserDataFiltersByOptIdAndMethod(sUserCode,sOptId,sOptMethod);
+        return optInfoManager.listUserDataFiltersByOptIdAndMethod(sUserCode,sOptId,sOptMethod);
     }
     /**
      * 创建用户数据范围过滤器
