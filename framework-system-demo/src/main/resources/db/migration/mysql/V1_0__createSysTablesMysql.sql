@@ -49,8 +49,6 @@ drop table if exists F_OptInfo;
 
 drop table if exists F_QUERY_FILTER_CONDITION;
 
-drop table if exists F_RANKGRANT;
-
 drop table if exists F_ROLEINFO;
 
 drop table if exists F_ROLEPOWER;
@@ -66,8 +64,6 @@ drop table if exists F_USERROLE;
 drop table if exists F_USERSETTING;
 
 drop table if exists F_USERUNIT;
-
-drop table if exists F_USER_FAVORITE;
 
 drop table if exists F_USER_QUERY_FILTER;
 
@@ -87,8 +83,7 @@ create table F_DATACATALOG
    CATALOG_CODE         varchar(16) not null,
    CATALOG_NAME         varchar(64) not null,
    CATALOG_STYLE        char(1) not null comment 'F : 框架固有的 U:用户 S：系统  G国标',
-   CATALOG_TYPE         char(1) not null comment 'T：树状表格 L:列表
-            ',
+   CATALOG_TYPE         char(1) not null comment 'T：树状表格 L:列表',
    CATALOG_DESC         varchar(256),
    Field_Desc           varchar(1024) comment '字段描述，不同字段用分号隔开',
    update_Date          datetime,
@@ -124,8 +119,8 @@ create table F_DATADICTIONARY
    DATA_ORDER           numeric(6,0) comment '排序字段'
 );
 
-alter table F_DATADICTIONARY comment '数据字典：存放一些常量数据 比如出物提示信息，还有一些 代码与名称的对应表，比如 状态，角色名，头衔 等等
-';
+alter table F_DATADICTIONARY comment
+    '数据字典：存放一些常量数据 比如出物提示信息，还有一些 代码与名称的对应表，比如 状态，角色名，头衔 等等';
 
 alter table F_DATADICTIONARY
    add primary key (CATALOG_CODE, DATA_CODE);
@@ -235,8 +230,7 @@ create table F_QUERY_FILTER_CONDITION
    Param_Type           varchar(8) comment '参数类型：S 字符串，L 数字， N 有小数点数据， D 日期， T 时间戳， Y 年， M 月',
    Default_Value        varchar(100),
    Filter_Sql           varchar(200) comment '过滤语句，将会拼装到sql语句中',
-   Select_Data_type     char(1) not null default 'N' comment '数据下拉框内容； N ：没有， D 数据字典, S 通过sql语句获得， J json数据直接获取
-            ',
+   Select_Data_type     char(1) not null default 'N' comment '数据下拉框内容； N ：没有， D 数据字典, S 通过sql语句获得， J json数据直接获取',
    Select_Data_Catalog  varchar(64) comment '数据字典',
    Select_SQL           varchar(1000) comment '有两个返回字段的sql语句',
    Select_JSON          varchar(2000) comment 'KEY,Value数值对，JSON格式'
@@ -245,26 +239,6 @@ create table F_QUERY_FILTER_CONDITION
 alter table F_QUERY_FILTER_CONDITION
    add primary key (CONDITION_NO);
 
-/*==============================================================*/
-/* Table: F_RANKGRANT                                           */
-/*==============================================================*/
-create table F_RANKGRANT
-(
-   RANK_grant_ID        numeric(12,0) not null,
-   granter              varchar(8) not null,
-   UNITCODE             varchar(6) not null,
-   UserStation          varchar(4) not null,
-   UserRank             varchar(2) not null comment 'RANK 代码不是 0开头的可以进行授予',
-   beginDate            datetime not null,
-   grantee              varchar(8) not null,
-   endDate              datetime,
-   grantDesc            varchar(256),
-   LastModifyDate       datetime,
-   CreateDate           datetime
-);
-
-alter table F_RANKGRANT
-   add primary key (RANK_grant_ID, UserRank);
 
 /*==============================================================*/
 /* Table: F_ROLEINFO                                            */
@@ -345,7 +319,7 @@ create table F_UNITINFO
    unit_Order           numeric(4,0),
    update_Date          datetime,
    Create_Date          datetime,
-   extJsonInfo          varchar(1000),
+   --extJsonInfo          varchar(1000),
    creator              varchar(32),
    updator              varchar(32),
    UNIT_PATH            varchar(1000),
@@ -382,7 +356,7 @@ create table F_USERINFO
    user_Order           numeric(4,0),
    update_Date          datetime,
    Create_Date          datetime,
-   extJsonInfo          varchar(1000),
+   --extJsonInfo          varchar(1000),
    creator              varchar(32),
    updator              varchar(32)
 );
@@ -451,21 +425,6 @@ alter table F_USERUNIT comment '同一个人可能在多个部门担任不同的
 alter table F_USERUNIT
    add primary key (USER_UNIT_ID);
 
-/*==============================================================*/
-/* Table: F_USER_FAVORITE                                       */
-/*==============================================================*/
-create table F_USER_FAVORITE
-(
-   USERCODE             varchar(8) not null comment 'DEFAULT:为默认设置
-            SYS001~SYS999: 为系统设置方案
-            是一个用户号,或者是系统的一个设置方案',
-   OptID                varchar(16) not null,
-   LastModifyDate       datetime,
-   CreateDate           datetime
-);
-
-alter table F_USER_FAVORITE
-   add primary key (USERCODE, OptID);
 
 /*==============================================================*/
 /* Table: F_USER_QUERY_FILTER                                   */
