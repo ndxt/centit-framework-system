@@ -8,6 +8,7 @@ import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.po.UserUnit;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;
+import com.centit.support.database.jsonmaptable.GeneralJsonObjectDao;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.database.utils.QueryAndNamedParams;
@@ -204,7 +205,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
           "[:unitIsValid | and UNIT_CODE IN (select UNIT_CODE from f_unitinfo where IS_VALID = :unitIsValid)]";
         PageDesc pageDesc = QueryParameterPrepare.fetchPageDescParams(pageQueryMap);
 
-        String selfOrderBy = fetchSelfOrderSql(sql, pageQueryMap);
+        String selfOrderBy = GeneralJsonObjectDao.fetchSelfOrderSql(sql, pageQueryMap);
         if (StringUtils.isNotBlank(selfOrderBy)) {
           sql = QueryUtils.removeOrderBy(sql) + " order by " + selfOrderBy;
         }
