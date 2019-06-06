@@ -1,8 +1,46 @@
 /*==============================================================*/
 /* Oracle 数据库脚本                                              */
 /*==============================================================*/
+create or replace procedure p_drop_ifExists(p_table in varchar2,
+                                            p_type  in char default '1') is
+  v_count number(10);
+begin
+  if p_type = '1' then
+    select count(*)
+      into v_count
+      from user_tables
+     where table_name = upper(p_table);
+    if v_count > 0 then
+      execute immediate 'drop table ' || p_table || ' purge';
+    end if;
+  elsif p_type = '2' then
+    select count(*)
+      into v_count
+      from user_sequences
+     where sequence_name = upper(p_table);
+
+    if v_count > 0 then
+      execute immediate 'drop sequence ' || p_table;
+    end if;
+  end if;
+end p_drop_ifExists;
+/
+call p_drop_ifExists('S_Filter_No','2');
+call p_drop_ifExists('s_optdefcode','2');
+call p_drop_ifExists('s_sys_log','2');
+call p_drop_ifExists('s_unitcode','2');
+
+call p_drop_ifExists('s_user_unit_id','2');
+
+call p_drop_ifExists('s_usercode','2');
+
+call p_drop_ifExists('S_MSGCODE','2');
+
+call p_drop_ifExists('S_RECIPIENT','2');
+
+call p_drop_ifExists('S_ROLECODE','2');
+
 create sequence S_Filter_No;
-create sequence s_notify_id;
 create sequence s_optdefcode INCREMENT BY 1 start with 1001000;
 create sequence s_sys_log;
 create sequence s_unitcode  INCREMENT BY 1  start with 10;
@@ -11,6 +49,44 @@ create sequence s_usercode INCREMENT BY 1 start with 10;
 create sequence S_MSGCODE ;
 create sequence S_RECIPIENT ;
 create sequence S_ROLECODE INCREMENT BY 1 start with 10;
+call p_drop_ifExists('F_DATACATALOG');
+
+call p_drop_ifExists('F_DATADICTIONARY');
+
+call p_drop_ifExists('F_OPTDATASCOPE');
+
+call p_drop_ifExists('F_OPTDEF');
+
+call p_drop_ifExists('F_OPT_LOG');
+
+call p_drop_ifExists('F_OptInfo');
+
+call p_drop_ifExists('F_QUERY_FILTER_CONDITION');
+
+call p_drop_ifExists('F_ROLEINFO');
+
+call p_drop_ifExists('F_ROLEPOWER');
+
+call p_drop_ifExists('F_SYS_NOTIFY');
+
+call p_drop_ifExists('F_UNITINFO');
+
+call p_drop_ifExists('F_USERINFO');
+
+call p_drop_ifExists('F_USERROLE');
+
+call p_drop_ifExists('F_USERSETTING');
+
+call p_drop_ifExists('F_USERUNIT');
+
+call p_drop_ifExists('F_USER_QUERY_FILTER');
+
+call p_drop_ifExists('M_InnerMsg');
+
+call p_drop_ifExists('M_InnerMsg_Recipient');
+
+call p_drop_ifExists('M_MsgAnnex');
+call p_drop_ifExists('F_UNITROLE');
 
 create table F_DATACATALOG
 (
@@ -61,8 +137,8 @@ create table F_OPTDATASCOPE
    Opt_ID               varchar2(16),
    scope_Name           varchar2(64),
    Filter_Condition     varchar2(1024)  ,
-   scope_Memo           varchar2(1024)  ,
-   Filter_Group         varchar2(16) default 'G'
+   scope_Memo           varchar2(1024)
+   --Filter_Group         varchar2(16) default 'G'
 );
 comment on column F_OPTDATASCOPE.Filter_Condition is '条件语句，可以有的参数 [mt] 业务表 [uc] 用户代码 [uu] 用户机构代码';
 comment on column F_OPTDATASCOPE.scope_Memo is '数据权限说明';
@@ -151,7 +227,8 @@ create table F_QUERY_FILTER_CONDITION
    Select_Data_type     char(1)  default 'N' not null ,
    Select_Data_Catalog  varchar2(64) ,
    Select_SQL           varchar2(1000)  ,
-   Select_JSON          varchar2(2000)
+   Select_JSON          varchar2(2000),
+   CREATE_DATE          date
 );
 comment on column F_QUERY_FILTER_CONDITION.Table_Class_Name is  '数据库表代码或者po的类名'     ;
 comment on column F_QUERY_FILTER_CONDITION.Param_Type is    '参数类型：S 字符串，L 数字， N 有小数点数据， D 日期， T 时间戳， Y 年， M 月'    ;
@@ -160,23 +237,6 @@ comment on column F_QUERY_FILTER_CONDITION.Select_Data_type is  '数据下拉框
 comment on column F_QUERY_FILTER_CONDITION.Select_SQL is     '有两个返回字段的sql语句'  ;
 comment on column F_QUERY_FILTER_CONDITION.Select_JSON is   'KEY,Value数值对，JSON格式'    ;
 alter table F_QUERY_FILTER_CONDITION add primary key (CONDITION_NO);
-
-create table F_RANKGRANT
-(
-   RANK_grant_ID        number(12,0) not null,
-   granter              varchar2(8) not null,
-   UNITCODE             varchar2(6) not null,
-   UserStation          varchar2(4) not null,
-   UserRank             varchar2(2) not null ,
-   beginDate            date not null,
-   grantee              varchar2(8) not null,
-   endDate              date,
-   grantDesc            varchar2(256),
-   LastModifyDate       date,
-   CreateDate           date
-);
-comment on column F_RANKGRANT.UserRank is  'RANK 代码不是 0开头的可以进行授予';
-alter table F_RANKGRANT add primary key (RANK_grant_ID, UserRank);
 
 create table F_ROLEINFO
 (
@@ -245,7 +305,7 @@ create table F_UNITINFO
    unit_Order           number(4,0),
    update_Date          date,
    Create_Date          date,
-   extJsonInfo          varchar2(1000),
+   --extJsonInfo          varchar2(1000),
    creator              varchar2(32),
    updator              varchar2(32),
    UNIT_PATH            varchar2(1000),
@@ -280,7 +340,7 @@ create table F_USERINFO
    user_Order           number(4,0),
    update_Date          date,
    Create_Date          date,
-   extJsonInfo          varchar2(1000),
+   --extJsonInfo          varchar2(1000),
    creator              varchar2(32),
    updator              varchar2(32)
 );
@@ -338,14 +398,6 @@ comment on column F_USERUNIT.  Rank_Memo is '任职备注' ;
 comment on table F_USERUNIT is '同一个人可能在多个部门担任不同的职位';
 alter table F_USERUNIT add primary key (USER_UNIT_ID);
 
-create table F_USER_FAVORITE
-(
-   USERCODE             varchar2(8) not null ,
-   OptID                varchar2(16) not null,
-   LastModifyDate       date,
-   CreateDate           date
-);
-alter table F_USER_FAVORITE add primary key (USERCODE, OptID);
 
 create table F_USER_QUERY_FILTER
 (
@@ -353,7 +405,9 @@ create table F_USER_QUERY_FILTER
    user_Code            varchar2(8) not null,
    modle_code           varchar2(64) not null  ,
    filter_name          varchar2(200) not null ,
-   filter_value         varchar2(3200) not null
+   filter_value         varchar2(3200) not null,
+   IS_DEFAULT           char(1),
+   CREATE_DATE          date
 );
 comment on column F_USER_QUERY_FILTER. modle_code is '开发人员自行定义，单不能重复，建议用系统的模块名加上当前的操作方法'  ;
 comment on column F_USER_QUERY_FILTER.  filter_name is   '用户自行定义的名称' ;
@@ -380,10 +434,7 @@ create table M_InnerMsg
 );
 comment on column M_InnerMsg.     Msg_Code    is     '消息主键自定义，通过S_M_INNERMSG序列生成'      ;
 comment on column M_InnerMsg.    Msg_Type    is       'P= 个人为消息  A= 机构为公告（通知） M=邮件'    ;
-comment on column M_InnerMsg.      Mail_Type   is         'I=收件箱
-            O=发件箱
-            D=草稿箱
-            T=废件箱 '  ;
+comment on column M_InnerMsg.      Mail_Type   is         'I=收件箱O=发件箱 D=草稿箱T=废件箱 '  ;
 comment on column M_InnerMsg.     Receive_Name    is    '使用部门，个人中文名，中间使用英文分号分割'       ;
 comment on column M_InnerMsg.  Hold_Users       is        '总数为发送人和接收人数量相加，发送和接收人删除消息时-1，当数量为0时真正删除此条记录 消息类型为邮件时不需要设置'  ;
 comment on column M_InnerMsg.     msg_State    is     '未读/已读/删除'     ;
@@ -404,17 +455,9 @@ create table M_InnerMsg_Recipient
    msg_State            char(1)  ,
    ID                   varchar2(16) not null
 );
-comment on column M_InnerMsg_Recipient.   Receive_Type     is   'P=个人为消息
-            A=机构为公告
-            M=邮件' ;
-comment on column M_InnerMsg_Recipient. Mail_Type       is  'T=收件人
-            C=抄送
-            B=密送'  ;
-comment on column M_InnerMsg_Recipient.    msg_State    is  '未读/已读/删除，收件人在线时弹出提示
-
-            U=未读
-            R=已读
-            D=删除'  ;
+comment on column M_InnerMsg_Recipient.   Receive_Type     is   'P=个人为消息A=机构为公告M=邮件' ;
+comment on column M_InnerMsg_Recipient. Mail_Type       is  'T=收件人C=抄送B=密送'  ;
+comment on column M_InnerMsg_Recipient.    msg_State    is  '未读/已读/删除，收件人在线时弹出提示U=未读R=已读D=删除'  ;
 comment on table M_InnerMsg_Recipient is '内部消息（邮件）与公告收件人及消息信息';
 alter table M_InnerMsg_Recipient add primary key (ID);
 
@@ -438,6 +481,7 @@ create table F_UNITROLE
    creator              varchar2(32),
    updator              varchar2(32)
 );
+alter table F_UNITROLE add primary key (UNIT_CODE, ROLE_CODE);
 
 CREATE OR REPLACE VIEW v_hi_unitinfo AS
 SELECT a.unit_code AS top_unit_code, b.unit_code, b.unit_type, b.parent_unit, b.is_valid, b.unit_name,b.unit_desc,b.unit_short_name, b.unit_order, b.dep_no,
@@ -501,6 +545,5 @@ create or replace view v_opt_tree as
    from F_OptInfo i where i.is_in_toolbar ='Y'
    union all
    select d.opt_code as MENU_ID,d.opt_id as PARENT_ID,d.opt_name as MENU_NAME,0 as order_ind
-   from F_OPTDEF d
-;
+   from F_OPTDEF d;
 

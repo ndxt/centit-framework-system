@@ -4,12 +4,12 @@ insert into F_UNITINFO
 (UNIT_CODE, PARENT_UNIT, UNIT_TYPE, IS_VALID, UNIT_TAG,
 UNIT_NAME, ENGLISH_NAME, DEP_NO, UNIT_DESC,
 UNIT_SHORT_NAME, UNIT_WORD, UNIT_GRADE, UNIT_ORDER, UPDATE_DATE,
-CREATE_DATE, EXTJSONINFO, CREATOR, UPDATOR, UNIT_PATH)
+CREATE_DATE, CREATOR, UPDATOR, UNIT_PATH,UNIT_MANAGER)
 values
 ('U00001', null, 'N', 'T', null,
 '根机构', 'root', null, '根机构',
 'root', 'root', null, 1, today(),
-today(), null, 'u0000000', 'u0000000', '/U00001');
+today(),  'u0000000', 'u0000000', '/U00001','u0000000');
 
 insert into F_USERINFO (USER_CODE, USER_PIN, IS_VALID, LOGIN_NAME, USER_NAME, USER_DESC, LOGIN_TIMES, ACTIVE_TIME, REG_EMAIL, USER_ORDER, USER_PWD, REG_CELL_PHONE, CREATE_DATE,CREATOR,UPDATOR,UPDATE_DATE)
 values ('noname', '67b74fe1423796dfe8db34b959b81fbd', 'F', 'noname', '匿名用户', '匿名用户', null, null, 'noname@centit.com', 1, '', '', parsedatetime('12-12-2014', 'dd-MM-yyyy', 'en'),'u0000000','u0000000',today());
@@ -79,8 +79,8 @@ INSERT INTO f_datadictionary(CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, D
 INSERT INTO f_datadictionary(CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, Last_Modify_Date, Create_Date, DATA_ORDER) VALUES ('RoleType', 'I', NULL, NULL, 'T', '项目角色', 'S', '', NULL, NULL, 5);
 INSERT INTO f_datadictionary(CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, Last_Modify_Date, Create_Date, DATA_ORDER) VALUES ('RoleType', 'P', NULL, NULL, 'T', '公共角色', 'S', '', NULL, NULL, 3);
 INSERT INTO f_datadictionary(CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, Last_Modify_Date, Create_Date, DATA_ORDER) VALUES ('RoleType', 'W', NULL, NULL, 'T', '工作流角色', 'S', '', NULL, NULL, 6);
-INSERT INTO f_optdatascope (opt_scope_code, opt_id, scope_name, filter_condition, scope_memo, filter_group) VALUES ('117', 'USERMAG', '维护本部门用户', '[F_USERINFO.UNITCODE] = {currentStation.unitCode :currUnit}', '维护本部门数据库', 'G');
-INSERT INTO f_optdatascope (opt_scope_code, opt_id, scope_name, filter_condition, scope_memo, filter_group) VALUES ('118', 'USERMAG', '所有用户', 'all', '维护全部用户', 'G');
+INSERT INTO f_optdatascope (opt_scope_code, opt_id, scope_name, filter_condition, scope_memo) VALUES ('117', 'USERMAG', '维护本部门用户', '[F_USERINFO.UNITCODE] = {currentStation.unitCode :currUnit}', '维护本部门数据库');
+INSERT INTO f_optdatascope (opt_scope_code, opt_id, scope_name, filter_condition, scope_memo) VALUES ('118', 'USERMAG', '所有用户', 'all', '维护全部用户');
 
 -- 初始化业务菜单
 INSERT INTO f_optinfo (opt_id, opt_name, pre_opt_id, opt_route, opt_url, form_code, opt_type, msg_no, msg_prm, is_in_toolbar, img_index, top_opt_id, order_ind, flow_code, page_type, icon, height, width, update_date, create_date, creator, updator) VALUES ('DEPLOY', '实施菜单', '0', '...', '...', null, 'S', null, null, 'Y', null, null, null, null, 'D', 'icon-ok', null, null, parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), parsedatetime('01-12-2015', 'dd-MM-yyyy','en'), 'u0000000', 'u0000000');
