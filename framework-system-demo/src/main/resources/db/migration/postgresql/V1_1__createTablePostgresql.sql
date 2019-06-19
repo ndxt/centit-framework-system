@@ -68,7 +68,7 @@ drop table if exists F_UNITROLE cascade;
 /*==============================================================*/
 create table F_DATACATALOG
 (
-   CATALOG_CODE         varchar(16) not null,
+   CATALOG_CODE         varchar(32) not null,
    CATALOG_NAME         varchar(64) not null,
    CATALOG_STYLE        char(1) not null ,
    CATALOG_TYPE         char(1) not null  ,
@@ -90,8 +90,8 @@ alter table F_DATACATALOG add primary key (CATALOG_CODE);
 
 create table F_DATADICTIONARY
 (
-   CATALOG_CODE         varchar(16) not null,
-   DATA_CODE            varchar(16) not null,
+   CATALOG_CODE         varchar(32) not null,
+   DATA_CODE            varchar(32) not null,
    EXTRA_CODE           varchar(16)  ,
    EXTRA_CODE2          varchar(16) ,
    DATA_TAG             char(1) ,
@@ -111,7 +111,7 @@ alter table F_DATADICTIONARY add primary key (CATALOG_CODE, DATA_CODE);
 
 create table F_OPTDATASCOPE
 (
-   opt_Scope_Code       varchar(16) not null,
+   opt_Scope_Code       varchar(32) not null,
    Opt_ID               varchar(16),
    scope_Name           varchar(64),
    Filter_Condition     varchar(1024)  ,
@@ -394,7 +394,7 @@ alter table F_USER_QUERY_FILTER add primary key (FILTER_NO);
 
 create table M_InnerMsg
 (
-   Msg_Code             varchar(16) not null ,
+   Msg_Code             varchar(32) not null ,
    Sender               varchar(128),
    Send_Date            date,
    Msg_Title            varchar(128),
@@ -431,7 +431,7 @@ create table M_InnerMsg_Recipient
    Receive_Type         char(1)  ,
    Mail_Type            char(1)  ,
    msg_State            char(1)  ,
-   ID                   varchar(16) not null
+   ID                   varchar(32) not null
 );
 comment on column M_InnerMsg_Recipient.   Receive_Type     is   'P=个人为消息A=机构为公告M=邮件' ;
 comment on column M_InnerMsg_Recipient. Mail_Type       is  'T=收件人C=抄送B=密送'  ;
@@ -443,7 +443,7 @@ create table M_MsgAnnex
 (
    Msg_Code             varchar(16) not null,
    Info_Code            varchar(16) not null,
-   Msg_Annex_Id         varchar(16) not null
+   Msg_Annex_Id         varchar(32) not null
 );
 alter table M_MsgAnnex  add primary key (Msg_Annex_Id);
 

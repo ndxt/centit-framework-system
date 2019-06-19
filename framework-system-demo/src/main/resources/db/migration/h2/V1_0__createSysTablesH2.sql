@@ -68,7 +68,7 @@ drop table if exists F_UNITROLE cascade;
 /*==============================================================*/
 create table F_DATACATALOG
 (
-   CATALOG_CODE         varchar(16) not null,
+   CATALOG_CODE         varchar(32) not null,
    CATALOG_NAME         varchar(64) not null,
    CATALOG_STYLE        char(1) not null comment 'F : 框架固有的 U:用户 S：系统  G国标',
    CATALOG_TYPE         char(1) not null comment 'T：树状表格 L:列表',
@@ -91,8 +91,8 @@ alter table F_DATACATALOG
 /*==============================================================*/
 create table F_DATADICTIONARY
 (
-   CATALOG_CODE         varchar(16) not null,
-   DATA_CODE            varchar(16) not null,
+   CATALOG_CODE         varchar(32) not null,
+   DATA_CODE            varchar(32) not null,
    EXTRA_CODE           varchar(16) comment '树型字典的父类代码',
    EXTRA_CODE2          varchar(16) comment '默认的排序字段',
    DATA_TAG             char(1) comment 'N正常，D已停用，用户可以自解释这个字段',
@@ -113,7 +113,7 @@ alter table F_DATADICTIONARY
 /*==============================================================*/
 create table F_OPTDATASCOPE
 (
-   opt_Scope_Code       varchar(16) not null,
+   opt_Scope_Code       varchar(32) not null,
    Opt_ID               varchar(16),
    scope_Name           varchar(64),
    Filter_Condition     varchar(1024) comment '条件语句，可以有的参数 [mt] 业务表 [uc] 用户代码 [uu] 用户机构代码',
@@ -446,7 +446,7 @@ alter table F_USER_QUERY_FILTER
 /*==============================================================*/
 create table M_InnerMsg
 (
-   Msg_Code             varchar(16) not null comment '消息主键自定义，通过S_M_INNERMSG序列生成',
+   Msg_Code             varchar(32) not null comment '消息主键自定义，通过S_M_INNERMSG序列生成',
    Sender               varchar(128),
    Send_Date            datetime,
    Msg_Title            varchar(128),
@@ -474,18 +474,10 @@ create table M_InnerMsg_Recipient
    Msg_Code             varchar(16) not null,
    Receive              varchar(8) not null,
    Reply_Msg_Code       int,
-   Receive_Type         char(1) comment 'P=个人为消息
-            A=机构为公告
-            M=邮件',
-   Mail_Type            char(1) comment 'T=收件人
-            C=抄送
-            B=密送',
-   msg_State            char(1) comment '未读/已读/删除，收件人在线时弹出提示
-
-            U=未读
-            R=已读
-            D=删除',
-   ID                   varchar(16) not null
+   Receive_Type         char(1) comment 'P=个人为消A=机构为公告M=邮件',
+   Mail_Type            char(1) comment 'T=收件人C=抄送B=密送',
+   msg_State            char(1) comment '未读/已读/删除，收件人在线时弹出提示U=未读R=已读D=删除',
+   ID                   varchar(32) not null
 );
 
 
@@ -499,7 +491,7 @@ create table M_MsgAnnex
 (
    Msg_Code             varchar(16) not null,
    Info_Code            varchar(16) not null,
-   Msg_Annex_Id         varchar(16) not null
+   Msg_Annex_Id         varchar(32) not null
 );
 
 alter table M_MsgAnnex
