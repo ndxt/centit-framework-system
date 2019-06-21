@@ -76,7 +76,7 @@ create table F_DATACATALOG
    Field_Desc           varchar(1024) ,
    update_Date          date,
    Create_Date          date,
-   opt_ID               varchar(16) ,
+   opt_ID               varchar(32) ,
    need_Cache           char(1) default '1',
    creator              varchar(32),
    updator              varchar(32)
@@ -112,7 +112,7 @@ alter table F_DATADICTIONARY add primary key (CATALOG_CODE, DATA_CODE);
 create table F_OPTDATASCOPE
 (
    opt_Scope_Code       varchar(32) not null,
-   Opt_ID               varchar(16),
+   Opt_ID               varchar(32),
    scope_Name           varchar(64),
    Filter_Condition     varchar(1024)  ,
    scope_Memo           varchar(1024)
@@ -152,7 +152,7 @@ create table F_OPT_LOG
    Opt_Content          varchar(1000) not null  ,
    New_Value            text ,
    Old_Value            text ,
-   Opt_ID               varchar(64) not null  ,
+   Opt_ID               varchar(32) not null  ,
    OPT_Method           varchar(64)  ,
    opt_Tag              varchar(200)
 );
@@ -174,7 +174,7 @@ create table F_OptInfo
    Msg_Prm              varchar(256),
    Is_In_ToolBar        char(1),
    Img_Index            numeric(10,0),
-   Top_Opt_ID           varchar(8),
+   Top_Opt_ID           varchar(32),
    Order_Ind            numeric(4,0) ,
    FLOW_CODE            varchar(8) ,
    Page_Type            char(1)  default 'I' ,
@@ -258,7 +258,7 @@ create table F_SYS_NOTIFY
    Notify_Time          date,
    opt_Tag              varchar(200)  ,
    OPT_Method           varchar(64)  ,
-   Opt_ID               varchar(64) not null
+   Opt_ID               varchar(32) not null
 );
 comment on column F_SYS_NOTIFY.Notify_State is '0 成功， 1 失败 2 部分成功'  ;
 comment on column F_SYS_NOTIFY.opt_Tag is  '一般用于关联到业务主体' ;
@@ -346,7 +346,7 @@ create table F_USERSETTING
    USER_CODE            varchar(32) not null ,
    Param_Code           varchar(32) not null,
    Param_Value          varchar(2048) not null,
-   opt_ID               varchar(16) not null,
+   opt_ID               varchar(32) not null,
    Param_Name           varchar(200),
    Create_Date          date
 );
@@ -406,7 +406,7 @@ create table M_InnerMsg
    msg_State            char(1)  ,
    msg_Content          bytea,
    Email_Id             varchar(8)  ,
-   Opt_ID               varchar(64) not null  ,
+   Opt_ID               varchar(32) not null  ,
    OPT_Method           varchar(64) ,
    opt_Tag              varchar(200)
 );
@@ -495,9 +495,11 @@ union
   select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'I' as OBTAIN_TYPE, b.ROLE_TYPE, b.UNIT_CODE,
         b.ROLE_DESC, b.CREATE_DATE, b.UPDATE_DATE ,c.USER_CODE, a.UNIT_CODE as INHERITED_FROM
     from F_UNITROLE a join F_ROLEINFO b on (a.ROLE_CODE = b.ROLE_CODE) JOIN F_USERUNIT c on( a.UNIT_CODE = c.UNIT_CODE)
-    where a.OBTAIN_DATE <=  now() and (a.SECEDE_DATE is null or a.SECEDE_DATE > now()) and b.IS_VALID='T';
-
-
+    where a.OBTAIN_DATE <=  now() and (a.SECEDE_DATE is null or a.SECEDE_DATE > now()) and b.IS_VALID='T'
+union
+  select 'public' as ROLE_CODE, '公共角色' as ROLE_NAME, 'T' as IS_VALID, 'D' as OBTAIN_TYPE, 'P' as ROLE_TYPE, null as UNIT_CODE,
+      '公共角色' as  ROLE_DESC, null as CREATE_DATE, null as UPDATE_DATE , a.USER_CODE, NULL as INHERITED_FROM
+  from F_USERINFO a;
 
 /*==============================================================*/
 /* View: F_V_UserOptDataScopes                                  */
