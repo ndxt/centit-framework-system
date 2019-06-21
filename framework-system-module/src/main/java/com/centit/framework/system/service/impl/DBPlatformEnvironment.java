@@ -180,7 +180,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional(readOnly = true)
     public List<OptInfo> listUserMenuOptInfos(String userCode, boolean asAdmin) {
 
-        List<OptInfo> preOpts = optInfoDao.getMenuFuncByOptUrl();
+        List<OptInfo> preOpts = optInfoDao.listParentMenuFunc();
         String optType = asAdmin ? "S" : "O";
         List<OptInfo> ls = optInfoDao.getMenuFuncByUserID(userCode, optType);
         List<OptInfo> menuFunsByUser = getMenuFuncs(preOpts,  ls);
@@ -190,7 +190,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(readOnly = true)
     public List<OptInfo> listUserMenuOptInfosUnderSuperOptId(String userCode, String superOptId,boolean asAdmin) {
-        List<OptInfo> preOpts=optInfoDao.getMenuFuncByOptUrl();
+        List<OptInfo> preOpts=optInfoDao.listParentMenuFunc();
         String optType = asAdmin ? "S" : "O";
         List<OptInfo> ls=optInfoDao.getMenuFuncByUserID(userCode, optType);
         List<OptInfo> menuFunsByUser = getMenuFuncs(preOpts,  ls);

@@ -36,7 +36,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
 
     @Override
     @Transactional
-    public List<OptInfo> getMenuFuncByOptUrl(){
+    public List<OptInfo> listParentMenuFunc(){
 //        String hql1 = "where OPT_URL='...' order by ORDER_IND ";
         String sql = "where Opt_ID in (select Pre_Opt_ID from f_optinfo group by Pre_Opt_ID) order by order_ind";
         return super.listObjectsByFilter(sql,(Object[]) null);

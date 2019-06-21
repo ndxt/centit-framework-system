@@ -4,7 +4,6 @@ import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.system.dao.OptDataScopeDao;
 import com.centit.framework.system.dao.OptInfoDao;
 import com.centit.framework.system.dao.OptMethodDao;
-import com.centit.framework.system.dao.RolePowerDao;
 import com.centit.framework.system.po.OptDataScope;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
@@ -16,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Service("functionManager")
@@ -373,7 +370,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Override
     @Transactional
     public List<OptInfo> listUserAllPower(String userCode, boolean asAdmin){
-        List<OptInfo> preOpts = optInfoDao.getMenuFuncByOptUrl();
+        List<OptInfo> preOpts = optInfoDao.listParentMenuFunc();
         String optType = asAdmin ? "S" : "O";
         List<OptInfo> ls = optInfoDao.listUserAllSubMenu(userCode, optType);
         List<OptInfo> menuFunsByUser = DBPlatformEnvironment.getMenuFuncs(preOpts,  ls);

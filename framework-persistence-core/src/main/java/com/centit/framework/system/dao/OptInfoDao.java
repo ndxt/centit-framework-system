@@ -83,7 +83,7 @@ public interface OptInfoDao {
      * 查询有子菜单 的菜单（opt_url=...）
      * @return 菜单列表
      */
-    List<OptInfo> getMenuFuncByOptUrl();
+    List<OptInfo> listParentMenuFunc();
 
   /**
    * 查询用户数据范围

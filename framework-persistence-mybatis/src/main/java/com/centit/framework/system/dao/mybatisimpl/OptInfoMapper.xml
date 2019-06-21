@@ -417,7 +417,7 @@
         where USERCODE=#{userCode}
     </select>
 
-    <select id="getMenuFuncByOptUrl" resultMap="OptInfo">
+    <select id="listParentMenuFunc" resultMap="OptInfo">
         select OPT_ID,
                PRE_OPT_ID,
                OPT_NAME,

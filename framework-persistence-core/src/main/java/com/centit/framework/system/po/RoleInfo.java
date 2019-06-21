@@ -31,15 +31,18 @@ public class RoleInfo implements IRoleInfo, EntityWithTimestamp, java.io.Seriali
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
+
     @Id
     @Column(name = "ROLE_CODE")
     //@GeneratedValue(generator = "assignedGenerator")
     @ApiModelProperty(value = "角色代码,可以选择不填后台自动生成", name = "roleCode")
     private String roleCode; // 角色代码
+
     @Column(name = "ROLE_NAME")
     @Length(max = 300, message = "字段长度不能大于{max}")
     @ApiModelProperty(value = "角色名称", name = "roleName", required = true)
     private String roleName; // 角色名称
+
     @Column(name = "IS_VALID")
     @NotBlank(message = "字段不能为空")
     @Length(max = 1, message = "字段长度必须为{max}")
@@ -59,24 +62,29 @@ public class RoleInfo implements IRoleInfo, EntityWithTimestamp, java.io.Seriali
     @ApiModelProperty(value = "角色的类别 F:系统内置的 G:全局的 P:公用的 D:部门（机构）特有的角色 I:项目角色 W:工作流角色", name = "roleType", required = true)
     @DictionaryMap(fieldName = "roleTypeText", value = "RoleType")
     private String roleType; // 角色类别
+
     @Column(name = "UNIT_CODE")
     @Length(max = 32, message = "字段长度不能大于{max}")
     private String unitCode; // 角色所属机构
+
     @Column(name = "ROLE_DESC")
     @Length(max = 256, message = "字段长度不能大于{max}")
     private String roleDesc; // 角色描述
+
     /**
      * CREATOR(创建人) 创建人
      */
     @Column(name = "CREATOR")
     @Length(max = 32, message = "字段长度不能大于{max}")
     private String creator;
+
     /**
      * UPDATOR(更新人) 更新人
      */
     @Column(name = "UPDATOR")
     @Length(max = 32, message = "字段长度不能大于{max}")
     private String updator;
+
     /**
      * UPDATEDATE(更新时间) 更新时间
      */
