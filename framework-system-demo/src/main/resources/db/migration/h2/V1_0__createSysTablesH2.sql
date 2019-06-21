@@ -1,55 +1,74 @@
 /*==============================================================*/
 /* H2 数据库脚本                                                  */
 /*==============================================================*/
+drop sequence if exists s_optdefcode;
+drop sequence if exists s_sys_log;
+drop sequence if exists s_unitcode;
+drop sequence if exists s_user_unit_id;
+drop sequence if exists s_usercode;
+drop sequence if exists S_MSGCODE;
+drop sequence if exists S_RECIPIENT;
+drop sequence if exists S_ROLECODE;
+drop sequence if exists S_Filter_No;
+create sequence S_Filter_No;
+create sequence S_MSGCODE;
+create sequence s_sys_log;
 
-drop table if exists F_DATACATALOG;
+create sequence S_OPTDEFCODE start with 1001000 INCREMENT BY 1;
 
-drop table if exists F_DATADICTIONARY;
+create sequence S_RECIPIENT;
 
-drop table if exists F_OPTDATASCOPE;
+create sequence S_UNITCODE start with 10 INCREMENT BY 1;
 
-drop table if exists F_OPTDEF;
+create sequence S_USER_UNIT_ID start with 10 INCREMENT BY 1;
 
-drop table if exists F_OPT_LOG;
+create sequence S_USERCODE start with 10 INCREMENT BY 1;
 
-drop table if exists F_OptInfo;
+create sequence S_ROLECODE start with 10 INCREMENT BY 1;
+drop table if exists F_DATACATALOG cascade;
 
-drop table if exists F_QUERY_FILTER_CONDITION;
+drop table if exists F_DATADICTIONARY cascade;
 
-drop table if exists F_RANKGRANT;
+drop table if exists F_OPTDATASCOPE cascade;
 
-drop table if exists F_ROLEINFO;
+drop table if exists F_OPTDEF cascade;
 
-drop table if exists F_ROLEPOWER;
+drop table if exists F_OPT_LOG cascade;
 
-drop table if exists F_SYS_NOTIFY;
+drop table if exists F_OptInfo cascade;
 
-drop table if exists F_UNITINFO;
+drop table if exists F_QUERY_FILTER_CONDITION cascade;
 
-drop table if exists F_USERINFO;
+drop table if exists F_ROLEINFO cascade;
 
-drop table if exists F_USERROLE;
+drop table if exists F_ROLEPOWER cascade;
 
-drop table if exists F_USERSETTING;
+drop table if exists F_SYS_NOTIFY cascade;
 
-drop table if exists F_USERUNIT;
+drop table if exists F_UNITINFO cascade;
 
-drop table if exists F_USER_FAVORITE;
+drop table if exists F_USERINFO cascade;
 
-drop table if exists F_USER_QUERY_FILTER;
+drop table if exists F_USERROLE cascade;
 
-drop table if exists M_InnerMsg;
+drop table if exists F_USERSETTING cascade;
 
-drop table if exists M_InnerMsg_Recipient;
+drop table if exists F_USERUNIT cascade;
 
-drop table if exists M_MsgAnnex;
+drop table if exists F_USER_QUERY_FILTER cascade;
 
+drop table if exists M_InnerMsg cascade;
+
+drop table if exists M_InnerMsg_Recipient cascade;
+
+drop table if exists M_MsgAnnex cascade;
+drop table if exists F_UNITROLE cascade;
 /*==============================================================*/
 /* Table: F_DATACATALOG                                         */
 /*==============================================================*/
 create table F_DATACATALOG
 (
-   CATALOG_CODE         varchar(16) not null,
+   CATALOG_CODE         varchar(32) not null,
    CATALOG_NAME         varchar(64) not null,
    CATALOG_STYLE        char(1) not null comment 'F : 框架固有的 U:用户 S：系统  G国标',
    CATALOG_TYPE         char(1) not null comment 'T：树状表格 L:列表',
@@ -72,8 +91,8 @@ alter table F_DATACATALOG
 /*==============================================================*/
 create table F_DATADICTIONARY
 (
-   CATALOG_CODE         varchar(16) not null,
-   DATA_CODE            varchar(16) not null,
+   CATALOG_CODE         varchar(32) not null,
+   DATA_CODE            varchar(32) not null,
    EXTRA_CODE           varchar(16) comment '树型字典的父类代码',
    EXTRA_CODE2          varchar(16) comment '默认的排序字段',
    DATA_TAG             char(1) comment 'N正常，D已停用，用户可以自解释这个字段',
@@ -94,12 +113,12 @@ alter table F_DATADICTIONARY
 /*==============================================================*/
 create table F_OPTDATASCOPE
 (
-   opt_Scope_Code       varchar(16) not null,
+   opt_Scope_Code       varchar(32) not null,
    Opt_ID               varchar(16),
    scope_Name           varchar(64),
    Filter_Condition     varchar(1024) comment '条件语句，可以有的参数 [mt] 业务表 [uc] 用户代码 [uu] 用户机构代码',
-   scope_Memo           varchar(1024) comment '数据权限说明',
-   Filter_Group         varchar(16) default 'G'
+   scope_Memo           varchar(1024) comment '数据权限说明'
+   --Filter_Group         varchar(16) default 'G'
 );
 
 alter table F_OPTDATASCOPE
@@ -197,32 +216,14 @@ create table F_QUERY_FILTER_CONDITION
    Select_Data_type     char(1) not null default 'N' comment '数据下拉框内容； N ：没有， D 数据字典, S 通过sql语句获得， J json数据直接获取 ',
    Select_Data_Catalog  varchar(64) comment '数据字典',
    Select_SQL           varchar(1000) comment '有两个返回字段的sql语句',
-   Select_JSON          varchar(2000) comment 'KEY,Value数值对，JSON格式'
+   Select_JSON          varchar(2000) comment 'KEY,Value数值对，JSON格式',
+   CREATE_DATE          datetime
 );
 
 alter table F_QUERY_FILTER_CONDITION
    add primary key (CONDITION_NO);
 
-/*==============================================================*/
-/* Table: F_RANKGRANT                                           */
-/*==============================================================*/
-create table F_RANKGRANT
-(
-   RANK_grant_ID        numeric(12,0) not null,
-   granter              varchar(8) not null,
-   UNITCODE             varchar(6) not null,
-   UserStation          varchar(4) not null,
-   UserRank             varchar(2) not null comment 'RANK 代码不是 0开头的可以进行授予',
-   beginDate            datetime not null,
-   grantee              varchar(8) not null,
-   endDate              datetime,
-   grantDesc            varchar(256),
-   LastModifyDate       datetime,
-   CreateDate           datetime
-);
 
-alter table F_RANKGRANT
-   add primary key (RANK_grant_ID, UserRank);
 
 /*==============================================================*/
 /* Table: F_ROLEINFO                                            */
@@ -303,7 +304,7 @@ create table F_UNITINFO
    unit_Order           numeric(4,0),
    update_Date          datetime,
    Create_Date          datetime,
-   extJsonInfo          varchar(1000),
+   --extJsonInfo          varchar(1000),
    creator              varchar(32),
    updator              varchar(32),
    UNIT_PATH            varchar(1000),
@@ -422,19 +423,6 @@ create table F_USERUNIT
 alter table F_USERUNIT
    add primary key (USER_UNIT_ID);
 
-/*==============================================================*/
-/* Table: F_USER_FAVORITE                                       */
-/*==============================================================*/
-create table F_USER_FAVORITE
-(
-   USERCODE             varchar(8) not null ,
-   OptID                varchar(16) not null,
-   LastModifyDate       datetime,
-   CreateDate           datetime
-);
-
-alter table F_USER_FAVORITE
-   add primary key (USERCODE, OptID);
 
 /*==============================================================*/
 /* Table: F_USER_QUERY_FILTER                                   */
@@ -445,7 +433,9 @@ create table F_USER_QUERY_FILTER
    user_Code            varchar(8) not null,
    modle_code           varchar(64) not null comment '开发人员自行定义，单不能重复，建议用系统的模块名加上当前的操作方法',
    filter_name          varchar(200) not null comment '用户自行定义的名称',
-   filter_value         varchar(3200) not null comment '变量值，json格式，对应一个map'
+   filter_value         varchar(3200) not null comment '变量值，json格式，对应一个map',
+   IS_DEFAULT           char(1),
+   CREATE_DATE          datetime
 );
 
 alter table F_USER_QUERY_FILTER
@@ -456,24 +446,15 @@ alter table F_USER_QUERY_FILTER
 /*==============================================================*/
 create table M_InnerMsg
 (
-   Msg_Code             varchar(16) not null comment '消息主键自定义，通过S_M_INNERMSG序列生成',
+   Msg_Code             varchar(32) not null comment '消息主键自定义，通过S_M_INNERMSG序列生成',
    Sender               varchar(128),
    Send_Date            datetime,
    Msg_Title            varchar(128),
-   Msg_Type             varchar(16) comment 'P= 个人为消息  A= 机构为公告（通知）
-            M=邮件',
-   Mail_Type            char(1) comment 'I=收件箱
-            O=发件箱
-            D=草稿箱
-            T=废件箱
-
-
-            ',
+   Msg_Type             varchar(16) comment 'P= 个人为消息  A= 机构为公告（通知）M=邮件',
+   Mail_Type            char(1) comment 'I=收件箱O=发件箱D=草稿箱T=废件箱',
    Mail_UnDel_Type      char(1),
    Receive_Name         varchar(2048) comment '使用部门，个人中文名，中间使用英文分号分割',
-   Hold_Users           numeric(8,0) comment '总数为发送人和接收人数量相加，发送和接收人删除消息时-1，当数量为0时真正删除此条记录
-
-            消息类型为邮件时不需要设置',
+   Hold_Users           numeric(8,0) comment '总数为发送人和接收人数量相加，发送和接收人删除消息时-1，当数量为0时真正删除此条记录消息类型为邮件时不需要设置',
    msg_State            char(1) comment '未读/已读/删除',
    msg_Content          longblob,
    Email_Id             varchar(8) comment '用户配置多邮箱时使用',
@@ -493,18 +474,10 @@ create table M_InnerMsg_Recipient
    Msg_Code             varchar(16) not null,
    Receive              varchar(8) not null,
    Reply_Msg_Code       int,
-   Receive_Type         char(1) comment 'P=个人为消息
-            A=机构为公告
-            M=邮件',
-   Mail_Type            char(1) comment 'T=收件人
-            C=抄送
-            B=密送',
-   msg_State            char(1) comment '未读/已读/删除，收件人在线时弹出提示
-
-            U=未读
-            R=已读
-            D=删除',
-   ID                   varchar(16) not null
+   Receive_Type         char(1) comment 'P=个人为消A=机构为公告M=邮件',
+   Mail_Type            char(1) comment 'T=收件人C=抄送B=密送',
+   msg_State            char(1) comment '未读/已读/删除，收件人在线时弹出提示U=未读R=已读D=删除',
+   ID                   varchar(32) not null
 );
 
 
@@ -518,46 +491,11 @@ create table M_MsgAnnex
 (
    Msg_Code             varchar(16) not null,
    Info_Code            varchar(16) not null,
-   Msg_Annex_Id         varchar(16) not null
+   Msg_Annex_Id         varchar(32) not null
 );
 
 alter table M_MsgAnnex
    add primary key (Msg_Annex_Id);
-
-/*==============================================================*/
-/* Table: P_TASK_LIST                                           */
-/*==============================================================*/
-/*
-create table P_TASK_LIST
-(
-   taskid               numeric(12,0) not null comment '自动生成的主键，需要一个序列来配合',
-   taskowner            varchar(8) not null comment '谁的任务',
-   tasktag              varchar(1) not null comment '类似与outlook中的邮件标记，可以用不同的颜色的旗子图表标识',
-   taskrank             varchar(1) not null comment '任务的优先级',
-   taskstatus           varchar(2) not null comment '处理中、完成、取消、终止',
-   tasktitle            varchar(256) not null,
-   taskmemo             varchar(1000) comment '简要描述任务的具体内容',
-   tasktype             varchar(8) not null comment '个人、组织活动、领导委派 等等',
-   OptID                varchar(64) not null comment '模块，或者表',
-   OPTMethod            varchar(64) comment '方法，或者字段',
-   optTag               varchar(200) comment '一般用于关联到业务主体',
-   creator              varchar(32) not null,
-   created              datetime not null,
-   planbegintime        datetime not null,
-   planendtime          datetime,
-   begintime            datetime,
-   endtime              datetime,
-   finishmemo           varchar(1000) comment '简要记录任务的执行过程和结果',
-   noticeSign           varchar(1) comment '提醒标志为：禁止提醒、未提醒、已提醒',
-   lastNoticeTime       datetime comment '最后一次提醒时间，根据提醒策略可以提醒多次',
-   taskdeadline         datetime,
-   taskvalue            varchar(2048) comment '备用，字段不够时使用'
-);
-*/
-
-create table simulate_sequence (
-seqname varchar(100) not null primary key,
-      currvalue numeric(12,0), increment numeric(4,0));
 
 -- v_hi_unitinfo视图脚本
 
@@ -650,19 +588,5 @@ create or replace view v_opt_tree as
 ;
 
 
-create sequence S_FILTER_NO;
 
-create sequence S_NOTIFY_ID;
-
-create sequence S_OPTDEFCODE start with 1001000 INCREMENT BY 1;
-
-create sequence S_SYS_LOG;
-
-create sequence S_UNITCODE start with 10 INCREMENT BY 1;
-
-create sequence S_USER_UNIT_ID start with 10 INCREMENT BY 1;
-
-create sequence S_USERCODE start with 10 INCREMENT BY 1;
-
-create sequence S_ROLECODE start with 10 INCREMENT BY 1;
 

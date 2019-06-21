@@ -34,53 +34,55 @@ INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
 
 INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
 ('S_ROLECODE', 10, 1);
+INSERT INTO f_mysql_sequence (name, currvalue , increment) VALUES
+   ('S_Filter_No', 0, 1);
 
-drop table if exists F_DATACATALOG;
+drop table if exists F_DATACATALOG cascade;
 
-drop table if exists F_DATADICTIONARY;
+drop table if exists F_DATADICTIONARY cascade;
 
-drop table if exists F_OPTDATASCOPE;
+drop table if exists F_OPTDATASCOPE cascade;
 
-drop table if exists F_OPTDEF;
+drop table if exists F_OPTDEF cascade;
 
-drop table if exists F_OPT_LOG;
+drop table if exists F_OPT_LOG cascade;
 
-drop table if exists F_OptInfo;
+drop table if exists F_OptInfo cascade;
 
-drop table if exists F_QUERY_FILTER_CONDITION;
+drop table if exists F_QUERY_FILTER_CONDITION cascade;
 
-drop table if exists F_ROLEINFO;
+drop table if exists F_ROLEINFO cascade;
 
-drop table if exists F_ROLEPOWER;
+drop table if exists F_ROLEPOWER cascade;
 
-drop table if exists F_SYS_NOTIFY;
+drop table if exists F_SYS_NOTIFY cascade;
 
-drop table if exists F_UNITINFO;
+drop table if exists F_UNITINFO cascade;
 
-drop table if exists F_USERINFO;
+drop table if exists F_USERINFO cascade;
 
-drop table if exists F_USERROLE;
+drop table if exists F_USERROLE cascade;
 
-drop table if exists F_USERSETTING;
+drop table if exists F_USERSETTING cascade;
 
-drop table if exists F_USERUNIT;
+drop table if exists F_USERUNIT cascade;
 
-drop table if exists F_USER_QUERY_FILTER;
+drop table if exists F_USER_QUERY_FILTER cascade;
 
-drop table if exists M_InnerMsg;
+drop table if exists M_InnerMsg cascade;
 
-drop table if exists M_InnerMsg_Recipient;
+drop table if exists M_InnerMsg_Recipient cascade;
 
-drop table if exists M_MsgAnnex;
+drop table if exists M_MsgAnnex cascade;
 
-drop table if exists  F_UNITROLE;
+drop table if exists  F_UNITROLE cascade;
 
 /*==============================================================*/
 /* Table: F_DATACATALOG                                         */
 /*==============================================================*/
 create table F_DATACATALOG
 (
-   CATALOG_CODE         varchar(16) not null,
+   CATALOG_CODE         varchar(32) not null,
    CATALOG_NAME         varchar(64) not null,
    CATALOG_STYLE        char(1) not null comment 'F : 框架固有的 U:用户 S：系统  G国标',
    CATALOG_TYPE         char(1) not null comment 'T：树状表格 L:列表',
@@ -106,8 +108,8 @@ alter table F_DATACATALOG
 /*==============================================================*/
 create table F_DATADICTIONARY
 (
-   CATALOG_CODE         varchar(16) not null,
-   DATA_CODE            varchar(16) not null,
+   CATALOG_CODE         varchar(32) not null,
+   DATA_CODE            varchar(32) not null,
    EXTRA_CODE           varchar(16) comment '树型字典的父类代码',
    EXTRA_CODE2          varchar(16) comment '默认的排序字段',
    DATA_TAG             char(1) comment 'N正常，D已停用，用户可以自解释这个字段',
@@ -130,12 +132,11 @@ alter table F_DATADICTIONARY
 /*==============================================================*/
 create table F_OPTDATASCOPE
 (
-   opt_Scope_Code       varchar(16) not null,
+   opt_Scope_Code       varchar(32) not null,
    Opt_ID               varchar(16),
    scope_Name           varchar(64),
    Filter_Condition     varchar(1024) comment '条件语句，可以有的参数 [mt] 业务表 [uc] 用户代码 [uu] 用户机构代码',
-   scope_Memo           varchar(1024) comment '数据权限说明',
-   Filter_Group         varchar(16) default 'G'
+   scope_Memo           varchar(1024) comment '数据权限说明'
 );
 
 alter table F_OPTDATASCOPE
@@ -233,7 +234,8 @@ create table F_QUERY_FILTER_CONDITION
    Select_Data_type     char(1) not null default 'N' comment '数据下拉框内容； N ：没有， D 数据字典, S 通过sql语句获得， J json数据直接获取',
    Select_Data_Catalog  varchar(64) comment '数据字典',
    Select_SQL           varchar(1000) comment '有两个返回字段的sql语句',
-   Select_JSON          varchar(2000) comment 'KEY,Value数值对，JSON格式'
+   Select_JSON          varchar(2000) comment 'KEY,Value数值对，JSON格式',
+   CREATE_DATE          datetime
 );
 
 alter table F_QUERY_FILTER_CONDITION
@@ -319,7 +321,6 @@ create table F_UNITINFO
    unit_Order           numeric(4,0),
    update_Date          datetime,
    Create_Date          datetime,
-   --extJsonInfo          varchar(1000),
    creator              varchar(32),
    updator              varchar(32),
    UNIT_PATH            varchar(1000),
@@ -356,7 +357,6 @@ create table F_USERINFO
    user_Order           numeric(4,0),
    update_Date          datetime,
    Create_Date          datetime,
-   --extJsonInfo          varchar(1000),
    creator              varchar(32),
    updator              varchar(32)
 );
@@ -435,7 +435,9 @@ create table F_USER_QUERY_FILTER
    user_Code            varchar(8) not null,
    modle_code           varchar(64) not null comment '开发人员自行定义，单不能重复，建议用系统的模块名加上当前的操作方法',
    filter_name          varchar(200) not null comment '用户自行定义的名称',
-   filter_value         varchar(3200) not null comment '变量值，json格式，对应一个map'
+   filter_value         varchar(3200) not null comment '变量值，json格式，对应一个map',
+   IS_DEFAULT           char(1),
+   CREATE_DATE          datetime
 );
 
 alter table F_USER_QUERY_FILTER
@@ -446,21 +448,15 @@ alter table F_USER_QUERY_FILTER
 /*==============================================================*/
 create table M_InnerMsg
 (
-   Msg_Code             varchar(16) not null comment '消息主键自定义，通过S_M_INNERMSG序列生成',
+   Msg_Code             varchar(32) not null comment '消息主键自定义，通过S_M_INNERMSG序列生成',
    Sender               varchar(128),
    Send_Date            datetime,
    Msg_Title            varchar(128),
-   Msg_Type             varchar(16) comment 'P= 个人为消息  A= 机构为公告（通知）
-            M=邮件',
-   Mail_Type            char(1) comment 'I=收件箱
-            O=发件箱
-            D=草稿箱
-            T=废件箱',
+   Msg_Type             varchar(16) comment 'P= 个人为消息  A= 机构为公告（通知）M=邮件',
+   Mail_Type            char(1) comment 'I=收件箱O=发件箱D=草稿箱T=废件箱',
    Mail_UnDel_Type      char(1),
    Receive_Name         varchar(2048) comment '使用部门，个人中文名，中间使用英文分号分割',
-   Hold_Users           numeric(8,0) comment '总数为发送人和接收人数量相加，发送和接收人删除消息时-1，当数量为0时真正删除此条记录
-
-            消息类型为邮件时不需要设置',
+   Hold_Users           numeric(8,0) comment '总数为发送人和接收人数量相加，发送和接收人删除消息时-1，当数量为0时真正删除此条记录消息类型为邮件时不需要设置',
    msg_State            char(1) comment '未读/已读/删除',
    msg_Content          longblob,
    Email_Id             varchar(8) comment '用户配置多邮箱时使用',
@@ -469,10 +465,7 @@ create table M_InnerMsg
    opt_Tag              varchar(200) comment '一般用于关联到业务主体'
 );
 
-alter table M_InnerMsg comment '内部消息与公告
-接受代码,  其实可以独立出来, 因为他 和发送人 是 一对多的关系
-
-                               -&#';
+alter table M_InnerMsg comment '内部消息与公告接受代码,其实可以独立出来,因为他和发送人是一对多的关系';
 
 alter table M_InnerMsg
    add primary key (Msg_Code);
@@ -485,18 +478,10 @@ create table M_InnerMsg_Recipient
    Msg_Code             varchar(16) not null,
    Receive              varchar(8) not null,
    Reply_Msg_Code       int,
-   Receive_Type         char(1) comment 'P=个人为消息
-            A=机构为公告
-            M=邮件',
-   Mail_Type            char(1) comment 'T=收件人
-            C=抄送
-            B=密送',
-   msg_State            char(1) comment '未读/已读/删除，收件人在线时弹出提示
-
-            U=未读
-            R=已读
-            D=删除',
-   ID                   varchar(16) not null
+   Receive_Type         char(1) comment 'P=个人为消息A=机构为公告M=邮件',
+   Mail_Type            char(1) comment 'T=收件人C=抄送B=密送',
+   msg_State            char(1) comment '未读/已读/删除，收件人在线时弹出提示U=未读R=已读D=删除',
+   ID                   varchar(32) not null
 );
 
 alter table M_InnerMsg_Recipient comment '内部消息（邮件）与公告收件人及消息信息';
@@ -511,7 +496,7 @@ create table M_MsgAnnex
 (
    Msg_Code             varchar(16) not null,
    Info_Code            varchar(16) not null,
-   Msg_Annex_Id         varchar(16) not null
+   Msg_Annex_Id         varchar(32) not null
 );
 
 alter table M_MsgAnnex

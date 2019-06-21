@@ -12,9 +12,9 @@ values
 NOW(),  'u0000000', 'u0000000', '/U00001','u0000000');
 
 insert into F_USERINFO (USER_CODE, USER_PIN, IS_VALID, LOGIN_NAME, USER_NAME, USER_DESC, LOGIN_TIMES, ACTIVE_TIME, REG_EMAIL, USER_ORDER, USER_PWD, REG_CELL_PHONE, CREATE_DATE,CREATOR,UPDATOR,UPDATE_DATE)
-values ('noname', '67b74fe1423796dfe8db34b959b81fbd', 'F', 'noname', '匿名用户', '匿名用户', null, null, 'noname@centit.com', 1, '', '', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'),'u0000000','u0000000',now());
+values ('noname', '67b74fe1423796dfe8db34b959b81fbd', 'F', 'noname', '匿名用户', '匿名用户', null, null, 'noname@centit.com', 1, '', '', to_date('12-12-2014 16:05:46','mm-dd-yyyy'),'u0000000','u0000000',now());
 insert into F_USERINFO (USER_CODE, USER_PIN, IS_VALID, LOGIN_NAME, USER_NAME, USER_DESC, LOGIN_TIMES, ACTIVE_TIME, REG_EMAIL, USER_ORDER, USER_PWD, REG_CELL_PHONE, CREATE_DATE ,CREATOR,UPDATOR,UPDATE_DATE,primary_Unit)
-values ('u0000000', '$2a$11$DbyFNhHeCES5CKoMuM5sXepY7GM35sZkUSqQbjYJnFTzJ2GDIYGLK', 'T', 'admin', '管理员', '', null, null, 'codefan@centit.com', 1, '', '18017458877', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'),'u0000000','u0000000',now(),'U00001');
+values ('u0000000', '$2a$11$DbyFNhHeCES5CKoMuM5sXepY7GM35sZkUSqQbjYJnFTzJ2GDIYGLK', 'T', 'admin', '管理员', '', null, null, 'codefan@centit.com', 1, '', '18017458877', to_date('12-12-2014 16:05:46','mm-dd-yyyy'),'u0000000','u0000000',now(),'U00001');
 
 INSERT INTO F_USERUNIT(USER_UNIT_ID, UNIT_CODE, USER_CODE, Is_Primary, User_Station, User_Rank, Rank_Memo, User_Order,
 update_Date, Create_Date) VALUES ('s000000000','U00001','u0000000','T','pf','CZ',null,'1','2014-12-12','2014-12-12');
@@ -157,24 +157,24 @@ INSERT INTO f_optdef (opt_code, opt_id, opt_name, opt_method, opt_url, opt_desc,
 
 -- 初始化角色信息
 insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
-values ('deploy', '实施人员','G','T', '实施人员角色', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
+values ('deploy', '实施人员','G','T', '实施人员角色', to_date('12-12-2014 16:05:46','mm-dd-yyyy'), now(),'u0000000','u0000000');
 
 insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
-values ('sysadmin', '系统管理员','G', 'T', '所有系统配置功能', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
+values ('sysadmin', '系统管理员','G', 'T', '所有系统配置功能', to_date('12-12-2014 16:05:46','mm-dd-yyyy'), now(),'u0000000','u0000000');
 
 insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
-values ('anonymous', '匿名角色','F', 'T', '匿名用户角色', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
+values ('anonymous', '匿名角色','F', 'T', '匿名用户角色', to_date('12-12-2014 16:05:46','mm-dd-yyyy'), now(),'u0000000','u0000000');
 
 insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
-values ('public', '公共角色','F', 'T', '公共角色权限会默认给不包括匿名用户的所有人', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
+values ('public', '公共角色','F', 'T', '公共角色权限会默认给不包括匿名用户的所有人', to_date('12-12-2014 16:05:46','mm-dd-yyyy'), now(),'u0000000','u0000000');
 
 insert into F_ROLEINFO (ROLE_CODE, ROLE_NAME,ROLE_TYPE, IS_VALID, ROLE_DESC, CREATE_DATE, UPDATE_DATE,CREATOR,UPDATOR)
-values ('forbidden', '禁用的功能','F', 'T', '这个角色不能赋给任何人，这个角色中的操作任何人都不可以调用。', str_to_date('12-12-2014 16:05:46', '%d-%m-%Y %H:%i:%s'), now(),'u0000000','u0000000');
+values ('forbidden', '禁用的功能','F', 'T', '这个角色不能赋给任何人，这个角色中的操作任何人都不可以调用。', to_date('12-12-2014 16:05:46','mm-dd-yyyy'), now(),'u0000000','u0000000');
 
 insert into F_ROLEPOWER (ROLE_CODE, OPT_CODE, UPDATE_DATE, CREATE_DATE, OPT_SCOPE_CODES,CREATOR,UPDATOR)
-values ('public', '1000080', str_to_date('11-04-2016 10:21:17', '%d-%m-%Y %H:%i:%s'), str_to_date('11-04-2016 10:21:17', '%d-%m-%Y %H:%i:%s'), '','u0000000','u0000000');
+values ('public', '1000080', to_date('12-12-2014 16:05:46','mm-dd-yyyy'), to_date('12-12-2014 16:05:46','mm-dd-yyyy'), '','u0000000','u0000000');
 insert into F_ROLEPOWER (ROLE_CODE, OPT_CODE, UPDATE_DATE, CREATE_DATE, OPT_SCOPE_CODES,CREATOR,UPDATOR)
-values ('public', '1000081', str_to_date('11-04-2016 10:21:17', '%d-%m-%Y %H:%i:%s'), str_to_date('11-04-2016 10:21:17', '%d-%m-%Y %H:%i:%s'), '','u0000000','u0000000');
+values ('public', '1000081', to_date('12-12-2014 16:05:46','mm-dd-yyyy'), to_date('12-12-2014 16:05:46','mm-dd-yyyy'), '','u0000000','u0000000');
 
 
 insert into F_ROLEPOWER(role_code,opt_code,update_Date,create_date,opt_scope_codes,CREATOR,UPDATOR)
@@ -182,8 +182,8 @@ insert into F_ROLEPOWER(role_code,opt_code,update_Date,create_date,opt_scope_cod
 
 insert into F_USERROLE (USER_CODE, ROLE_CODE, OBTAIN_DATE,
 			SECEDE_DATE, CHANGE_DESC, UPDATE_DATE, CREATE_DATE,CREATOR,UPDATOR)
-values ('u0000000', 'sysadmin', STR_TO_DATE('23-05-2012','%d-%m-%Y'),
-	STR_TO_DATE('01-10-2022', '%d-%m-%Y'),'' ,now(), now(),'u0000000','u0000000');
+values ('u0000000', 'sysadmin', to_date('12-12-2014 16:05:46','mm-dd-yyyy'),
+	to_date('12-12-2022 16:05:46','mm-dd-yyyy'),'' ,now(), now(),'u0000000','u0000000');
 
 
 commit;

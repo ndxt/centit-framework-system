@@ -1,13 +1,13 @@
 insert into F_UNITINFO
 (UNIT_CODE, PARENT_UNIT, UNIT_TYPE, IS_VALID, UNIT_TAG,
-UNIT_NAME, ENGLISH_NAME, DEP_NO, UNIT_DESC, ADDRBOOK_ID,
+UNIT_NAME, ENGLISH_NAME, DEP_NO, UNIT_DESC,
 UNIT_SHORT_NAME, UNIT_WORD, UNIT_GRADE, UNIT_ORDER, UPDATE_DATE,
-CREATE_DATE, EXTJSONINFO, CREATOR, UPDATOR, UNIT_PATH)
+CREATE_DATE, CREATOR, UPDATOR, UNIT_PATH,UNIT_MANAGER)
 values
 ('U00001', null, 'N', 'T', null,
-'根机构', 'root', null, '根机构', null,
+'根机构', 'root', null, '根机构',
 'root', 'root', null, 1, sysdate,
-sysdate, null, 'u0000000', 'u0000000', '/U00001');
+sysdate,  'u0000000', 'u0000000', '/U00001','u0000000');
 
 insert into F_USERINFO (USER_CODE, USER_PIN, IS_VALID, LOGIN_NAME, USER_NAME, USER_DESC, LOGIN_TIMES, ACTIVE_TIME, REG_EMAIL, USER_ORDER, USER_PWD, REG_CELL_PHONE, CREATE_DATE,CREATOR,UPDATOR,UPDATE_DATE)
 values ('noname', '67b74fe1423796dfe8db34b959b81fbd', 'F', 'noname', '匿名用户', '匿名用户', null, null, 'noname@centit.com', 1, '', '', sysdate,'u0000000','u0000000',sysdate);
@@ -78,8 +78,8 @@ INSERT INTO f_datadictionary(CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, D
 INSERT INTO f_datadictionary(CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, Last_Modify_Date, Create_Date, DATA_ORDER) VALUES ('RoleType', 'W', NULL, NULL, 'T', '工作流角色', 'S', '', NULL, NULL, 6);
 
 
-INSERT INTO f_optdatascope (opt_scope_code, opt_id, scope_name, filter_condition, scope_memo, filter_group) VALUES ('117', 'USERMAG', '维护本部门用户', '[F_USERINFO.UNITCODE] = {currentStation.unitCode :currUnit}', '维护本部门数据库', 'G');
-INSERT INTO f_optdatascope (opt_scope_code, opt_id, scope_name, filter_condition, scope_memo, filter_group) VALUES ('118', 'USERMAG', '所有用户', 'all', '维护全部用户', 'G');
+INSERT INTO f_optdatascope (opt_scope_code, opt_id, scope_name, filter_condition, scope_memo) VALUES ('117', 'USERMAG', '维护本部门用户', '[F_USERINFO.UNITCODE] = {currentStation.unitCode :currUnit}', '维护本部门数据库');
+INSERT INTO f_optdatascope (opt_scope_code, opt_id, scope_name, filter_condition, scope_memo) VALUES ('118', 'USERMAG', '所有用户', 'all', '维护全部用户');
 
 
 -- 初始化业务菜单
