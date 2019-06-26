@@ -1,4 +1,4 @@
-package com.centit.framework.web.demo.config;
+package com.centit.prodcts.demoapp.config;
 
 import com.centit.framework.config.BaseSpringMvcConfig;
 import org.springframework.context.annotation.ComponentScan;

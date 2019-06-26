@@ -1,13 +1,11 @@
-package com.centit.framework.web.demo.config;
+package com.centit.prodcts.demoapp.config;
 
 import com.centit.framework.components.impl.NotificationCenterImpl;
-import com.centit.framework.components.impl.TextOperationLogWriterImpl;
 import com.centit.framework.config.InitialWebRuntimeEnvironment;
 import com.centit.framework.config.SpringSecurityCasConfig;
 import com.centit.framework.config.SpringSecurityDaoConfig;
 import com.centit.framework.jdbc.config.JdbcConfig;
 import com.centit.framework.model.adapter.NotificationCenter;
-import com.centit.framework.model.adapter.OperationLogWriter;
 import com.centit.framework.security.model.StandardPasswordEncoderImpl;
 import com.centit.framework.system.config.SystemBeanConfig;
 import org.springframework.context.annotation.*;

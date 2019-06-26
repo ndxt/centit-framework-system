@@ -1,4 +1,4 @@
-package com.centit.framework.web.demo.config;
+package com.centit.prodcts.demoapp.config;
 
 import com.centit.framework.config.SystemSpringMvcConfig;
 import com.centit.framework.config.WebConfig;
@@ -24,8 +24,11 @@ public class WebInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext servletContext) throws ServletException {
 
         initializeSpringConfig(servletContext);
+
         initializeSystemSpringMvcConfig(servletContext);
         initializeNormalSpringMvcConfig(servletContext);
+
+        WebConfig.registerSpringSecurityFilter(servletContext);
         WebConfig.registerRequestContextListener(servletContext);
         WebConfig.registerSingleSignOutHttpSessionListener(servletContext);
         //WebConfig.registerResponseCorsFilter(servletContext);
@@ -33,7 +36,6 @@ public class WebInitializer implements WebApplicationInitializer {
         WebConfig.registerHttpPutFormContentFilter(servletContext);
         WebConfig.registerHiddenHttpMethodFilter(servletContext);
         WebConfig.registerRequestThreadLocalFilter(servletContext);
-        WebConfig.registerSpringSecurityFilter(servletContext);
 
         WebConfig.initializeH2Console(servletContext);
     }

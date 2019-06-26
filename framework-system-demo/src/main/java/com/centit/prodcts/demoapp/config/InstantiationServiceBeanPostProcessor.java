@@ -1,4 +1,4 @@
-package com.centit.framework.web.demo.config;
+package com.centit.prodcts.demoapp.config;
 
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.components.OperationLogCenter;

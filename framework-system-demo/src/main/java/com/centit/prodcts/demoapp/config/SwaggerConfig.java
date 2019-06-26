@@ -1,4 +1,4 @@
-package com.centit.framework.web.demo.config;
+package com.centit.prodcts.demoapp.config;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;

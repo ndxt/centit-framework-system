@@ -3,7 +3,7 @@ package com.centit.framework.web.demo.test;
 import com.centit.framework.common.SysParametersUtils;
 import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.algorithm.StringRegularOpt;
-import com.centit.framework.web.demo.config.ServiceConfig;
+import com.centit.prodcts.demoapp.config.ServiceConfig;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.lang.annotation.Annotation;
