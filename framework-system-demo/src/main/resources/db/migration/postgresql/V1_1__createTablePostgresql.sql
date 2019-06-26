@@ -485,21 +485,41 @@ select concat(c.opt_url,b.OPT_URL) as opt_url, b.opt_req, a.role_code, c.opt_id,
 /*==============================================================*/
 /* View: F_V_USERROLES                                          */
 /*==============================================================*/
-
 create or replace view F_V_USERROLES as
-select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'D' as OBTAIN_TYPE, b.ROLE_TYPE, b.UNIT_CODE,
-      b.ROLE_DESC, b.CREATE_DATE, b.UPDATE_DATE ,a.USER_CODE, NULL as INHERITED_FROM
-    from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE)
-    where a.OBTAIN_DATE <=  now() and (a.SECEDE_DATE is null or a.SECEDE_DATE > now()) and b.IS_VALID='T'
+SELECT b.role_code,
+   b.role_name,
+   b.is_valid,
+   'D'::text AS obtain_type,
+   b.role_type,
+   b.unit_code,
+   b.role_desc,
+   b.create_date,
+   b.update_date,
+   a.user_code,
+   NULL::character varying AS inherited_from
+FROM (f_userrole a
+   JOIN f_roleinfo b ON (((a.role_code)::text = (b.role_code)::text)))
+WHERE ((a.obtain_date <= now()) AND ((a.secede_date IS NULL) OR (a.secede_date > now())) AND (b.is_valid = 'T'::bpchar))
+UNION
+SELECT b.role_code,
+   b.role_name,
+   b.is_valid,
+   'I'::text AS obtain_type,
+   b.role_type,
+   b.unit_code,
+   b.role_desc,
+   b.create_date,
+   b.update_date,
+   c.user_code,
+   a.unit_code AS inherited_from
+FROM ((f_unitrole a
+   JOIN f_roleinfo b ON (((a.role_code)::text = (b.role_code)::text)))
+   JOIN f_userunit c ON (((a.unit_code)::text = (c.unit_code)::text)))
+WHERE ((a.obtain_date <= now()) AND ((a.secede_date IS NULL) OR (a.secede_date > now())) AND (b.is_valid = 'T'::bpchar))
 union
-  select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'I' as OBTAIN_TYPE, b.ROLE_TYPE, b.UNIT_CODE,
-        b.ROLE_DESC, b.CREATE_DATE, b.UPDATE_DATE ,c.USER_CODE, a.UNIT_CODE as INHERITED_FROM
-    from F_UNITROLE a join F_ROLEINFO b on (a.ROLE_CODE = b.ROLE_CODE) JOIN F_USERUNIT c on( a.UNIT_CODE = c.UNIT_CODE)
-    where a.OBTAIN_DATE <=  now() and (a.SECEDE_DATE is null or a.SECEDE_DATE > now()) and b.IS_VALID='T'
-union
-  select 'public' as ROLE_CODE, '公共角色' as ROLE_NAME, 'T' as IS_VALID, 'D' as OBTAIN_TYPE, 'P' as ROLE_TYPE, null as UNIT_CODE,
-      '公共角色' as  ROLE_DESC, null as CREATE_DATE, null as UPDATE_DATE , a.USER_CODE, NULL as INHERITED_FROM
-  from F_USERINFO a;
+select 'public'::varchar(32) as ROLE_CODE, '公共角色'::varchar(64) as ROLE_NAME, 'T'::char(1) as IS_VALID, 'D' as OBTAIN_TYPE, 'P'::char(1) as ROLE_TYPE, null::varchar(32) as UNIT_CODE,
+   '公共角色'::varchar(256) as  ROLE_DESC, null as CREATE_DATE, null as UPDATE_DATE , a.USER_CODE, NULL as INHERITED_FROM
+from F_USERINFO a;
 
 /*==============================================================*/
 /* View: F_V_UserOptDataScopes                                  */
