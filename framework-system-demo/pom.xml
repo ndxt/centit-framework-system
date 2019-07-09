@@ -36,7 +36,11 @@
             <artifactId>ojdbc6</artifactId>
             <scope>runtime</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.dm</groupId>
+            <artifactId>dmjdbc7</artifactId>
+            <version>1.7.0</version>
+        </dependency>
         <dependency>
             <groupId>com.centit.framework</groupId>
             <artifactId>framework-session</artifactId>
