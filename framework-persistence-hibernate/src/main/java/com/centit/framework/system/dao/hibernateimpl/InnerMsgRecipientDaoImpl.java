@@ -58,15 +58,15 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
     public  List<InnerMsgRecipient> getExchangeMsgs(String sender, String receiver) {
 
         String queryString ="From InnerMsgRecipient" +
-                " where( (msgCode in (Select msgCode from InnerMsg where sender= ? and (mailType='I' or mailType='O')) and Receive= ?) " +
-                     "or (msgCode in (Select msgCode from InnerMsg where sender= ? and (mailType='I' or mailType='O')) and Receive= ?)) order by msgCode desc";
+                " where( (msgCode in (Select msgCode from InnerMsg where sender= ?0 and (mailType='I' or mailType='O')) and Receive= ?1) " +
+                     "or (msgCode in (Select msgCode from InnerMsg where sender= ?2 and (mailType='I' or mailType='O')) and Receive= ?3)) order by msgCode desc";
         List<InnerMsgRecipient> l = listObjects(queryString, new Object[]{sender,receiver,receiver,sender});
         return l;
     }
 
     public long getUnreadMessageCount(String userCode){
         Object obj= DatabaseOptUtils.getSingleObjectByHql(this, "select count(1)"
-                + " from InnerMsgRecipient re Where re.receive = ? and msgState ='U'",userCode);
+                + " from InnerMsgRecipient re Where re.receive = ?0 and msgState ='U'",userCode);
         if (obj == null)
             return 0;
         if (obj instanceof Long)
@@ -79,7 +79,7 @@ public class InnerMsgRecipientDaoImpl extends BaseDaoImpl<InnerMsgRecipient, Str
     }
 
     public List<InnerMsgRecipient> listUnreadMessage(String userCode){
-        String queryString ="From InnerMsgRecipient re Where re.receive = ? and re.msgState ='U' "
+        String queryString ="From InnerMsgRecipient re Where re.receive = ?0 and re.msgState ='U' "
                 + "  order by re.id desc";
         return listObjects(queryString, userCode);
     }

@@ -15,7 +15,7 @@ public class OptDataScopeDaoImpl extends BaseDaoImpl<OptDataScope, String> imple
 
     @Transactional
     public List<OptDataScope> getDataScopeByOptID(String sOptID) {
-        return listObjects("FROM OptDataScope WHERE optId =?", sOptID);
+        return listObjects("FROM OptDataScope WHERE optId =?0", sOptID);
     }
 
     /**
@@ -30,13 +30,13 @@ public class OptDataScopeDaoImpl extends BaseDaoImpl<OptDataScope, String> imple
     @Transactional
     public int getOptDataScopeSumByOptID(String sOptID) {
         return Integer.valueOf(String.valueOf(DatabaseOptUtils.getSingleObjectByHql(this,
-                "SELECT count(optScopeCode) FROM OptDataScope WHERE optId = ?", sOptID)));
+                "SELECT count(optScopeCode) FROM OptDataScope WHERE optId = ?0", sOptID)));
     }
 
 
     @Transactional
     public void deleteDataScopeOfOptID(String sOptID) {
-        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM OptDataScope WHERE optId = ?", sOptID);
+        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM OptDataScope WHERE optId = ?0", sOptID);
     }
 
 
@@ -58,7 +58,7 @@ public class OptDataScopeDaoImpl extends BaseDaoImpl<OptDataScope, String> imple
 
     @Transactional
     public List<String> listDataFiltersByIds(Collection<String> scopeCodes) {
-        List<OptDataScope> objs    = listObjects("FROM OptDataScope WHERE optId in ?", scopeCodes);
+        List<OptDataScope> objs    = listObjects("FROM OptDataScope WHERE optId in ?0", scopeCodes);
         if(objs==null)
             return null;
         List<String> filters = new ArrayList<String>();

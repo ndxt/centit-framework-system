@@ -49,7 +49,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     public List<UserInfo> listUnitUsers(String unitCode) {
         String sSqlsen = "select a.* " +
                 "from F_USERINFO a join F_USERUNIT b on(a.USERCODE=b.USERCODE) " +
-                "where b.UNITCODE =?";
+                "where b.UNITCODE =?0";
 
         return DatabaseOptUtils.findObjectsBySql(
                 this, sSqlsen, new Object[]{unitCode} ,UserInfo.class);
@@ -81,7 +81,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     @Transactional
     public UnitInfo getUnitByName(String name) {
         if (StringUtils.isNotBlank(name)) {
-            String hql = "from UnitInfo where unitName = ? or unitShortName = ?"
+            String hql = "from UnitInfo where unitName = ?0 or unitShortName = ?1"
                         + " order by unitOrder asc";
             List<UnitInfo> list = listObjects(hql,
                     new Object[]{name,name});
@@ -105,7 +105,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     @Transactional
     public List<UnitInfo> listSubUnits(String unitCode){
         return super.listObjectByProperty("parentUnit", unitCode);
-        /*String hql = "from UnitInfo where parentUnit = ?";
+        /*String hql = "from UnitInfo where parentUnit = ?0";
         return listObjectsAll(hql,
             new Object[]{unitCode,unitCode});*/
     }
@@ -113,7 +113,7 @@ public class UnitInfoDaoImpl extends BaseDaoImpl<UnitInfo, String> implements Un
     @Override
     @Transactional(propagation=Propagation.MANDATORY)
     public List<UnitInfo> listSubUnitsByUnitPaht(String unitPath){
-        String hql = "from UnitInfo where unitPath like ?";
+        String hql = "from UnitInfo where unitPath like ?0";
         return listObjects(hql,
             new Object[]{unitPath+"%"});
     }

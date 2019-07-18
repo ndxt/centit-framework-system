@@ -40,11 +40,10 @@ public class TestCaseManagerImpl implements TestCaseManager {
         // 获取用户权限范围过滤条件，getOptId() 获取当前业务ID，  query为当前业务操作代码optCode
         List<String> filters = generalService.listUserDataFiltersByOptIdAndMethod(
             ud.getUserCode(), getOptId(), "query");
-        return DictionaryMapUtils.mapJsonArray( // 数据字典翻译工作
-            this.testCaseDao.listObjectsAsJson( // 执行数据驱动查询
-                dataPowerFilter.getSourceData(),// 当前用户相关参数（已包括查询信息）
-                filters,                        // 用户数据范围权限过滤条件
-                pageDesc), TestCase.class);
+        return DictionaryMapUtils.objectsToJSONArray( // 数据字典翻译工作
+            this.testCaseDao.listObjectByProperties(//) .listObjectsAsJson( // 执行数据驱动查询
+                //dataPowerFilter.getSourceData(),// 当前用户相关参数（已包括查询信息）
+                filterMap));
     }
 
     /**

@@ -38,13 +38,13 @@ public class DataDictionaryDaoImpl extends BaseDaoImpl<DataDictionary, DataDicti
 
     @Transactional
     public List<DataDictionary> listDataDictionary(String catalogCode) {
-        return listObjects("FROM DataDictionary WHERE id.catalogCode = ? ORDER BY dataOrder", catalogCode);
+        return listObjects("FROM DataDictionary WHERE id.catalogCode = ?0 ORDER BY dataOrder", catalogCode);
     }
 
     @Transactional
     public void deleteDictionary(String catalog) {
         try {
-            DatabaseOptUtils.doExecuteHql(this, "delete from DataDictionary where id.catalogCode =?", catalog);
+            DatabaseOptUtils.doExecuteHql(this, "delete from DataDictionary where id.catalogCode =?0", catalog);
             logger.debug("delete DataDictionary successful");
         } catch (RuntimeException re) {
             logger.error("delete DataDictionary failed", re);
