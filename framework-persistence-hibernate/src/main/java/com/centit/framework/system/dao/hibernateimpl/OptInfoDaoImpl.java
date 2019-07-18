@@ -88,6 +88,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
             opt.setOptRoute(opm.getOptRoute());
             opt.setPreOptId(opm.getPreOptId());
             opt.setTopOptId(opm.getTopOptId());
+            opt.setPageType(opm.getPageType());
             opts.add(opt);
             //System.out.print(opt.getOptType());
         }
