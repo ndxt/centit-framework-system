@@ -21,7 +21,7 @@
     <properties>
         <centit.framework.version>4.5-SNAPSHOT</centit.framework.version>
         <centit.persistence.version>1.2-SNAPSHOT</centit.persistence.version>
-        <centit.ui.version>3.1.1809</centit.ui.version>
+        <centit.ui.version>3.1.1901</centit.ui.version>
     </properties>
 
     <licenses>
