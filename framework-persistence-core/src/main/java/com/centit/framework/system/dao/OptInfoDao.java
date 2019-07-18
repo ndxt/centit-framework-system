@@ -85,13 +85,13 @@ public interface OptInfoDao {
      */
     List<OptInfo> listParentMenuFunc();
 
-  /**
-   * 查询用户数据范围
-   * @param userCode 用户Id
-   * @param optId 菜单Id
-   * @param optMethod 操作定义
-   * @return List&lt;String&gt;
-   */
+    /**
+    * 查询用户数据范围
+    * @param userCode 用户Id
+    * @param optId 菜单Id
+    * @param optMethod 操作定义
+    * @return List&lt;String&gt;
+    */
      List<String> listUserDataPowerByOptMethod(String userCode, String optId, String optMethod);
 
     /**

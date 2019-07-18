@@ -21,7 +21,7 @@ public class FVUserOptMoudleList implements java.io.Serializable {
     @Id
     @Column(name = "OPT_ID")
     //@GeneratedValue(generator = "assignedGenerator")
-    private String optid;           //业务模块类
+    private String optId;           //业务模块类
 
     @Column(name = "USER_CODE")
     @Length(max = 8, message = "字段长度不能大于{max}")
@@ -29,19 +29,19 @@ public class FVUserOptMoudleList implements java.io.Serializable {
 
     @Column(name = "OPT_NAME")
     @Length(max = 32, message = "字段长度不能大于{max}")
-    private String optname;
+    private String optName;
 
     @Column(name = "PRE_OPT_ID")
     @Length(max = 8, message = "字段长度不能大于{max}")
-    private String preoptid;
+    private String preOptId;
 
     @Column(name = "FORM_CODE")
     @Length(max = 4, message = "字段长度不能大于{max}")
-    private String formcode;
+    private String formCode;
 
     @Column(name = "OPT_URL")
     @Length(max = 256, message = "字段长度不能大于{max}")
-    private String opturl;
+    private String optUrl;
 
     /**
      * 系统菜单路由
@@ -54,31 +54,31 @@ public class FVUserOptMoudleList implements java.io.Serializable {
 
     @Column(name = "OPT_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
-    private String opttype;
+    private String optType;
 
     @Column(name = "MSG_NO")
     @Length(max = 10, message = "字段长度不能大于{max}")
-    private Long msgno;
+    private Long msgNo;
 
     @Column(name = "MSG_PRM")
     @Length(max = 256, message = "字段长度不能大于{max}")
-    private String msgprm;
+    private String msgPrm;
 
     @Column(name = "IS_IN_TOOLBAR")
     @Length(max = 1, message = "字段长度必须为{max}")
-    private String isintoolbar;
+    private String isInToolbar;
 
     @Column(name = "IMG_INDEX")
     @Length(max = 10, message = "字段长度不能大于{max}")
-    private Long imgindex;
+    private Long imgIndex;
 
     @Column(name = "TOP_OPT_ID")
     @Length(max = 8, message = "字段长度不能大于{max}")
-    private String topoptid;
+    private String topOptId;
 
     @Column(name = "ORDER_IND")
     @Length(max = 4, message = "字段长度不能大于{max}")
-    private Long orderind;
+    private Long orderInd;
 
     @Column(name = "PAGE_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
@@ -101,8 +101,8 @@ public class FVUserOptMoudleList implements java.io.Serializable {
      */
     public FVUserOptMoudleList(String userCode, String optid, String optname) {
         this.userCode = userCode;
-        this.optid = optid;
-        this.optname = optname;
+        this.optId = optid;
+        this.optName = optname;
     }
 
 
@@ -112,17 +112,17 @@ public class FVUserOptMoudleList implements java.io.Serializable {
                                String opttype,
                                Long orderind, String pageType) {
         this.userCode = userCode;
-        this.optid = optid;
-        this.optname = optname;
-        this.preoptid = preoptid;
-        this.formcode = formcode;
-        this.opturl = opturl;
-        this.msgno = msgno;
-        this.msgprm = msgprm;
-        this.isintoolbar = isintoolbar;
-        this.imgindex = imgindex;
-        this.topoptid = topoptid;
-        this.orderind = orderind;
+        this.optId = optid;
+        this.optName = optname;
+        this.preOptId = preoptid;
+        this.formCode = formcode;
+        this.optUrl = opturl;
+        this.msgNo = msgno;
+        this.msgPrm = msgprm;
+        this.isInToolbar = isintoolbar;
+        this.imgIndex = imgindex;
+        this.topOptId = topoptid;
+        this.orderInd = orderind;
         this.pageType = pageType;
     }
 
@@ -136,100 +136,96 @@ public class FVUserOptMoudleList implements java.io.Serializable {
         return this.userCode;
     }
 
-    public void setUsercode(String userCode) {
-        setUserCode(userCode);
-    }
-
     public void setUserCode(String userCode) {
         this.userCode = userCode;
     }
 
-    public String getOptid() {
-        return this.optid;
+    public String getOptId() {
+        return this.optId;
     }
 
-    public void setOptid(String optid) {
-        this.optid = optid;
+    public void setOptId(String optId) {
+        this.optId = optId;
     }
 
-    public String getOptname() {
-        return this.optname;
+    public String getOptName() {
+        return this.optName;
     }
 
-    public void setOptname(String optname) {
-        this.optname = optname;
+    public void setOptName(String optName) {
+        this.optName = optName;
     }
 
-    public String getPreoptid() {
-        return this.preoptid;
+    public String getPreOptId() {
+        return this.preOptId;
     }
 
-    public void setPreoptid(String preoptid) {
-        this.preoptid = preoptid;
+    public void setPreOptId(String preOptId) {
+        this.preOptId = preOptId;
     }
 
-    public String getFormcode() {
-        return this.formcode;
+    public String getFormCode() {
+        return this.formCode;
     }
 
-    public void setFormcode(String formcode) {
-        this.formcode = formcode;
+    public void setFormCode(String formCode) {
+        this.formCode = formCode;
     }
 
-    public String getOpturl() {
-        return this.opturl;
+    public String getOptUrl() {
+        return this.optUrl;
     }
 
-    public void setOpturl(String opturl) {
-        this.opturl = opturl;
+    public void setOptUrl(String opturl) {
+        this.optUrl = opturl;
     }
 
-    public Long getMsgno() {
-        return this.msgno;
+    public Long getMsgNo() {
+        return this.msgNo;
     }
 
-    public void setMsgno(Long msgno) {
-        this.msgno = msgno;
+    public void setMsgNo(Long msgNo) {
+        this.msgNo = msgNo;
     }
 
-    public String getMsgprm() {
-        return this.msgprm;
+    public String getMsgPrm() {
+        return this.msgPrm;
     }
 
-    public void setMsgprm(String msgprm) {
-        this.msgprm = msgprm;
+    public void setMsgPrm(String msgPrm) {
+        this.msgPrm = msgPrm;
     }
 
-    public String getIsintoolbar() {
-        return this.isintoolbar;
+    public String getIsInToolbar() {
+        return this.isInToolbar;
     }
 
-    public void setIsintoolbar(String isintoolbar) {
-        this.isintoolbar = isintoolbar;
+    public void setIsInToolbar(String isInToolbar) {
+        this.isInToolbar = isInToolbar;
     }
 
-    public Long getImgindex() {
-        return this.imgindex;
+    public Long getImgIndex() {
+        return this.imgIndex;
     }
 
-    public void setImgindex(Long imgindex) {
-        this.imgindex = imgindex;
+    public void setImgIndex(Long imgIndex) {
+        this.imgIndex = imgIndex;
     }
 
-    public String getTopoptid() {
-        return this.topoptid;
+    public String getTopOptId() {
+        return this.topOptId;
     }
 
-    public void setTopoptid(String topoptid) {
-        this.topoptid = topoptid;
+    public void setTopOptId(String topOptId) {
+        this.topOptId = topOptId;
     }
 
-    public Long getOrderind() {
-        return this.orderind;
+    public Long getOrderInd() {
+        return this.orderInd;
     }
 
-    public void setOrderind(Long orderind) {
-        this.orderind = orderind;
+    public void setOrderInd(Long orderInd) {
+        this.orderInd = orderInd;
     }
 
     public String getOptRoute() {
@@ -271,46 +267,46 @@ public class FVUserOptMoudleList implements java.io.Serializable {
                 .getUserCode() != null
                 && castOther.getUserCode() != null && this.getUserCode()
                 .equals(castOther.getUserCode())))
-                && ((this.getOptid() == castOther.getOptid()) || (this
-                .getOptid() != null
-                && castOther.getOptid() != null && this.getOptid()
-                .equals(castOther.getOptid())))
-                && ((this.getOptname() == castOther.getOptname()) || (this
-                .getOptname() != null
-                && castOther.getOptname() != null && this.getOptname()
-                .equals(castOther.getOptname())))
-                && ((this.getPreoptid() == castOther.getPreoptid()) || (this
-                .getPreoptid() != null
-                && castOther.getPreoptid() != null && this
-                .getPreoptid().equals(castOther.getPreoptid())))
-                && ((this.getFormcode() == castOther.getFormcode()) || (this
-                .getFormcode() != null
-                && castOther.getFormcode() != null && this
-                .getFormcode().equals(castOther.getFormcode())))
-                && ((this.getOpturl() == castOther.getOpturl()) || (this
-                .getOpturl() != null
-                && castOther.getOpturl() != null && this.getOpturl()
-                .equals(castOther.getOpturl())))
-                && ((this.getMsgno() == castOther.getMsgno()) || (this
-                .getMsgno() != null
-                && castOther.getMsgno() != null && this.getMsgno()
-                .equals(castOther.getMsgno())))
-                && ((this.getMsgprm() == castOther.getMsgprm()) || (this
-                .getMsgprm() != null
-                && castOther.getMsgprm() != null && this.getMsgprm()
-                .equals(castOther.getMsgprm())))
-                && ((this.getIsintoolbar() == castOther.getIsintoolbar()) || (this
-                .getIsintoolbar() != null
-                && castOther.getIsintoolbar() != null && this
-                .getIsintoolbar().equals(castOther.getIsintoolbar())))
-                && ((this.getImgindex() == castOther.getImgindex()) || (this
-                .getImgindex() != null
-                && castOther.getImgindex() != null && this
-                .getImgindex().equals(castOther.getImgindex())))
-                && ((this.getTopoptid() == castOther.getTopoptid()) || (this
-                .getTopoptid() != null
-                && castOther.getTopoptid() != null && this
-                .getTopoptid().equals(castOther.getTopoptid())));
+                && ((this.getOptId() == castOther.getOptId()) || (this
+                .getOptId() != null
+                && castOther.getOptId() != null && this.getOptId()
+                .equals(castOther.getOptId())))
+                && ((this.getOptName() == castOther.getOptName()) || (this
+                .getOptName() != null
+                && castOther.getOptName() != null && this.getOptName()
+                .equals(castOther.getOptName())))
+                && ((this.getPreOptId() == castOther.getPreOptId()) || (this
+                .getPreOptId() != null
+                && castOther.getPreOptId() != null && this
+                .getPreOptId().equals(castOther.getPreOptId())))
+                && ((this.getFormCode() == castOther.getFormCode()) || (this
+                .getFormCode() != null
+                && castOther.getFormCode() != null && this
+                .getFormCode().equals(castOther.getFormCode())))
+                && ((this.getOptUrl() == castOther.getOptUrl()) || (this
+                .getOptUrl() != null
+                && castOther.getOptUrl() != null && this.getOptUrl()
+                .equals(castOther.getOptUrl())))
+                && ((this.getMsgNo() == castOther.getMsgNo()) || (this
+                .getMsgNo() != null
+                && castOther.getMsgNo() != null && this.getMsgNo()
+                .equals(castOther.getMsgNo())))
+                && ((this.getMsgPrm() == castOther.getMsgPrm()) || (this
+                .getMsgPrm() != null
+                && castOther.getMsgPrm() != null && this.getMsgPrm()
+                .equals(castOther.getMsgPrm())))
+                && ((this.getIsInToolbar() == castOther.getIsInToolbar()) || (this
+                .getIsInToolbar() != null
+                && castOther.getIsInToolbar() != null && this
+                .getIsInToolbar().equals(castOther.getIsInToolbar())))
+                && ((this.getImgIndex() == castOther.getImgIndex()) || (this
+                .getImgIndex() != null
+                && castOther.getImgIndex() != null && this
+                .getImgIndex().equals(castOther.getImgIndex())))
+                && ((this.getTopOptId() == castOther.getTopOptId()) || (this
+                .getTopOptId() != null
+                && castOther.getTopOptId() != null && this
+                .getTopOptId().equals(castOther.getTopOptId())));
     }
 
     public int hashCode() {
@@ -319,27 +315,27 @@ public class FVUserOptMoudleList implements java.io.Serializable {
         result = 37 * result
                 + (getUserCode() == null ? 0 : this.getUserCode().hashCode());
         result = 37 * result
-                + (getOptid() == null ? 0 : this.getOptid().hashCode());
+                + (getOptId() == null ? 0 : this.getOptId().hashCode());
         result = 37 * result
-                + (getOptname() == null ? 0 : this.getOptname().hashCode());
+                + (getOptName() == null ? 0 : this.getOptName().hashCode());
         result = 37 * result
-                + (getPreoptid() == null ? 0 : this.getPreoptid().hashCode());
+                + (getPreOptId() == null ? 0 : this.getPreOptId().hashCode());
         result = 37 * result
-                + (getFormcode() == null ? 0 : this.getFormcode().hashCode());
+                + (getFormCode() == null ? 0 : this.getFormCode().hashCode());
         result = 37 * result
-                + (getOpturl() == null ? 0 : this.getOpturl().hashCode());
+                + (getOptUrl() == null ? 0 : this.getOptUrl().hashCode());
         result = 37 * result
-                + (getMsgno() == null ? 0 : this.getMsgno().hashCode());
+                + (getMsgNo() == null ? 0 : this.getMsgNo().hashCode());
         result = 37 * result
-                + (getMsgprm() == null ? 0 : this.getMsgprm().hashCode());
+                + (getMsgPrm() == null ? 0 : this.getMsgPrm().hashCode());
         result = 37
                 * result
-                + (getIsintoolbar() == null ? 0 : this.getIsintoolbar()
+                + (getIsInToolbar() == null ? 0 : this.getIsInToolbar()
                 .hashCode());
         result = 37 * result
-                + (getImgindex() == null ? 0 : this.getImgindex().hashCode());
+                + (getImgIndex() == null ? 0 : this.getImgIndex().hashCode());
         result = 37 * result
-                + (getTopoptid() == null ? 0 : this.getTopoptid().hashCode());
+                + (getTopOptId() == null ? 0 : this.getTopOptId().hashCode());
         return result;
     }
 
@@ -347,16 +343,16 @@ public class FVUserOptMoudleList implements java.io.Serializable {
     public void copy(FVUserOptMoudleList other) {
 
         this.userCode = other.getUserCode();
-        this.optname = other.getOptname();
-        this.preoptid = other.getPreoptid();
-        this.formcode = other.getFormcode();
-        this.opturl = other.getOpturl();
-        this.msgno = other.getMsgno();
-        this.msgprm = other.getMsgprm();
-        this.isintoolbar = other.getIsintoolbar();
-        this.imgindex = other.getImgindex();
-        this.topoptid = other.getTopoptid();
-        this.orderind = other.getOrderind();
+        this.optName = other.getOptName();
+        this.preOptId = other.getPreOptId();
+        this.formCode = other.getFormCode();
+        this.optUrl = other.getOptUrl();
+        this.msgNo = other.getMsgNo();
+        this.msgPrm = other.getMsgPrm();
+        this.isInToolbar = other.getIsInToolbar();
+        this.imgIndex = other.getImgIndex();
+        this.topOptId = other.getTopOptId();
+        this.orderInd = other.getOrderInd();
         this.pageType = other.getPageType();
     }
 
@@ -364,35 +360,35 @@ public class FVUserOptMoudleList implements java.io.Serializable {
 
         if (other.getUserCode() != null)
             this.userCode = other.getUserCode();
-        if (other.getOptname() != null)
-            this.optname = other.getOptname();
-        if (other.getPreoptid() != null)
-            this.preoptid = other.getPreoptid();
-        if (other.getFormcode() != null)
-            this.formcode = other.getFormcode();
-        if (other.getOpturl() != null)
-            this.opturl = other.getOpturl();
-        if (other.getMsgno() != null)
-            this.msgno = other.getMsgno();
-        if (other.getMsgprm() != null)
-            this.msgprm = other.getMsgprm();
-        if (other.getIsintoolbar() != null)
-            this.isintoolbar = other.getIsintoolbar();
-        if (other.getImgindex() != null)
-            this.imgindex = other.getImgindex();
-        if (other.getTopoptid() != null)
-            this.topoptid = other.getTopoptid();
-        if (other.getOrderind() != null)
-            this.orderind = other.getOrderind();
+        if (other.getOptName() != null)
+            this.optName = other.getOptName();
+        if (other.getPreOptId() != null)
+            this.preOptId = other.getPreOptId();
+        if (other.getFormCode() != null)
+            this.formCode = other.getFormCode();
+        if (other.getOptUrl() != null)
+            this.optUrl = other.getOptUrl();
+        if (other.getMsgNo() != null)
+            this.msgNo = other.getMsgNo();
+        if (other.getMsgPrm() != null)
+            this.msgPrm = other.getMsgPrm();
+        if (other.getIsInToolbar() != null)
+            this.isInToolbar = other.getIsInToolbar();
+        if (other.getImgIndex() != null)
+            this.imgIndex = other.getImgIndex();
+        if (other.getTopOptId() != null)
+            this.topOptId = other.getTopOptId();
+        if (other.getOrderInd() != null)
+            this.orderInd = other.getOrderInd();
         if (other.getPageType() != null)
             this.pageType = other.getPageType();
     }
 
-    public String getOpttype() {
-        return opttype;
+    public String getOptType() {
+        return optType;
     }
 
-    public void setOpttype(String opttype) {
-        this.opttype = opttype;
+    public void setOptType(String optType) {
+        this.optType = optType;
     }
 }

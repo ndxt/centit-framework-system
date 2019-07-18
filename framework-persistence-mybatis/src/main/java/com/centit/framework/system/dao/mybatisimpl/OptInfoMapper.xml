@@ -522,7 +522,7 @@
                OPT_METHOD
         from F_V_USEROPTLIST
         where USER_CODE=#{userCode}
-        and OPT_ID= #{optid}
+        and OPT_ID= #{optId}
     </select>
 
     <select id="listAllOptMethodUrlMap" resultType="com.centit.framework.system.po.OptMethodUrlMap">
@@ -531,7 +531,7 @@
     </select>
 
     <select id="listUserDataPowerByOptMethod" parameterType="map" resultType="String">
-        select opt_Scope_Codes from F_V_UserOptDataScopes  where User_Code = #{userCode} and OPT_ID =#{optid}
+        select opt_Scope_Codes from F_V_UserOptDataScopes  where User_Code = #{userCode} and OPT_ID =#{optId}
         <if test="optMethod != null  and optMethod != ''  ">
             and OPT_METHOD = #{optMethod}
         </if>
