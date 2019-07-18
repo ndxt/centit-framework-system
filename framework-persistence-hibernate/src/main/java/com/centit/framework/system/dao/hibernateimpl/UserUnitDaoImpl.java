@@ -57,7 +57,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
     @Transactional
     public List<UserUnit> listUserUnitsByUserCode(String userId) {
         List<UserUnit> ls = listObjects(
-                "FROM UserUnit where userCode=?",
+                "FROM UserUnit where userCode=?0",
                 userId);
         /*
          * for (FUserunit usun : ls) {
@@ -71,7 +71,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
     @Transactional
     public List<UserUnit> listObjectByUserUnit(String userCode,String unitCode){
         List<UserUnit> ls = listObjects(
-                "FROM UserUnit where userCode=? and unitCode=?",
+                "FROM UserUnit where userCode=?0 and unitCode=?1",
                 new Object[]{userCode,unitCode});
         return ls;
     }
@@ -89,7 +89,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         DatabaseOptUtils
                 .doExecuteHql(
                         this,
-                        "delete UserUnit  where userCode = ? ",
+                        "delete UserUnit  where userCode = ?0",
                         userCode);
 
     }
@@ -100,7 +100,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         DatabaseOptUtils
                 .doExecuteHql(
                         this,
-                        "delete UserUnit  where unitCode = ? ",
+                        "delete UserUnit  where unitCode = ?0",
                         unitCode);
     }
 
@@ -108,7 +108,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
     @Transactional
     public UserUnit getPrimaryUnitByUserId(String userId) {
         List<UserUnit> list = listObjects(
-                "FROM UserUnit where userCode=? and isPrimary='T'",
+                "FROM UserUnit where userCode=?0 and isPrimary='T'",
                 userId);
         if (list != null && list.size()>0) {
             return list.get(0);
@@ -121,7 +121,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
     @Transactional
     public List<UserUnit> listUnitUsersByUnitCode(String unitCode) {
         List<UserUnit> ls =listObjects(
-                "FROM UserUnit where unitCode=?",
+                "FROM UserUnit where unitCode=?0",
                 unitCode);
         return ls;
     }
@@ -141,18 +141,18 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         List<UserUnit> ls = null;
         if (unitCode != null && !"".equals(unitCode)) {
             if ("gw".equals(roleType)) {
-              ls = listObjects("FROM UserUnit where unitCode=? and userStation=? ",
+              ls = listObjects("FROM UserUnit where unitCode=?0 and userStation=?1 ",
                 new Object[]{unitCode, roleCode});
             }else if ("xz".equals(roleType)) {
-              ls = listObjects("FROM UserUnit where unitCode=? and userRank=? ",
+              ls = listObjects("FROM UserUnit where unitCode=?0 and userRank=?1 ",
                 new Object[]{unitCode, roleCode});
             }
         } else {
             if ("gw".equals(roleType)) {
-              ls = listObjects("FROM UserUnit where userStation=? ",
+              ls = listObjects("FROM UserUnit where userStation=?0 ",
                 roleCode);
             }else if ("xz".equals(roleType)) {
-              ls = listObjects("FROM UserUnit where userRank=? ",
+              ls = listObjects("FROM UserUnit where userRank=?0 ",
                 roleCode);
             }
         }
@@ -164,7 +164,7 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
     @Transactional
     public List<UserUnit> listUnitUsersByUnitCodeAndFilter(String unitCode, PageDesc pageDesc,
             Map<String, Object> filterMap) {
-        String hql = "FROM UserUnit where unitCode=? ";
+        String hql = "FROM UserUnit where unitCode=?0 ";
 
         if (null != filterMap && null != filterMap.get("ORDER_BY")) {
           hql += "order by " + filterMap.get("ORDER_BY");

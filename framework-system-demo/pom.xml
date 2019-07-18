@@ -9,7 +9,7 @@
         <version>1.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.centit.framework</groupId>
+    <groupId>com.centit.product</groupId>
     <version>1.0-SNAPSHOT</version>
     <artifactId>demoapp</artifactId>
     <packaging>war</packaging>
@@ -49,8 +49,8 @@
 
         <dependency>
             <groupId>com.centit.framework</groupId>
-            <artifactId>framework-persistence-jdbc</artifactId>
-            <!--<artifactId>framework-persistence-hibernate</artifactId>-->
+           <!-- <artifactId>framework-persistence-jdbc</artifactId>-->
+            <artifactId>framework-persistence-hibernate</artifactId>
             <!--<artifactId>framework-persistence-mybatis</artifactId>-->
         </dependency>
 
@@ -61,8 +61,8 @@
 
         <dependency>
             <groupId>com.centit.framework</groupId>
-            <artifactId>centit-persistence-jdbc-config</artifactId>
-            <!--<artifactId>centit-persistence-hibernate-config</artifactId>-->
+            <!--<artifactId>centit-persistence-jdbc-config</artifactId>-->
+            <artifactId>centit-persistence-hibernate-config</artifactId>
             <!--<artifactId>centit-persistence-mybatis-config</artifactId>-->
         </dependency>
 

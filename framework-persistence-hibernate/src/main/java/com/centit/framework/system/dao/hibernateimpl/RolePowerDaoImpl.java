@@ -36,18 +36,18 @@ public class RolePowerDaoImpl extends BaseDaoImpl<RolePower, RolePowerId> implem
 
     @Transactional
     public void deleteRolePowersByRoleCode(String rolecode) {
-        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM RolePower rp where rp.id.roleCode=?", rolecode);
+        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM RolePower rp where rp.id.roleCode=?0", rolecode);
     }
 
     @Transactional
     public void deleteRolePowersByOptCode(String optecode) {
-        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM RolePower rp where rp.id.optCode=?", optecode);
+        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM RolePower rp where rp.id.optCode=?0", optecode);
     }
 
 
     @Transactional
     public List<RolePower> listRolePowersByRoleCode(String rolecode) {
-        return listObjects("FROM RolePower rp where rp.id.roleCode=?", rolecode);
+        return listObjects("FROM RolePower rp where rp.id.roleCode=?0", rolecode);
     }
 
     @Transactional

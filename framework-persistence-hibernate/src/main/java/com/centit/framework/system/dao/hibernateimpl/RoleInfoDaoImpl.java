@@ -47,7 +47,7 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
     @Transactional
     public List<Object> listRoleOptMethods(String rolecode) {
         String hql = "select new map(def.optName as def_optname, def.optCode as def_optcode) "
-                + "from OptMethod def, RolePower pow where def.optCode = pow.id.optCode and pow.id.roleCode = ?";
+                + "from OptMethod def, RolePower pow where def.optCode = pow.id.optCode and pow.id.roleCode = ?0";
         return (List<Object>)DatabaseOptUtils.findObjectsByHql
                 (this,hql,  new Object[]{rolecode});
     }
@@ -59,8 +59,8 @@ public class RoleInfoDaoImpl extends BaseDaoImpl<RoleInfo, String> implements Ro
 
     @Override
     public RoleInfo getRoleByCodeOrName(String roleCodeOrName) {
-        List<RoleInfo> roles = this.listObjects(" From RoleInfo where isValid ='T' and ( roleCode= ? or " +
-            "(( roleType='G' or roleType='P') and roleName = ?))", new Object[]{roleCodeOrName,roleCodeOrName});
+        List<RoleInfo> roles = this.listObjects(" From RoleInfo where isValid ='T' and ( roleCode= ?0 or " +
+            "(( roleType='G' or roleType='P') and roleName = ?1))", new Object[]{roleCodeOrName,roleCodeOrName});
         if(roles!=null && roles.size()>0)
             return roles.get(0);
         return null;

@@ -53,22 +53,22 @@ public class UserQueryFilterDaoImpl extends BaseDaoImpl<UserQueryFilter,java.lan
 
     @Transactional
     public List<UserQueryFilter> listUserQueryFilterByModle(String userCode,String modelCode){
-        return super.listObjects("From UserQueryFilter where userCode = ? and modleCode = ? "
+        return super.listObjects("From UserQueryFilter where userCode = ?0 and modleCode = ?1 "
                 + "order by isDefault desc , createDate desc",
                 new Object[]{userCode,modelCode});
     }
 
     @Transactional
     public List<UserQueryFilter> listUserDefaultFilterByModle(String userCode,String modelCode){
-        return super.listObjects("From UserQueryFilter where userCode = ? and modleCode = ? "
+        return super.listObjects("From UserQueryFilter where userCode = ?0 and modleCode = ?1 "
                 + "and isDefault = 'T' order by isDefault desc , createDate desc",
                 new Object[]{userCode,modelCode});
     }
 
     @Transactional
     public UserQueryFilter getUserDefaultFilterByModle(String userCode,String modelCode){
-        List<UserQueryFilter> uqfs = super.listObjects("From UserQueryFilter where userCode = ? " +
-                        "and modleCode = ? and isDefault = 'T' order by isDefault desc , createDate desc",
+        List<UserQueryFilter> uqfs = super.listObjects("From UserQueryFilter where userCode = ?0 " +
+                        "and modleCode = ?1 and isDefault = 'T' order by isDefault desc , createDate desc",
                 new Object[]{userCode,modelCode});
         if(uqfs==null || uqfs.size()==0)
             return null;

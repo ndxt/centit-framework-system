@@ -17,19 +17,19 @@ public class OptMethodDaoImpl extends BaseDaoImpl<OptMethod, String> implements 
 
     @Transactional
     public List<OptMethod> listOptMethodByOptID(String sOptID) {
-        return listObjects("FROM OptMethod WHERE optId =?", sOptID);
+        return listObjects("FROM OptMethod WHERE optId =?0", sOptID);
     }
 
     @Transactional
     public List<OptMethod> listOptMethodByRoleCode(String roleCode) {
         return listObjects("FROM OptMethod WHERE optCode in "
-                + "(select id.optCode from RolePower where id.roleCode = ?)"
+                + "(select id.optCode from RolePower where id.roleCode = ?0)"
                 + " order by optId", roleCode);
     }
 
     @Transactional
     public void deleteOptMethodsByOptID(String sOptID) {
-        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM OptMethod WHERE optId = ?", sOptID);
+        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM OptMethod WHERE optId = ?0", sOptID);
     }
 
 

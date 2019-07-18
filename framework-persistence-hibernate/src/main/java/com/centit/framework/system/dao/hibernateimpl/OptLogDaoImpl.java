@@ -75,12 +75,14 @@ public class OptLogDaoImpl extends BaseDaoImpl<OptLog, Long> implements OptLogDa
     public void delete(Date begin, Date end) {
         String hql = "delete from OptLog o where 1=1 ";
         List<Object> objects = new ArrayList<>();
+        int n = 1;
         if (null != begin) {
-            hql += "and o.optTime > ?";
+            hql += "and o.optTime > ?0";
             objects.add(begin);
+            n++;
         }
         if (null != end) {
-            hql += "and o.optTime < ?";
+            hql += "and o.optTime < ?"+n;
             objects.add(end);
         }
 

@@ -54,20 +54,20 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
     @Override
     @Transactional
     public void deleteByRoleId(String roid) {
-        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.roleCode = ?", roid);
+        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.roleCode = ?0", roid);
     }
 
     @Override
     @Transactional
     public void deleteByUserId(String usid) {
-        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.userCode = ?", usid);
+        DatabaseOptUtils.doExecuteHql(this, "DELETE FROM UserRole WHERE id.userCode = ?0", usid);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     @Transactional
     public List<FVUserRoles> listUserRolesByUserCode(String userCode) {
-        final String sSqlsen = "from FVUserRoles v where v.id.userCode = ?";
+        final String sSqlsen = "from FVUserRoles v where v.id.userCode = ?0";
         return (List<FVUserRoles>) DatabaseOptUtils.findObjectsByHql(
           this, sSqlsen, new Object[]{userCode});
     }
@@ -77,7 +77,7 @@ public class UserRoleDaoImpl extends BaseDaoImpl<UserRole, UserRoleId> implement
     @SuppressWarnings("unchecked")
     @Transactional
     public List<FVUserRoles> listRoleUsersByRoleCode(String roleCode) {
-        final String sSqlsen = "from FVUserRoles v where v.id.roleCode = ?";
+        final String sSqlsen = "from FVUserRoles v where v.id.roleCode = ?0";
         return (List<FVUserRoles>) DatabaseOptUtils.findObjectsByHql(
           this, sSqlsen, new Object[]{roleCode});
     }

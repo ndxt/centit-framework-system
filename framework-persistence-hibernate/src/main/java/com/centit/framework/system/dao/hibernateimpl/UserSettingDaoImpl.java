@@ -43,12 +43,12 @@ public class UserSettingDaoImpl extends BaseDaoImpl<UserSetting, UserSettingId> 
 
     @Transactional
     public List<UserSetting> getUserSettingsByCode(String userCode) {
-        return listObjects("From UserSetting where cid.userCode=?",userCode);
+        return listObjects("From UserSetting where cid.userCode=?0",userCode);
     }
 
     @Transactional
     public List<UserSetting> getUserSettings(String userCode,String optID) {
-        return listObjects("From UserSetting where cid.userCode=? and optId= ?",
+        return listObjects("From UserSetting where cid.userCode=?0 and optId= ?1",
                 new Object[]{userCode,optID});
     }
 
@@ -74,7 +74,7 @@ public class UserSettingDaoImpl extends BaseDaoImpl<UserSetting, UserSettingId> 
 
     @Override
     public String getValue(String userCode, String key){
-        String sql = "SELECT PARAM_VALUE FROM F_USERSETTING WHERE USER_CODE = ? AND PARAM_CODE = ?";
+        String sql = "SELECT PARAM_VALUE FROM F_USERSETTING WHERE USER_CODE = ?0 AND PARAM_CODE = ?1";
         return String.valueOf(DatabaseOptUtils.getSingleObjectByHql(this, sql, new Object[]{userCode, key}));
     }
 }

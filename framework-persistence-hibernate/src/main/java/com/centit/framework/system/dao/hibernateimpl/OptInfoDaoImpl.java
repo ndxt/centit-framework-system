@@ -46,7 +46,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     @Transactional
     public List<OptInfo> getMenuFuncByUserID(String userCode, String optType) {
 
-        String hql = "FROM FVUserOptMoudleList where isintoolbar='Y' and userCode=? and opttype = ? ORDER BY orderind";
+        String hql = "FROM FVUserOptMoudleList where isintoolbar='Y' and userCode=?0 and opttype = ?1 ORDER BY orderind";
         // + " ORDER BY preoptid, formcode";
         List<OptInfo> ls = (List<OptInfo>) DatabaseOptUtils.findObjectsByHql
                 (this, hql,new Object[]{userCode, optType});
@@ -59,7 +59,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
 
         String sSqlsen = "select OPTSCOPECODES " +
                  "from F_V_USEROPTDATASCOPES " +
-                 "where USERCODE = ? and OPTID = ? and OPTMETHOD = ?";
+                 "where USERCODE = ?0 and OPTID = ?1 and OPTMETHOD = ?2";
 
         List<Object[]> l = (List<Object[]>) DatabaseOptUtils.findObjectsBySql
                  (this, sSqlsen,new Object[]{userCode, optId, optMethod});
@@ -135,7 +135,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
 
     public int countChildrenSum(String optId){
         return (int)DatabaseOptUtils.getSingleIntByHql(this,
-                "select count(1) as hasChildren from OptInfo where preOptId = ?",optId);
+                "select count(1) as hasChildren from OptInfo where preOptId = ?0",optId);
     }
 
  /*   public List<OptInfo> listObjectsByCon(String condition){
@@ -143,7 +143,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     }*/
 
     public List<OptInfo> listObjectByParentOptid(String optId){
-        return this.listObjects("From OptInfo where preOptId = ?", optId);
+        return this.listObjects("From OptInfo where preOptId = ?0", optId);
     }
 
     @Override
@@ -164,7 +164,7 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
 
     @Override
     public List<OptInfo> listUserAllSubMenu(String userCode, String optType){
-        String hql = "FROM FVUserOptMoudleList where userCode=? and opttype = ? ORDER BY orderind";
+        String hql = "FROM FVUserOptMoudleList where userCode=?0 and opttype = ?1 ORDER BY orderind";
         // + " ORDER BY preoptid, formcode";
         List<OptInfo> ls = (List<OptInfo>) DatabaseOptUtils.findObjectsByHql
             (this, hql,new Object[]{userCode, optType});
