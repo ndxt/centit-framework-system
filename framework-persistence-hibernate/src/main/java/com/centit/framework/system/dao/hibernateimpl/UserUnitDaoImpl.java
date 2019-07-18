@@ -223,9 +223,9 @@ public class UserUnitDaoImpl extends BaseDaoImpl<UserUnit, String> implements Us
         String hql = "from UserUnit where 1=1 " +
           "[:(STARTWITH)unitPath | and unitCode in (select unitCode from UnitInfo where unitPath like :unitPath)]"+
           "[:(like)userName | and userCode in (select userCode from UserInfo where userName like :userName or loginName like :userName)]"+
-          "[:isValid | and USER_CODE in (select us.USER_CODE from f_userinfo us where us.IS_VALID = :isValid)]"+
-          "[:userCode | and USER_CODE = :userCode]"+
-          "[:unitIsValid | and UNIT_CODE IN (select UNIT_CODE from f_unitinfo where IS_VALID = :unitIsValid)]";
+          "[:isValid | and userCode in (select us.userCode from UserInfo us where us.isValid = :isValid)]"+
+          "[:userCode | and userCode = :userCode]"+
+          "[:unitIsValid | and unitCode IN (select unitCode from UnitInfo where isValid = :unitIsValid)]";
 
         int startPos = 0;
       int maxSize = 0;
