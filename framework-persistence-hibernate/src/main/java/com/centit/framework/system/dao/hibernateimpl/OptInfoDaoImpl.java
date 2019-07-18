@@ -4,6 +4,7 @@ import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.hibernate.dao.BaseDaoImpl;
 import com.centit.framework.hibernate.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.OptInfoDao;
+import com.centit.framework.system.po.FVUserOptMoudleList;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethodUrlMap;
 import org.springframework.stereotype.Repository;
@@ -48,9 +49,9 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
 
         String hql = "FROM FVUserOptMoudleList where isintoolbar='Y' and userCode=?0 and opttype = ?1 ORDER BY orderind";
         // + " ORDER BY preoptid, formcode";
-        List<OptInfo> ls = (List<OptInfo>) DatabaseOptUtils.findObjectsByHql
+        List<FVUserOptMoudleList> ls = (List<FVUserOptMoudleList>)DatabaseOptUtils.findObjectsByHql
                 (this, hql,new Object[]{userCode, optType});
-        return ls;
+        return mapOptMoudleListToOptInfo(ls);
     }
 
     @SuppressWarnings("unchecked")
@@ -73,16 +74,9 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     }
 
 
-    /*@SuppressWarnings("unchecked")
-    @Transactional
-    public List<OptInfo> getFunctionsByUserAndSuperFunctionId(String userID, String superFunctionId) {
-        String[] params = null;
-        String hql = "FROM FVUserOptMoudleList  where userCode=? and topoptid=?" + " ORDER BY preOptId, orderInd";
 
-        params = new String[]{userID, superFunctionId};
-        List<FVUserOptMoudleList> ls = (List<FVUserOptMoudleList>)DatabaseOptUtils.findObjectsByHql
-                (this, hql, (Object[]) params);
-        List<OptInfo> opts = new ArrayList<OptInfo>();
+    private List<OptInfo> mapOptMoudleListToOptInfo(List<FVUserOptMoudleList> ls ) {
+        List<OptInfo> opts = new ArrayList<>(ls.size()+1);
         for (FVUserOptMoudleList opm : ls) {
             OptInfo opt = new OptInfo();
             opt.setFormCode(opm.getFormcode());
@@ -97,32 +91,12 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
             opt.setPreOptId(opm.getPreoptid());
             opt.setTopOptId(opm.getTopoptid());
             opts.add(opt);
-            System.out.print(opt.getOptType());
+            //System.out.print(opt.getOptType());
         }
-
         return opts;
-    }*/
+    }
 
-/*    @SuppressWarnings("unchecked")
-    @Transactional
-    public List<OptMethod> getMethodByUserAndOptid(String userCode, String optid) {
-        String[] params = null;
-        String hql = "FROM FVUserOptList urv where urv.id.userCode=? and optid= ?";
 
-        params = new String[]{userCode, optid};
-        List<FVUserOptList> ls = (List<FVUserOptList>) DatabaseOptUtils.findObjectsByHql
-                (this,hql, (Object[]) params);
-        List<OptMethod> methods = new ArrayList<OptMethod>();
-        for (FVUserOptList opm : ls) {
-            OptMethod method = new OptMethod();
-            method.setOptCode(opm.getId().getOptcode());
-            method.setOptId(opm.getOptId());
-            method.setOptMethod(opm.getOptMethod());
-            method.setOptName(opm.getOptName());
-            methods.add(method);
-        }
-        return methods;
-    }*/
 
     @SuppressWarnings("unchecked")
     @Transactional
@@ -166,9 +140,9 @@ public class OptInfoDaoImpl extends BaseDaoImpl<OptInfo, String> implements OptI
     public List<OptInfo> listUserAllSubMenu(String userCode, String optType){
         String hql = "FROM FVUserOptMoudleList where userCode=?0 and opttype = ?1 ORDER BY orderind";
         // + " ORDER BY preoptid, formcode";
-        List<OptInfo> ls = (List<OptInfo>) DatabaseOptUtils.findObjectsByHql
+        List<FVUserOptMoudleList> ls = (List<FVUserOptMoudleList>) DatabaseOptUtils.findObjectsByHql
             (this, hql,new Object[]{userCode, optType});
-        return ls;
+        return mapOptMoudleListToOptInfo(ls);
     }
 
 }
