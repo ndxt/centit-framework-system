@@ -1,7 +1,7 @@
 package com.otherpackage.dao;
 
 import com.centit.framework.core.dao.CodeBook;
-import com.centit.framework.hibernate.dao.BaseDaoImpl;
+import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.otherpackage.po.TestCase;
 import org.springframework.stereotype.Repository;
 

@@ -42,6 +42,22 @@
             <version>7.3.1.jre8-preview</version>
         </dependency>
         <dependency>
+            <groupId>com.gbase</groupId>
+            <artifactId>gbasejdbc</artifactId>
+            <version>4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.hg</groupId>
+            <artifactId>hgjdbc4</artifactId>
+            <version>4.0.2</version>
+            <classifier>jdbc42</classifier>
+        </dependency>
+        <dependency>
+            <groupId>com.kb</groupId>
+            <artifactId>kbjdbc4</artifactId>
+            <version>4.0</version>
+        </dependency>
+        <dependency>
             <groupId>com.dm</groupId>
             <artifactId>dmjdbc7</artifactId>
             <version>1.7.0</version>
@@ -58,8 +74,8 @@
 
         <dependency>
             <groupId>com.centit.framework</groupId>
-           <!-- <artifactId>framework-persistence-jdbc</artifactId>-->
-            <artifactId>framework-persistence-hibernate</artifactId>
+            <artifactId>framework-persistence-jdbc</artifactId>
+            <!--<artifactId>framework-persistence-hibernate</artifactId>-->
             <!--<artifactId>framework-persistence-mybatis</artifactId>-->
         </dependency>
 
@@ -70,8 +86,8 @@
 
         <dependency>
             <groupId>com.centit.framework</groupId>
-            <!--<artifactId>centit-persistence-jdbc-config</artifactId>-->
-            <artifactId>centit-persistence-hibernate-config</artifactId>
+            <artifactId>centit-persistence-jdbc-config</artifactId>
+            <!--<artifactId>centit-persistence-hibernate-config</artifactId>-->
             <!--<artifactId>centit-persistence-mybatis-config</artifactId>-->
         </dependency>
 
