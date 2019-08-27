@@ -27,14 +27,14 @@ public class WebInitializer implements WebApplicationInitializer {
 
         initializeSystemSpringMvcConfig(servletContext);
         initializeNormalSpringMvcConfig(servletContext);
-
-        WebConfig.registerSpringSecurityFilter(servletContext);
+        String [] servletUrlPatterns = {"/system/*","/test/*"};
+        WebConfig.registerSpringSecurityFilter(servletContext,servletUrlPatterns);
         WebConfig.registerRequestContextListener(servletContext);
         WebConfig.registerSingleSignOutHttpSessionListener(servletContext);
         //WebConfig.registerResponseCorsFilter(servletContext);
-        WebConfig.registerCharacterEncodingFilter(servletContext);
-        WebConfig.registerHttpPutFormContentFilter(servletContext);
-        WebConfig.registerHiddenHttpMethodFilter(servletContext);
+        WebConfig.registerCharacterEncodingFilter(servletContext,servletUrlPatterns);
+        WebConfig.registerHttpPutFormContentFilter(servletContext,servletUrlPatterns);
+        WebConfig.registerHiddenHttpMethodFilter(servletContext,servletUrlPatterns);
         WebConfig.registerRequestThreadLocalFilter(servletContext);
 
         WebConfig.initializeH2Console(servletContext);
@@ -70,8 +70,8 @@ public class WebInitializer implements WebApplicationInitializer {
     private void initializeNormalSpringMvcConfig(ServletContext servletContext) {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.register(NormalSpringMvcConfig.class, SwaggerConfig.class);
-        ServletRegistration.Dynamic system  = servletContext.addServlet("service", new DispatcherServlet(context));
-        system.addMapping("/service/*");
+        ServletRegistration.Dynamic system  = servletContext.addServlet("test", new DispatcherServlet(context));
+        system.addMapping("/test/*");
         system.setLoadOnStartup(1);
         system.setAsyncSupported(true);
     }
