@@ -1,17 +1,12 @@
 package com.centit.framework.system.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysRoleManager;
 import com.centit.support.algorithm.CollectionsOpt;
-import com.centit.support.algorithm.NumberBaseOpt;
-import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
-import com.centit.support.database.utils.QueryUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -76,17 +71,9 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Transactional
     public Serializable saveNewRoleInfo(RoleInfo o){
         if(StringUtils.isBlank(o.getRoleCode())) {
-            String roleCode = roleInfoDao.getNextKey();
-            if (StringUtils.isNotBlank(roleIdFormat)) {
-                //{"prefix":"U","length":8,"pad":"0"}
-                JSONObject idFormat = (JSONObject) JSON.parse(roleIdFormat);
-                if (idFormat != null) {
-                    roleCode = StringBaseOpt.midPad(roleCode,
-                        NumberBaseOpt.castObjectToInteger(idFormat.get("length"), 1),
-                        idFormat.getString("prefix"),
-                        idFormat.getString("pad"));
-                }
-            }
+            String roleCode =
+                PersistenceUtils.makeIdByFormat(roleInfoDao.getNextKey(),roleIdFormat,
+                    "R",8,"0");
             o.setRoleCode(roleCode);
         }
         roleInfoDao.saveNewObject(o);

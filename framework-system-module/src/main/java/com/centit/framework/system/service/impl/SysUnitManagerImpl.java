@@ -1,7 +1,5 @@
 package com.centit.framework.system.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.UnitInfoDao;
@@ -9,7 +7,6 @@ import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.service.SysUnitManager;
-import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
@@ -118,25 +115,14 @@ public class SysUnitManagerImpl implements SysUnitManager {
     }
 
     @Value("${framework.unitinfo.id.generator:}")
-    protected String userIdFormat;
+    protected String unitIdFormat;
 
     @Override
     @Transactional
     public String saveNewUnitInfo(UnitInfo unitinfo){
-        String unitCode = unitInfoDao.getNextKey();
-
-        if(StringUtils.isBlank(userIdFormat)){
-            unitCode = StringBaseOpt.midPad(unitCode,6,"D",'0');
-        }else{
-          //{"prefix":"U","length":8,"pad":"0"}
-            JSONObject idFormat = (JSONObject) JSON.parse(userIdFormat);
-            if(idFormat!=null) {
-                unitCode = StringBaseOpt.midPad(unitCode,
-                    NumberBaseOpt.castObjectToInteger(idFormat.get("length"), 1),
-                    idFormat.getString("prefix"),
-                    idFormat.getString("pad"));
-            }
-        }
+        String unitCode =
+            PersistenceUtils.makeIdByFormat(unitInfoDao.getNextKey(), unitIdFormat,
+                "D",8,"0");
 
         unitinfo.setUnitCode(unitCode);
         UnitInfo parentUnit = unitInfoDao.getObjectById(unitinfo.getParentUnit());

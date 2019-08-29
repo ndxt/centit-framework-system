@@ -1,7 +1,5 @@
 package com.centit.framework.system.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.common.ObjectException;
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.core.dao.QueryParameterPrepare;
@@ -11,8 +9,6 @@ import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysUserManager;
-import com.centit.support.algorithm.NumberBaseOpt;
-import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -57,9 +53,8 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @Transactional
     public List<RoleInfo> listUserValidRoles(String userCode) {
-       // List<RoleInfo> roles = userRoleDao.getSysRolesByUserId(userCode);
-
-        //edit by zhuxw  代码从原框架迁移过来，可和其它地方合并
+        // List<RoleInfo> roles = userRoleDao.getSysRolesByUserId(userCode);
+        // edit by zhuxw  代码从原框架迁移过来，可和其它地方合并
         List<RoleInfo> roles = new ArrayList<>();
         //所有的用户 都要添加这个角色
         roles.add(new RoleInfo("public", "general public","G",
@@ -72,12 +67,9 @@ public class SysUserManagerImpl implements SysUserManager {
                 roles.add(roleInfo);
             }
         }
-       //add  end
-
+        //add end
         return roles;
     }
-
-
 
     @Override
     @Transactional
@@ -156,12 +148,11 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @Transactional
     public boolean isAnyOneExist(String userCode, String loginName,String regPhone,String regEmail){
-        Map<String,String> map =new HashMap<String,String>();
+        Map<String,String> map =new HashMap<>();
         map.put("userCode", StringUtils.isBlank(userCode)?"null":userCode);
         map.put("loginName", StringUtils.isBlank(loginName)?"null":loginName);
         map.put("regCellPhone", StringUtils.isBlank(regPhone)?"null":regPhone);
         map.put("regEmail", StringUtils.isBlank(regEmail)?"null":regEmail);
-
         return userInfoDao.isAnyOneExist(userCode, loginName, regPhone, regEmail) > 0;
     }
 
@@ -171,19 +162,9 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @Transactional
     public void saveNewUserInfo(UserInfo userInfo, UserUnit userUnit){
-        String userCode = userInfoDao.getNextKey();
-        if(StringUtils.isBlank(userIdFormat)){
-            userCode = StringBaseOpt.midPad(userCode,8,"U",'0');
-        }else{
-            //{"prefix":"U","length":8,"pad":"0"}
-            JSONObject idFormat = (JSONObject)JSON.parse(userIdFormat);
-            if(idFormat!=null) {
-                userCode = StringBaseOpt.midPad(userCode,
-                NumberBaseOpt.castObjectToInteger(idFormat.get("length"), 1),
-                idFormat.getString("prefix"),
-                idFormat.getString("pad"));
-            }
-        }
+        String userCode =
+            PersistenceUtils.makeIdByFormat(userInfoDao.getNextKey(),userIdFormat,
+            "U",8,"0");
 
         userInfo.setUserCode(userCode);
         userInfo.setUserPin(getDefaultPassword(userInfo.getUserCode()));
