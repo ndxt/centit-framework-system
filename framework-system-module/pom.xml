@@ -5,7 +5,7 @@
     <parent>
         <artifactId>framework-system-parent</artifactId>
         <groupId>com.centit.framework</groupId>
-        <version>4.5-SNAPSHOT</version>
+        <version>4.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,9 +16,20 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.centit.framework</groupId>
-            <artifactId>framework-persistence-core</artifactId>
-            <version>${project.version}</version>
+            <artifactId>framework-core</artifactId>
+            <version>${centit.framework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.centit.framework</groupId>
+            <artifactId>centit-persistence-jdbc</artifactId>
+            <version>${centit.persistence.version}</version>
         </dependency>
 
         <dependency>
