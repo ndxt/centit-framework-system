@@ -90,8 +90,6 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
         return super.listObjects(filterMap);
     }
 
-
-
     @Transactional
     @Override
     public int pageCount(Map<String, Object> filterDescMap){
