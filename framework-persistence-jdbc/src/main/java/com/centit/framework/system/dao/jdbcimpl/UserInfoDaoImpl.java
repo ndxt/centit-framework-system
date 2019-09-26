@@ -26,20 +26,21 @@ import java.util.Map;
 public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements UserInfoDao {
 
     // 将F_V_USERROLES试图提出增加条件查询提高性能
-    private static String currentDateTime = QueryUtils.buildDatetimeStringForQuery(DatetimeOpt.currentUtilDate());
+    //private static String currentDateTime = QueryUtils.buildDatetimeStringForQuery(DatetimeOpt.currentUtilDate());
+
     private static String f_v_userroles_sql = "select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'D' as OBTAIN_TYPE, " +
         "b.ROLE_TYPE, b.UNIT_CODE,b.ROLE_DESC, b.CREATE_DATE, b.UPDATE_DATE ,a.USER_CODE, null as INHERITED_FROM " +
         "from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE) " +
-        "where a.OBTAIN_DATE <= " + currentDateTime +
-        " and (a.SECEDE_DATE is null or a.SECEDE_DATE > " + currentDateTime +
+        "where a.OBTAIN_DATE <= :currentDateTime "+
+        " and (a.SECEDE_DATE is null or a.SECEDE_DATE > :currentDateTime " +
         " ) and b.IS_VALID='T' and b.ROLE_CODE = :roleCode " +
         "union " +
         "select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'I' as OBTAIN_TYPE, b.ROLE_TYPE, b.UNIT_CODE, " +
         "b.ROLE_DESC, b.CREATE_DATE, b.UPDATE_DATE ,c.USER_CODE, a.UNIT_CODE as INHERITED_FROM " +
         "from F_UNITROLE a join F_ROLEINFO b on (a.ROLE_CODE = b.ROLE_CODE) " +
         "JOIN F_USERUNIT c on( a.UNIT_CODE = c.UNIT_CODE) " +
-        "where a.OBTAIN_DATE <= " + currentDateTime +
-        " and (a.SECEDE_DATE is null or a.SECEDE_DATE > " + currentDateTime +
+        "where a.OBTAIN_DATE <= :currentDateTime " +
+        " and (a.SECEDE_DATE is null or a.SECEDE_DATE > :currentDateTime " +
         " )" +
         " and b.IS_VALID='T' and a.ROLE_CODE = :roleCode ";
 
@@ -80,6 +81,30 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
                     "(select un.UNIT_CODE from f_unitinfo un where un.UNIT_PATH like :unitPath))");
         }
         return filterField;
+    }
+
+    @Transactional
+    @Override
+    public List<UserInfo> listObjects(Map<String, Object> filterMap){
+        filterMap.put("currentDateTime", DatetimeOpt.currentSqlDate());
+        return super.listObjects(filterMap);
+    }
+
+
+
+    @Transactional
+    @Override
+    public int pageCount(Map<String, Object> filterDescMap){
+        filterDescMap.put("currentDateTime", DatetimeOpt.currentSqlDate());
+        return super.pageCount(filterDescMap);
+    }
+
+
+    @Transactional
+    @Override
+    public List<UserInfo> pageQuery(Map<String, Object> pageQueryMap){
+        pageQueryMap.put("currentDateTime", DatetimeOpt.currentSqlDate());
+        return super.pageQuery(pageQueryMap);
     }
 
     @Transactional
