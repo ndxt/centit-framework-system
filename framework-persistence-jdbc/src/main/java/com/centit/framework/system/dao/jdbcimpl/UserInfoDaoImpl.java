@@ -26,8 +26,8 @@ import java.util.Map;
 public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements UserInfoDao {
 
     // 将F_V_USERROLES试图提出增加条件查询提高性能
-    private static final String currentDateTime = QueryUtils.buildDatetimeStringForQuery(DatetimeOpt.currentUtilDate());
-    private static final String f_v_userroles_sql = "select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'D' as OBTAIN_TYPE, " +
+    private static String currentDateTime = QueryUtils.buildDatetimeStringForQuery(DatetimeOpt.currentUtilDate());
+    private static String f_v_userroles_sql = "select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'D' as OBTAIN_TYPE, " +
         "b.ROLE_TYPE, b.UNIT_CODE,b.ROLE_DESC, b.CREATE_DATE, b.UPDATE_DATE ,a.USER_CODE, null as INHERITED_FROM " +
         "from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE) " +
         "where a.OBTAIN_DATE <= " + currentDateTime +
