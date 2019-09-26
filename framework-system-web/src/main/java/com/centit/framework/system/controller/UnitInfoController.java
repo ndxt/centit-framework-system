@@ -11,6 +11,7 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.DictionaryMapUtils;
+import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.security.model.CentitUserDetails;
@@ -94,7 +95,7 @@ public class UnitInfoController extends BaseController {
     })
     @RequestMapping(method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData list(boolean struct, String id, HttpServletRequest request) {
+    public ResponseData listAsTree(boolean struct, String id, HttpServletRequest request) {
         Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
         String unitName = (String) searchColumn.get("unitName");
 
@@ -123,6 +124,20 @@ public class UnitInfoController extends BaseController {
         }
     }
 
+
+    @ApiOperation(value = "分页查询机构信息", notes = "分页查询机构信息。")
+    @ApiImplicitParam(
+            name = "pageDesc", value = "json格式的分页信息",
+            paramType = "body", dataTypeClass = PageDesc.class
+        )
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @WrapUpResponseBody
+    public PageQueryResult<UnitInfo> list(PageDesc pageDesc, HttpServletRequest request) {
+        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
+
+        List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn, pageDesc);
+        return PageQueryResult.createResult(listObjects, pageDesc);
+    }
     /**
      * 查询所有子机构信息
      *
