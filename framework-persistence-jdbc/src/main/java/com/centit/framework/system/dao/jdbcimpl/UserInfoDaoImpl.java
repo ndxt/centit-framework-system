@@ -177,7 +177,8 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
 
     @Override
     public List<UserInfo> listUsersByRoleCode(String roleCode) {
-        return super.listObjects(CollectionsOpt.createHashMap("roleCode", roleCode) );
+        return super.listObjects(CollectionsOpt.createHashMap("roleCode", roleCode,
+            "currentDateTime", DatetimeOpt.currentSqlDate()) );
     }
 
     public int isLoginNameExist(String userCode, String loginName){
