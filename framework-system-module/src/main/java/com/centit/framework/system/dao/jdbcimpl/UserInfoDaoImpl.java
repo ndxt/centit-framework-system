@@ -32,17 +32,17 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
         "b.ROLE_TYPE, b.UNIT_CODE,b.ROLE_DESC, b.CREATE_DATE, b.UPDATE_DATE ,a.USER_CODE, null as INHERITED_FROM " +
         "from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE) " +
         "where a.OBTAIN_DATE <= :currentDateTime "+
-        " and (a.SECEDE_DATE is null or a.SECEDE_DATE > :currentDateTime " +
-        " ) and b.IS_VALID='T' and b.ROLE_CODE = :roleCode " +
+        " and (a.SECEDE_DATE is null or a.SECEDE_DATE > :currentDateTime )" +
+        " and b.IS_VALID='T' and b.ROLE_CODE = :roleCode " +
         "union " +
         "select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'I' as OBTAIN_TYPE, b.ROLE_TYPE, b.UNIT_CODE, " +
         "b.ROLE_DESC, b.CREATE_DATE, b.UPDATE_DATE ,c.USER_CODE, a.UNIT_CODE as INHERITED_FROM " +
         "from F_UNITROLE a join F_ROLEINFO b on (a.ROLE_CODE = b.ROLE_CODE) " +
         "JOIN F_USERUNIT c on( a.UNIT_CODE = c.UNIT_CODE) " +
         "where a.OBTAIN_DATE <= :currentDateTime " +
-        " and (a.SECEDE_DATE is null or a.SECEDE_DATE > :currentDateTime " +
-        " )" +
+        " and (a.SECEDE_DATE is null or a.SECEDE_DATE > :currentDateTime )" +
         " and b.IS_VALID='T' and a.ROLE_CODE = :roleCode ";
+
 
     public Map<String, String> getFilterField() {
         if (filterField == null) {
@@ -59,26 +59,26 @@ public class UserInfoDaoImpl extends BaseDaoImpl<UserInfo, String> implements Us
 
             filterField.put("(like)likeUserOrLoginName","(User_Name LIKE :likeUserOrLoginName OR LOGIN_NAME LIKE :likeUserOrLoginName)");
             filterField.put("byUnderUnit", "userCode in " +
-                    "(select us.USER_CODE from f_userunit us where us.UNIT_CODE = :byUnderUnit ) ");
-            filterField.put("roleCode", "USER_CODE in " +
-                "(select v.USER_CODE from ( " + f_v_userroles_sql + " ) v where v.ROLE_CODE = :roleCode) ");
+                "(select us.USER_CODE from f_userunit us where us.UNIT_CODE = :byUnderUnit ) ");
+            filterField.put("roleCode", "[(isNotEmpty(roleCode))(roleCode, currentDateTime) | and USER_CODE in " +
+                "(select v.USER_CODE from ( " + f_v_userroles_sql + " ) v where v.ROLE_CODE = :roleCode) ]");
             filterField.put("queryByUnit", "userCode in " +
-                    "(select us.USER_CODE from f_userunit us where us.UNIT_CODE = :queryByUnit ) ");
+                "(select us.USER_CODE from f_userunit us where us.UNIT_CODE = :queryByUnit ) ");
             filterField.put("queryByGW", "userCode in " +
-                    "(select us.USER_CODE from f_userunit us where us.User_Station = :queryByGW )");
+                "(select us.USER_CODE from f_userunit us where us.User_Station = :queryByGW )");
             filterField.put("queryByXZ", "userCode in " +
-                    "(select us.USER_CODE from f_userunit us where us.USER_RANK = :queryByXZ )");
+                "(select us.USER_CODE from f_userunit us where us.USER_RANK = :queryByXZ )");
             filterField.put("queryByRole", "userCode in " +
-                    "(select r.USER_CODE from f_userrole r join f_roleinfo i on r.ROLE_CODE = i.ROLE_CODE " +
-                    "where r.ROLE_CODE = :queryByRole and i.IS_VALID = 'T')");
+                "(select r.USER_CODE from f_userrole r join f_roleinfo i on r.ROLE_CODE = i.ROLE_CODE " +
+                "where r.ROLE_CODE = :queryByRole and i.IS_VALID = 'T')");
 
 //            filterField.put(CodeBook.ORDER_BY_HQL_ID, "userOrder asc");
 
             filterField.put("unitCode", "userCode in (select us.USER_CODE from f_userunit us where us.UNIT_CODE in " +
-                    "(select un.UNIT_CODE from f_unitinfo un where un.UNIT_CODE = :unitCode or un.PARENT_UNIT = :unitCode))");
+                "(select un.UNIT_CODE from f_unitinfo un where un.UNIT_CODE = :unitCode or un.PARENT_UNIT = :unitCode))");
 
             filterField.put("(STARTWITH)unitPath", "userCode in (select us.USER_CODE from f_userunit us where us.UNIT_CODE in " +
-                    "(select un.UNIT_CODE from f_unitinfo un where un.UNIT_PATH like :unitPath))");
+                "(select un.UNIT_CODE from f_unitinfo un where un.UNIT_PATH like :unitPath))");
         }
         return filterField;
     }
