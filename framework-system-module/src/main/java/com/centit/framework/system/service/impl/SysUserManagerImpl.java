@@ -1,14 +1,13 @@
 package com.centit.framework.system.service.impl;
 
-import com.centit.framework.common.ObjectException;
 import com.centit.framework.components.CodeRepositoryCache;
-import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.security.model.CentitPasswordEncoder;
 import com.centit.framework.system.dao.UserInfoDao;
 import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysUserManager;
+import com.centit.support.common.ObjectException;
 import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -240,10 +239,7 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @Transactional
     public List<UserInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return userInfoDao.pageQuery(
-            QueryParameterPrepare.makeMybatisOrderByParam(
-                QueryParameterPrepare.prepPageParams(filterMap,pageDesc,
-                  userInfoDao.pageCount(filterMap)),UserInfo.class));
+        return userInfoDao.listObjects(filterMap,pageDesc);
     }
 
     @Override

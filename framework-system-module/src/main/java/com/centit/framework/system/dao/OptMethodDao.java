@@ -1,78 +1,74 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.core.dao.CodeBook;
+import com.centit.framework.jdbc.dao.BaseDaoImpl;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.po.OptMethod;
+import com.centit.support.algorithm.CollectionsOpt;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-/**
- * 用户操作Dao
- * @author god
- * update by zou_wy@centit.com
- * date 2017-11-29
- */
-public interface OptMethodDao {
+@Repository("optMethodDao")
+public class OptMethodDao extends BaseDaoImpl<OptMethod, String>{
 
     /**
      * 查询全部操作
+     *
      * @return List&lt;OptMethod&gt;
      */
-    List<OptMethod> listObjectsAll();
+    public List<OptMethod> listObjectsAll() {
+        return super.listObjects();
+    }
 
-    /**
-     * 根据Id查询操作
-     * @param optCode 操作Id
-     * @return OptMethod
-     */
-    OptMethod getObjectById(String optCode);
+    public OptMethod getObjectById(String optCode) {
+        return super.getObjectById(optCode);
+    }
 
-    /**
-     * 更新操作定义
-     * @param optMethod 操作对象
-     */
-    void updateOptMethod(OptMethod optMethod);
+    public void deleteObjectById(String optCode) {
+        super.deleteObjectById(optCode);
+    }
 
-    /**
-     * 删除操作
-     * @param optMethod 操作对象
-     */
-    void deleteObject(OptMethod optMethod);
+    @Transactional
+    public List<OptMethod> listOptMethodByOptID(String sOptID) {
+        return listObjectsByProperty("optId", sOptID);
+    }
 
-    /**
-     * 根据Id删除操作
-     * @param optCode 操作Id
-     */
-    void deleteObjectById(String optCode);
+    @Transactional
+    public List<OptMethod> listOptMethodByRoleCode(String roleCode) {
+        return listObjectsByFilter(" WHERE OPT_CODE in "
+                + "(select rp.OPT_CODE from F_ROLEPOWER rp where rp.ROLE_CODE = ?)"
+                + " order by OPT_ID", new Object[]{roleCode});
+    }
 
-    /**
-     * 新增操作
-     * @param optMethod 操作对象
-     */
-    void saveNewObject(OptMethod optMethod);
+    @Transactional
+    public void deleteOptMethodsByOptID(String sOptID) {
+        deleteObjectsByProperties(CollectionsOpt.createHashMap("optId", sOptID));
+    }
 
-    /**
-     * 根据菜单Id查询操作
-     * @param sOptID 菜单Id
-     * @return List&lt;OptMethod&gt;
-     */
-    List<OptMethod> listOptMethodByOptID(String sOptID);
 
-    /**
-     *  根据角色Id查询操作
-     * @param roleCode 角色Id
-     * @return List&lt;OptMethod&gt;
-     */
-    List<OptMethod> listOptMethodByRoleCode(String roleCode);
+    public Map<String, String> getFilterField() {
+        if (filterField == null) {
+            filterField = new HashMap<>();
+            filterField.put("optId", CodeBook.EQUAL_HQL_ID);
+            filterField.put("optCode", CodeBook.EQUAL_HQL_ID);
+            filterField.put("isInWorkflow", CodeBook.EQUAL_HQL_ID);
+            filterField.put("optReq", CodeBook.EQUAL_HQL_ID);
+            filterField.put("optMethod", CodeBook.EQUAL_HQL_ID);
+            filterField.put("optName", CodeBook.LIKE_HQL_ID);
+        }
+        return filterField;
+    }
 
-    /**
-    * 根据菜单Id删除操作
-    * @param sOptID 菜单Id
-    */
-    void deleteOptMethodsByOptID(String sOptID);
+    @Transactional
+    public String getNextOptCode() {
+        return String.valueOf(DatabaseOptUtils.getSequenceNextValue(this, "S_OPTDEFCODE"));
+    }
 
-    /**
-     * 查询下一个序列值
-     * @return String
-     */
-    String getNextOptCode();
-
+    public void updateOptMethod(OptMethod optMethod){
+        super.updateObject(optMethod);
+    }
 }

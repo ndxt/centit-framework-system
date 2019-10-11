@@ -1,87 +1,65 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.core.dao.CodeBook;
+import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.DataDictionaryId;
+import com.centit.support.algorithm.CollectionsOpt;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 数据字典Dao
- * @author god
- * update by zou_wy@centit.com
- */
-public interface DataDictionaryDao {
+@Repository("dataDictionaryDao")
+public class DataDictionaryDao
+    extends BaseDaoImpl<DataDictionary, DataDictionaryId>{
 
-    /**
-    * 查询数据字典
-    * @param filterDescMap 过滤条件
-    * @return List&lt; DataDictionary &gt;
-    */
-    List<DataDictionary> listObjects(Map<String, Object> filterDescMap);
+    // 转换主键中的 字段描述 对应关系
+    public Map<String, String> getFilterField() {
+        if (filterField == null) {
+            filterField = new HashMap<>();
+            filterField.put("datacode", CodeBook.EQUAL_HQL_ID);
+            filterField.put("catalogcode", CodeBook.EQUAL_HQL_ID);
+            filterField.put("catalogCode", CodeBook.EQUAL_HQL_ID);
+            filterField.put("NP_system", "dataStyle = 'S'");
+            filterField.put("dataValue", CodeBook.LIKE_HQL_ID);
+        }
+        return filterField;
+    }
 
-    /**
-    * 根据Id查询数据字典
-    * @param dataDictionaryId 字典Id
-    * @return DataDictionary
-    */
-    DataDictionary getObjectById(DataDictionaryId dataDictionaryId);
+    @Override
+    public List<DataDictionary> listObjects(Map<String, Object> filterDescMap) {
+        return this.listObjectsByProperties(filterDescMap);
+    }
 
-    /**
-    * 新增数据自定
-    * @param dataDictionary 字典对象
-    */
-    void saveNewObject(DataDictionary dataDictionary);
+    public DataDictionary getObjectById(DataDictionaryId dd) {
+        return super.getObjectById(dd);
+    }
 
-    /**
-     * 删除字典
-     * @param dataDictionary 字典对象
-     */
-    void deleteObject(DataDictionary dataDictionary);
+    public void deleteObjectById(DataDictionaryId dd) {
+        super.deleteObjectById(dd);
+    }
 
-    /**
-    * 根据Id删除字典
-    * @param dataDictionaryId 字典Id
-    */
-    void deleteObjectById(DataDictionaryId dataDictionaryId);
+    public List<DataDictionary> getWholeDictionary(){
+        return listObjects();
 
-    /**
-    * 更新字典
-    * @param dataDictionary 字典对象
-    */
-    void updateDictionary(DataDictionary dataDictionary);
+    }
 
-    /**
-    * 查询全部
-    * @return List&lt; DataDictionary &gt;
-    */
-    List<DataDictionary> getWholeDictionary();
+    @Transactional
+    public List<DataDictionary> listDataDictionary(String catalogCode) {
+        return listObjectsByProperty("catalogCode", catalogCode);
+    }
 
-    /**
-    * 根据类别Id查询数据字典
-    * @param catalogCode 类别Id
-    * @return List&lt; DataDictionary &gt;
-    */
-    List<DataDictionary> listDataDictionary(String catalogCode);
+    @Transactional
+    public void deleteDictionary(String catalog) {
+        deleteObjectsByProperties(
+                CollectionsOpt.createHashMap( "catalogCode", catalog));
+    }
 
-    /**
-    * 根据类别Id删除字典
-    * @param catalogCode 类别ID
-    */
-    void deleteDictionary(String catalogCode);
-
-    /**
-     * 查询条数
-     * @param filterDescMap 过滤条件
-     * @return int
-     */
-    int pageCount(Map<String, Object> filterDescMap);
-
-    /**
-     *  分页查询
-     * @param pageQueryMap 过滤条件
-     * @return List&lt; DataDictionary &gt;
-     */
-    List<DataDictionary>  pageQuery(Map<String, Object> pageQueryMap);
+    public void updateDictionary(DataDictionary dataDictionary){
+        super.updateObject(dataDictionary);
+    }
 
 }

@@ -1,7 +1,6 @@
 package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
-import com.centit.framework.common.ObjectException;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.components.CodeRepositoryUtil;
@@ -14,6 +13,7 @@ import com.centit.framework.system.po.DataCatalog;
 import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.DataDictionaryId;
 import com.centit.framework.system.service.DataDictionaryManager;
+import com.centit.support.common.ObjectException;
 import com.centit.support.database.utils.PageDesc;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.ArrayUtils;

@@ -1,94 +1,105 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.core.dao.CodeBook;
+import com.centit.framework.jdbc.dao.BaseDaoImpl;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
+import com.centit.framework.system.dao.RoleInfoDao;
 import com.centit.framework.system.po.RoleInfo;
+import com.centit.support.algorithm.CollectionsOpt;
+import com.centit.support.algorithm.StringBaseOpt;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 角色信息Dao
- * @author zou_wy@centit.com
- */
-public interface RoleInfoDao {
+@Repository("roleInfoDao")
+public class RoleInfoDao extends BaseDaoImpl<RoleInfo, String>{
+
+
+    public Map<String, String> getFilterField() {
+        if (filterField == null) {
+            filterField = new HashMap<>();
+            filterField.put("roleCode", CodeBook.LIKE_HQL_ID);
+            filterField.put("publicUnitRole", "(ROLE_TYPE='P' or (ROLE_TYPE='D' and UNIT_CODE = :publicUnitRole))");
+            filterField.put("UNITROLE", "(ROLE_TYPE='P' or (ROLE_TYPE='D' and UNIT_CODE = :UNITROLE))");
+            filterField.put("NP_GLOBAL", "(ROLE_TYPE='G' or ROLE_TYPE='P')");
+            filterField.put("roleName", CodeBook.LIKE_HQL_ID);
+            filterField.put("ROLEDESC", CodeBook.LIKE_HQL_ID);
+            filterField.put("isValid", CodeBook.EQUAL_HQL_ID);
+            filterField.put("roleType", CodeBook.EQUAL_HQL_ID);
+            filterField.put("unitCode", CodeBook.EQUAL_HQL_ID);
+            filterField.put("NP_ALL", "(ROLE_TYPE='F' or ROLE_TYPE='G' or ROLE_TYPE='P')");
+            filterField.put("roleNameEq", "ROLE_NAME = :roleNameEq");
+            filterField.put("(date)createDateBeg", "CREATE_DATE>= :createDateBeg");
+            filterField.put("(nextday)createDateEnd", "CREATE_DATE< :createDateEnd");
+        }
+        return filterField;
+    }
+
+    public String getNextKey() {
+        return StringBaseOpt.objectToString(
+            DatabaseOptUtils.getSequenceNextValue(
+                this, "S_ROLECODE"));
+    }
+
+    public List<RoleInfo> listObjectsAll() {
+        return super.listObjects();
+    }
+
+    @Transactional
+    public void deleteObjectById(String roleCode) {
+        super.deleteObjectById(roleCode);
+    }
+
+    public RoleInfo getObjectById(String roleCode) {
+        return super.getObjectById(roleCode);
+    }
+
+    public RoleInfo getRoleByCodeOrName(String roleCodeOrName) {
+        List<RoleInfo> roles = this.listObjectsByFilter(" where IS_VALID ='T' and ( ROLE_CODE= ? or " +
+                    "((ROLE_TYPE='G' or ROLE_TYPE='P') and ROLE_NAME =?))", new Object[]{roleCodeOrName,roleCodeOrName});
+        if(roles!=null && roles.size()>0)
+            return roles.get(0);
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public List<Object> listRoleOptMethods(String rolecode) {
+        String hql = "select def.OPT_NAME as def_optname, def.OPT_CODE as def_optcode " +
+                "from F_OPTDEF def, F_ROLEPOWER pow  " +
+                "where def.OPT_CODE = pow.OPT_CODE and pow.ROLE_CODE = ? ";
+        return DatabaseOptUtils.listObjectsBySqlAsJson(
+                this,hql,  new Object[]{rolecode});
+    }
+
 
     /**
-     * 查询所有机构列表
-     * @return List &lt;UserInfo&gt;
-     */
-    List<RoleInfo> listObjectsAll();
-
-    /**
-     * 根据条件查询机构列表
-     * @param filterMap 过滤条件Map
-     * @return List &lt;UserInfo&gt;
-     */
-    List<RoleInfo> listObjects(Map<String, Object> filterMap);
-
-
-    /**
-     * 根据过滤条件查询总行数
-     * @param filterDescMap 过滤条件Map
-     * @return 总行数
-     */
-    int pageCount(Map<String, Object> filterDescMap);
-
-    /**
-     * 分页查询
-     * @param pageQueryMap 过滤条件Map
-     * @return List &lt;UserInfo&gt;
-     */
-    List<RoleInfo> pageQuery(Map<String, Object> pageQueryMap);
-
-    /**
-     * 新增角色
-     * @param roleInfo 角色对象
-     */
-    void saveNewObject(RoleInfo roleInfo);
-
-    /**
-     * 根据Id删除角色
-     * @param roleCode 角色ID
-     */
-    void deleteObjectById(String roleCode);
-
-    /**
-     * 更新角色
-     * @param roleInfo 角色对象
-     */
-    void updateRole(RoleInfo roleInfo);
-
-    /**
-     * 获取下一个序列值
-     * @return String
-     */
-    String getNextKey();
-
-    /**
-     * 根据Id查询角色
-     * @param roleCode 角色Id
-     * @return RoleInfo
-     */
-    RoleInfo getObjectById(String roleCode);
-
-    /**
-     * 查询角色 根据代码 或者 名称（根据名称查询时经查询 G 和 P 类别的角色）
-     * @param roleCodeOrName 角色代码或者名称
-     * @return RoleInfo
-     */
-    RoleInfo getRoleByCodeOrName(String roleCodeOrName);
-
-    /**
-     * 根据角色Id查询操作定义
-     * @param roleCode 角色ID
+     * 对角色信息进行模糊搜索，适用于带搜索条件的下拉框。
+     *
+     * @param key      搜索条件
+     * @param field    需要搜索的字段，如为空，默认，roleCode,roleName
      * @return List
      */
-    List<Object> listRoleOptMethods(String roleCode);
+    @Transactional
+    public List<RoleInfo> search(String key, String[] field) {
+        HashMap<String,Object> filter = new HashMap<>(field.length*2);
+        for(String f :field){
+            filter.put(f,key);
+        }
+        return listObjectsByProperties(filter);
+    }
 
-    /**
-     * 根据属性查询角色
-     * @param propertyName 属性名称
-     * @param propertyValue 属性值
-     * @return RoleInfo
-     */
-    RoleInfo getObjectByProperty(String propertyName, Object propertyValue);
+    @Override
+    public RoleInfo getObjectByProperty(String propertyName, Object propertyValue) {
+        return super.getObjectByProperties(CollectionsOpt.createHashMap(propertyName, propertyValue));
+    }
+
+    @Transactional
+    public void updateRole(RoleInfo roleInfo){
+        super.updateObject(roleInfo);
+    }
+
 }

@@ -32,7 +32,8 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Override
     @Transactional
     public boolean hasChildren(String optId){
-        return optInfoDao.countChildrenSum(optId) > 0;
+        return optInfoDao.countObject(
+            CollectionsOpt.createHashMap("optId", optId)) > 0;
     }
 
     @Override

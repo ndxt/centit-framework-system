@@ -1,7 +1,6 @@
 package com.centit.framework.system.service.impl;
 
 import com.centit.framework.components.CodeRepositoryCache;
-import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.UnitInfoDao;
 import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.po.UnitInfo;
@@ -218,9 +217,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
     @Override
     @Transactional
     public List<UnitInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return unitInfoDao.pageQuery(
-            QueryParameterPrepare.makeMybatisOrderByParam(
-                QueryParameterPrepare.prepPageParams(filterMap,pageDesc,unitInfoDao.pageCount(filterMap)),UnitInfo.class));
+        return unitInfoDao.listObjects(filterMap,pageDesc);
     }
 
     @Override

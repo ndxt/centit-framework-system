@@ -1,77 +1,56 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.core.dao.CodeBook;
+import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.system.po.DataCatalog;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 字典类别Dao
- * @author god
- * update by zou_wy@centit.com
- */
-public interface DataCatalogDao{
+@Repository("dataCatalogDao")
+public class DataCatalogDao extends BaseDaoImpl<DataCatalog, String>{
 
-    /**
-     * 查询所有类别
-     * @return list &lt; DataCatalog &gt;
-     */
-    List<DataCatalog> listObjects();
+    @Override
+    public Map<String, String> getFilterField() {
+        if (filterField == null) {
+            filterField = new HashMap<>();
+            filterField.put("catalogCode", CodeBook.LIKE_HQL_ID);
+            filterField.put("catalogName", CodeBook.LIKE_HQL_ID);
+            filterField.put("catalogStyle", CodeBook.EQUAL_HQL_ID);
+            filterField.put("catalogType", CodeBook.EQUAL_HQL_ID);
+            filterField.put("optId", CodeBook.EQUAL_HQL_ID);
+        }
+        return filterField;
+    }
 
-    /**
-     * 根据Id查询类别
-     * @param catalogCode 类别Id
-     * @return DataCatalog
-     */
-    DataCatalog getObjectById(String catalogCode);
+    public DataCatalog getObjectById(String catalogCode) {
+        return super.getObjectById(catalogCode);
+    }
 
-    /**
-     * 新增类别
-     * @param dataCatalog 类别对象
-     */
-    void saveNewObject(DataCatalog dataCatalog);
+    public void deleteObjectById(String catalogCode) {
+        super.deleteObjectById(catalogCode);
+    }
 
-    /**
-     * 更新类别
-     * @param dataCatalog 类别对象
-     */
-    void updateCatalog(DataCatalog dataCatalog);
+    @Transactional
+    public List<DataCatalog> listFixCatalog() {
+        return listObjectsByProperty("catalogStyle","F");
+    }
 
-    /**
-     * 根据Id删除类别
-     * @param catalogCode 类别Id
-     */
-    void deleteObjectById(String catalogCode);
+    @Transactional
+    public List<DataCatalog> listUserCatalog() {
+        return listObjectsByProperty("catalogStyle","U");
+    }
 
-    /**
-     * 查询所有框架固有的类别
-     * @return List&lt; DataCatalog &gt;
-     */
-    List<DataCatalog> listFixCatalog();
+    @Transactional
+    public List<DataCatalog> listSysCatalog() {
+        return listObjectsByProperty("catalogStyle","S");
+    }
 
-    /**
-     * 查询所有用户定义的类别
-     * @return List&lt; DataCatalog &gt;
-     */
-    List<DataCatalog> listUserCatalog();
+    public void updateCatalog(DataCatalog dataCatalog){
+        super.updateObject(dataCatalog);
+    }
 
-    /**
-     * 查询所有系统类别
-     * @return List&lt; DataCatalog &gt;
-     */
-    List<DataCatalog> listSysCatalog();
-
-    /**
-     * 查询条数
-     * @param filterDescMap 过滤条件
-     * @return int
-     */
-    int pageCount(Map<String, Object> filterDescMap);
-
-    /**
-     *  分页查询
-     * @param pageQueryMap 过滤条件
-     * @return List&lt; DataCatalog &gt;
-     */
-    List<DataCatalog>  pageQuery(Map<String, Object> pageQueryMap);
 }

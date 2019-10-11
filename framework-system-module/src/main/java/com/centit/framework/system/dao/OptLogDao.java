@@ -1,84 +1,92 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.components.CodeRepositoryUtil;
+import com.centit.framework.core.dao.CodeBook;
+import com.centit.framework.jdbc.dao.BaseDaoImpl;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.po.OptLog;
+import com.centit.support.database.utils.PersistenceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-/**
- * 操作日志Dao
- * @author god
- * updated by zou_wy@centit.com
- */
-public interface OptLogDao  {
-    /**
-     * 生成一个新的序列
-     * @return Long
-     */
-    Long createNewLogId();
+@Repository("optLogDao")
+public class OptLogDao extends BaseDaoImpl<OptLog, Long> {
 
-    /**
-     * 根据Id查询
-     * @param logId 日志Id
-     * @return OptLog
-     */
-    OptLog getObjectById(Long logId);
+    public static final Logger logger = LoggerFactory.getLogger(OptLogDao.class);
 
-    /**
-     * 新增
-     * @param o 日志对象
-     */
-    void saveNewObject(OptLog o);
+    public Map<String, String> getFilterField() {
+        if (filterField == null) {
+            filterField = new HashMap<>();
+            filterField.put("logId", CodeBook.EQUAL_HQL_ID);
+            filterField.put("logLevel", CodeBook.LIKE_HQL_ID);
+            filterField.put(CodeRepositoryUtil.USER_CODE, CodeBook.EQUAL_HQL_ID);
+            filterField.put("(date)optTimeBegin", "optTime >= :optTimeBegin ");
+            filterField.put("(nextday)optTimeEnd", "optTime < :optTimeEnd");
+            filterField.put("optId", CodeBook.LIKE_HQL_ID);
+            filterField.put("optCode", CodeBook.LIKE_HQL_ID);
+            filterField.put("optContent", CodeBook.LIKE_HQL_ID);
+            filterField.put("oldValue", CodeBook.LIKE_HQL_ID);
+            filterField.put("optMethod", CodeBook.EQUAL_HQL_ID);
 
-    /**
-     * 根据Id删除
-     * @param logId 日志Id
-     */
-    void deleteObjectById(Long logId);
+        }
+        return filterField;
+    }
 
-    /**
-     * 这个sql语句效率太低，应该从f_optinfo表中获取
-     * @return 所有的业务列表
-     */
-    //final String hql = "select DISTINCT f.optId from OptLog f";
-    List<String> listOptIds();
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public List<String> listOptIds() {
+        final String hql = "select DISTINCT f.OPT_ID from F_OPT_LOG f";
 
-    /**
-     *
-     * @param o 日志对象
-     */
-    //设置主键 DatabaseOptUtils.getNextLongSequence(this, "S_SYS_LOG"));
-    void mergeOptLog(OptLog o);
-
-    /**
-     * 根据开始
-     * @param begin 起始时间
-     * @param end 结束时间
-     */
-      //"delete from OptLog o where 1=1 ";  "and o.optTime > ?" "and o.optTime < ?";
-      //参数 String beginDate, String endDate
-    void delete(Date begin, Date end);
+        return this.getJdbcTemplate().queryForList(hql,String.class);
+    }
 
 
-    /**
-     * 查询条数
-     * @param filterDescMap 过滤条件
-     * @return int
-     */
-    int pageCount(Map<String, Object> filterDescMap);
+    @Transactional
+    public Long createNewLogId(){
+        return DatabaseOptUtils.getSequenceNextValue(this, "S_SYS_LOG");
+    }
 
-    /**
-     * 分页查询
-     * @param pageQueryMap 过滤条件
-     * @return List&lt;OptLog&gt;
-     */
-    List<OptLog>  pageQuery(Map<String, Object> pageQueryMap);
-    /* 用于测试
-     * 分页查询
-     * @param pageQueryMap 过滤条件
-     * @return List&lt;OptLog&gt;
-     */
-    //List<OptLog>  pageQueryByPDSql(Map<String, Object> pageQueryMap);
+    public OptLog getObjectById(Long logId) {
+        return super.getObjectById(logId);
+    }
+
+    @Transactional
+    public void deleteObjectById(Long logId) {
+        super.deleteObjectById(logId);
+    }
+
+    @Transactional
+    public void mergeOptLog(OptLog o) {
+        if (null == o.getLogId()) {
+            o.setLogId(DatabaseOptUtils.getSequenceNextValue(this, "S_SYS_LOG"));
+        }
+       /* return */super.mergeObject(o);
+    }
+
+    @Transactional
+    public void delete(Date begin, Date end) {
+        String hql = "delete from F_OPT_LOG o where 1=1 ";
+        List<Object> objects = new ArrayList<>();
+        if (null != begin) {
+            hql += "and o.optTime > ?";
+            objects.add(begin);
+        }
+        if (null != end) {
+            hql += "and o.optTime < ?";
+            objects.add(end);
+        }
+
+        try {
+            DatabaseOptUtils.doExecuteSql(this, hql, objects.toArray(new Object[objects.size()]));
+        } catch (DataAccessException e) {
+            throw new PersistenceException(e);
+        }
+
+    }
 
 }

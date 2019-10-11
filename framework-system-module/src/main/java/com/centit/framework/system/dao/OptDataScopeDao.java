@@ -1,71 +1,77 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.core.dao.CodeBook;
+import com.centit.framework.jdbc.dao.BaseDaoImpl;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.po.OptDataScope;
+import com.centit.support.algorithm.CollectionsOpt;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
-/**
- * 数据范围Dao
- * @author god
- * updated by zou_wy@centit.com
- */
-public interface OptDataScopeDao {
+@Repository("optDataScopeDao")
+public class OptDataScopeDao extends BaseDaoImpl<OptDataScope, String> {
 
-    /**
-     * 新增
-     * @param optDataScope 数据范围对象
-     */
-    void saveNewOPtDataScope(OptDataScope optDataScope);
-
-  /**
-     * 更新数据范围
-     * @param optDataScope 数据范围对象
-     */
-    void updateOptDataScope(OptDataScope optDataScope);
-
-    /**
-     * 删除
-     * @param optDataScope 数据范围对象
-     */
-    void deleteObject(OptDataScope optDataScope);
-
-    /**
-     * 根据菜单ID查询数据范围
-     * @param sOptID 菜单Id
-     * @return List &lt; OptDataScope &gt;
-     */
-    List<OptDataScope> getDataScopeByOptID(String sOptID);
-
+    public Map<String, String> getFilterField() {
+        if (filterField == null) {
+            filterField = new HashMap<>();
+            filterField.put("optId", CodeBook.EQUAL_HQL_ID);
+            filterField.put("optScopeCode", CodeBook.EQUAL_HQL_ID);
+            filterField.put("scopeName", CodeBook.LIKE_HQL_ID);
+        }
+        return filterField;
+    }
 
     /**
      * @return 所有的数据范围定义
      */
-    List<OptDataScope> listAllDataScope();
-    /**
-     * 根据菜单Id查询数据范围数量
-     * @param sOptID 菜单ID
-     * @return 数量
-     */
-    int getOptDataScopeSumByOptID(String sOptID);
+
+    @Transactional
+    public List<OptDataScope> listAllDataScope() {
+        return listObjects();
+    }
+
+    @Transactional
+    public List<OptDataScope> getDataScopeByOptID(String sOptID) {
+        return this.listObjectsByProperty("optId", sOptID);
+    }
 
 
-    /**
-     * 根据菜单Id删除数据范围
-     * @param sOptID 菜单ID
-     */
-    void deleteDataScopeOfOptID(String sOptID) ;
 
-    /**
-     * 获取下一个序列
-     * @return String
-     */
-    String getNextOptCode();
+    @Transactional
+    public void deleteDataScopeOfOptID(String sOptID) {
+        this.deleteObjectsByProperties(
+                CollectionsOpt.createHashMap("optId", sOptID));
+    }
 
-    /**
-     * 根据Id查询过滤条件
-     * @param scopeCodes 代码集合
-     * @return 对应的数据范围过滤器 zou_wy
-     */
-    List<String> listDataFiltersByIds(Collection<String> scopeCodes);
+
+    @Transactional
+    public String getNextOptCode() {
+        Long nextValue = DatabaseOptUtils.getSequenceNextValue(this, "S_OPTDEFCODE");
+        return nextValue==null?"":String.valueOf(nextValue);
+    }
+
+
+    @Transactional
+    public List<String> listDataFiltersByIds(Collection<String> scopeCodes) {
+        List<OptDataScope> objs = this.listObjectsByFilter(
+                "WHERE OPT_SCOPE_CODE in (:optScopeCode)",
+                CollectionsOpt.createHashMap("optScopeCode", scopeCodes));
+        if(objs==null)
+            return null;
+        List<String> filters = new ArrayList<>();
+        for(OptDataScope scope:objs)
+            filters.add(scope.getFilterCondition());
+        return filters;
+    }
+
+    public void updateOptDataScope(OptDataScope optDataScope){
+        super.updateObject(optDataScope);
+    }
+
+    public void saveNewOPtDataScope(OptDataScope optDataScope){
+        super.saveNewObject(optDataScope);
+    }
+
 }

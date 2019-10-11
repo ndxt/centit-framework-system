@@ -1,72 +1,79 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.core.dao.CodeBook;
+import com.centit.framework.jdbc.dao.BaseDaoImpl;
+import com.centit.framework.system.dao.RolePowerDao;
 import com.centit.framework.system.po.RolePower;
 import com.centit.framework.system.po.RolePowerId;
+import com.centit.support.algorithm.CollectionsOpt;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * 角色权限Dao
- * @author god
- * updated by zou_wy@centit.com
+ * Created with IntelliJ IDEA.
+ * User: sx
+ * Date: 14-10-29
+ * Time: 下午3:18
+ * To change this template use File | Settings | File Templates.
  */
-public interface RolePowerDao {
 
-  /**
-   * 查询全部
-   * @return List &lt;RolePower&gt;
-   */
-    List<RolePower> listObjectsAll();
+@Repository("rolePowerDao")
+public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
 
-  /**
-   * 新增
-   * @param rolePower 角色权限
-   */
-    void saveNewRolePower(RolePower rolePower);
+    public Map<String, String> getFilterField() {
+        if (filterField == null) {
+            filterField = new HashMap<>();
+            filterField.put("optCode", CodeBook.EQUAL_HQL_ID);
+            filterField.put("roleCode", CodeBook.EQUAL_HQL_ID);
+        }
+        return filterField;
+    }
 
-  /**
-   * 更新角色权限
-   * @param rolePower 角色权限对象
-   */
-  void updateRolePower(RolePower rolePower);
+    @Transactional(propagation = Propagation.MANDATORY)
+    public List<RolePower> listObjectsAll() {
+        return super.listObjects();
+    }
 
-  /**
-   * 删除
-   * @param rolePowers 角色权限对象
-   */
-    void deleteObject(RolePower rolePowers);
+    @Transactional
+    public void deleteRolePowersByRoleCode(String roleCode) {
+        super.deleteObjectsByProperties(CollectionsOpt.createHashMap("roleCode",roleCode));
+    }
 
-    /**
-     * 根据Id删除
-     * @param rolePowerId id
-     */
-    void deleteObjectById(RolePowerId rolePowerId);
+    @Transactional
+    public void deleteRolePowersByOptCode(String optCode) {
+        super.deleteObjectsByProperties(CollectionsOpt.createHashMap("optCode",optCode));
+    }
 
-  /**
-   * 根据条件查询
-   * @param filterMap 查询条件
-   * @return List &lt;RolePower&gt;
-   */
-    List<RolePower> listObjects(Map<String, Object> filterMap);
 
-  /**
-   * 根据角色代码删除角色权限
-   * @param roleCode 角色代码
-   */
-    void deleteRolePowersByRoleCode(String roleCode);
+    @Transactional
+    public List<RolePower> listRolePowersByRoleCode(String rolecode) {
+        return listObjectsByProperty("roleCode", rolecode);
+    }
 
-  /**
-   * 根据操作代码删除角色权限
-   * @param optCode 操作代码
-   */
-    void deleteRolePowersByOptCode(String optCode);
+    @Transactional
+    public void mergeBatchObject(List<RolePower> rolePowers) {
+        for (int i = 0; i < rolePowers.size(); i++) {
+            super.mergeObject(rolePowers.get(i));
+        }
+    }
 
-  /**
-   * 根据角色代码查询
-   * @param roleCode 角色代码
-   * @return List &lt;RolePower&gt;
-   */
-    List<RolePower> listRolePowersByRoleCode(String roleCode);
+    @Transactional
+    public void updateRolePower(RolePower rolePower){
+        super.updateObject(rolePower);
+    }
 
+    @Transactional
+    public void saveNewRolePower(RolePower rolePower){
+      super.saveNewObject(rolePower);
+    }
+
+    @Transactional
+    public void deleteObjectById(RolePowerId id){
+        super.deleteObjectById(id);
+    }
 }

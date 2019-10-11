@@ -2,22 +2,18 @@ package com.centit.framework.system.service.impl;
 
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.DataPowerFilter;
-import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.IUserUnit;
 import com.centit.framework.security.model.CentitUserDetails;
-import com.centit.framework.system.dao.OptDataScopeDao;
-import com.centit.framework.system.dao.OptInfoDao;
-import com.centit.framework.system.dao.UserQueryFilterDao;
-import com.centit.framework.system.po.UserQueryFilter;
 import com.centit.framework.system.service.GeneralService;
 import com.centit.framework.system.service.OptInfoManager;
-import com.centit.support.algorithm.StringBaseOpt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service("generalService")
 public  class GeneralServiceImpl implements GeneralService {

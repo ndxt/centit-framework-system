@@ -2,7 +2,6 @@ package com.centit.framework.system.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.DataDictionaryDao;
 import com.centit.framework.system.dao.UserSettingDao;
 import com.centit.framework.system.po.DataDictionary;
@@ -84,10 +83,7 @@ public class UserSettingManagerImpl implements UserSettingManager {
     @Override
     public JSONArray listObjects(Map<String, Object> searchColumn, PageDesc pageDesc) {
         searchColumn.put("catalogCode", "userSettingKey");
-        List<DataDictionary> dataDictionaries = dataDictionaryDao.pageQuery(
-            QueryParameterPrepare.makeMybatisOrderByParam(
-                QueryParameterPrepare.prepPageParams(searchColumn, pageDesc,
-                    dataDictionaryDao.pageCount(searchColumn) ),DataDictionary.class));
+        List<DataDictionary> dataDictionaries = dataDictionaryDao.listObjects(searchColumn, pageDesc);
 
         JSONArray userSettings = new JSONArray(10);
         for(DataDictionary d : dataDictionaries){
@@ -125,10 +121,7 @@ public class UserSettingManagerImpl implements UserSettingManager {
         List<UserSetting> userSettings = new ArrayList<>();
 
         map.put("catalogCode", "userSettingKey");
-        List<DataDictionary> dataDictionaries = dataDictionaryDao.pageQuery(
-            QueryParameterPrepare.makeMybatisOrderByParam(
-                QueryParameterPrepare.prepPageParams(map, pageDesc,
-                    dataDictionaryDao.pageCount(map) ),DataDictionary.class));
+        List<DataDictionary> dataDictionaries = dataDictionaryDao.listObjects(map, pageDesc);
 
         for(DataDictionary d : dataDictionaries){
             UserSetting userSetting = new UserSetting(new UserSettingId("default", d.getDataCode()));

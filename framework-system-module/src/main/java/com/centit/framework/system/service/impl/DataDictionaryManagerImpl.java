@@ -1,7 +1,6 @@
 package com.centit.framework.system.service.impl;
 
 import com.centit.framework.components.CodeRepositoryCache;
-import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.DataCatalogDao;
 import com.centit.framework.system.dao.DataDictionaryDao;
 import com.centit.framework.system.po.DataCatalog;
@@ -194,7 +193,7 @@ public class DataDictionaryManagerImpl implements
     public int existCatalogName(String catalogName) {
         HashMap<String,Object> map = new HashMap();
         map.put("catalogName",catalogName);
-        return dataCatalogDao.pageCount(map);
+        return dataCatalogDao.countObject(map);
     }
 
 
@@ -214,10 +213,7 @@ public class DataDictionaryManagerImpl implements
     @Override
     @Transactional
     public List<DataCatalog> listObjects(Map<String, Object> filterDescMap, PageDesc pageDesc) {
-          return dataCatalogDao.pageQuery(
-              QueryParameterPrepare.makeMybatisOrderByParam(
-                  QueryParameterPrepare.prepPageParams(filterDescMap, pageDesc,
-                          dataCatalogDao.pageCount(filterDescMap) ),DataCatalog.class));
+        return dataCatalogDao.listObjects(filterDescMap, pageDesc);
     }
 
 }

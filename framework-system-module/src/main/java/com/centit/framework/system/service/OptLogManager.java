@@ -36,7 +36,7 @@ public interface OptLogManager {
 
     void deleteMany(Long[] logIds);
 
-     JSONArray listObjectsAsJson(
+    JSONArray listObjectsAsJson(
             String[] fields,
             Map<String, Object> filterMap, PageDesc pageDesc);
 }

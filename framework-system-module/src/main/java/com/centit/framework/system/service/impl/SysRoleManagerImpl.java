@@ -1,7 +1,6 @@
 package com.centit.framework.system.service.impl;
 
 import com.centit.framework.components.CodeRepositoryCache;
-import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysRoleManager;
@@ -181,9 +180,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Override
     @Transactional
     public List<RoleInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return roleInfoDao.pageQuery(
-            QueryParameterPrepare.makeMybatisOrderByParam(
-                QueryParameterPrepare.prepPageParams(filterMap,pageDesc,roleInfoDao.pageCount(filterMap)),RoleInfo.class));
+        return roleInfoDao.listObjects(filterMap,pageDesc);
     }
 
     @Override
@@ -196,7 +193,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Transactional
     public int countRoleUserSum(String roleCode){
 //        return roleInfoDao.countRoleUserSum(roleCode);
-        return userRoleDao.pageCount(CollectionsOpt.createHashMap("roleCode",roleCode));
+        return userRoleDao.countObject(CollectionsOpt.createHashMap("roleCode",roleCode));
     }
 
     @Override

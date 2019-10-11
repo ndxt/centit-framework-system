@@ -1,81 +1,68 @@
 package com.centit.framework.system.dao;
 
-
+import com.centit.framework.jdbc.dao.BaseDaoImpl;
+import com.centit.framework.system.dao.UnitRoleDao;
 import com.centit.framework.system.po.UnitRole;
 import com.centit.framework.system.po.UnitRoleId;
+import com.centit.support.algorithm.CollectionsOpt;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 机构角色Dao
- * @author codefan
- * updated by zou_wy@centit.com
- */
-public interface UnitRoleDao {
+@Repository("unitRoleDao")
+public class UnitRoleDao extends BaseDaoImpl<UnitRole, UnitRoleId> {
 
-    /**
-    * 新增
-    * @param dbUnitRole 机构角色对象
-    */
-    void saveNewObject(UnitRole dbUnitRole);
+    public Map<String, String> getFilterField() {
+        if (filterField == null) {
+            filterField = new HashMap<>();
+            filterField.put("roleCode", "ROLE_CODE = :roleCode");
+            filterField.put("unitCode", "UNIT_CODE = :unitCode");
+            filterField.put("(StartWith)unitPathPrefix",
+                "UNIT_CODE in (select UNIT_CODE from f_unitinfo where UNIT_PATH like :unitPathPrefix)");
+            filterField.put("currentUnitCode",
+                "ROLE_CODE in (select ROLE_CODE from f_roleinfo where UNIT_CODE = :currentUnitCode)");
+            filterField.put("unitValid", "unitCode in (select UNIT_CODE from f_unitinfo where IS_VALID = :unitValid)");
+            filterField.put("roleValid", "roleCode in (select ROLE_CODE from f_roleinfo where IS_VALID = :roleValid)");
+        }
+        return filterField;
+    }
 
-    /**
-    * 更新
-    * @param dbUnitRole 机构角色对象
-    */
-    void updateUnitRole(UnitRole dbUnitRole);
+    @Transactional
+    public void updateUnitRole(UnitRole dbUnitRole){
+        super.updateObject(dbUnitRole);
+    }
 
-    /**
-    *
-    * @param dbUnitRole 机构角色对象
-    */
-    void mergeUnitRole(UnitRole dbUnitRole);
+    @Transactional
+    public void mergeUnitRole(UnitRole dbUnitRole) {
+        super.mergeObject(dbUnitRole);
+    }
 
-    /**
-    * 删除
-    * @param unitRole 机构角色对象
-    */
-    void deleteUnitRole(UnitRole unitRole);
+    @Transactional
+    public void deleteUnitRole(UnitRole dbUnitRole){
+        super.deleteObject(dbUnitRole);
+    }
 
-    /**
-    * 根据Id删除
-    * @param id 机构角色Id
-    */
-    void deleteUnitRoleById(UnitRoleId id);
+    @Transactional
+    public void deleteUnitRoleById(UnitRoleId id){
+        super.deleteObjectById(id);
+    }
 
-    /**
-    * 根据Id查询
-    * @param id 机构角色Id
-    * @return UnitRole
-    */
-    UnitRole getUnitRoleById(UnitRoleId id);
+    @Transactional
+    public UnitRole getUnitRoleById(UnitRoleId id){
+        return super.getObjectById(id);
+    }
 
-    /**
-    * 查询数量 用于分页
-    * @param filterDescMap 过滤条件
-    * @return int
-    */
-    int pageCount(Map<String, Object> filterDescMap);
+    @Transactional
+    public List<UnitRole> listUnitRolesByUnitCode(String unitCode){
+        return super.listObjects(CollectionsOpt.createHashMap("unitCode",unitCode));
+    }
 
-    /**
-    * 分页查询
-    * @param pageQueryMap 分页查询条件
-    * @return List &lt;UnitRole&gt;
-    */
-    List<UnitRole> pageQuery(Map<String, Object> pageQueryMap);
+    @Transactional
+    public List<UnitRole> listUnitRolesByRoleCode(String roleCode){
+        return super.listObjects(CollectionsOpt.createHashMap("roleCode",roleCode));
+    }
 
-    /**
-    * 根据机构代码查询
-    * @param unitCode 机构代码
-    * @return List &lt;UnitRole&gt;
-    */
-    List<UnitRole> listUnitRolesByUnitCode(String unitCode);
-
-    /**
-    * 根据角色代码查询
-    * @param roleCode 角色代码
-    * @return List &lt;UnitRole&gt;
-    */
-    List<UnitRole> listUnitRolesByRoleCode(String roleCode);
 }

@@ -2,7 +2,6 @@ package com.centit.framework.system.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.core.dao.DictionaryMapUtils;
-import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.model.adapter.OperationLogWriter;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.system.dao.OptLogDao;
@@ -99,11 +98,9 @@ public class OptLogManagerImpl implements OptLogManager,OperationLogWriter {
             Map<String, Object> filterMap, PageDesc pageDesc){
         //filterMap.put(CodeBook.TABLE_SORT_FIELD, "optTime");
         //filterMap.put("optId", new String[]{"login","admin","optTime"});
-        return DictionaryMapUtils.objectsToJSONArray(
-                    optLogDao.pageQuery/*ByPDSql*/(
-                        QueryParameterPrepare.makeMybatisOrderByParam(
-                            QueryParameterPrepare.prepPageParams(filterMap,pageDesc,
-                                optLogDao.pageCount(filterMap)),OptLog.class)));
+        return DictionaryMapUtils.mapJsonArray(
+                    optLogDao.listObjectsPartFieldAsJson( filterMap, fields ,pageDesc),
+                    OptLog.class);
     }
 
 

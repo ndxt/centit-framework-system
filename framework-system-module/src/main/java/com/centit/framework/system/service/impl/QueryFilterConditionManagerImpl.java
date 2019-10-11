@@ -2,7 +2,6 @@ package com.centit.framework.system.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.core.dao.DictionaryMapUtils;
-import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.QueryFilterConditionDao;
 import com.centit.framework.system.po.QueryFilterCondition;
 import com.centit.framework.system.service.QueryFilterConditionManager;
@@ -49,10 +48,7 @@ public class QueryFilterConditionManagerImpl implements QueryFilterConditionMana
     @Override
     @Transactional
     public List<QueryFilterCondition> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return queryFilterConditionDao.pageQuery(
-            QueryParameterPrepare.makeMybatisOrderByParam(
-                QueryParameterPrepare.prepPageParams(filterMap,pageDesc,
-                        queryFilterConditionDao.pageCount(filterMap)),QueryFilterCondition.class));
+        return queryFilterConditionDao.listObjects(filterMap,pageDesc);
     }
 
 

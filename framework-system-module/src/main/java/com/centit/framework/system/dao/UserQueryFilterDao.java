@@ -1,7 +1,16 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.core.dao.CodeBook;
+import com.centit.framework.jdbc.dao.BaseDaoImpl;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.po.UserQueryFilter;
+import com.centit.support.algorithm.CollectionsOpt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,35 +22,55 @@ import java.util.Map;
  * 用户自定义过滤条件表null
 */
 
-public interface UserQueryFilterDao {
+@Repository("userQueryFilterDao")
+public class UserQueryFilterDao extends BaseDaoImpl<UserQueryFilter,Long> {
+    public static final Logger logger = LoggerFactory.getLogger(UserQueryFilterDao.class);
 
-    void deleteObject(UserQueryFilter userQueryFilter);
+    @Override
+    public Map<String, String> getFilterField() {
+        if( filterField == null){
+            filterField = new HashMap<>();
+            filterField.put("filterNo" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("userCode" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("modleCode" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("filterName" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("filterValue" , CodeBook.EQUAL_HQL_ID);
+        }
+        return filterField;
+    }
 
-    void mergeUserFilter(UserQueryFilter userQueryFilter);
+    @Transactional
+    public void mergeUserFilter(UserQueryFilter userQueryFilter) {
+        this.mergeObject(userQueryFilter);
+    }
 
-    void saveNewObject(UserQueryFilter userQueryFilter);
+    public UserQueryFilter getObjectById(Long filterNo) {
+        return super.getObjectById(filterNo);
+    }
 
+    @Transactional
+    public List<UserQueryFilter> listUserQueryFilterByModle(String userCode,String modelCode){
+        return super.listObjectsByFilter(" where USER_CODE = ? and MODLE_CODE = ? "
+                + "order by IS_DEFAULT desc , CREATE_DATE desc",
+                new Object[]{userCode,modelCode});
+    }
 
-    int  pageCount(Map<String, Object> filterDescMap);
-    List<UserQueryFilter>  pageQuery(Map<String, Object> pageQureyMap);
+    @Transactional
+    public List<UserQueryFilter> listUserDefaultFilterByModle(String userCode,String modelCode){
+        return super.listObjectsByFilter(" where USER_CODE = ? and MODLE_CODE = ? "
+                + "and IS_DEFAULT = 'T' order by CREATE_DATE desc",
+                new Object[]{userCode,modelCode});
+    }
 
-    UserQueryFilter getObjectById(Long filterNo);
-    //"From UserQueryFilter where userCode = ? and modleCode = ? "
-            //+ "order by isDefault desc , createDate desc"
-    // 参数 String userCode,String modelCode
-    List<UserQueryFilter> listUserQueryFilterByModle(String userCode,
-                                                     String modelCode);
+    @Transactional
+    public UserQueryFilter getUserDefaultFilterByModle(String userCode,String modelCode){
+        return super.getObjectByProperties(
+                CollectionsOpt.createHashMap("userCode",userCode,"modelCode",modelCode ));
 
-    //super.listObjectsAll("From UserQueryFilter where userCode = ? and modleCode = ? "
-        //+ "and isDefault = 'T' order by isDefault desc , createDate desc",
-    //参数 String userCode,String modelCode
-    List<UserQueryFilter> listUserDefaultFilterByModle(String userCode, String modelCode);
+    }
 
-    //= super.listObjectsAll("From UserQueryFilter where userCode = ? and modleCode = ? "
-        //+ "and isDefault = 'T' order by isDefault desc , createDate desc",
-        //new Object[]{userCode,modelCode});
-    //public UserQueryFilter getUserDefaultFilterByModle(String userCode,String modelCode);
-
-    // DatabaseOptUtils.getNextLongSequence(this, "S_FILTER_NO");
-    Long getNextKey();
+    @Transactional
+    public Long getNextKey() {
+        return DatabaseOptUtils.getSequenceNextValue(this, "S_FILTER_NO");
+    }
 }

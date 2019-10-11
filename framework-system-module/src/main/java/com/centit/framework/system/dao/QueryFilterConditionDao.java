@@ -1,8 +1,15 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.core.dao.CodeBook;
+import com.centit.framework.jdbc.dao.BaseDaoImpl;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.po.QueryFilterCondition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -13,23 +20,57 @@ import java.util.Map;
  * 系统内置查询方式null
 */
 
-public interface QueryFilterConditionDao {
+@Repository("queryFilterConditionDao")
+public class QueryFilterConditionDao extends BaseDaoImpl<QueryFilterCondition,Long> {
 
-    //DatabaseOptUtils.getNextLongSequence(this, "S_FILTER_NO");
-    Long getNextKey();
+    public static final Logger logger = LoggerFactory.getLogger(QueryFilterConditionDao.class);
+
+    @Override
+    public Map<String, String> getFilterField() {
+        if( filterField == null){
+            filterField = new HashMap<>();
+            filterField.put("conditionNo" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("tableClassName" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("paramName" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("paramLabel" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("paramType" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("defaultValue" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("filterSql" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("selectDataType" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("selectDataCatalog" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("selectSql" , CodeBook.EQUAL_HQL_ID);
+            filterField.put("selectJson" , CodeBook.EQUAL_HQL_ID);
+        }
+        return filterField;
+    }
+
+    @Transactional
+    public Long getNextKey() {
+        return DatabaseOptUtils.getSequenceNextValue(this, "S_FILTER_NO");
+    }
 
 
-    int  pageCount(Map<String, Object> filterDescMap);
-    List<QueryFilterCondition>  pageQuery(Map<String, Object> pageQureyMap);
+    public QueryFilterCondition getObjectById(Long filterNo) {
+        return super.getObjectById(filterNo);
+    }
 
+    @Transactional
+    public void mergeFilterCondition(QueryFilterCondition userQueryFilter) {
+        super.mergeObject(userQueryFilter);
+    }
 
-    QueryFilterCondition getObjectById(Long filterNo);
+    @Transactional
+    public void deleteObjectById(Long filterNo) {
+        super.deleteObjectById(filterNo);
+    }
 
-    void mergeFilterCondition(QueryFilterCondition userQueryFilter);
+    @Transactional
+    public void saveNewQueryFilterCondition(QueryFilterCondition queryFilterCondition){
+        super.saveNewObject(queryFilterCondition);
+    }
 
-    void deleteObjectById(Long filterNo);
-
-    void saveNewQueryFilterCondition(QueryFilterCondition queryFilterCondition);
-
-    void updateQueryFilterCondition(QueryFilterCondition queryFilterCondition);
+    @Transactional
+    public void updateQueryFilterCondition(QueryFilterCondition queryFilterCondition){
+        super.updateObject(queryFilterCondition);
+    }
 }

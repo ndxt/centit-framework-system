@@ -208,10 +208,7 @@ public class SysUserUnitManagerImpl
 
     @Override
     public List<UserUnit> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return userUnitDao.pageQuery(
-            QueryParameterPrepare.makeMybatisOrderByParam(
-                QueryParameterPrepare.prepPageParams(
-                        filterMap,pageDesc,userUnitDao.pageCount(filterMap)),UserUnit.class));
+        return userUnitDao.listObjects(filterMap, pageDesc);
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.centit.framework.system.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.core.dao.DictionaryMapUtils;
-import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.UnitRoleDao;
 import com.centit.framework.system.po.UnitRole;
 import com.centit.framework.system.po.UnitRoleId;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,11 +27,8 @@ public class SysUnitRoleManagerImpl implements SysUnitRoleManager {
     @Override
     @Transactional
     public JSONArray listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-        List<UnitRole> unitRoles = unitRoleDao.pageQuery(
-            QueryParameterPrepare.makeMybatisOrderByParam(
-                QueryParameterPrepare.prepPageParams(
-                    filterMap,pageDesc,unitRoleDao.pageCount(filterMap)),UnitRole.class));
-        return DictionaryMapUtils.objectsToJSONArray(unitRoles);
+        JSONArray unitRoles = unitRoleDao.listObjectsAsJson(filterMap,pageDesc);
+        return DictionaryMapUtils.mapJsonArray(unitRoles,  UnitRole.class);
     }
 
     @Override
@@ -41,11 +36,8 @@ public class SysUnitRoleManagerImpl implements SysUnitRoleManager {
     public JSONArray listUnitRoles(String unitCode, PageDesc pageDesc) {
         Map<String, Object> filterMap = new HashMap<>(5);
         filterMap.put("unitCode",unitCode);
-        List<UnitRole> unitRoles = unitRoleDao.pageQuery(
-            QueryParameterPrepare.makeMybatisOrderByParam(
-                QueryParameterPrepare.prepPageParams(
-                    filterMap,pageDesc,unitRoleDao.pageCount(filterMap)),UnitRole.class));
-        return DictionaryMapUtils.objectsToJSONArray(unitRoles);
+        JSONArray unitRoles = unitRoleDao.listObjectsAsJson(filterMap, pageDesc);
+        return DictionaryMapUtils.mapJsonArray(unitRoles,  UnitRole.class);
     }
 
     @Override
@@ -53,11 +45,8 @@ public class SysUnitRoleManagerImpl implements SysUnitRoleManager {
     public JSONArray listRoleUnits(String roleCode,PageDesc pageDesc) {
         Map<String, Object> filterMap = new HashMap<>(5);
         filterMap.put("roleCode",roleCode);
-        List<UnitRole> unitRoles = unitRoleDao.pageQuery(
-            QueryParameterPrepare.makeMybatisOrderByParam(
-                QueryParameterPrepare.prepPageParams(
-                    filterMap,pageDesc,unitRoleDao.pageCount(filterMap)),UnitRole.class));
-        return DictionaryMapUtils.objectsToJSONArray(unitRoles);
+        JSONArray unitRoles = unitRoleDao.listObjectsAsJson(filterMap, pageDesc);
+        return DictionaryMapUtils.mapJsonArray(unitRoles,  UnitRole.class);
     }
 
     @Override
@@ -96,11 +85,8 @@ public class SysUnitRoleManagerImpl implements SysUnitRoleManager {
         Map<String, Object> filterMap = new HashMap<>(4);
         filterMap.put("roleCode", roleCode);
         filterMap.put("unitPathPrefix", unitPathPrefix);
-        List<UnitRole> unitRoles = unitRoleDao.pageQuery(
-            QueryParameterPrepare.makeMybatisOrderByParam(
-                QueryParameterPrepare.prepPageParams(
-                    filterMap,pageDesc,unitRoleDao.pageCount(filterMap)),UnitRole.class));
-        return DictionaryMapUtils.objectsToJSONArray(unitRoles);
+        JSONArray unitRoles = unitRoleDao.listObjectsAsJson(filterMap, pageDesc);
+        return DictionaryMapUtils.mapJsonArray(unitRoles,  UnitRole.class);
     }
 
     @Override
@@ -109,10 +95,7 @@ public class SysUnitRoleManagerImpl implements SysUnitRoleManager {
         Map<String, Object> filterMap = new HashMap<>(4);
         filterMap.put("unitCode", unitCode);
         filterMap.put("currentUnitCode", unitCode);
-        List<UnitRole> unitRoles = unitRoleDao.pageQuery(
-            QueryParameterPrepare.makeMybatisOrderByParam(
-                QueryParameterPrepare.prepPageParams(
-                    filterMap,pageDesc,unitRoleDao.pageCount(filterMap)),UnitRole.class));
-        return DictionaryMapUtils.objectsToJSONArray(unitRoles);
+        JSONArray unitRoles = unitRoleDao.listObjectsAsJson(filterMap, pageDesc);
+        return DictionaryMapUtils.mapJsonArray(unitRoles,  UnitRole.class);
     }
 }

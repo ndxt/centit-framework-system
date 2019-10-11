@@ -1,117 +1,168 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.core.dao.CodeBook;
+import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethodUrlMap;
+import com.centit.support.algorithm.CollectionsOpt;
+import com.centit.support.database.orm.OrmDaoUtils;
+import org.springframework.jdbc.core.ConnectionCallback;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 菜单信息Dao
- * @author zou_wy@centit.com
- */
-public interface OptInfoDao {
+@Repository("optInfoDao")
+public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
 
-    /**
-     * 查询所有菜单
-     * @return List &lt;UserInfo&gt;
-     */
-    List<OptInfo> listObjectsAll();
+    public Map<String, String> getFilterField() {
+        if (filterField == null) {
+            filterField = new HashMap<>();
+            filterField.put("optId", CodeBook.EQUAL_HQL_ID);
+            filterField.put("optUrl", CodeBook.EQUAL_HQL_ID);
+            filterField.put("optName", CodeBook.LIKE_HQL_ID);
+            filterField.put("preOptId", CodeBook.EQUAL_HQL_ID);
+            filterField.put("NP_TOPOPT", "(preOptId is null or preOptId='0')");
+            filterField.put("optType", CodeBook.EQUAL_HQL_ID);
+            filterField.put("optTypes", "optType in (:optTypes)");
+            filterField.put("topOptId", CodeBook.EQUAL_HQL_ID);
+            filterField.put("isInToolbar", CodeBook.EQUAL_HQL_ID);
+        }
+        return filterField;
+    }
 
-    /**
-     * 根据条件查询机构列表
-     * @param filterMap 过滤条件Map
-     * @return List&lt;UserInfo&gt;
-     */
-    List<OptInfo> listObjects(Map<String, Object> filterMap);
+    @Transactional
+    public List<OptInfo> listParentMenuFunc(){
+//        String hql1 = "where OPT_URL='...' order by ORDER_IND ";
+        String sql = "where Opt_ID in (select Pre_Opt_ID from f_optinfo group by Pre_Opt_ID) order by order_ind";
+        return super.listObjectsByFilter(sql,(Object[]) null);
+    }
 
-    /**
-     * 新增菜单
-     * @param optInfo 菜单对象
-     */
-    void saveNewObject(OptInfo optInfo);
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public List<OptInfo> getMenuFuncByUserID(String userCode, String optType) {
 
-    /**
-     * 删除菜单
-     * @param optInfo 菜单对象
-     */
-     void deleteObject(OptInfo optInfo);
+        String querySql = "SELECT DISTINCT a.USER_CODE,d.Opt_ID,d.Opt_Name,d.Pre_Opt_ID,d.Form_Code,d.opt_url,d.opt_Route," +
+            "d.Msg_No,d.Msg_Prm,d.Is_In_ToolBar,d.Img_Index,d.Top_Opt_ID,d.Order_Ind,d.Page_Type,d.Opt_Type,d.flow_code," +
+            "d.icon,d.height,d.width,d.update_date,d.create_date,d.creator,d.updator " +
+            "FROM f_v_userroles a " +
+            "JOIN f_rolepower b ON a.ROLE_CODE = b.ROLE_CODE " +
+            "JOIN f_optdef c ON b.OPT_CODE = c.OPT_CODE " +
+            "JOIN f_optinfo d ON c.Opt_ID = d.Opt_ID " +
+            "WHERE " +
+//            "d.opt_url <> '...' " +
+            "d.Opt_ID not in (select Pre_Opt_ID from f_optinfo group by Pre_Opt_ID) " +
+            "and d.IS_IN_TOOLBAR = 'Y' " +
+            "and a.USER_CODE = ? "+
+            "and d.OPT_TYPE = ? "+
+            "order by d.ORDER_IND ";
 
-    /**
-     * 根据Id删除菜单
-     * @param optId 菜单Id
-     */
-    void deleteObjectById(String optId);
 
-    /**
-     * 更新菜单
-     * @param optInfo 菜单对象
-     */
-    void updateOptInfo(OptInfo optInfo);
 
-    /**
-     * 查询下级菜单数量
-     * @param optId 菜单ID
-     * @return 菜单数量
-     */
-     int countChildrenSum(String optId);
+      /*  String querySql = "select OPT_ID, USER_CODE, OPT_NAME, PRE_OPT_ID, FORM_CODE,"+
+                "OPT_URL, OPT_ROUTE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, " +
+                "TOP_OPT_ID, ORDER_IND, PAGE_TYPE "+
+                "from F_V_USEROPTMOUDLELIST "+
+                "where IS_IN_TOOLBAR = 'Y' "+
+                "and USER_CODE = ? "+
+                "and OPT_TYPE = ? "+
+                "order by ORDER_IND ";*/
 
-    /**
-     * 根据Id查询菜单
-     * @param optId 菜单对象
-     * @return OptInfo
-     */
-     OptInfo getObjectById(String optId);
+        return getJdbcTemplate().execute(
+                (ConnectionCallback<List<OptInfo>>) conn ->
+                        OrmDaoUtils.queryObjectsByParamsSql(conn, querySql ,
+                                new Object[]{userCode, optType}, OptInfo.class));
 
-    /**
-     * 查询用户拥有的叶子菜单
-      * @param userCode 用户ID
-     * @param optType 菜单类型
-     * @return List&lt;FVUserOptMoudleList&gt;
-     */
-     List<OptInfo> getMenuFuncByUserID(String userCode, String optType);
+    }
 
-    /**
-     * 查询用户拥有的所有叶子菜单
-     * @param userCode 用户代码
-     * @param optType 菜单类型
-     * @return List OptInfo
-     */
-    List<OptInfo> listUserAllSubMenu(String userCode, String optType);
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public List<String> listUserDataPowerByOptMethod(String userCode,String optId,String optMethod) {
 
-    /**
-     * 查询有子菜单 的菜单（opt_url=...）
-     * @return 菜单列表
-     */
-    List<OptInfo> listParentMenuFunc();
+        String sql = "select OPT_SCOPE_CODES " +
+            "from F_V_USEROPTDATASCOPES " +
+            "where USER_CODE = ? and OPT_ID = ? and OPT_METHOD = ?";
+        return this.getJdbcTemplate().queryForList(sql,
+                new Object[]{userCode, optId, optMethod} ,String.class);
+    }
 
-    /**
-    * 查询用户数据范围
-    * @param userCode 用户Id
-    * @param optId 菜单Id
-    * @param optMethod 操作定义
-    * @return List&lt;String&gt;
-    */
-     List<String> listUserDataPowerByOptMethod(String userCode, String optId, String optMethod);
+    @SuppressWarnings("unchecked")
+    @Transactional
+    public List<OptMethodUrlMap> listAllOptMethodUrlMap() {
+        return getJdbcTemplate().execute(
+                (ConnectionCallback<List<OptMethodUrlMap>>) conn ->
+                        OrmDaoUtils.listAllObjects(conn, OptMethodUrlMap.class));
+    }
 
-    /**
-     * 查询全部OptMethodUrlMap
-     * @return List&lt;OptMethodUrlMap&gt;
-     */
-    List<OptMethodUrlMap> listAllOptMethodUrlMap();
+    public List<OptInfo> listObjectByParentOptid(String optId){
+        return this.listObjectsByProperty("preOptId", optId);
+    }
 
-    /**
-     * 根据父Id查询下级菜单
-     * @param optId 父Id
-     * @return List&lt;OptInfo&gt;
-     */
-    List<OptInfo> listObjectByParentOptid(String optId);
 
-    /**
-     * 根据菜单类型获取菜单
-     * @param types 类型数组
-     * @return 菜单列表
-     */
-    List<OptInfo> listMenuByTypes(String... types);
+    public OptInfo getObjectById(String optId) {
+        return super.getObjectById(optId);
+    }
+
+   /* public List<OptInfo> listObjectsByCon(String condition){
+        return this.listObjectsByFilter(" where "+condition, (Object[]) null);
+    }*/
+
+    public List<OptInfo> listObjectsAll() {
+        return super.listObjects();
+    }
+
+    @Transactional
+    public void deleteObjectById(String optId) {
+        super.deleteObjectById(optId);
+    }
+
+
+    public List<OptInfo> listMenuByTypes(String... types){
+        Map<String, Object> map = new HashMap<>(2);
+        if(types.length == 1){
+            map.put("optType", types);
+        }else {
+            map.put("optTypes", types);
+        }
+        return listObjects(map);
+    }
+
+    @Transactional
+    public void updateOptInfo(OptInfo optInfo){
+        super.updateObject(optInfo);
+    }
+
+
+    public List<OptInfo> listUserAllSubMenu(String userCode, String optType){
+        String querySql = "SELECT DISTINCT a.USER_CODE,d.Opt_ID,d.Opt_Name,d.Pre_Opt_ID,d.Form_Code,d.opt_url,d.opt_Route," +
+            "d.Msg_No,d.Msg_Prm,d.Is_In_ToolBar,d.Img_Index,d.Top_Opt_ID,d.Order_Ind,d.Page_Type,d.Opt_Type,d.flow_code," +
+            "d.icon,d.height,d.width,d.update_date,d.create_date,d.creator,d.updator " +
+            "FROM f_v_userroles a " +
+            "JOIN f_rolepower b ON a.ROLE_CODE = b.ROLE_CODE " +
+            "JOIN f_optdef c ON b.OPT_CODE = c.OPT_CODE " +
+            "JOIN f_optinfo d ON c.Opt_ID = d.Opt_ID " +
+            "WHERE " +
+//            "d.opt_url <> '...' " +
+            "d.Opt_ID not in (select Pre_Opt_ID from f_optinfo group by Pre_Opt_ID) " +
+            "and a.USER_CODE = ? "+
+            "and d.OPT_TYPE = ? "+
+            "order by d.ORDER_IND ";
+
+
+       /* String querySql = "select OPT_ID, USER_CODE, OPT_NAME, PRE_OPT_ID, FORM_CODE,"+
+            "OPT_URL, OPT_ROUTE, OPT_TYPE, MSG_NO, MSG_PRM, IS_IN_TOOLBAR, IMG_INDEX, " +
+            "TOP_OPT_ID, ORDER_IND, PAGE_TYPE "+
+            "from F_V_USEROPTMOUDLELIST "+
+            "where USER_CODE = ? "+
+            "and OPT_TYPE = ? "+
+            "order by ORDER_IND ";
+*/
+        return getJdbcTemplate().execute(
+            (ConnectionCallback<List<OptInfo>>) conn ->
+                OrmDaoUtils.queryObjectsByParamsSql(conn, querySql ,
+                    new Object[]{userCode, optType}, OptInfo.class));
+    }
 
 }

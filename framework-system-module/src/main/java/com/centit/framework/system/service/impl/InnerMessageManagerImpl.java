@@ -1,8 +1,6 @@
 package com.centit.framework.system.service.impl;
 
-import com.centit.framework.common.ObjectException;
 import com.centit.framework.components.CodeRepositoryUtil;
-import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.model.adapter.MessageSender;
 import com.centit.framework.model.basedata.IUnitInfo;
 import com.centit.framework.model.basedata.IUserInfo;
@@ -12,6 +10,7 @@ import com.centit.framework.system.dao.InnerMsgRecipientDao;
 import com.centit.framework.system.po.InnerMsg;
 import com.centit.framework.system.po.InnerMsgRecipient;
 import com.centit.framework.system.service.InnerMessageManager;
+import com.centit.support.common.ObjectException;
 import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -201,10 +200,7 @@ public class InnerMessageManagerImpl implements InnerMessageManager, MessageSend
 
     @Override
     public List<InnerMsgRecipient> listMsgRecipients(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return innerMsgRecipientDao.pageQuery(
-            QueryParameterPrepare.makeMybatisOrderByParam(
-                QueryParameterPrepare.prepPageParams(
-                    filterMap, pageDesc, innerMsgRecipientDao.pageCount(filterMap)),InnerMsgRecipient.class));
+        return innerMsgRecipientDao.listObjects(filterMap, pageDesc);
     }
 
     @Override
@@ -223,11 +219,7 @@ public class InnerMessageManagerImpl implements InnerMessageManager, MessageSend
     }
     @Override
     public List<InnerMsgRecipient> listMsgRecipientsCascade(Map<String, Object> filterMap, PageDesc pageDesc){
-        List<InnerMsgRecipient> recipients =
-            innerMsgRecipientDao.pageQuery(
-                QueryParameterPrepare.makeMybatisOrderByParam(
-                    QueryParameterPrepare.prepPageParams(
-                        filterMap, pageDesc, innerMsgRecipientDao.pageCount(filterMap)),InnerMsgRecipient.class));
+        List<InnerMsgRecipient> recipients = listMsgRecipients(filterMap, pageDesc);
         for(InnerMsgRecipient recipient : recipients){
             recipient.setMInnerMsg(innerMsgDao.getObjectById(recipient.getMsgCode()));
         }
@@ -254,10 +246,7 @@ public class InnerMessageManagerImpl implements InnerMessageManager, MessageSend
 
     @Override
     public List<InnerMsg> listInnerMsgs(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return innerMsgDao.pageQuery(
-            QueryParameterPrepare.makeMybatisOrderByParam(
-                QueryParameterPrepare.prepPageParams(filterMap,pageDesc,innerMsgDao.pageCount(filterMap)),
-                InnerMsg.class));
+        return innerMsgDao.listObjects(filterMap,pageDesc);
     }
 
     @Override
