@@ -1,9 +1,9 @@
 package com.centit.framework.system.dao;
 
+import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.core.dao.CodeBook;
-import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.system.dao.UserRoleDao;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.po.FVUserRoles;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
@@ -163,9 +163,9 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
     }
 
     @Transactional
-    public List<FVUserRoles> pageQueryUserRole(Map<String, Object> pageQureyMap) {
+    public JSONArray pageQueryUserRole(Map<String, Object> filterMap, PageDesc pageDesc) {
         String querySql;
-        String obtainType = StringBaseOpt.castObjectToString(pageQureyMap.get("obtainType"));
+        String obtainType = StringBaseOpt.castObjectToString(filterMap.get("obtainType"));
         if("D".equals(obtainType)){
             querySql =  f_v_user_appoint_roles_sql ;
         } else if("I".equals(obtainType)){
@@ -173,13 +173,14 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
         } else{
             querySql = f_v_userroles_sql;
         }
-        pageQureyMap.put("currentDateTime", DatetimeOpt.currentSqlDate());
-        PageDesc pageDesc = QueryParameterPrepare.fetchPageDescParams(pageQureyMap);
-        QueryAndNamedParams qap = QueryUtils.translateQuery(querySql, pageQureyMap);
-        return jdbcTemplate.execute(
+        filterMap.put("currentDateTime", DatetimeOpt.currentSqlDate());
+        QueryAndNamedParams qap = QueryUtils.translateQuery(querySql, filterMap);
+        return
+            DatabaseOptUtils.listObjectsByNamedSqlAsJson(this,qap.getQuery(), qap.getParams(), pageDesc);
+        /*return jdbcTemplate.execute(
             (ConnectionCallback<List<FVUserRoles>>) conn -> OrmDaoUtils
                 .queryObjectsByNamedParamsSql(conn, qap.getQuery(), qap.getParams(), FVUserRoles.class,
-                    pageDesc.getRowStart(), pageDesc.getPageSize()));
+                    pageDesc.getRowStart(), pageDesc.getPageSize()));*/
     }
 
     @Transactional

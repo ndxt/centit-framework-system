@@ -1,18 +1,18 @@
 package com.centit.sys.util;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
+import com.centit.framework.system.po.UserInfo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
-import com.centit.framework.system.po.UserInfo;
-
 public class SysTypeUtils {
 
     public static final int sysType  = 1;
-    
+
     public static void main(String[] args) {
         //JSONObject jsonObject = new JSONObject();
 

@@ -4,7 +4,6 @@ import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
-import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.po.UserUnit;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;

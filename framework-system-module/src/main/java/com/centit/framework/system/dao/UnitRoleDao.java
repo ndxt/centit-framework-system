@@ -1,7 +1,6 @@
 package com.centit.framework.system.dao;
 
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.system.dao.UnitRoleDao;
 import com.centit.framework.system.po.UnitRole;
 import com.centit.framework.system.po.UnitRoleId;
 import com.centit.support.algorithm.CollectionsOpt;

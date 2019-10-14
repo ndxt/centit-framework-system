@@ -2,7 +2,6 @@ package com.centit.framework.system.service;
 
 import com.centit.framework.core.dao.DataPowerFilter;
 import com.centit.framework.security.model.CentitUserDetails;
-import com.centit.framework.system.po.UserQueryFilter;
 
 import java.util.List;
 

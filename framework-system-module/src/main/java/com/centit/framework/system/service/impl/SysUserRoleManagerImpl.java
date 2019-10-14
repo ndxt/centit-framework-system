@@ -2,7 +2,6 @@ package com.centit.framework.system.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.core.dao.DictionaryMapUtils;
-import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.system.dao.UserInfoDao;
 import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.po.FVUserRoles;
@@ -88,11 +87,8 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
 
     @Override
     @Transactional
-    public List<FVUserRoles> pageQueryUserRole(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return userRoleDao.pageQueryUserRole(
-                QueryParameterPrepare.makeMybatisOrderByParam(
-                    QueryParameterPrepare.prepPageParams(
-                        filterMap,pageDesc,userRoleDao.pageCountUserRole(filterMap)),FVUserRoles.class));
+    public JSONArray pageQueryUserRole(Map<String, Object> filterMap, PageDesc pageDesc) {
+        return userRoleDao.pageQueryUserRole(filterMap, pageDesc);
     }
 
     /**
@@ -103,7 +99,7 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
     @Override
     @Transactional
     public List<UserRole> listUserRoles(String userCode){
-        return userRoleDao.listRoleUsers(userCode);
+        return userRoleDao.listUserRoles(userCode);
     }
     /**
      * 查询全部

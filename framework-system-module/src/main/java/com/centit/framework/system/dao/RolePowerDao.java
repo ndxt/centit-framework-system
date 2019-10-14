@@ -2,7 +2,6 @@ package com.centit.framework.system.dao;
 
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.system.dao.RolePowerDao;
 import com.centit.framework.system.po.RolePower;
 import com.centit.framework.system.po.RolePowerId;
 import com.centit.support.algorithm.CollectionsOpt;

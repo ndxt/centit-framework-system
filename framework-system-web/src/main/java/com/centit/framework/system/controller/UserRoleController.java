@@ -8,7 +8,10 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.operationlog.RecordOperationLog;
-import com.centit.framework.system.po.*;
+import com.centit.framework.system.po.RoleInfo;
+import com.centit.framework.system.po.UnitInfo;
+import com.centit.framework.system.po.UserRole;
+import com.centit.framework.system.po.UserRoleId;
 import com.centit.framework.system.service.SysRoleManager;
 import com.centit.framework.system.service.SysUnitManager;
 import com.centit.framework.system.service.SysUserRoleManager;
@@ -30,7 +33,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -72,12 +74,12 @@ public class UserRoleController extends BaseController {
     })
     @RequestMapping(value = "/roleusersinherited/{roleCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult<FVUserRoles> listUserRoleSInherited(@PathVariable String roleCode, PageDesc pageDesc) {
+    public PageQueryResult<Object> listUserRoleSInherited(@PathVariable String roleCode, PageDesc pageDesc) {
         Map<String, Object> filterMap = new HashMap<>(8);
         filterMap.put("roleCode", roleCode);
         filterMap.put("obtainType", "I");
-        List<FVUserRoles> listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
-        return PageQueryResult.createResultMapDict(listObjects, pageDesc);
+        JSONArray listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
+        return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
     /**
@@ -96,12 +98,12 @@ public class UserRoleController extends BaseController {
     )})
     @RequestMapping(value = "/userrolesinherited/{userCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult<FVUserRoles> listRoleUsersInherited(@PathVariable String userCode, PageDesc pageDesc) {
+    public PageQueryResult<Object> listRoleUsersInherited(@PathVariable String userCode, PageDesc pageDesc) {
         Map<String, Object> filterMap = new HashMap<>(8);
         filterMap.put("userCode", userCode);
         filterMap.put("obtainType", "I");
-        List<FVUserRoles> listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
-        return PageQueryResult.createResultMapDict(listObjects, pageDesc);
+        JSONArray listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
+        return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
     /**
@@ -120,11 +122,11 @@ public class UserRoleController extends BaseController {
     )})
     @RequestMapping(value = "/userrolesall/{userCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult<FVUserRoles> listRoleUsersAll(@PathVariable String userCode, PageDesc pageDesc) {
+    public PageQueryResult<Object> listRoleUsersAll(@PathVariable String userCode, PageDesc pageDesc) {
         Map<String, Object> filterMap = new HashMap<>(8);
         filterMap.put("userCode", userCode);
-        List<FVUserRoles> listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
-        return PageQueryResult.createResultMapDict(listObjects, pageDesc);
+        JSONArray listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
+        return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
     /**

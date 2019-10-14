@@ -2,7 +2,6 @@ package com.centit.framework.system.dao;
 
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
-import com.centit.framework.system.dao.SysNotifyDao;
 import com.centit.framework.system.po.SysNotify;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
