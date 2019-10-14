@@ -105,7 +105,7 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
     @Override
     @Transactional
     public List<UserRole> listUserRoles(String userCode){
-        return userRoleDao.listRoleUsers(userCode);
+        return userRoleDao.listUserRoles(userCode);
     }
     /**
      * 查询全部
