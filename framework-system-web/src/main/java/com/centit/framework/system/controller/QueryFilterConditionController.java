@@ -2,9 +2,9 @@ package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.common.ResponseData;
-import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
+import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.system.po.QueryFilterCondition;
 import com.centit.framework.system.service.QueryFilterConditionManager;
 import com.centit.support.database.utils.PageDesc;
@@ -67,19 +67,13 @@ public class QueryFilterConditionController extends BaseController {
     })
     @RequestMapping(method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData list(String[] field, PageDesc pageDesc, HttpServletRequest request) {
-        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
+    public PageQueryResult<Object> list(String[] field, PageDesc pageDesc, HttpServletRequest request) {
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
 
-        JSONArray listObjects = queryFilterConditionMag.listQueryFilterConditionsAsJson(field, searchColumn, pageDesc);
+        JSONArray listObjects = queryFilterConditionMag
+            .listQueryFilterConditionsAsJson(field, searchColumn, pageDesc);
 
-        if (null == pageDesc) {
-            return ResponseData.makeResponseData(listObjects);
-        }
-
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, listObjects);
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-        return resData;
+        return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
     /**

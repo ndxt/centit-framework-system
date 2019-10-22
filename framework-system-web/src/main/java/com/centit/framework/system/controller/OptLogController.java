@@ -7,6 +7,7 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.core.dao.DictionaryMapUtils;
+import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.OptLog;
 import com.centit.framework.system.service.OptLogManager;
@@ -64,13 +65,13 @@ public class OptLogController extends BaseController {
     @GetMapping
     @WrapUpResponseBody
     public ResponseMapData list(String[] field, PageDesc pageDesc, HttpServletRequest request) {
-        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
 
         JSONArray jsonArray = optLogManager.listObjectsAsJson(field, searchColumn, pageDesc);
 
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, jsonArray);
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
+        resData.addResponseData(PageQueryResult.OBJECT_LIST_LABEL, jsonArray);
+        resData.addResponseData(PageQueryResult.PAGE_INFO_LABEL, pageDesc);
         resData.addResponseData(CodeBook.SELF_ORDER_BY, searchColumn.get(CodeBook.SELF_ORDER_BY));
         return resData;
     }

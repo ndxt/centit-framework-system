@@ -8,6 +8,7 @@ import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
+import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.OptInfo;
@@ -15,12 +16,10 @@ import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.service.OptInfoManager;
 import com.centit.framework.system.service.OptMethodManager;
 import com.centit.support.common.ParamName;
-import com.centit.support.json.JsonPropertyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -71,7 +69,7 @@ public class OptInfoController extends BaseController {
     @RequestMapping(value = "/sub", method = RequestMethod.GET)
     @WrapUpResponseBody
     public ResponseData listFromParent(String id, HttpServletRequest request) {
-        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
 
         if (StringUtils.isNotBlank(id)) {
             searchColumn.put("preOptId", id);
@@ -127,18 +125,11 @@ public class OptInfoController extends BaseController {
         allowMultiple = true, paramType = "query", dataType = "String")
     @RequestMapping(value = "/itempoweropts", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData listItemPowerOpts(String[] field) {
+    public JSONArray listItemPowerOpts(String[] field) {
         List<OptInfo> listObjects = optInfoManager.listItemPowerOpts();
         listObjects = optInfoManager.listObjectFormatTree(listObjects, true);
 
-        ResponseMapData resData = new ResponseMapData();
-        if (ArrayUtils.isNotEmpty(field)) {
-            resData.addResponseData(BaseController.OBJLIST, listObjects);
-            resData.toJSONString(JsonPropertyUtils.getIncludePropPreFilter(OptInfo.class, field));
-            return ResponseData.makeResponseData(resData.getResponseData(BaseController.OBJLIST));
-        } else {
-            return ResponseData.makeResponseData(listObjects);
-        }
+        return DictionaryMapUtils.objectsToJSONArray(listObjects, field);
     }
 
 

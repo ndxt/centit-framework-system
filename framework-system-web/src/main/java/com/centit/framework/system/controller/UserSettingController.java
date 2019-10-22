@@ -1,9 +1,7 @@
 package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.common.ResponseData;
-import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.controller.BaseController;
@@ -18,7 +16,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
@@ -65,7 +62,7 @@ public class UserSettingController extends BaseController {
     @GetMapping
     @WrapUpResponseBody
     public PageQueryResult<Object> list(PageDesc pageDesc, HttpServletRequest request) {
-        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         searchColumn.put(CodeRepositoryUtil.USER_CODE, WebOptUtils.getCurrentUserCode(request));
         JSONArray listObjects = userSettingManager.listObjects(searchColumn, pageDesc);
         return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
@@ -88,16 +85,12 @@ public class UserSettingController extends BaseController {
     )})
     @GetMapping(value = "/list/{userCode}")
     @WrapUpResponseBody
-    public ResponseData listUserSetting(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request) {
-        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
+    public PageQueryResult<Object> listUserSetting(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request) {
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         searchColumn.put(CodeRepositoryUtil.USER_CODE, userCode);
 
         JSONArray listObjects = userSettingManager.listObjects(searchColumn, pageDesc);
-
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, listObjects);
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-        return resData;
+        return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
     /**
@@ -113,16 +106,11 @@ public class UserSettingController extends BaseController {
         paramType = "body", dataTypeClass = PageDesc.class)
     @GetMapping(value = "/listdefault")
     @ResponseBody
-    public ResponseData listUserDefaultSetting(PageDesc pageDesc, HttpServletRequest request) {
-        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
+    public PageQueryResult<UserSetting> listUserDefaultSetting(PageDesc pageDesc, HttpServletRequest request) {
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
 
         List<UserSetting> listObjects = userSettingManager.listDefaultSettings(searchColumn, pageDesc);
-
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, listObjects);
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-
-        return resData;
+        return PageQueryResult.createResult(listObjects, pageDesc);
     }
 
     /**
@@ -137,22 +125,14 @@ public class UserSettingController extends BaseController {
         allowMultiple = true, paramType = "query", dataType = "String")
     @RequestMapping(value = "/listall", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData listAll(String[] field, HttpServletRequest request) {
+    public PageQueryResult<UserSetting> listAll(String[] field, HttpServletRequest request) {
         Map<String, Object> searchColumn = new HashMap<>();
         String userCode = WebOptUtils.getCurrentUserCode(request);
         searchColumn.put(CodeRepositoryUtil.USER_CODE, userCode);
 
         List<UserSetting> listObjects = userSettingManager.listObjects(searchColumn);
 
-        SimplePropertyPreFilter simplePropertyPreFilter = null;
-        if (ArrayUtils.isNotEmpty(field)) {
-            simplePropertyPreFilter = new SimplePropertyPreFilter(UserSetting.class, field);
-        }
-
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, listObjects);
-        resData.toJSONString(simplePropertyPreFilter);
-        return resData;
+        return PageQueryResult.createResultMapDict(listObjects, null, field);
     }
 
     /**

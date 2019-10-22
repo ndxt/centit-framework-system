@@ -1,13 +1,12 @@
 package com.centit.framework.system.controller;
 
-import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
-import com.centit.framework.core.dao.DictionaryMapUtils;
+import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.DataCatalog;
 import com.centit.framework.system.po.DataDictionary;
@@ -16,7 +15,6 @@ import com.centit.framework.system.service.DataDictionaryManager;
 import com.centit.support.common.ObjectException;
 import com.centit.support.database.utils.PageDesc;
 import io.swagger.annotations.*;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -84,22 +82,12 @@ public class DataDictionaryController extends BaseController {
     })
     @RequestMapping(method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
+    public PageQueryResult<DataCatalog> list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
 
         List<DataCatalog> listObjects = dataDictionaryManager.listObjects(searchColumn, pageDesc);
 
-        SimplePropertyPreFilter simplePropertyPreFilter = null;
-        if (ArrayUtils.isNotEmpty(field)) {
-            simplePropertyPreFilter = new SimplePropertyPreFilter(DataCatalog.class, field);
-        }
-
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-        resData.toJSONString(simplePropertyPreFilter);
-
-        return resData;
+        return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
     }
 
     /**

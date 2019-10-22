@@ -1,7 +1,5 @@
 package com.centit.framework.system.controller;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
@@ -9,6 +7,7 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.DictionaryMapUtils;
+import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserRole;
@@ -16,6 +15,7 @@ import com.centit.framework.system.po.UserUnit;
 import com.centit.framework.system.service.SysUserManager;
 import com.centit.framework.system.service.SysUserUnitManager;
 import com.centit.framework.system.service.UserSettingManager;
+import com.centit.support.algorithm.BooleanBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
 import io.swagger.annotations.Api;
@@ -89,38 +89,21 @@ public class UserInfoController extends BaseController {
     )})
     @RequestMapping(method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData list(String[] field, PageDesc pageDesc, String _search, HttpServletRequest request) {
-        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
+    public PageQueryResult<UserInfo> list(String[] field, PageDesc pageDesc, String _search, HttpServletRequest request) {
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         //特殊字符转义
         if (searchColumn.get("userName") != null) {
             searchColumn.put("likeUserOrLoginName", StringEscapeUtils.escapeHtml4(searchColumn.get("userName").toString()));
             searchColumn.remove("userName");
         }
-        List<UserInfo> listObjects = null;
-        if (Boolean.parseBoolean(_search)) {
+        List<UserInfo> listObjects;
+        if (BooleanBaseOpt.castObjectToBoolean(_search,false)) {
             listObjects = sysUserManager.listObjects(searchColumn);
-            pageDesc = null;
+            //pageDesc = null;
         } else {
             listObjects = sysUserManager.listObjects(searchColumn, pageDesc);
         }
-        JSONArray jsonArr = DictionaryMapUtils.objectsToJSONArray(listObjects);
-
-        SimplePropertyPreFilter simplePropertyPreFilter = null;
-        if (ArrayUtils.isNotEmpty(field)) {
-            simplePropertyPreFilter = new SimplePropertyPreFilter(UserInfo.class, field);
-        }
-        ResponseMapData resData = new ResponseMapData();
-        if (null == pageDesc) {
-            resData.addResponseData(BaseController.OBJLIST, listObjects);
-            resData.toJSONString(simplePropertyPreFilter);
-            return ResponseData.makeResponseData(resData.getResponseData(BaseController.OBJLIST));
-        }
-
-        resData.addResponseData(BaseController.OBJLIST, jsonArr);
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-        resData.toJSONString(simplePropertyPreFilter);
-
-        return resData;
+        return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
     }
 
     /**

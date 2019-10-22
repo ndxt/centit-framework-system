@@ -1,6 +1,5 @@
 package com.centit.framework.system.controller;
 
-import com.alibaba.fastjson.serializer.PropertyPreFilter;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
@@ -8,13 +7,12 @@ import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
-import com.centit.framework.core.dao.DictionaryMapUtils;
+import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.system.po.InnerMsg;
 import com.centit.framework.system.po.InnerMsgRecipient;
 import com.centit.framework.system.service.InnerMessageManager;
 import com.centit.support.database.utils.PageDesc;
-import com.centit.support.json.JsonPropertyUtils;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -60,18 +58,15 @@ public class InnerMsgController extends BaseController {
         paramType = "body", dataTypeClass = PageDesc.class)
     @RequestMapping(value = "/inbox", method = {RequestMethod.GET})
     @WrapUpResponseBody
-    public ResponseData listInbox(PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
+    public PageQueryResult<InnerMsgRecipient> listInbox(PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
 
         String receive = (String) searchColumn.get("receive");
         if (StringUtils.isBlank(receive)) {
             searchColumn.put("receive", WebOptUtils.getCurrentUserCode(request));
         }
         List<InnerMsgRecipient> listObjects = innerMessageManager.listMsgRecipientsCascade(searchColumn, pageDesc);
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-        return resData;
+        return PageQueryResult.createResultMapDict(listObjects, pageDesc);
     }
 
     /**
@@ -100,8 +95,8 @@ public class InnerMsgController extends BaseController {
         paramType = "body", dataTypeClass = PageDesc.class)
     @RequestMapping(value = "/outbox", method = {RequestMethod.GET})
     @WrapUpResponseBody
-    public ResponseData listOutbox(PageDesc pageDesc, HttpServletRequest request) {
-        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
+    public PageQueryResult<InnerMsg> listOutbox(PageDesc pageDesc, HttpServletRequest request) {
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
 
         String sender = (String) searchColumn.get("sender");
         if (StringUtils.isBlank(sender)) {
@@ -109,10 +104,7 @@ public class InnerMsgController extends BaseController {
         }
 
         List<InnerMsg> listObjects = innerMessageManager.listInnerMsgs(searchColumn, pageDesc);
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-        return resData;
+        return PageQueryResult.createResultMapDict(listObjects, pageDesc);
     }
 
     /**
@@ -161,16 +153,11 @@ public class InnerMsgController extends BaseController {
     })
     @RequestMapping(value = "/notice", method = {RequestMethod.GET})
     @WrapUpResponseBody
-    public ResponseData listnotify(String[] field, PageDesc pageDesc, HttpServletRequest request) {
-        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
+    public PageQueryResult<InnerMsg> listnotify(String[] field, PageDesc pageDesc, HttpServletRequest request) {
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         searchColumn.put("msgType", "A");
         List<InnerMsg> listObjects = innerMessageManager.listInnerMsgs(searchColumn, pageDesc);
-        PropertyPreFilter includePropPreFilter = JsonPropertyUtils.getIncludePropPreFilter(InnerMsg.class, field);
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-        resData.toJSONString(includePropPreFilter);
-        return resData;
+        return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
     }
 
     /**
@@ -349,7 +336,7 @@ public class InnerMsgController extends BaseController {
         List<InnerMsgRecipient> recipientlist = innerMessageManager
             .getExchangeMsgRecipients(sender, receiver);
         ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, recipientlist);
+        resData.addResponseData(PageQueryResult.OBJECT_LIST_LABEL, recipientlist);
         return resData;
     }
 

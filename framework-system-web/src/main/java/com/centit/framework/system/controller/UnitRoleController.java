@@ -2,10 +2,10 @@ package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.common.ResponseData;
-import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
+import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UnitRole;
@@ -74,14 +74,12 @@ public class UnitRoleController extends BaseController {
     @RequestMapping(value = "/roleunits/{roleCode}", method = RequestMethod.GET)
     //@RecordOperationLog(content="用户",appendRequest = true )
     @WrapUpResponseBody
-    public ResponseData listUsersByRole(@PathVariable String roleCode, PageDesc pageDesc) {
+    public PageQueryResult<Object> listUsersByRole(@PathVariable String roleCode, PageDesc pageDesc) {
         Map<String, Object> filterMap = new HashMap<>(5);
         filterMap.put("roleCode", roleCode);
         filterMap.put("unitValid", "T");
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, sysUnitRoleManager.listObjects(filterMap, pageDesc));
-        resData.addResponseData(PAGE_DESC, pageDesc);
-        return resData;
+        JSONArray listObjects = sysUnitRoleManager.listObjects(filterMap, pageDesc);
+        return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
     /**
@@ -101,7 +99,7 @@ public class UnitRoleController extends BaseController {
     })
     @RequestMapping(value = "/rolesubunits/{roleCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData listSubUnitByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request) {
+    public PageQueryResult<Object> listSubUnitByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request) {
 
         String currentUnitCode = WebOptUtils.getCurrentUnitCode(request);
         UnitInfo currentUnit = sysUnitManager.getObjectById(currentUnitCode);
@@ -110,11 +108,8 @@ public class UnitRoleController extends BaseController {
         filterMap.put("roleCode", roleCode);
         filterMap.put("unitPathPrefix", unitPathPrefix);
         filterMap.put("unitValid", "T");
-
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, sysUnitRoleManager.listObjects(filterMap, pageDesc));
-        resData.addResponseData(PAGE_DESC, pageDesc);
-        return resData;
+        JSONArray listObjects = sysUnitRoleManager.listObjects(filterMap, pageDesc);
+        return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
     /**
@@ -134,15 +129,13 @@ public class UnitRoleController extends BaseController {
     })
     @RequestMapping(value = "/unitroles/{unitCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData listRolesByUser(@PathVariable String unitCode, PageDesc pageDesc) {
+    public PageQueryResult<Object> listRolesByUser(@PathVariable String unitCode, PageDesc pageDesc) {
         Map<String, Object> filterMap = new HashMap<>();
         filterMap.put("unitCode", unitCode);
         filterMap.put("roleValid", "T");
 
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, sysUnitRoleManager.listObjects(filterMap, pageDesc));
-        resData.addResponseData(PAGE_DESC, pageDesc);
-        return resData;
+        JSONArray listObjects = sysUnitRoleManager.listObjects(filterMap, pageDesc);
+        return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
     /**
@@ -162,17 +155,14 @@ public class UnitRoleController extends BaseController {
     })
     @RequestMapping(value = "/currentunitroles/{unitCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData listCurrentUnitRole(@PathVariable String unitCode, PageDesc pageDesc) {
+    public PageQueryResult<Object> listCurrentUnitRole(@PathVariable String unitCode, PageDesc pageDesc) {
         Map<String, Object> filterMap = new HashMap<>(4);
         filterMap.put("unitCode", unitCode);
 //        filterMap.put("currentUnitCode", unitCode);
         filterMap.put("roleValid", "T");
 
-        JSONArray ja = sysUnitRoleManager.listObjects(filterMap, pageDesc);
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(OBJLIST, ja);
-        resData.addResponseData(PAGE_DESC, pageDesc);
-        return resData;
+        JSONArray listObjects = sysUnitRoleManager.listObjects(filterMap, pageDesc);
+        return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
     /**

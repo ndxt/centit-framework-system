@@ -2,12 +2,12 @@ package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.common.ResponseData;
-import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
+import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.IUserUnit;
@@ -18,7 +18,6 @@ import com.centit.framework.system.service.SysRoleManager;
 import com.centit.framework.system.service.SysUnitRoleManager;
 import com.centit.framework.system.service.SysUserRoleManager;
 import com.centit.support.database.utils.PageDesc;
-import com.centit.support.json.JsonPropertyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -68,20 +67,6 @@ public class RoleInfoController extends BaseController {
         return "ROLEMAG";
     }
 
-    private ResponseMapData writeRoleListToResponse(List<RoleInfo> roleInfos, String[] field, PageDesc pageDesc) {
-
-        ResponseMapData respData = new ResponseMapData();
-        respData.addResponseData(BaseController.OBJLIST, roleInfos);
-        respData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-
-        if (ArrayUtils.isNotEmpty(field)) {
-            respData.toJSONString(JsonPropertyUtils.getIncludePropPreFilter(RoleInfo.class, field));
-        } else {
-            respData.toJSONString(JsonPropertyUtils.getExcludePropPreFilter(RoleInfo.class, "rolePowers", "userRoles"));
-        }
-        return respData;
-    }
-
     /**
      * 查询所有系统角色
      *
@@ -100,7 +85,7 @@ public class RoleInfoController extends BaseController {
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @WrapUpResponseBody()
     public PageQueryResult<RoleInfo> listAllRole(PageDesc pageDesc, HttpServletRequest request) {
-        Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
+        Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("NP_ALL", "true");
         List<RoleInfo> list = sysRoleManager.listObjects(filterMap, pageDesc);
         return PageQueryResult.createResultMapDict(list, pageDesc);
@@ -124,13 +109,13 @@ public class RoleInfoController extends BaseController {
     })
     @RequestMapping(value = "/global", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData listGlobalAndPublicRole(String[] field, PageDesc pageDesc, HttpServletRequest request) {
+    public PageQueryResult<RoleInfo> listGlobalAndPublicRole(String[] field, PageDesc pageDesc, HttpServletRequest request) {
 
-        Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
+        Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("NP_GLOBAL", "true");
         filterMap.put("isValid", "T");
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
-        return writeRoleListToResponse(roleInfos, field, pageDesc);
+        return PageQueryResult.createResultMapDict(roleInfos, pageDesc, field);
     }
 
     /**
@@ -148,7 +133,7 @@ public class RoleInfoController extends BaseController {
     public PageQueryResult<RoleInfo> listUnitAndPublicRole(PageDesc pageDesc, HttpServletRequest request) {
 
         String currentUnit = WebOptUtils.getCurrentUnitCode(request);
-        Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
+        Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("publicUnitRole", currentUnit);
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
         return PageQueryResult.createResultMapDict(roleInfos, pageDesc);
@@ -172,21 +157,12 @@ public class RoleInfoController extends BaseController {
     })
     @RequestMapping(value = "/item", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData listItemRole(String[] field, PageDesc pageDesc, HttpServletRequest request) {
-        Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
+    public PageQueryResult<RoleInfo> listItemRole(String[] field, PageDesc pageDesc, HttpServletRequest request) {
+        Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("ROLETYPE", "I");
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
 
-        ResponseMapData respData = new ResponseMapData();
-        respData.addResponseData(BaseController.OBJLIST, roleInfos);
-        respData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-
-        if (ArrayUtils.isNotEmpty(field)) {
-            respData.toJSONString(JsonPropertyUtils.getIncludePropPreFilter(RoleInfo.class, field));
-        } else {
-            respData.toJSONString(JsonPropertyUtils.getExcludePropPreFilter(RoleInfo.class, "rolePowers", "userRoles"));
-        }
-        return respData;
+        return PageQueryResult.createResultMapDict(roleInfos, pageDesc, field);
     }
 
     /**
@@ -634,11 +610,11 @@ public class RoleInfoController extends BaseController {
     })
     @RequestMapping(value = "/listRoles/{type}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData listRoles(@PathVariable String type, String[] field, HttpServletRequest request) {
+    public JSONArray listRoles(@PathVariable String type, String[] field, HttpServletRequest request) {
         if (ArrayUtils.isEmpty(field)) {
             field = new String[]{"roleCode", "roleName"};
         }
-        Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
+        Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
 //        filterMap.put("roleType", type);
         filterMap.put("isValid", "T");
         if ("S".equals(type)) {
@@ -653,11 +629,7 @@ public class RoleInfoController extends BaseController {
             }
         }
         List<RoleInfo> listObjects = sysRoleManager.listObjects(filterMap);
-
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, listObjects);
-        resData.toJSONString(JsonPropertyUtils.getIncludePropPreFilter(RoleInfo.class, field));
-        return ResponseData.makeResponseData(resData.getResponseData(BaseController.OBJLIST));
+        return DictionaryMapUtils.objectsToJSONArray(listObjects, field);
     }
 
 }

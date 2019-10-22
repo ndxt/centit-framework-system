@@ -17,17 +17,17 @@ import java.util.Map;
 public interface QueryFilterConditionManager
 {
 
-    public List<QueryFilterCondition> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
+    List<QueryFilterCondition> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
 
-    public QueryFilterCondition getObjectById(Long filterNo);
+    QueryFilterCondition getObjectById(Long filterNo);
 
-    public void mergeObject(QueryFilterCondition userQueryFilter);
+    void mergeObject(QueryFilterCondition userQueryFilter);
 
-    public void deleteObjectById(Long filterNo);
+    void deleteObjectById(Long filterNo);
 
-    public Long saveNewObject(QueryFilterCondition userQueryFilter);
+    Long saveNewObject(QueryFilterCondition userQueryFilter);
 
-    public JSONArray listQueryFilterConditionsAsJson(
+    JSONArray listQueryFilterConditionsAsJson(
             String[] fields,
             Map<String, Object> filterMap, PageDesc pageDesc);
 }

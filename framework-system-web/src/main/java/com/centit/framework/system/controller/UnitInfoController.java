@@ -3,9 +3,7 @@ package com.centit.framework.system.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.common.ResponseData;
-import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpContentType;
@@ -14,13 +12,11 @@ import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.operationlog.RecordOperationLog;
-import com.centit.framework.security.model.CentitUserDetails;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.*;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
-import com.centit.support.json.JsonPropertyUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -96,7 +92,7 @@ public class UnitInfoController extends BaseController {
     @RequestMapping(method = RequestMethod.GET)
     @WrapUpResponseBody
     public ResponseData listAsTree(boolean struct, String id, HttpServletRequest request) {
-        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         String unitName = (String) searchColumn.get("unitName");
 
         if (StringUtils.isNotBlank(unitName) && StringUtils.isBlank(id)) {
@@ -133,10 +129,10 @@ public class UnitInfoController extends BaseController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @WrapUpResponseBody
     public PageQueryResult<UnitInfo> list(PageDesc pageDesc, HttpServletRequest request) {
-        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
 
         List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn, pageDesc);
-        return PageQueryResult.createResult(listObjects, pageDesc);
+        return PageQueryResult.createResultMapDict(listObjects, pageDesc);
     }
     /**
      * 查询所有子机构信息
@@ -151,7 +147,7 @@ public class UnitInfoController extends BaseController {
     @RequestMapping(value = "/subunits", method = RequestMethod.GET)
     @WrapUpResponseBody
     public ResponseData listSub(String id, HttpServletRequest request) {
-        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         String currentUnitCode = WebOptUtils.getCurrentUnitCode(request);
 
         String unitName = StringBaseOpt.castObjectToString(searchColumn.get("unitName"));
@@ -422,15 +418,12 @@ public class UnitInfoController extends BaseController {
     })
     @RequestMapping(value = "/{unitCode}/children", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData listChildren(@PathVariable String unitCode, String[] field, HttpServletRequest request) {
-        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
+    public JSONArray listChildren(@PathVariable String unitCode, String[] field, HttpServletRequest request) {
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         searchColumn.put("parentUnit", unitCode);
 
         List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn);
-        ResponseMapData respData = new ResponseMapData();
-        respData.addResponseData(BaseController.OBJLIST, listObjects);
-        respData.toJSONString(JsonPropertyUtils.getIncludePropPreFilter(UnitInfo.class, field));
-        return ResponseData.makeResponseData(respData.getResponseData(BaseController.OBJLIST));
+        return DictionaryMapUtils.objectsToJSONArray(listObjects, field);
     }
 
     /**
@@ -445,11 +438,11 @@ public class UnitInfoController extends BaseController {
         name = "pageDesc", value = "json格式，分页对象信息",
         paramType = "body", dataTypeClass = PageDesc.class)
     @WrapUpResponseBody
-    public ResponseData listUnitUsers(PageDesc pageDesc, HttpServletRequest request) {
+    public PageQueryResult<Object> listUnitUsers(PageDesc pageDesc, HttpServletRequest request) {
 
         String currentUnitCode = WebOptUtils.getCurrentUnitCode(request);
 
-        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         searchColumn.put("unitCode", currentUnitCode);
 
         //特殊字符转义
@@ -459,14 +452,8 @@ public class UnitInfoController extends BaseController {
         }
 
         List<UserInfo> listObjects = sysUserMag.listObjects(searchColumn, pageDesc);
-
         JSONArray jsonArr = DictionaryMapUtils.objectsToJSONArray(listObjects);
-
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, jsonArr);
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-
-        return resData;
+        return PageQueryResult.createJSONArrayResult(jsonArr, pageDesc);
     }
 
     /**

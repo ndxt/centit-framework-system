@@ -1,8 +1,6 @@
 package com.centit.framework.system.controller;
 
-import com.centit.support.common.ObjectException;
 import com.centit.framework.common.ResponseData;
-import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.controller.BaseController;
@@ -12,10 +10,10 @@ import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.model.basedata.IUnitInfo;
 import com.centit.framework.model.basedata.IUserInfo;
 import com.centit.framework.operationlog.RecordOperationLog;
-import com.centit.framework.security.model.CentitUserDetails;
 import com.centit.framework.system.po.UserUnit;
 import com.centit.framework.system.service.SysUserManager;
 import com.centit.framework.system.service.SysUserUnitManager;
+import com.centit.support.common.ObjectException;
 import com.centit.support.database.utils.PageDesc;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -126,16 +124,10 @@ public class UserUnitController extends BaseController {
     })
     @RequestMapping(value = "/unitusers/{unitCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData listUsersByUnit(@PathVariable String unitCode, PageDesc pageDesc, HttpServletRequest request) {
-        Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
-
+    public PageQueryResult<UserUnit> listUsersByUnit(@PathVariable String unitCode, PageDesc pageDesc, HttpServletRequest request) {
+        Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         List<UserUnit> listObjects = sysUserUnitManager.listSubUsersByUnitCode(unitCode, filterMap, pageDesc);
-
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-
-        return resData;
+        return PageQueryResult.createResultMapDict(listObjects, pageDesc);
     }
 
     /**
@@ -157,20 +149,15 @@ public class UserUnitController extends BaseController {
     })
     @RequestMapping(value = "/userunits/{userCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData listUnitsByUser(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request) {
+    public PageQueryResult<UserUnit> listUnitsByUser(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request) {
 
 //        UserInfo user = sysUserManager.getObjectById(this.WebOptUtils.getCurrentUserCode(request));
-        Map<String, Object> filterMap = BaseController.convertSearchColumn(request);
+        Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("userCode", userCode);
 //        filterMap.put("unitCode", user.getPrimaryUnit());
 
         List<UserUnit> listObjects = sysUserUnitManager.listObjects(filterMap, pageDesc);
-
-        ResponseMapData resData = new ResponseMapData();
-        resData.addResponseData(BaseController.OBJLIST, DictionaryMapUtils.objectsToJSONArray(listObjects));
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-
-        return resData;
+        return PageQueryResult.createResultMapDict(listObjects, pageDesc);
     }
 
     @ApiOperation(value = "获取用户所在机构列表（在当前用户可见范围内）")
@@ -184,7 +171,7 @@ public class UserUnitController extends BaseController {
         }
 
         List<UserUnit> userUnits = sysUserUnitManager.listUserUnitsUnderUnitByUserCode(userCode, currentUnitCode, pageDesc);
-        return PageQueryResult.createResult(userUnits, pageDesc);
+        return PageQueryResult.createResultMapDict(userUnits, pageDesc);
     }
 
     /**

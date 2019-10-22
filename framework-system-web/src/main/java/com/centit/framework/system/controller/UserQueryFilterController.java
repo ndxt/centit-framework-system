@@ -1,11 +1,10 @@
 package com.centit.framework.system.controller;
 
-import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.centit.framework.common.ResponseData;
-import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
+import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.system.po.UserQueryFilter;
 import com.centit.framework.system.service.UserQueryFilterManager;
 import com.centit.support.algorithm.DatetimeOpt;
@@ -15,7 +14,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -71,25 +69,10 @@ public class UserQueryFilterController extends BaseController {
     )})
     @RequestMapping(method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData list(String[] field, PageDesc pageDesc, HttpServletRequest request) {
-        Map<String, Object> searchColumn = BaseController.convertSearchColumn(request);
+    public PageQueryResult<UserQueryFilter> list(String[] field, PageDesc pageDesc, HttpServletRequest request) {
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         List<UserQueryFilter> listObjects = userQueryFilterMag.listObjects(searchColumn, pageDesc);
-
-        SimplePropertyPreFilter simplePropertyPreFilter = null;
-        if (ArrayUtils.isNotEmpty(field)) {
-            simplePropertyPreFilter = new SimplePropertyPreFilter(UserQueryFilter.class, field);
-        }
-
-        ResponseMapData resData = new ResponseMapData();
-        if (null == pageDesc) {
-            resData.addResponseData(BaseController.OBJLIST, listObjects);
-            resData.toJSONString(simplePropertyPreFilter);
-            return ResponseData.makeResponseData(resData.getResponseData(BaseController.OBJLIST));
-        }
-        resData.addResponseData(BaseController.OBJLIST, listObjects);
-        resData.addResponseData(BaseController.PAGE_DESC, pageDesc);
-
-        return resData;
+        return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
     }
 
     /**
