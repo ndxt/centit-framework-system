@@ -140,13 +140,17 @@ public class SysRoleManagerImpl implements SysRoleManager {
                 rolePowerDao.saveNewRolePower(rp);
             }
         }
-
+        //有用信息只有主键 所以没有必要修改
         if(forUpdate.getMiddle() != null){
             for(Pair<RolePower, RolePower> rp : forUpdate.getMiddle()){
                 RolePower oldRolePower = rp.getLeft();
                 RolePower newRolePower = rp.getRight();
-                oldRolePower.copyNotNullProperty(newRolePower);
-                rolePowerDao.updateRolePower(oldRolePower);
+                if(StringUtils.equals(oldRolePower.getOptScopeCodes(),
+                    newRolePower.getOptScopeCodes())) {
+                    oldRolePower.copyNotNullProperty(newRolePower);
+                    rolePowerDao.updateObject(
+                        CollectionsOpt.createList("optScopeCodes"), oldRolePower);
+                }
             }
         }
         CodeRepositoryCache.evictCache("RoleInfo");
