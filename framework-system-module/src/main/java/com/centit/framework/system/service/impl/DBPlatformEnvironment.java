@@ -124,11 +124,12 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
      * @return 树状菜单列表
      */
     private List<OptInfo> formatMenuTree(List<OptInfo> optInfos) {
-        Iterator<OptInfo> menus = optInfos.iterator();
+        optInfos.sort((a,b)-> a.getOrderInd()==null? 1 :(
+                b.getOrderInd() == null ? -1 :Long.compare(a.getOrderInd(),b.getOrderInd() )
+            ));
 
         List<OptInfo> parentMenu = new ArrayList<>();
-        while (menus.hasNext()) {
-            OptInfo optInfo = menus.next();
+        for (OptInfo optInfo :optInfos) {
             boolean getParent = false;
             for (OptInfo opt : optInfos) {
                 if (opt.getOptId().equals(optInfo.getPreOptId())) {
