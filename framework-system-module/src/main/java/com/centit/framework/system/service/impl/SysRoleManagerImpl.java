@@ -145,11 +145,12 @@ public class SysRoleManagerImpl implements SysRoleManager {
             for(Pair<RolePower, RolePower> rp : forUpdate.getMiddle()){
                 RolePower oldRolePower = rp.getLeft();
                 RolePower newRolePower = rp.getRight();
-                if(StringUtils.equals(oldRolePower.getOptScopeCodes(),
+                if(! StringUtils.equals(oldRolePower.getOptScopeCodes(),
                     newRolePower.getOptScopeCodes())) {
                     oldRolePower.copyNotNullProperty(newRolePower);
                     rolePowerDao.updateObject(
-                        CollectionsOpt.createList("optScopeCodes"), oldRolePower);
+                        CollectionsOpt.createList("optScopeCodes", "updator", "updateDate"),
+                        oldRolePower);
                 }
             }
         }
