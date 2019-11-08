@@ -116,20 +116,13 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
      * @param unitCode 结构代码
      * @return UnitInfo 机构信息
      */
-    public UnitInfo getPeerUnitByName(String unitName, String parentCode, String unitCode) {
-        String sql = "select u.UNIT_CODE, u.PARENT_UNIT, u.UNIT_TYPE, u.IS_VALID, u.UNIT_NAME, u.ENGLISH_NAME," +
-                " u.UNIT_SHORT_NAME, u.UNIT_WORD, u.UNIT_TAG, u.UNIT_DESC, u.UNIT_ORDER, u.UNIT_GRADE," +
-                " u.DEP_NO, u.UNIT_PATH, u.UNIT_MANAGER, u.CREATE_DATE, u.CREATOR, u.UPDATOR, u.UPDATE_DATE " +
-                "from F_UNITINFO u " +
+    public boolean getPeerUnitByName(String unitName, String parentCode, String unitCode) {
+        String sql = "select count(*) as hasSameNameUnit from F_UNITINFO u " +
                 "where u.UNIT_NAME = :unitName and u.PARENT_UNIT = :parentUnit and u.UNIT_CODE <> :unitCode";
-
-        List<UnitInfo> list = listObjectsBySql(sql, CollectionsOpt.createHashMap(
+        Object hasSameNameUnit = DatabaseOptUtils.getScalarObjectQuery(this, sql, CollectionsOpt.createHashMap(
                 "unitName", unitName, "parentUnit", parentCode, "unitCode", unitCode));
 
-        if(list == null || list.size() == 0){
-          return null;
-        }
-        return list.get(0);
+        return NumberBaseOpt.castObjectToInteger(hasSameNameUnit,0)>0;
     }
 
     /**
