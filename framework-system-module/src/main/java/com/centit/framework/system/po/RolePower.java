@@ -3,6 +3,9 @@ package com.centit.framework.system.po;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IRolePower;
 import com.centit.support.algorithm.DatetimeOpt;
+import com.centit.support.database.orm.GeneratorCondition;
+import com.centit.support.database.orm.GeneratorType;
+import com.centit.support.database.orm.ValueGenerator;
 import io.swagger.annotations.ApiModel;
 import org.hibernate.validator.constraints.Length;
 
@@ -29,6 +32,7 @@ public class RolePower implements IRolePower, EntityWithTimestamp, java.io.Seria
 
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
+    @ValueGenerator(strategy = GeneratorType.FUNCTION, value = "today()")
     protected Date createDate;
 
     @Column(name = "OPT_SCOPE_CODES")
@@ -53,6 +57,8 @@ public class RolePower implements IRolePower, EntityWithTimestamp, java.io.Seria
      * UPDATEDATE(更新时间) 更新时间
      */
     @Column(name = "UPDATE_DATE")
+    @ValueGenerator(strategy = GeneratorType.FUNCTION,
+        condition = GeneratorCondition.ALWAYS, value = "today()")
     private Date  updateDate;
     //结束
 
