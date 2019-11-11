@@ -161,11 +161,14 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @Transactional
     public void saveNewUserInfo(UserInfo userInfo, UserUnit userUnit){
-        String userCode =
-            PersistenceUtils.makeIdByFormat(userInfoDao.getNextKey(),userIdFormat,
-            "U",8,"0");
 
-        userInfo.setUserCode(userCode);
+        if(StringUtils.isBlank(userInfo.getUserCode()) && !"default".equals(userIdFormat)) {
+            String userCode =
+                PersistenceUtils.makeIdByFormat(userInfoDao.getNextKey(),userIdFormat,
+                    "U",8,"0");
+            userInfo.setUserCode(userCode);
+        }
+
         userInfo.setUserPin(getDefaultPassword(userInfo.getUserCode()));
         userInfoDao.saveNewObject(userInfo);
         //resetPwd(userInfo.getUserCode());

@@ -34,8 +34,7 @@ public class RoleInfo implements IRoleInfo, EntityWithTimestamp, java.io.Seriali
 
     @Id
     @Column(name = "ROLE_CODE")
-    //@GeneratedValue(generator = "assignedGenerator")
-    @ValueGenerator(strategy = GeneratorType.TABLE_ID, value = "F_ROLEINFO:ROLE_CODE:8")
+    @ValueGenerator(strategy = GeneratorType.TABLE_ID, value = "F_ROLEINFO:ROLE_CODE:12")
     @ApiModelProperty(value = "角色代码,可以选择不填后台自动生成", name = "roleCode")
     private String roleCode; // 角色代码
 

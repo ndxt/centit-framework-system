@@ -36,7 +36,7 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
 
     @Id
     @Column(name = "UNIT_CODE")
-    //@GeneratedValue(generator = "assignedGenerator")
+    @ValueGenerator(strategy = GeneratorType.TABLE_ID, value = "F_UNITINFO:UNIT_CODE:12")
     @ApiModelProperty(value = "机构代码",name = "unitCode")
     private String unitCode; // 机构代码
 

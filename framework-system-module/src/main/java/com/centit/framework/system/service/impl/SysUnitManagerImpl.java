@@ -119,11 +119,13 @@ public class SysUnitManagerImpl implements SysUnitManager {
     @Override
     @Transactional
     public String saveNewUnitInfo(UnitInfo unitinfo){
-        String unitCode =
-            PersistenceUtils.makeIdByFormat(unitInfoDao.getNextKey(), unitIdFormat,
-                "D",8,"0");
 
-        unitinfo.setUnitCode(unitCode);
+        if(StringUtils.isBlank(unitinfo.getUnitCode()) && !"default".equals(unitIdFormat)) {
+            String unitCode =
+                PersistenceUtils.makeIdByFormat(unitInfoDao.getNextKey(), unitIdFormat,
+                    "D",8,"0");
+            unitinfo.setUnitCode(unitCode);
+        }
         UnitInfo parentUnit = unitInfoDao.getObjectById(unitinfo.getParentUnit());
 
         if (parentUnit == null) {
