@@ -3,6 +3,9 @@ package com.centit.framework.system.po;
 import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IRoleInfo;
+import com.centit.support.database.orm.GeneratorCondition;
+import com.centit.support.database.orm.GeneratorType;
+import com.centit.support.database.orm.ValueGenerator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
@@ -28,13 +31,11 @@ public class RoleInfo implements IRoleInfo, EntityWithTimestamp, java.io.Seriali
 
     // Fields
     private static final long serialVersionUID = 1L;
-    @Column(name = "CREATE_DATE", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    protected Date createDate;
 
     @Id
     @Column(name = "ROLE_CODE")
     //@GeneratedValue(generator = "assignedGenerator")
+    @ValueGenerator(strategy = GeneratorType.TABLE_ID, value = "F_ROLEINFO:ROLE_CODE:8")
     @ApiModelProperty(value = "角色代码,可以选择不填后台自动生成", name = "roleCode")
     private String roleCode; // 角色代码
 
@@ -85,10 +86,16 @@ public class RoleInfo implements IRoleInfo, EntityWithTimestamp, java.io.Seriali
     @Length(max = 32, message = "字段长度不能大于{max}")
     private String updator;
 
+    @Column(name = "CREATE_DATE", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @ValueGenerator(strategy = GeneratorType.FUNCTION, value = "today()")
+    protected Date createDate;
+
     /**
      * UPDATEDATE(更新时间) 更新时间
      */
     @Column(name = "UPDATE_DATE")
+    @ValueGenerator(strategy = GeneratorType.FUNCTION, condition = GeneratorCondition.ALWAYS, value = "today()")
     private Date updateDate;
 
     @Transient

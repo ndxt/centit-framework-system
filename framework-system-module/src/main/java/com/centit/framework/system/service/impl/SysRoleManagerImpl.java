@@ -69,7 +69,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Override
     @Transactional
     public Serializable saveNewRoleInfo(RoleInfo o){
-        if(StringUtils.isBlank(o.getRoleCode())) {
+        if(StringUtils.isBlank(o.getRoleCode()) && !"default".equals(roleIdFormat)) {
             String roleCode =
                 PersistenceUtils.makeIdByFormat(roleInfoDao.getNextKey(),roleIdFormat,
                     "R",8,"0");
