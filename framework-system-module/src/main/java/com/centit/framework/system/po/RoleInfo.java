@@ -50,19 +50,24 @@ public class RoleInfo implements IRoleInfo, EntityWithTimestamp, java.io.Seriali
     @ApiModelProperty(value = "是否生效 T:生效 F:失效 A:新建可以删除", name = "isValid", required = true)
     private String isValid; // 是否生效
     /**
-     * 角色的类别 F （Fixe）系统内置的，固有的， G （global） 全局的
-     * P （public） 公用的，指 系统全局 和 部门之间公用的
-     * D （department）部门（机构）特有的角色
-     * I ( Item )为项目角色 W (workflow)工作流角色 ，这两个为保留类别，暂时没有使用
-     * H (HIDE)系统内置的不要显示的，是部门可以自己支配的操作权限集合
-     * 角色的类别 F/G/P/D/I/W
+     * 角色的类别 F (Fixe)系统内置的，固有的 这些角色不能删除，也不能赋给任何人，
+     *          G (global) 全局的
+     *          P (Public) 公用的，指 系统全局 和 部门之间公用的
+     *          D (Department)部门(机构)特有的角色
+     *          S (Sub System) 属于某个子系统
+     *          I (Item )为项目角色
+     *          W (workflow)工作流角色 ，这两个为保留类别，暂时没有使用
+     *          H (HIDE)系统内置的不要显示的，是部门可以自己支配的操作权限集合
+     * 角色的类别 F/G/P/D/S/I/W/H
      */
     @Column(name = "ROLE_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
     @ApiModelProperty(value = "角色的类别 F:系统内置的 G:全局的 P:公用的 D:部门（机构）特有的角色 I:项目角色 W:工作流角色", name = "roleType", required = true)
     @DictionaryMap(fieldName = "roleTypeText", value = "RoleType")
     private String roleType; // 角色类别
-
+    /**
+     * 这个 应该改成owner_code 如果是 部门角色就是 unitCode 如果是 子系统 就是系统代码
+     */
     @Column(name = "UNIT_CODE")
     @Length(max = 32, message = "字段长度不能大于{max}")
     private String unitCode; // 角色所属机构
