@@ -10,6 +10,7 @@ import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
 import com.centit.framework.system.service.SysUserRoleManager;
 import com.centit.support.database.utils.PageDesc;
+import com.centit.support.json.JSONOpt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +47,12 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
 
     @Override
     public JSONArray listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-        JSONArray userRoles = userRoleDao.listObjectsAsJson(filterMap, pageDesc);
+        List<UserRole> userRolesList= userRoleDao.listObjects(filterMap, pageDesc);
+        for(UserRole userRole:userRolesList){
+            userRole.setUserPrimaryUnit(userRole.getUserPrimaryUnit());
+            userRole.setLoginName(userRole.getLoginName());
+        }
+        JSONArray userRoles = JSONOpt.arrayToJSONArray(userRolesList);
         return DictionaryMapUtils.mapJsonArray(userRoles, UserRole.class);
     }
 

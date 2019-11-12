@@ -79,7 +79,8 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
     @Transient
     @DictionaryMap(fieldName = "userPrimaryUnitText", value = "unitCode")
     private String userPrimaryUnit;
-
+    @Transient
+    private String loginName;
     @Override
     public String getObtainType() {
       return obtainType;
@@ -142,6 +143,9 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
         }
 
         return null;
+    }
+    public void setLoginName(String loginName){
+        this.loginName=loginName;
     }
     public String getUserPrimaryUnit() {
         String userCode = getUserCode();
