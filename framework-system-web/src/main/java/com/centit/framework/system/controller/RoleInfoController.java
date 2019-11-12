@@ -9,7 +9,6 @@ import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.core.dao.PageQueryResult;
-import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.IUserUnit;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.*;
@@ -43,9 +42,6 @@ public class RoleInfoController extends BaseController {
     @Resource
     @NotNull
     private SysRoleManager sysRoleManager;
-
-    @Resource
-    protected PlatformEnvironment platformEnvironment;
 
     @Resource
     @NotNull
@@ -212,10 +208,9 @@ public class RoleInfoController extends BaseController {
     @RequestMapping(value = "/power/optCode/{optId}", method = RequestMethod.GET)
     @WrapUpResponseBody
     public ResponseData getRolePowerByOptId(@PathVariable String optId) {
-        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> result = new ArrayList<>();
 
         List<OptMethod> optDefs = optMethodManager.listOptMethodByOptID(optId);
-
 
         for (OptMethod def : optDefs) {
             Map<String, Object> temp = new HashMap<>();
@@ -368,7 +363,7 @@ public class RoleInfoController extends BaseController {
     @RequestMapping(value = "/{roleCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新角色")
     @WrapUpResponseBody
-    public ResponseData edit(@PathVariable String roleCode, @Valid RoleInfo roleInfo) {
+    public ResponseData updateRole(@PathVariable String roleCode, @Valid RoleInfo roleInfo) {
 
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         if (null == dbRoleInfo) {
@@ -413,10 +408,7 @@ public class RoleInfoController extends BaseController {
             return ResponseData.makeErrorMessage("角色信息不存在");
         }
 //        String  userCode = WebOptUtils.getCurrentUserCode(request);
-
-
 //        List<RolePower> oldPowers = dbRoleInfo.getRolePowers();
-
         // List<RolePower> rolePowers = new ArrayList<>();
         /*for( Map.Entry<String, Object> ent : rolePower.entrySet()){
             RolePower po = new RolePower(
@@ -610,24 +602,26 @@ public class RoleInfoController extends BaseController {
     })
     @RequestMapping(value = "/listRoles/{type}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public JSONArray listRoles(@PathVariable String type, String[] field, HttpServletRequest request) {
+    public JSONArray listRoles(@PathVariable String type,String owner, String[] field, HttpServletRequest request) {
         if (ArrayUtils.isEmpty(field)) {
             field = new String[]{"roleCode", "roleName"};
         }
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
 //        filterMap.put("roleType", type);
         filterMap.put("isValid", "T");
-        if ("S".equals(type)) {
-            filterMap.put("NP_unitCode", true);
+        filterMap.put("roleType",type);
 
-        } else if ("D".equals(type)) {
+        if ("D".equals(type) && StringUtils.isBlank(owner)) {
+
             IUserUnit unit = CodeRepositoryUtil.getUserPrimaryUnit(WebOptUtils.getCurrentUserCode(request));
             if (unit != null) {
-                filterMap.put("publicUnitRole", unit.getUnitCode());
-            } else {
-                return null;
+                owner =  unit.getUnitCode();
             }
         }
+        if(StringUtils.isNotBlank(owner)) {
+            filterMap.put("unitCode", owner);
+        }
+
         List<RoleInfo> listObjects = sysRoleManager.listObjects(filterMap);
         return DictionaryMapUtils.objectsToJSONArray(listObjects, field);
     }
