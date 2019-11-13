@@ -11,6 +11,7 @@ import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UnitRole;
 import com.centit.framework.system.service.SysUnitManager;
 import com.centit.framework.system.service.SysUnitRoleManager;
+import com.centit.support.common.ObjectException;
 import com.centit.support.database.utils.PageDesc;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -212,7 +213,8 @@ public class UnitRoleController extends BaseController {
      *
      * @param roleCode 角色代码
      * @param unitCode 机构代码
-     * @param unitRole UserRole
+     * @param unitRole unitRole
+     * @return UnitRole 机构角色关联信息
      */
     @ApiOperation(value = "更新机构角色关联信息", notes = "更新机构角色关联信息。")
     @ApiImplicitParams({
@@ -229,19 +231,14 @@ public class UnitRoleController extends BaseController {
     @RequestMapping(value = "/{roleCode}/{unitCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}修改机构角色关联信息")
     @WrapUpResponseBody
-    public ResponseData edit(@PathVariable String roleCode, @PathVariable String unitCode, @Valid UnitRole unitRole) {
+    public UnitRole updateUnitRole(@PathVariable String roleCode, @PathVariable String unitCode, @Valid UnitRole unitRole) {
         UnitRole dbUnitRole = sysUnitRoleManager.getUnitRoleById(unitCode, roleCode);
         if (null == dbUnitRole) {
-            return ResponseData.makeErrorMessage("当前角色中无此用户");
+            throw new ObjectException(unitRole, "当前角色中无此机构");
         }
         dbUnitRole.copyNotNullProperty(unitRole);
         sysUnitRoleManager.updateUnitRole(dbUnitRole);
-        return ResponseData.makeResponseData(dbUnitRole);
-
-        /*********log*********/
-        //OperationLogCenter.logUpdateObject(request,optId,dbUnitRole.getUnitCode(),
-        //OperationLog.P_OPT_LOG_METHOD_U,"更改用户角色信息:" + JSON.toJSONString(unitRole.getId()) ,unitRole,dbUnitRole);
-        /*********log*********/
+        return dbUnitRole;
     }
 
     /**
@@ -277,6 +274,5 @@ public class UnitRoleController extends BaseController {
         }
         return ResponseData.makeSuccessResponse();
     }
-
 
 }
