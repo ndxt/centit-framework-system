@@ -322,7 +322,7 @@ public class UnitInfoController extends BaseController {
         if (null == dbUnitInfo) {
             return ResponseData.makeErrorMessage("机构不存在");
         }
-        if (!sysUnitManager.isUniqueName(unitInfo)) {
+        if (!dbUnitInfo.getUnitName().equals(unitInfo.getUnitName())&&!sysUnitManager.isUniqueName(unitInfo)) {
             return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
                 "机构名" + unitInfo.getUnitName() + "已存在，请更换！");
         }
