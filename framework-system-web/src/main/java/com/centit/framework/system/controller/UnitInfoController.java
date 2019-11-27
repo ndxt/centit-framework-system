@@ -107,13 +107,12 @@ public class UnitInfoController extends BaseController {
             }
             return ResponseData.makeResponseData(ja);
         } else {
-            Map<String, Object> filterMap = new HashMap<>(2);
             if (StringUtils.isNotBlank(id)) {
-                filterMap.put("parentUnit", id);
+                searchColumn.put("parentUnit", id);
             } else {
-                filterMap.put("NP_TOPUnit", "true");
+                searchColumn.put("NP_TOPUnit", "true");
             }
-            List<UnitInfo> listObjects = sysUnitManager.listObjects(filterMap);
+            List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn);
             sysUnitManager.checkState(listObjects);
             JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
             return ResponseData.makeResponseData(ja);
