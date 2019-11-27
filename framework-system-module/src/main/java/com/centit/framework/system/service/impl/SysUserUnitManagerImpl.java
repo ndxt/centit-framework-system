@@ -2,7 +2,6 @@ package com.centit.framework.system.service.impl;
 
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.components.CodeRepositoryUtil;
-import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.model.basedata.IDataDictionary;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
@@ -160,8 +159,7 @@ public class SysUserUnitManagerImpl
 
     @Override
     public UserUnit getPrimaryUnitByUserCode(String userCode) {
-        UserUnit uu=userUnitDao.getPrimaryUnitByUserId(userCode);
-        return uu;
+        return userUnitDao.getPrimaryUnitByUserId(userCode);
     }
 
     @Override
@@ -169,12 +167,7 @@ public class SysUserUnitManagerImpl
         HashMap <String ,Object>filterDesc=new HashMap<>();
         filterDesc.put("userStation", stationCode);
         filterDesc.put("userCode", userCode);
-        List<UserUnit> list=userUnitDao.listObjects(filterDesc);
-        if(null!=list&& list.size()!=0) {
-          return true;
-        } else {
-          return false;
-        }
+        return userUnitDao.countObject(filterDesc) > 0 ;
     }
 
     @Override
@@ -237,9 +230,7 @@ public class SysUserUnitManagerImpl
         if(unitInfo != null){
             map.put("unitPath", unitInfo.getUnitPath());
             map.put("isValid", "T");
-            return userUnitDao.querySubUserUnits(
-                QueryParameterPrepare.makeMybatisOrderByParam(
-              QueryParameterPrepare.prepPageParams(map,pageDesc,userUnitDao.countSubUserUnits(map)),UserUnit.class));
+            return userUnitDao.querySubUserUnits(map, pageDesc);
         }
         return null;
     }
@@ -250,8 +241,6 @@ public class SysUserUnitManagerImpl
         map.put("userCode", userCode);
         map.put("unitPath", unitInfo.getUnitPath());
         map.put("unitIsValid", "T");
-        return userUnitDao.querySubUserUnits(
-            QueryParameterPrepare.makeMybatisOrderByParam(
-                QueryParameterPrepare.prepPageParams(map, pageDesc, userUnitDao.countSubUserUnits(map)), UserUnit.class));
+        return userUnitDao.querySubUserUnits(map, pageDesc);
     }
 }

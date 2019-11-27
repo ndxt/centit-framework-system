@@ -1,7 +1,6 @@
 package com.centit.framework.system.dao;
 
 import com.centit.framework.core.dao.CodeBook;
-import com.centit.framework.core.dao.QueryParameterPrepare;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.po.UserUnit;
@@ -28,10 +27,6 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
     public Map<String, String> getFilterField() {
         if (filterField == null) {
             filterField = new HashMap<>(20);
-            filterField.put("userCode_isValid", "userCode in (select us.USER_CODE" +
-                    " from f_userinfo us where us.IS_VALID = :userCode_isValid)");
-//            filterField.put("unitCode","(unitCode = :unitCode or unitCode in " +
-//                    "(select un.UNIT_CODE from f_unitinfo un  where un.PARENT_UNIT = :unitCode))");
             filterField.put("unitCode", CodeBook.EQUAL_HQL_ID);
             filterField.put("userStation", CodeBook.EQUAL_HQL_ID);
             filterField.put("userRank", CodeBook.EQUAL_HQL_ID);
@@ -42,7 +37,8 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
                     " us.USER_NAME like :userName)");
             filterField.put("isValid", "userCode in (select us.USER_CODE from f_userinfo us where " +
                     "us.IS_VALID = :isValid)");
-
+            filterField.put("userCode_isValid", "userCode in (select us.USER_CODE" +
+                " from f_userinfo us where us.IS_VALID = :userCode_isValid)");
             filterField.put(CodeBook.ORDER_BY_HQL_ID, "userOrder asc");
         }
         return filterField;
@@ -165,22 +161,24 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
         return ls;
     }
 
-    public int countSubUserUnits(Map<String, Object> filterDescMap){
-        String sql = "select USER_UNIT_ID, UNIT_CODE, USER_CODE, IS_PRIMARY, USER_RANK, RANK_MEMO, USER_ORDER, " +
-            "UPDATE_DATE, CREATE_DATE, CREATOR, UPDATOR " +
-            "FROM F_USERUNIT WHERE 1=1 " +
+
+
+    public List<UserUnit> querySubUserUnits(Map<String, Object> filterDescMap, PageDesc pageDesc) {
+
+        String sql = "select count(*) WHERE 1=1 " +
             "[:(STARTWITH)unitPath | and UNIT_CODE IN (select UNIT_CODE from f_unitinfo where UNIT_PATH like :unitPath)]"+
-            "[:(like)userName | and USER_CODE in (select USER_CODE from f_userinfo where USER_NAME like :userName)]";
+            "[:(like)userName | and USER_CODE in (select USER_CODE from f_userinfo where USER_NAME like :userName or LOGIN_NAME like :userName)]" +
+            "[:isValid | and USER_CODE in (select us.USER_CODE from f_userinfo us where us.IS_VALID = :isValid)]"+
+            "[:userCode | and USER_CODE = :userCode]"+
+            "[:unitIsValid | and UNIT_CODE IN (select UNIT_CODE from f_unitinfo where IS_VALID = :unitIsValid)]";
 
-        QueryAndNamedParams qap = QueryUtils.translateQuery(
-          QueryUtils.buildGetCountSQLByReplaceFields(sql), filterDescMap);
-        return jdbcTemplate.execute(
-          (ConnectionCallback<Integer>) conn ->
-            OrmDaoUtils.fetchObjectsCount(conn, qap.getQuery(), qap.getParams()));
-    }
+        QueryAndNamedParams qap = QueryUtils.translateQuery(sql, filterDescMap);
+        Integer rowCount = jdbcTemplate.execute(
+            (ConnectionCallback<Integer>) conn ->
+                OrmDaoUtils.fetchObjectsCount(conn, qap.getQuery(), qap.getParams()));
+        pageDesc.setTotalRows(rowCount);
 
-    public List<UserUnit> querySubUserUnits(Map<String, Object> pageQueryMap) {
-        String sql = "select USER_UNIT_ID, UNIT_CODE, USER_CODE, IS_PRIMARY, USER_STATION, USER_RANK, RANK_MEMO, USER_ORDER, " +
+        sql = "select USER_UNIT_ID, UNIT_CODE, USER_CODE, IS_PRIMARY, USER_STATION, USER_RANK, RANK_MEMO, USER_ORDER, " +
           "UPDATE_DATE, CREATE_DATE, CREATOR, UPDATOR " +
           "FROM F_USERUNIT WHERE 1=1 " +
           "[:(STARTWITH)unitPath | and UNIT_CODE IN (select UNIT_CODE from f_unitinfo where UNIT_PATH like :unitPath)]"+
@@ -188,20 +186,20 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
           "[:isValid | and USER_CODE in (select us.USER_CODE from f_userinfo us where us.IS_VALID = :isValid)]"+
           "[:userCode | and USER_CODE = :userCode]"+
           "[:unitIsValid | and UNIT_CODE IN (select UNIT_CODE from f_unitinfo where IS_VALID = :unitIsValid)]";
-        PageDesc pageDesc = QueryParameterPrepare.fetchPageDescParams(pageQueryMap);
 
-        String selfOrderBy = GeneralJsonObjectDao.fetchSelfOrderSql(sql, pageQueryMap);
+
+        String selfOrderBy = GeneralJsonObjectDao.fetchSelfOrderSql(sql, filterDescMap);
         if (StringUtils.isNotBlank(selfOrderBy)) {
           sql = QueryUtils.removeOrderBy(sql) + " order by " + selfOrderBy;
         }
-        QueryAndNamedParams qap = QueryUtils.translateQuery(sql, pageQueryMap);
+        QueryAndNamedParams qap2 = QueryUtils.translateQuery(sql, filterDescMap);
         return jdbcTemplate.execute(
           /** 这个地方可以用replaceField 已提高效率
            *  pageDesc.setTotalRows(OrmDaoUtils.fetchObjectsCount(conn,
            QueryUtils.buildGetCountSQLByReplaceFields(qap.getSql()),qap.getParams()));
            * */
           (ConnectionCallback<List<UserUnit>>) conn -> OrmDaoUtils
-            .queryObjectsByNamedParamsSql(conn, qap.getQuery(), qap.getParams(), (Class<UserUnit>) getPoClass(),
+            .queryObjectsByNamedParamsSql(conn, qap2.getQuery(), qap2.getParams(), (Class<UserUnit>) getPoClass(),
               pageDesc.getRowStart(), pageDesc.getPageSize()));
     }
 
