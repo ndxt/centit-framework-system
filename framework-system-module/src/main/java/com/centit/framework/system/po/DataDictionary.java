@@ -259,34 +259,6 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
     }
 
 
-    public void copy(DataDictionary other) {
-
-        this.extraCode = other.getExtraCode();
-        this.extraCode2 = other.getExtraCode2();
-        this.dataTag = other.getDataTag();
-        this.dataValue = other.getDataValue();
-        this.dataStyle = other.getDataStyle();
-        this.dataDesc = other.getDataDesc();
-        this.dataOrder = other.getDataOrder();
-    }
-
-    public void copyNotNullProperty(DataDictionary other) {
-
-        if (other.getExtraCode() != null)
-            this.extraCode = other.getExtraCode();
-        if (other.getExtraCode2() != null)
-            this.extraCode2 = other.getExtraCode2();
-        if (other.getDataTag() != null)
-            this.dataTag = other.getDataTag();
-        if (other.getDataValue() != null)
-            this.dataValue = other.getDataValue();
-        if (other.getDataStyle() != null)
-            this.dataStyle = other.getDataStyle();
-        if (other.getDataDesc() != null)
-            this.dataDesc = other.getDataDesc();
-        if (other.getDataOrder() != null)
-            this.dataOrder = other.getDataOrder();
-    }
 
     public String display() {
         return "字典明细信息 [" + "标记=" + dataTag

@@ -234,43 +234,6 @@ public class RoleInfo implements IRoleInfo, EntityWithTimestamp, java.io.Seriali
         this.updateDate = lastModifyDate;
     }
 
-    public void copyNotNullProperty(RoleInfo other) {
-        if (other.getRoleCode() != null)
-            this.roleCode = other.getRoleCode();
-        if (other.getRoleName() != null)
-            this.roleName = other.getRoleName();
-        if (other.getIsValid() != null)
-            this.isValid = other.getIsValid();
-        if (other.getRoleDesc() != null)
-            this.roleDesc = other.getRoleDesc();
-        if (other.getRoleType() != null)
-            this.roleType = other.getRoleType();
-        if (other.getUnitCode() != null)
-            this.unitCode = other.getUnitCode();
-        if (other.getCreator() != null)
-            this.creator = other.getCreator();
-        if (other.getUpdator() != null)
-            this.updator = other.getUpdator();
-        if (other.getCreateDate() != null)
-            this.createDate = other.getCreateDate();
-        if (other.getUpdateDate() != null)
-            this.updateDate = other.getUpdateDate();
-    }
-
-    public void copy(RoleInfo other) {
-        this.roleCode = other.getRoleCode();
-        this.roleName = other.getRoleName();
-        this.isValid = other.getIsValid();
-        this.roleDesc = other.getRoleDesc();
-        this.roleType = other.getRoleType();
-        this.unitCode = other.getUnitCode();
-        this.creator = other.creator;
-        this.updator = other.updator;
-        this.createDate = other.createDate;
-        this.updateDate = other.updateDate;
-    }
-
-
     public String getCreator() {
         return this.creator;
     }

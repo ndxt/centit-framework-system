@@ -120,18 +120,17 @@ public class SysUnitManagerImpl implements SysUnitManager {
     @Transactional
     public String saveNewUnitInfo(UnitInfo unitinfo){
 
-        if(StringUtils.isBlank(unitinfo.getUnitCode()) && !"default".equals(unitIdFormat)) {
+        if(StringUtils.isBlank(unitinfo.getUnitCode()) && ! "default".equals(unitIdFormat)) {
             String unitCode =
                 PersistenceUtils.makeIdByFormat(unitInfoDao.getNextKey(), unitIdFormat,
                     "D",8,"0");
             unitinfo.setUnitCode(unitCode);
         }
         UnitInfo parentUnit = unitInfoDao.getObjectById(unitinfo.getParentUnit());
-
         if (parentUnit == null) {
-          unitinfo.setUnitPath("/" + unitinfo.getUnitCode() + "/");
+          unitinfo.setUnitPath("/" + unitinfo.getUnitCode() );
         } else {
-          unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitCode() + "/");
+          unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitCode());
         }
 
         unitInfoDao.saveNewObject(unitinfo);
@@ -158,17 +157,15 @@ public class SysUnitManagerImpl implements SysUnitManager {
     @Transactional
     public void updateUnitInfo(UnitInfo unitinfo){
         UnitInfo dbUnitInfo = unitInfoDao.getObjectById(unitinfo.getUnitCode());
-        String oldUnitPath = dbUnitInfo.getUnitPath();
 
-        dbUnitInfo.copyNotNullProperty(unitinfo);
+        String oldUnitPath = dbUnitInfo.getUnitPath();
 
         if(!StringUtils.equals(dbUnitInfo.getParentUnit(), unitinfo.getParentUnit())){
             UnitInfo parentUnit = unitInfoDao.getObjectById(unitinfo.getParentUnit());
             if(parentUnit==null) {
-                unitinfo.setUnitPath("/"+unitinfo.getUnitCode()+"/");
-            }
-            else {
-                unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitCode() + "/");
+                unitinfo.setUnitPath("/"+unitinfo.getUnitCode());
+            } else {
+                unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitCode());
             }
             List<UnitInfo> subUnits = unitInfoDao.listSubUnitsByUnitPaht(oldUnitPath);
             int noupl = oldUnitPath.length();
@@ -177,7 +174,8 @@ public class SysUnitManagerImpl implements SysUnitManager {
                 unitInfoDao.updateUnit(ui);
             }
         }
-        unitInfoDao.updateUnit(dbUnitInfo);
+
+        unitInfoDao.updateUnit(unitinfo);
         CodeRepositoryCache.evictCache("UnitInfo");
     }
 

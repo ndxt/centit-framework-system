@@ -92,7 +92,7 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
 
     @Transactional
     public List<UnitInfo> listSubUnitsByUnitPaht(String unitPath){
-        return listObjects(CollectionsOpt.createHashMap("unitPath", unitPath+"%" ));
+        return listObjects(CollectionsOpt.createHashMap("unitPath", unitPath+"/%" ));
     }
 
     public List<String> getAllParentUnit(){

@@ -107,11 +107,11 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                     new UserSettingId(userSetting.getUserCode(), userSetting.getParamCode()));
                 if(us==null) {
                     us = new UserSetting();
-                    us.copyNotNullProperty(userSetting);
+                    us.copyFromIUserSetting(userSetting);
                     us.setCreateDate(DatetimeOpt.currentUtilDate());
                     userSettingDao.saveNewUserSetting(us);
                 }else {
-                    us.copyNotNullProperty(userSetting);
+                    us.copyFromIUserSetting(userSetting);
                     userSettingDao.updateUserSetting(us);
                 }
             }
@@ -425,7 +425,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         UserInfo ui = userInfoDao.getUserByCode(userInfo.getUserCode());
         if(ui==null)
           return;
-        ui.copyNotNullProperty(userInfo);
+        ui.copyFromIUserInfo(userInfo);
         userInfoDao.updateUser(ui);
     }
 
@@ -542,8 +542,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                 OptMethod oldMethod = p.getLeft();
                 OptMethod newMethod = p.getRight();
                 newMethod.setOptCode(oldMethod.getOptCode());
-                oldMethod.copy(newMethod);
-                optMethodDao.updateOptMethod(oldMethod);
+                optMethodDao.updateOptMethod(newMethod);
             }
         }
         //删除

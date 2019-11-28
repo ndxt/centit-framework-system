@@ -489,12 +489,7 @@ public class RoleInfoController extends BaseController {
         if (null == dbRoleInfo) {
             throw new ObjectException(roleInfo, "角色信息不存在");
         }
-
-        RoleInfo oldRoleInfo = new RoleInfo();
-        oldRoleInfo.copy(dbRoleInfo);
-        dbRoleInfo.setRolePowers(roleInfo.getRolePowers());
-        List<RolePower> oldRolePowers = sysRoleManager.updateRolePower(dbRoleInfo);
-        oldRoleInfo.setRolePowers(oldRolePowers);
+        sysRoleManager.updateRolePower(roleInfo);
         CodeRepositoryCache.evictCache("RolePower");
     }
 

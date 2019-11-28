@@ -224,60 +224,6 @@ public class OptLog implements java.io.Serializable {
         this.oldValue = other.getOldValue();
     }
 
-
-    public void copy(OptLog other) {
-
-        this.setLogId(other.getLogId());
-
-        this.logLevel = other.getLogLevel();
-        this.userCode = other.getUserCode();
-        this.optTime = other.getOptTime();
-        this.optId = other.getOptId();
-        this.optTag = other.getOptTag();
-        this.optMethod = other.getOptMethod();
-        this.optContent = other.getOptContent();
-        this.oldValue = other.getOldValue();
-        this.newValue = other.getNewValue();
-    }
-
-    public void copyNotNullProperty(OptLog other) {
-
-        if (other.getLogId() != null)
-            this.setLogId(other.getLogId());
-
-        if (other.getLogLevel() != null)
-            this.logLevel = other.getLogLevel();
-        if (other.getUserCode() != null)
-            this.userCode = other.getUserCode();
-        if (other.getOptTime() != null)
-            this.optTime = other.getOptTime();
-        if (other.getOptId() != null)
-            this.optId = other.getOptId();
-        if (other.getOptTag() != null)
-            this.optTag = other.getOptTag();
-        if (other.getOptMethod() != null)
-            this.optMethod = other.getOptMethod();
-        if (other.getOptContent() != null)
-            this.optContent = other.getOptContent();
-        if (other.getNewValue() != null)
-            this.newValue = other.getNewValue();
-        if (other.getOldValue() != null)
-            this.oldValue = other.getOldValue();
-    }
-
-    public void clearProperties() {
-
-        this.logLevel = null;
-        this.userCode = null;
-        this.optTime = null;
-        this.optId = null;
-        this.optMethod = null;
-        this.optContent = null;
-        this.newValue = null;
-        this.oldValue = null;
-        this.optTag=null;
-    }
-
     public String getOptMethodText() {
         if (OperationLog.P_OPT_LOG_METHOD_C.equals(getOptMethod())) {
             return "新增";

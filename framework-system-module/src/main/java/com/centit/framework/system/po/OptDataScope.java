@@ -118,29 +118,6 @@ public class OptDataScope implements IOptDataScope,Serializable{
         this.scopeMemo = scopeMemo;
     }
 
-    public void copy(OptDataScope other) {
-
-        this.scopeName = other.getScopeName();
-        this.optScopeCode = other.getOptScopeCode();
-        this.scopeMemo = other.getScopeMemo();
-        this.filterCondition = other.getFilterCondition();
-        //this.filterGroup = other.getFilterGroup();
-        this.optId = other.getOptId();
-    }
-
-    public void copyNotNullProperty(OptDataScope other) {
-        if (other.getOptId() != null)
-            this.optId = other.getOptId();
-        if (other.getScopeName() != null)
-            this.scopeName = other.getScopeName();
-        if (other.getFilterCondition() != null)
-            this.filterCondition = other.getFilterCondition();
-        if (other.getScopeMemo() != null)
-            this.scopeMemo = other.getScopeMemo();
-        if (other.getOptScopeCode() != null)
-            this.optScopeCode = other.getOptScopeCode();
-    }
-
     @Override
       public boolean equals(Object obj){
           if(obj==null)
@@ -162,7 +139,7 @@ public class OptDataScope implements IOptDataScope,Serializable{
       }
 
     @Override
-      public int hashCode(){
+    public int hashCode(){
         return optScopeCode==null?0:optScopeCode.hashCode();
     }
 }

@@ -214,49 +214,6 @@ public class OptMethod implements IOptMethod,EntityWithTimestamp, java.io.Serial
         return optOrder;
     }
 
-
-    public void copy(OptMethod other) {
-        this.optName = other.getOptName();
-        this.optMethod = other.getOptMethod();
-        this.optDesc = other.getOptDesc();
-        this.isInWorkflow = other.getIsInWorkflow();
-        this.optId = other.getOptId();
-        this.optOrder = other.getOptOrder();
-        this.optReq = other.getOptReq();
-        this.optUrl = other.getOptUrl();
-
-        this.creator=other.creator;
-        this.updator=other.updator;
-        this.updateDate=other.updateDate;
-    }
-
-    public void copyNotNullProperty(OptMethod other) {
-        if (other.getOptId() != null)
-            this.optId = other.getOptId();
-        if (other.getOptName() != null)
-            this.optName = other.getOptName();
-        if (other.getOptMethod() != null)
-            this.optMethod = other.getOptMethod();
-        if (other.getOptDesc() != null)
-            this.optDesc = other.getOptDesc();
-        if (other.getIsInWorkflow() != null)
-            this.isInWorkflow = other.getIsInWorkflow();
-        if (other.getCreator() != null)
-            this.creator =other.getCreator();
-
-        if (other.getOptOrder() != null)
-            this.optOrder = other.getOptOrder();
-        if (other.getOptReq() != null)
-            this.optReq = other.getOptReq();
-        if (other.getOptUrl() != null)
-            this.optUrl = other.getOptUrl();
-
-        if (other.getUpdator() != null)
-            this.updator =other.getUpdator();
-        if (other.getUpdateDate() != null)
-            this.updateDate =other.getUpdateDate();
-    }
-
     //创建人、更新人、更新时间
     public String getCreator() {
           return this.creator;

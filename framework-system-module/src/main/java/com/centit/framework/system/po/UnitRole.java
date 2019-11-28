@@ -138,12 +138,6 @@ public class UnitRole implements IUnitRole, EntityWithTimestamp, java.io.Seriali
         this.obtainDate =obtaindate;
     }
 
-    /*
-     * public void setSecededate(String ssecededate) { try { this.secededate =
-     * sdfDate.parse(ssecededate); } catch (ParseException e) {
-     * e.printStackTrace(); } }
-     */
-
     public String getChangeDesc() {
         return this.changeDesc;
     }
@@ -166,33 +160,6 @@ public class UnitRole implements IUnitRole, EntityWithTimestamp, java.io.Seriali
 
     public void setSecedeDate(Date secedeDate) {
         this.secedeDate = secedeDate;
-    }
-    public void copy(UnitRole other) {
-
-        this.setId(other.getId());
-        this.obtainDate = other.getObtainDate();
-        this.secedeDate = other.secedeDate;
-        this.changeDesc = other.getChangeDesc();
-        this.creator=other.creator;
-        this.updator=other.updator;
-        this.updateDate=other.updateDate;
-        this.createDate = other.getCreateDate();
-    }
-
-    public void copyNotNullProperty(UnitRole other) {
-        if(other.getId()!=null)
-            this.setId(other.getId());
-        if (other.getObtainDate() != null)
-            this.obtainDate = other.getObtainDate();
-        if (other.getChangeDesc() != null)
-            this.changeDesc = other.getChangeDesc();
-        if (other.getCreator() != null)
-            this.creator =other.getCreator();
-        if (other.getUpdator() != null)
-            this.updator =other.getUpdator();
-        if (other.getCreateDate() != null)
-            this.createDate = other.getCreateDate();
-        this.secedeDate = other.secedeDate;
     }
 
     //创建人、更新人、更新时间

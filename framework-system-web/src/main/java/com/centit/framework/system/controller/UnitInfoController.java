@@ -370,10 +370,6 @@ public class UnitInfoController extends BaseController {
                 return ResponseData.makeErrorMessage("该机构存在关联用户，不能设为禁用！");
             }
         }
-
-        UnitInfo oldValue = new UnitInfo();
-        oldValue.copy(dbUnitInfo);
-
         sysUnitManager.updateUnitInfo(unitInfo);
 
         return ResponseData.makeResponseData(unitInfo);

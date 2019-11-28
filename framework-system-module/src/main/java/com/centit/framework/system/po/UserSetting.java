@@ -181,19 +181,7 @@ public class UserSetting implements IUserSetting,java.io.Serializable {
         this.createDate = createDate;
     }
 
-    public void copy(UserSetting other) {
-
-        this.setUserCode(other.getUserCode());
-        this.setParamCode(other.getParamCode());
-
-        this.paramValue = other.getParamValue();
-        this.optId = other.getOptId();
-        this.paramName = other.getParamName();
-        this.createDate = other.getCreateDate();
-
-    }
-
-    public void copyNotNullProperty(IUserSetting other) {
+     public void copyFromIUserSetting(IUserSetting other) {
 
         if (other.getUserCode() != null)
             this.setUserCode(other.getUserCode());
@@ -208,12 +196,4 @@ public class UserSetting implements IUserSetting,java.io.Serializable {
             this.paramName = other.getParamName();
     }
 
-    public void clearProperties() {
-
-        this.paramValue = null;
-        this.optId = null;
-        this.paramName = null;
-        this.createDate = null;
-
-    }
 }

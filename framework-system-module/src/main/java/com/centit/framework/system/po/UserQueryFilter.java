@@ -1,6 +1,9 @@
 package com.centit.framework.system.po;
 
 import com.centit.framework.core.dao.DictionaryMap;
+import com.centit.support.database.orm.GeneratorCondition;
+import com.centit.support.database.orm.GeneratorType;
+import com.centit.support.database.orm.ValueGenerator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
@@ -66,6 +69,8 @@ public class UserQueryFilter implements java.io.Serializable {
 
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
+    @ValueGenerator(strategy= GeneratorType.FUNCTION,
+                  condition= GeneratorCondition.ALWAYS, value="today()")
     protected Date createDate;
 
     // Constructors
@@ -141,48 +146,5 @@ public class UserQueryFilter implements java.io.Serializable {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
-    }
-
-
-    public UserQueryFilter copy(UserQueryFilter other){
-
-        this.setFilterNo(other.getFilterNo());
-        this.userCode= other.getUserCode();
-        this.modleCode= other.getModleCode();
-        this.filterName= other.getFilterName();
-        this.filterValue= other.getFilterValue();
-        this.isDefault= other.getIsDefault();
-        this.createDate= other.getCreateDate();
-
-        return this;
-    }
-
-    public UserQueryFilter copyNotNullProperty(UserQueryFilter other){
-
-    if( other.getFilterNo() != null)
-        this.setFilterNo(other.getFilterNo());
-        if( other.getUserCode() != null)
-            this.userCode= other.getUserCode();
-        if( other.getModleCode() != null)
-            this.modleCode= other.getModleCode();
-        if( other.getFilterName() != null)
-            this.filterName= other.getFilterName();
-        if( other.getFilterValue() != null)
-            this.filterValue= other.getFilterValue();
-        if( other.getIsDefault() != null)
-            this.isDefault= other.getIsDefault();
-        if( other.getCreateDate() != null)
-            this.createDate= other.getCreateDate();
-        return this;
-    }
-
-    public UserQueryFilter clearProperties(){
-        this.userCode= null;
-        this.modleCode= null;
-        this.filterName= null;
-        this.filterValue= null;
-        this.isDefault=null;
-        this.createDate=null;
-        return this;
     }
 }

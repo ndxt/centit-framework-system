@@ -324,10 +324,8 @@ public class UserRoleController extends BaseController {
         userRole.setCreateDate(new Date());
         if (userCode != null && userCode.length > 0) {
             for (String u : userCode) {
-                UserRole ur = new UserRole();
-                ur.copy(userRole);
-                ur.setUserCode(u);
-                sysUserRoleManager.mergeObject(ur);
+                userRole.setUserCode(u);
+                sysUserRoleManager.mergeObject(userRole);
             }
         } else {
             sysUserRoleManager.mergeObject(userRole);

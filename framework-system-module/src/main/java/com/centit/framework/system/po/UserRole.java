@@ -238,37 +238,6 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
         this.createDate = createDate;
     }
 
-    public void copy(UserRole other) {
-
-        this.setId(other.getId());
-        this.obtainDate = other.getObtainDate();
-        this.changeDesc = other.getChangeDesc();
-        this.creator=other.creator;
-        this.updator=other.updator;
-        this.updateDate=other.updateDate;
-        this.secedeDate =other.secedeDate;
-        this.createDate = other.getCreateDate();
-    }
-
-    public void copyNotNullProperty(UserRole other) {
-        if(other.getId()!=null)
-            this.setId(other.getId());
-        if (other.getObtainDate() != null)
-            this.obtainDate = other.getObtainDate();
-        if (other.getChangeDesc() != null)
-            this.changeDesc = other.getChangeDesc();
-        if (other.getCreator() != null)
-            this.creator =other.getCreator();
-        if (other.getUpdator() != null)
-            this.updator =other.getUpdator();
-        if (other.getUpdateDate() != null)
-            this.updateDate =other.getUpdateDate();
-        if (other.getCreateDate() != null)
-            this.createDate = other.getCreateDate();
-
-        this.secedeDate =other.secedeDate;
-    }
-
     //创建人、更新人、更新时间
     public String getCreator() {
           return this.creator;

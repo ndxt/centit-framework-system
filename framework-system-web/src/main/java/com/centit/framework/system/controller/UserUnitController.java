@@ -281,12 +281,7 @@ public class UserUnitController extends BaseController {
             return ResponseData.makeErrorMessage("当前机构中无此用户");
         }
 
-        UserUnit oldValue = new UserUnit();
-        oldValue.copy(dbUserUnit);
-
-        dbUserUnit.copy(userUnit);
-
-        sysUserUnitManager.updateUserUnit(dbUserUnit);
+        sysUserUnitManager.updateUserUnit(userUnit);
 
         return ResponseData.makeResponseData(userUnit);
 

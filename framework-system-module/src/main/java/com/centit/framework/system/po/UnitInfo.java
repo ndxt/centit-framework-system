@@ -16,7 +16,6 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -314,104 +313,6 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
     @Override
     public void setLastModifyDate(Date lastModifyDate) {
         this.updateDate = lastModifyDate;
-    }
-
-
-    public void copy(UnitInfo other) {
-        this.unitCode = other.getUnitCode();
-        this.parentUnit = other.getParentUnit();
-        this.unitType = other.getUnitType();
-        this.isValid = other.getIsValid();
-        this.unitTag = other.getUnitTag();
-        this.unitName = other.getUnitName();
-        this.englishName = other.getEnglishName();
-        this.unitShortName = other.getUnitShortName();
-        this.unitDesc = other.getUnitDesc();
-        this.unitOrder = other.getUnitOrder();
-        this.depNo = other.getDepNo();
-        this.unitWord = other.getUnitWord();
-        this.unitGrade = other.getUnitGrade();
-        this.creator=other.getCreator();
-        this.updator=other.getUpdator();
-        this.createDate = other.getCreateDate();
-        this.updateDate=other.getUpdateDate();
-        this.unitPath =other.getUnitPath();
-        this.unitManager = other.getUnitManager();
-    }
-
-    public void copyNotNullProperty(UnitInfo other) {
-
-        if (other.getUnitCode() != null) {
-          this.unitCode = other.getUnitCode();
-        }
-        if (other.getParentUnit() != null) {
-          this.parentUnit = other.getParentUnit();
-        }
-        if (other.getUnitType() != null) {
-          this.unitType = other.getUnitType();
-        }
-        if (other.getIsValid() != null) {
-          this.isValid = other.getIsValid();
-        }
-        if (other.getUnitName() != null) {
-          this.unitName = other.getUnitName();
-        }
-        if (other.getUnitDesc() != null) {
-          this.unitDesc = other.getUnitDesc();
-        }
-        if (other.getUnitShortName() != null) {
-          this.unitShortName = other.getUnitShortName();
-        }
-        if (other.getUnitOrder() != null) {
-          this.unitOrder = other.getUnitOrder();
-        }
-        if (other.getUnitWord() != null) {
-          this.unitWord = other.getUnitWord();
-        }
-        if (other.getUnitGrade() != null) {
-          this.unitGrade = other.getUnitGrade();
-        }
-        if (other.getDepNo() != null) {
-          this.depNo = other.getDepNo();
-        }
-        if (other.getUnitTag() != null) {
-          this.unitTag = other.getUnitTag();
-        }
-        if (other.getEnglishName() != null) {
-          this.englishName = other.getEnglishName();
-        }
-        if (other.getCreator() != null) {
-          this.creator = other.getCreator();
-        }
-        if (other.getUpdator() != null) {
-          this.updator = other.getUpdator();
-        }
-        if (other.getUpdateDate() != null) {
-          this.updateDate = other.getUpdateDate();
-        }
-        if (other.getUnitPath() != null) {
-          this.unitPath = other.getUnitPath();
-        }
-        if (other.getUnitManager() != null) {
-          this.unitManager = other.getUnitManager();
-        }
-    }
-
-    public static String[] field2Name(Field[] f) {
-        String[] name = new String[f.length];
-        for (int i = 0; i < f.length; i++) {
-            name[i] = f[i].getName();
-        }
-        return name;
-    }
-
-    public static Object[] field2Value(Field[] f, UserInfo o)
-            throws IllegalArgumentException, IllegalAccessException {
-        Object[] value = new Object[f.length];
-        for (int i = 0; i < f.length; i++) {
-            value[i] = f[i].get(o);
-        }
-        return value;
     }
 
     @Override

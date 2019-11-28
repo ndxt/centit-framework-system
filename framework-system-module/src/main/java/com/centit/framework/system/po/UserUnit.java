@@ -236,91 +236,39 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
         this.createDate = createDate;
     }
 
-    public void copy(UserUnit other) {
-        this.userUnitId  = other.getUserUnitId();
-        this.xzRank = other.getXzRank();
-        this.isPrimary = other.getIsPrimary();
-        this.createDate = other.getCreateDate();
-        this.rankMemo = other.getRankMemo();
-        this.userRank = other.getUserRank();
-        this.userStation = other.getUserStation();
-        this.userCode = other.getUserCode();
-        this.unitCode = other.getUnitCode();
-        this.userOrder = other.getUserOrder();
-        this.creator=other.creator;
-        this.updator=other.updator;
-        this.updateDate=other.updateDate;
-     }
-
-    public void copyNotNullProperty(UserUnit other) {
-
-        this.xzRank = other.getXzRank();
-
-        if (null != other.getIsPrimary()) {
-            this.isPrimary = other.getIsPrimary();
-        }
-        if (null != other.getCreateDate()) {
-            this.createDate = other.getCreateDate();
-        }
-        if (null != other.getRankMemo()) {
-            this.rankMemo = other.getRankMemo();
-        }
-        if (null != other.getUserRank()) {
-            this.userRank = other.getUserRank();
-        }
-        if (null != other.getUserStation()) {
-            this.userStation = other.getUserStation();
-        }
-        if (null != other.getUserCode()) {
-            this.userCode = other.getUserCode();
-        }
-        if (null != other.getUnitCode()) {
-            this.unitCode = other.getUnitCode();
-        }
-        if (null != other.getUserOrder()) {
-            this.userOrder = other.getUserOrder();
-        }
-        if (other.getCreator() != null)
-            this.creator =other.getCreator();
-        if (other.getUpdator() != null)
-            this.updator =other.getUpdator();
-        if (other.getUpdateDate() != null)
-            this.updateDate =other.getUpdateDate();
-    }
-
     //创建人、更新人、更新时间
     public String getCreator() {
           return this.creator;
       }
 
-      public void setCreator(String creator) {
-          this.creator = creator;
-      }
-
-      public String getUpdator() {
-          return this.updator;
-      }
-
-      public void setUpdator(String updator) {
-          this.updator = updator;
-      }
-
-      public Date getUpdateDate() {
-          return updateDate;
-      }
-
-      public void setUpdateDate(Date updateDate) {
-          this.updateDate = updateDate;
-      }
-
-      @Override
-      public Date getLastModifyDate() {
-          return updateDate;
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
-      @Override
-      public void setLastModifyDate(Date lastModifyDate) {
-          this.updateDate = lastModifyDate;
+    public String getUpdator() {
+        return this.updator;
+    }
+
+    public void setUpdator(String updator) {
+        this.updator = updator;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    @Override
+    public Date getLastModifyDate() {
+        return updateDate;
+    }
+
+    @Override
+    public void setLastModifyDate(Date lastModifyDate) {
+        this.updateDate = lastModifyDate;
     }
     //结束
 }

@@ -130,25 +130,6 @@ public class RolePower implements IRolePower, EntityWithTimestamp, java.io.Seria
         this.optScopeCodes = optScopeCodes;
     }
 
-    public void copyNotNullProperty(RolePower other) {
-        if (other.getOptScopeCodes() != null)
-            this.optScopeCodes = other.getOptScopeCodes();
-        if (other.getCreator() != null)
-            this.creator = other.getCreator();
-        if (other.getUpdator() != null)
-            this.updator = other.getUpdator();
-        if (other.getUpdateDate() != null)
-            this.updateDate = other.getUpdateDate();
-    }
-
-    public void copy(RolePower other) {
-        this.optScopeCodes = other.getOptScopeCodes();
-        this.creator=other.creator;
-        this.updator=other.updator;
-        this.updateDate=other.updateDate;
-    }
-
-
     public Date getCreateDate() {
         return createDate;
     }

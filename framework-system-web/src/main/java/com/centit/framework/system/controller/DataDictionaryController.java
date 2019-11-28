@@ -310,12 +310,6 @@ public class DataDictionaryController extends BaseController {
                                          @Valid DataDictionary dataDictionary,
                                          HttpServletRequest request) {
 
-        DataDictionary dbDataDictionary = dataDictionaryManager.getDataDictionaryPiece(new DataDictionaryId(catalogCode,
-            dataCode));
-
-        DataDictionary oldValue = new DataDictionary();
-        oldValue.copy(dbDataDictionary);
-
         DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
 
         dictionaryPreHandler(dbDataCatalog, dataDictionary);
@@ -360,9 +354,6 @@ public class DataDictionaryController extends BaseController {
 
         DataDictionary dbDataDictionary = dataDictionaryManager.getDataDictionaryPiece(new DataDictionaryId(catalogCode,
             dataCode));
-
-        DataDictionary oldValue = new DataDictionary();
-        oldValue.copy(dbDataDictionary);
 
         DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
 

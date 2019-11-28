@@ -146,8 +146,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
 
         if(compareMethod.getMiddle() != null){
             for(Pair<OptMethod, OptMethod> pair : compareMethod.getMiddle()){
-                pair.getLeft().copyNotNullProperty(pair.getRight());
-                optMethodDao.updateOptMethod(pair.getLeft());
+                optMethodDao.updateOptMethod(pair.getRight());
             }
         }
 
@@ -178,8 +177,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
 
         if(compareScope.getMiddle() != null){
             for(Pair<OptDataScope, OptDataScope> pair : compareScope.getMiddle()){
-                pair.getLeft().copyNotNullProperty(pair.getRight());
-                dataScopeDao.updateOptDataScope(pair.getLeft());
+                dataScopeDao.updateOptDataScope(pair.getRight());
             }
         }
 

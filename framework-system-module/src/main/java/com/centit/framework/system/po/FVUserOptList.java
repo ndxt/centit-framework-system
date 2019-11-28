@@ -123,20 +123,4 @@ public class FVUserOptList implements java.io.Serializable {
         this.optMethod = optmethod;
     }
 
-    public void copy(FVUserOptList other) {
-        this.id = other.getId();
-        this.optName = other.getOptName();
-        this.optId = other.getOptId();
-        this.optMethod = other.getOptMethod();
-    }
-
-    public void copyNotNullProperty(FVUserOptList other) {
-
-        if (other.getOptName() != null)
-            this.optName = other.getOptName();
-        if (other.getOptId() != null)
-            this.optId = other.getOptId();
-        if (other.getOptMethod() != null)
-            this.optMethod = other.getOptMethod();
-    }
 }

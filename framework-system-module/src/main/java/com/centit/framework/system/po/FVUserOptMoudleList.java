@@ -339,51 +339,6 @@ public class FVUserOptMoudleList implements java.io.Serializable {
         return result;
     }
 
-
-    public void copy(FVUserOptMoudleList other) {
-
-        this.userCode = other.getUserCode();
-        this.optName = other.getOptName();
-        this.preOptId = other.getPreOptId();
-        this.formCode = other.getFormCode();
-        this.optUrl = other.getOptUrl();
-        this.msgNo = other.getMsgNo();
-        this.msgPrm = other.getMsgPrm();
-        this.isInToolbar = other.getIsInToolbar();
-        this.imgIndex = other.getImgIndex();
-        this.topOptId = other.getTopOptId();
-        this.orderInd = other.getOrderInd();
-        this.pageType = other.getPageType();
-    }
-
-    public void copyNotNullProperty(FVUserOptMoudleList other) {
-
-        if (other.getUserCode() != null)
-            this.userCode = other.getUserCode();
-        if (other.getOptName() != null)
-            this.optName = other.getOptName();
-        if (other.getPreOptId() != null)
-            this.preOptId = other.getPreOptId();
-        if (other.getFormCode() != null)
-            this.formCode = other.getFormCode();
-        if (other.getOptUrl() != null)
-            this.optUrl = other.getOptUrl();
-        if (other.getMsgNo() != null)
-            this.msgNo = other.getMsgNo();
-        if (other.getMsgPrm() != null)
-            this.msgPrm = other.getMsgPrm();
-        if (other.getIsInToolbar() != null)
-            this.isInToolbar = other.getIsInToolbar();
-        if (other.getImgIndex() != null)
-            this.imgIndex = other.getImgIndex();
-        if (other.getTopOptId() != null)
-            this.topOptId = other.getTopOptId();
-        if (other.getOrderInd() != null)
-            this.orderInd = other.getOrderInd();
-        if (other.getPageType() != null)
-            this.pageType = other.getPageType();
-    }
-
     public String getOptType() {
         return optType;
     }

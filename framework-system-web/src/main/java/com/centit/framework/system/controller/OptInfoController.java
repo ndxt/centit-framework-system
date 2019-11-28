@@ -350,16 +350,8 @@ public class OptInfoController extends BaseController {
             return ResponseData.makeErrorMessage(ResponseData.ERROR_INTERNAL_SERVER_ERROR,
                 "数据库不匹配,数据库中不存在optId为" + optId + "的业务信息。");
         }
-
-        OptMethod dbOptDef = optMethodManager.getObjectById(optCode);
-        if (null == dbOptDef) {
-            return ResponseData.makeErrorMessage(ResponseData.ERROR_INTERNAL_SERVER_ERROR,
-                "数据库不匹配, 数据库中不存在optCode为" + optCode + "的操作信息。");
-        } else {
-            dbOptDef.copy(optDef);
-            optMethodManager.updateOptMethod(dbOptDef);
-        }
-
+        optDef.setOptCode(optCode);
+        optMethodManager.updateOptMethod(optDef);
         return ResponseData.makeSuccessResponse();
     }
 

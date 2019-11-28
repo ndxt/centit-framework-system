@@ -192,10 +192,8 @@ public class UnitRoleController extends BaseController {
         unitRole.setCreateDate(new Date());
         if (unitCode != null && unitCode.length > 0) {
             for (String u : unitCode) {
-                UnitRole ur = new UnitRole();
-                ur.copy(unitRole);
-                ur.setUnitCode(u);
-                sysUnitRoleManager.saveNewUnitRole(ur);
+                unitRole.setUnitCode(u);
+                sysUnitRoleManager.saveNewUnitRole(unitRole);
             }
         } else {
             sysUnitRoleManager.mergeUnitRole(unitRole);
@@ -236,8 +234,7 @@ public class UnitRoleController extends BaseController {
         if (null == dbUnitRole) {
             throw new ObjectException(unitRole, "当前角色中无此机构");
         }
-        dbUnitRole.copyNotNullProperty(unitRole);
-        sysUnitRoleManager.updateUnitRole(dbUnitRole);
+        sysUnitRoleManager.updateUnitRole(unitRole);
         return dbUnitRole;
     }
 

@@ -38,6 +38,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
     @Id
     @Column(name = "CATALOG_CODE")
     @ApiModelProperty(value = "类别代码",name = "catalogCode",required = true)
+    @ValueGenerator(strategy = GeneratorType.UUID22)
     private String catalogCode;
 
     /**
@@ -294,46 +295,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
         this.updateDate = lastModifyDate;
     }
     //结束
-    public void copy(DataCatalog other) {
-
-        this.catalogName = other.getCatalogName();
-        this.catalogStyle = other.getCatalogStyle();
-        this.catalogType = other.getCatalogType();
-        this.catalogDesc = other.getCatalogDesc();
-        this.fieldDesc = other.getFieldDesc();
-        this.optId = other.getOptId();
-        this.needCache = other.getNeedCache();
-        this.creator=other.creator;
-        this.updator=other.updator;
-        this.updateDate=other.updateDate;
-    }
-
-    public void copyNotNullProperty(DataCatalog other) {
-
-        if (other.getCatalogName() != null)
-            this.catalogName = other.getCatalogName();
-        if (other.getCatalogStyle() != null)
-            this.catalogStyle = other.getCatalogStyle();
-        if (other.getCatalogType() != null)
-            this.catalogType = other.getCatalogType();
-        if (other.getCatalogDesc() != null)
-            this.catalogDesc = other.getCatalogDesc();
-        if (other.getFieldDesc() != null)
-            this.fieldDesc = other.getFieldDesc();
-        if (other.getOptId() != null) {
-            this.optId = other.getOptId();
-            this.needCache = other.getOptId() == null ? "1" : other.getNeedCache();
-        }
-        if (other.getCreator() != null)
-            this.creator =other.getCreator();
-        if (other.getUpdator() != null)
-            this.updator =other.getUpdator();
-        if (other.getUpdateDate() != null)
-            this.updateDate =other.getUpdateDate();
-    }
-
-
-    public void addAllDataPiece(List<DataDictionary> dataDictionaries) {
+     public void addAllDataPiece(List<DataDictionary> dataDictionaries) {
         getDataDictionaries().clear();
 
         if (CollectionUtils.isEmpty(dataDictionaries)) {

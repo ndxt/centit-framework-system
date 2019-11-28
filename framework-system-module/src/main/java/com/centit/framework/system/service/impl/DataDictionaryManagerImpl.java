@@ -88,13 +88,8 @@ public class DataDictionaryManagerImpl implements
                 DataDictionary newD = updateDp.getRight();
 
                 if(isAdmin || "U".equals(oldD.getDataStyle())){
-                    /*BeanUtils.copyProperties(newD, oldD, new String[]{"id","dataStyle"});
-                    dictionaryDao.updateUserUnit(oldD);*/
-                    oldD.copy(newD);
-                }else{ // 否则只能排序
-                    oldD.setDataOrder(newD.getDataOrder());
+                    dictionaryDao.updateDictionary(newD);
                 }
-                dictionaryDao.updateDictionary(oldD);
             }
         }
         CodeRepositoryCache.evictCache("DataCatalog");

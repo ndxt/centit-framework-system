@@ -144,19 +144,9 @@ public class QueryFilterConditionController extends BaseController {
     })
     @RequestMapping(value = "/{conditionNo}", method = {RequestMethod.PUT})
     @WrapUpResponseBody
-    public ResponseData updateQueryFilterCondition(@PathVariable Long conditionNo,
+    public void updateQueryFilterCondition(@PathVariable Long conditionNo,
                                                    @Valid QueryFilterCondition queryFilterCondition) {
-
-        QueryFilterCondition dbQueryFilterCondition =
-            queryFilterConditionMag.getObjectById(conditionNo);
-
-        if (null != queryFilterCondition) {
-            dbQueryFilterCondition.copy(queryFilterCondition);
-            queryFilterConditionMag.mergeObject(dbQueryFilterCondition);
-        } else {
-            return ResponseData.makeErrorMessage("当前对象不存在");
-        }
-
-        return ResponseData.makeSuccessResponse();
+        queryFilterCondition.setConditionNo(conditionNo);
+        queryFilterConditionMag.mergeObject(queryFilterCondition);
     }
 }

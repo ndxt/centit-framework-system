@@ -17,7 +17,9 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * FUserinfo entity.
@@ -457,31 +459,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         this.updateDate = updateDate;
     }
 
-    public void copy(UserInfo other) {
-        this.userCode = other.getUserCode();
-        this.userPin = other.getUserPin();
-        this.isValid = other.getIsValid();
-        this.loginName = other.getLoginName();
-        this.userName = other.getUserName();
-        this.userDesc = other.getUserDesc();
-        this.primaryUnit=other.getPrimaryUnit();
-        this.loginTimes = other.getLoginTimes();
-        this.activeTime = other.getActiveTime();
-        this.topUnit = other.getTopUnit();
-        this.regEmail = other.getRegEmail();
-        this.regCellPhone = other.getRegCellPhone();
-        this.userOrder = other.getUserOrder();
-        this.userType = other.getUserType();
-        this.userTag = other.getUserTag();
-        this.englishName =other.getEnglishName();
-        this.replaceUserRoles(other.getUserRoles());
-        this.creator=other.creator;
-        this.updator=other.updator;
-        this.createDate =other.getCreateDate();
-        this.updateDate=other.updateDate;
-    }
-
-    public void copyNotNullProperty(IUserInfo other) {
+    public void copyFromIUserInfo(IUserInfo other) {
         if (other.getIsValid() != null)
             this.isValid = other.getIsValid();
         if (other.getUserType() != null)
@@ -507,67 +485,6 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
             this.userOrder = other.getUserOrder();
         if (other.getRegCellPhone() != null)
             this.regCellPhone = other.getRegCellPhone();
-    }
-
-    public void copyNotNullProperty(UserInfo other) {
-        /*if (other.getUserCode() != null)
-            this.userCode = other.getUserCode();
-        if (other.getUserPin() != null)
-            this.userPin = other.getUserPin();*/
-        if (other.getIsValid() != null)
-            this.isValid = other.getIsValid();
-        if (other.getUserType() != null)
-            this.userType = other.getUserType();
-        if(other.getPrimaryUnit()!=null)
-            this.primaryUnit=other.getPrimaryUnit();
-        if (other.getLoginName() != null)
-            this.loginName = other.getLoginName();
-        if (other.getUserName() != null)
-            this.userName = other.getUserName();
-        if (other.getUserDesc() != null)
-            this.userDesc = other.getUserDesc();
-        if (other.getLoginTimes() != null)
-            this.loginTimes = other.getLoginTimes();
-        if (other.getActiveTime() != null)
-            this.activeTime = other.getActiveTime();
-        if (other.getTopUnit() != null)
-            this.topUnit = other.getTopUnit();
-        if (other.getIdCardNo() != null)
-            this.idCardNo = other.getIdCardNo();
-        if (other.getRegEmail() != null)
-            this.regEmail = other.getRegEmail();
-        if (other.getUserTag() != null)
-            this.userTag = other.getUserTag();
-        if (other.getEnglishName() != null)
-            this.englishName =other.getEnglishName();
-        if (other.getUserOrder() != null)
-            this.userOrder = other.getUserOrder();
-        if (other.regCellPhone != null)
-            this.regCellPhone = other.getRegCellPhone();
-        if (other.getUserRoles() != null)
-            this.replaceUserRoles(other.getUserRoles());
-        if (other.getCreator() != null)
-            this.creator =other.getCreator();
-        if (other.getUpdator() != null)
-            this.updator =other.getUpdator();
-        if (other.getUpdateDate() != null)
-            this.updateDate =other.getUpdateDate();
-    }
-
-    public void clearProperties() {
-        this.userCode = null;
-        this.userPin = null;
-        this.isValid = null;
-        this.loginName = null;
-        this.userName = null;
-        this.userDesc = null;
-        this.loginTimes = null;
-        this.activeTime = null;
-        this.topUnit = null;
-        this.primaryUnit=null;
-        this.regEmail = null;
-        this.userType = null;
-        this.userOrder = null;
     }
 
     public Long getUserOrder() {
@@ -608,54 +525,5 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
         this.getUserRoles().remove(odt);
 
     }
-    /**
-     * 替换子类对象数组，这个函数主要是考虑hibernate中的对象的状态，以避免对象状态不一致的问题
-     * @param userRoles Collection UserRole
-     */
-    public void replaceUserRoles(Collection<UserRole> userRoles) {
-        //必须不稳null，如果为null 请直接调用删除
-        if(userRoles==null)
-            return;
-        List<UserRole> newObjs = new ArrayList<UserRole>();
-        for(UserRole p :userRoles){
-            if(p==null)
-                continue;
-            UserRole newdt = new UserRole();
-            newdt.copyNotNullProperty(p);
-            newObjs.add(newdt);
-        }
-        //delete
-        boolean found = false;
-        Set<UserRole> oldObjs = new HashSet<UserRole>();
-        oldObjs.addAll(getUserRoles());
 
-        for(Iterator<UserRole> it=oldObjs.iterator(); it.hasNext();){
-            UserRole odt = it.next();
-            found = false;
-            for(UserRole newdt :newObjs){
-                if(odt.getId().equals( newdt.getId())){
-                    found = true;
-                    break;
-                }
-            }
-            if(! found)
-                removeUserRole(odt);
-        }
-        oldObjs.clear();
-        //insert or update
-        for(UserRole newdt :newObjs){
-            found = false;
-            for(Iterator<UserRole> it = getUserRoles().iterator();
-                it.hasNext();){
-                UserRole odt = it.next();
-                if(odt.getId().equals( newdt.getId())){
-                    odt.copy(newdt);
-                    found = true;
-                    break;
-                }
-            }
-            if(! found)
-                addUserRole(newdt);
-        }
-    }
 }

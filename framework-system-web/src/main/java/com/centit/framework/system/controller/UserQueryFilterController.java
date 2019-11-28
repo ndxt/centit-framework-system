@@ -224,19 +224,9 @@ public class UserQueryFilterController extends BaseController {
     })
     @RequestMapping(value = "/{filterNo}", method = {RequestMethod.PUT})
     @WrapUpResponseBody
-    public ResponseData updateUserQueryFilter(@PathVariable Long filterNo,
+    public void updateUserQueryFilter(@PathVariable Long filterNo,
                                               @Valid UserQueryFilter userQueryFilter) {
-
-        UserQueryFilter dbUserQueryFilter =
-            userQueryFilterMag.getUserQueryFilter(filterNo);
-
-        if (null != userQueryFilter) {
-            dbUserQueryFilter.copy(userQueryFilter);
-            dbUserQueryFilter.setCreateDate(DatetimeOpt.currentUtilDate());
-            userQueryFilterMag.mergeObject(dbUserQueryFilter);
-        } else {
-            return ResponseData.makeErrorMessage("当前对象不存在");
-        }
-        return ResponseData.makeSuccessResponse();
+        userQueryFilter.setFilterNo(filterNo);
+        userQueryFilterMag.mergeObject(userQueryFilter);
     }
 }

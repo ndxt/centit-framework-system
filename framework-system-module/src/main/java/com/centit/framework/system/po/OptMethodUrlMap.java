@@ -46,8 +46,6 @@ public class OptMethodUrlMap implements java.io.Serializable {
         this.optReq = optmethod;
     }
 
-
-
     public String getOptCode() {
         return optCode;
     }
@@ -73,19 +71,4 @@ public class OptMethodUrlMap implements java.io.Serializable {
     }
 
 
-    public void copy(OptMethodUrlMap other) {
-        this.optCode = other.getOptCode();
-        this.optReq = other.getOptReq();
-        this.optDefUrl = other.getOptDefUrl();
-    }
-
-    public void copyNotNullProperty(OptMethodUrlMap other) {
-
-        if (other.getOptCode() != null)
-            this.optCode = other.getOptCode();
-        if (null == optReq)
-            this.optReq = other.getOptReq();
-        if (other.getOptDefUrl() != null)
-            this.optDefUrl = other.getOptDefUrl();
-    }
 }
