@@ -16,6 +16,7 @@ import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.*;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;
+import com.centit.support.common.ObjectException;
 import com.centit.support.database.utils.PageDesc;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -297,6 +298,29 @@ public class UnitInfoController extends BaseController {
         /*********log*********/
     }
 
+
+    /**
+     * 新建部门，仅仅是为了区分权限
+     *
+     * @param unitInfo UnitInfo
+     */
+    @ApiOperation(value = "新建机构", notes = "新建一个机构。")
+    @ApiImplicitParam(
+        name = "unitInfo", value = "json格式，机构信息对象",
+        paramType = "body", dataTypeClass = UnitInfo.class)
+    @RequestMapping(value = "department", method = RequestMethod.POST)
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增机构")
+    @WrapUpResponseBody
+    public ResponseData createDepartment(@Valid UnitInfo unitInfo, HttpServletRequest request) {
+        UnitInfo parentUnit = sysUnitManager.getObjectById(unitInfo.getParentUnit());
+        if(parentUnit == null ||
+            ! StringUtils.contains(parentUnit.getUnitPath(),
+                WebOptUtils.getCurrentUnitCode(request))){
+            throw new ObjectException(unitInfo, ResponseData.ERROR_BAD_PROCESS_DATASCOPE,
+                "用户只能添加其所在部门的下级部门。");
+        }
+        return create(unitInfo);
+    }
     /**
      * 更新机构信息
      *
