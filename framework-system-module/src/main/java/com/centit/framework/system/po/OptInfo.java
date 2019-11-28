@@ -3,6 +3,8 @@ package com.centit.framework.system.po;
 import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IOptInfo;
+import com.centit.support.database.orm.GeneratorType;
+import com.centit.support.database.orm.ValueGenerator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
@@ -29,7 +31,7 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
 
     @Id
     @Column(name = "OPT_ID")
-    //@GeneratedValue(generator = "assignedGenerator")
+    @ValueGenerator(strategy = GeneratorType.UUID)
     @ApiModelProperty(value = "业务菜单编号",name = "optId",required = true)
     private String optId; // 业务编号
 
@@ -53,7 +55,7 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     private String optType; // 业务类别
 
     @Column(name = "FORM_CODE")
-    @Length(max = 4, message = "字段长度不能大于{max}")
+    @Length(max = 32, message = "字段长度不能大于{max}")
     private String formCode; // 界面代码(C/S)
 
     /**
@@ -85,11 +87,11 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     private Long imgIndex; // 图标编号
 
     @Column(name = "TOP_OPT_ID")
-    @Length(max = 8, message = "字段长度不能大于{max}")
+    @Length(max = 32, message = "字段长度不能大于{max}")
     private String topOptId; // 顶层业务编号
 
     @Column(name = "FLOW_CODE")
-    @Length(max = 8, message = "字段长度不能大于{max}")
+    @Length(max = 32, message = "字段长度不能大于{max}")
     private String flowCode; // 流程代码
 
     @Column(name = "PAGE_TYPE")
@@ -99,7 +101,7 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
 
     @OrderBy
     @Column(name = "ORDER_IND")
-    @Range(max = 100000, message = "字段长度不能大于{max}")
+    @Range(max = 100000, message = "数值不能大于{max}")
     private Long orderInd; // 业务顺序
 
     @Column(name = "ICON")
@@ -107,11 +109,11 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     private String icon;// 图标
 
     @Column(name = "HEIGHT")
-    @Range(max = 100000, message = "字段长度不能大于{max}")
+    @Range(max = 100000, message = "数值不能大于{max}")
     private Long height;// 高度
 
     @Column(name = "WIDTH")
-    @Range(max = 100000, message = "字段长度不能大于{max}")
+    @Range(max = 100000, message = "数值不能大于{max}")
     private Long width;// 宽度
 
 
