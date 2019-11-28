@@ -1,14 +1,13 @@
 package com.centit.framework.system.po;
 
 import com.centit.framework.core.dao.DictionaryMap;
-import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IOptInfo;
+import com.centit.support.database.orm.GeneratorCondition;
 import com.centit.support.database.orm.GeneratorType;
 import com.centit.support.database.orm.ValueGenerator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.util.CollectionUtils;
 
@@ -26,7 +25,7 @@ import java.util.List;
 @Entity
 @Table(name = "F_OPTINFO")
 @ApiModel(value="业务菜单对象",description="业务菜单对象 OptInfo")
-public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializable{
+public class OptInfo implements IOptInfo, java.io.Serializable{
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -41,7 +40,6 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     private String preOptId; // 上级业务模块编号
 
     @Column(name = "OPT_NAME")
-    @NotBlank(message = "字段不能为空")
     @Length(max = 100, message = "字段长度不能大于{max}")
     @ApiModelProperty(value = "业务菜单名称，字段长度不能大于100",name = "optName",required = true)
     private String optName; // 业务名称
@@ -71,28 +69,16 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     @Length(max = 256, message = "字段长度不能大于{max}")
     private String optUrl; // 业务url（b/s）
 
-    @Column(name = "MSG_NO")
-    @Range(max = 1000000000, message = "字段长度不能大于{max}")
-    private Long msgNo; // 消息编号
-
-    @Column(name = "MSG_PRM")
-    @Length(max = 256, message = "字段长度不能大于{max}")
-    private String msgPrm; // 业务参数
-
     @Column(name = "IS_IN_TOOLBAR")
     private String isInToolbar; // 是否放入工具栏
 
     @Column(name = "IMG_INDEX")
-    @Range(max = 100000, message = "字段长度不能大于{max}")
+    @Range(max = 100000, message = "数值不能大于{max}")
     private Long imgIndex; // 图标编号
 
     @Column(name = "TOP_OPT_ID")
     @Length(max = 32, message = "字段长度不能大于{max}")
     private String topOptId; // 顶层业务编号
-
-    @Column(name = "FLOW_CODE")
-    @Length(max = 32, message = "字段长度不能大于{max}")
-    private String flowCode; // 流程代码
 
     @Column(name = "PAGE_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
@@ -116,7 +102,6 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
     @Range(max = 100000, message = "数值不能大于{max}")
     private Long width;// 宽度
 
-
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
@@ -138,6 +123,7 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
      * UPDATEDATE(更新时间) 更新时间
      */
     @Column(name = "UPDATE_DATE")
+    @ValueGenerator(strategy= GeneratorType.FUNCTION, condition= GeneratorCondition.ALWAYS, value="today()")
     private Date  updateDate;
     //结束
 
@@ -184,33 +170,6 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
 
         this.optName = optname;
     }
-
-    public OptInfo(String optid, String preoptid, String optname,
-            String formcode, String opturl, Long msgno, String msgprm,
-            String isintoolbar, Long imgindex, String topoptid, String opttype,
-            String wfcode, Long orderind, String pageType, String icon,
-            Long height, Long width) {
-
-        this.optId = optid;
-
-        this.preOptId = preoptid;
-        this.optName = optname;
-        this.formCode = formcode;
-        this.optUrl = opturl;
-        this.msgNo = msgno;
-        this.msgPrm = msgprm;
-        this.isInToolbar = isintoolbar;
-        this.imgIndex = imgindex;
-        this.topOptId = topoptid;
-        this.optType = opttype;
-        this.flowCode = wfcode;
-        this.orderInd = orderind;
-        this.pageType = pageType;
-        this.icon = icon;
-        this.height = height;
-        this.width = width;
-    }
-
     public String getOptId() {
         return this.optId;
     }
@@ -257,30 +216,6 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
 
     public void setOptUrl(String opturl) {
         this.optUrl = opturl;
-    }
-
-    public String getFlowCode() {
-        return flowCode;
-    }
-
-    public void setFlowCode(String wfcode) {
-        this.flowCode = wfcode;
-    }
-
-    public Long getMsgNo() {
-        return this.msgNo;
-    }
-
-    public void setMsgNo(Long msgno) {
-        this.msgNo = msgno;
-    }
-
-    public String getMsgPrm() {
-        return this.msgPrm;
-    }
-
-    public void setMsgPrm(String msgprm) {
-        this.msgPrm = msgprm;
     }
 
     public String getIsInToolbar() {
@@ -371,13 +306,10 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
         this.optName = other.getOptName();
         this.formCode = other.getFormCode();
         this.optUrl = other.getOptUrl();
-        this.msgNo = other.getMsgNo();
-        this.msgPrm = other.getMsgPrm();
         this.isInToolbar = other.getIsInToolbar();
         this.imgIndex = other.getImgIndex();
         this.topOptId = other.getTopOptId();
         this.optType = other.getOptType();
-        this.flowCode = other.getFlowCode();
         this.orderInd = other.getOrderInd();
         this.pageType = other.getPageType();
         this.icon = other.getIcon();
@@ -390,78 +322,6 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
         this.state = other.getState();
         this.createDate = other.getCreateDate();
     }
-
-    public void copyNotNullProperty(OptInfo other) {
-
-        if (other.getPreOptId() != null)
-            this.preOptId = other.getPreOptId();
-        if (other.getOptName() != null)
-            this.optName = other.getOptName();
-        if (other.getFormCode() != null)
-            this.formCode = other.getFormCode();
-        if (other.getOptUrl() != null)
-            this.optUrl = other.getOptUrl();
-        if (other.getMsgNo() != null)
-            this.msgNo = other.getMsgNo();
-        if (other.getMsgPrm() != null)
-            this.msgPrm = other.getMsgPrm();
-        if (other.getIsInToolbar() != null)
-            this.isInToolbar = other.getIsInToolbar();
-        if (other.getImgIndex() != null)
-            this.imgIndex = other.getImgIndex();
-        if (other.getTopOptId() != null)
-            this.topOptId = other.getTopOptId();
-        if (other.getOptType() != null)
-            this.optType = other.getOptType();
-        if (other.getFlowCode() != null)
-            this.flowCode = other.getFlowCode();
-        if (other.getOrderInd() != null)
-            this.orderInd = other.getOrderInd();
-        if (other.getPageType() != null)
-            this.pageType = other.getPageType();
-        if (other.getIcon() != null)
-            this.icon = other.getIcon();
-        if (other.getHeight() != null)
-            this.height = other.getHeight();
-        if (other.getWidth() != null)
-            this.width = other.getWidth();
-        if (null != other.getOptRoute()) {
-            this.optRoute = other.getOptRoute();
-        }
-        if (other.getCreator() != null)
-            this.creator =other.getCreator();
-        if (other.getUpdator() != null)
-            this.updator =other.getUpdator();
-        if (other.getUpdateDate() != null)
-            this.updateDate =other.getUpdateDate();
-        if (other.getState() != null)
-            this.state = other.getState();
-        if (other.getCreateDate() != null)
-            this.createDate = other.getCreateDate();
-    }
-
-    public void clearProperties() {
-        this.preOptId = null;
-        this.optName = null;
-        this.formCode = null;
-        this.optUrl = null;
-        this.msgNo = null;
-        this.msgPrm = null;
-        this.isInToolbar = null;
-        this.imgIndex = null;
-        this.topOptId = null;
-        this.optType = null;
-        this.flowCode = null;
-        this.orderInd = null;
-        this.pageType = "I";
-        this.icon = null;
-        this.height = null;
-        this.width = null;
-        this.optRoute = null;
-        this.state = null;
-        this.createDate = null;
-    }
-
     public List<OptInfo> getChildren() {
         return children;
     }
@@ -572,14 +432,5 @@ public class OptInfo implements IOptInfo, EntityWithTimestamp, java.io.Serializa
           this.updateDate = updateDate;
       }
 
-      @Override
-      public Date getLastModifyDate() {
-          return updateDate;
-    }
 
-      @Override
-      public void setLastModifyDate(Date lastModifyDate) {
-          this.updateDate = lastModifyDate;
-    }
-    //结束
 }

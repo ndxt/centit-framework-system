@@ -226,10 +226,7 @@ public class OptInfoController extends BaseController {
             }
         }
 
-        dbOptInfo.copyNotNullProperty(optInfo);
-        //BeanUtils.copyProperties(optInfo, dbOptInfo, "optMethods", "dataScopes");
-        optInfoManager.updateOptInfo(dbOptInfo);
-
+        optInfoManager.updateOptInfo(optInfo);
         return ResponseData.makeResponseData(dbOptInfo);
     }
 
@@ -271,11 +268,9 @@ public class OptInfoController extends BaseController {
             }
         }
 
-        dbOptInfo.copyNotNullProperty(optInfo);
-
-        dbOptInfo.addAllOptMethods(optInfo.getOptMethods());
-        dbOptInfo.addAllDataScopes(optInfo.getDataScopes());
-        optInfoManager.updateOperationPower(dbOptInfo);
+    /*  dbOptInfo.addAllOptMethods(optInfo.getOptMethods());
+        dbOptInfo.addAllDataScopes(optInfo.getDataScopes());*/
+        optInfoManager.updateOperationPower(optInfo);
         return ResponseData.makeSuccessResponse();
     }
 
