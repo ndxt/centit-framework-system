@@ -42,15 +42,43 @@ public class OptInfoManagerImpl implements OptInfoManager {
         return dataScopeDao.listAllDataScope();
     }
 
+
+    private void checkOptInfoProperties(OptInfo optInfo){
+        if("N".equals(optInfo.getIsInToolbar())){
+            List<OptInfo> optInfos = findSubOptInfo(optInfo.getOptId());
+            for(OptInfo o : optInfos){
+                o.setIsInToolbar("N");
+                optInfoDao.updateOptInfo(o);
+            }
+        }else{
+            List<OptInfo> optInfos = findPreOptInfo(optInfo.getPreOptId());
+            for(OptInfo o : optInfos){
+                o.setIsInToolbar("Y");
+                optInfoDao.updateOptInfo(o);
+            }
+        }
+        List<OptInfo> optInfos = findSubOptInfo(optInfo.getOptId());
+        optInfos.addAll(findPreOptInfo(optInfo.getPreOptId()));
+        for(OptInfo o : optInfos) {
+            o.setOptType(optInfo.getOptType());
+            optInfoDao.updateOptInfo(o);
+        }
+
+        OptInfo parentOpt = optInfoDao.getObjectById(optInfo.getPreOptId());
+        if (parentOpt == null) {
+            optInfo.setPreOptId("0");
+            optInfo.setTopOptId(optInfo.getOptId());
+        } else {
+            optInfo.setTopOptId(parentOpt.getTopOptId());
+        }
+    }
+
     @Override
     @Transactional
     public void saveNewOptInfo(OptInfo optInfo){
         //同步菜单上下级显示与否
-        syncState(optInfo);
-        OptInfo parentOpt = optInfoDao.getObjectById(optInfo.getPreOptId());
-        if (parentOpt == null) {
-            optInfo.setPreOptId("0");
-        }
+        checkOptInfoProperties(optInfo);
+
 
         optInfoDao.saveNewObject( optInfo );
 
@@ -80,7 +108,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Override
     @Transactional
     public void updateOptInfo(OptInfo optInfo) {
-        syncState(optInfo);
+        checkOptInfoProperties(optInfo);
         optInfoDao.updateOptInfo(optInfo);
         CodeRepositoryCache.evictCache("OptInfo");
     }
@@ -180,8 +208,9 @@ public class OptInfoManagerImpl implements OptInfoManager {
 
     @Override
     @Transactional
-    public void deleteOptInfo(OptInfo optinfo){
-        deleteOptInfoById(optinfo.getOptId());
+    public int countSubOptInfo(String optId){
+        return optInfoDao.countObject(
+            CollectionsOpt.createHashMap("preOptId", optId));
     }
 
     @Override
@@ -346,27 +375,6 @@ public class OptInfoManagerImpl implements OptInfoManager {
         return result;
     }
 
-    private void syncState(OptInfo optInfo){
-        if("N".equals(optInfo.getIsInToolbar())){
-            List<OptInfo> optInfos = findSubOptInfo(optInfo.getOptId());
-            for(OptInfo o : optInfos){
-                o.setIsInToolbar("N");
-                optInfoDao.updateOptInfo(o);
-            }
-        }else{
-            List<OptInfo> optInfos = findPreOptInfo(optInfo.getPreOptId());
-            for(OptInfo o : optInfos){
-                o.setIsInToolbar("Y");
-                optInfoDao.updateOptInfo(o);
-            }
-        }
-        List<OptInfo> optInfos = findSubOptInfo(optInfo.getOptId());
-        optInfos.addAll(findPreOptInfo(optInfo.getPreOptId()));
-        for(OptInfo o : optInfos) {
-          o.setOptType(optInfo.getOptType());
-          optInfoDao.updateOptInfo(o);
-        }
-      }
 
     @Override
     @Transactional

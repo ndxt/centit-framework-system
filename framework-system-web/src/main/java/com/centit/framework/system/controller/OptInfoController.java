@@ -9,12 +9,12 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.DictionaryMapUtils;
-import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.service.OptInfoManager;
 import com.centit.framework.system.service.OptMethodManager;
+import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -42,9 +42,6 @@ public class OptInfoController extends BaseController {
 
     @Resource
     private OptMethodManager optMethodManager;
-
-    @Resource
-    private PlatformEnvironment platformEnvironment;
 
     /**
      * 系统日志中记录
@@ -287,8 +284,12 @@ public class OptInfoController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除菜单")
     @WrapUpResponseBody
     public ResponseData delete(@PathVariable String optId) {
-        OptInfo dboptInfo = optInfoManager.getObjectById(optId);
-        optInfoManager.deleteOptInfo(dboptInfo);
+        int hasChild = optInfoManager.countSubOptInfo(optId);
+        if(hasChild > 0){
+            throw new ObjectException(optId, ResponseData.ERROR_BAD_PROCESS_DATASCOPE,
+                "不能删除有子菜单的菜单！");
+        }
+        optInfoManager.deleteOptInfoById(optId);
         return ResponseData.makeSuccessResponse();
     }
 

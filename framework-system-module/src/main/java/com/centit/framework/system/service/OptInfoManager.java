@@ -61,7 +61,7 @@ public interface OptInfoManager {
 
     void updateOperationPower(OptInfo optInfo);
 
-    void deleteOptInfo(OptInfo optinfo);
+    int countSubOptInfo(String optId);
 
     void deleteOptInfoById(String optId);
 

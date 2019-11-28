@@ -78,6 +78,7 @@ public class OptInfo implements IOptInfo, java.io.Serializable{
 
     @Column(name = "TOP_OPT_ID")
     @Length(max = 32, message = "字段长度不能大于{max}")
+    @ValueGenerator(strategy = GeneratorType.FUNCTION, value = "optId")
     private String topOptId; // 顶层业务编号
 
     @Column(name = "PAGE_TYPE")
