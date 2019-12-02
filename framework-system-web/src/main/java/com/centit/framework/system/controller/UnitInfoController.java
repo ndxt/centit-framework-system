@@ -149,23 +149,14 @@ public class UnitInfoController extends BaseController {
     public ResponseData listSub(String id, HttpServletRequest request) {
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         String currentUnitCode = WebOptUtils.getCurrentUnitCode(request);
-
+        searchColumn.put("parentUnit", StringUtils.isNotBlank(id) ? id : currentUnitCode);
         String unitName = StringBaseOpt.castObjectToString(searchColumn.get("unitName"));
-
-        if (StringUtils.isNotBlank(unitName) && StringUtils.isBlank(id)) {
-
+        if (StringUtils.isNotBlank(unitName)) {
             List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn);
             JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
             return ResponseData.makeResponseData(ja);
         } else {
-            Map<String, Object> filterMap = new HashMap<>(2);
-            if (StringUtils.isNotBlank(id)) {
-                filterMap.put("parentUnit", id);
-            } else {
-                filterMap.put("parentUnit", StringUtils.isNotBlank(id) ? id : currentUnitCode);
-            }
-            List<UnitInfo> listObjects = sysUnitManager.listAllSubUnits(currentUnitCode);
-
+            List<UnitInfo> listObjects = sysUnitManager.listAllSubUnits((String) searchColumn.get("parentUnit"));
             JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
             for (Object o : ja) {
                 ((JSONObject) o).put("state", "open");
@@ -187,7 +178,8 @@ public class UnitInfoController extends BaseController {
     @RequestMapping(value = "/validsubunits", method = RequestMethod.GET)
     @WrapUpResponseBody
     public ResponseData listValidSubUnit(HttpServletRequest request) {
-
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
+        String unitName = (String) searchColumn.get("unitName");
         String currentUnitCode = WebOptUtils.getCurrentUnitCode(request);
         List<UnitInfo> listObjects = sysUnitManager.listValidSubUnits(currentUnitCode);
 
@@ -274,7 +266,7 @@ public class UnitInfoController extends BaseController {
     @WrapUpResponseBody
     public ResponseData create(@Valid UnitInfo unitInfo) {
 
-        if (!sysUnitManager.isUniqueName(unitInfo)) {
+        if (sysUnitManager.isUniqueName(unitInfo)) {
             return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
                 "机构名" + unitInfo.getUnitName() + "已存在，请更换！");
         }

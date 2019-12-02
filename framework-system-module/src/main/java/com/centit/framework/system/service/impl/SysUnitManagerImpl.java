@@ -128,9 +128,9 @@ public class SysUnitManagerImpl implements SysUnitManager {
         }
         UnitInfo parentUnit = unitInfoDao.getObjectById(unitinfo.getParentUnit());
         if (parentUnit == null) {
-          unitinfo.setUnitPath("/" + unitinfo.getUnitCode() );
+          unitinfo.setUnitPath("/" + unitinfo.getUnitWord() );
         } else {
-          unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitCode());
+          unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitWord());
         }
 
         unitInfoDao.saveNewObject(unitinfo);
@@ -141,7 +141,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
     @Override
     @Transactional
     public boolean isUniqueName(UnitInfo unitInfo){
-        return unitInfoDao.getPeerUnitByName(
+        return unitInfoDao.isUniqueName(
                 unitInfo.getUnitName(), unitInfo.getParentUnit(), unitInfo.getUnitCode());
     }
 
@@ -260,7 +260,9 @@ public class SysUnitManagerImpl implements SysUnitManager {
     public List<UnitInfo> listAllSubUnits(String unitCode) {
 
         UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
-        return  unitInfoDao.listSubUnitsByUnitPaht(unitInfo != null ? unitInfo.getUnitPath() : null);
+        Map<String, Object> filterMap = new HashMap<>(4);
+        filterMap.put("unitPath", unitInfo.getUnitPath());
+        return  unitInfoDao.listObjects(filterMap);
     }
 
     /**
