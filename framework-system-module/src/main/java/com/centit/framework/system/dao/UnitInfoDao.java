@@ -116,7 +116,7 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
      * @param unitCode 结构代码
      * @return UnitInfo 机构信息
      */
-    public boolean getPeerUnitByName(String unitName, String parentCode, String unitCode) {
+    public boolean isUniqueName(String unitName, String parentCode, String unitCode) {
         String sql = "select count(*) as hasSameNameUnit from F_UNITINFO u " +
                 "where u.UNIT_NAME = :unitName and u.PARENT_UNIT = :parentUnit and u.UNIT_CODE <> :unitCode";
         Object hasSameNameUnit = DatabaseOptUtils.getScalarObjectQuery(this, sql, CollectionsOpt.createHashMap(
