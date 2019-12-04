@@ -2,6 +2,9 @@ package com.centit.framework.system.po;
 
 import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.model.basedata.OperationLog;
+import com.centit.support.database.orm.GeneratorTime;
+import com.centit.support.database.orm.GeneratorType;
+import com.centit.support.database.orm.ValueGenerator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
@@ -35,7 +38,8 @@ public class OptLog implements java.io.Serializable {
     @NotBlank(message = "字段不能为空")
     @Length(max = 2, message = "字段长度不能大于{max}")
     @ApiModelProperty(value = "日志级别 使用常量LEVEL_INFO和LEVEL_ERROR表示 默认级别为LEVEL_INFO",name = "logLevel")
-    private String logLevel = OperationLog.LEVEL_INFO;
+    @ValueGenerator(strategy = GeneratorType.CONSTANT, occasion = GeneratorTime.NEW, value = OperationLog.LEVEL_INFO)
+    private String logLevel;
 
 
     @Column(name = "USER_CODE")
@@ -55,7 +59,7 @@ public class OptLog implements java.io.Serializable {
      * 业务操作ID，如记录的是用户管理模块，optId=F_OPT_INFO表中操作用户管理模块业务的主键
      */
     @Column(name = "OPT_ID")
-    @NotBlank(message = "字段不能为空")
+    @ValueGenerator(strategy = GeneratorType.CONSTANT, occasion = GeneratorTime.NEW, value = "system")
     @Length(max = 64, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="optName",value="optId")
     private String optId;

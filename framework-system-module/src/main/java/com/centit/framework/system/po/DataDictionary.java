@@ -6,13 +6,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IDataDictionary;
+import com.centit.support.database.orm.GeneratorTime;
+import com.centit.support.database.orm.GeneratorType;
+import com.centit.support.database.orm.ValueGenerator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
 
@@ -43,7 +45,7 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
     private String extraCode2; // 附加代码2
 
     @Column(name = "DATA_TAG")
-    @NotBlank(message = "字段不能为空")
+    @ValueGenerator(strategy = GeneratorType.CONSTANT, occasion = GeneratorTime.NEW, value = "T")
     @Length(max = 1, message = "字段长度必须为{max}")
     @ApiModelProperty(value = "标志符字段不能为空，长度为1",name = "dataTag",required = true)
     private String dataTag; // 标志符
@@ -58,7 +60,7 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
     private JSONObject jsonData;
 
     @Column(name = "DATA_STYLE")
-    @NotNull(message = "字段不能为空")
+    @ValueGenerator(strategy = GeneratorType.CONSTANT, occasion = GeneratorTime.NEW, value = "U")
     @Length(max = 1, message = "字段长度必须为{max}")
     @Pattern(regexp = "[SUF]", message = "字段只能填写F,S,U")
     @ApiModelProperty(value = "数据值字段不能为空，字段长度不能大于1，字段只能填写F,S,U",name = "dataStyle",required = true)

@@ -4,12 +4,12 @@ import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IRoleInfo;
 import com.centit.support.database.orm.GeneratorCondition;
+import com.centit.support.database.orm.GeneratorTime;
 import com.centit.support.database.orm.GeneratorType;
 import com.centit.support.database.orm.ValueGenerator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
@@ -45,7 +45,7 @@ public class RoleInfo implements IRoleInfo, EntityWithTimestamp, java.io.Seriali
     private String roleName; // 角色名称
 
     @Column(name = "IS_VALID")
-    @NotBlank(message = "字段不能为空")
+    @ValueGenerator(strategy = GeneratorType.CONSTANT, occasion = GeneratorTime.NEW, value = "T")
     @Length(max = 1, message = "字段长度必须为{max}")
     @Pattern(regexp = "[TFA]", message = "字段值必须是T或F,A为新建可以删除")
     @ApiModelProperty(value = "是否生效 T:生效 F:失效 A:新建可以删除", name = "isValid", required = true)
@@ -93,7 +93,7 @@ public class RoleInfo implements IRoleInfo, EntityWithTimestamp, java.io.Seriali
 
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    @ValueGenerator(strategy = GeneratorType.FUNCTION, value = "today()")
+    @ValueGenerator(strategy = GeneratorType.FUNCTION, occasion = GeneratorTime.NEW, value = "today()")
     protected Date createDate;
 
     /**

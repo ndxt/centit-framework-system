@@ -1,5 +1,8 @@
 package com.centit.framework.system.po;
 
+import com.centit.support.database.orm.GeneratorTime;
+import com.centit.support.database.orm.GeneratorType;
+import com.centit.support.database.orm.ValueGenerator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
@@ -77,9 +80,10 @@ public class QueryFilterCondition implements java.io.Serializable {
 
      */
     @Column(name = "SELECT_DATA_TYPE")
-    @NotBlank(message = "字段不能为空")
+    @ValueGenerator(strategy = GeneratorType.CONSTANT, occasion = GeneratorTime.NEW, value = "N")
     @Length(max = 1, message = "字段长度不能大于{max}")
-    @ApiModelProperty(value = "参考类型 数据下拉框内容；N ：没有，D 数据字典, S 通过sql语句获得，J json数据直接获取",name = "selectDataType",required = true)
+    @ApiModelProperty(value = "参考类型 数据下拉框内容；N ：没有，D 数据字典, S 通过sql语句获得，J json数据直接获取",
+        name = "selectDataType",required = true)
     private String  selectDataType;
     /**
      * 数据字典类别 数据字典

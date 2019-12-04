@@ -15,7 +15,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,7 +52,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
      * 类别状态
      */
     @Column(name = "CATALOG_STYLE")
-    @NotBlank(message = "字段不能为空")
+    @ValueGenerator(strategy = GeneratorType.CONSTANT, occasion = GeneratorTime.NEW, value = "U")
     @Length(max = 1, message = "字段长度必须为{max}")
     @Pattern(regexp = "[SUF]", message = "字段只能填写F,S,U")
     @ApiModelProperty(value = "类别状态 字段只能填写F,S,U",name = "catalogStyle",required = true)
@@ -64,7 +63,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
      * 类别形式 L或T
      */
     @Column(name = "CATALOG_TYPE")
-    @NotBlank(message = "字段不能为空")
+    @ValueGenerator(strategy = GeneratorType.CONSTANT, occasion = GeneratorTime.NEW, value = "L")
     @Length(max = 1, message = "字段长度必须为{max}")
     @Pattern(regexp = "[LT]", message = "字段只能填写L或T")
     @ApiModelProperty(value = "字段只能填写L(列表)或T(树)",name = "catalogType",required = true)
@@ -89,15 +88,19 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
      * 是否需要缓存
      */
     @Column(name = "NEED_CACHE")
-    @NotBlank(message = "字段不能为空")
     @Length(max = 1, message = "字段长度必须为{max}")
-    // 默认值为1如何设置？
+    @ValueGenerator(strategy = GeneratorType.CONSTANT, occasion = GeneratorTime.NEW, value = "1")
     @ApiModelProperty(value = "是否需要缓存，字段不能为空可以默认设置为1",name = "needCache",required = true)
     private String needCache;
 
+    /**
+     * 归属系统，一般为一个业务菜单的ID
+     * 内置变量 system 系统数据字典 public 公用数据字典
+     */
     @Column(name = "OPT_ID")
     @Length(max = 16, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="optName", value="optId")
+    @ValueGenerator(strategy = GeneratorType.CONSTANT, occasion = GeneratorTime.NEW, value = "public")
     private String optId;
 
     @Column(name = "CREATE_DATE", nullable = false)
@@ -119,7 +122,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
      * UPDATEDATE(更新时间) 更新时间
      */
     @Column(name = "UPDATE_DATE")
-    @ValueGenerator(strategy = GeneratorType.FUNCTION, occasion = GeneratorTime.ALWAYS,
+    @ValueGenerator(strategy = GeneratorType.FUNCTION, occasion = GeneratorTime.NEW_UPDATE,
             condition = GeneratorCondition.ALWAYS, value="today()" )
     private Date  updateDate;
 
@@ -145,31 +148,6 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
         this.catalogType = catalogtype;
         this.needCache = "1";
     }
-
-    /**
-     * full constructor
-     * @param catalogcode String
-     * @param catalogname String
-     * @param catalogstyle String
-     * @param catalogtype String
-     * @param catalogdesc String
-     * @param isupload String
-     * @param needCache String
-     * @param fielddesc String
-     */
-    public DataCatalog(String catalogcode, String catalogname, String catalogstyle, String catalogtype,
-                       String catalogdesc, String isupload, String needCache, String fielddesc) {
-
-        this.catalogCode = catalogcode;
-
-        this.catalogName = catalogname;
-        this.catalogStyle = catalogstyle;
-        this.catalogType = catalogtype;
-        this.catalogDesc = catalogdesc;
-        this.fieldDesc = fielddesc;
-        this.needCache = needCache;
-    }
-
 
     public String getCatalogCode() {
         return this.catalogCode;

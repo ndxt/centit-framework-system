@@ -84,9 +84,7 @@ public class DataDictionaryController extends BaseController {
     @WrapUpResponseBody
     public PageQueryResult<DataCatalog> list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
-
         List<DataCatalog> listObjects = dataDictionaryManager.listObjects(searchColumn, pageDesc);
-
         return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
     }
 
@@ -103,9 +101,7 @@ public class DataDictionaryController extends BaseController {
     @RequestMapping(value = "/{catalogCode}", method = {RequestMethod.GET})
     @WrapUpResponseBody
     public ResponseData getCatalog(@PathVariable String catalogCode) {
-
         DataCatalog dbDataCatalog = dataDictionaryManager.getCatalogIncludeDataPiece(catalogCode);
-
         return ResponseData.makeResponseData(dbDataCatalog);
     }
 
@@ -263,9 +259,7 @@ public class DataDictionaryController extends BaseController {
     @WrapUpResponseBody
     public ResponseData updateDictionary(@PathVariable String catalogCode, @Valid DataCatalog dataCatalog,
                                          HttpServletRequest request) {
-
         DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
-
         if (null == dbDataCatalog) {
             return ResponseData.makeErrorMessage("当前对象不存在");
         }
@@ -279,7 +273,6 @@ public class DataDictionaryController extends BaseController {
         dbDataCatalog.addAllDataPiece(dataCatalog.getDataDictionaries());
         dataDictionaryManager.updateCatalog(dataCatalog);
         dataDictionaryManager.saveCatalogIncludeDataPiece(dbDataCatalog, isAdmin);
-
         return ResponseData.makeSuccessResponse();
     }
 
@@ -309,18 +302,14 @@ public class DataDictionaryController extends BaseController {
     public ResponseData createDictionary(@PathVariable String catalogCode, @PathVariable String dataCode,
                                          @Valid DataDictionary dataDictionary,
                                          HttpServletRequest request) {
-
         DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
-
         dictionaryPreHandler(dbDataCatalog, dataDictionary);
-
         dictionaryPreInsertHandler(dbDataCatalog, dataDictionary, request);
         dataDictionaryManager.saveDataDictionaryPiece(dataDictionary);
         /**************************log***************************/
 //            OperationLogCenter.logNewObject(request, optId, catalogCode+"-"+dataCode, OperationLog.P_OPT_LOG_METHOD_C,
 //                    "新增数据字典明细", dataDictionary);
         /**************************log***************************/
-
         return ResponseData.makeSuccessResponse();
     }
 
@@ -380,7 +369,6 @@ public class DataDictionaryController extends BaseController {
     protected void dictionaryPreHandler(DataCatalog dataCatalog, DataDictionary dataDictionary) {
         //附加代码 EXTRACODE  字段
         //这是一个自解释字段，业务系统可以自行解释这个字段的意义，单作为树形结构的数据字典时，这个字段必需为上级字典的代码。
-
         if (T.equalsIgnoreCase(dataCatalog.getCatalogType())) {
             String extraCode = dataDictionary.getExtraCode();
             if (StringUtils.isBlank(extraCode)) {
