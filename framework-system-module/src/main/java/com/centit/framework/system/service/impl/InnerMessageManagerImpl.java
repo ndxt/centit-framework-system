@@ -1,5 +1,6 @@
 package com.centit.framework.system.service.impl;
 
+import com.centit.framework.common.ResponseData;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.model.adapter.MessageSender;
 import com.centit.framework.model.basedata.IUnitInfo;
@@ -167,13 +168,12 @@ public class InnerMessageManagerImpl implements InnerMessageManager, MessageSend
         return innerMsgRecipientDao.listUnreadMessage(userCode);
     }
 
-
     /**
      * 发送消息
      */
     @Override
     @Transactional
-    public String sendMessage(String sender, String receiver, NoticeMessage message) {
+    public ResponseData sendMessage(String sender, String receiver, NoticeMessage message) {
         InnerMsg msg = new InnerMsg();
         msg.copyFromNoticeMessage(message);
         msg.setSendDate(new Date());
@@ -189,7 +189,7 @@ public class InnerMessageManagerImpl implements InnerMessageManager, MessageSend
         recipient.setMsgState("U");
         String[] receives = new String[]{receiver};
         sendToMany(receives, msg, recipient);
-        return "OK";
+        return ResponseData.makeSuccessResponse();
     }
 
 
