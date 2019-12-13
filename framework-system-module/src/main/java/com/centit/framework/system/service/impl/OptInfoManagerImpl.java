@@ -103,7 +103,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
         List<OptMethod> oldOptMethods = optMethodDao.listOptMethodByOptID(optInfo.getOptId());
 
         Triple<List<OptMethod>, List<Pair<OptMethod,OptMethod>>, List<OptMethod>> compareMethod =
-            CollectionsOpt.compareTwoList(oldOptMethods, newOptMethods, Comparator.comparing(OptMethod::getOptId));
+            CollectionsOpt.compareTwoList(oldOptMethods, newOptMethods, Comparator.comparing(OptMethod::getOptCode));
 
         if(compareMethod.getRight() != null) {
             for (OptMethod optMethod : compareMethod.getRight()) {
