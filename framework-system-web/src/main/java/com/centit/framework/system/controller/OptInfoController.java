@@ -269,7 +269,7 @@ public class OptInfoController extends BaseController {
     /*  dbOptInfo.addAllOptMethods(optInfo.getOptMethods());
         dbOptInfo.addAllDataScopes(optInfo.getDataScopes());*/
         optInfoManager.updateOperationPower(optInfo);
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
     /**
@@ -291,7 +291,7 @@ public class OptInfoController extends BaseController {
                 "不能删除有子菜单的菜单！");
         }
         optInfoManager.deleteOptInfoById(optId);
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
     /**
@@ -353,7 +353,7 @@ public class OptInfoController extends BaseController {
         }
         optDef.setOptCode(optCode);
         optMethodManager.updateOptMethod(optDef);
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
     /**

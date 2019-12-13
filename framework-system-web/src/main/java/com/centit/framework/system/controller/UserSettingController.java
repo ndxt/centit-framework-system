@@ -179,7 +179,7 @@ public class UserSettingController extends BaseController {
         } else {
             userSettingManager.updateUserSetting(userSetting);
         }
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
     /**
@@ -203,7 +203,7 @@ public class UserSettingController extends BaseController {
         } else {
             userSettingManager.updateUserSetting(userSetting);
         }
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
     /**
@@ -223,7 +223,7 @@ public class UserSettingController extends BaseController {
         UserSetting dbUserSetting = userSettingManager.getObjectById(
             new UserSettingId(WebOptUtils.getCurrentUserCode(request), paramCode));
         userSettingManager.deleteObject(dbUserSetting);
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
         /*********log*********/
 //        OperationLogCenter.logDeleteObject(request,optId,dbUserSetting.getUserCode(),
 //                OperationLog.P_OPT_LOG_METHOD_D,  "已删除",dbUserSetting);
@@ -256,7 +256,7 @@ public class UserSettingController extends BaseController {
             }
             userSettingManager.deleteObject(userSetting);
         }
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
     /**
@@ -279,6 +279,6 @@ public class UserSettingController extends BaseController {
         } else {
             return ResponseData.makeErrorMessage("值已为null！");
         }
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 }

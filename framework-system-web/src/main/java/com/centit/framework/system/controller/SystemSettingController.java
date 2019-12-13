@@ -56,7 +56,7 @@ public class SystemSettingController extends BaseController {
         } catch (IOException e) {
 
         }
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
     @RequestMapping(method = RequestMethod.POST)

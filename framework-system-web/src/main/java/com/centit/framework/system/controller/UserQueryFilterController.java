@@ -202,7 +202,7 @@ public class UserQueryFilterController extends BaseController {
 
         boolean b = userQueryFilterMag.deleteUserQueryFilter(filterNo);
         if (b)
-            return ResponseData.makeSuccessResponse();
+            return ResponseData.successResponse;
         else
             return ResponseData.makeErrorMessage("不能删除默认过滤条件！");
     }

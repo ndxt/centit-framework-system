@@ -124,7 +124,7 @@ public class QueryFilterConditionController extends BaseController {
     public ResponseData deleteQueryFilterCondition(@PathVariable Long conditionNo) {
 
         queryFilterConditionMag.deleteObjectById(conditionNo);
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
     /**

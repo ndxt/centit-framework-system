@@ -198,7 +198,7 @@ public class UnitRoleController extends BaseController {
         } else {
             sysUnitRoleManager.mergeUnitRole(unitRole);
         }
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
 
         /*********log*********/
         //OperationLogCenter.logNewObject(request,optId, unitRole.getUnitCode()+"-"+ unitRole.getRoleCode(),
@@ -269,7 +269,7 @@ public class UnitRoleController extends BaseController {
                 /*********log*********/
             }
         }
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
 }

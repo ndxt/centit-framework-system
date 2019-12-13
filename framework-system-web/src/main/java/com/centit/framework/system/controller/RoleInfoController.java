@@ -610,7 +610,7 @@ public class RoleInfoController extends BaseController {
         }
         //RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         sysRoleManager.deleteRoleInfo(roleCode);
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
     /**

@@ -192,7 +192,7 @@ public class UserInfoController extends BaseController {
         }
 
         sysUserManager.updateUserInfo(userInfo);
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
 
     }
 
@@ -321,7 +321,7 @@ public class UserInfoController extends BaseController {
 
         sysUserManager.setNewPassword(userCode, password, newPassword);
 
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
 
         /*********log*********/
         //OperationLogCenter.log(request,optId,userCode, "changePassword", "更新用户密码,用户代码:" + userCode);
@@ -349,7 +349,7 @@ public class UserInfoController extends BaseController {
             sysUserManager.forceSetPassword(userCode, newPassword);
         }
 
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
         /*********log*********/
         //OperationLogCenter.log(request,optId,userCode, "forceChangePwd", "更新用户密码,用户代码:" + userCode);
         /*********log*********/
@@ -395,7 +395,7 @@ public class UserInfoController extends BaseController {
             return ResponseData.makeErrorMessage("用户代码集合为空");
         }
         sysUserManager.resetPwd(userCodes);
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
 
         /*********log*********/
         //OperationLogCenter.logNewObject(request,optId,null, "resetPassword",  "批量重置密码",userCodes);
@@ -427,7 +427,7 @@ public class UserInfoController extends BaseController {
 //                    "删除用户"+userInfo.getUserName(), userInfo);
             /*********log*********/
         }
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
 }

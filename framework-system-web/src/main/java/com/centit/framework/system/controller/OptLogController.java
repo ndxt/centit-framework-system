@@ -110,7 +110,7 @@ public class OptLogController extends BaseController {
     public ResponseData deleteOne(@PathVariable Long logId) {
 //        OptLog optLog = optLogManager.getObjectById(logId);
         optLogManager.deleteObjectById(logId);
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
 
         /***************log*******************/
 //        OperationLogCenter.logDeleteObject(request, optId, logId.toString(), OperationLog.P_OPT_LOG_METHOD_D,
@@ -140,7 +140,7 @@ public class OptLogController extends BaseController {
         }*/
         optLogManager.deleteMany(logIds);
 
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
     /**
@@ -164,6 +164,6 @@ public class OptLogController extends BaseController {
     public ResponseData deleteByTime(Date begin, Date end) {
         optLogManager.delete(begin, end);
 
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 }

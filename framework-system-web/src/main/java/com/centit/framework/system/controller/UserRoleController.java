@@ -330,7 +330,7 @@ public class UserRoleController extends BaseController {
         } else {
             sysUserRoleManager.mergeObject(userRole);
         }
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
 
         /*********log*********/
 //        OperationLogCenter.logNewObject(request,optId, userRole.getUserCode()+"-"+ userRole.getRoleCode(),
@@ -404,7 +404,7 @@ public class UserRoleController extends BaseController {
 //                    "删除用户角色关联信息", userRole);
             /*********log*********/
         }
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
     /**
@@ -428,7 +428,7 @@ public class UserRoleController extends BaseController {
         UserRoleId a = new UserRoleId(userCode, roleCode);
 //        UserRole userRole = sysUserRoleManager.getObjectById(a);
         sysUserRoleManager.deleteObjectById(a);
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
 
         /*********log*********/
 //        OperationLogCenter.logDeleteObject(request, optId, userCode+"-"+roleCode,

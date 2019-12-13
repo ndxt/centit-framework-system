@@ -244,7 +244,7 @@ public class UnitInfoController extends BaseController {
             }
         }
 
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
         /*********log*********/
 //        OperationLogCenter.logDeleteObject(request,optId,unitInfo.getUnitCode(), OperationLog.P_OPT_LOG_METHOD_D,
 //                "删除机构"+unitInfo.getUnitName(), unitInfo);
@@ -402,7 +402,7 @@ public class UnitInfoController extends BaseController {
 
         sysUnitManager.changeStatus(unitCode, statusValue);
 
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
 
         /*********log*********/
 //         String optContent = "更新机构状态,机构名称:" + CodeRepositoryUtil.getCode(CodeRepositoryUtil.UNIT_CODE, unitCode) + ",机构是否启用:" + ("T".equals
@@ -580,7 +580,7 @@ public class UnitInfoController extends BaseController {
         roleInfo.addAllRolePowers(rolePowers);
         sysRoleManager.updateRolePower(roleInfo);
         //sysRoleManager.loadRoleSecurityMetadata();
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
         /*********log*********/
 //       OperationLogCenter.logNewObject(request,optId, roleInfo.getRoleCode(), OperationLog.P_OPT_LOG_METHOD_U,
 //               "更新机构权限",roleInfo);
@@ -717,7 +717,7 @@ public class UnitInfoController extends BaseController {
 
         roleInfo.addAllRolePowers(rolePowers);
         sysRoleManager.updateRolePower(roleInfo);
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
 }

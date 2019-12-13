@@ -189,7 +189,7 @@ public class InnerMessageManagerImpl implements InnerMessageManager, MessageSend
         recipient.setMsgState("U");
         String[] receives = new String[]{receiver};
         sendToMany(receives, msg, recipient);
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
 

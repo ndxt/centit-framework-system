@@ -228,7 +228,7 @@ public class DataDictionaryController extends BaseController {
 //        dataDictionaryManager.saveCatalogIncludeDataPiece(dbDataCatalog,isAdmin);
         dataDictionaryManager.updateCatalog(dbDataCatalog);
 
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
 
         /***********************log*****************************/
 //        OperationLogCenter.logUpdateObject(request, optId, catalogCode, OperationLog.P_OPT_LOG_METHOD_U,
@@ -273,7 +273,7 @@ public class DataDictionaryController extends BaseController {
         dbDataCatalog.addAllDataPiece(dataCatalog.getDataDictionaries());
         dataDictionaryManager.updateCatalog(dataCatalog);
         dataDictionaryManager.saveCatalogIncludeDataPiece(dbDataCatalog, isAdmin);
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
     /**
@@ -310,7 +310,7 @@ public class DataDictionaryController extends BaseController {
 //            OperationLogCenter.logNewObject(request, optId, catalogCode+"-"+dataCode, OperationLog.P_OPT_LOG_METHOD_C,
 //                    "新增数据字典明细", dataDictionary);
         /**************************log***************************/
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
     /**
@@ -357,7 +357,7 @@ public class DataDictionaryController extends BaseController {
 //                "更新数据字典明细", dbDataDictionary, oldValue);
         /**************************log***************************/
 
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
     /**
@@ -492,7 +492,7 @@ public class DataDictionaryController extends BaseController {
         catalogPrDeleteHandler(dataCatalog, request);
 
         dataDictionaryManager.deleteDataDictionary(catalogCode);
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
 
         /*****************log************************/
 //        OperationLogCenter.logDeleteObject(request, optId, catalogCode, OperationLog.P_OPT_LOG_METHOD_D,
@@ -531,7 +531,7 @@ public class DataDictionaryController extends BaseController {
 
         dataDictionaryManager.deleteDataDictionaryPiece(dataDictionary.getId());
 
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
 
         /*****************log************************/
 //        OperationLogCenter.logDeleteObject(request, optId, catalogCode+"-"+dataCode, OperationLog.P_OPT_LOG_METHOD_D,

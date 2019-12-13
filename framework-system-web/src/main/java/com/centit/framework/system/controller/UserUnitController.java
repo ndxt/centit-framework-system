@@ -248,7 +248,7 @@ public class UserUnitController extends BaseController {
         userUnit.setCreator(WebOptUtils.getCurrentUserCode(request));
         sysUserUnitManager.saveNewUserUnit(userUnit);
 
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
         /*********log*********/
 //        OperationLogCenter.logNewObject(request,optId, OperationLog.P_OPT_LOG_METHOD_C, OperationLog.P_OPT_LOG_METHOD_C, "新增用户机构关联信息" , userUnit);
         /*********log*********/
@@ -311,7 +311,7 @@ public class UserUnitController extends BaseController {
 
         sysUserUnitManager.deleteObject(dbUserUnit);
 
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
 
         /*********log*********/
 //        OperationLogCenter.logDeleteObject(request,optId,dbUserUnit.getUserUnitId(),

@@ -185,7 +185,7 @@ public class InnerMsgController extends BaseController {
             innerMsg.setSendDate(new Date());
         }
         innerMessageManager.noticeByUnitCode(unitCode, innerMsg);
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
 
@@ -287,7 +287,7 @@ public class InnerMsgController extends BaseController {
     public ResponseData deleteMsg(@PathVariable String msgCode,
                                   HttpServletResponse response) {
         innerMessageManager.deleteInnerMsgById(msgCode);
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
     /**
@@ -311,7 +311,7 @@ public class InnerMsgController extends BaseController {
         ;
         OperationLogCenter.logDeleteObject(request, "recipient", id, OperationLog.P_OPT_LOG_METHOD_D,
             "删除接收这信息", "");
-        return ResponseData.makeSuccessResponse();
+        return ResponseData.successResponse;
     }
 
 
