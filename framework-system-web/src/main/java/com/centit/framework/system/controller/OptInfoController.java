@@ -275,6 +275,7 @@ public class OptInfoController extends BaseController {
         }
 
         for (OptMethod optDef : optInfo.getOptMethods()) {
+            optDef.setOptId(optId);
             if (StringUtils.isBlank(optDef.getOptCode())) {
                 optDef.setOptCode(optMethodManager.getNextOptCode());
             }
