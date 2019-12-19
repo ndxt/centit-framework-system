@@ -36,7 +36,7 @@ public class UserInfo implements IUserInfo, EntityWithTimestamp, java.io.Seriali
 
     @Id
     @Column(name = "USER_CODE")
-    @ValueGenerator(strategy = GeneratorType.TABLE_ID, value = "F_USERINFO:USER_CODE:7")
+    @ValueGenerator(strategy = GeneratorType.RANDOM_ID, value = "7:U")
     @ApiModelProperty(value = "用户代码",name = "userCode")
     private String userCode; // 用户代码
 
