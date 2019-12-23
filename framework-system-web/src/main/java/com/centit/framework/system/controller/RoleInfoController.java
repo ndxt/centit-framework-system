@@ -91,17 +91,17 @@ public class RoleInfoController extends BaseController {
     @ApiOperation(value = "查询子系统角色", notes = "查询子系统角色。")
     @ApiImplicitParams({
         @ApiImplicitParam(
-            name = "subSystem", value = "子系统代码",
+            name = "topOptId", value = "子系统代码",
             allowMultiple = true, paramType = "path", dataType = "String"),
         @ApiImplicitParam(
             name = "pageDesc", value = "json格式的分页对象信息",
             paramType = "body", dataTypeClass = PageDesc.class)
     })
-    @RequestMapping(value = "/subSystem/{subSystem}", method = RequestMethod.GET)
+    @RequestMapping(value = "/subSysRole/{topOptId}", method = RequestMethod.GET)
     @WrapUpResponseBody()
-    public PageQueryResult<RoleInfo> listSubSystemRole(@PathVariable String subSystem,PageDesc pageDesc, HttpServletRequest request) {
+    public PageQueryResult<RoleInfo> listSubSystemRole(@PathVariable String topOptId,PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
-        filterMap.put("subSystemROLE", subSystem);
+        filterMap.put("subSystemROLE", topOptId);
         List<RoleInfo> list = sysRoleManager.listObjects(filterMap, pageDesc);
         return PageQueryResult.createResultMapDict(list, pageDesc);
     }
