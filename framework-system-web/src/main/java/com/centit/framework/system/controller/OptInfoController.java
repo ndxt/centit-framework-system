@@ -21,12 +21,12 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -37,10 +37,10 @@ import java.util.Map;
 @RequestMapping("/optinfo")
 @Api(value = "系统业务菜单维护接口", tags = "系统业务菜单操作接口")
 public class OptInfoController extends BaseController {
-    @Resource
+    @Autowired
     private OptInfoManager optInfoManager;
 
-    @Resource
+    @Autowired
     private OptMethodManager optMethodManager;
 
     /**

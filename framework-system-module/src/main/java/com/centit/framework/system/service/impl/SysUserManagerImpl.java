@@ -13,11 +13,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,19 +28,19 @@ import java.util.Map;
 public class SysUserManagerImpl implements SysUserManager {
     public static Logger logger = LoggerFactory.getLogger(SysUserManagerImpl.class);
     // 加密
-    @Resource
+    @Autowired
     @NotNull
     private CentitPasswordEncoder passwordEncoder;
 
-    @Resource
+    @Autowired
     @NotNull
     private UserUnitDao userUnitDao;
 
-    @Resource
+    @Autowired
     @NotNull
     private UserRoleDao userRoleDao;
 
-    @Resource
+    @Autowired
     protected UserInfoDao userInfoDao;
 
 

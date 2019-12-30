@@ -4,10 +4,10 @@ import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.system.dao.OptMethodDao;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.service.OptMethodManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
 @Transactional
 public class OptMethodManagerImpl implements OptMethodManager {
 
-    @Resource
+    @Autowired
     @NotNull
     protected OptMethodDao optMethodDao;
 

@@ -12,10 +12,10 @@ import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,10 +26,10 @@ public class UserSettingManagerImpl implements UserSettingManager {
 
     public static final Logger logger = LoggerFactory.getLogger(UserSettingManager.class);
 
-    @Resource
+    @Autowired
     private UserSettingDao userSettingDao;
 
-    @Resource
+    @Autowired
     private DataDictionaryDao dataDictionaryDao;
 
     @Override

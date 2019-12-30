@@ -17,6 +17,7 @@ import com.centit.support.database.utils.PageDesc;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -55,7 +55,7 @@ public class DataDictionaryController extends BaseController {
     @Value("${app.local.multiLang:false}")
     private boolean multiLang;
 
-    @Resource
+    @Autowired
     private DataDictionaryManager dataDictionaryManager;
 
     //private String optId = "DICTSET";

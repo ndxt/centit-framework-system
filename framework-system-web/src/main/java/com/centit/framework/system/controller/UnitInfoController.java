@@ -25,10 +25,10 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -46,27 +46,27 @@ import java.util.*;
 @Api(value = "系统机构管理操作接口", tags = "系统机构管理操作接口")
 public class UnitInfoController extends BaseController {
 
-    @Resource
+    @Autowired
     @NotNull
     private SysUnitManager sysUnitManager;
 
-    @Resource
+    @Autowired
     @NotNull
     private SysUserManager sysUserMag;
 
-    @Resource
+    @Autowired
     @NotNull
     private SysUserUnitManager sysUserUnitManager;
 
-    @Resource
+    @Autowired
     @NotNull
     private SysRoleManager sysRoleManager;
 
-    @Resource
+    @Autowired
     @NotNull
     private SysUnitRoleManager sysUnitRoleManager;
 
-    @Resource
+    @Autowired
     private PlatformEnvironment platformEnvironment;
 
     /**

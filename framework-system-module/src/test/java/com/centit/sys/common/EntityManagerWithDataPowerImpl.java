@@ -27,7 +27,7 @@ public abstract class EntityManagerWithDataPowerImpl{
     }
 
 
-    @Resource
+    @Autowired
     private OptInfoManager optInfoManager;
     public List<T> listObjecesDemo(String userCode,String optid,String method){
         List<String> filters = optInfoManager.listUserDataFiltersByOptIdAndMethod(userCode, optid, method);

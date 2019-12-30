@@ -25,12 +25,12 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -43,17 +43,17 @@ import java.util.Map;
 @Controller
 @RequestMapping("/userinfo")
 public class UserInfoController extends BaseController {
-    @Resource
+    @Autowired
     @NotNull
     private SysUserManager sysUserManager;
 
-    @Resource
+    @Autowired
     @NotNull
     private SysUserUnitManager sysUserUnitManager;
 
-    @Resource
+    /*@Autowired
     @NotNull
-    private UserSettingManager userSettingManager;
+    private UserSettingManager userSettingManager;*/
 
     /**
      * 系统日志中记录
@@ -72,6 +72,7 @@ public class UserInfoController extends BaseController {
      * @param pageDesc PageDesc
      * @param _search  _search
      * @param request  HttpServletRequest
+     * @return 分页查询结果
      */
     @ApiOperation(value = "用户信息分页查询", notes = "查询用户信息")
     @ApiImplicitParams({@ApiImplicitParam(
@@ -112,6 +113,7 @@ public class UserInfoController extends BaseController {
      * @param userInfo UserInfo
      * @param userUnit 用户机构
      * @param request  HttpServletRequest
+     * @return 结果
      */
     @ApiOperation(value = "新增用户", notes = "新增用户。")
     @ApiImplicitParams({
@@ -151,11 +153,11 @@ public class UserInfoController extends BaseController {
 
     /**
      * 更新用户信息
-     *
      * @param userCode userCode
      * @param userInfo userInfo
      * @param userUnit userUnit
      * @param request  HttpServletRequest
+     * @return 结果
      */
     @ApiOperation(value = "更新用户信息", notes = "更新用户信息。")
     @ApiImplicitParams({
@@ -200,6 +202,7 @@ public class UserInfoController extends BaseController {
      * 当前登录用户信息
      *
      * @param request HttpServletRequest
+     * @return 结果
      */
     @ApiOperation(value = "当前登录用户信息", notes = "当前登录用户信息。")
     @RequestMapping(value = "/current", method = RequestMethod.GET)
@@ -216,6 +219,7 @@ public class UserInfoController extends BaseController {
      * 获取单个用户信息
      *
      * @param userCode 用户代码
+     * @return 结果
      */
     @ApiOperation(value = "获取单个用户信息", notes = "根据用户代码获取单个用户信息。")
     @ApiImplicitParam(
@@ -253,7 +257,8 @@ public class UserInfoController extends BaseController {
      * 当前登录名是否已存在
      *
      * @param request HttpServletRequest
-     */
+     * @return 结果
+     * */
     @ApiOperation(value = "当前登录名是否已存在", notes = "当前登录名是否已存在。")
     @ApiImplicitParams({
         @ApiImplicitParam(
@@ -283,6 +288,7 @@ public class UserInfoController extends BaseController {
      * 当前登录名是否已存在
      *
      * @param loginName 登录名
+     * @return 结果
      */
     @ApiOperation(value = "当前登录名是否已存在", notes = "当前登录名是否已存在。")
     @ApiImplicitParam(
@@ -301,7 +307,8 @@ public class UserInfoController extends BaseController {
      * @param userCode    用户代码
      * @param password    旧密码
      * @param newPassword 新密码
-     */
+     * @return 结果
+     * */
     @ApiOperation(value = "更新用户密码", notes = "更新用户密码。")
     @ApiImplicitParams({
         @ApiImplicitParam(
@@ -333,6 +340,7 @@ public class UserInfoController extends BaseController {
      *
      * @param userCode 用户代码
      * @param request  {@link HttpServletRequest}
+     * @return 结果
      */
     @ApiOperation(value = "强制更新用户密码", notes = "强制更新用户密码。")
     @ApiImplicitParam(
@@ -360,7 +368,8 @@ public class UserInfoController extends BaseController {
      *
      * @param userCode    用户代码
      * @param oldPassword 旧密码
-     */
+     * @return 结果
+     * */
     @ApiOperation(value = "检查用户密码是否可以修改", notes = "检查用户密码是否可以修改。")
     @ApiImplicitParams({
         @ApiImplicitParam(
@@ -382,7 +391,8 @@ public class UserInfoController extends BaseController {
      * 批量重置密码
      *
      * @param userCodes 用户代码集合
-     */
+     * @return 结果
+     * */
     @ApiOperation(value = "批量重置密码", notes = "批量重置密码。")
     @ApiImplicitParam(
         name = "userCodes", value = "用户代码集合(数组)", allowMultiple = true,
@@ -405,7 +415,8 @@ public class UserInfoController extends BaseController {
      * 删除用户
      *
      * @param userCodes 用户代码
-     */
+     * @return 结果
+     * */
     @ApiOperation(value = "批量删除用户", notes = "批量删除用户。")
     @ApiImplicitParam(
         name = "userCodes", value = "用户代码集合(数组)", allowMultiple = true,

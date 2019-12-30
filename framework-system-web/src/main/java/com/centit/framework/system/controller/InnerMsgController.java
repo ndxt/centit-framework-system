@@ -15,12 +15,12 @@ import com.centit.framework.system.service.InnerMessageManager;
 import com.centit.support.database.utils.PageDesc;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -37,7 +37,7 @@ import java.util.Map;
 @Api(tags = "内部消息、公告操作接口", value = "内部消息、公告接口维护")
 public class InnerMsgController extends BaseController {
 
-    @Resource
+    @Autowired
     @NotNull
     public InnerMessageManager innerMessageManager;
 

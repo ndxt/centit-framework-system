@@ -11,6 +11,7 @@ import com.centit.framework.system.po.FVUserRoles;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserSetting;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,7 +20,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
@@ -28,19 +28,19 @@ public class DaoUserDetailsService
     implements CentitUserDetailsService,UserDetailsService,
         AuthenticationUserDetailsService<Authentication> {
 
-    @Resource
+    @Autowired
     @NotNull
     private PlatformEnvironment platformEnvironment;
 
-    @Resource
+    @Autowired
     @NotNull
     private UserSettingDao userSettingDao;
 
-    @Resource
+    @Autowired
     @NotNull
     private UserRoleDao userRoleDao;
 
-    @Resource
+    @Autowired
     @NotNull
     private UserInfoDao userInfoDao;
 

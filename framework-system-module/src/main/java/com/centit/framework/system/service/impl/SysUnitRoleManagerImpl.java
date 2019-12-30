@@ -7,10 +7,10 @@ import com.centit.framework.system.po.UnitRole;
 import com.centit.framework.system.po.UnitRoleId;
 import com.centit.framework.system.service.SysUnitRoleManager;
 import com.centit.support.database.utils.PageDesc;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @Service("sysUnitRoleManager")
 public class SysUnitRoleManagerImpl implements SysUnitRoleManager {
-    @Resource
+    @Autowired
     @NotNull
     protected UnitRoleDao unitRoleDao;
 

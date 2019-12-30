@@ -11,11 +11,11 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Comparator;
@@ -28,23 +28,23 @@ public class SysRoleManagerImpl implements SysRoleManager {
 
     public static Logger logger = LoggerFactory.getLogger(SysRoleManagerImpl.class);
 
-    @Resource
+    @Autowired
     @NotNull
     private OptInfoDao optInfoDao;
 
-    @Resource
+    @Autowired
     @NotNull
     private OptMethodDao optMethodDao;
 
-    @Resource
+    @Autowired
     @NotNull
     private RolePowerDao rolePowerDao;
 
-    @Resource
+    @Autowired
     @NotNull
     protected RoleInfoDao roleInfoDao;
 
-    @Resource
+    @Autowired
     @NotNull
     private UserRoleDao userRoleDao;
 

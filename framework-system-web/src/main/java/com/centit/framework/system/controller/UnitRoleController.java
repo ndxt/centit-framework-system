@@ -17,12 +17,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -40,11 +40,11 @@ import java.util.Map;
 @RequestMapping("/unitrole")
 @Api(value = "系统机构角色操作接口", tags = "系统机构角色操作接口")
 public class UnitRoleController extends BaseController {
-    @Resource
+    @Autowired
     @NotNull
     private SysUnitRoleManager sysUnitRoleManager;
 
-    @Resource
+    @Autowired
     private SysUnitManager sysUnitManager;
 
     /**

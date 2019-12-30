@@ -20,13 +20,13 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -47,11 +47,11 @@ import java.util.Map;
 @RequestMapping("/userunit")
 @Api(value = "用户机构关联操作，此操作是双向操作，用户可在用户管理中新增或更新自身所在机构，机构可在机构管理中新增或更新机构内用户。", tags = "用户机构关联操作接口")
 public class UserUnitController extends BaseController {
-    @Resource
+    @Autowired
     @NotNull
     private SysUserUnitManager sysUserUnitManager;
 
-    @Resource
+    @Autowired
     @NotNull
     private SysUserManager sysUserManager;
 

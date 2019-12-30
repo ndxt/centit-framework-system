@@ -11,10 +11,10 @@ import com.centit.framework.system.po.UserRoleId;
 import com.centit.framework.system.service.SysUserRoleManager;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JSONOpt;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
@@ -31,11 +31,11 @@ import java.util.Map;
 @Transactional
 public class SysUserRoleManagerImpl implements SysUserRoleManager {
 
-    @Resource
+    @Autowired
     @NotNull
     protected UserRoleDao userRoleDao;
 
-    @Resource
+    @Autowired
     private UserInfoDao userInfoDao;
 
     @Override

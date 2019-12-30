@@ -14,11 +14,11 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -31,11 +31,11 @@ public class DataDictionaryManagerImpl implements
 
     protected Logger logger = LoggerFactory.getLogger(DataDictionaryManagerImpl.class);
 
-    @Resource
+    @Autowired
     @NotNull
     private DataDictionaryDao dictionaryDao;
 
-    @Resource
+    @Autowired
     @NotNull
     protected DataCatalogDao dataCatalogDao;
 

@@ -4,6 +4,7 @@ import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.security.model.CentitUserDetailsService;
 import com.centit.framework.system.security.DaoUserDetailsService;
 import com.centit.framework.system.service.impl.DBPlatformEnvironment;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
@@ -13,15 +14,13 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
-import javax.annotation.Resource;
-
 @PropertySource("classpath:system.properties")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class SystemBeanConfig implements EnvironmentAware {
 
     private Environment env;
 
-    @Resource
+    @Autowired
     @Override
     public void setEnvironment(Environment environment) {
         if(environment!=null) {

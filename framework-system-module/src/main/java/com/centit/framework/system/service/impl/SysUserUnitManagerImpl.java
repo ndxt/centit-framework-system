@@ -13,10 +13,10 @@ import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
@@ -35,21 +35,21 @@ public class SysUserUnitManagerImpl
     implements SysUserUnitManager {
     public static final Logger logger = LoggerFactory.getLogger(SysUserUnitManagerImpl.class);
 
-    @Resource
+    @Autowired
     @NotNull
     protected UserUnitDao userUnitDao;
 
-    @Resource
+    @Autowired
     private UnitInfoDao unitInfoDao;
 
-    @Resource
+    @Autowired
     @NotNull
     private UserInfoDao userInfoDao;
 
-    @Resource
+    @Autowired
     private UserRoleDao userRoleDao;
 
-    @Resource
+    @Autowired
     private RoleInfoDao roleInfoDao;
 
     @Override

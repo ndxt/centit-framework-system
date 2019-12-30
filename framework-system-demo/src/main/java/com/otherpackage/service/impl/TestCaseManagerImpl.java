@@ -9,10 +9,10 @@ import com.centit.support.database.utils.PageDesc;
 import com.otherpackage.dao.TestCaseDao;
 import com.otherpackage.po.TestCase;
 import com.otherpackage.service.TestCaseManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -24,10 +24,10 @@ public class TestCaseManagerImpl implements TestCaseManager {
         return "testCase";
     }
     // 框架通用的服务，可以访问框架的配置信息
-    @Resource
+    @Autowired
     protected GeneralService generalService;
     // 业务对应的数据库访问到
-    @Resource
+    @Autowired
     protected TestCaseDao testCaseDao;
     // 具体的业务操作，每一个业务操作有一个唯一的操作代码optCode
     @Override

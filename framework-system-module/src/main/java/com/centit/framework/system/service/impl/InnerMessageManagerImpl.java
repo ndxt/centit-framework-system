@@ -14,10 +14,10 @@ import com.centit.framework.system.service.InnerMessageManager;
 import com.centit.support.common.ObjectException;
 import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
@@ -25,11 +25,11 @@ import java.util.*;
 @Service("innerMessageManager")
 public class InnerMessageManagerImpl implements InnerMessageManager, MessageSender {
 
-    @Resource
+    @Autowired
     @NotNull
     protected InnerMsgRecipientDao innerMsgRecipientDao;
 
-    @Resource
+    @Autowired
     private InnerMsgDao innerMsgDao;
 
     /*

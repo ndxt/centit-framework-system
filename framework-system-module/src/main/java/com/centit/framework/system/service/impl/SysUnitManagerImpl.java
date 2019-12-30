@@ -11,11 +11,11 @@ import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
@@ -24,11 +24,11 @@ import java.util.*;
 public class SysUnitManagerImpl implements SysUnitManager {
 
     public static Logger logger = LoggerFactory.getLogger(SysUnitManagerImpl.class);
-    @Resource
+    @Autowired
     @NotNull
     private UserUnitDao userUnitDao;
 
-    @Resource
+    @Autowired
     @NotNull
     protected UnitInfoDao unitInfoDao;
 

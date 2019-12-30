@@ -16,11 +16,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -37,7 +37,7 @@ import java.util.Map;
 @RequestMapping("/usersetting")
 @Api(value = "用户设置操作维护接口。", tags = "用户设置操作接口")
 public class UserSettingController extends BaseController {
-    @Resource
+    @Autowired
     private UserSettingManager userSettingManager;
 
     /**
