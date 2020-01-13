@@ -35,7 +35,7 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
             filterField.put("parentUnit", CodeBook.EQUAL_HQL_ID);
             filterField.put("NP_TOPUnit", "(parentUnit is null or parentUnit='0' or parentUnit='')");
             filterField.put("depNo", CodeBook.EQUAL_HQL_ID);
-            filterField.put(CodeBook.ORDER_BY_HQL_ID, " unitOrder, unitCode ");
+            filterField.put(CodeBook.ORDER_BY_HQL_ID, " UNIT_ORDER, UNIT_CODE ");
             filterField.put("(STARTWITH)unitPath", CodeBook.LIKE_HQL_ID);
         }
         return filterField;
@@ -66,8 +66,8 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
                 " u.UNIT_SHORT_NAME, u.UNIT_WORD, u.UNIT_TAG, u.UNIT_DESC, u.UNIT_ORDER, u.UNIT_GRADE," +
                 " u.DEP_NO, u.UNIT_PATH, u.UNIT_MANAGER, u.CREATE_DATE, u.CREATOR, u.UPDATOR, u.UPDATE_DATE " +
                 "from F_UNITINFO u " +
-                "where u.UNIT_NAME = ? or u.UNIT_SHORT_NAME = ?"
-                + " order by unitOrder asc";
+                "where u.UNIT_NAME = ? or u.UNIT_SHORT_NAME = ?";
+                //+ " order by UNIT_ORDER asc";
 
         return getJdbcTemplate().execute(
                 (ConnectionCallback<List<UnitInfo>>) conn ->
@@ -135,7 +135,6 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
         String sql = "select count(*) as existUnit " +
           "from F_UNITINFO u " +
           "where u.UNIT_ORDER = :unitOrder and u.PARENT_UNIT = :parentUnit ";
-
         Object object = DatabaseOptUtils.getScalarObjectQuery(this, sql, CollectionsOpt.createHashMap(
           "unitOrder", unitOrder, "parentUnit", parentUnit));
 
