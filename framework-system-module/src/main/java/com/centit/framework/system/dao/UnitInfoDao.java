@@ -68,11 +68,14 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
                 "from F_UNITINFO u " +
                 "where u.UNIT_NAME = ? or u.UNIT_SHORT_NAME = ?";
                 //+ " order by UNIT_ORDER asc";
-
-        return getJdbcTemplate().execute(
+        List<UnitInfo> unitInfos = getJdbcTemplate().execute(
                 (ConnectionCallback<List<UnitInfo>>) conn ->
                         OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
-                                new Object[]{name, name}, UnitInfo.class)).get(0);
+                                new Object[]{name, name}, UnitInfo.class));
+        if(unitInfos!=null && unitInfos.size()>0){
+            return unitInfos.get(0);
+        }
+        return null;
     }
 
     @Transactional
