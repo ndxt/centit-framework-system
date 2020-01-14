@@ -187,7 +187,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
             List<UnitInfo> subUnits = unitInfoDao.listSubUnitsByUnitPaht(oldUnitPath);
             int noupl = oldUnitPath.length();
             for(UnitInfo ui : subUnits){
-                ui.setParentUnit(unitinfo.getUnitPath()+ ui.getUnitPath().substring(noupl));
+                ui.setUnitPath(unitinfo.getUnitPath()+ ui.getUnitPath().substring(noupl));
                 unitInfoDao.updateUnit(ui);
             }
         }
