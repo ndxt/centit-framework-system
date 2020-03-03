@@ -59,12 +59,6 @@ drop table if exists F_WORK_CLASS;
 
 drop table if exists F_WORK_DAY;
 
-drop table if exists M_InnerMsg;
-
-drop table if exists M_InnerMsg_Recipient;
-
-drop table if exists M_MsgAnnex;
-
 drop table if exists P_TASK_LIST;
 
 /*==============================================================*/
@@ -547,81 +541,8 @@ create table F_WORK_DAY
 );
 
 alter table F_WORK_DAY comment '��������ҵʱ����
-A:�����շż� B:��ĩ���ݳɹ���ʱ��  C: �����ϰ�  D:�����ݼ�  
+A:�����շż� B:��ĩ���ݳɹ���ʱ��  C: �����ϰ�  D:�����ݼ�
 ';
-
-/*==============================================================*/
-/* Table: M_InnerMsg                                            */
-/*==============================================================*/
-create table M_InnerMsg
-(
-   MsgCode              varchar(16) not null comment '��Ϣ�����Զ��壬ͨ��S_M_INNERMSG��������',
-   Sender               varchar(128),
-   SendDate             date,
-   MsgTitle             varchar(128),
-   MsgType              char(1) comment 'P= ����Ϊ��Ϣ  A= ����Ϊ���棨֪ͨ��
-            M=�ʼ�',
-   MailType             char(1) comment 'I=�ռ���
-            O=������
-            D=�ݸ���
-            T=�ϼ���
-            
-            
-            ',
-   MailUnDelType        char(1),
-   ReceiveName          varchar(2048) comment 'ʹ�ò��ţ��������������м�ʹ��Ӣ�ķֺŷָ�',
-   HoldUsers            numeric(8,0) comment '����Ϊ�����˺ͽ�����������ӣ����ͺͽ�����ɾ����Ϣʱ-1��������Ϊ0ʱ����ɾ��������¼
-            
-            ��Ϣ����Ϊ�ʼ�ʱ����Ҫ����',
-   msgState             char(1) comment 'δ��/�Ѷ�/ɾ��',
-   msgContent           longblob,
-   EmailId              varchar(8) comment '�û����ö�����ʱʹ��',
-   OptID                varchar(64) not null comment 'ģ�飬���߱�',
-   OPTMethod            varchar(64) comment '�����������ֶ�',
-   optTag               varchar(200) comment 'һ�����ڹ�����ҵ������',
-   primary key (MsgCode)
-);
-
-alter table M_InnerMsg comment '�ڲ���Ϣ�빫��
-���ܴ���,  ��ʵ���Զ�������, ��Ϊ�� �ͷ����� �� һ�Զ�Ĺ�ϵ
-
-                               -&#';
-
-/*==============================================================*/
-/* Table: M_InnerMsg_Recipient                                  */
-/*==============================================================*/
-create table M_InnerMsg_Recipient
-(
-   MsgCode              varchar(16) not null,
-   Receive              varchar(8) not null,
-   ReplyMsgCode         int,
-   ReceiveType          char(1) comment 'P=����Ϊ��Ϣ
-            A=����Ϊ����
-            M=�ʼ�',
-   MailType             char(1) comment 'T=�ռ���
-            C=����
-            B=����',
-   msgState             char(1) comment 'δ��/�Ѷ�/ɾ�����ռ�������ʱ������ʾ
-            
-            U=δ��
-            R=�Ѷ�
-            D=ɾ��',
-   ID                   varchar(16) not null,
-   primary key (ID)
-);
-
-alter table M_InnerMsg_Recipient comment '�ڲ���Ϣ���ʼ����빫���ռ��˼���Ϣ��Ϣ';
-
-/*==============================================================*/
-/* Table: M_MsgAnnex                                            */
-/*==============================================================*/
-create table M_MsgAnnex
-(
-   MsgCode              varchar(16) not null,
-   InfoCode             varchar(16) not null,
-   MsgAnnexId           varchar(16) not null,
-   primary key (MsgAnnexId)
-);
 
 /*==============================================================*/
 /* Table: P_TASK_LIST                                           */

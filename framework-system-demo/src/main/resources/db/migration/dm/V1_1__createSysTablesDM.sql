@@ -81,11 +81,6 @@ call p_drop_ifExists('F_USERUNIT');
 
 call p_drop_ifExists('F_USER_QUERY_FILTER');
 
-call p_drop_ifExists('M_InnerMsg');
-
-call p_drop_ifExists('M_InnerMsg_Recipient');
-
-call p_drop_ifExists('M_MsgAnnex');
 call p_drop_ifExists('F_UNITROLE');
 
 create table F_DATACATALOG
@@ -413,61 +408,6 @@ comment on column F_USER_QUERY_FILTER. modle_code is '开发人员自行定义�
 comment on column F_USER_QUERY_FILTER.  filter_name is   '用户自行定义的名称' ;
 comment on column F_USER_QUERY_FILTER. filter_value is  '变量值，json格式，对应一个map' ;
 alter table F_USER_QUERY_FILTER add primary key (FILTER_NO);
-
-create table M_InnerMsg
-(
-   Msg_Code             varchar2(32) not null ,
-   Sender               varchar2(128),
-   Send_Date            date,
-   Msg_Title            varchar2(128),
-   Msg_Type             varchar2(16) ,
-   Mail_Type            char(1) ,
-   Mail_UnDel_Type      char(1),
-   Receive_Name         varchar2(2048) ,
-   Hold_Users           number(8,0)  ,
-   msg_State            char(1)  ,
-   msg_Content          blob,
-   Email_Id             varchar2(8)  ,
-   Opt_ID               varchar2(32) not null  ,
-   OPT_Method           varchar2(64) ,
-   opt_Tag              varchar2(200)
-);
-comment on column M_InnerMsg.     Msg_Code    is     '消息主键自定义，通过S_M_INNERMSG序列生成'      ;
-comment on column M_InnerMsg.    Msg_Type    is       'P= 个人为消息  A= 机构为公告（通知） M=邮件'    ;
-comment on column M_InnerMsg.      Mail_Type   is         'I=收件箱O=发件箱 D=草稿箱T=废件箱 '  ;
-comment on column M_InnerMsg.     Receive_Name    is    '使用部门，个人中文名，中间使用英文分号分割'       ;
-comment on column M_InnerMsg.  Hold_Users       is        '总数为发送人和接收人数量相加，发送和接收人删除消息时-1，当数量为0时真正删除此条记录 消息类型为邮件时不需要设置'  ;
-comment on column M_InnerMsg.     msg_State    is     '未读/已读/删除'     ;
-comment on column M_InnerMsg.    Email_Id     is       '用户配置多邮箱时使用'   ;
-comment on column M_InnerMsg.       Opt_ID  is       '模块，或者表'   ;
-comment on column M_InnerMsg.       OPT_Method  is   '方法，或者字段'        ;
-comment on column M_InnerMsg.     opt_Tag    is     '一般用于关联到业务主体'     ;
-comment on table M_InnerMsg is  '内部消息与公告接受代码,  其实可以独立出来, 因为他 和发送人 是 一对多的关系 ';
-alter table M_InnerMsg add primary key (Msg_Code);
-
-create table M_InnerMsg_Recipient
-(
-   Msg_Code             varchar2(16) not null,
-   Receive              varchar2(8) not null,
-   Reply_Msg_Code       int,
-   Receive_Type         char(1)  ,
-   Mail_Type            char(1)  ,
-   msg_State            char(1)  ,
-   ID                   varchar2(32) not null
-);
-comment on column M_InnerMsg_Recipient.   Receive_Type     is   'P=个人为消息A=机构为公告M=邮件' ;
-comment on column M_InnerMsg_Recipient. Mail_Type       is  'T=收件人C=抄送B=密送'  ;
-comment on column M_InnerMsg_Recipient.    msg_State    is  '未读/已读/删除，收件人在线时弹出提示U=未读R=已读D=删除'  ;
-comment on table M_InnerMsg_Recipient is '内部消息（邮件）与公告收件人及消息信息';
-alter table M_InnerMsg_Recipient add primary key (ID);
-
-create table M_MsgAnnex
-(
-   Msg_Code             varchar2(16) not null,
-   Info_Code            varchar2(16) not null,
-   Msg_Annex_Id         varchar2(32) not null
-);
-alter table M_MsgAnnex  add primary key (Msg_Annex_Id);
 
 create table F_UNITROLE
 (

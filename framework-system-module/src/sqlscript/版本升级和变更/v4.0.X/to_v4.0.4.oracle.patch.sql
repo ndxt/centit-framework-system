@@ -48,4 +48,3 @@ values ('userSettingKey', 'receiveways', null, null, 'T', '消息接收方式', 
 insert into F_DATADICTIONARY (CATALOG_CODE, DATA_CODE, EXTRA_CODE, EXTRA_CODE2, DATA_TAG, DATA_VALUE, DATA_STYLE, DATA_DESC, LAST_MODIFY_DATE, CREATE_DATE, DATA_ORDER)
 values ('userSettingKey', 'LOCAL_LANG', null, null, 'T', '语言', 'S', '设置用户语言', null, null, null);
 
-alter table M_InnerMsg MODIFY MSG_TYPE varchar2(16);

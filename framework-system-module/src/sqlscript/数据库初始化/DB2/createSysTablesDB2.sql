@@ -59,16 +59,10 @@ drop table F_WORK_CLASS  ;
 
 drop table F_WORK_DAY  ;
 
-drop table M_InnerMsg  ;
-
-drop table M_InnerMsg_Recipient  ;
-
-drop table M_MsgAnnex  ;
-
 drop table P_TASK_LIST  ;
 
 /*==============================================================*/
-/* 创建 序列                                                                                                                                                                     
+/* 创建 序列
 */
 /*==============================================================*/
 /*
@@ -788,7 +782,7 @@ create table F_WORK_DAY  (
 
 comment on table F_WORK_DAY is
 '非正常作业时间日
-A:工作日放假 B:周末调休成工作时间  C: 正常上班  D:正常休假  
+A:工作日放假 B:周末调休成工作时间  C: 正常上班  D:正常休假
 ';
 
 comment on column F_WORK_DAY.DayType is
@@ -797,118 +791,6 @@ comment on column F_WORK_DAY.DayType is
 alter table F_WORK_DAY
    add constraint PK_F_WORK_DAY primary key (WorkDay);
 
-/*==============================================================*/
-/* Table: M_InnerMsg                                            */
-/*==============================================================*/
-create table M_InnerMsg  (
-   MsgCode              VARCHAR(16)                    not null,
-   Sender               VARCHAR(128),
-   SendDate             TIMESTAMP,
-   MsgTitle             VARCHAR(128),
-   MsgType              CHAR(1),
-   MailType             CHAR(1),
-   MailUnDelType        CHAR(1),
-   ReceiveName          VARCHAR(2048),
-   HoldUsers            decimal(8,0),
-   msgState             CHAR(1),
-   msgContent           BLOB,
-   EmailId              VARCHAR(8),
-   OptID                VARCHAR(64)                    not null,
-   OPTMethod            VARCHAR(64),
-   optTag               VARCHAR(200)
-);
-
-
-
-comment on column M_InnerMsg.MsgCode is
-'消息主键自定义，通过S_M_INNERMSG序列生成';
-
-comment on column M_InnerMsg.MsgType is
-'P= 个人为消息  A= 机构为公告（通知）
-M=邮件';
-
-comment on column M_InnerMsg.MailType is
-'I=收件箱
-O=发件箱
-D=草稿箱
-T=废件箱
-
-
-';
-
-comment on column M_InnerMsg.ReceiveName is
-'使用部门，个人中文名，中间使用英文分号分割';
-
-comment on column M_InnerMsg.HoldUsers is
-'总数为发送人和接收人数量相加，发送和接收人删除消息时-1，当数量为0时真正删除此条记录
-
-消息类型为邮件时不需要设置';
-
-comment on column M_InnerMsg.msgState is
-'未读/已读/删除';
-
-comment on column M_InnerMsg.EmailId is
-'用户配置多邮箱时使用';
-
-comment on column M_InnerMsg.OptID is
-'模块，或者表';
-
-comment on column M_InnerMsg.OPTMethod is
-'方法，或者字段';
-
-comment on column M_InnerMsg.optTag is
-'一般用于关联到业务主体';
-
-alter table M_InnerMsg
-   add constraint PK_M_INNERMSG primary key (MsgCode);
-
-/*==============================================================*/
-/* Table: M_InnerMsg_Recipient                                  */
-/*==============================================================*/
-create table M_InnerMsg_Recipient  (
-   MsgCode              VARCHAR(16)                    not null,
-   Receive              VARCHAR(8)                     not null,
-   ReplyMsgCode         INTEGER,
-   ReceiveType          CHAR(1),
-   MailType             CHAR(1),
-   msgState             CHAR(1),
-   ID                   VARCHAR(16)                    not null
-);
-
-comment on table M_InnerMsg_Recipient is
-'内部消息（邮件）与公告收件人及消息信息';
-
-comment on column M_InnerMsg_Recipient.ReceiveType is
-'P=个人为消息
-A=机构为公告
-M=邮件';
-
-comment on column M_InnerMsg_Recipient.MailType is
-'T=收件人
-C=抄送
-B=密送';
-
-comment on column M_InnerMsg_Recipient.msgState is
-'未读/已读/删除，收件人在线时弹出提示
-
-U=未读
-R=已读
-D=删除';
-
-alter table M_InnerMsg_Recipient
-   add constraint PK_M_INNERMSG_RECIPIENT primary key (ID);
-
-/*==============================================================*/
-/* Table: M_MsgAnnex                                            */
-/*==============================================================*/
-create table M_MsgAnnex  (
-   MsgCode              VARCHAR(16)                    not null,
-   InfoCode             VARCHAR(16)                    not null,
-   MsgAnnexId           VARCHAR(16)                    not null
-);
-
-alter table M_MsgAnnex
-   add constraint PK_M_MSGANNEX primary key (MsgAnnexId);
 
 /*==============================================================*/
 /* Table: P_TASK_LIST                                           */
@@ -1048,7 +930,7 @@ where  d.opturl<> '...'
 /* View: V_Hi_Optinfo                                           */
 /*==============================================================*/
 create or replace view V_Hi_Optinfo as
-WITH RPL 
+WITH RPL
 (hi_level,optid,topoptid,preoptid
 --,optname
      )
@@ -1106,7 +988,7 @@ from F_OPTDEF b join f_optinfo c
 /* View: v_hi_unitinfo                                          */
 /*==============================================================*/
 create or replace view v_hi_unitinfo as
-WITH RPL 
+WITH RPL
 (LEVEL,UNITCODE,topunitcode,PARENTUNIT
 ,UNITTYPE,ISVALID,
      UNITNAME,UNITSHORTNAME,UNITDESC,ADDRBOOKID,
@@ -1117,7 +999,7 @@ AS
  (SELECT 1             as LEVEL,
          UNITCODE,
          PARENTUNIT as topunitcode,
-         PARENTUNIT    
+         PARENTUNIT
          ,UNITTYPE,ISVALID,
      UNITNAME,UNITSHORTNAME,UNITDESC,ADDRBOOKID,
      unitOrder,unitWord,unitGrade,UnitPath
@@ -1142,15 +1024,15 @@ SELECT LEVEL,
      unitOrder,unitWord,unitGrade,UnitPath
   FROM RPL
 ;
-  
-  
- comment on table v_hi_unitinfo is
-'下级部门可以通过语句 
-select * from v_hi_unitinfo 
-where topunitcode = ''机构代码来获取'' 
-order by topunitcode,hi_level 
 
-需要视图 
+
+ comment on table v_hi_unitinfo is
+'下级部门可以通过语句
+select * from v_hi_unitinfo
+where topunitcode = ''机构代码来获取''
+order by topunitcode,hi_level
+
+需要视图
 
 ';
 
@@ -1170,10 +1052,10 @@ select
    MENU_NAME,
    ORDERIND
 from
-   (select i.optid as MENU_ID,i.preoptid as PARENT_ID,i.optname as MENU_NAME,i.orderind 
+   (select i.optid as MENU_ID,i.preoptid as PARENT_ID,i.optname as MENU_NAME,i.orderind
    from f_optinfo i where i.isintoolbar ='Y')
-   union all 
-   (select d.optcode as MENU_ID,d.optid as PARENT_ID,d.optname as MENU_NAME,0 as orderind 
+   union all
+   (select d.optcode as MENU_ID,d.optid as PARENT_ID,d.optname as MENU_NAME,0 as orderind
    from f_optdef d)
   -- order by orderind ASC
 ;

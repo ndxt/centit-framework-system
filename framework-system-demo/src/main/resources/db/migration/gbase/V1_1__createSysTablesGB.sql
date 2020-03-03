@@ -31,11 +31,6 @@ drop table if exists F_USERUNIT cascade;
 
 drop table if exists F_USER_QUERY_FILTER cascade;
 
-drop table if exists M_InnerMsg cascade;
-
-drop table if exists M_InnerMsg_Recipient cascade;
-
-drop table if exists M_MsgAnnex cascade;
 drop table if exists F_UNITROLE cascade;
 drop sequence if exists s_optdefcode;
 drop sequence if exists s_sys_log;
@@ -319,43 +314,7 @@ create table F_USER_QUERY_FILTER
    CREATE_DATE          date,
    primary key (FILTER_NO)
 );
-create table M_InnerMsg
-(
-   Msg_Code             varchar(32) not null ,
-   Sender               varchar(128),
-   Send_Date            date,
-   Msg_Title            varchar(128),
-   Msg_Type             varchar(16) ,
-   Mail_Type            char(1) ,
-   Mail_UnDel_Type      char(1),
-   Receive_Name         lvarchar(2048) ,
-   Hold_Users           int,
-   msg_State            char(1)  ,
-   msg_Content          blob,
-   Email_Id             varchar(8)  ,
-   Opt_ID               varchar(32) not null  ,
-   OPT_Method           varchar(64) ,
-   opt_Tag              varchar(200),
-   primary key (Msg_Code)
-);
-create table M_InnerMsg_Recipient
-(
-   Msg_Code             varchar(16) not null,
-   Receive              varchar(8) not null,
-   Reply_Msg_Code       int,
-   Receive_Type         char(1)  ,
-   Mail_Type            char(1)  ,
-   msg_State            char(1)  ,
-   ID                   varchar(32) not null,
-   primary key (ID)
-);
-create table M_MsgAnnex
-(
-   Msg_Code             varchar(16) not null,
-   Info_Code            varchar(16) not null,
-   Msg_Annex_Id         varchar(32) not null,
-   primary key (Msg_Annex_Id)
-);
+
 create table F_UNITROLE
 (
    UNIT_CODE            varchar(32) not null,

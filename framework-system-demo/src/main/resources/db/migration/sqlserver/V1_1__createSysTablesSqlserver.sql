@@ -46,15 +46,6 @@ IF OBJECT_ID(N'F_USERUNIT', N'U') IS  NOT  NULL
 IF OBJECT_ID(N'F_USER_QUERY_FILTER', N'U') IS  NOT  NULL
   DROP table F_USER_QUERY_FILTER;
 
-IF OBJECT_ID(N'M_InnerMsg', N'U') IS  NOT  NULL
-  DROP table M_InnerMsg;
-
-IF OBJECT_ID(N'M_InnerMsg_Recipient', N'U') IS  NOT  NULL
-  DROP table M_InnerMsg_Recipient;
-
-IF OBJECT_ID(N'M_MsgAnnex', N'U') IS  NOT  NULL
-  DROP table M_MsgAnnex;
-
 IF OBJECT_ID(N'F_UNITROLE', N'U') IS  NOT  NULL
   DROP table F_UNITROLE;
 
@@ -368,46 +359,6 @@ create table F_USER_QUERY_FILTER
    CREATE_datetime          datetime
 );
 alter table F_USER_QUERY_FILTER add primary key (FILTER_NO);
-
-create table M_InnerMsg
-(
-   Msg_Code             varchar(32) not null ,
-   Sender               varchar(128),
-   Send_datetime            datetime,
-   Msg_Title            varchar(128),
-   Msg_Type             varchar(16) ,
-   Mail_Type            char(1) ,
-   Mail_UnDel_Type      char(1),
-   Receive_Name         varchar(2048) ,
-   Hold_Users           numeric(8,0)  ,
-   msg_State            char(1)  ,
-   msg_Content          image,
-   Email_Id             varchar(8)  ,
-   Opt_ID               varchar(32) not null  ,
-   OPT_Method           varchar(64) ,
-   opt_Tag              varchar(200)
-);
-alter table M_InnerMsg add primary key (Msg_Code);
-
-create table M_InnerMsg_Recipient
-(
-   Msg_Code             varchar(16) not null,
-   Receive              varchar(8) not null,
-   Reply_Msg_Code       int,
-   Receive_Type         char(1)  ,
-   Mail_Type            char(1)  ,
-   msg_State            char(1)  ,
-   ID                   varchar(32) not null
-);
-alter table M_InnerMsg_Recipient add primary key (ID);
-
-create table M_MsgAnnex
-(
-   Msg_Code             varchar(16) not null,
-   Info_Code            varchar(16) not null,
-   Msg_Annex_Id         varchar(32) not null
-);
-alter table M_MsgAnnex  add primary key (Msg_Annex_Id);
 
 create table F_UNITROLE
 (
