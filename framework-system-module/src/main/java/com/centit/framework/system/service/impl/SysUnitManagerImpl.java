@@ -140,7 +140,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
 
     @Override
     @Transactional
-    public boolean isUniqueName(UnitInfo unitInfo){
+    public boolean hasSameName(UnitInfo unitInfo){
         return unitInfoDao.isUniqueName(
                 unitInfo.getUnitName(), unitInfo.getParentUnit(), unitInfo.getUnitCode());
     }

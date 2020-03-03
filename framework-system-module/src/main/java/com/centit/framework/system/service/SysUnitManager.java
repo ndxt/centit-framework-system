@@ -36,7 +36,7 @@ public interface SysUnitManager{
 
     String saveNewUnitInfo(UnitInfo unitinfo);
 
-    boolean isUniqueName(UnitInfo unitInfo);
+    boolean hasSameName(UnitInfo unitInfo);
 
     boolean isUniqueOrder(UnitInfo unitInfo);
 
