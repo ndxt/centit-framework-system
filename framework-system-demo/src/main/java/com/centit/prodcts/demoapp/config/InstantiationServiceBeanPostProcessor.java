@@ -41,7 +41,6 @@ public class InstantiationServiceBeanPostProcessor implements ApplicationListene
         /*if(operationLogWriter!=null) {
             OperationLogCenter.registerOperationLogWriter(operationLogWriter);
         }*/
-
     }
 
 }
