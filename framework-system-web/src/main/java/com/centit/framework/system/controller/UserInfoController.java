@@ -14,7 +14,6 @@ import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserUnit;
 import com.centit.framework.system.service.SysUserManager;
 import com.centit.framework.system.service.SysUserUnitManager;
-import com.centit.framework.system.service.UserSettingManager;
 import com.centit.support.algorithm.BooleanBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
