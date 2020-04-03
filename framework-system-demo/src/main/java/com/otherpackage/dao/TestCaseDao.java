@@ -12,10 +12,8 @@ public class TestCaseDao extends BaseDaoImpl<TestCase, String> {
 
     @Override
     public Map<String, String> getFilterField() {
-        if (filterField == null) {
-            filterField = new HashMap<>();
-            filterField.put("caseId", CodeBook.EQUAL_HQL_ID);
-        }
+        Map<String, String> filterField = new HashMap<>();
+        filterField.put("caseId", CodeBook.EQUAL_HQL_ID);
         return filterField;
     }
 }

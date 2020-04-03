@@ -27,20 +27,18 @@ public class QueryFilterConditionDao extends BaseDaoImpl<QueryFilterCondition,Lo
 
     @Override
     public Map<String, String> getFilterField() {
-        if( filterField == null){
-            filterField = new HashMap<>();
-            filterField.put("conditionNo" , CodeBook.EQUAL_HQL_ID);
-            filterField.put("tableClassName" , CodeBook.EQUAL_HQL_ID);
-            filterField.put("paramName" , CodeBook.EQUAL_HQL_ID);
-            filterField.put("paramLabel" , CodeBook.EQUAL_HQL_ID);
-            filterField.put("paramType" , CodeBook.EQUAL_HQL_ID);
-            filterField.put("defaultValue" , CodeBook.EQUAL_HQL_ID);
-            filterField.put("filterSql" , CodeBook.EQUAL_HQL_ID);
-            filterField.put("selectDataType" , CodeBook.EQUAL_HQL_ID);
-            filterField.put("selectDataCatalog" , CodeBook.EQUAL_HQL_ID);
-            filterField.put("selectSql" , CodeBook.EQUAL_HQL_ID);
-            filterField.put("selectJson" , CodeBook.EQUAL_HQL_ID);
-        }
+        Map<String, String> filterField = new HashMap<>();
+        filterField.put("conditionNo" , CodeBook.EQUAL_HQL_ID);
+        filterField.put("tableClassName" , CodeBook.EQUAL_HQL_ID);
+        filterField.put("paramName" , CodeBook.EQUAL_HQL_ID);
+        filterField.put("paramLabel" , CodeBook.EQUAL_HQL_ID);
+        filterField.put("paramType" , CodeBook.EQUAL_HQL_ID);
+        filterField.put("defaultValue" , CodeBook.EQUAL_HQL_ID);
+        filterField.put("filterSql" , CodeBook.EQUAL_HQL_ID);
+        filterField.put("selectDataType" , CodeBook.EQUAL_HQL_ID);
+        filterField.put("selectDataCatalog" , CodeBook.EQUAL_HQL_ID);
+        filterField.put("selectSql" , CodeBook.EQUAL_HQL_ID);
+        filterField.put("selectJson" , CodeBook.EQUAL_HQL_ID);
         return filterField;
     }
 

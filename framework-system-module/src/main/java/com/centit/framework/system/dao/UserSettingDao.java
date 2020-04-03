@@ -22,15 +22,13 @@ public class UserSettingDao extends BaseDaoImpl<UserSetting, UserSettingId> {
     public static final Logger logger = LoggerFactory.getLogger(UserSettingDao.class);
 
     public Map<String, String> getFilterField() {
-        if (filterField == null) {
-            filterField = new HashMap<>();
-            filterField.put(CodeRepositoryUtil.USER_CODE,  CodeBook.LIKE_HQL_ID);
-            filterField.put("paramCode",  CodeBook.LIKE_HQL_ID);
-            filterField.put("paramValue", CodeBook.LIKE_HQL_ID);
-            filterField.put("paramClass", CodeBook.LIKE_HQL_ID);
-            filterField.put("paramName", CodeBook.LIKE_HQL_ID);
-            filterField.put("createDate", CodeBook.LIKE_HQL_ID);
-        }
+        Map<String, String> filterField = new HashMap<>();
+        filterField.put(CodeRepositoryUtil.USER_CODE,  CodeBook.LIKE_HQL_ID);
+        filterField.put("paramCode",  CodeBook.LIKE_HQL_ID);
+        filterField.put("paramValue", CodeBook.LIKE_HQL_ID);
+        filterField.put("paramClass", CodeBook.LIKE_HQL_ID);
+        filterField.put("paramName", CodeBook.LIKE_HQL_ID);
+        filterField.put("createDate", CodeBook.LIKE_HQL_ID);
         return filterField;
     }
 

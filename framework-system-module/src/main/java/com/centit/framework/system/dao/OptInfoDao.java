@@ -17,18 +17,16 @@ import java.util.Map;
 public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
 
     public Map<String, String> getFilterField() {
-        if (filterField == null) {
-            filterField = new HashMap<>();
-            filterField.put("optId", CodeBook.EQUAL_HQL_ID);
-            filterField.put("optUrl", CodeBook.EQUAL_HQL_ID);
-            filterField.put("optName", CodeBook.LIKE_HQL_ID);
-            filterField.put("preOptId", CodeBook.EQUAL_HQL_ID);
-            filterField.put("NP_TOPOPT", "(preOptId is null or preOptId='0')");
-            filterField.put("optType", CodeBook.EQUAL_HQL_ID);
-            filterField.put("optTypes", "optType in (:optTypes)");
-            filterField.put("topOptId", CodeBook.EQUAL_HQL_ID);
-            filterField.put("isInToolbar", CodeBook.EQUAL_HQL_ID);
-        }
+        Map<String, String> filterField = new HashMap<>();
+        filterField.put("optId", CodeBook.EQUAL_HQL_ID);
+        filterField.put("optUrl", CodeBook.EQUAL_HQL_ID);
+        filterField.put("optName", CodeBook.LIKE_HQL_ID);
+        filterField.put("preOptId", CodeBook.EQUAL_HQL_ID);
+        filterField.put("NP_TOPOPT", "(preOptId is null or preOptId='0')");
+        filterField.put("optType", CodeBook.EQUAL_HQL_ID);
+        filterField.put("optTypes", "optType in (:optTypes)");
+        filterField.put("topOptId", CodeBook.EQUAL_HQL_ID);
+        filterField.put("isInToolbar", CodeBook.EQUAL_HQL_ID);
         return filterField;
     }
 

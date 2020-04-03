@@ -28,14 +28,12 @@ public class UserQueryFilterDao extends BaseDaoImpl<UserQueryFilter,Long> {
 
     @Override
     public Map<String, String> getFilterField() {
-        if( filterField == null){
-            filterField = new HashMap<>();
-            filterField.put("filterNo" , CodeBook.EQUAL_HQL_ID);
-            filterField.put("userCode" , CodeBook.EQUAL_HQL_ID);
-            filterField.put("modleCode" , CodeBook.EQUAL_HQL_ID);
-            filterField.put("filterName" , CodeBook.EQUAL_HQL_ID);
-            filterField.put("filterValue" , CodeBook.EQUAL_HQL_ID);
-        }
+        Map<String, String> filterField = new HashMap<>();
+        filterField.put("filterNo" , CodeBook.EQUAL_HQL_ID);
+        filterField.put("userCode" , CodeBook.EQUAL_HQL_ID);
+        filterField.put("modleCode" , CodeBook.EQUAL_HQL_ID);
+        filterField.put("filterName" , CodeBook.EQUAL_HQL_ID);
+        filterField.put("filterValue" , CodeBook.EQUAL_HQL_ID);
         return filterField;
     }
 

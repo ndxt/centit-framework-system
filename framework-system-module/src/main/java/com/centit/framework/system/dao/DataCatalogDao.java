@@ -15,14 +15,12 @@ public class DataCatalogDao extends BaseDaoImpl<DataCatalog, String>{
 
     @Override
     public Map<String, String> getFilterField() {
-        if (filterField == null) {
-            filterField = new HashMap<>();
-            filterField.put("catalogCode", CodeBook.LIKE_HQL_ID);
-            filterField.put("catalogName", CodeBook.LIKE_HQL_ID);
-            filterField.put("catalogStyle", CodeBook.EQUAL_HQL_ID);
-            filterField.put("catalogType", CodeBook.EQUAL_HQL_ID);
-            filterField.put("optId", CodeBook.EQUAL_HQL_ID);
-        }
+        Map<String, String> filterField = new HashMap<>();
+        filterField.put("catalogCode", CodeBook.LIKE_HQL_ID);
+        filterField.put("catalogName", CodeBook.LIKE_HQL_ID);
+        filterField.put("catalogStyle", CodeBook.EQUAL_HQL_ID);
+        filterField.put("catalogType", CodeBook.EQUAL_HQL_ID);
+        filterField.put("optId", CodeBook.EQUAL_HQL_ID);
         return filterField;
     }
 

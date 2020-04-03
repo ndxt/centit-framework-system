@@ -25,19 +25,17 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
 
     @Override
     public Map<String, String> getFilterField() {
-        if (filterField == null) {
-            filterField = new HashMap<>(10);
-            filterField.put("unitCode", CodeBook.EQUAL_HQL_ID);
-            filterField.put("unitName", CodeBook.LIKE_HQL_ID);
-            filterField.put("isValid", CodeBook.EQUAL_HQL_ID);
-            filterField.put("UNITTAG", CodeBook.EQUAL_HQL_ID);
-            filterField.put("unitWord", CodeBook.EQUAL_HQL_ID);
-            filterField.put("parentUnit", CodeBook.EQUAL_HQL_ID);
-            filterField.put("NP_TOPUnit", "(parentUnit is null or parentUnit='0' or parentUnit='')");
-            filterField.put("depNo", CodeBook.EQUAL_HQL_ID);
-            filterField.put(CodeBook.ORDER_BY_HQL_ID, " UNIT_ORDER, UNIT_CODE ");
-            filterField.put("(STARTWITH)unitPath", CodeBook.LIKE_HQL_ID);
-        }
+        Map<String, String> filterField = new HashMap<>(10);
+        filterField.put("unitCode", CodeBook.EQUAL_HQL_ID);
+        filterField.put("unitName", CodeBook.LIKE_HQL_ID);
+        filterField.put("isValid", CodeBook.EQUAL_HQL_ID);
+        filterField.put("UNITTAG", CodeBook.EQUAL_HQL_ID);
+        filterField.put("unitWord", CodeBook.EQUAL_HQL_ID);
+        filterField.put("parentUnit", CodeBook.EQUAL_HQL_ID);
+        filterField.put("NP_TOPUnit", "(parentUnit is null or parentUnit='0' or parentUnit='')");
+        filterField.put("depNo", CodeBook.EQUAL_HQL_ID);
+        filterField.put(CodeBook.ORDER_BY_HQL_ID, " UNIT_ORDER, UNIT_CODE ");
+        filterField.put("(STARTWITH)unitPath", CodeBook.LIKE_HQL_ID);
         return filterField;
     }
 

@@ -15,17 +15,15 @@ import java.util.Map;
 public class UnitRoleDao extends BaseDaoImpl<UnitRole, UnitRoleId> {
 
     public Map<String, String> getFilterField() {
-        if (filterField == null) {
-            filterField = new HashMap<>();
-            filterField.put("roleCode", "ROLE_CODE = :roleCode");
-            filterField.put("unitCode", "UNIT_CODE = :unitCode");
-            filterField.put("(StartWith)unitPathPrefix",
-                "UNIT_CODE in (select UNIT_CODE from f_unitinfo where UNIT_PATH like :unitPathPrefix)");
-            filterField.put("currentUnitCode",
-                "ROLE_CODE in (select ROLE_CODE from f_roleinfo where UNIT_CODE = :currentUnitCode)");
-            filterField.put("unitValid", "unitCode in (select UNIT_CODE from f_unitinfo where IS_VALID = :unitValid)");
-            filterField.put("roleValid", "roleCode in (select ROLE_CODE from f_roleinfo where IS_VALID = :roleValid)");
-        }
+        Map<String, String> filterField = new HashMap<>();
+        filterField.put("roleCode", "ROLE_CODE = :roleCode");
+        filterField.put("unitCode", "UNIT_CODE = :unitCode");
+        filterField.put("(StartWith)unitPathPrefix",
+            "UNIT_CODE in (select UNIT_CODE from f_unitinfo where UNIT_PATH like :unitPathPrefix)");
+        filterField.put("currentUnitCode",
+            "ROLE_CODE in (select ROLE_CODE from f_roleinfo where UNIT_CODE = :currentUnitCode)");
+        filterField.put("unitValid", "unitCode in (select UNIT_CODE from f_unitinfo where IS_VALID = :unitValid)");
+        filterField.put("roleValid", "roleCode in (select ROLE_CODE from f_roleinfo where IS_VALID = :roleValid)");
         return filterField;
     }
 

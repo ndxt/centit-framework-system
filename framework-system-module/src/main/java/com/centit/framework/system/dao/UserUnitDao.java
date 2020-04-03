@@ -25,22 +25,20 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
 
     @Override
     public Map<String, String> getFilterField() {
-        if (filterField == null) {
-            filterField = new HashMap<>(20);
-            filterField.put("unitCode", CodeBook.EQUAL_HQL_ID);
-            filterField.put("userStation", CodeBook.EQUAL_HQL_ID);
-            filterField.put("userRank", CodeBook.EQUAL_HQL_ID);
-            filterField.put("userCode", CodeBook.EQUAL_HQL_ID);
-            filterField.put("isPrimary", CodeBook.EQUAL_HQL_ID);
-            filterField.put("unitName", CodeBook.LIKE_HQL_ID);
-            filterField.put("(like)userName", "userCode in (select us.USER_CODE from f_userinfo us where" +
-                    " us.USER_NAME like :userName)");
-            filterField.put("isValid", "userCode in (select us.USER_CODE from f_userinfo us where " +
-                    "us.IS_VALID = :isValid)");
-            filterField.put("userCode_isValid", "userCode in (select us.USER_CODE" +
-                " from f_userinfo us where us.IS_VALID = :userCode_isValid)");
-            filterField.put(CodeBook.ORDER_BY_HQL_ID, "userOrder asc");
-        }
+        Map<String, String> filterField = new HashMap<>(20);
+        filterField.put("unitCode", CodeBook.EQUAL_HQL_ID);
+        filterField.put("userStation", CodeBook.EQUAL_HQL_ID);
+        filterField.put("userRank", CodeBook.EQUAL_HQL_ID);
+        filterField.put("userCode", CodeBook.EQUAL_HQL_ID);
+        filterField.put("isPrimary", CodeBook.EQUAL_HQL_ID);
+        filterField.put("unitName", CodeBook.LIKE_HQL_ID);
+        filterField.put("(like)userName", "userCode in (select us.USER_CODE from f_userinfo us where" +
+                " us.USER_NAME like :userName)");
+        filterField.put("isValid", "userCode in (select us.USER_CODE from f_userinfo us where " +
+                "us.IS_VALID = :isValid)");
+        filterField.put("userCode_isValid", "userCode in (select us.USER_CODE" +
+            " from f_userinfo us where us.IS_VALID = :userCode_isValid)");
+        filterField.put(CodeBook.ORDER_BY_HQL_ID, "userOrder asc");
         return filterField;
     }
 

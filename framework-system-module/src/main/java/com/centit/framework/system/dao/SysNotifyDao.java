@@ -6,7 +6,6 @@ import com.centit.framework.system.po.SysNotify;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Repository("sysNotifyDao")
@@ -14,11 +13,7 @@ public class SysNotifyDao extends BaseDaoImpl<SysNotify, Long> {
 
     @Override
     public Map<String, String> getFilterField() {
-        if (filterField == null) {
-            filterField = new HashMap<>();
-
-        }
-        return filterField;
+        return null;
     }
 
     @Transactional

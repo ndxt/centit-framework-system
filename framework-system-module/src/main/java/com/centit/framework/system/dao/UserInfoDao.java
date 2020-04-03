@@ -43,41 +43,39 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
 
 
     public Map<String, String> getFilterField() {
-        if (filterField == null) {
-            filterField = new HashMap<>();
-            filterField.put(CodeRepositoryUtil.USER_CODE, CodeBook.LIKE_HQL_ID);
-            filterField.put("USERCODE_EQ", CodeBook.EQUAL_HQL_ID);
-            filterField.put("userName", CodeBook.LIKE_HQL_ID);
-            filterField.put("isValid", CodeBook.EQUAL_HQL_ID);
-            filterField.put("LOGINNAME", CodeBook.LIKE_HQL_ID);
-            filterField.put("USERSTATE", CodeBook.EQUAL_HQL_ID);
-            filterField.put("USERORDER", CodeBook.EQUAL_HQL_ID);
-            filterField.put("USERTAG", CodeBook.EQUAL_HQL_ID);
-            filterField.put("USERWORD", CodeBook.EQUAL_HQL_ID);
+        Map<String, String> filterField = new HashMap<>();
+        filterField.put(CodeRepositoryUtil.USER_CODE, CodeBook.LIKE_HQL_ID);
+        filterField.put("USERCODE_EQ", CodeBook.EQUAL_HQL_ID);
+        filterField.put("userName", CodeBook.LIKE_HQL_ID);
+        filterField.put("isValid", CodeBook.EQUAL_HQL_ID);
+        filterField.put("LOGINNAME", CodeBook.LIKE_HQL_ID);
+        filterField.put("USERSTATE", CodeBook.EQUAL_HQL_ID);
+        filterField.put("USERORDER", CodeBook.EQUAL_HQL_ID);
+        filterField.put("USERTAG", CodeBook.EQUAL_HQL_ID);
+        filterField.put("USERWORD", CodeBook.EQUAL_HQL_ID);
 
-            filterField.put("(like)likeUserOrLoginName","(User_Name LIKE :likeUserOrLoginName OR LOGIN_NAME LIKE :likeUserOrLoginName)");
-            filterField.put("byUnderUnit", "userCode in " +
-                "(select us.USER_CODE from f_userunit us where us.UNIT_CODE = :byUnderUnit ) ");
-            filterField.put("roleCode", "[(isNotEmpty(roleCode))(roleCode, currentDateTime) | and USER_CODE in " +
-                "(select v.USER_CODE from ( " + f_v_userroles_sql + " ) v where v.ROLE_CODE = :roleCode) ]");
-            filterField.put("queryByUnit", "userCode in " +
-                "(select us.USER_CODE from f_userunit us where us.UNIT_CODE = :queryByUnit ) ");
-            filterField.put("queryByGW", "userCode in " +
-                "(select us.USER_CODE from f_userunit us where us.User_Station = :queryByGW )");
-            filterField.put("queryByXZ", "userCode in " +
-                "(select us.USER_CODE from f_userunit us where us.USER_RANK = :queryByXZ )");
-            filterField.put("queryByRole", "userCode in " +
-                "(select r.USER_CODE from f_userrole r join f_roleinfo i on r.ROLE_CODE = i.ROLE_CODE " +
-                "where r.ROLE_CODE = :queryByRole and i.IS_VALID = 'T')");
+        filterField.put("(like)likeUserOrLoginName","(User_Name LIKE :likeUserOrLoginName OR LOGIN_NAME LIKE :likeUserOrLoginName)");
+        filterField.put("byUnderUnit", "userCode in " +
+            "(select us.USER_CODE from f_userunit us where us.UNIT_CODE = :byUnderUnit ) ");
+        filterField.put("roleCode", "[(isNotEmpty(roleCode))(roleCode, currentDateTime) | and USER_CODE in " +
+            "(select v.USER_CODE from ( " + f_v_userroles_sql + " ) v where v.ROLE_CODE = :roleCode) ]");
+        filterField.put("queryByUnit", "userCode in " +
+            "(select us.USER_CODE from f_userunit us where us.UNIT_CODE = :queryByUnit ) ");
+        filterField.put("queryByGW", "userCode in " +
+            "(select us.USER_CODE from f_userunit us where us.User_Station = :queryByGW )");
+        filterField.put("queryByXZ", "userCode in " +
+            "(select us.USER_CODE from f_userunit us where us.USER_RANK = :queryByXZ )");
+        filterField.put("queryByRole", "userCode in " +
+            "(select r.USER_CODE from f_userrole r join f_roleinfo i on r.ROLE_CODE = i.ROLE_CODE " +
+            "where r.ROLE_CODE = :queryByRole and i.IS_VALID = 'T')");
 
 //            filterField.put(CodeBook.ORDER_BY_HQL_ID, "userOrder asc");
 
-            filterField.put("unitCode", "userCode in (select us.USER_CODE from f_userunit us where us.UNIT_CODE in " +
-                "(select un.UNIT_CODE from f_unitinfo un where un.UNIT_CODE = :unitCode or un.PARENT_UNIT = :unitCode))");
+        filterField.put("unitCode", "userCode in (select us.USER_CODE from f_userunit us where us.UNIT_CODE in " +
+            "(select un.UNIT_CODE from f_unitinfo un where un.UNIT_CODE = :unitCode or un.PARENT_UNIT = :unitCode))");
 
-            filterField.put("(STARTWITH)unitPath", "userCode in (select us.USER_CODE from f_userunit us where us.UNIT_CODE in " +
-                "(select un.UNIT_CODE from f_unitinfo un where un.UNIT_PATH like :unitPath))");
-        }
+        filterField.put("(STARTWITH)unitPath", "userCode in (select us.USER_CODE from f_userunit us where us.UNIT_CODE in " +
+            "(select un.UNIT_CODE from f_unitinfo un where un.UNIT_PATH like :unitPath))");
         return filterField;
     }
 

@@ -17,28 +17,26 @@ import java.util.Map;
 public class RoleInfoDao extends BaseDaoImpl<RoleInfo, String>{
 
     public Map<String, String> getFilterField() {
-        if (filterField == null) {
-            filterField = new HashMap<>();
-            filterField.put("roleCode", CodeBook.LIKE_HQL_ID);
-            filterField.put("publicUnitRole", "(ROLE_TYPE='P' or (ROLE_TYPE='D' and UNIT_CODE = :publicUnitRole))");
-            filterField.put("NP_ALL", "(ROLE_TYPE='F' or ROLE_TYPE='G' or ROLE_TYPE='P')");
-            filterField.put("NP_GLOBAL", "(ROLE_TYPE='G' or ROLE_TYPE='P')");
-            filterField.put("NP_OWNER", "(ROLE_TYPE='D' or ROLE_TYPE='S')");
+        Map<String, String> filterField = new HashMap<>();
+        filterField.put("roleCode", CodeBook.LIKE_HQL_ID);
+        filterField.put("publicUnitRole", "(ROLE_TYPE='P' or (ROLE_TYPE='D' and UNIT_CODE = :publicUnitRole))");
+        filterField.put("NP_ALL", "(ROLE_TYPE='F' or ROLE_TYPE='G' or ROLE_TYPE='P')");
+        filterField.put("NP_GLOBAL", "(ROLE_TYPE='G' or ROLE_TYPE='P')");
+        filterField.put("NP_OWNER", "(ROLE_TYPE='D' or ROLE_TYPE='S')");
 
-            filterField.put("roleName", CodeBook.LIKE_HQL_ID);
-            filterField.put("ROLEDESC", CodeBook.LIKE_HQL_ID);
-            filterField.put("isValid", CodeBook.EQUAL_HQL_ID);
-            filterField.put("roleType", CodeBook.EQUAL_HQL_ID);
-            filterField.put("unitCode", CodeBook.EQUAL_HQL_ID);
-            filterField.put("ownerCode", "UNIT_CODE = :ownerCode");
+        filterField.put("roleName", CodeBook.LIKE_HQL_ID);
+        filterField.put("ROLEDESC", CodeBook.LIKE_HQL_ID);
+        filterField.put("isValid", CodeBook.EQUAL_HQL_ID);
+        filterField.put("roleType", CodeBook.EQUAL_HQL_ID);
+        filterField.put("unitCode", CodeBook.EQUAL_HQL_ID);
+        filterField.put("ownerCode", "UNIT_CODE = :ownerCode");
 
-            filterField.put("roleNameEq", "ROLE_NAME = :roleNameEq");
-            filterField.put("(date)createDateBeg", "CREATE_DATE>= :createDateBeg");
-            filterField.put("(nextday)createDateEnd", "CREATE_DATE< :createDateEnd");
+        filterField.put("roleNameEq", "ROLE_NAME = :roleNameEq");
+        filterField.put("(date)createDateBeg", "CREATE_DATE>= :createDateBeg");
+        filterField.put("(nextday)createDateEnd", "CREATE_DATE< :createDateEnd");
 
-            filterField.put("unitRole", "(ROLE_TYPE='D' and UNIT_CODE = :unitRole)");
-            filterField.put("subSystemROLE", "(ROLE_TYPE='S' and UNIT_CODE = :subSystemROLE)");
-        }
+        filterField.put("unitRole", "(ROLE_TYPE='D' and UNIT_CODE = :unitRole)");
+        filterField.put("subSystemROLE", "(ROLE_TYPE='S' and UNIT_CODE = :subSystemROLE)");
         return filterField;
     }
 

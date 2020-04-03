@@ -18,14 +18,12 @@ public class DataDictionaryDao
 
     // 转换主键中的 字段描述 对应关系
     public Map<String, String> getFilterField() {
-        if (filterField == null) {
-            filterField = new HashMap<>();
-            filterField.put("datacode", CodeBook.EQUAL_HQL_ID);
-            filterField.put("catalogcode", CodeBook.EQUAL_HQL_ID);
-            filterField.put("catalogCode", CodeBook.EQUAL_HQL_ID);
-            filterField.put("NP_system", "dataStyle = 'S'");
-            filterField.put("dataValue", CodeBook.LIKE_HQL_ID);
-        }
+        Map<String, String> filterField = new HashMap<>();
+        filterField.put("datacode", CodeBook.EQUAL_HQL_ID);
+        filterField.put("catalogcode", CodeBook.EQUAL_HQL_ID);
+        filterField.put("catalogCode", CodeBook.EQUAL_HQL_ID);
+        filterField.put("NP_system", "dataStyle = 'S'");
+        filterField.put("dataValue", CodeBook.LIKE_HQL_ID);
         return filterField;
     }
 

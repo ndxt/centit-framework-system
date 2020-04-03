@@ -25,11 +25,9 @@ import java.util.Map;
 public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
 
     public Map<String, String> getFilterField() {
-        if (filterField == null) {
-            filterField = new HashMap<>();
-            filterField.put("optCode", CodeBook.EQUAL_HQL_ID);
-            filterField.put("roleCode", CodeBook.EQUAL_HQL_ID);
-        }
+        Map<String, String> filterField = new HashMap<>();
+        filterField.put("optCode", CodeBook.EQUAL_HQL_ID);
+        filterField.put("roleCode", CodeBook.EQUAL_HQL_ID);
         return filterField;
     }
 
