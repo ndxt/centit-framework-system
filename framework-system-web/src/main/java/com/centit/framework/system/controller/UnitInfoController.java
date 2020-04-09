@@ -17,6 +17,7 @@ import com.centit.framework.system.service.*;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.common.ObjectException;
+import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -34,9 +35,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
-/**
+/*
  * Created with IntelliJ IDEA.
- * User: sx
  * Date: 14-10-28
  * Time: 下午1:32
  * 机构管理Controller
@@ -69,7 +69,7 @@ public class UnitInfoController extends BaseController {
     @Autowired
     private PlatformEnvironment platformEnvironment;
 
-    /**
+    /*
      * 系统日志中记录
      *
      * @return 业务标识ID
@@ -78,7 +78,7 @@ public class UnitInfoController extends BaseController {
         return "UNITMAG";
     }
 
-    /**
+    /*
      * 查询所有机构信息
      *
      * @param struct  是否需要树形结构
@@ -134,7 +134,7 @@ public class UnitInfoController extends BaseController {
         List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn, pageDesc);
         return PageQueryResult.createResultMapDict(listObjects, pageDesc);
     }
-    /**
+    /*
      * 查询所有子机构信息
      *
      * @param id      String parentUnit 父类机构
@@ -197,7 +197,7 @@ public class UnitInfoController extends BaseController {
         return ResponseData.makeResponseData(ja);
     }
 
-    /**
+    /*
      * 查询单个机构信息
      *
      * @param unitCode 机构代码
@@ -212,7 +212,7 @@ public class UnitInfoController extends BaseController {
         return sysUnitManager.getObjectById(unitCode);
     }
 
-    /**
+    /*
      * 删除机构
      *
      * @param unitCode unitCode
@@ -222,9 +222,10 @@ public class UnitInfoController extends BaseController {
         name = "unitCode", value = "机构ID",
         paramType = "query", dataType = "String")
     @RequestMapping(value = "/{unitCode}", method = {RequestMethod.DELETE})
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除机构")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除机构",
+        tag="{unitCode}")
     @WrapUpResponseBody
-    public ResponseData delete(@PathVariable String unitCode) {
+    public ResponseData delete(@ParamName("unitCode")@PathVariable String unitCode) {
         UnitInfo unitInfo = sysUnitManager.getObjectById(unitCode);
         if (unitInfo == null) {
             return ResponseData.makeErrorMessage("The object not found!");
@@ -245,14 +246,14 @@ public class UnitInfoController extends BaseController {
         }
 
         return ResponseData.successResponse;
-        /*********log*********/
+        /********log*********/
 //        OperationLogCenter.logDeleteObject(request,optId,unitInfo.getUnitCode(), OperationLog.P_OPT_LOG_METHOD_D,
 //                "删除机构"+unitInfo.getUnitName(), unitInfo);
-        /*********log*********/
+        /********log*********/
     }
 
 
-    /**
+    /*
      * 新建机构
      *
      * @param unitInfo UnitInfo
@@ -262,9 +263,10 @@ public class UnitInfoController extends BaseController {
         name = "unitInfo", value = "json格式，机构信息对象",
         paramType = "body", dataTypeClass = UnitInfo.class)
     @RequestMapping(method = RequestMethod.POST)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增机构")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增机构",
+        tag="{ui.unitCode}:{ui.unitName}")
     @WrapUpResponseBody
-    public ResponseData create(@Valid UnitInfo unitInfo) {
+    public ResponseData create(@ParamName("ui")@Valid UnitInfo unitInfo) {
 
         if (sysUnitManager.hasSameName(unitInfo)) {
             return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
@@ -284,14 +286,14 @@ public class UnitInfoController extends BaseController {
 
         return ResponseData.makeResponseData(unitInfo);
 
-        /*********log*********/
+        /********log*********/
 //        OperationLogCenter.logNewObject(request,optId,unitInfo.getUnitCode(),
 //                OperationLog.P_OPT_LOG_METHOD_C,  "新增机构" , unitInfo);
-        /*********log*********/
+        /********log*********/
     }
 
 
-    /**
+    /*
      * 新建部门，仅仅是为了区分权限
      *
      * @param unitInfo UnitInfo
@@ -301,9 +303,10 @@ public class UnitInfoController extends BaseController {
         name = "unitInfo", value = "json格式，机构信息对象",
         paramType = "body", dataTypeClass = UnitInfo.class)
     @RequestMapping(value = "department", method = RequestMethod.POST)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增机构")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增机构",
+        tag="{ui.unitCode}:{ui.unitName}")
     @WrapUpResponseBody
-    public ResponseData createDepartment(@Valid UnitInfo unitInfo, HttpServletRequest request) {
+    public ResponseData createDepartment(@ParamName("ui")@Valid UnitInfo unitInfo, HttpServletRequest request) {
         UnitInfo parentUnit = sysUnitManager.getObjectById(unitInfo.getParentUnit());
         if(parentUnit == null ||
             ! StringUtils.contains(parentUnit.getUnitPath(),
@@ -313,7 +316,7 @@ public class UnitInfoController extends BaseController {
         }
         return create(unitInfo);
     }
-    /**
+    /*
      * 更新机构信息
      *
      * @param unitCode 机构代码
@@ -329,9 +332,10 @@ public class UnitInfoController extends BaseController {
             paramType = "body", dataTypeClass = UnitInfo.class)
     })
     @RequestMapping(value = "/{unitCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新机构")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新机构",
+        tag="{unitCode}")
     @WrapUpResponseBody
-    public ResponseData edit(@PathVariable String unitCode, @Valid UnitInfo unitInfo) {
+    public ResponseData edit(@ParamName("unitCode")@PathVariable String unitCode, @Valid UnitInfo unitInfo) {
 
         UnitInfo dbUnitInfo = sysUnitManager.getObjectById(unitCode);
         if (null == dbUnitInfo) {
@@ -366,13 +370,13 @@ public class UnitInfoController extends BaseController {
 
         return ResponseData.makeResponseData(unitInfo);
 
-        /*********log*********/
+        /********log*********/
 //        OperationLogCenter.logUpdateObject(request, optId, unitCode, OperationLog.P_OPT_LOG_METHOD_U,
 //                "更新机构信息", unitInfo, oldValue);
-        /*********log*********/
+        /********log*********/
     }
 
-    /**
+    /*
      * 更新机构及子机构的状态
      *
      * @param unitCode    机构代码
@@ -388,9 +392,10 @@ public class UnitInfoController extends BaseController {
             required = true, paramType = "path", dataType = "String")
     })
     @RequestMapping(value = "/{unitCode}/status/{statusValue}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新机构状态")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新机构状态",
+        tag="{unitCode}")
     @WrapUpResponseBody
-    public ResponseData changeStatus(@PathVariable String unitCode, @PathVariable String statusValue) {
+    public ResponseData changeStatus(@ParamName("unitCode")@PathVariable String unitCode, @PathVariable String statusValue) {
         UnitInfo dbUnitInfo = sysUnitManager.getObjectById(unitCode);
         if (null == dbUnitInfo) {
             return ResponseData.makeErrorMessage("机构不存在");
@@ -404,14 +409,14 @@ public class UnitInfoController extends BaseController {
 
         return ResponseData.successResponse;
 
-        /*********log*********/
+        /********log*********/
 //         String optContent = "更新机构状态,机构名称:" + CodeRepositoryUtil.getCode(CodeRepositoryUtil.UNIT_CODE, unitCode) + ",机构是否启用:" + ("T".equals
 //                (statusValue) ? "是" : "否");
 //        OperationLogCenter.log(request,optId,unitCode, OperationLog.P_OPT_LOG_METHOD_U,  optContent);
-        /*********log*********/
+        /********log*********/
     }
 
-    /**
+    /*
      * 获取单个机构下属子机构
      *
      * @param field    需要显示的字段
@@ -437,7 +442,7 @@ public class UnitInfoController extends BaseController {
         return DictionaryMapUtils.objectsToJSONArray(listObjects, field);
     }
 
-    /**
+    /*
      * 当前机构下所有用户
      *
      * @param pageDesc 分页信息
@@ -467,7 +472,7 @@ public class UnitInfoController extends BaseController {
         return PageQueryResult.createJSONArrayResult(jsonArr, pageDesc);
     }
 
-    /**
+    /*
      * 获取机构下所有可用的用户
      *
      * @param unitCode 机构代码
@@ -488,7 +493,7 @@ public class UnitInfoController extends BaseController {
         return ResponseData.makeResponseData(listObjects);
     }
 
-    /**
+    /*
      * 获取当前用户所在机构下所有用户
      *
      * @param state   是否启用 T|F
@@ -512,7 +517,7 @@ public class UnitInfoController extends BaseController {
         return ResponseData.makeResponseData(listObjects);
     }
 
-    /**
+    /*
      * 当前机构下用户
      *
      * @param userunitid 用户机构代码
@@ -532,7 +537,7 @@ public class UnitInfoController extends BaseController {
         return ResponseData.makeResponseData(userUnit);
     }
 
-    /**
+    /*
      * 将权限赋给部门
      *
      * @param unitCode 机构代码
@@ -548,9 +553,10 @@ public class UnitInfoController extends BaseController {
             required = true, paramType = "query", dataType = "String")
     })
     @RequestMapping(value = "/unit/saveopts/{unitCode}", method = RequestMethod.POST)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新机构权限")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新机构权限",
+        tag="{unitCode}")
     @WrapUpResponseBody
-    public ResponseData setUnitPowers(@PathVariable String unitCode, String optCodes) {
+    public ResponseData setUnitPowers(@ParamName("unitCode") @PathVariable String unitCode, String optCodes) {
         String[] optCodesArray = optCodes.split(",");
         RoleInfo roleInfo = sysRoleManager.getObjectById("G$" + unitCode);
         if (roleInfo == null) {
@@ -581,10 +587,6 @@ public class UnitInfoController extends BaseController {
         sysRoleManager.updateRolePower(roleInfo);
         //sysRoleManager.loadRoleSecurityMetadata();
         return ResponseData.successResponse;
-        /*********log*********/
-//       OperationLogCenter.logNewObject(request,optId, roleInfo.getRoleCode(), OperationLog.P_OPT_LOG_METHOD_U,
-//               "更新机构权限",roleInfo);
-        /*********log*********/
     }
 
     /*
@@ -603,7 +605,7 @@ public class UnitInfoController extends BaseController {
         return ResponseData.makeResponseData(roleInfos);
     }
 
-    /**
+    /*
      * 验证部门编码可用性
      *
      * @param depNo 部门编码
@@ -619,7 +621,7 @@ public class UnitInfoController extends BaseController {
         return sysUnitManager.isDepNoUnique(depNo, null);
     }
 
-    /**
+    /*
      * 验证部门编码可用性
      *
      * @param unitCode 部门代码
@@ -637,7 +639,7 @@ public class UnitInfoController extends BaseController {
         return sysUnitManager.isDepNoUnique(depNo, unitCode);
     }
 
-    /**
+    /*
      * 验证部门自定义编码可用性
      *
      * @param unitWord 部门自定义编码
@@ -653,7 +655,7 @@ public class UnitInfoController extends BaseController {
         return sysUnitManager.isUnitWordUnique(unitWord, null);
     }
 
-    /**
+    /*
      * 验证部门自定义编码可用性
      *
      * @param unitCode 部门Code
@@ -671,7 +673,7 @@ public class UnitInfoController extends BaseController {
         return sysUnitManager.isUnitWordUnique(unitWord, unitCode);
     }
 
-    /**
+    /*
      * 更新部门权限
      *
      * @param unitCode    机构代码
@@ -684,9 +686,10 @@ public class UnitInfoController extends BaseController {
             value = "操作代码(json数组字符串，格式：[{'optCode':'xxx','optDataScopes':'xxx,xxx'}])", required = true)
     })
     @PostMapping(value = "/{unitCode}/authorities")
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新部门权限")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新部门权限",
+            tag="{unitCode}")
     @WrapUpResponseBody()
-    public ResponseData updateAuthorities(@PathVariable String unitCode, String authorities) {
+    public ResponseData updateAuthorities(@ParamName("unitCode") @PathVariable String unitCode, String authorities) {
         RoleInfo roleInfo = sysRoleManager.getObjectById("G$" + unitCode);
         if (roleInfo == null) {
             roleInfo = new RoleInfo();

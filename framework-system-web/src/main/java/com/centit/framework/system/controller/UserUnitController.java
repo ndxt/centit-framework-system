@@ -14,6 +14,7 @@ import com.centit.framework.system.po.UserUnit;
 import com.centit.framework.system.service.SysUserManager;
 import com.centit.framework.system.service.SysUserUnitManager;
 import com.centit.support.common.ObjectException;
+import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -35,7 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
+/*
  * Created with IntelliJ IDEA.
  * User: sx
  * Date: 14-11-27
@@ -55,7 +56,7 @@ public class UserUnitController extends BaseController {
     @NotNull
     private SysUserManager sysUserManager;
 
-    /**
+    /*
      * 系统日志中记录
      *
      * @return 业务标识ID
@@ -65,7 +66,7 @@ public class UserUnitController extends BaseController {
         return "USERUNIT";
     }
 
-    /**
+    /*
      * 机构人员树形信息
      *
      * @param state A或空，返回所有机构人员信息。T，返回未禁用的机构人员信息
@@ -105,7 +106,7 @@ public class UserUnitController extends BaseController {
         return ResponseData.makeResponseData(listObjects);
     }
 
-    /**
+    /*
      * 通过机构代码获取机构及其子机构下用户组
      *
      * @param unitCode 机构代码
@@ -130,7 +131,7 @@ public class UserUnitController extends BaseController {
         return PageQueryResult.createResultMapDict(listObjects, pageDesc);
     }
 
-    /**
+    /*
      * 通过用户代码获取用户所在机构
      *
      * @param userCode 用户代码
@@ -174,19 +175,19 @@ public class UserUnitController extends BaseController {
         return PageQueryResult.createResultMapDict(userUnits, pageDesc);
     }
 
-    /**
+    /*
      * 根据用户机构关联对象的ID获取一条用户机构关联信息
      *
-     * @param userunitid userunitid
+     * @param userUnitId userUnitId
      */
     @ApiOperation(value = "根据用户机构关联对象的ID获取一条用户机构关联信息", notes = "根据用户机构关联对象的ID获取一条用户机构关联信息。")
     @ApiImplicitParam(
-        name = "userunitid", value = "用户机构ID",
+        name = "userUnitId", value = "用户机构ID",
         required = true, paramType = "path", dataType = "String")
-    @RequestMapping(value = "/{userunitid}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{userUnitId}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData getUserUnitById(@PathVariable String userunitid) {
-        UserUnit userUnit = sysUserUnitManager.getObjectById(userunitid);
+    public ResponseData getUserUnitById(@PathVariable String userUnitId) {
+        UserUnit userUnit = sysUserUnitManager.getObjectById(userUnitId);
 
         if (null == userUnit) {
             return ResponseData.makeErrorMessage("当前机构中无此用户");
@@ -194,7 +195,7 @@ public class UserUnitController extends BaseController {
         return ResponseData.makeResponseData(DictionaryMapUtils.objectToJSON(userUnit));
     }
 
-    /**
+    /*
      * 根据用户代码和机构代码获取一组用户机构关联信息
      *
      * @param unitCode 机构代码
@@ -220,7 +221,7 @@ public class UserUnitController extends BaseController {
         return ResponseData.makeResponseData(DictionaryMapUtils.objectsToJSONArray(userUnits));
     }
 
-    /**
+    /*
      * 创建用户机构关联信息
      *
      * @param userUnit UserUnit
@@ -231,10 +232,10 @@ public class UserUnitController extends BaseController {
         name = "userUnit", value = "json格式的用户机构关联对象信息", required = true,
         paramType = "body", dataTypeClass = UserUnit.class)
     @RequestMapping(method = RequestMethod.POST)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增用户机构关联信息")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增用户机构关联信息",
+        tag = "{userUnit.userUnitId}:{userUnit.userCode}:{userUnit.unitCode}")
     @WrapUpResponseBody
-    public ResponseData create(@Valid UserUnit userUnit, HttpServletRequest request) {
-
+    public ResponseData create(@ParamName("userUnit") @Valid UserUnit userUnit, HttpServletRequest request) {
         HashMap<String, Object> map = new HashMap();
         map.put("unitCode", userUnit.getUnitCode());
         map.put("userRank", userUnit.getUserRank());
@@ -244,79 +245,63 @@ public class UserUnitController extends BaseController {
         if (list != null && list.size() > 0) {
             return ResponseData.makeErrorMessage("该用户已存在");
         }
-
         userUnit.setCreator(WebOptUtils.getCurrentUserCode(request));
         sysUserUnitManager.saveNewUserUnit(userUnit);
-
         return ResponseData.successResponse;
-        /*********log*********/
-//        OperationLogCenter.logNewObject(request,optId, OperationLog.P_OPT_LOG_METHOD_C, OperationLog.P_OPT_LOG_METHOD_C, "新增用户机构关联信息" , userUnit);
-        /*********log*********/
     }
 
-    /**
+    /*
      * 更新机构用户信息
      *
-     * @param userunitid userunitid
+     * @param userUnitId userUnitId
      * @param userUnit   UserUnit
      * @param request    {@link HttpServletRequest}
      */
     @ApiOperation(value = "更新机构用户信息", notes = "根据用户机构代码更新机构用户信息。")
     @ApiImplicitParams({
         @ApiImplicitParam(
-            name = "userunitid", value = "用户机构代码",
+            name = "userUnitId", value = "用户机构代码",
             required = true, paramType = "path", dataType = "String"),
         @ApiImplicitParam(
             name = "userUnit", value = "json格式的用户机构关联对象信息", required = true,
             paramType = "body", dataTypeClass = UserUnit.class)
     })
-    @RequestMapping(value = "/{userunitid}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新用户机构关联信息")
+    @RequestMapping(value = "/{userUnitId}", method = RequestMethod.PUT)
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新用户机构关联信息",
+        tag="userUnitId")
     @WrapUpResponseBody
-    public ResponseData edit(@PathVariable String userunitid, @Valid UserUnit userUnit, HttpServletRequest request) {
+    public ResponseData edit(@ParamName("userUnitId") @PathVariable String userUnitId,
+                             @Valid UserUnit userUnit, HttpServletRequest request) {
 
         userUnit.setUpdator(WebOptUtils.getCurrentUserCode(request));
-        UserUnit dbUserUnit = sysUserUnitManager.getObjectById(userunitid);
+        UserUnit dbUserUnit = sysUserUnitManager.getObjectById(userUnitId);
         if (null == dbUserUnit) {
             return ResponseData.makeErrorMessage("当前机构中无此用户");
         }
-
         sysUserUnitManager.updateUserUnit(userUnit);
-
         return ResponseData.makeResponseData(userUnit);
 
-        /*********log*********/
-//        OperationLogCenter.logUpdateObject(request,optId,oldValue.getUserUnitId(), OperationLog.P_OPT_LOG_METHOD_U,
-//                "更新用户机构关联信息", dbUserUnit, oldValue);
-        /*********log*********/
     }
 
-    /**
+    /*
      * 删除用户机构关联信息
-     *
-     * @param userunitid userunitid
+     * @param userUnitId userUnitId
      */
     @ApiOperation(value = "删除用户机构关联信息", notes = "根据用户机构代码 删除用户机构关联信息。")
     @ApiImplicitParam(
-        name = "userunitid", value = "用户机构代码",
+        name = "userUnitId", value = "用户机构代码",
         required = true, paramType = "path", dataType = "String")
-    @RequestMapping(value = "/{userunitid}", method = RequestMethod.DELETE)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户机构关联信息")
+    @RequestMapping(value = "/{userUnitId}", method = RequestMethod.DELETE)
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户机构关联信息",
+        tag = "{userUnitId}")
     @WrapUpResponseBody
-    public ResponseData delete(@PathVariable String userunitid) {
-        UserUnit dbUserUnit = sysUserUnitManager.getObjectById(userunitid);
+    public ResponseData delete(@ParamName("userUnitId") @PathVariable String userUnitId) {
+        UserUnit dbUserUnit = sysUserUnitManager.getObjectById(userUnitId);
         if ("T".equals(dbUserUnit.getIsPrimary())) {
             return ResponseData.makeErrorMessage("主机构组织信息不能删除！");
         }
-
         sysUserUnitManager.deleteObject(dbUserUnit);
-
         return ResponseData.successResponse;
-
-        /*********log*********/
-//        OperationLogCenter.logDeleteObject(request,optId,dbUserUnit.getUserUnitId(),
-//                OperationLog.P_OPT_LOG_METHOD_D,  "删除用户机构关联信息",dbUserUnit);
-        /*********log*********/
     }
 
 }

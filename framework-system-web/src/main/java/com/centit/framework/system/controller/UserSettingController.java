@@ -11,6 +11,7 @@ import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.UserSetting;
 import com.centit.framework.system.po.UserSettingId;
 import com.centit.framework.system.service.UserSettingManager;
+import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -27,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
+/*
  * 用户设置
  *
  * @author sx
@@ -40,7 +41,7 @@ public class UserSettingController extends BaseController {
     @Autowired
     private UserSettingManager userSettingManager;
 
-    /**
+    /*
      * 系统日志中记录
      *
      * @return 业务标识ID
@@ -49,7 +50,7 @@ public class UserSettingController extends BaseController {
         return "userSetting";
     }
 
-    /**
+    /*
      * 查询当前用户所有的用户参数设置信息
      *
      * @param pageDesc pageDesc
@@ -68,7 +69,7 @@ public class UserSettingController extends BaseController {
         return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
-    /**
+    /*
      * 查询用户个人设置列表
      *
      * @param userCode 用户代码
@@ -93,7 +94,7 @@ public class UserSettingController extends BaseController {
         return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
-    /**
+    /*
      * 查询用户个人默认设置列表
      *
      * @param pageDesc 分页信息
@@ -113,7 +114,7 @@ public class UserSettingController extends BaseController {
         return PageQueryResult.createResult(listObjects, pageDesc);
     }
 
-    /**
+    /*
      * 查询当前用户所有个人设置 不分页
      *
      * @param field   需要返回的字段
@@ -135,7 +136,7 @@ public class UserSettingController extends BaseController {
         return PageQueryResult.createResultMapDict(listObjects, null, field);
     }
 
-    /**
+    /*
      * 获取当前用户设置的参数
      *
      * @param paramCode paramCode
@@ -158,7 +159,7 @@ public class UserSettingController extends BaseController {
         return ResponseData.makeResponseData(userSetting);
     }
 
-    /**
+    /*
      * 更新用户设置参数
      *
      * @param userSetting UserSetting
@@ -168,9 +169,10 @@ public class UserSettingController extends BaseController {
         name = "userSetting", value = "json格式的用户设置参数对象信息",
         paramType = "body", dataTypeClass = UserSetting.class)
     @RequestMapping(method = {RequestMethod.POST})
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新用户设置参数")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新用户设置参数",
+        tag = "{loginUser.userCode}:{us.paramCode}")
     @WrapUpResponseBody
-    public ResponseData editUserSetting(@Valid UserSetting userSetting) {
+    public ResponseData editUserSetting(@ParamName("us") @Valid UserSetting userSetting) {
 
         boolean isDefaultValue = userSetting.isDefaultValue();
         if (isDefaultValue) {
@@ -182,7 +184,7 @@ public class UserSettingController extends BaseController {
         return ResponseData.successResponse;
     }
 
-    /**
+    /*
      * 更新用户默认设置参数
      *
      * @param userSetting UserSetting
@@ -192,9 +194,10 @@ public class UserSettingController extends BaseController {
         name = "userSetting", value = "json格式的用户设置参数对象信息",
         paramType = "body", dataTypeClass = UserSetting.class)
     @RequestMapping(value = "updatedefault", method = {RequestMethod.POST})
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新当前用户设置参数")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新当前用户设置参数",
+        tag = "{loginUser.userCode}:{us.paramCode}")
     @WrapUpResponseBody
-    public ResponseData editDefaultSetting(@Valid UserSetting userSetting) {
+    public ResponseData editDefaultSetting(@ParamName("us")@Valid UserSetting userSetting) {
 
         UserSetting dbSetting = userSettingManager.getUserSetting(userSetting.getUserCode(), userSetting.getParamCode());
         if (dbSetting == null) {
@@ -206,7 +209,7 @@ public class UserSettingController extends BaseController {
         return ResponseData.successResponse;
     }
 
-    /**
+    /*
      * 删除当前用户设置参数
      *
      * @param paramCode paramCode
@@ -217,20 +220,17 @@ public class UserSettingController extends BaseController {
         name = "paramCode", value = "用户设置参数代码",
         required = true, paramType = "path", dataType = "String")
     @RequestMapping(value = "/{paramCode}", method = {RequestMethod.DELETE})
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户设置参数")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户设置参数",
+        tag = "{loginUser.userCode}:{paramCode}")
     @WrapUpResponseBody
-    public ResponseData deleteUserSetting(@PathVariable String paramCode, HttpServletRequest request) {
+    public ResponseData deleteUserSetting(@ParamName("paramCode")@PathVariable String paramCode, HttpServletRequest request) {
         UserSetting dbUserSetting = userSettingManager.getObjectById(
             new UserSettingId(WebOptUtils.getCurrentUserCode(request), paramCode));
         userSettingManager.deleteObject(dbUserSetting);
         return ResponseData.successResponse;
-        /*********log*********/
-//        OperationLogCenter.logDeleteObject(request,optId,dbUserSetting.getUserCode(),
-//                OperationLog.P_OPT_LOG_METHOD_D,  "已删除",dbUserSetting);
-        /*********log*********/
     }
 
-    /**
+    /*
      * 删除用户设置参数
      *
      * @param userCode  用户代码
@@ -246,9 +246,11 @@ public class UserSettingController extends BaseController {
             required = true, paramType = "path", dataType = "String")
     })
     @RequestMapping(value = "/{userCode}/{paramCode}", method = {RequestMethod.DELETE})
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户设置参数")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户设置参数",
+        tag = "{userCode}:{paramCode}")
     @WrapUpResponseBody
-    public ResponseData delete(@PathVariable String userCode, @PathVariable String paramCode) {
+    public ResponseData delete(@ParamName("userCode") @PathVariable String userCode,
+                               @ParamName("paramCode") @PathVariable String paramCode) {
         UserSetting userSetting = userSettingManager.getUserSetting(userCode, paramCode);
         if (userSetting != null) {
             if ("default".equals(userSetting.getUserCode())) {
@@ -259,7 +261,7 @@ public class UserSettingController extends BaseController {
         return ResponseData.successResponse;
     }
 
-    /**
+    /*
      * 删除用户默认设置
      *
      * @param paramCode 设置编码
@@ -269,10 +271,10 @@ public class UserSettingController extends BaseController {
         name = "paramCode", value = "用户设置参数代码",
         required = true, paramType = "path", dataType = "String")
     @RequestMapping(value = "/deletedefault/{paramCode}", method = {RequestMethod.DELETE})
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户设置参数")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户设置参数",
+        tag = "{paramCode}")
     @WrapUpResponseBody
-    public ResponseData deleteDefault(@PathVariable String paramCode) {
-
+    public ResponseData deleteDefault(@ParamName("paramCode") @PathVariable String paramCode) {
         UserSetting userSetting = userSettingManager.getUserSetting("default", paramCode);
         if (userSetting != null) {
             userSettingManager.deleteObject(userSetting);

@@ -18,6 +18,7 @@ import com.centit.framework.system.service.SysRoleManager;
 import com.centit.framework.system.service.SysUnitRoleManager;
 import com.centit.framework.system.service.SysUserRoleManager;
 import com.centit.support.common.ObjectException;
+import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -55,7 +56,7 @@ public class RoleInfoController extends BaseController {
     @Autowired
     private SysUnitRoleManager sysUnitRoleManager;
 
-    /**
+    /*
      * 系统日志中记录
      *
      * @return 业务标识ID
@@ -65,7 +66,7 @@ public class RoleInfoController extends BaseController {
         return "ROLEMAG";
     }
 
-    /**
+    /*
      * 查询所有系统角色
      *
      * @param pageDesc PageDesc
@@ -105,7 +106,7 @@ public class RoleInfoController extends BaseController {
         List<RoleInfo> list = sysRoleManager.listObjects(filterMap, pageDesc);
         return PageQueryResult.createResultMapDict(list, pageDesc);
     }
-    /**
+    /*
      * 查询所有可用的系统角色
      *
      * @param field    field[]
@@ -132,7 +133,7 @@ public class RoleInfoController extends BaseController {
         return PageQueryResult.createResultMapDict(roleInfos, pageDesc, field);
     }
 
-    /**
+    /*
      * 查询所有 当前部门角色
      *
      * @param pageDesc PageDesc
@@ -153,7 +154,7 @@ public class RoleInfoController extends BaseController {
         return PageQueryResult.createResultMapDict(roleInfos, pageDesc);
     }
 
-    /**
+    /*
      * 查询所有某部门的部门角色
      *
      * @param field    field[]
@@ -179,7 +180,7 @@ public class RoleInfoController extends BaseController {
         return PageQueryResult.createResultMapDict(roleInfos, pageDesc, field);
     }
 
-    /**
+    /*
      * 根据角色代码获取角色操作定义信息
      *
      * @param roleCode 角色代码
@@ -194,7 +195,7 @@ public class RoleInfoController extends BaseController {
         return sysRoleManager.getRolePowers(roleCode);
     }
 
-    /**
+    /*
      * 根据操作定义代码获取角色信息
      *
      * @param defCode 操作定义代码
@@ -209,7 +210,7 @@ public class RoleInfoController extends BaseController {
         return sysRoleManager.getRolePowersByDefCode(defCode);
     }
 
-    /**
+    /*
      * 根据业务代码获取角色信息
      *
      * @param optId 业务菜单代码
@@ -236,7 +237,7 @@ public class RoleInfoController extends BaseController {
         return result;
     }
 
-    /**
+    /*
      * 新增系统角色
      *
      * @param roleInfo RoleInfo
@@ -247,9 +248,10 @@ public class RoleInfoController extends BaseController {
         name = "roleInfo", value = "json格式，系统角色对象",
         required = true, paramType = "body", dataTypeClass = RoleInfo.class)
     @RequestMapping(method = RequestMethod.POST)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增角色")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增角色",
+        tag="{ri.roleCode}")
     @WrapUpResponseBody
-    public void createRole(@Valid RoleInfo roleInfo, HttpServletRequest request) {
+    public void createRole(@ParamName("ri") @Valid RoleInfo roleInfo, HttpServletRequest request) {
         String roleType = roleInfo.getRoleType();
         if (StringUtils.isBlank(roleType)) {
             throw new ObjectException(roleInfo, "新建角色必须指定角色类别。");
@@ -266,7 +268,7 @@ public class RoleInfoController extends BaseController {
         CodeRepositoryCache.evictCache("RoleInfo");
     }
 
-    /**
+    /*
      * 新增系统角色
      *
      * @param roleInfo RoleInfo
@@ -278,9 +280,10 @@ public class RoleInfoController extends BaseController {
         required = true, paramType = "body", dataTypeClass = RoleInfo.class)
 
     @RequestMapping(value = "/departmentRole", method = RequestMethod.POST)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增角色")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增角色",
+        tag="{ri.roleCode}")
     @WrapUpResponseBody
-    public void createDepartmentRole(@Valid RoleInfo roleInfo, HttpServletRequest request) {
+    public void createDepartmentRole(@ParamName("ri") @Valid RoleInfo roleInfo, HttpServletRequest request) {
         roleInfo.setRoleType("D");
         if (StringUtils.isBlank(roleInfo.getUnitCode())) {
             roleInfo.setRoleOwner(WebOptUtils.getCurrentUnitCode(request));
@@ -291,7 +294,7 @@ public class RoleInfoController extends BaseController {
         CodeRepositoryCache.evictCache("RoleInfo");
     }
 
-    /**
+    /*
      * 新增系统角色
      *
      * @param roleInfo RoleInfo
@@ -307,9 +310,11 @@ public class RoleInfoController extends BaseController {
             required = true, paramType = "path", dataType = "String")
     })
     @RequestMapping(value = "/subSysRole/{topOptId}", method = RequestMethod.POST)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增角色")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增角色",
+        tag="{topOptId}:{ri.roleCode}")
     @WrapUpResponseBody
-    public void createSubSystemRole(@PathVariable String topOptId, @Valid RoleInfo roleInfo, HttpServletRequest request) {
+    public void createSubSystemRole(@ParamName("topOptId") @PathVariable String topOptId,
+                                    @ParamName("ri") @Valid RoleInfo roleInfo, HttpServletRequest request) {
         roleInfo.setRoleType("S");
         roleInfo.setRoleOwner(topOptId);
 
@@ -321,7 +326,7 @@ public class RoleInfoController extends BaseController {
     }
 
 
-    /**
+    /*
      * 从操作定义反向添加角色代码
      *
      * @param roleCode 角色代码
@@ -337,10 +342,11 @@ public class RoleInfoController extends BaseController {
             required = true, paramType = "path", dataType = "String")
     })
     @RequestMapping(value = "/addopt/{roleCode}/{optCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}给角色添加权限")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}给角色添加权限",
+        tag="{roleCode}:{optCode}")
     @WrapUpResponseBody
-    public void addOptToRole(@PathVariable String roleCode, @PathVariable String optCode) {
-
+    public void addOptToRole(@ParamName("roleCode")@PathVariable String roleCode,
+                             @ParamName("optCode")@PathVariable String optCode) {
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         if (null == dbRoleInfo) {
             throw new ObjectException(roleCode+":"+optCode, "角色信息不存在");
@@ -356,7 +362,7 @@ public class RoleInfoController extends BaseController {
         CodeRepositoryCache.evictCache("RolePower");
     }
 
-    /**
+    /*
      * 从操作定义反向删除角色代码
      *
      * @param roleCode 角色代码
@@ -372,9 +378,11 @@ public class RoleInfoController extends BaseController {
             required = true, paramType = "path", dataType = "String")
     })
     @RequestMapping(value = "/delopt/{roleCode}/{optCode}", method = RequestMethod.DELETE)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除角色权限")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除角色权限",
+        tag="{roleCode}:{optCode}")
     @WrapUpResponseBody
-    public void deleteOptFormRole(@PathVariable String roleCode, @PathVariable String optCode) {
+    public void deleteOptFormRole(@ParamName("roleCode")@PathVariable String roleCode,
+                                  @ParamName("optCode")@PathVariable String optCode) {
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
 
         if (null == dbRoleInfo) {
@@ -392,7 +400,7 @@ public class RoleInfoController extends BaseController {
         CodeRepositoryCache.evictCache("RolePower");
     }
 
-    /**
+    /*
      * 更新系统角色
      *
      * @param roleCode 角色代码
@@ -408,9 +416,10 @@ public class RoleInfoController extends BaseController {
             required = true, paramType = "path", dataTypeClass = RoleInfo.class)
     })
     @RequestMapping(value = "/{roleCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新角色")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新角色",
+        tag="{roleCode}")
     @WrapUpResponseBody
-    public void updateRole(@PathVariable String roleCode, @Valid RoleInfo roleInfo) {
+    public void updateRole(@ParamName("roleCode")@PathVariable String roleCode, @Valid RoleInfo roleInfo) {
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         if (null == dbRoleInfo) {
             throw new ObjectException(roleInfo, "角色信息不存在");
@@ -431,9 +440,10 @@ public class RoleInfoController extends BaseController {
             required = true, paramType = "path", dataTypeClass = RoleInfo.class)
     })
     @RequestMapping(value = "/departmentRole/{roleCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新角色")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新角色",
+        tag="{roleCode}")
     @WrapUpResponseBody
-    public void updateDepartmentRole(@PathVariable String roleCode,
+    public void updateDepartmentRole(@ParamName("roleCode")@PathVariable String roleCode,
                                              @Valid RoleInfo roleInfo,
                                             HttpServletRequest request) {
 
@@ -464,10 +474,11 @@ public class RoleInfoController extends BaseController {
             required = true, paramType = "path", dataTypeClass = RoleInfo.class)
     })
     @RequestMapping(value = "/subSysRole/{topOptId}/{roleCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新角色")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新角色",
+        tag="{topOptId}:{roleCode}")
     @WrapUpResponseBody
-    public void updateSubSystemRole(@PathVariable String topOptId,
-                                    @PathVariable String roleCode, @Valid RoleInfo roleInfo) {
+    public void updateSubSystemRole(@ParamName("topOptId")@PathVariable String topOptId,
+                                    @ParamName("roleCode")@PathVariable String roleCode, @Valid RoleInfo roleInfo) {
 
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         if (null == dbRoleInfo) {
@@ -482,7 +493,7 @@ public class RoleInfoController extends BaseController {
         sysRoleManager.updateRoleInfo(roleInfo);
         CodeRepositoryCache.evictCache("RoleInfo");
     }
-    /**
+    /*
      * 更新系统角色权限
      *
      * @param roleCode 角色代码
@@ -498,9 +509,10 @@ public class RoleInfoController extends BaseController {
             required = true, paramType = "path", dataTypeClass = RoleInfo.class)
     })
     @RequestMapping(value = "/power/{roleCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新角色权限")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新角色权限",
+        tag="{roleCode}")
     @WrapUpResponseBody
-    public void updateRolePower(@PathVariable String roleCode, RoleInfo roleInfo) {
+    public void updateRolePower(@ParamName("roleCode")@PathVariable String roleCode, RoleInfo roleInfo) {
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         if (null == dbRoleInfo) {
             throw new ObjectException(roleInfo, "角色信息不存在");
@@ -509,7 +521,7 @@ public class RoleInfoController extends BaseController {
         CodeRepositoryCache.evictCache("RolePower");
     }
 
-    /**
+    /*
      * 新增系统角色 判断名称是否存在
      *
      * @param roleName 角色名称
@@ -524,7 +536,7 @@ public class RoleInfoController extends BaseController {
         return sysRoleManager.judgeSysRoleNameExist(roleName, null, null);
     }
 
-    /**
+    /*
      * 更新系统角色 判断名称是否存在
      *
      * @param roleName 角色名称
@@ -545,7 +557,7 @@ public class RoleInfoController extends BaseController {
         return sysRoleManager.judgeSysRoleNameExist(roleName, roleCode, null);
     }
 
-    /**
+    /*
      * 新增部门角色 判断名称是否存在
      *
      * @param unitCode 部门代码
@@ -567,7 +579,7 @@ public class RoleInfoController extends BaseController {
         return sysRoleManager.judgeSysRoleNameExist(roleName, null, unitCode);
     }
 
-    /**
+    /*
      * 更新部门角色 判断名称是否存在
      *
      * @param unitCode 部门代码
@@ -592,7 +604,7 @@ public class RoleInfoController extends BaseController {
         return sysRoleManager.judgeSysRoleNameExist(roleName, roleCode, unitCode);
     }
 
-    /**
+    /*
      * 从操作定义反向删除角色代码
      *
      * @param roleCode 角色代码
@@ -602,9 +614,10 @@ public class RoleInfoController extends BaseController {
         name = "roleCode", value = "角色代码",
         required = true, paramType = "path", dataType = "String")
     @RequestMapping(value = "/{roleCode}", method = RequestMethod.DELETE)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除角色")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除角色",
+        tag="{roleCode}")
     @WrapUpResponseBody
-    public ResponseData deleteRole(@PathVariable String roleCode) {
+    public ResponseData deleteRole(@ParamName("roleCode") @PathVariable String roleCode) {
         if (StringUtils.equalsAny(roleCode, "public", "anonymous", "forbidden")) {
             return ResponseData.makeErrorMessage("系统内置角色不能删除。");
         }
@@ -629,7 +642,7 @@ public class RoleInfoController extends BaseController {
         return ResponseData.successResponse;
     }
 
-    /**
+    /*
      * 单个角色信息
      *
      * @param roleCode 角色代码
@@ -644,7 +657,7 @@ public class RoleInfoController extends BaseController {
         return sysRoleManager.getRoleInfo(roleCode);
     }
 
-    /**
+    /*
      * 机构权限
      *
      * @param unitCode 机构代码
@@ -662,7 +675,7 @@ public class RoleInfoController extends BaseController {
         return ResponseData.makeResponseData(rolePowers);
     }
 
-    /**
+    /*
      * 对角色信息进行模糊搜索，适用于带搜索条件的下拉框。
      *
      * @param type    搜索条件

@@ -30,7 +30,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
+/*
  * Created with IntelliJ IDEA.
  *
  * @author codefan
@@ -47,7 +47,7 @@ public class UnitRoleController extends BaseController {
     @Autowired
     private SysUnitManager sysUnitManager;
 
-    /**
+    /*
      * 系统日志中记录
      *
      * @return 业务标识ID
@@ -57,7 +57,7 @@ public class UnitRoleController extends BaseController {
         return "UNITROLE";
     }
 
-    /**
+    /*
      * 通过角色代码获取机构
      *
      * @param roleCode 角色代码
@@ -83,7 +83,7 @@ public class UnitRoleController extends BaseController {
         return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
-    /**
+    /*
      * 通过角色代码获取当前登陆者所在机构下的所有子机构
      *
      * @param roleCode 角色代码
@@ -113,7 +113,7 @@ public class UnitRoleController extends BaseController {
         return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
-    /**
+    /*
      * 通过机构代码获取角色
      *
      * @param unitCode 机构代码
@@ -139,7 +139,7 @@ public class UnitRoleController extends BaseController {
         return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
-    /**
+    /*
      * 通过机构代码获取本机构角色
      *
      * @param unitCode 机构代码
@@ -166,7 +166,7 @@ public class UnitRoleController extends BaseController {
         return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
-    /**
+    /*
      * 创建用户角色关联信息
      *
      * @param unitRole unitRole
@@ -182,7 +182,8 @@ public class UnitRoleController extends BaseController {
             allowMultiple = true, paramType = "query", dataType = "String")
     })
     @RequestMapping(method = RequestMethod.POST)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}给机构{arg1}赋予权限{arg0.roleCode}")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}给机构{arg1}赋予权限{arg0.roleCode}",
+        tag = "{arg0.roleCode}:{arg1}")
     @WrapUpResponseBody
     public ResponseData create(@Valid UnitRole unitRole, @Valid String[] unitCode) {
         if (sysUnitRoleManager.getUnitRoleById(unitRole.getUnitCode(), unitRole.getRoleCode()) != null) {
@@ -200,13 +201,13 @@ public class UnitRoleController extends BaseController {
         }
         return ResponseData.successResponse;
 
-        /*********log*********/
+        /********log*********/
         //OperationLogCenter.logNewObject(request,optId, unitRole.getUnitCode()+"-"+ unitRole.getRoleCode(),
         //OperationLog.P_OPT_LOG_METHOD_C, "新增用户角色关联" , unitCodes);
-        /*********log*********/
+        /********log*********/
     }
 
-    /**
+    /*
      * 更新机构角色关联信息
      *
      * @param roleCode 角色代码
@@ -227,7 +228,8 @@ public class UnitRoleController extends BaseController {
             paramType = "body", dataTypeClass = UnitRole.class)
     })
     @RequestMapping(value = "/{roleCode}/{unitCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}修改机构角色关联信息")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}修改机构角色关联信息",
+        tag = "{arg0}:{arg1}")
     @WrapUpResponseBody
     public UnitRole updateUnitRole(@PathVariable String roleCode, @PathVariable String unitCode, @Valid UnitRole unitRole) {
         UnitRole dbUnitRole = sysUnitRoleManager.getUnitRoleById(unitCode, roleCode);
@@ -238,7 +240,7 @@ public class UnitRoleController extends BaseController {
         return dbUnitRole;
     }
 
-    /**
+    /*
      * 删除机构角色关联信息
      *
      * @param roleCode  角色代码
@@ -254,7 +256,8 @@ public class UnitRoleController extends BaseController {
             allowMultiple = true, paramType = "path", dataType = "String")
     })
     @RequestMapping(value = "/{roleCode}/{unitCodes}", method = RequestMethod.DELETE)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除机构{arg1}角色{arg0.roleCode}")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除机构{arg1}角色{arg0.roleCode}",
+        tag = "{arg0}:{arg1}")
     @WrapUpResponseBody
     public ResponseData delete(@PathVariable String roleCode, @PathVariable String unitCodes) {
 
@@ -263,10 +266,10 @@ public class UnitRoleController extends BaseController {
             UnitRole dbUnitRole = sysUnitRoleManager.getUnitRoleById(unitCode, roleCode);
             if (dbUnitRole != null) {
                 sysUnitRoleManager.deleteUnitRole(unitCode, roleCode);
-                /*********log*********/
+                /********log*********/
                 //OperationLogCenter.logDeleteObject(request, optId, unitCode + "-" + roleCode,
                 //OperationLog.P_OPT_LOG_METHOD_D, "删除用户角色关联信息", dbUnitRole);
-                /*********log*********/
+                /********log*********/
             }
         }
         return ResponseData.successResponse;

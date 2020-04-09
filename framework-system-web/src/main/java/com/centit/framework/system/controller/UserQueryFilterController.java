@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-/**
+/*
  * UserQueryFilter  Controller.
  * create by scaffold 2016-02-29
  *
@@ -52,7 +52,7 @@ public class UserQueryFilterController extends BaseController {
         //this.setBaseEntityManager(userQueryFilterMag);
     }*/
 
-    /**
+    /*
      * 查询所有   用户自定义过滤条件表  列表
      *
      * @param field    json中只保存需要的属性名
@@ -75,7 +75,7 @@ public class UserQueryFilterController extends BaseController {
         return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
     }
 
-    /**
+    /*
      * 查找用户某个模块的所有过滤器
      *
      * @param modelCode 按照模块列出用户所有的过滤器
@@ -94,7 +94,7 @@ public class UserQueryFilterController extends BaseController {
         return ResponseData.makeResponseData(userFilters);
     }
 
-    /**
+    /*
      * 查询单个 用户自定义过滤条件
      *
      * @param filterNo 过滤条件序号
@@ -112,7 +112,7 @@ public class UserQueryFilterController extends BaseController {
         return ResponseData.makeResponseData(userQueryFilter);
     }
 
-    /**
+    /*
      * 新增 用户自定义过滤条件表
      *
      * @param userQueryFilter {@link UserQueryFilter}
@@ -135,7 +135,7 @@ public class UserQueryFilterController extends BaseController {
         return ResponseData.makeResponseData(userQueryFilter);
     }
 
-    /**
+    /*
      * 保存用户最新查看筛选器
      *
      * @param modelCode       所属模块编码
@@ -167,7 +167,7 @@ public class UserQueryFilterController extends BaseController {
         return ResponseData.makeResponseData(pk);
     }
 
-    /**
+    /*
      * 保存用户最新查看筛选器
      *
      * @param modelCode 所属模块编码
@@ -187,7 +187,7 @@ public class UserQueryFilterController extends BaseController {
     }
 
 
-    /**
+    /*
      * 删除单个 用户自定义过滤条件表
      *
      * @param filterNo FILTER_NO
@@ -207,7 +207,7 @@ public class UserQueryFilterController extends BaseController {
             return ResponseData.makeErrorMessage("不能删除默认过滤条件！");
     }
 
-    /**
+    /*
      * 新增或保存 用户自定义过滤条件表
      *
      * @param filterNo        FILTER_NO

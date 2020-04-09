@@ -43,7 +43,7 @@ public class OptInfoController extends BaseController {
     @Autowired
     private OptMethodManager optMethodManager;
 
-    /**
+    /*
      * 系统日志中记录
      *
      * @return 业务标识ID
@@ -53,7 +53,7 @@ public class OptInfoController extends BaseController {
         return "OPTINFO";
     }
 
-    /**
+    /*
      * 查询所有系统业务
      *
      * @param id      父id
@@ -98,7 +98,7 @@ public class OptInfoController extends BaseController {
             ), (jsonObject, obj) -> jsonObject.put("external", !("D".equals(obj.getPageType()))));
     }
 
-    /**
+    /*
      * 查询所有需要通过权限管理的业务
      */
     @ApiOperation(value = "查询所有需要通过权限管理的业务", notes = "查询所有需要通过权限管理的业务。")
@@ -111,7 +111,7 @@ public class OptInfoController extends BaseController {
     }
 
 
-    /**
+    /*
      * 查询所有项目权限管理的业务
      *
      * @param field 需要显示的字段
@@ -130,7 +130,7 @@ public class OptInfoController extends BaseController {
     }
 
 
-    /**
+    /*
      * 查询某个部门权限的业务
      *
      * @param field    需要显示的字段
@@ -154,7 +154,7 @@ public class OptInfoController extends BaseController {
         return ResponseData.makeResponseData(makeMenuFuncsJson(listObjects));
     }
 
-    /**
+    /*
      * 新增菜单
      *
      * @param optInfo 业务菜单信息
@@ -165,7 +165,8 @@ public class OptInfoController extends BaseController {
         required = true, paramType = "body", dataTypeClass = OptInfo.class
     ))
     @RequestMapping(method = {RequestMethod.POST})
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增{optInfo.optName}菜单")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增{optInfo.optName}菜单",
+        tag = "{optInfo.optId}:{optInfo.optName}")
     @WrapUpResponseBody
     public OptInfo createOptInfo(@ParamName("optInfo") @Valid OptInfo optInfo) {
         optInfoManager.saveNewOptInfo(optInfo);
@@ -173,7 +174,7 @@ public class OptInfoController extends BaseController {
         return optInfo;
     }
 
-    /**
+    /*
      * optId是否已存在
      *
      * @param optId optId
@@ -191,7 +192,7 @@ public class OptInfoController extends BaseController {
         return null == optInfo;
     }
 
-    /**
+    /*
      * 更新菜单
      *
      * @param optId   主键
@@ -207,9 +208,10 @@ public class OptInfoController extends BaseController {
             required = true, paramType = "body", dataTypeClass = OptInfo.class)
     })
     @RequestMapping(value = "/{optId}", method = {RequestMethod.PUT})
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新菜单")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新菜单",
+        tag = "{optId}")
     @WrapUpResponseBody
-    public ResponseData edit(@PathVariable String optId, @Valid OptInfo optInfo) {
+    public ResponseData edit(@ParamName("optId") @PathVariable String optId, @Valid OptInfo optInfo) {
 
         OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
         if (null == dbOptInfo) {
@@ -227,7 +229,7 @@ public class OptInfoController extends BaseController {
         return ResponseData.makeResponseData(dbOptInfo);
     }
 
-    /**
+    /*
      * 更新操作权限
      *
      * @param optId   主键
@@ -243,9 +245,10 @@ public class OptInfoController extends BaseController {
             required = true, paramType = "body", dataTypeClass = OptInfo.class)
     })
     @RequestMapping(value = "/editpower/{optId}", method = {RequestMethod.PUT})
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新操作权限")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新操作权限",
+        tag = "{optId}")
     @WrapUpResponseBody
-    public ResponseData editPower(@PathVariable String optId, @Valid OptInfo optInfo) {
+    public ResponseData editPower(@ParamName("optId") @PathVariable String optId, @Valid OptInfo optInfo) {
 
         OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
         if (null == dbOptInfo) {
@@ -272,7 +275,7 @@ public class OptInfoController extends BaseController {
         return ResponseData.successResponse;
     }
 
-    /**
+    /*
      * 删除菜单
      *
      * @param optId 主键
@@ -282,9 +285,10 @@ public class OptInfoController extends BaseController {
         name = "optId", value = "菜单id",
         required = true, paramType = "path", dataType = "String")
     @RequestMapping(value = "/{optId}", method = {RequestMethod.DELETE})
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除菜单")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除菜单",
+        tag = "{optId}")
     @WrapUpResponseBody
-    public ResponseData delete(@PathVariable String optId) {
+    public ResponseData delete(@ParamName("optId") @PathVariable String optId) {
         int hasChild = optInfoManager.countSubOptInfo(optId);
         if(hasChild > 0){
             throw new ObjectException(optId, ResponseData.ERROR_BAD_PROCESS_DATASCOPE,
@@ -294,7 +298,7 @@ public class OptInfoController extends BaseController {
         return ResponseData.successResponse;
     }
 
-    /**
+    /*
      * 查询单条数据
      *
      * @param optId 主键
@@ -310,7 +314,7 @@ public class OptInfoController extends BaseController {
         return ResponseData.makeResponseData(dbOptInfo);
     }
 
-    /**
+    /*
      * 新增页面时获取OptDef主键
      */
     @ApiOperation(value = "获取菜单的下个主键", notes = "获取菜单的下个主键。")
@@ -324,7 +328,7 @@ public class OptInfoController extends BaseController {
         return responseData;
     }
 
-    /**
+    /*
      * 新建或更新业务操作
      *
      * @param optId   主键
@@ -356,7 +360,7 @@ public class OptInfoController extends BaseController {
         return ResponseData.successResponse;
     }
 
-    /**
+    /*
      * 获取所有的业务菜单
      */
     @ApiOperation(value = "获取所有的业务菜单", notes = "获取所有的业务菜单。")
@@ -367,7 +371,7 @@ public class OptInfoController extends BaseController {
         return ResponseData.makeResponseData(optInfos);
     }
 
-    /**
+    /*
      * 获取所有的操作方法
      */
     @ApiOperation(value = "获取所有的操作方法", notes = "获取所有的操作方法。")
@@ -378,7 +382,7 @@ public class OptInfoController extends BaseController {
         return ResponseData.makeResponseData(optDefs);
     }
 
-    /**
+    /*
      * 获取用户的操作方法
      *
      * @param userCode 用户ID

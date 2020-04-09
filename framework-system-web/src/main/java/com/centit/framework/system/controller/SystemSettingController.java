@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 
-/**
+/*
  * 系统设置
  *
  * @author zou_wy@centit.com
@@ -24,7 +24,7 @@ public class SystemSettingController extends BaseController {
     @Autowired
     private UserSettingManager userSettingManager;
 
-    /**
+    /*
      * 系统日志中记录
      *
      * @return 业务标识ID

@@ -15,6 +15,7 @@ import com.centit.framework.system.po.UserUnit;
 import com.centit.framework.system.service.SysUserManager;
 import com.centit.framework.system.service.SysUserUnitManager;
 import com.centit.support.algorithm.BooleanBaseOpt;
+import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
 import io.swagger.annotations.Api;
@@ -54,7 +55,7 @@ public class UserInfoController extends BaseController {
     @NotNull
     private UserSettingManager userSettingManager;*/
 
-    /**
+    /*
      * 系统日志中记录
      *
      * @return 业务标识ID
@@ -64,7 +65,7 @@ public class UserInfoController extends BaseController {
         return "USERMAG";
     }
 
-    /**
+    /*
      * 查询所有用户信息
      *
      * @param field    显示结果中只需要显示的字段
@@ -106,7 +107,7 @@ public class UserInfoController extends BaseController {
         return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
     }
 
-    /**
+    /*
      * 新增用户
      *
      * @param userInfo UserInfo
@@ -124,9 +125,10 @@ public class UserInfoController extends BaseController {
             paramType = "body", dataTypeClass = UserUnit.class)
     })
     @RequestMapping(method = RequestMethod.POST)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增用户")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增用户",
+        tag = "{us.userCode}")
     @WrapUpResponseBody
-    public ResponseData create(@Valid UserInfo userInfo, UserUnit userUnit, HttpServletRequest request) {
+    public ResponseData create(@ParamName("us") @Valid UserInfo userInfo, UserUnit userUnit, HttpServletRequest request) {
 
         UserInfo dbuserinfo = sysUserManager.loadUserByLoginname(userInfo.getLoginName());
         if (null != dbuserinfo) {
@@ -145,12 +147,12 @@ public class UserInfoController extends BaseController {
 
         return ResponseData.makeResponseData(userInfo);
 
-        /*********log*********/
+        /********log*********/
 //        OperationLogCenter.logNewObject(request,optId,userInfo.getUserCode(),
 //                OperationLog.P_OPT_LOG_METHOD_C,  "新增用户", userInfo);
     }
 
-    /**
+    /*
      * 更新用户信息
      * @param userCode userCode
      * @param userInfo userInfo
@@ -171,9 +173,10 @@ public class UserInfoController extends BaseController {
             paramType = "body", dataTypeClass = UserUnit.class)
     })
     @RequestMapping(value = "/{userCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新用户信息")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新用户信息",
+        tag = "{userCode}")
     @WrapUpResponseBody
-    public ResponseData updateUserInfo(@PathVariable String userCode, @Valid UserInfo userInfo, UserUnit userUnit,
+    public ResponseData updateUserInfo(@ParamName("userCode") @PathVariable String userCode, @Valid UserInfo userInfo, UserUnit userUnit,
                              HttpServletRequest request) {
 
         UserInfo dbUserInfo = sysUserManager.getObjectById(userCode);
@@ -197,7 +200,7 @@ public class UserInfoController extends BaseController {
 
     }
 
-    /**
+    /*
      * 当前登录用户信息
      *
      * @param request HttpServletRequest
@@ -214,7 +217,7 @@ public class UserInfoController extends BaseController {
         return sysUserManager.getObjectById(userCode);
     }
 
-    /**
+    /*
      * 获取单个用户信息
      *
      * @param userCode 用户代码
@@ -252,7 +255,7 @@ public class UserInfoController extends BaseController {
     }
 
 
-    /**
+    /*
      * 当前登录名是否已存在
      *
      * @param request HttpServletRequest
@@ -283,7 +286,7 @@ public class UserInfoController extends BaseController {
         return sysUserManager.isAnyOneExist(userCode, loginName, regPhone, regEmail);
     }
 
-    /**
+    /*
      * 当前登录名是否已存在
      *
      * @param loginName 登录名
@@ -300,7 +303,7 @@ public class UserInfoController extends BaseController {
         return null != userInfo;
     }
 
-    /**
+    /*
      * 更新用户密码
      *
      * @param userCode    用户代码
@@ -321,20 +324,14 @@ public class UserInfoController extends BaseController {
             paramType = "query", dataType = "String")
     })
     @RequestMapping(value = "/change/{userCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新用户密码")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新用户密码",
+        tag = "{userCode}")
     @WrapUpResponseBody
-    public ResponseData changePwd(@PathVariable String userCode, String password, String newPassword) {
-
+    public void changePwd(@ParamName("userCode") @PathVariable String userCode, String password, String newPassword) {
         sysUserManager.setNewPassword(userCode, password, newPassword);
-
-        return ResponseData.successResponse;
-
-        /*********log*********/
-        //OperationLogCenter.log(request,optId,userCode, "changePassword", "更新用户密码,用户代码:" + userCode);
-        /*********log*********/
     }
 
-    /**
+    /*
      * 强制更新用户密码
      *
      * @param userCode 用户代码
@@ -346,23 +343,19 @@ public class UserInfoController extends BaseController {
         name = "userCode", value = "用户代码", required = true,
         paramType = "path", dataType = "String")
     @RequestMapping(value = "/changePwd/{userCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}强制更新用户密码")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}强制更新用户密码",
+        tag = "{userCode}")
     @WrapUpResponseBody
-    public ResponseData forceChangePwd(@PathVariable String userCode, HttpServletRequest request) {
+    public void forceChangePwd(@ParamName("userCode") @PathVariable String userCode, HttpServletRequest request) {
         String newPassword = request.getParameter("newPassword");
         if (StringUtils.isBlank(newPassword)) {
             sysUserManager.resetPwd(userCode);
         } else {
             sysUserManager.forceSetPassword(userCode, newPassword);
         }
-
-        return ResponseData.successResponse;
-        /*********log*********/
-        //OperationLogCenter.log(request,optId,userCode, "forceChangePwd", "更新用户密码,用户代码:" + userCode);
-        /*********log*********/
     }
 
-    /**
+    /*
      * 检查用户密码是否可以修改
      *
      * @param userCode    用户代码
@@ -386,7 +379,7 @@ public class UserInfoController extends BaseController {
         return ResponseData.makeResponseData(bo);
     }
 
-    /**
+    /*
      * 批量重置密码
      *
      * @param userCodes 用户代码集合
@@ -397,20 +390,18 @@ public class UserInfoController extends BaseController {
         name = "userCodes", value = "用户代码集合(数组)", allowMultiple = true,
         paramType = "path", dataType = "String")
     @RequestMapping(value = "/reset", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}重置用户密码")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}重置用户密码",
+        tag = "{userCodes}")
     @WrapUpResponseBody
-    public ResponseData resetBatchPwd(String[] userCodes) {
+    public ResponseData resetBatchPwd(@ParamName("userCodes") String[] userCodes) {
         if (ArrayUtils.isEmpty(userCodes)) {
             return ResponseData.makeErrorMessage("用户代码集合为空");
         }
         sysUserManager.resetPwd(userCodes);
         return ResponseData.successResponse;
-
-        /*********log*********/
-        //OperationLogCenter.logNewObject(request,optId,null, "resetPassword",  "批量重置密码",userCodes);
     }
 
-    /**
+    /*
      * 删除用户
      *
      * @param userCodes 用户代码
@@ -421,9 +412,10 @@ public class UserInfoController extends BaseController {
         name = "userCodes", value = "用户代码集合(数组)", allowMultiple = true,
         required = true, paramType = "path", dataType = "String")
     @RequestMapping(value = "/{userCodes}", method = RequestMethod.DELETE)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户",
+        tag = "{userCodes}")
     @WrapUpResponseBody
-    public ResponseData deleteUser(@PathVariable String[] userCodes) {
+    public ResponseData deleteUser(@ParamName("userCodes") @PathVariable String[] userCodes) {
         for (String userCode : userCodes) {
             UserInfo userInfo = sysUserManager.getObjectById(userCode);
             if (null != userInfo) {
@@ -432,10 +424,10 @@ public class UserInfoController extends BaseController {
                 return ResponseData.makeErrorMessage("该用户不存在");
             }
 
-            /*********log*********/
+            /********log*********/
 //            OperationLogCenter.logDeleteObject(request, optId, userCode, OperationLog.P_OPT_LOG_METHOD_D,
 //                    "删除用户"+userInfo.getUserName(), userInfo);
-            /*********log*********/
+            /********log*********/
         }
         return ResponseData.successResponse;
     }

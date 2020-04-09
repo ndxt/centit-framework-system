@@ -23,7 +23,7 @@ import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.Map;
 
-/**
+/*
  * QueryFilterCondition  Controller.
  * create by scaffold 2016-03-01
  *
@@ -49,7 +49,7 @@ public class QueryFilterConditionController extends BaseController {
         //this.setBaseEntityManager(queryFilterConditionMag);
     }*/
 
-    /**
+    /*
      * 查询所有   系统内置查询方式  列表
      *
      * @param field    json中只保存需要的属性名
@@ -76,7 +76,7 @@ public class QueryFilterConditionController extends BaseController {
         return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
-    /**
+    /*
      * 查询单个  系统内置查询方式
      *
      * @param conditionNo CONDITION_NO
@@ -94,7 +94,7 @@ public class QueryFilterConditionController extends BaseController {
         return ResponseData.makeResponseData(queryFilterCondition);
     }
 
-    /**
+    /*
      * 新增 系统内置查询方式
      *
      * @param queryFilterCondition {@link QueryFilterCondition}
@@ -110,7 +110,7 @@ public class QueryFilterConditionController extends BaseController {
         return ResponseData.makeResponseData(pk);
     }
 
-    /**
+    /*
      * 删除单个  系统内置查询方式
      *
      * @param conditionNo CONDITION_NO
@@ -127,7 +127,7 @@ public class QueryFilterConditionController extends BaseController {
         return ResponseData.successResponse;
     }
 
-    /**
+    /*
      * 新增或保存 系统内置查询方式
      *
      * @param conditionNo          CONDITION_NO

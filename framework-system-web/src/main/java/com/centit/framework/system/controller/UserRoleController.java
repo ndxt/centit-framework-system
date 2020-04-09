@@ -17,6 +17,7 @@ import com.centit.framework.system.service.SysRoleManager;
 import com.centit.framework.system.service.SysUnitManager;
 import com.centit.framework.system.service.SysUserRoleManager;
 import com.centit.support.common.ObjectException;
+import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -36,7 +37,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
+/*
  * 用户角色关联操作，此操作是双向操作。
  */
 @Controller
@@ -55,7 +56,7 @@ public class UserRoleController extends BaseController {
     @Autowired
     private SysUnitManager sysUnitManager;
 
-    /**
+    /*
      * 系统日志中记录
      * @return 业务标识ID
      */
@@ -63,7 +64,7 @@ public class UserRoleController extends BaseController {
         return "USERROLE";
     }
 
-    /**
+    /*
      * 通过继承得到的用户
      * @param roleCode 角色代码
      * @param pageDesc 分页信息
@@ -83,7 +84,7 @@ public class UserRoleController extends BaseController {
         return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
-    /**
+    /*
      * 通过继承得到的角色
      *
      * @param userCode 用户代码
@@ -107,7 +108,7 @@ public class UserRoleController extends BaseController {
         return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
-    /**
+    /*
      * 获取用户的所有角色信息
      *
      * @param userCode 用户代码
@@ -130,7 +131,7 @@ public class UserRoleController extends BaseController {
         return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
-    /**
+    /*
      * 查询所有用户角色
      *
      * @param filterMap 显示结果中只需要显示的字段
@@ -141,7 +142,7 @@ public class UserRoleController extends BaseController {
         return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
 
-    /**
+    /*
      * 通过用户代码获取可用的所有用户角色
      *
      * @param userCode 用户代码
@@ -166,7 +167,7 @@ public class UserRoleController extends BaseController {
         return listObject(filterMap, pageDesc);
     }
 
-    /**
+    /*
      * 通过角色代码获取用户
      *
      * @param roleCode 通过角色代码获取用户
@@ -194,7 +195,7 @@ public class UserRoleController extends BaseController {
         return listObject(filterMap, pageDesc);
     }
 
-    /**
+    /*
      * 通过角色代码获取当前机构下的所有可用的用户
      *
      * @param roleCode 角色代码
@@ -221,7 +222,7 @@ public class UserRoleController extends BaseController {
         return listObject(filterMap, pageDesc);
     }
 
-    /**
+    /*
      * 通过用户代码获取当前机构下的所有可用的角色
      *
      * @param userCode 用户代码
@@ -247,7 +248,7 @@ public class UserRoleController extends BaseController {
         return listObject(filterMap, pageDesc);
     }
 
-    /**
+    /*
      * 根据机构代码和角色代码获取用户
      *
      * @param unitCode 机构代码
@@ -278,7 +279,7 @@ public class UserRoleController extends BaseController {
         return listObject(filterMap, pageDesc);
     }
 
-    /**
+    /*
      * 返回一条用户角色关联信息
      *
      * @param roleCode 角色代码
@@ -303,7 +304,7 @@ public class UserRoleController extends BaseController {
         return (JSONObject)DictionaryMapUtils.objectToJSON(userRole);
     }
 
-    /**
+    /*
      * 创建用户角色关联信息
      *
      * @param userRole UserRole
@@ -318,9 +319,11 @@ public class UserRoleController extends BaseController {
         allowMultiple = true, paramType = "query", dataType = "String"
     )})
     @RequestMapping(method = RequestMethod.POST)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增用户角色关联信息")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增用户角色关联信息",
+        tag="{roleCode}:{userCode}")
     @WrapUpResponseBody
-    public ResponseData create(@Valid UserRole userRole, @Valid String[] userCode) {
+    public ResponseData create(@ParamName("roleCode") @Valid UserRole userRole,
+                               @ParamName("userCode") @Valid String[] userCode) {
         userRole.setCreateDate(new Date());
         if (userCode != null && userCode.length > 0) {
             for (String u : userCode) {
@@ -332,14 +335,14 @@ public class UserRoleController extends BaseController {
         }
         return ResponseData.successResponse;
 
-        /*********log*********/
+        /********log*********/
 //        OperationLogCenter.logNewObject(request,optId, userRole.getUserCode()+"-"+ userRole.getRoleCode(),
 //                OperationLog.P_OPT_LOG_METHOD_C, "新增用户角色关联" , userRole);
-        /*********log*********/
+        /********log*********/
     }
 
 
-    /**
+    /*
      * 更新用户角色关联信息
      *
      * @param roleCode 角色代码
@@ -358,9 +361,11 @@ public class UserRoleController extends BaseController {
         required = true, paramType = "body", dataTypeClass = UserRole.class
     )})
     @RequestMapping(value = "/{roleCode}/{userCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新用户角色信息")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新用户角色信息",
+        tag="{roleCode}:{userCode}")
     @WrapUpResponseBody
-    public ResponseData edit(@PathVariable String roleCode, @PathVariable String userCode, @Valid UserRole userRole) {
+    public ResponseData edit(@ParamName("roleCode") @PathVariable String roleCode,
+                             @ParamName("userCode") @PathVariable String userCode, @Valid UserRole userRole) {
         UserRole dbUserRole = sysUserRoleManager.getObjectById(new UserRoleId(userCode, roleCode));
 
         if (null == userRole) {
@@ -369,13 +374,13 @@ public class UserRoleController extends BaseController {
         sysUserRoleManager.mergeObject(dbUserRole, userRole);
         return ResponseData.makeResponseData(userRole);
 
-        /*********log*********/
+        /********log*********/
 //        OperationLogCenter.logUpdateObject(request,optId,dbUserRole.getUserCode(),
 //                OperationLog.P_OPT_LOG_METHOD_U,"更改用户角色信息:" + JSON.toJSONString(userRole.getId()) ,userRole,dbUserRole);
-        /*********log*********/
+        /********log*********/
     }
 
-    /**
+    /*
      * 删除多个用户角色关联信息
      *
      * @param roleCode  角色代码
@@ -390,24 +395,22 @@ public class UserRoleController extends BaseController {
         required = true, paramType = "path", dataType = "String"
     )})
     @RequestMapping(value = "/{roleCode}/{userCodes}", method = RequestMethod.DELETE)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户角色关联信息")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户角色关联信息",
+        tag="{roleCode}:{userCodes}")
     @WrapUpResponseBody
-    public ResponseData delete(@PathVariable String roleCode, @PathVariable String userCodes) {
+    public ResponseData delete(@ParamName ("roleCode") @PathVariable String roleCode,
+                               @ParamName ("userCodes") @PathVariable String userCodes) {
 
         String[] userCodeArray = userCodes.split(",");
         for (String userCode : userCodeArray) {
             UserRoleId userRoleId = new UserRoleId(userCode, roleCode);
-            UserRole userRole = sysUserRoleManager.getObjectById(userRoleId);
+            //UserRole userRole = sysUserRoleManager.getObjectById(userRoleId);
             sysUserRoleManager.deleteObjectById(userRoleId);
-            /*********log*********/
-//            OperationLogCenter.logDeleteObject(request,optId,userCode+"-"+roleCode, OperationLog.P_OPT_LOG_METHOD_D,
-//                    "删除用户角色关联信息", userRole);
-            /*********log*********/
         }
         return ResponseData.successResponse;
     }
 
-    /**
+    /*
      * 删除单个用户角色关联信息
      *
      * @param roleCode 角色代码
@@ -422,17 +425,13 @@ public class UserRoleController extends BaseController {
         required = true, paramType = "path", dataType = "String"
     )})
     @RequestMapping(value = "/ban/{roleCode}/{userCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户角色关联信息")
+    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户角色关联信息",
+        tag="{roleCode}:{userCode}")
     @WrapUpResponseBody
-    public ResponseData ban(@PathVariable String roleCode, @PathVariable String userCode) {
+    public ResponseData ban(@ParamName ("roleCode") @PathVariable String roleCode,
+                            @ParamName ("userCode") @PathVariable String userCode) {
         UserRoleId a = new UserRoleId(userCode, roleCode);
-//        UserRole userRole = sysUserRoleManager.getObjectById(a);
         sysUserRoleManager.deleteObjectById(a);
         return ResponseData.successResponse;
-
-        /*********log*********/
-//        OperationLogCenter.logDeleteObject(request, optId, userCode+"-"+roleCode,
-//                OperationLog.P_OPT_LOG_METHOD_D, "删除用户角色关联信息", userRole);
-        /*********log*********/
     }
 }
