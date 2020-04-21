@@ -98,7 +98,7 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
      * 内置变量 system 系统数据字典 public 公用数据字典
      */
     @Column(name = "OPT_ID")
-    @Length(max = 16, message = "字段长度不能大于{max}")
+    @Length(max = 32, message = "字段长度不能大于{max}")
     @DictionaryMap(fieldName="optName", value="optId")
     @ValueGenerator(strategy = GeneratorType.CONSTANT, occasion = GeneratorTime.NEW, value = "public")
     private String optId;
