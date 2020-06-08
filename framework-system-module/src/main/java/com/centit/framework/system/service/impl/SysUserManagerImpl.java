@@ -115,7 +115,7 @@ public class SysUserManagerImpl implements SysUserManager {
     @Transactional
     public void forceSetPassword(String userCode, String newPassword){
         UserInfo user = userInfoDao.getUserByCode(userCode);
-        user.setUserPin(passwordEncoder.createPassword(newPassword, user.getUserCode()));
+        user.setUserPin(passwordEncoder.encodePassword(newPassword, user.getUserCode()));
         userInfoDao.updateUser(user);
     }
 
