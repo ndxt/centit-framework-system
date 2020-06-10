@@ -49,5 +49,5 @@ public interface SysRoleManager{
    * @param unitCode 部门代码 （系统角色设为null）
    * @return 名称是否可用 （true 可用； false 不可用）
    */
-    boolean judgeSysRoleNameExist(String roleName, String roleCode, String unitCode);
+    boolean judgeSysRoleNameCanBeUsed(String roleName, String roleCode, String unitCode);
 }

@@ -533,7 +533,7 @@ public class RoleInfoController extends BaseController {
     @GetMapping(value = "/issysroleunique/{roleName}")
     @WrapUpResponseBody(contentType = WrapUpContentType.RAW)
     public boolean isSysRoleNotExist(@PathVariable String roleName) {
-        return sysRoleManager.judgeSysRoleNameExist(roleName, null, null);
+        return sysRoleManager.judgeSysRoleNameCanBeUsed(roleName, null, null);
     }
 
     /*
@@ -554,7 +554,7 @@ public class RoleInfoController extends BaseController {
     @GetMapping(value = "/issysroleunique/{roleName}/{roleCode}")
     @WrapUpResponseBody(contentType = WrapUpContentType.RAW)
     public boolean isSysRoleUnique(@PathVariable String roleName, @PathVariable String roleCode) {
-        return sysRoleManager.judgeSysRoleNameExist(roleName, roleCode, null);
+        return sysRoleManager.judgeSysRoleNameCanBeUsed(roleName, roleCode, null);
     }
 
     /*
@@ -576,7 +576,7 @@ public class RoleInfoController extends BaseController {
     @WrapUpResponseBody(contentType = WrapUpContentType.RAW)
     public boolean isUnitRoleNotExist(@PathVariable String unitCode,
                                       @PathVariable String roleName) {
-        return sysRoleManager.judgeSysRoleNameExist(roleName, null, unitCode);
+        return sysRoleManager.judgeSysRoleNameCanBeUsed(roleName, null, unitCode);
     }
 
     /*
@@ -601,7 +601,7 @@ public class RoleInfoController extends BaseController {
     @GetMapping(value = "/isunitroleunique/{unitCode}/{roleName}/{roleCode}")
     @WrapUpResponseBody(contentType = WrapUpContentType.RAW)
     public boolean isUnitRoleUnique(@PathVariable String unitCode, @PathVariable String roleName, @PathVariable String roleCode) {
-        return sysRoleManager.judgeSysRoleNameExist(roleName, roleCode, unitCode);
+        return sysRoleManager.judgeSysRoleNameCanBeUsed(roleName, roleCode, unitCode);
     }
 
     /*

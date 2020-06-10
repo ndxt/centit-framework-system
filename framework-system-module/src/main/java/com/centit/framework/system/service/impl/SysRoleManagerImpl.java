@@ -200,10 +200,16 @@ public class SysRoleManagerImpl implements SysRoleManager {
         return userRoleDao.countObject(CollectionsOpt.createHashMap("roleCode",roleCode));
     }
 
+    /**
+     * 检查 角色名称是可以用
+     * @param roleName 角色名称 角色名称
+     * @param roleCode 角色代码 （新增时设为null）
+     * @param unitCode 部门代码 （系统角色设为null）
+     * @return true 不冲突 可以用 false 冲突 不可用
+     */
     @Override
     @Transactional
-    public boolean judgeSysRoleNameExist(String roleName, String roleCode, String unitCode){
-
+    public boolean judgeSysRoleNameCanBeUsed(String roleName, String roleCode, String unitCode){
         Map<String, Object> filterMap = new HashMap<>(4);
         //系统角色
         if(unitCode == null) {
