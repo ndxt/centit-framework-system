@@ -4,6 +4,8 @@ import com.centit.framework.components.impl.NotificationCenterImpl;
 import com.centit.framework.config.InitialWebRuntimeEnvironment;
 import com.centit.framework.config.SpringSecurityCasConfig;
 import com.centit.framework.config.SpringSecurityDaoConfig;
+import com.centit.framework.core.service.DataScopePowerManager;
+import com.centit.framework.core.service.impl.DataScopePowerManagerImpl;
 import com.centit.framework.jdbc.config.JdbcConfig;
 import com.centit.framework.model.adapter.NotificationCenter;
 import com.centit.framework.security.model.StandardPasswordEncoderImpl;
@@ -45,6 +47,11 @@ public class ServiceConfig {
         notificationCenter.initDummyMsgSenders();
         //notificationCenter.registerMessageSender("innerMsg",innerMessageManager);
         return notificationCenter;
+    }
+
+    @Bean
+    public DataScopePowerManager dataScopePowerManager(){
+        return new DataScopePowerManagerImpl();
     }
 
     /*@Bean

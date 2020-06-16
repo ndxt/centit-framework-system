@@ -125,7 +125,8 @@ public class UserUnitController extends BaseController {
     })
     @RequestMapping(value = "/unitusers/{unitCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult<UserUnit> listUsersByUnit(@PathVariable String unitCode, PageDesc pageDesc, HttpServletRequest request) {
+    public PageQueryResult<UserUnit> listUsersByUnit(@PathVariable String unitCode,
+                                                     PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         List<UserUnit> listObjects = sysUserUnitManager.listSubUsersByUnitCode(unitCode, filterMap, pageDesc);
         return PageQueryResult.createResultMapDict(listObjects, pageDesc);

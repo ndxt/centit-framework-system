@@ -229,7 +229,7 @@ public class SysUserUnitManagerImpl
         UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
         if(unitInfo != null){
             map.put("unitPath", unitInfo.getUnitPath());
-            map.put("isValid", "T");
+            //map.put("isValid", "T");
             return userUnitDao.querySubUserUnits(map, pageDesc);
         }
         return null;
