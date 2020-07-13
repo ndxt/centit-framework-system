@@ -1,7 +1,6 @@
 package com.centit.framework.system.po;
 
 import com.centit.framework.core.dao.DictionaryMap;
-import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IDataCatalog;
 import com.centit.support.database.orm.GeneratorCondition;
 import com.centit.support.database.orm.GeneratorTime;
@@ -28,7 +27,7 @@ import java.util.List;
 @Entity
 @Table(name = "F_DATACATALOG")
 @ApiModel(value="数据字典类别对象",description="数据字典类别对象DataCatalog")
-public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Serializable{
+public class DataCatalog implements IDataCatalog, java.io.Serializable{
     private static final long serialVersionUID = 1L;
 
     /**
@@ -262,13 +261,10 @@ public class DataCatalog implements EntityWithTimestamp,IDataCatalog, java.io.Se
         this.updateDate = updateDate;
     }
 
-
-    @Override
     public Date getLastModifyDate() {
         return updateDate;
     }
 
-    @Override
     public void setLastModifyDate(Date lastModifyDate) {
         this.updateDate = lastModifyDate;
     }

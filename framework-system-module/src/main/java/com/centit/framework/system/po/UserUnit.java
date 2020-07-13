@@ -1,7 +1,6 @@
 package com.centit.framework.system.po;
 
 import com.centit.framework.core.dao.DictionaryMap;
-import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IUserUnit;
 import com.centit.support.database.orm.GeneratorCondition;
 import com.centit.support.database.orm.GeneratorTime;
@@ -24,7 +23,7 @@ import java.util.Date;
 @Entity
 @Table(name = "F_USERUNIT")
 @ApiModel(value="系统用户机构对象",description="系统用户机构对象 UserUnit")
-public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Serializable {
+public class UserUnit implements IUserUnit, java.io.Serializable {
 
     // Fields
     private static final long serialVersionUID = 1L;
@@ -95,8 +94,8 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
      * UPDATEDATE(更新时间) 更新时间
      */
     @Column(name = "UPDATE_DATE")
-    @ValueGenerator( strategy= GeneratorType.FUNCTION,
-       value = "today()", condition = GeneratorCondition.ALWAYS, occasion = GeneratorTime.ALWAYS )
+    @ValueGenerator(strategy = GeneratorType.FUNCTION, occasion = GeneratorTime.NEW_UPDATE,
+        condition = GeneratorCondition.ALWAYS, value="today()" )
     private Date  updateDate;
     //结束
 
@@ -261,12 +260,10 @@ public class UserUnit implements IUserUnit, EntityWithTimestamp, java.io.Seriali
         this.updateDate = updateDate;
     }
 
-    @Override
     public Date getLastModifyDate() {
         return updateDate;
     }
 
-    @Override
     public void setLastModifyDate(Date lastModifyDate) {
         this.updateDate = lastModifyDate;
     }

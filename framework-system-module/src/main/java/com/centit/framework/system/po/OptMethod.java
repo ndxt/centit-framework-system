@@ -1,8 +1,11 @@
 package com.centit.framework.system.po;
 
-import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IOptDataScope;
 import com.centit.framework.model.basedata.IOptMethod;
+import com.centit.support.database.orm.GeneratorCondition;
+import com.centit.support.database.orm.GeneratorTime;
+import com.centit.support.database.orm.GeneratorType;
+import com.centit.support.database.orm.ValueGenerator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.StringUtils;
@@ -19,7 +22,7 @@ import java.util.Date;
 @Entity
 @Table(name = "F_OPTDEF")
 @ApiModel(value="操作方法对象",description="操作方法对象 OptMethod")
-public class OptMethod implements IOptMethod,EntityWithTimestamp, java.io.Serializable{
+public class OptMethod implements IOptMethod, java.io.Serializable{
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -80,6 +83,8 @@ public class OptMethod implements IOptMethod,EntityWithTimestamp, java.io.Serial
      * UPDATEDATE(更新时间) 更新时间
      */
     @Column(name = "UPDATE_DATE")
+    @ValueGenerator(strategy = GeneratorType.FUNCTION, occasion = GeneratorTime.NEW_UPDATE,
+        condition = GeneratorCondition.ALWAYS, value="today()" )
     private Date  updateDate;
 
     /**
@@ -239,12 +244,10 @@ public class OptMethod implements IOptMethod,EntityWithTimestamp, java.io.Serial
           this.updateDate = updateDate;
       }
 
-      @Override
       public Date getLastModifyDate() {
           return updateDate;
     }
 
-      @Override
       public void setLastModifyDate(Date lastModifyDate) {
           this.updateDate = lastModifyDate;
     }

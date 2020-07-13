@@ -1,9 +1,9 @@
 package com.centit.framework.system.po;
 
-import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IRolePower;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.database.orm.GeneratorCondition;
+import com.centit.support.database.orm.GeneratorTime;
 import com.centit.support.database.orm.GeneratorType;
 import com.centit.support.database.orm.ValueGenerator;
 import io.swagger.annotations.ApiModel;
@@ -22,7 +22,7 @@ import java.util.Date;
 @Entity
 @Table(name = "F_ROLEPOWER")
 @ApiModel(value="系统角色操作权限对象",description="系统角色操作权限对象 RolePower")
-public class RolePower implements IRolePower, EntityWithTimestamp, java.io.Serializable{
+public class RolePower implements IRolePower, java.io.Serializable{
 
     // Fields
     private static final long serialVersionUID = 1L;
@@ -57,8 +57,8 @@ public class RolePower implements IRolePower, EntityWithTimestamp, java.io.Seria
      * UPDATEDATE(更新时间) 更新时间
      */
     @Column(name = "UPDATE_DATE")
-    @ValueGenerator(strategy = GeneratorType.FUNCTION,
-        condition = GeneratorCondition.ALWAYS, value = "today()")
+    @ValueGenerator(strategy = GeneratorType.FUNCTION, occasion = GeneratorTime.NEW_UPDATE,
+        condition = GeneratorCondition.ALWAYS, value="today()" )
     private Date  updateDate;
     //结束
 
@@ -176,12 +176,10 @@ public class RolePower implements IRolePower, EntityWithTimestamp, java.io.Seria
           this.updateDate = updateDate;
       }
 
-      @Override
       public Date getLastModifyDate() {
           return updateDate;
     }
 
-      @Override
       public void setLastModifyDate(Date lastModifyDate) {
           this.updateDate = lastModifyDate;
     }

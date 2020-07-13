@@ -2,10 +2,13 @@ package com.centit.framework.system.po;
 
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.DictionaryMap;
-import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IUserInfo;
 import com.centit.framework.model.basedata.IUserRole;
 import com.centit.framework.model.basedata.IUserUnit;
+import com.centit.support.database.orm.GeneratorCondition;
+import com.centit.support.database.orm.GeneratorTime;
+import com.centit.support.database.orm.GeneratorType;
+import com.centit.support.database.orm.ValueGenerator;
 import io.swagger.annotations.ApiModel;
 import org.hibernate.validator.constraints.Length;
 
@@ -21,7 +24,7 @@ import java.util.Date;
 @Entity
 @Table(name = "F_USERROLE")
 @ApiModel(value="系统用户角色关联信息对象",description="系统用户角色关联信息对象 UserInfo")
-public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Serializable {
+public class UserRole implements IUserRole, java.io.Serializable {
     // Fields
     // public final SimpleDateFormat sdfDate = new
     // SimpleDateFormat("yyyy-MM-dd");
@@ -64,6 +67,8 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
      * UPDATEDATE(更新时间) 更新时间
      */
     @Column(name = "UPDATE_DATE")
+    @ValueGenerator(strategy = GeneratorType.FUNCTION, occasion = GeneratorTime.NEW_UPDATE,
+        condition = GeneratorCondition.ALWAYS, value="today()" )
     private Date  updateDate;
     //结束
 
@@ -263,12 +268,10 @@ public class UserRole implements IUserRole, EntityWithTimestamp, java.io.Seriali
         this.updateDate = updateDate;
     }
 
-    @Override
     public Date getLastModifyDate() {
         return updateDate;
   }
 
-    @Override
     public void setLastModifyDate(Date lastModifyDate) {
         this.updateDate = lastModifyDate;
     }

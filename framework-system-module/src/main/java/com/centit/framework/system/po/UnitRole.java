@@ -1,7 +1,10 @@
 package com.centit.framework.system.po;
 
-import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IUnitRole;
+import com.centit.support.database.orm.GeneratorCondition;
+import com.centit.support.database.orm.GeneratorTime;
+import com.centit.support.database.orm.GeneratorType;
+import com.centit.support.database.orm.ValueGenerator;
 import io.swagger.annotations.ApiModel;
 import org.hibernate.validator.constraints.Length;
 
@@ -17,7 +20,7 @@ import java.util.Date;
 @Entity
 @Table(name = "F_UNITROLE")
 @ApiModel(value="系统机构角色对象",description="系统机构角色对象 UnitRole")
-public class UnitRole implements IUnitRole, EntityWithTimestamp, java.io.Serializable {
+public class UnitRole implements IUnitRole, java.io.Serializable {
 
     // Fields
     // public final SimpleDateFormat sdfDate = new
@@ -61,6 +64,8 @@ public class UnitRole implements IUnitRole, EntityWithTimestamp, java.io.Seriali
      * UPDATEDATE(更新时间) 更新时间
      */
     @Column(name = "UPDATE_DATE")
+    @ValueGenerator(strategy = GeneratorType.FUNCTION, occasion = GeneratorTime.NEW_UPDATE,
+        condition = GeneratorCondition.ALWAYS, value="today()" )
     private Date  updateDate;
     //结束
 
@@ -187,12 +192,10 @@ public class UnitRole implements IUnitRole, EntityWithTimestamp, java.io.Seriali
         this.updateDate = updateDate;
     }
 
-    @Override
     public Date getLastModifyDate() {
         return updateDate;
   }
 
-    @Override
     public void setLastModifyDate(Date lastModifyDate) {
         this.updateDate = lastModifyDate;
   }

@@ -2,7 +2,6 @@ package com.centit.framework.system.po;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.centit.framework.core.dao.DictionaryMap;
-import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IUnitInfo;
 import com.centit.support.database.orm.GeneratorCondition;
 import com.centit.support.database.orm.GeneratorTime;
@@ -29,7 +28,7 @@ import java.util.List;
 @Entity
 @Table(name = "F_UNITINFO")
 @ApiModel(value="系统机构信息对象",description="系统机构信息对象 UnitInfo")
-public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializable{
+public class UnitInfo implements IUnitInfo, java.io.Serializable{
     // Fields
     private static final long serialVersionUID = -2538006375160615889L;
 
@@ -145,8 +144,8 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
      * UPDATEDATE(更新时间) 更新时间
      */
     @Column(name = "UPDATE_DATE")
-    @ValueGenerator( strategy= GeneratorType.FUNCTION, value="today()",
-        condition = GeneratorCondition.ALWAYS, occasion = GeneratorTime.ALWAYS )
+    @ValueGenerator(strategy = GeneratorType.FUNCTION, occasion = GeneratorTime.NEW_UPDATE,
+        condition = GeneratorCondition.ALWAYS, value="today()" )
     private Date  updateDate;
 
 
@@ -305,12 +304,10 @@ public class UnitInfo implements IUnitInfo,EntityWithTimestamp, java.io.Serializ
         this.createDate = createDate;
     }
 
-    @Override
     public Date getLastModifyDate() {
         return updateDate;
     }
 
-    @Override
     public void setLastModifyDate(Date lastModifyDate) {
         this.updateDate = lastModifyDate;
     }

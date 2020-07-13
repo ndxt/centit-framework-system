@@ -1,7 +1,6 @@
 package com.centit.framework.system.po;
 
 import com.centit.framework.core.dao.DictionaryMap;
-import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IRoleInfo;
 import com.centit.support.database.orm.GeneratorCondition;
 import com.centit.support.database.orm.GeneratorTime;
@@ -27,7 +26,7 @@ import java.util.List;
 @Entity
 @Table(name = "F_ROLEINFO")
 @ApiModel(value = "系统角色信息对象", description = "系统角色信息对象 RoleInfo")
-public class RoleInfo implements IRoleInfo, EntityWithTimestamp, java.io.Serializable {
+public class RoleInfo implements IRoleInfo, java.io.Serializable {
 
     // Fields
     private static final long serialVersionUID = 1L;
@@ -100,7 +99,8 @@ public class RoleInfo implements IRoleInfo, EntityWithTimestamp, java.io.Seriali
      * UPDATEDATE(更新时间) 更新时间
      */
     @Column(name = "UPDATE_DATE")
-    @ValueGenerator(strategy = GeneratorType.FUNCTION, condition = GeneratorCondition.ALWAYS, value = "today()")
+    @ValueGenerator(strategy = GeneratorType.FUNCTION, occasion = GeneratorTime.NEW_UPDATE,
+        condition = GeneratorCondition.ALWAYS, value="today()" )
     private Date updateDate;
 
     @Transient
@@ -224,12 +224,10 @@ public class RoleInfo implements IRoleInfo, EntityWithTimestamp, java.io.Seriali
         this.unitCode = roleOwner;
     }
 
-    @Override
     public Date getLastModifyDate() {
         return updateDate;
     }
 
-    @Override
     public void setLastModifyDate(Date lastModifyDate) {
         this.updateDate = lastModifyDate;
     }

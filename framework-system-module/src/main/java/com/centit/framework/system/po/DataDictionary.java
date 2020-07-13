@@ -4,8 +4,8 @@ package com.centit.framework.system.po;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.core.dao.DictionaryMap;
-import com.centit.framework.core.po.EntityWithTimestamp;
 import com.centit.framework.model.basedata.IDataDictionary;
+import com.centit.support.database.orm.GeneratorCondition;
 import com.centit.support.database.orm.GeneratorTime;
 import com.centit.support.database.orm.GeneratorType;
 import com.centit.support.database.orm.ValueGenerator;
@@ -29,7 +29,7 @@ import java.util.Date;
 @Entity
 @Table(name = "F_DATADICTIONARY")
 @ApiModel(value="数据字典对象",description="数据字典类别对象DataDictionary")
-public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java.io.Serializable {
+public class DataDictionary implements IDataDictionary, java.io.Serializable {
 
     // Fields
     private static final long serialVersionUID = -4063651885248484498L;
@@ -82,6 +82,8 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
 
     @Column(name = "LAST_MODIFY_DATE")
     @Temporal(TemporalType.TIMESTAMP)
+    @ValueGenerator(strategy = GeneratorType.FUNCTION, occasion = GeneratorTime.NEW_UPDATE,
+        condition = GeneratorCondition.ALWAYS, value="today()" )
     protected Date lastModifyDate;
 
     /**
@@ -250,12 +252,10 @@ public class DataDictionary implements IDataDictionary,EntityWithTimestamp, java
         this.createDate = createDate;
     }
 
-    @Override
     public Date getLastModifyDate() {
         return lastModifyDate;
     }
 
-    @Override
     public void setLastModifyDate(Date lastModifyDate) {
         this.lastModifyDate = lastModifyDate;
     }
