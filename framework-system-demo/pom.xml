@@ -20,7 +20,7 @@
     </description>
 
     <properties>
-        <centit.stat.version>2.0.1-SNAPSHOT</centit.stat.version>
+        <centit.stat.version>2.1-SNAPSHOT</centit.stat.version>
     </properties>
 
     <dependencies>
