@@ -2,17 +2,17 @@
 alter table F_DATACATALOG modify FieldDesc varchar2(1024);
 alter table F_UNITINFO add UNITPATH VARCHAR2(1000);
 
-update f_unitinfo t set t.unitpath = (
+update f_unitinfo t set t.unit_path = (
 select b.UnitPath from (
 select level as hi_level,
-               t.unitcode,
-               t.parentunit,
-               CONNECT_BY_ROOT t.unitcode as topunitcode,
-               SYS_CONNECT_BY_PATH(t.unitcode, '/') UnitPath
-          from f_unitinfo t 
-          start with t.parentunit is null or not exists (select f.* from f_unitinfo f where f.unitcode=t.parentunit)
-connect by prior unitcode = parentunit) b 
-where b.unitcode=t.unitcode);
+               t.unit_code,
+               t.parent_unit,
+               CONNECT_BY_ROOT t.unit_code as topunitcode,
+               SYS_CONNECT_BY_PATH(t.unit_code, '/') UnitPath
+          from f_unitinfo t
+          start with t.parent_unit is null or not exists (select f.* from f_unitinfo f where f.unit_code=t.parent_unit)
+connect by prior unit_code = parent_unit) b
+where b.unit_code=t.unit_code);
 
 --mysql
 alter table F_DATACATALOG modify FieldDesc varchar(1024);
