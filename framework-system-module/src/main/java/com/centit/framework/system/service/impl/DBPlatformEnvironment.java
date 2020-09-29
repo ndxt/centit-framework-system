@@ -198,7 +198,6 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         return formatMenuTree(menuFunsByUser,superOptId);
     }
 
-
     @Override
     @Transactional(readOnly = true)
     public List<FVUserRoles> listUserRoles(String userCode) {
@@ -267,7 +266,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                       uu.setXzRank(Integer.valueOf(dd.getExtraCode()));
                     } catch (Exception e) {
                       logger.error(e.getMessage(),e);
-                      uu.setXzRank(CodeRepositoryUtil.MAXXZRANK);
+                      uu.setXzRank(IUserUnit.MAX_XZ_RANK);
                     }
                 }
             }

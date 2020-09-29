@@ -3,6 +3,7 @@ package com.centit.framework.system.service.impl;
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.model.basedata.IDataDictionary;
+import com.centit.framework.model.basedata.IUserUnit;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysUserUnitManager;
@@ -72,7 +73,7 @@ public class SysUserUnitManagerImpl
                         uu.setXzRank(Integer.valueOf(dd.getExtraCode()));
                     } catch (Exception e) {
                         logger.error(e.getMessage(),e);
-                        uu.setXzRank(CodeRepositoryUtil.MAXXZRANK);
+                        uu.setXzRank(IUserUnit.MAX_XZ_RANK);
                     }
                  }
             }
