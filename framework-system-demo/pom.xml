@@ -42,7 +42,7 @@
 
         <dependency>
             <groupId>com.centit.framework</groupId>
-            <artifactId>framework-session</artifactId>
+            <artifactId>framework-session-core</artifactId>
         </dependency>
 
         <dependency>

@@ -9,8 +9,14 @@ import com.centit.framework.core.service.impl.DataScopePowerManagerImpl;
 import com.centit.framework.jdbc.config.JdbcConfig;
 import com.centit.framework.model.adapter.NotificationCenter;
 import com.centit.framework.security.model.StandardPasswordEncoderImpl;
+import com.centit.framework.session.SimpleMapSessionRepository;
 import com.centit.framework.system.config.SystemBeanConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.session.FindByIndexNameSessionRepository;
+import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
+import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
 /**
  * Created by codefan on 17-7-18.
@@ -23,6 +29,7 @@ import org.springframework.context.annotation.*;
     SpringSecurityCasConfig.class,
     SpringSecurityDaoConfig.class,
     JdbcConfig.class})
+@EnableSpringHttpSession
 public class ServiceConfig {
 
     @Bean
@@ -67,4 +74,14 @@ public class ServiceConfig {
         return new InstantiationServiceBeanPostProcessor();
     }
 
+    @Bean
+    public FindByIndexNameSessionRepository sessionRepository() {
+        return new SimpleMapSessionRepository();
+    }
+
+    @Bean
+    public SessionRegistry sessionRegistry(
+        @Autowired FindByIndexNameSessionRepository sessionRepository){
+        return new SpringSessionBackedSessionRegistry(sessionRepository);
+    }
 }
