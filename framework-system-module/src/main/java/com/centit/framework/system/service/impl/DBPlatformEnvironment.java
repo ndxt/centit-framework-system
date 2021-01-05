@@ -39,6 +39,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     private UserSettingDao userSettingDao;
 
     @Autowired
+    private OsInfoDao osInfoDao;
+
+    @Autowired
     private OptInfoDao optInfoDao;
 
     @Autowired
@@ -550,6 +553,11 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                 optMethodDao.deleteObject(om);
             }
         }
+    }
+
+    @Override
+    public List<? extends IOsInfo> listOsInfos() {
+        return osInfoDao.listObjects();
     }
 
 }
