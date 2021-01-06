@@ -20,7 +20,7 @@ public interface SysUserUnitManager{
 
     List<UserUnit> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
 
-    List<UserUnit> listObjectByUserUnit(String userCode,String unitCode);
+    List<UserUnit> listObjectByUserUnit(String userCode, String unitCode);
 
     UserUnit getPrimaryUnitByUserCode(String userCode);
 

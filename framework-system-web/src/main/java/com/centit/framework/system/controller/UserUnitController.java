@@ -13,6 +13,7 @@ import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.UserUnit;
 import com.centit.framework.system.service.SysUserManager;
 import com.centit.framework.system.service.SysUserUnitManager;
+import com.centit.support.algorithm.BooleanBaseOpt;
 import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
@@ -127,8 +128,13 @@ public class UserUnitController extends BaseController {
     @WrapUpResponseBody
     public PageQueryResult<UserUnit> listUsersByUnit(@PathVariable String unitCode,
                                                      PageDesc pageDesc, HttpServletRequest request) {
+        boolean withSubUnit = BooleanBaseOpt.castObjectToBoolean(
+            request.getParameter("withSubUnit"),false);
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
-        List<UserUnit> listObjects = sysUserUnitManager.listSubUsersByUnitCode(unitCode, filterMap, pageDesc);
+        filterMap.put("unitCode", unitCode);
+        List<UserUnit> listObjects = withSubUnit?
+            sysUserUnitManager.listSubUsersByUnitCode(unitCode, filterMap, pageDesc) :
+            sysUserUnitManager.listObjects(filterMap, pageDesc);
         return PageQueryResult.createResultMapDict(listObjects, pageDesc);
     }
 
