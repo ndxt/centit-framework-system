@@ -20,7 +20,7 @@
     </description>
 
     <properties>
-        <centit.stat.version>2.1-SNAPSHOT</centit.stat.version>
+        <centit.stat.version>1.2-SNAPSHOT</centit.stat.version>
     </properties>
 
     <dependencies>
@@ -37,7 +37,7 @@
         <dependency>
             <groupId>com.centit.product</groupId>
             <artifactId>opt-log-module</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>
