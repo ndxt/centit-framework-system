@@ -12,7 +12,7 @@
     <groupId>com.centit.framework</groupId>
     <artifactId>framework-system-parent</artifactId>
     <packaging>pom</packaging>
-    <version>5.0.2101</version>
+    <version>5.0-SNAPSHOT</version>
     <name>com.centit.framework:framework-system-parent</name>
     <description>设计了一套兼容基础用户、组织机构和功能权限、数据权限体系的系统维护页面，作为公司内部研发的基础平台。
     </description>
@@ -143,7 +143,7 @@
             </plugin>
 
             <!-- GPG自动签名的插件-->
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
@@ -156,10 +156,10 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
            <!--  sonatype release :
                 mvn nexus-staging:release-->
-            <plugin>
+           <!-- <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
                 <version>1.6.8</version>
@@ -169,7 +169,7 @@
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 </project>
