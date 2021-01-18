@@ -6,11 +6,11 @@
     <parent>
         <artifactId>framework-snapshot-dependencies</artifactId>
         <groupId>com.centit.framework</groupId>
-        <version>1.3-SNAPSHOT</version>
+        <version>1.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.centit.product</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
     <artifactId>demoapp</artifactId>
     <packaging>war</packaging>
     <name>com.centit.product:demoapp</name>
@@ -37,7 +37,6 @@
         <dependency>
             <groupId>com.centit.product</groupId>
             <artifactId>opt-log-module</artifactId>
-            <version>1.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>

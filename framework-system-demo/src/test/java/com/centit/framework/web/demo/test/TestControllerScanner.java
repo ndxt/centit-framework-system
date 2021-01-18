@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +55,8 @@ public class TestControllerScanner {
                         new String[]{"optId","optName","optUrl","optName","optReq"});
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | NoSuchMethodException | IllegalAccessException
+            |InvocationTargetException | NoSuchFieldException e) {
             e.printStackTrace();
         }
         System.out.println(optInfoList.toJSONString());
