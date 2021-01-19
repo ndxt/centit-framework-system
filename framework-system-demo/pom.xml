@@ -11,12 +11,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.centit.product</groupId>
     <version>1.1-SNAPSHOT</version>
-    <artifactId>demoapp</artifactId>
+    <artifactId>framework-system-demo</artifactId>
     <packaging>war</packaging>
-    <name>com.centit.product:demoapp</name>
+    <name>com.centit.product:framework-system-demo</name>
     <description>
         基于框架开发的应用示例，根据项目的需要
-        其他的两个选择 framework-sys-view-easyui
     </description>
 
     <properties>
@@ -24,11 +23,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.centit.framework</groupId>
-            <artifactId>framework-system-view-easyui</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.centit.framework</groupId>
             <artifactId>framework-system-web</artifactId>
