@@ -82,7 +82,6 @@
     </scm>
 
     <modules>
-        <module>framework-system-view-easyui</module>
         <module>framework-system-module</module>
         <module>framework-system-config</module>
         <module>framework-system-web</module>
