@@ -62,6 +62,11 @@ public class UnitInfo implements IUnitInfo, java.io.Serializable{
     @ApiModelProperty(value = "机构名称",name = "unitName",required = true)
     private String unitName;// 机构名称
 
+    @Column(name = "SOCIAL_CREDIT_CODE")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "统一社会信用代码",name = "socialCreditCode",required = true)
+    private String socialCreditCode;
+
     @Column(name = "ENGLISH_NAME")
     @Length(max = 300, message = "字段长度不能大于{max}")
     @ApiModelProperty(value = "机构英文名称",name = "englishName",required = true)
@@ -69,16 +74,18 @@ public class UnitInfo implements IUnitInfo, java.io.Serializable{
 
     @Column(name = "UNIT_SHORT_NAME")
     @Length(max = 32, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "机构简称",name = "unitShortName",required = true)
     private String unitShortName;
 
     @Column(name = "UNIT_WORD")
     @Length(max = 100, message = "字段长度不能大于{max}")
-    @ApiModelProperty(value = "机构自定义编码",name = "unitWord")
+    @ApiModelProperty(value = "机构自定义编码，用户和第三方对接",name = "unitWord")
     private String unitWord;//机构自定义编码
 
     @Column(name = "UNIT_TAG")
     @Length(max = 100, message = "字段长度不能大于{max}")
-    private String unitTag;//机构标识用于第三方系统关联
+    @ApiModelProperty(value = "机构标签",name = "unitTag",required = true)
+    private String unitTag;//机构标签
 
     @Column(name = "UNIT_DESC")
     @Length(max = 256, message = "字段长度不能大于{max}")
@@ -98,12 +105,20 @@ public class UnitInfo implements IUnitInfo, java.io.Serializable{
     @Length(max = 100, message = "字段长度不能大于{max}")
     private String depNo;
 
+    /**
+     * 顶级机构，用于帐套、租户管理
+     */
+    @Column(name = "TOP_UNIT")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    private String topUnit; // 顶级机构，用于帐套
+
     @Column(name = "UNIT_PATH")// 机构路径
     @Length(max = 1000, message = "字段长度不能大于{max}")
     private String unitPath;
 
     @Transient
     private String state;
+
     public String getState() {
         return state;
     }
@@ -162,56 +177,6 @@ public class UnitInfo implements IUnitInfo, java.io.Serializable{
      * default constructor
      */
     public UnitInfo() {
-        unitUsers = null;
-    }
-
-    /**
-     * minimal constructor
-     * @param unitcode String
-     * @param unitstate String
-     * @param unitname String
-     */
-    public UnitInfo(String unitcode, String unitstate, String unitname) {
-        this.unitCode = unitcode;
-        this.isValid = unitstate;
-        this.unitName = unitname;
-        unitUsers = null;
-    }
-
-    public UnitInfo(String unitcode, String parentunit, String unittype,
-                    String isvalid, String unitname, String unitshortname, String unitword,
-                    String unitdesc, Long grade, Long unitorder, String depno,
-                    Date createDate, Date lastModifyDate) {
-        super();
-        this.unitCode = unitcode;
-        this.parentUnit = parentunit;
-        this.unitType = unittype;
-        this.isValid = isvalid;
-        this.unitName = unitname;
-        this.unitShortName = unitshortname;
-        this.unitWord = unitword;
-        this.unitDesc = unitdesc;
-        this.unitGrade = grade;
-        this.unitOrder = unitorder;
-        this.depNo = depno;
-    }
-
-    public UnitInfo(String unitcode, String parentunit, String unittype,
-                    String unitstate, String unitname, String unitdesc,
-                    String unitshortname, String depno,
-                    String unittag, String englishname,String unitword, Long unitgrade) {
-        this.unitCode = unitcode;
-        this.parentUnit = parentunit;
-        this.unitType = unittype;
-        this.isValid = unitstate;
-        this.unitName = unitname;
-        this.unitDesc = unitdesc;
-        this.unitShortName = unitshortname;
-        this.depNo = depno;
-        this.unitWord = unitword;
-        this.unitGrade = unitgrade;
-        this.unitTag = unittag;
-        this.englishName = englishname;
         unitUsers = null;
     }
 
@@ -354,7 +319,24 @@ public class UnitInfo implements IUnitInfo, java.io.Serializable{
         return subUnits;
     }
 
-    /*public List<UnitInfo> getChildren() {
+    @Override
+    public String getSocialCreditCode() {
+        return socialCreditCode;
+    }
+
+    public void setSocialCreditCode(String socialCreditCode) {
+        this.socialCreditCode = socialCreditCode;
+    }
+
+    @Override
+    public String getTopUnit() {
+        return topUnit;
+    }
+
+    public void setTopUnit(String topUnit) {
+        this.topUnit = topUnit;
+    }
+/*public List<UnitInfo> getChildren() {
         if(subUnits==null)
             subUnits = new ArrayList<>();
         return subUnits;

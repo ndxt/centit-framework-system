@@ -40,6 +40,13 @@ public class UserUnit implements IUserUnit, java.io.Serializable {
     @ApiModelProperty(value = "机构代码",name = "unitCode")
     private String unitCode; // 机构代码
 
+    /**
+     * 顶级机构，用于帐套、租户管理
+     */
+    @Column(name = "TOP_UNIT")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    private String topUnit; // 顶级机构，用于帐套
+
     @Column(name = "USER_CODE")
     @DictionaryMap(fieldName="userName",value="userCode")
     @ApiModelProperty(value = "用户代码",name = "userCode")
@@ -190,6 +197,15 @@ public class UserUnit implements IUserUnit, java.io.Serializable {
 
     public void setRankMemo(String rankmemo) {
         this.rankMemo = rankmemo;
+    }
+
+    @Override
+    public String getTopUnit() {
+        return topUnit;
+    }
+
+    public void setTopUnit(String topUnit) {
+        this.topUnit = topUnit;
     }
 
     /**

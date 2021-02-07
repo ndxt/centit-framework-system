@@ -123,7 +123,7 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
     private Long userOrder; // 用户排序
 
     /**
-     * 顶级机构，用于帐套
+     * 顶级机构，用于帐套、租户管理
      */
     @Column(name = "TOP_UNIT")
     @Length(max = 32, message = "字段长度不能大于{max}")
@@ -176,7 +176,7 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
     public void setUserPwd(String userPwd) {
         this.userPwd = userPwd;
     }
-
+    @Override
     public String getRegCellPhone() {
         return regCellPhone;
     }
@@ -185,6 +185,7 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
         this.regCellPhone = regCellPhone;
     }
 
+    @Override
     public String getUserWord() {
         return userWord;
     }
@@ -197,6 +198,7 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
      * 密码失效时间
      * @return  PwdExpiredTime
      */
+    @Override
     public Date getPwdExpiredTime() {
         return pwdExpiredTime;
     }
@@ -216,64 +218,8 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
         //this.userType = "U";
     }
 
-    /**
-     * minimal constructor
-     * @param userCode String
-     * @param userstate String
-     * @param loginname String
-     * @param username String
-     */
-    public UserInfo(String userCode, String userstate, String loginname,
-                    String username) {
-        this.userCode = userCode;
-        this.isValid = userstate;
-        this.userName = username;
-        this.loginName = loginname;
-        //this.userUnits = null;
-        this.primaryUnit = null;
-        //this.userType = "U";
-        userRoles = null;
-    }
-
-    public UserInfo(String userCode, String userpin,String usertype, String userstate,
-            String loginname, String username, String userdesc,
-            Long logintimes, Date activeime, String topUnit) {
-            this.userCode = userCode;
-            this.userPin = userpin;
-            this.isValid = userstate;
-            this.userName = username;
-            this.userType = usertype;
-            this.userDesc = userdesc;
-            this.loginTimes = logintimes;
-            this.activeTime = activeime;
-            this.topUnit = topUnit;
-            this.loginName = loginname;
-            // userUnits=null;
-            primaryUnit = null;
-    }
-
-
-    public UserInfo(String userCode, String userpin,String usertype, String userstate,
-                    String loginname, String username, String userdesc,
-                    String usertag, String englishname,
-                    Long logintimes, Date activeime, String topUnit) {
-        this.userCode = userCode;
-        this.userPin = userpin;
-        this.isValid = userstate;
-        this.userName = username;
-        this.userType = usertype;
-        this.userDesc = userdesc;
-        this.loginTimes = logintimes;
-        this.activeTime = activeime;
-        this.topUnit = topUnit;
-        this.loginName = loginname;
-        this.userTag = usertag;
-        this.englishName = englishname;
-        // userUnits=null;
-        primaryUnit = null;
-    }
-
     // Property accessors
+    @Override
     public String getUserCode() {
         return this.userCode;
     }
@@ -282,6 +228,7 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
         this.userCode = userCode;
     }
 
+    @Override
     @JSONField(serialize = false)
     public String getUserPin() {
         return this.userPin;
@@ -290,7 +237,7 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
     public void setUserPin(String userpin) {
         this.userPin = userpin;
     }
-
+    @Override
     public String getEnglishName() {
         return englishName;
     }
@@ -322,6 +269,7 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
      *
      * @return  IsValid
      */
+    @Override
     public String getIsValid() {
         return this.isValid;
     }
@@ -332,11 +280,11 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
     public void setIsValid(String userstate) {
         this.isValid = userstate;
     }
-
+    @Override
     public String getUserName() {
         return this.userName;
     }
-
+    @Override
     public String getUserType() {
         return userType;
     }
@@ -348,7 +296,7 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
     public void setUserName(String username) {
         this.userName = username;
     }
-
+    @Override
     public String getUserDesc() {
         return this.userDesc;
     }
@@ -364,7 +312,7 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
     public void setLoginTimes(Long logintimes) {
         this.loginTimes = logintimes;
     }
-
+    @Override
     public String getTopUnit() {
         return this.topUnit;
     }
@@ -372,7 +320,7 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
     public void setTopUnit(String topUnit) {
         this.topUnit = topUnit;
     }
-
+    @Override
     public String getLoginName() {
         if (loginName == null)
             return "";
@@ -441,7 +389,7 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
         this.creator = creator;
     }
 
-        public String getUpdator() {
+    public String getUpdator() {
         return this.updator;
     }
 
@@ -485,6 +433,7 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
             this.regCellPhone = other.getRegCellPhone();
     }
 
+    @Override
     public Long getUserOrder() {
         if (userOrder == null)
             return 1000l;
