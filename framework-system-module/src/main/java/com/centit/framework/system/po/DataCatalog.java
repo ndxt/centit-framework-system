@@ -93,6 +93,22 @@ public class DataCatalog implements IDataCatalog, java.io.Serializable{
     private String needCache;
 
     /**
+     * 顶级机构，用于帐套、租户管理
+     */
+    @Column(name = "TOP_UNIT")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    private String topUnit; // 顶级机构，用于帐套
+
+    /**
+     * 归属系统，一般为一个业务菜单的ID
+     * 内置变量 system 系统数据字典 public 公用数据字典
+     */
+    @Column(name = "OS_ID")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    @DictionaryMap(fieldName="osId", value="osId")
+    private String osId;
+
+    /**
      * 归属系统，一般为一个业务菜单的ID
      * 内置变量 system 系统数据字典 public 公用数据字典
      */
@@ -200,6 +216,24 @@ public class DataCatalog implements IDataCatalog, java.io.Serializable{
 
     public String getFieldDesc() {
         return this.fieldDesc;
+    }
+
+    @Override
+    public String getTopUnit() {
+        return topUnit;
+    }
+
+    public void setTopUnit(String topUnit) {
+        this.topUnit = topUnit;
+    }
+
+    @Override
+    public String getOsId() {
+        return osId;
+    }
+
+    public void setOsId(String osId) {
+        this.osId = osId;
     }
 
     public void setFieldDesc(String fielddesc) {

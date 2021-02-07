@@ -71,12 +71,14 @@ create table F_DATACATALOG
    Field_Desc           varchar(1024) ,
    update_Date          date,
    Create_Date          date,
-   opt_ID               varchar(32) ,
+   TOP_UNIT             varchar(32),
+   OS_ID               varchar(32),
+   opt_ID               varchar(32),
    need_Cache           char(1) default '1',
    creator              varchar(32),
    updator              varchar(32)
 );
-comment on  table  F_DATACATALOG is '类别状态   U:用户 S：系统，G国标类别形式  T：树状表格 L:列表';
+comment on table  F_DATACATALOG is '类别状态   U:用户 S：系统，G国标类别形式  T：树状表格 L:列表';
 comment on column F_DATACATALOG.CATALOG_STYLE is  'F : 框架固有的 U:用户 S：系统  G国标';
 comment on column F_DATACATALOG.CATALOG_TYPE is 'T：树状表格 L:列表';
 comment on column F_DATACATALOG.Field_Desc is  '字段描述，不同字段用分号隔开';
@@ -281,6 +283,8 @@ create table F_UNITINFO
    --extJsonInfo          varchar(1000),
    creator              varchar(32),
    updator              varchar(32),
+   TOP_UNIT             varchar(32),
+   SOCIAL_CREDIT_CODE   varchar(32),
    UNIT_PATH            varchar(1000),
    UNIT_MANAGER         varchar(32)
 );
@@ -362,6 +366,7 @@ create table F_USERUNIT
    USER_ORDER           numeric(8,0) default 0,
    update_Date          date,
    Create_Date          date,
+   TOP_UNIT             varchar(32),
    creator              varchar(32),
    updator              varchar(32)
 );

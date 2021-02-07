@@ -62,7 +62,9 @@ create table F_DATACATALOG
    Field_Desc           varchar2(1024) ,
    update_Date          date,
    Create_Date          date,
-   opt_ID               varchar2(32) ,
+   TOP_UNIT             varchar(32),
+   OS_ID               varchar(32),
+   opt_ID               varchar(32),
    need_Cache           char(1) default '1',
    creator              varchar2(32),
    updator              varchar2(32)
@@ -272,6 +274,8 @@ create table F_UNITINFO
    --extJsonInfo          varchar2(1000),
    creator              varchar2(32),
    updator              varchar2(32),
+   TOP_UNIT             varchar(32),
+   SOCIAL_CREDIT_CODE   varchar(32),
    UNIT_PATH            varchar2(1000),
    UNIT_MANAGER         varchar2(32)
 );
@@ -353,6 +357,7 @@ create table F_USERUNIT
    USER_ORDER           number(8,0) default 0,
    update_Date          date,
    Create_Date          date,
+   TOP_UNIT             varchar(32),
    creator              varchar2(32),
    updator              varchar2(32)
 );

@@ -62,7 +62,9 @@ create table F_DATACATALOG
    Field_Desc           lvarchar(1024) ,
    update_Date          date,
    Create_Date          date,
-   opt_ID               varchar(32) ,
+   TOP_UNIT             varchar(32),
+   OS_ID               varchar(32) ,
+   opt_ID               varchar(32) comment '业务分类，使用数据字典DICTIONARYTYPE中数据',
    need_Cache           char(1) default '1',
    creator              varchar(32),
    updator              varchar(32),
@@ -233,6 +235,8 @@ create table F_UNITINFO
    creator              varchar(32),
    updator              varchar(32),
    UNIT_PATH            lvarchar(1000),
+   TOP_UNIT             varchar(32),
+   SOCIAL_CREDIT_CODE   varchar(32),
    UNIT_MANAGER         varchar(32),
    primary key (UNIT_CODE)
 );
@@ -301,6 +305,7 @@ create table F_USERUNIT
    Create_Date          date,
    creator              varchar(32),
    updator              varchar(32),
+   TOP_UNIT             varchar(32),
    primary key (USER_UNIT_ID)
 );
 create table F_USER_QUERY_FILTER

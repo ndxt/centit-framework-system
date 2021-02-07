@@ -84,6 +84,8 @@ create table F_DATACATALOG
    Field_Desc           varchar(1024) comment '字段描述，不同字段用分号隔开',
    update_Date          datetime,
    Create_Date          datetime,
+   TOP_UNIT             varchar(32),
+   OS_ID               varchar(32) ,
    opt_ID               varchar(32) comment '业务分类，使用数据字典DICTIONARYTYPE中数据',
    need_Cache           char(1) default '1',
    creator              varchar(32),
@@ -317,6 +319,8 @@ create table F_UNITINFO
    Create_Date          datetime,
    creator              varchar(32),
    updator              varchar(32),
+   TOP_UNIT             varchar(32),
+   SOCIAL_CREDIT_CODE   varchar(32),
    UNIT_PATH            varchar(1000),
    UNIT_MANAGER         varchar(32)
 );
@@ -411,6 +415,7 @@ create table F_USERUNIT
    update_Date          datetime,
    Create_Date          datetime,
    creator              varchar(32),
+   TOP_UNIT             varchar(32),
    updator              varchar(32)
 );
 
