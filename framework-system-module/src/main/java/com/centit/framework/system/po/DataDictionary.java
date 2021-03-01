@@ -205,12 +205,13 @@ public class DataDictionary implements IDataDictionary, java.io.Serializable {
         }
         String sRet=null;
         if(jsonData!=null){
-            if(lang==null)
-                sRet =jsonData.getString("zh_CN");
-            else{
+            if(lang==null) {
+                sRet = jsonData.getString("zh_CN");
+            } else {
                 sRet =jsonData.getString(lang);
-                if(sRet==null)
-                    sRet =jsonData.getString("zh_CN");
+                if(sRet==null) {
+                    sRet = jsonData.getString("zh_CN");
+                }
             }
         }
         return sRet;
