@@ -243,20 +243,26 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserInfo> listAllUsers() {
-        return userInfoDao.listObjects();
+    public List<UserInfo> listAllUsers(String topUnit) {
+        Map<String, Object> filterMap = new HashMap<>();
+        filterMap.put("topUnit", topUnit);
+        return userInfoDao.listObjects(filterMap);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<UnitInfo> listAllUnits() {
-        return unitInfoDao.listObjects();
+    public List<UnitInfo> listAllUnits(String topUnit) {
+        Map<String, Object> filterMap = new HashMap<>();
+        filterMap.put("topUnit", topUnit);
+        return unitInfoDao.listObjects(filterMap);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserUnit> listAllUserUnits() {
-        return userUnitDao.listObjectsAll();
+    public List<UserUnit> listAllUserUnits(String topUnit) {
+        Map<String, Object> filterMap = new HashMap<>();
+        filterMap.put("topUnit", topUnit);
+        return userUnitDao.listObjectsAll(filterMap);
     }
 
     private List<UserUnit> fetchUserUnitXzRank(List<UserUnit> userUnits){

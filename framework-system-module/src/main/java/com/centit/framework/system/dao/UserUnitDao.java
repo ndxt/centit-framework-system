@@ -32,6 +32,7 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
         filterField.put("userCode", CodeBook.EQUAL_HQL_ID);
         filterField.put("isPrimary", CodeBook.EQUAL_HQL_ID);
         filterField.put("unitName", CodeBook.LIKE_HQL_ID);
+        filterField.put("topUnit", CodeBook.EQUAL_HQL_ID);
         filterField.put("(like)userName", "userCode in (select us.USER_CODE from f_userinfo us where" +
                 " us.USER_NAME like :userName)");
         filterField.put("isValid", "userCode in (select us.USER_CODE from f_userinfo us where " +
@@ -42,8 +43,8 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
         return filterField;
     }
 
-    public List<UserUnit> listObjectsAll() {
-        return listObjects();
+    public List<UserUnit> listObjectsAll(Map<String, Object> filterMap) {
+        return listObjects(filterMap);
     }
 
     public UserUnit getObjectById(String userUnitId) {
