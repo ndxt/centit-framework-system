@@ -43,20 +43,31 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
     @Transactional
     public String getNextKey() {
         return StringBaseOpt.objectToString(
-          DatabaseOptUtils.getSequenceNextValue(this, "S_UNITCODE"));
+            DatabaseOptUtils.getSequenceNextValue(this, "S_UNITCODE"));
     }
-
     @SuppressWarnings("unchecked")
     @Transactional
     public List<UserInfo> listUnitUsers(String unitCode) {
         String sql = "select a.* " +
-                "from F_USERINFO a join F_USERUNIT b on(a.USERCODE=b.USERCODE) " +
-                "where b.UNITCODE =?";
+                "from F_USERINFO a join F_USERUNIT b on(a.USER_CODE=b.USER_CODE) " +
+                "where b.UNIT_CODE =?";
 
         return getJdbcTemplate().execute(
                 (ConnectionCallback<List<UserInfo>>) conn ->
                         OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
                                 new Object[]{unitCode}, UserInfo.class));
+    }
+
+
+    @Transactional
+    public List<UnitInfo> listUserTopUnits(String userCode){
+        String sql = "select a.* " +
+            "from F_UNITINFO a join F_USERUNIT b on (a.USER_CODE = b.USER_CODE) " +
+            "where b.USER_CODE =? and a.UNIT_CODE = a.UNIT_PATH";
+        return getJdbcTemplate().execute(
+            (ConnectionCallback<List<UnitInfo>>) conn ->
+                OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
+                    new Object[]{userCode}, UnitInfo.class));
     }
 
     @Transactional
@@ -120,7 +131,8 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
      */
     public boolean isUniqueName(String unitName, String parentCode, String unitCode) {
         String sql = "select count(*) as hasSameNameUnit from F_UNITINFO u " +
-                "where u.UNIT_NAME = :unitName and u.PARENT_UNIT = :parentUnit and u.UNIT_CODE <> :unitCode";
+                "where u.UNIT_NAME = :unitName and" +
+            " u.PARENT_UNIT = :parentUnit and u.UNIT_CODE <> :unitCode";
         Object hasSameNameUnit = DatabaseOptUtils.getScalarObjectQuery(this, sql, CollectionsOpt.createHashMap(
                 "unitName", unitName, "parentUnit", parentCode, "unitCode", unitCode));
 

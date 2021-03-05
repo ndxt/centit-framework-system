@@ -28,6 +28,7 @@ public class OptMethod implements IOptMethod, java.io.Serializable{
     @Id
     @Column(name = "OPT_CODE")
     //@GeneratedValue(generator = "assignedGenerator")
+    @ValueGenerator(strategy = GeneratorType.UUID22)
     @ApiModelProperty(value = "操作代码",name = "optCode")
     private String optCode;// 操作代码
 

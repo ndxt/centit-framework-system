@@ -81,12 +81,6 @@ public class UserRole implements IUserRole, java.io.Serializable {
     @Transient
     private String inheritedFrom;
 
-    @Transient
-    @DictionaryMap(fieldName = "userPrimaryUnitText", value = "unitCode")
-    private String userPrimaryUnit;
-
-    @Transient
-    private String loginName;
     @Override
     public String getObtainType() {
       return obtainType;
@@ -137,40 +131,6 @@ public class UserRole implements IUserRole, java.io.Serializable {
         this.changeDesc = changedesc;
     }
 
-    public String getLoginName() {
-        String userCode = getUserCode();
-
-        if (null != userCode) {
-          IUserInfo user = CodeRepositoryUtil.getUserInfoByCode(userCode);
-
-          if (null != user) {
-            return user.getLoginName();
-          }
-        }
-
-        return null;
-    }
-    public void setLoginName(String loginName){
-        this.loginName=loginName;
-    }
-
-    public String getUserPrimaryUnit() {
-        String userCode = getUserCode();
-
-        if (null != userCode) {
-          IUserUnit unit = CodeRepositoryUtil.getUserPrimaryUnit(userCode);
-
-          if (null != unit) {
-            return unit.getUnitCode();
-          }
-        }
-
-        return null;
-    }
-
-    public void setUserPrimaryUnit(String userPrimaryUnit) {
-        this.userPrimaryUnit = userPrimaryUnit;
-    }
 // Property accessors
 
     public UserRoleId getId() {

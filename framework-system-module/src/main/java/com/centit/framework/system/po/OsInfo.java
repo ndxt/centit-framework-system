@@ -32,6 +32,10 @@ public class OsInfo implements IOsInfo, java.io.Serializable {
     @ApiModelProperty(value = "系统名",name = "osName")
     private String osName;
 
+    @Column(name = "OS_TYPE")
+    @Length(max = 16, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "系统名",name = "osName")
+    private String osType;
     /**
      * 业务系统后台url
      */
@@ -40,6 +44,10 @@ public class OsInfo implements IOsInfo, java.io.Serializable {
     @ApiModelProperty(value = "系统地址",name = "osUrl")
     private String osUrl;
 
+    @Column(name = "TOP_UNIT")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "系统地址",name = "osUrl")
+    private String topUnit;
     /**
      * 业务系统首页
      */
@@ -87,6 +95,7 @@ public class OsInfo implements IOsInfo, java.io.Serializable {
 
     public OsInfo(String osId, String osName) {
         this.osId = osId;
+        this.osType = "I";
         this.osName = osName;
     }
 
@@ -134,6 +143,20 @@ public class OsInfo implements IOsInfo, java.io.Serializable {
         return oauthPassword;
     }
 
+    public void setTopUnit(String topUnit) {
+        this.topUnit = topUnit;
+    }
+
+    /**
+     * 多租户应用下的租户
+     *
+     * @return 租户
+     */
+    @Override
+    public String getTopUnit() {
+        return this.topUnit;
+    }
+
     public void setOauthPassword(String oauthPassword) {
         this.oauthPassword = oauthPassword;
     }
@@ -160,6 +183,15 @@ public class OsInfo implements IOsInfo, java.io.Serializable {
 
     public void setLastModifyDate(Date lastModifyDate) {
         this.lastModifyDate = lastModifyDate;
+    }
+
+    @Override
+    public String getOsType() {
+        return osType;
+    }
+
+    public void setOsType(String osType) {
+        this.osType = osType;
     }
 
     public Date getCreateTime() {

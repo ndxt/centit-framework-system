@@ -3,8 +3,12 @@ package com.centit.framework.system.dao;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
+import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.support.algorithm.CollectionsOpt;
+import com.centit.support.algorithm.UuidOpt;
+import com.centit.support.database.orm.OrmDaoUtils;
+import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +19,9 @@ import java.util.Map;
 @Repository("optMethodDao")
 public class OptMethodDao extends BaseDaoImpl<OptMethod, String>{
 
+    public String getNextOptCode() {
+        return UuidOpt.getUuidAsString22();
+    }
     /**
      * 查询全部操作
      *
@@ -62,8 +69,16 @@ public class OptMethodDao extends BaseDaoImpl<OptMethod, String>{
     }
 
     @Transactional
-    public String getNextOptCode() {
-        return String.valueOf(DatabaseOptUtils.getSequenceNextValue(this, "S_OPTDEFCODE"));
+    public List<OptMethod> listAllOptMethodByUnit(String topUnit){
+        String sql = "select a.* " +
+            "from F_OPTDEF o join F_OPTINFO a on ( o.OPT_ID = a.OPT_ID" +
+            " join F_OS_INFO b on(a.TOP_OPT_ID=b.REL_OPT_ID) " +
+            "where b.TOP_UNIT = ?";
+
+        return getJdbcTemplate().execute(
+            (ConnectionCallback<List<OptMethod>>) conn ->
+                OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
+                    new Object[]{topUnit}, OptMethod.class));
     }
 
     public void updateOptMethod(OptMethod optMethod){

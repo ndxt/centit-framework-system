@@ -78,13 +78,15 @@ public class UserUnitController extends BaseController {
         paramType = "path", dataType = "String")
     @RequestMapping(method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData list(String state) {
+    public ResponseData list(String state, HttpServletRequest request) {
         List<Map<String, Object>> listObjects = new ArrayList<>();
         if (StringUtils.isBlank(state)) {
             state = "A";
         }
-        List<IUserInfo> users = CodeRepositoryUtil.getAllUsers(state);
-        List<IUnitInfo> units = CodeRepositoryUtil.getAllUnits(state);
+        String topUnit = WebOptUtils.getCurrentTopUnit(request);
+        // TODO 朱方纲 这个地方最好不要从缓存中获取，应该直接从数据库中获取
+        List<IUserInfo> users = CodeRepositoryUtil.getAllUsers(topUnit, state);
+        List<IUnitInfo> units = CodeRepositoryUtil.getAllUnits(topUnit, state);
 
         for (IUnitInfo unit : units) {
             Map<String, Object> object = new HashMap<>();

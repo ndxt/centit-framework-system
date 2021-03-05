@@ -31,6 +31,7 @@ public class UserUnit implements IUserUnit, java.io.Serializable {
     @Id
     @Column(name = "USER_UNIT_ID")
     //@GeneratedValue(generator = "assignedGenerator")
+    @ValueGenerator(strategy = GeneratorType.UUID22)
     @Length(max = 64)
     @ApiModelProperty(value = "用户机构ID",name = "userUnitId")
     private String userUnitId;

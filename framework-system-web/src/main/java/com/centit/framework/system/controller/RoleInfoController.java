@@ -704,7 +704,9 @@ public class RoleInfoController extends BaseController {
 
         if ("D".equals(type) && StringUtils.isBlank(owner)) {
 
-            IUserUnit unit = CodeRepositoryUtil.getUserPrimaryUnit(WebOptUtils.getCurrentUserCode(request));
+            IUserUnit unit = CodeRepositoryUtil.getUserPrimaryUnit(
+                WebOptUtils.getCurrentTopUnit(request),
+                WebOptUtils.getCurrentUserCode(request));
             if (unit != null) {
                 owner =  unit.getUnitCode();
             }

@@ -13,6 +13,7 @@ import com.centit.framework.system.po.*;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.StringRegularOpt;
+import com.centit.support.algorithm.UuidOpt;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -180,7 +181,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         }
     }
 
-    @Override
+    /*@Override
     @Transactional(readOnly = true)
     public List<OptInfo> listUserMenuOptInfos(String userCode, boolean asAdmin) {
 
@@ -189,11 +190,11 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         List<OptInfo> ls = optInfoDao.getMenuFuncByUserID(userCode, optType);
         List<OptInfo> menuFunsByUser = getMenuFuncs(preOpts,  ls);
         return formatMenuTree(menuFunsByUser);
-    }
+    }*/
 
     @Override
     @Transactional(readOnly = true)
-    public List<OptInfo> listUserMenuOptInfosUnderSuperOptId(String userCode, String superOptId,boolean asAdmin) {
+    public List<OptInfo> listUserMenuOptInfosUnderSuperOptId(String userCode, String superOptId, boolean asAdmin) {
         List<OptInfo> preOpts=optInfoDao.listParentMenuFunc();
         String optType = asAdmin ? "S" : "O";
         List<OptInfo> ls=optInfoDao.getMenuFuncByUserID(userCode, optType);
@@ -203,14 +204,14 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional(readOnly = true)
-    public List<FVUserRoles> listUserRoles(String userCode) {
-        return userRoleDao.listUserRolesByUserCode(userCode);
+    public List<FVUserRoles> listUserRoles(String topUnit, String userCode) {
+        return userRoleDao.listUserRolesByTopUnit(topUnit, userCode);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<FVUserRoles> listRoleUsers(String roleCode) {
-        return userRoleDao.listRoleUsersByRoleCode(roleCode);
+    public List<FVUserRoles> listRoleUsers(String topUnit, String roleCode) {
+        return userRoleDao.listRoleUsersByTopUnit(topUnit, roleCode);
     }
 
     @Override
@@ -265,6 +266,17 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         return userUnitDao.listObjectsAll(filterMap);
     }
 
+    /**
+     * 根据用户代码获得 用户的所有租户，顶级机构
+     *
+     * @param userCode userCode
+     * @return List 用户所有的机构信息
+     */
+    @Override
+    public List<? extends IUnitInfo> listUserTopUnits(String userCode) {
+        return unitInfoDao.listUserTopUnits(userCode);
+    }
+
     private List<UserUnit> fetchUserUnitXzRank(List<UserUnit> userUnits){
         if(userUnits!=null){
             for (UserUnit uu : userUnits) {
@@ -285,8 +297,8 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserUnit> listUserUnits(String userCode) {
-        return fetchUserUnitXzRank(userUnitDao.listUserUnitsByUserCode(userCode));
+    public List<UserUnit> listUserUnits(String topUnit, String userCode) {
+        return fetchUserUnitXzRank(userUnitDao.listUserUnitsByUserCode(topUnit, userCode));
     }
 
     @Override
@@ -297,39 +309,39 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional(readOnly = true)
-    public List<? extends IRoleInfo> listAllRoleInfo() {
-        return roleInfoDao.listObjectsAll();
+    public List<? extends IRoleInfo> listAllRoleInfo(String topUnit) {
+        return roleInfoDao.listAllRoleByUnit(topUnit);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<? extends IRolePower> listAllRolePower() {
-        return rolePowerDao.listObjectsAll();
+    public List<? extends IRolePower> listAllRolePower(String topUnit) {
+        return rolePowerDao.listAllRolePowerByUnit(topUnit);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<? extends IOptInfo> listAllOptInfo() {
-        return optInfoDao.listObjectsAll();
+    public List<? extends IOptInfo> listAllOptInfo(String topUnit) {
+        return optInfoDao.listAllOptInfoByUnit(topUnit);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<? extends IOptMethod> listAllOptMethod() {
-        return optMethodDao.listObjectsAll();
+    public List<? extends IOptMethod> listAllOptMethod(String topUnit) {
+        return optMethodDao.listAllOptMethodByUnit(topUnit);
     }
 
     /**
      * @return 所有的数据范围定义表达式
      */
     @Override
-    public List<? extends IOptDataScope> listAllOptDataScope() {
+    public List<? extends IOptDataScope> listAllOptDataScope(String topUnit) {
         return dataScopeDao.listAllDataScope();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<DataCatalog> listAllDataCatalogs() {
+    public List<DataCatalog> listAllDataCatalogs(String topUnit) {
         return dataCatalogDao.listObjects();
     }
 
@@ -510,7 +522,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
      * @param optInfos 菜单对象集合
      * @param optMethods 操作对象集合
      */
-    @Override
+    //@Override
     @Transactional
     public void insertOrUpdateMenu(List<? extends IOptInfo> optInfos, List<? extends IOptMethod> optMethods) {
         List<OptMethod> dbMethods = new ArrayList<>();
@@ -540,7 +552,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                 if(StringUtils.isEmpty(om.getOptReq())){
                     om.setOptReq("CRUD");
                 }
-                om.setOptCode(optMethodDao.getNextOptCode());
+                om.setOptCode(UuidOpt.getUuidAsString22());
                 optMethodDao.saveNewObject(om);
             }
         }
@@ -562,8 +574,8 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
-    public List<? extends IOsInfo> listOsInfos() {
-        return osInfoDao.listObjects();
+    public List<? extends IOsInfo> listOsInfos(String topUnit) {
+        return osInfoDao.listOsInfoByUnit(topUnit);
     }
 
 }

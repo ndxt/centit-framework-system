@@ -162,4 +162,23 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
                     new Object[]{userCode, optType}, OptInfo.class));
     }
 
+
+    @Transactional
+    public List<OptInfo> listAllOptInfoByTopOpt(String topOptId){
+       return super.listObjectsByFilter("where TOP_OPT_ID = ?",
+           new Object[]{topOptId});
+
+    }
+
+    @Transactional
+    public List<OptInfo> listAllOptInfoByUnit(String topUnit){
+        String sql = "select a.* " +
+            "from F_OPTINFO a join F_OS_INFO b on(a.TOP_OPT_ID=b.REL_OPT_ID) " +
+            "where b.TOP_UNIT = ?";
+
+        return getJdbcTemplate().execute(
+            (ConnectionCallback<List<OptInfo>>) conn ->
+                OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
+                    new Object[]{topUnit}, OptInfo.class));
+    }
 }

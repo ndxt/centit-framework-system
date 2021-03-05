@@ -3,9 +3,11 @@ package com.centit.framework.system.dao;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
+import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserUnit;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;
+import com.centit.support.algorithm.UuidOpt;
 import com.centit.support.database.jsonmaptable.GeneralJsonObjectDao;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.PageDesc;
@@ -82,21 +84,21 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
     }
 
     @Transactional
-    public List<UserUnit> listObjectByUserUnit(String userCode,String unitCode){
-        List<UserUnit> ls = listObjectsByProperties(CollectionsOpt.createHashMap(
-                "userCode", userCode,"unitCode",unitCode));
-        /*
-         * for (FUserunit usun : ls) {
-         * usun.setUnitname(CodeRepositoryUtil.getValue
-         * ("unitCode",usun.getId().getUnitcode() )); }
-         */
-        return ls;
+    public List<UserUnit> listUserUnitsByUserCode(String unitCode, String userCode) {
+        String sql = "select a.* " +
+            "from F_USERUNIT a join F_UNITINFO b on (a.UNIT_CODE = b.USERCODE) " +
+            "where a.USER_CODE =? and b.TOP_UNIT = ?";
+        return getJdbcTemplate().execute(
+            (ConnectionCallback<List<UserUnit>>) conn ->
+                OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
+                    new Object[]{userCode, unitCode}, UserUnit.class));
     }
 
     @Transactional
-    public String getNextKey() {
-        return "s" + StringBaseOpt.fillZeroForString(
-                String.valueOf(DatabaseOptUtils.getSequenceNextValue(this, "S_USER_UNIT_ID")),9);
+    public List<UserUnit> listObjectByUserUnit(String userCode, String unitCode){
+        List<UserUnit> ls = listObjectsByProperties(CollectionsOpt.createHashMap(
+                "userCode", userCode,"unitCode",unitCode));
+        return ls;
     }
 
     @Transactional
@@ -160,6 +162,9 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
         return ls;
     }
 
+    public String getNextKey() {
+        return UuidOpt.getUuidAsString22();
+    }
 
 
     public List<UserUnit> querySubUserUnits(Map<String, Object> filterDescMap, PageDesc pageDesc) {

@@ -80,6 +80,25 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
     private static final String f_v_userroles_sql =
         f_v_user_appoint_roles_sql + " union all " + f_v_user_inherited_roles_sql;
 
+
+    private static final String f_v_topunit_user_role =
+        "select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'D' as OBTAIN_TYPE, b.ROLE_TYPE, " +
+            " b.UNIT_CODE, b.ROLE_DESC, a.USER_CODE, null as INHERITED_FROM,c.user_name,d.unit_name " +
+            "from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE) " +
+            "where a.USER_CODE = :userCode and a.OBTAIN_DATE <= :currentDateTime and " +
+             " (a.SECEDE_DATE is null  or a.SECEDE_DATE > :currentDateTime) " +
+                "and b.IS_VALID='T' " +
+            " and ( ROLE_TYPE = 'G' or (ROLE_TYPE='D' and UNIT_CODE = :unitCode )";
+
+    private static final String f_v_topunit_role_user =
+        "select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'D' as OBTAIN_TYPE, b.ROLE_TYPE, " +
+            " b.UNIT_CODE, b.ROLE_DESC, a.USER_CODE, null as INHERITED_FROM,c.user_name,d.unit_name " +
+            "from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE) " +
+            "where a.ROLE_CODE = :roleCode and a.OBTAIN_DATE <= :currentDateTime and " +
+            " (a.SECEDE_DATE is null  or a.SECEDE_DATE > :currentDateTime) " +
+            "and b.IS_VALID='T' " +
+            " and ROLE_TYPE='D' and UNIT_CODE = :unitCode";
+
     @Transactional
     public List<UserRole> listUserRoles(String userCode) {
         return super.listObjects(CollectionsOpt.createHashMap("userCode",userCode));
@@ -143,6 +162,26 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
         return jdbcTemplate.execute(
             (ConnectionCallback<List<FVUserRoles>>) conn -> OrmDaoUtils
                 .queryObjectsByNamedParamsSql(conn, qap.getQuery(), qap.getParams(), FVUserRoles.class));
+    }
+
+    @Transactional
+    public List<FVUserRoles> listUserRolesByTopUnit(String topUnit, String userCode) {
+        Map<String,Object> map = CollectionsOpt.createHashMap("userCode",userCode,
+            "currentDateTime", DatetimeOpt.currentSqlDate(),
+            "unitCode", topUnit);
+        return jdbcTemplate.execute(
+            (ConnectionCallback<List<FVUserRoles>>) conn -> OrmDaoUtils
+                .queryObjectsByNamedParamsSql(conn, f_v_topunit_user_role, map, FVUserRoles.class));
+    }
+
+    @Transactional
+    public List<FVUserRoles> listRoleUsersByTopUnit(String topUnit, String roleCode) {
+        Map<String,Object> map = CollectionsOpt.createHashMap("roleCode", roleCode,
+            "currentDateTime", DatetimeOpt.currentSqlDate(),
+            "unitCode", topUnit);
+        return jdbcTemplate.execute(
+            (ConnectionCallback<List<FVUserRoles>>) conn -> OrmDaoUtils
+                .queryObjectsByNamedParamsSql(conn, f_v_topunit_role_user, map, FVUserRoles.class));
     }
 
     @Transactional

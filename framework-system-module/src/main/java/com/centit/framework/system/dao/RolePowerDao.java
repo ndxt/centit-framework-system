@@ -2,9 +2,12 @@ package com.centit.framework.system.dao;
 
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
+import com.centit.framework.system.po.OsInfo;
 import com.centit.framework.system.po.RolePower;
 import com.centit.framework.system.po.RolePowerId;
 import com.centit.support.algorithm.CollectionsOpt;
+import com.centit.support.database.orm.OrmDaoUtils;
+import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,5 +75,18 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
     @Transactional
     public void deleteObjectById(RolePowerId id){
         super.deleteObjectById(id);
+    }
+
+
+    @Transactional
+    public List<RolePower> listAllRolePowerByUnit(String topUnit){
+        String sql = "select distinct a.* " +
+            "from F_ROLEPOWER a join F_ROLEINFO b on(a.ROLE_CODE=b.ROLE_CODE) " +
+            "where (ROLE_TYPE = 'G' or (ROLE_TYPE='D' and UNIT_CODE = ?)";
+
+        return getJdbcTemplate().execute(
+            (ConnectionCallback<List<RolePower>>) conn ->
+                OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
+                    new Object[]{topUnit}, RolePower.class));
     }
 }

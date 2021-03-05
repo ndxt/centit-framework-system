@@ -59,21 +59,6 @@ public class SysUnitManagerImpl implements SysUnitManager {
         return parentUnit;
     }
 
-    /**
-     * 查找对象，如果没有新建一个空对象，并附一个默认的编码
-     * @param  object UnitInfo
-     * @return UnitInfo
-     */
-    public UnitInfo getObject(UnitInfo object) {
-        UnitInfo newObj = unitInfoDao.getObjectById(object.getUnitCode());
-        if (newObj == null) {
-            newObj = object;
-            newObj.setUnitCode(unitInfoDao.getNextKey());
-            newObj.setIsValid("T");
-        }
-        return newObj;
-    }
-
     @Override
     @Transactional
     public List<UserInfo> getUnitUsers(String unitCode) {

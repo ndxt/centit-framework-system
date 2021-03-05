@@ -48,10 +48,10 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
     @Override
     public JSONArray listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
         List<UserRole> userRolesList= userRoleDao.listObjects(filterMap, pageDesc);
-        for(UserRole userRole:userRolesList){
+        /*for(UserRole userRole:userRolesList){
             userRole.setUserPrimaryUnit(userRole.getUserPrimaryUnit());
             userRole.setLoginName(userRole.getLoginName());
-        }
+        }*/
         JSONArray userRoles = JSONOpt.arrayToJSONArray(userRolesList);
         return DictionaryMapUtils.mapJsonArray(userRoles, UserRole.class);
     }

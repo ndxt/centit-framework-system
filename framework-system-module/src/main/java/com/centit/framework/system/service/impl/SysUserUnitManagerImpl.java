@@ -10,6 +10,7 @@ import com.centit.framework.system.service.SysUserUnitManager;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.algorithm.StringRegularOpt;
+import com.centit.support.algorithm.UuidOpt;
 import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -129,7 +130,7 @@ public class SysUserUnitManagerImpl
         }
 
         if(StringBaseOpt.isNvl(userunit.getUserUnitId())){
-            userunit.setUserUnitId(userUnitDao.getNextKey());
+            userunit.setUserUnitId(UuidOpt.getUuidAsString22());
         }
 
         if ("T".equals(userunit.getIsPrimary())) {

@@ -104,4 +104,11 @@ public class RoleInfoDao extends BaseDaoImpl<RoleInfo, String>{
         super.updateObject(roleInfo);
     }
 
+    @Transactional
+    public List<RoleInfo> listAllRoleByUnit(String topUnit){
+        return super.listObjectsByFilter(
+            " where ROLE_TYPE = 'G' or (ROLE_TYPE='D' and UNIT_CODE = ?",
+            new Object[]{topUnit});
+    }
+
 }

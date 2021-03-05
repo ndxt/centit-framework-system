@@ -30,7 +30,7 @@ public class OptInfo implements IOptInfo, java.io.Serializable{
 
     @Id
     @Column(name = "OPT_ID")
-    @ValueGenerator(strategy = GeneratorType.UUID)
+    @ValueGenerator(strategy = GeneratorType.UUID22)
     @ApiModelProperty(value = "业务菜单编号",name = "optId",required = true)
     private String optId; // 业务编号
 
