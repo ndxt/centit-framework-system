@@ -21,13 +21,17 @@ public class DataCatalogDao extends BaseDaoImpl<DataCatalog, String>{
         filterField.put("catalogStyle", CodeBook.EQUAL_HQL_ID);
         filterField.put("catalogType", CodeBook.EQUAL_HQL_ID);
         filterField.put("optId", CodeBook.EQUAL_HQL_ID);
+        filterField.put("topUnit", CodeBook.EQUAL_HQL_ID);
+
         return filterField;
     }
 
+    @Transactional
     public DataCatalog getObjectById(String catalogCode) {
         return super.getObjectById(catalogCode);
     }
 
+    @Transactional
     public void deleteObjectById(String catalogCode) {
         super.deleteObjectById(catalogCode);
     }
@@ -47,8 +51,13 @@ public class DataCatalogDao extends BaseDaoImpl<DataCatalog, String>{
         return listObjectsByProperty("catalogStyle","S");
     }
 
+    @Transactional
     public void updateCatalog(DataCatalog dataCatalog){
         super.updateObject(dataCatalog);
     }
 
+    @Transactional
+    public List<DataCatalog> listDataCatalogByUnit(String topUnit){
+        return super.listObjectsByProperty("topUnit", topUnit);
+    }
 }

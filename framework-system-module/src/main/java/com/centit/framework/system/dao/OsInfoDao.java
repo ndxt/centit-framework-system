@@ -1,10 +1,8 @@
 package com.centit.framework.system.dao;
 
 import com.centit.framework.core.dao.CodeBook;
-
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.system.po.OsInfo;
-import com.centit.framework.system.po.RoleInfo;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

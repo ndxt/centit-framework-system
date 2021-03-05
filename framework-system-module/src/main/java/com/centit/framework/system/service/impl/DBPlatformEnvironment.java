@@ -336,13 +336,13 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
      */
     @Override
     public List<? extends IOptDataScope> listAllOptDataScope(String topUnit) {
-        return dataScopeDao.listAllDataScope();
+        return dataScopeDao.listAllDataScopeByUnit(topUnit);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<DataCatalog> listAllDataCatalogs(String topUnit) {
-        return dataCatalogDao.listObjects();
+        return dataCatalogDao.listDataCatalogByUnit(topUnit);
     }
 
     @Override

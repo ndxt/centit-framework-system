@@ -2,8 +2,6 @@ package com.centit.framework.system.dao;
 
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.jdbc.dao.DatabaseOptUtils;
-import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.UuidOpt;
@@ -70,7 +68,7 @@ public class OptMethodDao extends BaseDaoImpl<OptMethod, String>{
 
     @Transactional
     public List<OptMethod> listAllOptMethodByUnit(String topUnit){
-        String sql = "select a.* " +
+        String sql = "select o.* " +
             "from F_OPTDEF o join F_OPTINFO a on ( o.OPT_ID = a.OPT_ID" +
             " join F_OS_INFO b on(a.TOP_OPT_ID=b.REL_OPT_ID) " +
             "where b.TOP_UNIT = ?";
