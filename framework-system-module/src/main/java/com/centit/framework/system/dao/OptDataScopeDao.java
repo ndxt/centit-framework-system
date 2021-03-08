@@ -64,15 +64,15 @@ public class OptDataScopeDao extends BaseDaoImpl<OptDataScope, String> {
     }
 
     @Transactional
-    public List<OptDataScope> listAllDataScopeByUnit(String topUnit){
+    public List<OptDataScope> listAllDataScopeByUnit(String topUnit) {
         String sql = "select o.* " +
-            "from F_OPTDATASCOPE o join F_OPTINFO a on ( o.OPT_ID = a.OPT_ID" +
+            "from F_OPTDATASCOPE o join F_OPTINFO a on ( o.OPT_ID = a.OPT_ID )" +
             " join F_OS_INFO b on(a.TOP_OPT_ID=b.REL_OPT_ID) " +
             "where b.TOP_UNIT = ?";
 
         return getJdbcTemplate().execute(
             (ConnectionCallback<List<OptDataScope>>) conn ->
-                OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
+                OrmDaoUtils.queryObjectsByParamsSql(conn, sql,
                     new Object[]{topUnit}, OptDataScope.class));
     }
 

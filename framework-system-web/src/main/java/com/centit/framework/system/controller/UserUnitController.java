@@ -92,9 +92,6 @@ public class UserUnitController extends BaseController {
         }
         String topUnit = WebOptUtils.getCurrentTopUnit(request);
         // 不从缓存中获取，直接从数据库中获取
-        //List<IUserInfo> users = CodeRepositoryUtil.getAllUsers(topUnit, state);
-        //List<IUnitInfo> units = CodeRepositoryUtil.getAllUnits(topUnit, state);
-
         Map<String, Object> filterMap = new HashMap<>();
         filterMap.put("topUnit", topUnit);
         if (StringUtils.isNotBlank(state) && !"A".equals(state)) {

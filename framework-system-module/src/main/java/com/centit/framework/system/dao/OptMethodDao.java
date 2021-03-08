@@ -67,15 +67,15 @@ public class OptMethodDao extends BaseDaoImpl<OptMethod, String>{
     }
 
     @Transactional
-    public List<OptMethod> listAllOptMethodByUnit(String topUnit){
+    public List<OptMethod> listAllOptMethodByUnit(String topUnit) {
         String sql = "select o.* " +
-            "from F_OPTDEF o join F_OPTINFO a on ( o.OPT_ID = a.OPT_ID" +
+            "from F_OPTDEF o join F_OPTINFO a on ( o.OPT_ID = a.OPT_ID )" +
             " join F_OS_INFO b on(a.TOP_OPT_ID=b.REL_OPT_ID) " +
             "where b.TOP_UNIT = ?";
 
         return getJdbcTemplate().execute(
             (ConnectionCallback<List<OptMethod>>) conn ->
-                OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
+                OrmDaoUtils.queryObjectsByParamsSql(conn, sql,
                     new Object[]{topUnit}, OptMethod.class));
     }
 

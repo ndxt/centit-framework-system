@@ -38,8 +38,6 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
                 "us.IS_VALID = :isValid)");
         filterField.put("userCode_isValid", "userCode in (select us.USER_CODE" +
             " from f_userinfo us where us.IS_VALID = :userCode_isValid)");
-        filterField.put("(STARTWITH)unitPath","UNIT_CODE IN (select UNIT_CODE from f_unitinfo where " +
-            " UNIT_PATH like :unitPath)");
         filterField.put(CodeBook.ORDER_BY_HQL_ID, "userOrder asc");
         return filterField;
     }

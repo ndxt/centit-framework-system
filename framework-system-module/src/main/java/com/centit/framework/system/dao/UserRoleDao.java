@@ -63,7 +63,6 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
             "and b.IS_VALID='T' " +
             "[:userCode | and a.USER_CODE = :userCode]" +
             "[:(startwith)roleName | and b.ROLE_NAME like :roleName]" +
-            //"[:(startwith)unitPath | and d.unitPath like :unitPath]" +
             "[:roleCode | and a.ROLE_CODE = :roleCode]";
 
     private static final String f_v_user_inherited_roles_sql =
@@ -78,7 +77,6 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
             "and b.IS_VALID='T' " +
             "[:userCode | and c.USER_CODE = :userCode]" +
             "[:(startwith)roleName | and b.ROLE_NAME like :roleName]" +
-            //"[:(startwith)unitPath | and e.unitPath like :unitPath]" +
             "[:roleCode | and a.ROLE_CODE = :roleCode]";
     private static final String f_v_userroles_sql =
         f_v_user_appoint_roles_sql + " union all " + f_v_user_inherited_roles_sql;
