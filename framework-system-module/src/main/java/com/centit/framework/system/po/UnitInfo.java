@@ -177,9 +177,15 @@ public class UnitInfo implements IUnitInfo, java.io.Serializable{
      * default constructor
      */
     public UnitInfo() {
-        unitUsers = null;
+        this.unitUsers = null;
     }
 
+    public UnitInfo(String unitcode, String unitstate, String unitname) {
+        this.unitCode = unitcode;
+        this.isValid = unitstate;
+        this.unitName = unitname;
+        this.unitUsers = null;
+    }
 
     public String getEnglishName() {
         return englishName;

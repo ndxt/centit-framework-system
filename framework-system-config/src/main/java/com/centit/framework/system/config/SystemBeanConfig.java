@@ -4,6 +4,7 @@ import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.security.model.CentitUserDetailsService;
 import com.centit.framework.system.security.DaoUserDetailsService;
 import com.centit.framework.system.service.impl.DBPlatformEnvironment;
+import com.centit.support.algorithm.BooleanBaseOpt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.context.EnvironmentAware;
@@ -42,7 +43,10 @@ public class SystemBeanConfig implements EnvironmentAware {
 
     @Bean
     public PlatformEnvironment platformEnvironment(){
+        boolean supportTenant = BooleanBaseOpt.castObjectToBoolean(
+            env.getProperty("app.support.tenant"), false);
         DBPlatformEnvironment platformEnvironment = new DBPlatformEnvironment();
+        platformEnvironment.setSupportTenant(supportTenant);
         return platformEnvironment;
     }
 
