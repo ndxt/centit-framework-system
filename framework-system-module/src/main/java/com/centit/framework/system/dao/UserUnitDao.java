@@ -38,6 +38,8 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
                 "us.IS_VALID = :isValid)");
         filterField.put("userCode_isValid", "userCode in (select us.USER_CODE" +
             " from f_userinfo us where us.IS_VALID = :userCode_isValid)");
+        filterField.put("(STARTWITH)unitPath","UNIT_CODE IN (select UNIT_CODE from f_unitinfo where " +
+            " UNIT_PATH like :unitPath)");
         filterField.put(CodeBook.ORDER_BY_HQL_ID, "userOrder asc");
         return filterField;
     }
@@ -83,7 +85,7 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
     @Transactional
     public List<UserUnit> listUserUnitsByUserCode(String unitCode, String userCode) {
         String sql = "select a.* " +
-            "from F_USERUNIT a join F_UNITINFO b on (a.UNIT_CODE = b.USERCODE) " +
+            "from F_USERUNIT a join F_UNITINFO b on (a.UNIT_CODE = b.UNIT_CODE) " +
             "where a.USER_CODE =? and b.TOP_UNIT = ?";
         return getJdbcTemplate().execute(
             (ConnectionCallback<List<UserUnit>>) conn ->

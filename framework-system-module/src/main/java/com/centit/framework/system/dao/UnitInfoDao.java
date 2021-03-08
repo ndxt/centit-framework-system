@@ -1,5 +1,6 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.common.GlobalConstValue;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
@@ -37,6 +38,8 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
         filterField.put(CodeBook.ORDER_BY_HQL_ID, " UNIT_ORDER, UNIT_CODE ");
         filterField.put("(STARTWITH)unitPath", CodeBook.LIKE_HQL_ID);
         filterField.put("topUnit", CodeBook.EQUAL_HQL_ID);
+        filterField.put("userCode", "TOP_UNIT in (select top_unit from f_userinfo " +
+            "where user_code = :userCode)");
         return filterField;
     }
 
@@ -45,6 +48,7 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
         return StringBaseOpt.objectToString(
             DatabaseOptUtils.getSequenceNextValue(this, "S_UNITCODE"));
     }
+
     @SuppressWarnings("unchecked")
     @Transactional
     public List<UserInfo> listUnitUsers(String unitCode) {
@@ -160,5 +164,31 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
     public void updateUnit(UnitInfo unitInfo){
         super.updateObject(unitInfo);
     }
+
+    /**
+     * 获取当前租户的所有机构
+     * 如果 topUnit = 'all' 返回所有机构;
+     * 通过 unitpath来过滤
+     *
+     * @param topUnit
+     * @return
+     */
+    public List<UnitInfo> listAllUnits(String topUnit) {
+        if (GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)) {
+            return listObjects();
+        } else {
+            return listObjects(CollectionsOpt.createHashMap("unitPath", topUnit + "/%"));
+        }
+    }
+
+    /**
+     * 根据用户代码获得 用户的所有租户
+     *
+     * @param userCode
+     * @return
+     *//*
+    public List<UnitInfo> listUserTopUnits(String userCode) {
+        return listObjects(CollectionsOpt.createHashMap("userCode", userCode));
+    }*/
 
 }

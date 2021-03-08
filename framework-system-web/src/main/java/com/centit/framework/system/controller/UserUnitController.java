@@ -10,7 +10,10 @@ import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.model.basedata.IUnitInfo;
 import com.centit.framework.model.basedata.IUserInfo;
 import com.centit.framework.operationlog.RecordOperationLog;
+import com.centit.framework.system.po.UnitInfo;
+import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserUnit;
+import com.centit.framework.system.service.SysUnitManager;
 import com.centit.framework.system.service.SysUserManager;
 import com.centit.framework.system.service.SysUserUnitManager;
 import com.centit.support.algorithm.BooleanBaseOpt;
@@ -57,6 +60,10 @@ public class UserUnitController extends BaseController {
     @NotNull
     private SysUserManager sysUserManager;
 
+    @Autowired
+    @NotNull
+    private SysUnitManager sysUnitManager;
+
     /*
      * 系统日志中记录
      *
@@ -84,11 +91,19 @@ public class UserUnitController extends BaseController {
             state = "A";
         }
         String topUnit = WebOptUtils.getCurrentTopUnit(request);
-        // TODO 朱方纲 这个地方最好不要从缓存中获取，应该直接从数据库中获取
-        List<IUserInfo> users = CodeRepositoryUtil.getAllUsers(topUnit, state);
-        List<IUnitInfo> units = CodeRepositoryUtil.getAllUnits(topUnit, state);
+        // 不从缓存中获取，直接从数据库中获取
+        //List<IUserInfo> users = CodeRepositoryUtil.getAllUsers(topUnit, state);
+        //List<IUnitInfo> units = CodeRepositoryUtil.getAllUnits(topUnit, state);
 
-        for (IUnitInfo unit : units) {
+        Map<String, Object> filterMap = new HashMap<>();
+        filterMap.put("topUnit", topUnit);
+        if (StringUtils.isNotBlank(state) && !"A".equals(state)) {
+            filterMap.put("isValid", state);
+        }
+        List<UserInfo> users = sysUserManager.listObjects(filterMap);
+        List<UnitInfo> units = sysUnitManager.listObjects(filterMap);
+
+        for (UnitInfo unit : units) {
             Map<String, Object> object = new HashMap<>();
             object.put("id", unit.getUnitCode());
             object.put("name", unit.getUnitName());
@@ -97,7 +112,7 @@ public class UserUnitController extends BaseController {
             listObjects.add(object);
         }
 
-        for (IUserInfo user : users) {
+        for (UserInfo user : users) {
             Map<String, Object> object = new HashMap<>();
             object.put("id", user.getUserCode());
             object.put("name", user.getUserName());
