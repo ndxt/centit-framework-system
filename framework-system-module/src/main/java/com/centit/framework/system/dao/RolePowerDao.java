@@ -30,6 +30,8 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
         Map<String, String> filterField = new HashMap<>();
         filterField.put("optCode", CodeBook.EQUAL_HQL_ID);
         filterField.put("roleCode", CodeBook.EQUAL_HQL_ID);
+        filterField.put("topUnit", "ROLE_CODE in (select role_code from f_roleinfo us " +
+            "where unit_code = :topUnit)");
         return filterField;
     }
 

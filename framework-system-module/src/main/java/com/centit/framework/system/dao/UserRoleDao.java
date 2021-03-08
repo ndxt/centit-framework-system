@@ -34,6 +34,7 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
         filterField.put("roleUnitCode", "ROLE_CODE in (select ro.ROLE_CODE from f_roleinfo ro " +
                 "where (ro.ROLE_TYPE = 'P' or (ro.ROLE_TYPE = 'D' and ro.UNIT_CODE = :roleUnitCode)))");
         filterField.put("unitCode", "USER_CODE in (select uu.USER_CODE from F_USERUNIT uu where uu.UNIT_CODE = :unitCode)");
+        filterField.put("topUnit", "USER_CODE in (select uu.USER_CODE from F_USERUNIT uu where uu.TOP_UNIT = :topUnit)");
         filterField.put("userCode_isValid", "userCode in (select us.USER_CODE from f_userinfo us " +
                 "where us.IS_VALID = :userCode_isValid)");
         //filterField.put(CodeBook.ORDER_BY_HQL_ID, " userCode ");
@@ -62,6 +63,7 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
             "and b.IS_VALID='T' " +
             "[:userCode | and a.USER_CODE = :userCode]" +
             "[:(startwith)roleName | and b.ROLE_NAME like :roleName]" +
+            //"[:(startwith)unitPath | and d.unitPath like :unitPath]" +
             "[:roleCode | and a.ROLE_CODE = :roleCode]";
 
     private static final String f_v_user_inherited_roles_sql =
@@ -76,6 +78,7 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
             "and b.IS_VALID='T' " +
             "[:userCode | and c.USER_CODE = :userCode]" +
             "[:(startwith)roleName | and b.ROLE_NAME like :roleName]" +
+            //"[:(startwith)unitPath | and e.unitPath like :unitPath]" +
             "[:roleCode | and a.ROLE_CODE = :roleCode]";
     private static final String f_v_userroles_sql =
         f_v_user_appoint_roles_sql + " union all " + f_v_user_inherited_roles_sql;
@@ -169,6 +172,7 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
         Map<String,Object> map = CollectionsOpt.createHashMap("userCode",userCode,
             "currentDateTime", DatetimeOpt.currentSqlDate(),
             "unitCode", topUnit);
+        //topUnit
         return jdbcTemplate.execute(
             (ConnectionCallback<List<FVUserRoles>>) conn -> OrmDaoUtils
                 .queryObjectsByNamedParamsSql(conn, f_v_topunit_user_role, map, FVUserRoles.class));
@@ -179,6 +183,7 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
         Map<String,Object> map = CollectionsOpt.createHashMap("roleCode", roleCode,
             "currentDateTime", DatetimeOpt.currentSqlDate(),
             "unitCode", topUnit);
+        //topUnit
         return jdbcTemplate.execute(
             (ConnectionCallback<List<FVUserRoles>>) conn -> OrmDaoUtils
                 .queryObjectsByNamedParamsSql(conn, f_v_topunit_role_user, map, FVUserRoles.class));

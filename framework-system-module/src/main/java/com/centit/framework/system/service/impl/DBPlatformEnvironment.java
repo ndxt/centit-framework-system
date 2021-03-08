@@ -3,6 +3,7 @@ package com.centit.framework.system.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.centit.framework.common.GlobalConstValue;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.*;
@@ -74,6 +75,17 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Autowired
     private RolePowerDao rolePowerDao;
+
+
+    private boolean supportTenant;
+
+    public DBPlatformEnvironment(){
+        supportTenant = false;
+    }
+
+    public void setSupportTenant(boolean supportTenant) {
+        this.supportTenant = supportTenant;
+    }
 
     @Override
     public List<UserSetting> listUserSettings(String userCode){
@@ -204,14 +216,16 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional(readOnly = true)
-    public List<FVUserRoles> listUserRoles(String topUnit, String userCode) {
-        return userRoleDao.listUserRolesByTopUnit(topUnit, userCode);
+    public List<? extends IUserRole> listUserRoles(String topUnit, String userCode) {
+        return supportTenant ? userRoleDao.listUserRolesByTopUnit(topUnit, userCode)
+            : userRoleDao.listUserRoles(userCode);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<FVUserRoles> listRoleUsers(String topUnit, String roleCode) {
-        return userRoleDao.listRoleUsersByTopUnit(topUnit, roleCode);
+    public List<? extends IUserRole> listRoleUsers(String topUnit, String roleCode) {
+        return supportTenant ? userRoleDao.listRoleUsersByTopUnit(topUnit, roleCode)
+            : userRoleDao.listRoleUsers(roleCode);
     }
 
     @Override
@@ -245,25 +259,37 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(readOnly = true)
     public List<UserInfo> listAllUsers(String topUnit) {
-        Map<String, Object> filterMap = new HashMap<>();
-        filterMap.put("topUnit", topUnit);
-        return userInfoDao.listObjects(filterMap);
+        if(supportTenant) {
+            Map<String, Object> filterMap = new HashMap<>();
+            filterMap.put("topUnit", topUnit);
+            return userInfoDao.listObjects(filterMap);
+        } else {
+            return userInfoDao.listObjects();
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<UnitInfo> listAllUnits(String topUnit) {
-        Map<String, Object> filterMap = new HashMap<>();
-        filterMap.put("topUnit", topUnit);
-        return unitInfoDao.listObjects(filterMap);
+        if(supportTenant) {
+            Map<String, Object> filterMap = new HashMap<>();
+            filterMap.put("topUnit", topUnit);
+            return unitInfoDao.listObjects(filterMap);
+        } else {
+            return unitInfoDao.listObjects();
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<UserUnit> listAllUserUnits(String topUnit) {
-        Map<String, Object> filterMap = new HashMap<>();
-        filterMap.put("topUnit", topUnit);
-        return userUnitDao.listObjectsAll(filterMap);
+        if(supportTenant) {
+            Map<String, Object> filterMap = new HashMap<>();
+            filterMap.put("topUnit", topUnit);
+            return userUnitDao.listObjectsAll(filterMap);
+        } else {
+            return userUnitDao.listObjects();
+        }
     }
 
     /**
@@ -274,7 +300,10 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
      */
     @Override
     public List<? extends IUnitInfo> listUserTopUnits(String userCode) {
-        return unitInfoDao.listUserTopUnits(userCode);
+        return supportTenant ? unitInfoDao.listUserTopUnits(userCode)
+            : CollectionsOpt.createList(
+            new UnitInfo(GlobalConstValue.NO_TENANT_TOP_UNIT,
+                "T", "不支持租户时的默认顶级机构"));
     }
 
     private List<UserUnit> fetchUserUnitXzRank(List<UserUnit> userUnits){
@@ -298,7 +327,8 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(readOnly = true)
     public List<UserUnit> listUserUnits(String topUnit, String userCode) {
-        return fetchUserUnitXzRank(userUnitDao.listUserUnitsByUserCode(topUnit, userCode));
+        return this.supportTenant ? fetchUserUnitXzRank(userUnitDao.listUserUnitsByUserCode(topUnit, userCode))
+            : fetchUserUnitXzRank(userUnitDao.listUserUnitsByUserCode(userCode));
     }
 
     @Override
@@ -310,25 +340,29 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(readOnly = true)
     public List<? extends IRoleInfo> listAllRoleInfo(String topUnit) {
-        return roleInfoDao.listAllRoleByUnit(topUnit);
+        return this.supportTenant ? roleInfoDao.listAllRoleByUnit(topUnit)
+            : roleInfoDao.listObjectsAll();
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<? extends IRolePower> listAllRolePower(String topUnit) {
-        return rolePowerDao.listAllRolePowerByUnit(topUnit);
+        return this.supportTenant ? rolePowerDao.listAllRolePowerByUnit(topUnit)
+            : rolePowerDao.listObjectsAll();
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<? extends IOptInfo> listAllOptInfo(String topUnit) {
-        return optInfoDao.listAllOptInfoByUnit(topUnit);
+        return this.supportTenant ? optInfoDao.listAllOptInfoByUnit(topUnit)
+            : optInfoDao.listObjectsAll();
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<? extends IOptMethod> listAllOptMethod(String topUnit) {
-        return optMethodDao.listAllOptMethodByUnit(topUnit);
+        return this.supportTenant ? optMethodDao.listAllOptMethodByUnit(topUnit)
+            : optMethodDao.listObjectsAll();
     }
 
     /**
@@ -336,13 +370,15 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
      */
     @Override
     public List<? extends IOptDataScope> listAllOptDataScope(String topUnit) {
-        return dataScopeDao.listAllDataScopeByUnit(topUnit);
+        return this.supportTenant ? dataScopeDao.listAllDataScopeByUnit(topUnit)
+            : dataScopeDao.listAllDataScope();
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<DataCatalog> listAllDataCatalogs(String topUnit) {
-        return dataCatalogDao.listDataCatalogByUnit(topUnit);
+        return  this.supportTenant ? dataCatalogDao.listDataCatalogByUnit(topUnit)
+            : dataCatalogDao.listObjects();
     }
 
     @Override
@@ -354,6 +390,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     //@Transactional
     private JsonCentitUserDetails fillUserDetailsField(UserInfo userinfo){
         List<UserUnit> usun = userUnitDao.listUserUnitsByUserCode(userinfo.getUserCode());
+        String currentUnitCode = userinfo.getPrimaryUnit();
         JsonCentitUserDetails sysuser = new JsonCentitUserDetails();
         sysuser.setUserInfo((JSONObject) JSON.toJSON(userinfo));
         sysuser.getUserInfo().put("userPin", userinfo.getUserPin());
@@ -361,6 +398,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         for(UserUnit uu :usun){
             if("T".equals(uu.getIsPrimary())){
                 sysuser.setCurrentStationId(uu.getUserUnitId());
+                currentUnitCode = uu.getUnitCode();
                 break;
             }
         }
@@ -396,8 +434,17 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
         List<UserSetting> uss =userSettingDao.getUserSettingsByCode(userinfo.getUserCode());
         if(uss!=null){
-            for(UserSetting us :uss)
+            for(UserSetting us :uss) {
                 sysuser.putUserSettingsParams(us.getParamCode(), us.getParamValue());
+            }
+        }
+        if(this.supportTenant) {
+            UnitInfo ui = unitInfoDao.getObjectById(currentUnitCode);
+            if(ui!=null) {
+                sysuser.setTopUnitCode(ui.getTopUnit());
+            }
+        } else {
+            sysuser.setTopUnitCode(GlobalConstValue.NO_TENANT_TOP_UNIT);
         }
         return sysuser;
     }
@@ -424,8 +471,8 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional
     public JsonCentitUserDetails loadUserDetailsByRegEmail(String regEmail) {
         UserInfo userinfo = userInfoDao.getUserByRegEmail(regEmail);
-           if(userinfo==null)
-                return null;
+       if(userinfo==null)
+            return null;
         return fillUserDetailsField(userinfo);
     }
 
@@ -433,9 +480,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional
     public JsonCentitUserDetails loadUserDetailsByRegCellPhone(String regCellPhone) {
         UserInfo userinfo = userInfoDao.getUserByRegCellPhone(regCellPhone);
-           if(userinfo==null) {
-             return null;
-           }
+       if(userinfo==null) {
+         return null;
+       }
         return fillUserDetailsField(userinfo);
     }
 
@@ -443,8 +490,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional
     public void updateUserInfo(IUserInfo userInfo) {
         UserInfo ui = userInfoDao.getUserByCode(userInfo.getUserCode());
-        if(ui==null)
-          return;
+        if(ui==null) {
+            return;
+        }
         ui.copyFromIUserInfo(userInfo);
         userInfoDao.updateUser(ui);
     }
@@ -575,7 +623,8 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     public List<? extends IOsInfo> listOsInfos(String topUnit) {
-        return osInfoDao.listOsInfoByUnit(topUnit);
+        return this.supportTenant ? osInfoDao.listOsInfoByUnit(topUnit)
+            : osInfoDao.listObjects();
     }
 
 }
