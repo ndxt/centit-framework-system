@@ -56,7 +56,6 @@ public interface SysUserManager{
 
      List<RoleInfo> listUserValidRoles(String userCode);
 
-     List<FVUserOptList> getAllOptMethodByUser(String userCode);
      boolean checkIfUserExists(UserInfo user);
 
      boolean checkUserPassword(String userCode, String oldPassword);

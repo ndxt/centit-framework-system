@@ -418,9 +418,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
          }
         //add  end
         //sysuser.setUserFuncs(functionDao.getMenuFuncByUserID(sysuser.getUserCode()));
-        sysuser.setAuthoritiesByRoles((JSONArray) JSON.toJSON(roles));
-        List<FVUserOptList> uoptlist = userInfoDao.getAllOptMethodByUser(userinfo.getUserCode());
-        Map<String, String> userOptList = new HashMap<String, String>();
+        sysuser.setAuthoritiesByRoles((JSONArray)JSON.toJSON(roles));
+        List<FVUserOptList> uoptlist = userInfoDao.listUserOptMethods(userinfo.getUserCode());
+        Map<String, String> userOptList = new HashMap<>();
         if (uoptlist != null) {
             for (FVUserOptList opt : uoptlist){
                 if(!StringUtils.isBlank(opt.getOptMethod())) {

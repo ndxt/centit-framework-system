@@ -221,12 +221,6 @@ public class SysUserManagerImpl implements SysUserManager {
 
     @Override
     @Transactional
-    public List<FVUserOptList> getAllOptMethodByUser(String userCode){
-        return userInfoDao.getAllOptMethodByUser(userCode);
-    }
-
-    @Override
-    @Transactional
     public boolean checkUserPassword(String userCode, String oldPassword) {
         UserInfo user = userInfoDao.getUserByCode(userCode);
         return passwordEncoder.isPasswordValid(

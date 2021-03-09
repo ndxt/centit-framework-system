@@ -94,13 +94,12 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
           DatabaseOptUtils.getSequenceNextValue(this, "S_USERCODE"));
     }
 
-
     @SuppressWarnings("unchecked")
     @Transactional
-    public List<FVUserOptList> getAllOptMethodByUser(String userCode) {
-        String sql = "select USER_CODE,OPT_CODE,OPT_NAME,OPT_ID,OPT_METHOD " +
+    public List<FVUserOptList> listUserOptMethods(String userCode) {
+        String sql = "select USER_CODE, OPT_CODE, OPT_NAME, OPT_ID, OPT_METHOD " +
                 "from F_V_USEROPTLIST " +
-                "where USER_CODE=?";
+                "where USER_CODE=? and OPT_METHOD is not null";
 
         return getJdbcTemplate().execute(
                 (ConnectionCallback<List<FVUserOptList>>) conn ->
