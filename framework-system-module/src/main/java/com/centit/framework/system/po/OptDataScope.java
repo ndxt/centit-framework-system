@@ -2,6 +2,8 @@ package com.centit.framework.system.po;
 
 import com.centit.framework.model.basedata.IOptDataScope;
 import com.centit.framework.model.basedata.IOptMethod;
+import com.centit.support.database.orm.GeneratorType;
+import com.centit.support.database.orm.ValueGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
@@ -24,6 +26,7 @@ public class OptDataScope implements IOptDataScope,Serializable{
     @Id
     @Column(name = "OPT_SCOPE_CODE")
     //@GeneratedValue(generator = "assignedGenerator")
+    @ValueGenerator(strategy = GeneratorType.UUID22)
     private String optScopeCode;// 操作代码
 
     @Column(name = "SCOPE_NAME")
