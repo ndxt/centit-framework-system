@@ -2,6 +2,7 @@ package com.centit.framework.system.controller;
 
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
+import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpContentType;
@@ -32,6 +33,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -83,6 +86,7 @@ public class DataDictionaryController extends BaseController {
     @WrapUpResponseBody
     public PageQueryResult<DataCatalog> list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
+        searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         List<DataCatalog> listObjects = dataDictionaryManager.listObjects(searchColumn, pageDesc);
         return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
     }
@@ -569,26 +573,32 @@ public class DataDictionaryController extends BaseController {
      * 获取所以字典目录信息
      * @return result
      */
-    @ApiOperation(value = "获取所以字典目录信息", notes = "获取所以字典目录信息")
+    @ApiOperation(value = "获取所有字典目录信息", notes = "获取所有字典目录信息")
     @RequestMapping(value = "/allCatalog", method = {RequestMethod.GET})
     @WrapUpResponseBody
-    public ResponseData getAllCatalog() {
-        List<DataCatalog> catalogs = dataDictionaryManager.listAllDataCatalog();
+    public ResponseData getAllCatalog(HttpServletRequest request) {
+        Map<String, Object> searchColumn = new HashMap<>();
+        searchColumn.put("topUnit",WebOptUtils.getCurrentTopUnit(request));
+        List<DataCatalog> catalogs = dataDictionaryManager.listAllDataCatalog(searchColumn);
         return ResponseData.makeResponseData(catalogs);
     }
 
     /**
-     * 获取所以字典目录信息及对应的所以字典明细信息
+     * 获取所有字典目录信息及对应的所以字典明细信息
      *
      * @param response HttpServletResponse
      * @return result
      */
-    @ApiOperation(value = "获取所以字典目录信息及对应的所以字典明细信息", notes = "获取所以字典目录信息及对应的所以字典明细信息")
+    @ApiOperation(value = "获取所有字典目录信息及对应的所以字典明细信息", notes = "获取所有字典目录信息及对应的所以字典明细信息")
     @RequestMapping(value = "/wholeDictionary", method = {RequestMethod.GET})
     @WrapUpResponseBody
-    public ResponseData getWholeDictionary(HttpServletResponse response) {
-        List<DataCatalog> catalogs = dataDictionaryManager.listAllDataCatalog();
-        List<DataDictionary> dictionarys = dataDictionaryManager.getWholeDictionary();
+    public ResponseData getWholeDictionary(HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> searchColumn = new HashMap<>();
+        searchColumn.put("topUnit",WebOptUtils.getCurrentTopUnit(request));
+        List<DataCatalog> catalogs = dataDictionaryManager.listAllDataCatalog(searchColumn);
+        List<String> catalogCodes = new ArrayList<>();
+        catalogs.forEach(ca -> catalogCodes.add(ca.getCatalogCode()));
+        List<DataDictionary> dictionarys = dataDictionaryManager.getWholeDictionary(catalogCodes);
 
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData("catalog", catalogs);
@@ -604,8 +614,13 @@ public class DataDictionaryController extends BaseController {
     @ApiOperation(value = "将字典明细信息导入到Properties文件", notes = "将字典明细信息导入到Properties文件")
     @GetMapping("/dictionaryprop")
     @ResponseBody
-    public ResponseEntity<byte[]> downloadProperties() throws IOException {
-        List<DataDictionary> dictionarys = dataDictionaryManager.getWholeDictionary();
+    public ResponseEntity<byte[]> downloadProperties(HttpServletRequest request) throws IOException {
+        Map<String, Object> searchColumn = new HashMap<>();
+        searchColumn.put("topUnit",WebOptUtils.getCurrentTopUnit(request));
+        List<DataCatalog> catalogs = dataDictionaryManager.listAllDataCatalog(searchColumn);
+        List<String> catalogCodes = new ArrayList<>();
+        catalogs.forEach(ca -> catalogCodes.add(ca.getCatalogCode()));
+        List<DataDictionary> dictionarys = dataDictionaryManager.getWholeDictionary(catalogCodes);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         out.write("#dictionaryprop_zh_CN.Properties\r\n".getBytes());
 

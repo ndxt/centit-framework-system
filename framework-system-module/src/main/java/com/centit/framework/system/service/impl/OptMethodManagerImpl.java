@@ -58,4 +58,8 @@ public class OptMethodManagerImpl implements OptMethodManager {
         return optMethod.getOptCode();
     }
 
+    @Override
+    public List<OptMethod> listAllOptMethodByUnit(String topUnit) {
+        return optMethodDao.listAllOptMethodByUnit(topUnit);
+    }
 }

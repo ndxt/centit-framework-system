@@ -19,4 +19,6 @@ public interface OptMethodManager{
     void deleteObjectById(String optCode);
 
     String saveNewObject(OptMethod optMethod);
+
+    List<OptMethod> listAllOptMethodByUnit(String topUnit);
 }

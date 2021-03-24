@@ -86,9 +86,11 @@ public class RoleInfoController extends BaseController {
     public PageQueryResult<RoleInfo> listAllRole(PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("NP_ALL", "true");
+        filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         List<RoleInfo> list = sysRoleManager.listObjects(filterMap, pageDesc);
         return PageQueryResult.createResultMapDict(list, pageDesc);
     }
+
     @ApiOperation(value = "查询子系统角色", notes = "查询子系统角色。")
     @ApiImplicitParams({
         @ApiImplicitParam(
@@ -103,9 +105,11 @@ public class RoleInfoController extends BaseController {
     public PageQueryResult<RoleInfo> listSubSystemRole(@PathVariable String topOptId,PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("subSystemROLE", topOptId);
+        filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         List<RoleInfo> list = sysRoleManager.listObjects(filterMap, pageDesc);
         return PageQueryResult.createResultMapDict(list, pageDesc);
     }
+
     /*
      * 查询所有可用的系统角色
      *
@@ -129,6 +133,7 @@ public class RoleInfoController extends BaseController {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("NP_GLOBAL", "true");
         filterMap.put("isValid", "T");
+        filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
         return PageQueryResult.createResultMapDict(roleInfos, pageDesc, field);
     }
@@ -147,9 +152,10 @@ public class RoleInfoController extends BaseController {
     @WrapUpResponseBody()
     public PageQueryResult<RoleInfo> listUnitAndPublicRole(PageDesc pageDesc, HttpServletRequest request) {
 
-        String currentUnit = WebOptUtils.getCurrentUnitCode(request);
+        String currentUnit = WebOptUtils.getCurrentTopUnit(request);
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("publicUnitRole", currentUnit);
+        filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
         return PageQueryResult.createResultMapDict(roleInfos, pageDesc);
     }
@@ -175,6 +181,7 @@ public class RoleInfoController extends BaseController {
     public PageQueryResult<RoleInfo> listItemRole(String[] field, PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("ROLETYPE", "I");
+        filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
 
         return PageQueryResult.createResultMapDict(roleInfos, pageDesc, field);
@@ -701,6 +708,7 @@ public class RoleInfoController extends BaseController {
 //        filterMap.put("roleType", type);
         filterMap.put("isValid", "T");
         filterMap.put("roleType",type);
+        filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
 
         if ("D".equals(type) && StringUtils.isBlank(owner)) {
 

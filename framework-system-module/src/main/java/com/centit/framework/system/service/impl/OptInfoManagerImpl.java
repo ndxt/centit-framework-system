@@ -388,4 +388,13 @@ public class OptInfoManagerImpl implements OptInfoManager {
         return menuFunsByUser;
     }
 
+    @Override
+    public List<OptInfo> listFromParent(Map<String, Object> filterMap) {
+        return optInfoDao.listFromParent(filterMap);
+    }
+
+    @Override
+    public List<OptInfo> listAllOptInfoByUnit(String topUnit) {
+        return optInfoDao.listAllOptInfoByUnit(topUnit);
+    }
 }

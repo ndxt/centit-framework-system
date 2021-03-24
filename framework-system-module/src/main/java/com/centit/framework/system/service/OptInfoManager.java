@@ -76,4 +76,7 @@ public interface OptInfoManager {
      */
     List<OptInfo> listUserAllPower(String userCode, boolean asAdmin);
 
+    List<OptInfo> listFromParent(Map<String, Object> filterMap);
+
+    List<OptInfo> listAllOptInfoByUnit(String topUnit);
 }

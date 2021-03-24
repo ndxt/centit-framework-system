@@ -24,6 +24,7 @@ public class DataDictionaryDao
         filterField.put("catalogCode", CodeBook.EQUAL_HQL_ID);
         filterField.put("NP_system", "dataStyle = 'S'");
         filterField.put("dataValue", CodeBook.LIKE_HQL_ID);
+        filterField.put("catalogcodes", "catalogcode in (:catalogcodes)");
         return filterField;
     }
 
@@ -40,8 +41,8 @@ public class DataDictionaryDao
         super.deleteObjectById(dd);
     }
 
-    public List<DataDictionary> getWholeDictionary(){
-        return listObjects();
+    public List<DataDictionary> getWholeDictionary(Map<String, Object> filterMap){
+        return listObjects(filterMap);
 
     }
 
