@@ -279,4 +279,9 @@ public class SysUnitManagerImpl implements SysUnitManager {
         List<UnitInfo> list = unitInfoDao.listObjects(filterMap);
         return list == null || list.size() == 0 || (unitCode != null && unitCode.equals(list.get(0).getUnitCode()));
     }
+
+    @Override
+    public List<UnitInfo> listUserTopUnits(String userCode) {
+        return unitInfoDao.listUserTopUnits(userCode);
+    }
 }

@@ -60,6 +60,10 @@ public class FVUserRoles implements IUserRole, IRoleInfo, Serializable {
     @Length(max = 32, message = "字段长度不能大于{max}")
     private String unitCode; // 角色所属机构
 
+    @Column(name = "CHANGE_DESC")
+    @Length(max = 256, message = "字段长度不能大于{max}")
+    private String changeDesc; // 说明
+
     @Transient
     private List<RolePower> rolePowers;
 
@@ -213,5 +217,13 @@ public class FVUserRoles implements IUserRole, IRoleInfo, Serializable {
             return;
         }
         getRolePowers().addAll(rolePowers);
+    }
+
+    public String getChangeDesc() {
+        return changeDesc;
+    }
+
+    public void setChangeDesc(String changeDesc) {
+        this.changeDesc = changeDesc;
     }
 }

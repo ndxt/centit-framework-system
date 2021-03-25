@@ -535,7 +535,7 @@ public class DataDictionaryController extends BaseController {
      * @param catalogCode 数据字典的类别代码
      * @return result
      */
-    @ApiOperation(value = "获取字典的所有明细信息", notes = "根据字典类别代码获取字典的所以明细信息")
+    @ApiOperation(value = "获取字典的所有明细信息", notes = "根据字典类别代码获取字典的所有明细信息")
     @ApiImplicitParam(
         name = "catalogCode", value = "数据字典的类别代码",
         required = true, paramType = "path", dataType = "String"
@@ -570,7 +570,7 @@ public class DataDictionaryController extends BaseController {
     }
 
     /**
-     * 获取所以字典目录信息
+     * 获取所有字典目录信息
      * @return result
      */
     @ApiOperation(value = "获取所有字典目录信息", notes = "获取所有字典目录信息")
@@ -584,12 +584,12 @@ public class DataDictionaryController extends BaseController {
     }
 
     /**
-     * 获取所有字典目录信息及对应的所以字典明细信息
+     * 获取所有字典目录信息及对应的所有字典明细信息
      *
      * @param response HttpServletResponse
      * @return result
      */
-    @ApiOperation(value = "获取所有字典目录信息及对应的所以字典明细信息", notes = "获取所有字典目录信息及对应的所以字典明细信息")
+    @ApiOperation(value = "获取所有字典目录信息及对应的所有字典明细信息", notes = "获取所有字典目录信息及对应的所有字典明细信息")
     @RequestMapping(value = "/wholeDictionary", method = {RequestMethod.GET})
     @WrapUpResponseBody
     public ResponseData getWholeDictionary(HttpServletRequest request, HttpServletResponse response) {

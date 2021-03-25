@@ -120,7 +120,6 @@ public class UnitInfoController extends BaseController {
         }
     }
 
-
     @ApiOperation(value = "分页查询机构信息", notes = "分页查询机构信息。")
     @ApiImplicitParam(
             name = "pageDesc", value = "json格式的分页信息",
@@ -134,6 +133,7 @@ public class UnitInfoController extends BaseController {
         List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn, pageDesc);
         return PageQueryResult.createResultMapDict(listObjects, pageDesc);
     }
+
     /*
      * 查询所有子机构信息
      *
@@ -253,7 +253,6 @@ public class UnitInfoController extends BaseController {
         /********log*********/
     }
 
-
     /*
      * 新建机构
      *
@@ -293,7 +292,6 @@ public class UnitInfoController extends BaseController {
         /********log*********/
     }
 
-
     /*
      * 新建部门，仅仅是为了区分权限
      *
@@ -317,6 +315,7 @@ public class UnitInfoController extends BaseController {
         }
         return create(unitInfo);
     }
+
     /*
      * 更新机构信息
      *
@@ -729,6 +728,15 @@ public class UnitInfoController extends BaseController {
         roleInfo.addAllRolePowers(rolePowers);
         sysRoleManager.updateRolePower(roleInfo);
         return ResponseData.successResponse;
+    }
+
+    @ApiOperation(value = "根据用户代码获得用户的所有租户", notes = "根据用户代码获得用户的所有租户。")
+    @ApiImplicitParam(name = "userCode", value = "用户代码", required = true, dataType = "String")
+    @RequestMapping(value = "/topUnit/{userCode}", method = RequestMethod.GET)
+    @WrapUpResponseBody
+    public ResponseData listUserTopUnits(@PathVariable String userCode, HttpServletRequest request) {
+        List<UnitInfo> listObjects = sysUnitManager.listUserTopUnits(userCode);
+        return ResponseData.makeResponseData(listObjects);
     }
 
 }

@@ -97,6 +97,9 @@ public class UserInfoController extends BaseController {
             searchColumn.put("likeUserOrLoginName", StringEscapeUtils.escapeHtml4(searchColumn.get("userName").toString()));
             searchColumn.remove("userName");
         }
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
+        }
         List<UserInfo> listObjects;
         if (BooleanBaseOpt.castObjectToBoolean(_search,false)) {
             listObjects = sysUserManager.listObjects(searchColumn);

@@ -124,9 +124,12 @@ public class UserRoleController extends BaseController {
     )})
     @RequestMapping(value = "/userrolesall/{userCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult<Object> listRoleUsersAll(@PathVariable String userCode, PageDesc pageDesc) {
+    public PageQueryResult<Object> listRoleUsersAll(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> filterMap = new HashMap<>(8);
         filterMap.put("userCode", userCode);
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            filterMap.put("unitCode", WebOptUtils.getCurrentTopUnit(request));
+        }
         JSONArray listObjects = sysUserRoleManager.pageQueryUserRole(filterMap, pageDesc);
         return PageQueryResult.createJSONArrayResult(listObjects, pageDesc);
     }
@@ -163,7 +166,9 @@ public class UserRoleController extends BaseController {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("userCode", userCode);
         filterMap.put("roleValid", "T");
-
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            filterMap.put("unitCode", WebOptUtils.getCurrentTopUnit(request));
+        }
         return listObject(filterMap, pageDesc);
     }
 
@@ -189,6 +194,9 @@ public class UserRoleController extends BaseController {
         //特殊字符转义
         if (filterMap.get("userName") != null) {
             filterMap.put("userName", StringEscapeUtils.escapeHtml4(filterMap.get("userName").toString()));
+        }
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            filterMap.put("unitCode", WebOptUtils.getCurrentTopUnit(request));
         }
         filterMap.put("roleCode", roleCode);
         filterMap.put("userValid", "T");
@@ -219,6 +227,9 @@ public class UserRoleController extends BaseController {
         filterMap.put("roleCode", roleCode);
         filterMap.put("unitPath", currentUnitInfo.getUnitPath());
         filterMap.put("userValid", "T");
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            filterMap.put("unitCode", WebOptUtils.getCurrentTopUnit(request));
+        }
         return listObject(filterMap, pageDesc);
     }
 
@@ -245,6 +256,9 @@ public class UserRoleController extends BaseController {
         filterMap.put("userCode", userCode);
         filterMap.put("roleUnitCode", currentUnitCode);
         filterMap.put("roleValid", "T");
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            filterMap.put("unitCode", WebOptUtils.getCurrentTopUnit(request));
+        }
         return listObject(filterMap, pageDesc);
     }
 

@@ -66,17 +66,17 @@ public class OptInfoController extends BaseController {
     @WrapUpResponseBody
     public ResponseData listFromParent(String id, HttpServletRequest request) {
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
-        String topUnit = WebOptUtils.getCurrentTopUnit(request);
-        searchColumn.put("topUnit", topUnit);
         if (StringUtils.isNotBlank(id)) {
             searchColumn.put("preOptId", id);
         } else {
             searchColumn.put("NP_TOPOPT", "true");
         }
-        List<OptInfo> listObjects = new ArrayList<>();
-        if (isTenant(topUnit)) {
+        List<OptInfo> listObjects;
+        if (WebOptUtils.isTenantTopUnit(request)) {
             listObjects = optInfoManager.listObjects(searchColumn);
         } else {
+            String topUnit = WebOptUtils.getCurrentTopUnit(request);
+            searchColumn.put("topUnit", topUnit);
             listObjects = optInfoManager.listFromParent(searchColumn);
         }
 
@@ -370,9 +370,9 @@ public class OptInfoController extends BaseController {
     @RequestMapping(value = "/allOptInfo", method = RequestMethod.GET)
     @WrapUpResponseBody
     public ResponseData loadAllOptInfo(HttpServletRequest request) {
-        List<OptInfo> optInfos = new ArrayList<>();
-        String topUnit = WebOptUtils.getCurrentTopUnit(request);
-        if (isTenant(topUnit)) {
+        List<OptInfo> optInfos;
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            String topUnit = WebOptUtils.getCurrentTopUnit(request);
             optInfos = optInfoManager.listAllOptInfoByUnit(topUnit);
         } else {
             optInfos = optInfoManager.listObjects();
@@ -387,9 +387,9 @@ public class OptInfoController extends BaseController {
     @RequestMapping(value = "/allOptMethod", method = RequestMethod.GET)
     @WrapUpResponseBody
     public ResponseData loadAllOptMethod(HttpServletRequest request) {
-        String topUnit = WebOptUtils.getCurrentTopUnit(request);
-        List<OptMethod> optDefs = new ArrayList<>();
-        if (isTenant(topUnit)) {
+        List<OptMethod> optDefs;
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            String topUnit = WebOptUtils.getCurrentTopUnit(request);
             optDefs = optMethodManager.listAllOptMethodByUnit(topUnit);
         } else {
             optDefs = optMethodManager.listObjects();
@@ -415,11 +415,4 @@ public class OptInfoController extends BaseController {
         return ResponseData.makeResponseData(makeMenuFuncsJson(optInfos));
     }
 
-    private boolean isTenant(String topUnit) {
-        if (GlobalConstValue.NO_TENANT_TOP_UNIT.equalsIgnoreCase(topUnit) || StringUtils.isBlank(topUnit) ) {
-            return false;
-        } else {
-            return true;
-        }
-    }
 }
