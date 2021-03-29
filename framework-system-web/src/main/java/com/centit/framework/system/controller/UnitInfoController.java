@@ -733,10 +733,9 @@ public class UnitInfoController extends BaseController {
     @ApiOperation(value = "根据用户代码获得用户的所有租户", notes = "根据用户代码获得用户的所有租户。")
     @ApiImplicitParam(name = "userCode", value = "用户代码", required = true, dataType = "String")
     @RequestMapping(value = "/topUnit/{userCode}", method = RequestMethod.GET)
-    @WrapUpResponseBody
-    public ResponseData listUserTopUnits(@PathVariable String userCode, HttpServletRequest request) {
-        List<UnitInfo> listObjects = sysUnitManager.listUserTopUnits(userCode);
-        return ResponseData.makeResponseData(listObjects);
+    @WrapUpResponseBody(contentType = WrapUpContentType.MAP_DICT)
+    public  List<UnitInfo> listUserTopUnits(@PathVariable String userCode, HttpServletRequest request) {
+        return sysUnitManager.listUserTopUnits(userCode);
     }
 
 }
