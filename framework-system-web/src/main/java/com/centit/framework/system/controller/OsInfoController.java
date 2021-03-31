@@ -89,8 +89,9 @@ public class OsInfoController extends BaseController {
     @WrapUpResponseBody
     public PageQueryResult<Object> list(PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
-        String topUnit = WebOptUtils.getCurrentTopUnit(request);
-        searchColumn.put("topUnit", topUnit);
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
+        }
         JSONArray listObjects = osInfoMag.listOsInfoAsJson(searchColumn, pageDesc);
         return PageQueryResult.createJSONArrayResult(listObjects,pageDesc, OsInfo.class);
     }

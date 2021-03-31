@@ -73,11 +73,10 @@ public class OptInfoController extends BaseController {
         }
         List<OptInfo> listObjects;
         if (WebOptUtils.isTenantTopUnit(request)) {
-            listObjects = optInfoManager.listObjects(searchColumn);
-        } else {
-            String topUnit = WebOptUtils.getCurrentTopUnit(request);
-            searchColumn.put("topUnit", topUnit);
+            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
             listObjects = optInfoManager.listFromParent(searchColumn);
+        } else {
+            listObjects = optInfoManager.listObjects(searchColumn);
         }
 
         for (OptInfo opt : listObjects) {

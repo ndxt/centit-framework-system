@@ -90,8 +90,7 @@ public class UserUnitController extends BaseController {
         // 不从缓存中获取，直接从数据库中获取
         Map<String, Object> filterMap = new HashMap<>();
         if (WebOptUtils.isTenantTopUnit(request)) {
-            String topUnit = WebOptUtils.getCurrentTopUnit(request);
-            filterMap.put("topUnit", topUnit);
+            filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         }
         if (StringUtils.isNotBlank(state) && !"A".equals(state)) {
             filterMap.put("isValid", state);
@@ -146,8 +145,7 @@ public class UserUnitController extends BaseController {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("unitCode", unitCode);
         if (WebOptUtils.isTenantTopUnit(request)) {
-            String topUnit = WebOptUtils.getCurrentTopUnit(request);
-            filterMap.put("topUnit", topUnit);
+            filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         }
         List<UserUnit> listObjects = withSubUnit?
             sysUserUnitManager.listSubUsersByUnitCode(unitCode, filterMap, pageDesc) :
@@ -180,8 +178,7 @@ public class UserUnitController extends BaseController {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("userCode", userCode);
         if (WebOptUtils.isTenantTopUnit(request)) {
-            String topUnit = WebOptUtils.getCurrentTopUnit(request);
-            filterMap.put("topUnit", topUnit);
+            filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         }
 //        filterMap.put("unitCode", user.getPrimaryUnit());
 
