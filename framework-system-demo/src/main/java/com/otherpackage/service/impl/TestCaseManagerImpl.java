@@ -39,7 +39,7 @@ public class TestCaseManagerImpl implements TestCaseManager {
         dataPowerFilter.addSourceData(filterMap);
         // 获取用户权限范围过滤条件，getOptId() 获取当前业务ID，  query为当前业务操作代码optCode
         List<String> filters = dataScopePowerManager.listUserDataFiltersByOptIdAndMethod(
-            ud.getUserCode(), getOptId(), "query");
+            ud.getTopUnitCode(), ud.getUserCode(), getOptId(), "query");
         return DictionaryMapUtils.mapJsonArray( // 数据字典翻译工作
             this.testCaseDao.listObjectsAsJson( // 执行数据驱动查询
                 dataPowerFilter.getSourceData(),// 当前用户相关参数（已包括查询信息）
@@ -59,7 +59,7 @@ public class TestCaseManagerImpl implements TestCaseManager {
         DataPowerFilter dataPowerFilter = dataScopePowerManager.createUserDataPowerFilter(ud);
         // 获取用户权限范围过滤条件，getOptId() 获取当前业务ID，  saveNew 为当前业务操作代码optCode
         List<String> filters = dataScopePowerManager.listUserDataFiltersByOptIdAndMethod(
-            ud.getUserCode(), getOptId(), "saveNew");
+            ud.getTopUnitCode(), ud.getUserCode(), getOptId(), "saveNew");
         boolean passed = dataPowerFilter.checkObject(testCase, filters);
         if(passed){
             this.testCaseDao.saveNewObject(testCase);
