@@ -52,12 +52,10 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
     @ApiModelProperty(value = "是否生效 T:生效 F:失效 A:新建可以删除",name = "isValid",required = true)
     private String isValid; // 状态
 
-    /**
-     * 'G发布任务/R接收任务/S系统管理';
-     */
+
     @Column(name = "USER_TYPE")
     @Length(max = 1, message = "字段长度不能大于{max}")
-    @ApiModelProperty(value = "G发布任务/R接收任务/S系统管理",name = "userType")
+    @ApiModelProperty(value = "和数据字典关联，业务系统可以自行解释这个字段", name = "userType")
     private String userType; // 用户类别
 
     @Column(name = "LOGIN_NAME")
@@ -212,10 +210,10 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
      */
     public UserInfo() {
         //userUnits = null;
-        primaryUnit = null;
-        userRoles = null;
-
-        //this.userType = "U";
+        this.primaryUnit = null;
+        this.userRoles = null;
+        this.isValid = "T";
+        this.userType = "U";
     }
 
     // Property accessors

@@ -1,6 +1,5 @@
 package com.centit.framework.system.service;
 
-import com.centit.framework.system.po.FVUserOptList;
 import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserUnit;

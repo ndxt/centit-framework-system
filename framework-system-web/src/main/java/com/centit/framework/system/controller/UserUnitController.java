@@ -2,13 +2,10 @@ package com.centit.framework.system.controller;
 
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.WebOptUtils;
-import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.core.dao.PageQueryResult;
-import com.centit.framework.model.basedata.IUnitInfo;
-import com.centit.framework.model.basedata.IUserInfo;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserInfo;
@@ -90,10 +87,11 @@ public class UserUnitController extends BaseController {
         if (StringUtils.isBlank(state)) {
             state = "A";
         }
-        String topUnit = WebOptUtils.getCurrentTopUnit(request);
         // 不从缓存中获取，直接从数据库中获取
         Map<String, Object> filterMap = new HashMap<>();
-        filterMap.put("topUnit", topUnit);
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
+        }
         if (StringUtils.isNotBlank(state) && !"A".equals(state)) {
             filterMap.put("isValid", state);
         }
@@ -146,6 +144,9 @@ public class UserUnitController extends BaseController {
             request.getParameter("withSubUnit"),false);
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("unitCode", unitCode);
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
+        }
         List<UserUnit> listObjects = withSubUnit?
             sysUserUnitManager.listSubUsersByUnitCode(unitCode, filterMap, pageDesc) :
             sysUserUnitManager.listObjects(filterMap, pageDesc);
@@ -176,6 +177,9 @@ public class UserUnitController extends BaseController {
 //        UserInfo user = sysUserManager.getObjectById(this.WebOptUtils.getCurrentUserCode(request));
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("userCode", userCode);
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
+        }
 //        filterMap.put("unitCode", user.getPrimaryUnit());
 
         List<UserUnit> listObjects = sysUserUnitManager.listObjects(filterMap, pageDesc);

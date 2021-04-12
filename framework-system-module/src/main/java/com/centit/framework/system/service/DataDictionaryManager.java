@@ -5,6 +5,7 @@ import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.DataDictionaryId;
 import com.centit.support.database.utils.PageDesc;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ public interface DataDictionaryManager {
 
     List<DataCatalog> listFixDataCatalog();
 
-    List<DataCatalog> listAllDataCatalog();
+    List<DataCatalog> listAllDataCatalog(Map<String, Object> filterMap);
 
     List<DataDictionary> listDataDictionarys(Map<String, Object> filterDescMap);
 
@@ -48,5 +49,5 @@ public interface DataDictionaryManager {
 
     List<DataDictionary> getDataDictionary(String catalogCode);
 
-    List<DataDictionary> getWholeDictionary();
+    List<DataDictionary> getWholeDictionary(Collection<String> catalogCodes);
 }

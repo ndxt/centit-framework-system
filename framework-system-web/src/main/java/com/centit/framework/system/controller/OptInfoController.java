@@ -1,9 +1,7 @@
 package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.JSONArray;
-import com.centit.framework.common.ResponseData;
-import com.centit.framework.common.ResponseMapData;
-import com.centit.framework.common.ViewDataTransform;
+import com.centit.framework.common.*;
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpContentType;
@@ -30,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -67,14 +66,18 @@ public class OptInfoController extends BaseController {
     @WrapUpResponseBody
     public ResponseData listFromParent(String id, HttpServletRequest request) {
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
-
         if (StringUtils.isNotBlank(id)) {
             searchColumn.put("preOptId", id);
         } else {
             searchColumn.put("NP_TOPOPT", "true");
         }
-
-        List<OptInfo> listObjects = optInfoManager.listObjects(searchColumn);
+        List<OptInfo> listObjects;
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
+            listObjects = optInfoManager.listFromParent(searchColumn);
+        } else {
+            listObjects = optInfoManager.listObjects(searchColumn);
+        }
 
         for (OptInfo opt : listObjects) {
             opt.setState(optInfoManager.hasChildren(opt.getOptId()) ? "closed" : "open");
@@ -109,7 +112,6 @@ public class OptInfoController extends BaseController {
         listObjects = optInfoManager.listObjectFormatTree(listObjects, true);
         return makeMenuFuncsJson(listObjects);
     }
-
 
     /*
      * 查询所有项目权限管理的业务
@@ -366,8 +368,14 @@ public class OptInfoController extends BaseController {
     @ApiOperation(value = "获取所有的业务菜单", notes = "获取所有的业务菜单。")
     @RequestMapping(value = "/allOptInfo", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData loadAllOptInfo() {
-        List<OptInfo> optInfos = optInfoManager.listObjects();
+    public ResponseData loadAllOptInfo(HttpServletRequest request) {
+        List<OptInfo> optInfos;
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            String topUnit = WebOptUtils.getCurrentTopUnit(request);
+            optInfos = optInfoManager.listAllOptInfoByUnit(topUnit);
+        } else {
+            optInfos = optInfoManager.listObjects();
+        }
         return ResponseData.makeResponseData(optInfos);
     }
 
@@ -377,8 +385,14 @@ public class OptInfoController extends BaseController {
     @ApiOperation(value = "获取所有的操作方法", notes = "获取所有的操作方法。")
     @RequestMapping(value = "/allOptMethod", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData loadAllOptMethod() {
-        List<OptMethod> optDefs = optMethodManager.listObjects();
+    public ResponseData loadAllOptMethod(HttpServletRequest request) {
+        List<OptMethod> optDefs;
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            String topUnit = WebOptUtils.getCurrentTopUnit(request);
+            optDefs = optMethodManager.listAllOptMethodByUnit(topUnit);
+        } else {
+            optDefs = optMethodManager.listObjects();
+        }
         return ResponseData.makeResponseData(optDefs);
     }
 

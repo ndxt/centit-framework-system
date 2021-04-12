@@ -5,6 +5,8 @@ import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethodUrlMap;
 import com.centit.support.database.orm.OrmDaoUtils;
+import com.centit.support.database.utils.QueryAndNamedParams;
+import com.centit.support.database.utils.QueryUtils;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -180,5 +182,19 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
             (ConnectionCallback<List<OptInfo>>) conn ->
                 OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
                     new Object[]{topUnit}, OptInfo.class));
+    }
+
+    @Transactional
+    public List<OptInfo> listFromParent(Map<String, Object> filterMap){
+        String sql = "select a.* " +
+            "from F_OPTINFO a join F_OS_INFO b on(a.TOP_OPT_ID=b.REL_OPT_ID) " +
+            "where b.TOP_UNIT = :TOP_UNIT " +
+            "[:preOptId | and a.preOptId =:preOptId]" +
+            "[:NP_TOPOPT | and (a.preOptId is null or a.preOptId='0')]";
+        QueryAndNamedParams qap = QueryUtils.translateQuery(sql, filterMap);
+        return getJdbcTemplate().execute(
+            (ConnectionCallback<List<OptInfo>>) conn ->
+                OrmDaoUtils.queryObjectsByNamedParamsSql(conn, qap.getQuery() ,
+                    qap.getParams(), OptInfo.class));
     }
 }

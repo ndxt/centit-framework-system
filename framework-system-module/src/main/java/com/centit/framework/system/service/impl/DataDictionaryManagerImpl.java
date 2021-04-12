@@ -20,10 +20,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service("dataDictionaryManager")
 public class DataDictionaryManagerImpl implements
@@ -47,7 +44,6 @@ public class DataDictionaryManagerImpl implements
         return dictionaryDao.listDataDictionary(catalogCode);
         //logger.info("loading DataDictionary end");
     }
-
 
     @Override
     @Transactional
@@ -162,8 +158,8 @@ public class DataDictionaryManagerImpl implements
     }
 
     @Transactional
-    public List<DataCatalog> listAllDataCatalog(){
-        return dataCatalogDao.listObjects();
+    public List<DataCatalog> listAllDataCatalog(Map<String, Object> filterMap){
+        return dataCatalogDao.listObjects(filterMap);
     }
 
     @Transactional
@@ -172,10 +168,11 @@ public class DataDictionaryManagerImpl implements
     }
 
     @Transactional
-    public List<DataDictionary> getWholeDictionary(){
-        return dictionaryDao.getWholeDictionary();
+    public List<DataDictionary> getWholeDictionary(Collection<String> catalogCodes){
+        Map<String, Object> filterMap = new HashMap<>();
+        filterMap.put("catalogcodes", CollectionsOpt.listToArray(catalogCodes));
+        return dictionaryDao.getWholeDictionary(filterMap);
     }
-
 
     @Override
     @Transactional

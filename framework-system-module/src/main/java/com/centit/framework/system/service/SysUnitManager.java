@@ -72,4 +72,6 @@ public interface SysUnitManager{
      */
     boolean isUnitWordUnique(String depNo, String unitCode);
 
+    List<UnitInfo> listUserTopUnits(String userCode);
+
 }

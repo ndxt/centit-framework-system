@@ -110,6 +110,7 @@ public class UnitRole implements IUnitRole, java.io.Serializable {
         this.id = id;
     }
 
+    @Override
     public String getUnitCode() {
         if (this.id == null)
             this.id = new UnitRoleId();
@@ -122,6 +123,7 @@ public class UnitRole implements IUnitRole, java.io.Serializable {
         this.id.setUnitCode(userCode);
     }
 
+    @Override
     public String getRoleCode() {
         if (this.id == null)
             this.id = new UnitRoleId();
@@ -143,6 +145,7 @@ public class UnitRole implements IUnitRole, java.io.Serializable {
         this.obtainDate =obtaindate;
     }
 
+    @Override
     public String getChangeDesc() {
         return this.changeDesc;
     }

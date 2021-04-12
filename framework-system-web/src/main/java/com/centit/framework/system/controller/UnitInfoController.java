@@ -95,7 +95,9 @@ public class UnitInfoController extends BaseController {
     public ResponseData listAsTree(boolean struct, String id, HttpServletRequest request) {
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         String unitName = (String) searchColumn.get("unitName");
-
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
+        }
         if (StringUtils.isNotBlank(unitName) && StringUtils.isBlank(id)) {
 
             List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn);
@@ -120,7 +122,6 @@ public class UnitInfoController extends BaseController {
         }
     }
 
-
     @ApiOperation(value = "分页查询机构信息", notes = "分页查询机构信息。")
     @ApiImplicitParam(
             name = "pageDesc", value = "json格式的分页信息",
@@ -130,10 +131,13 @@ public class UnitInfoController extends BaseController {
     @WrapUpResponseBody
     public PageQueryResult<UnitInfo> list(PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
-
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
+        }
         List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn, pageDesc);
         return PageQueryResult.createResultMapDict(listObjects, pageDesc);
     }
+
     /*
      * 查询所有子机构信息
      *
@@ -150,6 +154,9 @@ public class UnitInfoController extends BaseController {
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         String currentUnitCode = WebOptUtils.getCurrentUnitCode(request);
         searchColumn.put("parentUnit", StringUtils.isNotBlank(id) ? id : currentUnitCode);
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
+        }
         String unitName = StringBaseOpt.castObjectToString(searchColumn.get("unitName"));
         if (StringUtils.isNotBlank(unitName)) {
             List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn);
@@ -252,7 +259,6 @@ public class UnitInfoController extends BaseController {
         /********log*********/
     }
 
-
     /*
      * 新建机构
      *
@@ -292,7 +298,6 @@ public class UnitInfoController extends BaseController {
         /********log*********/
     }
 
-
     /*
      * 新建部门，仅仅是为了区分权限
      *
@@ -316,6 +321,7 @@ public class UnitInfoController extends BaseController {
         }
         return create(unitInfo);
     }
+
     /*
      * 更新机构信息
      *
@@ -437,6 +443,9 @@ public class UnitInfoController extends BaseController {
     public JSONArray listChildren(@PathVariable String unitCode, String[] field, HttpServletRequest request) {
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         searchColumn.put("parentUnit", unitCode);
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
+        }
 
         List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn);
         return DictionaryMapUtils.objectsToJSONArray(listObjects, field);
@@ -460,6 +469,9 @@ public class UnitInfoController extends BaseController {
 
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         searchColumn.put("unitCode", currentUnitCode);
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
+        }
 
         //特殊字符转义
         if (searchColumn.get("userName") != null) {
@@ -483,11 +495,14 @@ public class UnitInfoController extends BaseController {
         required = true, paramType = "path", dataType = "String")
     @RequestMapping(value = "/{unitCode}/validusers", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData listUnitAllUsers(@PathVariable String unitCode) {
+    public ResponseData listUnitAllUsers(@PathVariable String unitCode, HttpServletRequest request) {
 
         Map<String, Object> filterMap = new HashMap<>();
         filterMap.put("unitCode", unitCode);
         filterMap.put("isValid", "T");
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
+        }
         List<UserInfo> listObjects = sysUserMag.listObjects(filterMap);
 
         return ResponseData.makeResponseData(listObjects);
@@ -511,7 +526,11 @@ public class UnitInfoController extends BaseController {
 
         Map<String, Object> filterMap = new HashMap<>(4);
         filterMap.put("unitPath", currentUnitInfo.getUnitPath());
+
         filterMap.put("isValid", state);
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
+        }
         List<UserInfo> listObjects = sysUserMag.listObjects(filterMap);
 
         return ResponseData.makeResponseData(listObjects);
@@ -601,6 +620,9 @@ public class UnitInfoController extends BaseController {
         Map<String, Object> filterMap = new HashMap<>(4);
         filterMap.put("publicUnitRole", currentUnitCode);
         filterMap.put("isValid", "T");
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
+        }
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap);
         return ResponseData.makeResponseData(roleInfos);
     }
@@ -721,6 +743,14 @@ public class UnitInfoController extends BaseController {
         roleInfo.addAllRolePowers(rolePowers);
         sysRoleManager.updateRolePower(roleInfo);
         return ResponseData.successResponse;
+    }
+
+    @ApiOperation(value = "根据用户代码获得用户的所有租户", notes = "根据用户代码获得用户的所有租户。")
+    @ApiImplicitParam(name = "userCode", value = "用户代码", required = true, dataType = "String")
+    @RequestMapping(value = "/topUnit/{userCode}", method = RequestMethod.GET)
+    @WrapUpResponseBody(contentType = WrapUpContentType.MAP_DICT)
+    public  List<UnitInfo> listUserTopUnits(@PathVariable String userCode, HttpServletRequest request) {
+        return sysUnitManager.listUserTopUnits(userCode);
     }
 
 }

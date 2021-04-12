@@ -137,6 +137,7 @@ public class UserRole implements IUserRole, java.io.Serializable {
         this.id = id;
     }
 
+    @Override
     public String getUserCode() {
         if (this.id == null)
             this.id = new UserRoleId();
@@ -149,6 +150,7 @@ public class UserRole implements IUserRole, java.io.Serializable {
         this.id.setUserCode(userCode);
     }
 
+    @Override
     public String getRoleCode() {
         if (this.id == null)
             this.id = new UserRoleId();
@@ -182,7 +184,7 @@ public class UserRole implements IUserRole, java.io.Serializable {
      * sdfDate.parse(ssecededate); } catch (ParseException e) {
      * e.printStackTrace(); } }
      */
-
+    @Override
     public String getChangeDesc() {
         return this.changeDesc;
     }

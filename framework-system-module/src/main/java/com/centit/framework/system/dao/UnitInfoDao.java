@@ -64,7 +64,7 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
     public List<UnitInfo> listUserTopUnits(String userCode){
         String sql = "select a.* " +
             "from F_UNITINFO a join F_USERUNIT b on (a.UNIT_CODE = b.UNIT_CODE) " +
-            "where b.USER_CODE =? and a.UNIT_CODE = a.UNIT_PATH";
+            "where b.USER_CODE =? and CONCAT('/',a.UNIT_CODE) = a.UNIT_PATH";
         return getJdbcTemplate().execute(
             (ConnectionCallback<List<UnitInfo>>) conn ->
                 OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
