@@ -4090,7 +4090,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:ModificationDate>1614936540</a:ModificationDate>
 <a:Modifier>zhf</a:Modifier>
 <a:Comment>用于第三方系统关联</a:Comment>
-<a:DataType>VARCHAR2(100)</a:DataType>
+<a:DataType>VARCHAR2(500)</a:DataType>
 <a:Length>100</a:Length>
 </o:Column>
 <o:Column Id="o104">
@@ -4482,7 +4482,7 @@ TableComment 0 新宋体,8,N</a:FontList>
 <a:ModificationDate>1615165852</a:ModificationDate>
 <a:Modifier>zhf</a:Modifier>
 <a:Comment>用户第三方系统管理</a:Comment>
-<a:DataType>VARCHAR2(100)</a:DataType>
+<a:DataType>VARCHAR2(500)</a:DataType>
 <a:Length>100</a:Length>
 </o:Column>
 <o:Column Id="o136">
@@ -6846,12 +6846,12 @@ order by
 <a:Creator>codefan</a:Creator>
 <a:ModificationDate>1615168336</a:ModificationDate>
 <a:Modifier>zhf</a:Modifier>
-<a:Comment>下级部门可以通过语句 
-select * from v_hi_unitinfo 
-where topunitcode = &#39;机构代码来获取&#39; 
-order by topunitcode,hi_level 
+<a:Comment>下级部门可以通过语句
+select * from v_hi_unitinfo
+where topunitcode = &#39;机构代码来获取&#39;
+order by topunitcode,hi_level
 
-需要视图 
+需要视图
 
 </a:Comment>
 <a:View.SQLQuery>SELECT a.unit_code AS top_unit_code, b.unit_code, b.unit_type, b.parent_unit, b.is_valid, b.unit_name,b.unit_desc,b.unit_short_name, b.unit_order, b.dep_no,
