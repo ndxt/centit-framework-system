@@ -381,9 +381,10 @@ create table F_USERUNIT
    USER_UNIT_ID         varchar(32) not null,
    UNIT_CODE            varchar(32) not null,
    USER_CODE            varchar(32) not null,
-   Is_Primary           char(1)  default '1' not null ,
+   REL_TYPE             char(1)  default 'T' not null ,
    User_Station         varchar(16) not null,
-   User_Rank            varchar(16) not null  ,
+   User_Rank            varchar(16) not null,
+   POST_Rank            varchar(16),
    Rank_Memo            varchar(256)  ,
    USER_ORDER           number(8,0) default 0,
    update_Date          date,
@@ -391,7 +392,7 @@ create table F_USERUNIT
    creator              varchar(32),
    updator              varchar(32)
 );
-comment on column F_USERUNIT. Is_Primary  is  'T：为主， F：兼职' ;
+comment on column F_USERUNIT. REL_TYPE  is  'T：为主， F：兼职' ;
 comment on column F_USERUNIT. User_Rank  is  'RANK 代码不是 0开头的可以进行授予';
 comment on column F_USERUNIT.  Rank_Memo is '任职备注' ;
 comment on table F_USERUNIT is '同一个人可能在多个部门担任不同的职位';
