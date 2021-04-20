@@ -175,7 +175,7 @@ public class SysUserManagerImpl implements SysUserManager {
         userUnit.setUserUnitId(userUnitDao.getNextKey());
         userUnit.setUserCode(userInfo.getUserCode());
         userUnit.setUnitCode(userInfo.getPrimaryUnit());
-        userUnit.setIsPrimary("T");
+        userUnit.setRelType("T");
         userUnitDao.saveNewObject(userUnit);
 
         if(null!=userInfo.getUserRoles()){

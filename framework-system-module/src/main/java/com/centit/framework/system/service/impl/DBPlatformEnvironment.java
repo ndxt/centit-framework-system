@@ -396,7 +396,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         sysuser.getUserInfo().put("userPin", userinfo.getUserPin());
         sysuser.setUserUnits((JSONArray) JSON.toJSON(usun));
         for(UserUnit uu :usun){
-            if("T".equals(uu.getIsPrimary())){
+            if("T".equals(uu.getRelType()) || "I".equals(uu.getRelType())){
                 sysuser.setCurrentStationId(uu.getUserUnitId());
                 currentUnitCode = uu.getUnitCode();
                 break;

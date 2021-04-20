@@ -65,14 +65,20 @@ public class UserUnit implements IUserUnit, java.io.Serializable {
     @ApiModelProperty(value = "职务",name = "userRank")
     private String userRank; // 职务
 
+    @Column(name = "POST_RANK")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    @DictionaryMap(fieldName="userPostText",value="PostRank")
+    @ApiModelProperty(value = "职务",name = "postRank")
+    private String postRank; // 职务
+
     @Column(name = "RANK_MEMO")
     @Length(max = 256, message = "字段长度不能大于{max}")
     private String rankMemo; // 备注
 
-    @Column(name = "IS_PRIMARY")
+    @Column(name = "REL_TYPE")
     @NotBlank(message = "字段不能为空")
     @Length(max = 1, message = "字段长度必须为{max}")
-    private String isPrimary; // 是否为主
+    private String relType; // 是否为主
 
     @Column(name = "USER_ORDER")
     private Long userOrder;    //用户排序号
@@ -137,7 +143,7 @@ public class UserUnit implements IUserUnit, java.io.Serializable {
      */
     public UserUnit(String id, String isprimary) {
         this.userUnitId = id;
-        this.isPrimary = isprimary;
+        this.relType = isprimary;
     }
 
     /**
@@ -152,11 +158,20 @@ public class UserUnit implements IUserUnit, java.io.Serializable {
         this.userUnitId = id;
         this.userStation = userstation;
         this.userRank = userrank;
-        this.isPrimary = isprimary;
+        this.relType = isprimary;
     }
 
     // Property accessors
 
+
+    @Override
+    public String getPostRank() {
+        return postRank;
+    }
+
+    public void setPostRank(String postRank) {
+        this.postRank = postRank;
+    }
 
     public String getUserStation() {
         return this.userStation;
@@ -210,17 +225,19 @@ public class UserUnit implements IUserUnit, java.io.Serializable {
     }
 
     /**
-     * T:主机构 F：辅机构
-     * @return  IsPrimary
+     * 关联关系，数据字典
+     * 归属部门 T 工作部门 F 借出部门 O 借入部门 I
+     * @return 归属部门 T 工作部门 F 借出部门 O 借入部门 I
      */
-    public String getIsPrimary() {
-        return this.isPrimary;
+    @Override
+    public String getRelType() {
+        return this.relType;
     }
     /**
      * @param isprimary T:主机构 F：辅机构
      */
-    public void setIsPrimary(String isprimary) {
-        this.isPrimary = isprimary;
+    public void setRelType(String isprimary) {
+        this.relType = isprimary;
     }
 
 

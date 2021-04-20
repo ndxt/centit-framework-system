@@ -113,7 +113,7 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
     private String userWord;
 
     @Column(name = "USER_TAG")
-    @Length(max = 100, message = "字段长度不能大于{max}")
+    @Length(max = 200, message = "字段长度不能大于{max}")
     private String userTag;
 
     @Column(name = "USER_ORDER")

@@ -133,11 +133,11 @@ public class SysUserUnitManagerImpl
             userunit.setUserUnitId(UuidOpt.getUuidAsString22());
         }
 
-        if ("T".equals(userunit.getIsPrimary())) {
+        if ("T".equals(userunit.getRelType())) {
             UserUnit origPrimUnit=userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode());
             if(origPrimUnit!=null){
-                origPrimUnit.setIsPrimary("F");
-                //userunit.setIsPrimary("T");
+                origPrimUnit.setRelType("F");
+                //userunit.setRelType("T");
                 userUnitDao.updateUserUnit(origPrimUnit);
             }
             UserInfo user=userInfoDao.getUserByCode(userunit.getUserCode());
@@ -174,11 +174,11 @@ public class SysUserUnitManagerImpl
 
     @Override
     public void updateUserUnit(UserUnit userunit) {
-        if ("T".equals(userunit.getIsPrimary())) {
+        if ("T".equals(userunit.getRelType())) {
             UserUnit origPrimUnit=userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode());
             if(origPrimUnit!=null && ! origPrimUnit.getUserUnitId().equals(userunit.getUserUnitId())){
-                origPrimUnit.setIsPrimary("F");
-                userunit.setIsPrimary("T");
+                origPrimUnit.setRelType("F");
+                userunit.setRelType("T");
                 userUnitDao.updateUserUnit(origPrimUnit);
             }
             UserInfo user=userInfoDao.getUserByCode(userunit.getUserCode());

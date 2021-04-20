@@ -322,8 +322,9 @@ public class UserUnitController extends BaseController {
     @WrapUpResponseBody
     public ResponseData delete(@ParamName("userUnitId") @PathVariable String userUnitId) {
         UserUnit dbUserUnit = sysUserUnitManager.getObjectById(userUnitId);
-        if ("T".equals(dbUserUnit.getIsPrimary())) {
-            return ResponseData.makeErrorMessage("主机构组织信息不能删除！");
+        if ("T".equals(dbUserUnit.getRelType()) ||
+            "O".equals(dbUserUnit.getRelType()) ) {
+            return ResponseData.makeErrorMessage("归属部门信息不能删除！");
         }
         sysUserUnitManager.deleteObject(dbUserUnit);
         return ResponseData.successResponse;

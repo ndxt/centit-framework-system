@@ -190,7 +190,7 @@ public class UserInfoController extends BaseController {
         sysUserUnitManager.deletePrimaryUnitByUserCode(userCode);
         userUnit.setUserCode(userInfo.getUserCode());
         userUnit.setUnitCode(userInfo.getPrimaryUnit());
-        userUnit.setIsPrimary("T");
+        userUnit.setRelType("T");
         userUnit.setCreator(WebOptUtils.getCurrentUserCode(request));
         sysUserUnitManager.saveNewUserUnit(userUnit);
 

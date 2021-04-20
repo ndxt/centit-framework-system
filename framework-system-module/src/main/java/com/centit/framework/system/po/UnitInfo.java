@@ -83,7 +83,7 @@ public class UnitInfo implements IUnitInfo, java.io.Serializable{
     private String unitWord;//机构自定义编码
 
     @Column(name = "UNIT_TAG")
-    @Length(max = 100, message = "字段长度不能大于{max}")
+    @Length(max = 2200, message = "字段长度不能大于{max}")
     @ApiModelProperty(value = "机构标签",name = "unitTag",required = true)
     private String unitTag;//机构标签
 
