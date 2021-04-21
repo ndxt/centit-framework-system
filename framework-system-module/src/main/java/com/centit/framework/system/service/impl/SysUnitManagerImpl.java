@@ -103,22 +103,23 @@ public class SysUnitManagerImpl implements SysUnitManager {
 
     @Override
     @Transactional
-    public String saveNewUnitInfo(UnitInfo unitinfo){
+    public String saveNewUnitInfo(UnitInfo unitinfo) {
 
-        if(StringUtils.isBlank(unitinfo.getUnitCode()) && ! "default".equals(unitIdFormat)) {
+        if (StringUtils.isBlank(unitinfo.getUnitCode()) && !"default".equals(unitIdFormat)) {
             String unitCode =
                 PersistenceUtils.makeIdByFormat(unitInfoDao.getNextKey(), unitIdFormat,
-                    "D",8,"0");
+                    "D", 8, "0");
             unitinfo.setUnitCode(unitCode);
         }
         UnitInfo parentUnit = unitInfoDao.getObjectById(unitinfo.getParentUnit());
-        if (parentUnit == null) {
-          unitinfo.setUnitPath("/" + unitinfo.getUnitWord() );
-        } else {
-          unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitWord());
-        }
-
         unitInfoDao.saveNewObject(unitinfo);
+        if (parentUnit == null) {
+            unitinfo.setUnitPath("/" + unitinfo.getUnitCode());
+        } else {
+            unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitCode());
+        }
+        unitinfo.setTopUnit(unitinfo.getUnitCode());
+        unitInfoDao.updateObject(unitinfo);
         CodeRepositoryCache.evictCache("UnitInfo");
         return unitinfo.getUnitCode();
     }
