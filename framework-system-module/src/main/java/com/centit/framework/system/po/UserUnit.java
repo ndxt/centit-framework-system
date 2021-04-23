@@ -9,7 +9,6 @@ import com.centit.support.database.orm.ValueGenerator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -76,7 +75,6 @@ public class UserUnit implements IUserUnit, java.io.Serializable {
     private String rankMemo; // 备注
 
     @Column(name = "REL_TYPE")
-    @NotBlank(message = "字段不能为空")
     @Length(max = 1, message = "字段长度必须为{max}")
     private String relType; // 是否为主
 

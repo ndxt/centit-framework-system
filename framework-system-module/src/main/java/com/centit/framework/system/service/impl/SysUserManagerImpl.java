@@ -170,6 +170,7 @@ public class SysUserManagerImpl implements SysUserManager {
         }
 
         userInfo.setUserPin(getDefaultPassword(userInfo.getUserCode()));
+        userInfo.setTopUnit(userInfo.getPrimaryUnit());
         userInfoDao.saveNewObject(userInfo);
         //resetPwd(userInfo.getUserCode());
         userUnit.setUserUnitId(userUnitDao.getNextKey());
