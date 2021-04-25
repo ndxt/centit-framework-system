@@ -72,6 +72,14 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
     }
 
     @Transactional
+    public List<UnitInfo> listAllTopUnits() {
+        String sql = "select a.* from F_UNITINFO a where CONCAT('/',a.UNIT_CODE) = a.UNIT_PATH";
+        return getJdbcTemplate().execute(
+            (ConnectionCallback<List<UnitInfo>>) conn ->
+                OrmDaoUtils.queryObjectsByParamsSql(conn, sql, null, UnitInfo.class));
+    }
+
+    @Transactional
     public UnitInfo getUnitByName(String name) {
         String sql = "select u.UNIT_CODE, u.PARENT_UNIT, u.UNIT_TYPE, u.IS_VALID, u.UNIT_NAME, u.ENGLISH_NAME," +
                 " u.UNIT_SHORT_NAME, u.UNIT_WORD, u.UNIT_TAG, u.UNIT_DESC, u.UNIT_ORDER, u.UNIT_GRADE," +

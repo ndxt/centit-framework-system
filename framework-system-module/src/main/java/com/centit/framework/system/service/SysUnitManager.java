@@ -74,4 +74,6 @@ public interface SysUnitManager{
 
     List<UnitInfo> listUserTopUnits(String userCode);
 
+    List<UnitInfo> listAllTopUnits();
+
 }

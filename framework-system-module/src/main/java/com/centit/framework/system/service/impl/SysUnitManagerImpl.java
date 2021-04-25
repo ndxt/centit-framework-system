@@ -285,4 +285,9 @@ public class SysUnitManagerImpl implements SysUnitManager {
     public List<UnitInfo> listUserTopUnits(String userCode) {
         return unitInfoDao.listUserTopUnits(userCode);
     }
+
+    @Override
+    public List<UnitInfo> listAllTopUnits() {
+        return unitInfoDao.listAllTopUnits();
+    }
 }
