@@ -80,6 +80,7 @@ public class UserUnit implements IUserUnit, java.io.Serializable {
     @Length(max = 1, message = "字段长度必须为{max}")
     private String relType; // 是否为主
 
+    @OrderBy
     @Column(name = "USER_ORDER")
     private Long userOrder;    //用户排序号
 
