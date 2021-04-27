@@ -753,4 +753,10 @@ public class UnitInfoController extends BaseController {
         return sysUnitManager.listUserTopUnits(userCode);
     }
 
+    @ApiOperation(value = "获得所有租户", notes = "获得所有租户。")
+    @RequestMapping(value = "/topUnit/all", method = RequestMethod.GET)
+    @WrapUpResponseBody(contentType = WrapUpContentType.MAP_DICT)
+    public  List<UnitInfo> listAllTopUnits(HttpServletRequest request) {
+        return sysUnitManager.listAllTopUnits();
+    }
 }
