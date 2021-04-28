@@ -438,13 +438,16 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                 sysuser.putUserSettingsParams(us.getParamCode(), us.getParamValue());
             }
         }
-        if(this.supportTenant) {
+
+        sysuser.setTopUnitCode(userinfo.getTopUnit());
+        if(StringUtils.isBlank(sysuser.getTopUnitCode())) {
             UnitInfo ui = unitInfoDao.getObjectById(currentUnitCode);
-            if(ui!=null) {
+            if (ui != null) {
                 sysuser.setTopUnitCode(ui.getTopUnit());
             }
-        } else {
-            sysuser.setTopUnitCode(GlobalConstValue.NO_TENANT_TOP_UNIT);
+            if (StringUtils.isBlank(sysuser.getTopUnitCode())) {
+                sysuser.setTopUnitCode(GlobalConstValue.SYSTEM_TENANT_TOP_UNIT);
+            }
         }
         return sysuser;
     }
