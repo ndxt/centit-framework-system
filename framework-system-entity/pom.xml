@@ -9,16 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>framework-system-module</artifactId>
-    <name>com.centit.framework:framework-system-module</name>
-    <packaging>jar</packaging>
-    <description>定义了一组和core兼容的表结构，并用mybatis实现了表的增删改查</description>
+    <artifactId>framework-system-entity</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>com.centit.framework</groupId>
-            <artifactId>framework-system-entity</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
         </dependency>
 
         <dependency>
@@ -28,28 +24,9 @@
         </dependency>
 
         <dependency>
-          <groupId>com.centit.framework</groupId>
-          <artifactId>centit-persistence-extend</artifactId>
-          <version>${centit.persistence.version}</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- test library -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
+            <groupId>com.centit.framework</groupId>
+            <artifactId>framework-core</artifactId>
+            <version>${centit.framework.version}</version>
         </dependency>
 
         <!-- server runtime library -->

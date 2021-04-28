@@ -85,6 +85,7 @@
         <module>framework-system-module</module>
         <module>framework-system-config</module>
         <module>framework-system-web</module>
+        <module>framework-system-entity</module>
     </modules>
 
     <build>
