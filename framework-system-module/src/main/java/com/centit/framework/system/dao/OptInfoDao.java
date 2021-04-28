@@ -24,9 +24,9 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
         filterField.put("optUrl", CodeBook.EQUAL_HQL_ID);
         filterField.put("optName", CodeBook.LIKE_HQL_ID);
         filterField.put("preOptId", CodeBook.EQUAL_HQL_ID);
-        filterField.put("NP_TOPOPT", "(preOptId is null or preOptId='0')");
+        filterField.put("NP_TOPOPT", "(PRE_OPT_ID is null or PRE_OPT_ID='0')");
         filterField.put("optType", CodeBook.EQUAL_HQL_ID);
-        filterField.put("optTypes", "optType in (:optTypes)");
+        filterField.put("optTypes", "OPT_TYPE in (:optTypes)");
         filterField.put("topOptId", CodeBook.EQUAL_HQL_ID);
         filterField.put("isInToolbar", CodeBook.EQUAL_HQL_ID);
         return filterField;
@@ -35,7 +35,7 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
     @Transactional
     public List<OptInfo> listParentMenuFunc(){
 //        String hql1 = "where OPT_URL='...' order by ORDER_IND ";
-        String sql = "where Opt_ID in (select Pre_Opt_ID from f_optinfo group by Pre_Opt_ID) order by order_ind";
+        String sql = "where Opt_ID in (select PRE_OPT_ID from f_optinfo group by Pre_Opt_ID) order by order_ind";
         return super.listObjectsByFilter(sql,(Object[]) null);
     }
 
@@ -189,8 +189,8 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
         String sql = "select a.* " +
             "from F_OPTINFO a join F_OS_INFO b on(a.TOP_OPT_ID=b.REL_OPT_ID) " +
             "where b.TOP_UNIT = :TOP_UNIT " +
-            "[:preOptId | and a.preOptId =:preOptId]" +
-            "[:NP_TOPOPT | and (a.preOptId is null or a.preOptId='0')]";
+            "[:preOptId | and a.PRE_OPT_ID =:preOptId]" +
+            "[:NP_TOPOPT | and (a.PRE_OPT_ID is null or a.PRE_OPT_ID='0')]";
         QueryAndNamedParams qap = QueryUtils.translateQuery(sql, filterMap);
         return getJdbcTemplate().execute(
             (ConnectionCallback<List<OptInfo>>) conn ->
