@@ -188,7 +188,7 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
     public List<OptInfo> listFromParent(Map<String, Object> filterMap){
         String sql = "select a.* " +
             "from F_OPTINFO a join F_OS_INFO b on(a.TOP_OPT_ID=b.REL_OPT_ID) " +
-            "where b.TOP_UNIT = :TOP_UNIT " +
+            "where 1=1 [:topUnit | and b.TOP_UNIT = :topUnit] " +
             "[:preOptId | and a.PRE_OPT_ID =:preOptId]" +
             "[:NP_TOPOPT | and (a.PRE_OPT_ID is null or a.PRE_OPT_ID='0')]";
         QueryAndNamedParams qap = QueryUtils.translateQuery(sql, filterMap);
