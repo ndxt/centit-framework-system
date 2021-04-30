@@ -29,6 +29,7 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
         filterField.put("optTypes", "OPT_TYPE in (:optTypes)");
         filterField.put("topOptId", CodeBook.EQUAL_HQL_ID);
         filterField.put("isInToolbar", CodeBook.EQUAL_HQL_ID);
+        filterField.put("topUnit", CodeBook.EQUAL_HQL_ID);
         return filterField;
     }
 

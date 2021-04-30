@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,12 +102,17 @@ public class UserInfoController extends BaseController {
             searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         }
         List<UserInfo> listObjects;
+        //List<UserInfo> listTransObjects = new ArrayList<>();
         if (BooleanBaseOpt.castObjectToBoolean(_search,false)) {
             listObjects = sysUserManager.listObjects(searchColumn);
             //pageDesc = null;
         } else {
             listObjects = sysUserManager.listObjects(searchColumn, pageDesc);
         }
+        //脱敏操作
+        /*listTransObjects.addAll(listObjects);
+        listObjects.clear();
+        listTransObjects.forEach(user -> listObjects.add(Sensitive.desensitize(user)));*/
         return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
     }
 
@@ -242,6 +248,8 @@ public class UserInfoController extends BaseController {
         userInfo.setEnglishName(StringEscapeUtils.unescapeHtml4(userInfo.getEnglishName()));
         userInfo.setUserName(StringEscapeUtils.unescapeHtml4(userInfo.getUserName()));
         userInfo.setUserDesc(StringEscapeUtils.unescapeHtml4(userInfo.getUserDesc()));
+        //脱敏操作
+        //UserInfo desensitizeUserInfo = Sensitive.desensitize(userInfo);
 
         Object userJson = DictionaryMapUtils.objectToJSON(userInfo);
         Object userUnitJson = DictionaryMapUtils.objectToJSON(userUnit);
@@ -435,4 +443,28 @@ public class UserInfoController extends BaseController {
         return ResponseData.successResponse;
     }
 
+    /*
+     * 获取单个用户指定的敏感信息
+     *
+     * @param userCode 用户代码
+     * @return 结果
+     */
+    @ApiOperation(value = "获取单个用户指定的敏感信息", notes = "获取单个用户指定的敏感信息。")
+    @ApiImplicitParam(
+        name = "userCode", value = "用户代码",
+        paramType = "path", dataType = "String")
+    @RequestMapping(value = "/{userCode}/{name}", method = RequestMethod.GET)
+    @WrapUpResponseBody
+    public ResponseData getUserInfo(@PathVariable String userCode, @PathVariable String name) {
+        UserInfo userInfo = sysUserManager.getObjectById(userCode);
+        Map<String, String> result = new HashMap<>();
+        if ("idCardNo".equals(name)) {
+            result.put(name, userInfo.getIdCardNo());
+        } else if ("regCellPhone".equals(name)) {
+            result.put(name, userInfo.getRegCellPhone());
+        } else if ("regEmail".equals(name)) {
+            result.put(name, userInfo.getRegEmail());
+        }
+        return ResponseData.makeResponseData(result);
+    }
 }
