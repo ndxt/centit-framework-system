@@ -276,4 +276,20 @@ public class SysUserManagerImpl implements SysUserManager {
     public UserInfo getUserByUserWord(String userWord){
         return userInfoDao.getUserByUserWord(userWord);
     }
+
+    @Override
+    public List<OptMethod> listUserPowers(String topUnit, String userCode) {
+        List<FVUserOptList> fvUserOptLists = userInfoDao.listUserPowers(topUnit, userCode);
+        List<OptMethod> optMethods = new ArrayList<>();
+        fvUserOptLists.forEach(fv -> {
+            OptMethod method = new OptMethod();
+            method.setOptId(fv.getOptId());
+            method.setUserCode(fv.getUserCode());
+            method.setOptCode(fv.getOptcode());
+            method.setOptName(fv.getOptName());
+            method.setOptMethod(fv.getOptMethod());
+            optMethods.add(method);
+        });
+        return optMethods;
+    }
 }

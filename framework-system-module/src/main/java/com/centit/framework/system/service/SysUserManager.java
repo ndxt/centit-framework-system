@@ -1,5 +1,6 @@
 package com.centit.framework.system.service;
 
+import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserUnit;
@@ -65,4 +66,6 @@ public interface SysUserManager{
      boolean isAnyOneExist(String userCode, String loginName,String regPhone,String regEmail);
 
      UserInfo getUserByUserWord(String userWord);
+
+     List<OptMethod> listUserPowers(String topUnit, String userCode);
 }

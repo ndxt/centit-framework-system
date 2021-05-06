@@ -93,6 +93,9 @@ public class OptMethod implements IOptMethod, java.io.Serializable{
      */
     @Column(name = "OPT_ORDER")
     private Integer optOrder;// 操作方法排序
+
+    @Transient
+    private String userCode;
     //结束
 
     // Constructors
@@ -252,6 +255,15 @@ public class OptMethod implements IOptMethod, java.io.Serializable{
       public void setLastModifyDate(Date lastModifyDate) {
           this.updateDate = lastModifyDate;
     }
+
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
+
     //结束
       @Override
       public boolean equals(Object obj){

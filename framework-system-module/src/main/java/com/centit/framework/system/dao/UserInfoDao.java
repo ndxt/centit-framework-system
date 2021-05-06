@@ -41,6 +41,16 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
         " and (a.SECEDE_DATE is null or a.SECEDE_DATE > :currentDateTime )" +
         " and b.IS_VALID='T' and a.ROLE_CODE = :roleCode ";
 
+    private static final String f_v_topunit_user_powers =
+        "select DISTINCT a.USER_CODE, c.OPT_CODE, c.OPT_NAME, c.OPT_ID, c.OPT_METHOD " +
+            "from F_V_USERROLES a " +
+            "JOIN F_ROLEPOWER b ON ( a.Role_Code = b.Role_Code ) " +
+            "JOIN F_OPTDEF c ON ( b.OPT_CODE = c.OPT_CODE ) " +
+            "where USER_CODE= :userCode and OPT_METHOD is not null and a.role_code in ( " +
+            "select b.ROLE_CODE from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE) " +
+            "where a.USER_CODE = :userCode and a.OBTAIN_DATE <= :currentDateTime and " +
+            " (a.SECEDE_DATE is null  or a.SECEDE_DATE > :currentDateTime) and b.IS_VALID='T' " +
+            " and ( ROLE_TYPE = 'G' or (ROLE_TYPE='D' and b.UNIT_CODE = :unitCode ) ) )";
 
     public Map<String, String> getFilterField() {
         Map<String, String> filterField = new HashMap<>();
@@ -105,6 +115,16 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
                 (ConnectionCallback<List<FVUserOptList>>) conn ->
                         OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
                                 new Object[]{userCode}, FVUserOptList.class));
+    }
+
+    @Transactional
+    public List<FVUserOptList> listUserPowers(String topUnit, String userCode) {
+        Map<String,Object> map = CollectionsOpt.createHashMap("userCode",userCode,
+            "currentDateTime", DatetimeOpt.currentSqlDate(),
+            "unitCode", topUnit);
+        return jdbcTemplate.execute(
+            (ConnectionCallback<List<FVUserOptList>>) conn -> OrmDaoUtils
+                .queryObjectsByNamedParamsSql(conn, f_v_topunit_user_powers, map, FVUserOptList.class));
     }
 
     @Transactional
