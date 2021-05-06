@@ -2,6 +2,7 @@ package com.centit.framework.system.service.impl;
 
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.security.model.CentitPasswordEncoder;
+import com.centit.framework.system.dao.UnitInfoDao;
 import com.centit.framework.system.dao.UserInfoDao;
 import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.dao.UserUnitDao;
@@ -9,6 +10,7 @@ import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysUserManager;
 import com.centit.support.common.ObjectException;
 import com.centit.support.database.utils.PageDesc;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +45,8 @@ public class SysUserManagerImpl implements SysUserManager {
     @Autowired
     protected UserInfoDao userInfoDao;
 
+    @Autowired
+    private UnitInfoDao unitInfoDao;
 
     private String getDefaultPassword(String userCode) {
         //final String defaultPassword = "000000";
@@ -170,13 +174,22 @@ public class SysUserManagerImpl implements SysUserManager {
         }
 
         userInfo.setUserPin(getDefaultPassword(userInfo.getUserCode()));
-        userInfo.setTopUnit(userInfo.getPrimaryUnit());
+        UnitInfo unitInfo = unitInfoDao.getObjectById(userInfo.getPrimaryUnit());
+        String topUnitCode = "";
+        if (null != unitInfo && StringUtils.isNotBlank(unitInfo.getUnitPath())) {
+            String[] unitCodeArray = unitInfo.getUnitPath().split("/");
+            if (ArrayUtils.isNotEmpty(unitCodeArray)) {
+                topUnitCode = unitCodeArray[0];
+            }
+        }
+        userInfo.setTopUnit(topUnitCode);
         userInfoDao.saveNewObject(userInfo);
         //resetPwd(userInfo.getUserCode());
         userUnit.setUserUnitId(userUnitDao.getNextKey());
         userUnit.setUserCode(userInfo.getUserCode());
         userUnit.setUnitCode(userInfo.getPrimaryUnit());
         userUnit.setRelType("T");
+        userUnit.setTopUnit(topUnitCode);
         userUnitDao.saveNewObject(userUnit);
 
         if(null!=userInfo.getUserRoles()){

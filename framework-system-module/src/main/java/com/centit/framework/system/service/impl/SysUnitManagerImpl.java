@@ -8,6 +8,7 @@ import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.service.SysUnitManager;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -118,7 +119,12 @@ public class SysUnitManagerImpl implements SysUnitManager {
         } else {
             unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitCode());
         }
-        unitinfo.setTopUnit(unitinfo.getUnitCode());
+        if (StringUtils.isNotBlank(unitinfo.getUnitPath())) {
+            String[] unitCodeArray = unitinfo.getUnitPath().split("/");
+            if (ArrayUtils.isNotEmpty(unitCodeArray)) {
+                unitinfo.setTopUnit(unitCodeArray[0]);
+            }
+        }
         unitInfoDao.updateObject(unitinfo);
         CodeRepositoryCache.evictCache("UnitInfo");
         return unitinfo.getUnitCode();
