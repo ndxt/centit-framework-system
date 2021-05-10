@@ -178,8 +178,8 @@ public class SysUserManagerImpl implements SysUserManager {
         String topUnitCode = "";
         if (null != unitInfo && StringUtils.isNotBlank(unitInfo.getUnitPath())) {
             String[] unitCodeArray = unitInfo.getUnitPath().split("/");
-            if (ArrayUtils.isNotEmpty(unitCodeArray)) {
-                topUnitCode = unitCodeArray[0];
+            if (ArrayUtils.isNotEmpty(unitCodeArray) && unitCodeArray.length > 1) {
+                topUnitCode = unitCodeArray[1];
             }
         }
         userInfo.setTopUnit(topUnitCode);

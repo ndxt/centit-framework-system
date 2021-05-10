@@ -121,8 +121,8 @@ public class SysUnitManagerImpl implements SysUnitManager {
         }
         if (StringUtils.isNotBlank(unitinfo.getUnitPath())) {
             String[] unitCodeArray = unitinfo.getUnitPath().split("/");
-            if (ArrayUtils.isNotEmpty(unitCodeArray)) {
-                unitinfo.setTopUnit(unitCodeArray[0]);
+            if (ArrayUtils.isNotEmpty(unitCodeArray) && unitCodeArray.length > 1) {
+                unitinfo.setTopUnit(unitCodeArray[1]);
             }
         }
         unitInfoDao.updateObject(unitinfo);
