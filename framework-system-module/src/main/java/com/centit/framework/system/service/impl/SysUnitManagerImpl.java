@@ -253,7 +253,9 @@ public class SysUnitManagerImpl implements SysUnitManager {
 
         UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
         Map<String, Object> filterMap = new HashMap<>(4);
-        filterMap.put("unitPath", unitInfo.getUnitPath());
+        if (null != unitInfo) {
+            filterMap.put("unitPath", unitInfo.getUnitPath());
+        }
         return  unitInfoDao.listObjects(filterMap);
     }
 
