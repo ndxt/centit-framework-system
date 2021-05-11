@@ -457,7 +457,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                 sysuser.setTopUnitCode(ui.getTopUnit());
             }
             if (StringUtils.isBlank(sysuser.getTopUnitCode())) {
-                sysuser.setTopUnitCode(GlobalConstValue.SYSTEM_TENANT_TOP_UNIT);
+                //sysuser.setTopUnitCode(GlobalConstValue.SYSTEM_TENANT_TOP_UNIT);
             }
         }
         return sysuser;
