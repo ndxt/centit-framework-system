@@ -102,7 +102,7 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
             "where a.ROLE_CODE = :roleCode and a.OBTAIN_DATE <= :currentDateTime and " +
             " (a.SECEDE_DATE is null  or a.SECEDE_DATE > :currentDateTime) " +
             "and b.IS_VALID='T' " +
-            " and ROLE_TYPE='D' and UNIT_CODE = :unitCode";
+            " and ROLE_TYPE='D' and b.UNIT_CODE = :unitCode";
 
     @Transactional
     public List<UserRole> listUserRoles(String userCode) {
