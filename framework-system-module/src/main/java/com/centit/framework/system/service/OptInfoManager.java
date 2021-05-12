@@ -79,4 +79,6 @@ public interface OptInfoManager {
     List<OptInfo> listFromParent(Map<String, Object> filterMap);
 
     List<OptInfo> listAllOptInfoByUnit(String topUnit);
+
+    List<OptInfo> listUserOptinfos(String topUnit, String userCode);
 }

@@ -4,6 +4,8 @@ import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethodUrlMap;
+import com.centit.support.algorithm.CollectionsOpt;
+import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.QueryAndNamedParams;
 import com.centit.support.database.utils.QueryUtils;
@@ -197,5 +199,27 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
             (ConnectionCallback<List<OptInfo>>) conn ->
                 OrmDaoUtils.queryObjectsByNamedParamsSql(conn, qap.getQuery() ,
                     qap.getParams(), OptInfo.class));
+    }
+
+    @Transactional
+    public List<OptInfo> listUserOptinfos(String topUnit, String userCode) {
+        String sql =
+            "select DISTINCT d.* " +
+                "from F_V_USERROLES a " +
+                "JOIN F_ROLEPOWER b ON ( a.Role_Code = b.Role_Code ) " +
+                "JOIN F_OPTDEF c ON ( b.OPT_CODE = c.OPT_CODE ) " +
+                "JOIN F_OPTINFO d ON (c.OPT_ID = d.OPT_ID) " +
+                "where USER_CODE= :userCode and a.role_code in ( " +
+                "select b.ROLE_CODE from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE) " +
+                "where a.USER_CODE = :userCode and a.OBTAIN_DATE <= :currentDateTime and " +
+                " (a.SECEDE_DATE is null  or a.SECEDE_DATE > :currentDateTime) and b.IS_VALID='T' " +
+                " and ( ROLE_TYPE = 'G' or (ROLE_TYPE='D' and b.UNIT_CODE = :unitCode ) ) ) " +
+                " order by d.PRE_OPT_ID,d.ORDER_IND ";
+        Map<String,Object> map = CollectionsOpt.createHashMap("userCode",userCode,
+            "currentDateTime", DatetimeOpt.currentSqlDate(),
+            "unitCode", topUnit);
+        return jdbcTemplate.execute(
+            (ConnectionCallback<List<OptInfo>>) conn -> OrmDaoUtils
+                .queryObjectsByNamedParamsSql(conn, sql, map, OptInfo.class));
     }
 }

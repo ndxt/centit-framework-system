@@ -397,4 +397,9 @@ public class OptInfoManagerImpl implements OptInfoManager {
     public List<OptInfo> listAllOptInfoByUnit(String topUnit) {
         return optInfoDao.listAllOptInfoByUnit(topUnit);
     }
+
+    @Override
+    public List<OptInfo> listUserOptinfos(String topUnit, String userCode) {
+        return optInfoDao.listUserOptinfos(topUnit, userCode);
+    }
 }
