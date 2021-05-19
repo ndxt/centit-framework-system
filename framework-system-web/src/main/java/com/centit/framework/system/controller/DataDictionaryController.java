@@ -573,6 +573,7 @@ public class DataDictionaryController extends BaseController {
 
     /**
      * 获取所有字典目录信息
+     * @param request 请求体
      * @return result
      */
     @ApiOperation(value = "获取所有字典目录信息", notes = "获取所有字典目录信息")
@@ -590,13 +591,13 @@ public class DataDictionaryController extends BaseController {
     /**
      * 获取所有字典目录信息及对应的所有字典明细信息
      *
-     * @param response HttpServletResponse
+     * @param request HttpServletResponse
      * @return result
      */
     @ApiOperation(value = "获取所有字典目录信息及对应的所有字典明细信息", notes = "获取所有字典目录信息及对应的所有字典明细信息")
     @RequestMapping(value = "/wholeDictionary", method = {RequestMethod.GET})
     @WrapUpResponseBody
-    public ResponseData getWholeDictionary(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseData getWholeDictionary(HttpServletRequest request) {
         Map<String, Object> searchColumn = new HashMap<>();
         if (WebOptUtils.isTenantTopUnit(request)) {
             searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
@@ -614,6 +615,7 @@ public class DataDictionaryController extends BaseController {
 
     /**
      * 将字典明细信息导入到Properties文件
+     * @param request 请求体
      * @return result
      * @exception IOException 异常
      */
