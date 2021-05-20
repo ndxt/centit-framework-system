@@ -1,5 +1,6 @@
 package com.centit.framework.system.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.UserInfo;
@@ -14,6 +15,7 @@ public interface SysUserManager{
      List<UserInfo> listObjects(Map<String, Object> filterMap);
 
      List<UserInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
+    JSONArray listObjectsByUnit(Map<String, Object> filterMap, PageDesc pageDesc);
 
      UserInfo getObjectById(String userCode);
 

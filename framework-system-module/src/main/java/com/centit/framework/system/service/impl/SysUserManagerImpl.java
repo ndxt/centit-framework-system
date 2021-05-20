@@ -1,5 +1,6 @@
 package com.centit.framework.system.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.security.model.CentitPasswordEncoder;
 import com.centit.framework.system.dao.UnitInfoDao;
@@ -252,7 +253,10 @@ public class SysUserManagerImpl implements SysUserManager {
     public List<UserInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
         return userInfoDao.listObjects(filterMap,pageDesc);
     }
-
+    @Override
+    public JSONArray listObjectsByUnit(Map<String, Object> filterMap, PageDesc pageDesc){
+        return userInfoDao.listObjectsByUnit(filterMap,pageDesc);
+    }
     @Override
     @Transactional
     public UserInfo getObjectById(String userCode) {

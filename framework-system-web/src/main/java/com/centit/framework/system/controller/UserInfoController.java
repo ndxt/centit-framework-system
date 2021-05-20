@@ -1,5 +1,6 @@
 package com.centit.framework.system.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
@@ -26,6 +27,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -115,7 +117,17 @@ public class UserInfoController extends BaseController {
         listTransObjects.forEach(user -> listObjects.add(Sensitive.desensitize(user)));*/
         return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
     }
-
+    @ApiOperation(value = "用户信息按机构分页查询", notes = "用户信息按机构分页查询")
+    @RequestMapping(value = "/querybyunit",method = RequestMethod.GET)
+    @WrapUpResponseBody
+    public PageQueryResult<Object> listQueryByUnit(PageDesc pageDesc,HttpServletRequest request) {
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
+        }
+        JSONArray jsonArray = sysUserManager.listObjectsByUnit(searchColumn, pageDesc);
+        return PageQueryResult.createJSONArrayResult(jsonArray,pageDesc, UserInfo.class);
+    }
     /*
      * 新增用户
      *

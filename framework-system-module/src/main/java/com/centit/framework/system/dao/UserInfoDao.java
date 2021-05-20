@@ -1,5 +1,6 @@
 package com.centit.framework.system.dao;
 
+import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
@@ -12,6 +13,8 @@ import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.PageDesc;
+import com.centit.support.database.utils.QueryAndNamedParams;
+import com.centit.support.database.utils.QueryUtils;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -135,6 +138,18 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     @Transactional
     public List<UserInfo> listUnderUnit(Map<String, Object> filterMap, PageDesc pageDesc) {
         return this.listObjectsByProperties(filterMap, pageDesc);
+    }
+    @Transactional
+    public JSONArray listObjectsByUnit(Map<String, Object> filterMap, PageDesc pageDesc) {
+        String querySql="SELECT a.* FROM F_USERINFO a " +
+            "JOIN " +
+            "(SELECT * FROM f_userunit WHERE 1=1 "
+        +"[:queryByUnit | AND unit_code=:queryByUnit] [:topUnit | AND top_unit=:topUnit]) b " +
+            "ON a.USER_CODE=b.user_code " +
+            "ORDER BY b.user_order";
+        QueryAndNamedParams qap = QueryUtils.translateQuery(querySql, filterMap);
+        return DatabaseOptUtils.listObjectsByNamedSqlAsJson(this,qap.getQuery(), qap.getParams(), pageDesc);
+
     }
 
     @Transactional
