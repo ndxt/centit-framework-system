@@ -305,6 +305,9 @@ public class RoleInfoController extends BaseController {
         if (StringUtils.isBlank(roleInfo.getUnitCode())) {
             roleInfo.setRoleOwner(WebOptUtils.getCurrentUnitCode(request));
         }
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            roleInfo.setUnitCode(WebOptUtils.getCurrentTopUnit(request));
+        }
         roleInfo.setCreator(WebOptUtils.getCurrentUserCode(request));
         roleInfo.setCreateDate(new Date());
         sysRoleManager.saveNewRoleInfo(roleInfo);
