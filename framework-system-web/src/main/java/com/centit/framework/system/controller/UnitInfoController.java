@@ -285,8 +285,10 @@ public class UnitInfoController extends BaseController {
             return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
                 "机构编码" + unitInfo.getUnitName() + "已存在，请更换！");
         }
-        while (!sysUnitManager.isUniqueOrder(unitInfo)) {
-            unitInfo.setUnitOrder(unitInfo.getUnitOrder() + 1);
+        if(unitInfo.getUnitOrder()==null || unitInfo.getUnitOrder()==0) {
+            while (!sysUnitManager.isUniqueOrder(unitInfo)) {
+                unitInfo.setUnitOrder(unitInfo.getUnitOrder() + 1);
+            }
         }
         sysUnitManager.saveNewUnitInfo(unitInfo);
 

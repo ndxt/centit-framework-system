@@ -144,6 +144,7 @@ public class SysUserUnitManagerImpl
             if(user != null) {
                 user.setPrimaryUnit(userunit.getUnitCode());
                 user.setTopUnit(userunit.getTopUnit());
+                user.setUserOrder(userunit.getUserOrder());
                 userInfoDao.updateUser(user);
             }
         }
@@ -186,6 +187,7 @@ public class SysUserUnitManagerImpl
             if(user != null) {
                 user.setPrimaryUnit(userunit.getUnitCode());
                 user.setTopUnit(userunit.getTopUnit());
+                user.setUserOrder(userunit.getUserOrder());
                 userInfoDao.updateUser(user);
             }
         }
