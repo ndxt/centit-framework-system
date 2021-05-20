@@ -466,7 +466,13 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             }
         } else {
             UnitInfo ui = unitInfoDao.getObjectById(sysuser.getTopUnitCode());
-            sysuser.getUserInfo().put("topUnitName", ui.getUnitName());
+            if (GlobalConstValue.NO_TENANT_TOP_UNIT.equals(sysuser.getTopUnitCode())
+                || GlobalConstValue.SYSTEM_TENANT_TOP_UNIT.equals(sysuser.getTopUnitCode())) {
+                ui = unitInfoDao.getObjectById(currentUnitCode);
+            }
+            if (null != ui) {
+                sysuser.getUserInfo().put("topUnitName", ui.getUnitName());
+            }
         }
         return sysuser;
     }
@@ -585,6 +591,12 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             }
 
         });*/
+    }
+
+    public static List<OptInfo> getFormatMenuTree(List<OptInfo> optInfos) {
+        DBPlatformEnvironment dbPlatformEnvironment = new DBPlatformEnvironment();
+        List<OptInfo> opts = dbPlatformEnvironment.formatMenuTree(optInfos);
+        return opts;
     }
 
     /**

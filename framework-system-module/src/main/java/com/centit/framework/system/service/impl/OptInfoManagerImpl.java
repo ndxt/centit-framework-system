@@ -400,6 +400,9 @@ public class OptInfoManagerImpl implements OptInfoManager {
 
     @Override
     public List<OptInfo> listUserOptinfos(String topUnit, String userCode) {
-        return optInfoDao.listUserOptinfos(topUnit, userCode);
+        List<OptInfo> preOpts = optInfoDao.listParentMenuFunc();
+        List<OptInfo> ls = optInfoDao.listUserOptinfos(topUnit, userCode);
+        List<OptInfo> menuFunsByUser =  DBPlatformEnvironment.getMenuFuncs(preOpts, ls);
+        return DBPlatformEnvironment.getFormatMenuTree(menuFunsByUser);
     }
 }
