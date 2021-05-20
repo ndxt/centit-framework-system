@@ -164,6 +164,7 @@ public class UserInfoController extends BaseController {
         }
         userUnit.setCreator(WebOptUtils.getCurrentUserCode(request));
         userUnit.setUserCode(userInfo.getUserCode());
+        userUnit.setUserOrder(userInfo.getUserOrder());
         sysUserManager.saveNewUserInfo(userInfo, userUnit);
 
         return ResponseData.makeResponseData(userInfo);
@@ -210,6 +211,7 @@ public class UserInfoController extends BaseController {
         userUnit.setUnitCode(userInfo.getPrimaryUnit());
         userUnit.setRelType("T");
         userUnit.setCreator(WebOptUtils.getCurrentUserCode(request));
+        userUnit.setUserOrder(userInfo.getUserOrder());
         sysUserUnitManager.saveNewUserUnit(userUnit);
 
         if (StringUtils.isBlank(userInfo.getUserPin())) {
