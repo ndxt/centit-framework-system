@@ -451,6 +451,10 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         }
 
         sysuser.setTopUnitCode(userinfo.getTopUnit());
+        UnitInfo currentUnit = unitInfoDao.getObjectById(currentUnitCode);
+        if (null != currentUnit) {
+            sysuser.getUserInfo().put("primaryUnitName", currentUnit.getUnitName());
+        }
         if (StringUtils.isBlank(sysuser.getTopUnitCode())) {
             UnitInfo ui = unitInfoDao.getObjectById(currentUnitCode);
             if (ui != null) {
