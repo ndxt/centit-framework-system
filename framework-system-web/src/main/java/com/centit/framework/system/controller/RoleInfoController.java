@@ -86,9 +86,6 @@ public class RoleInfoController extends BaseController {
     public PageQueryResult<RoleInfo> listAllRole(PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("NP_ALL", "true");
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
         List<RoleInfo> list = sysRoleManager.listObjects(filterMap, pageDesc);
         return PageQueryResult.createResultMapDict(list, pageDesc);
     }
@@ -107,9 +104,6 @@ public class RoleInfoController extends BaseController {
     public PageQueryResult<RoleInfo> listSubSystemRole(@PathVariable String topOptId,PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("subSystemROLE", topOptId);
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
         List<RoleInfo> list = sysRoleManager.listObjects(filterMap, pageDesc);
         return PageQueryResult.createResultMapDict(list, pageDesc);
     }
@@ -137,9 +131,6 @@ public class RoleInfoController extends BaseController {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("NP_GLOBAL", "true");
         filterMap.put("isValid", "T");
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
         return PageQueryResult.createResultMapDict(roleInfos, pageDesc, field);
     }
@@ -161,9 +152,6 @@ public class RoleInfoController extends BaseController {
         String currentUnit = WebOptUtils.getCurrentUnitCode(request);
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("publicUnitRole", currentUnit);
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
         return PageQueryResult.createResultMapDict(roleInfos, pageDesc);
     }
