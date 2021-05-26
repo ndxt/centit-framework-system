@@ -146,6 +146,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
             "(SELECT * FROM f_userunit WHERE 1=1 "
         +"[:queryByUnit | AND unit_code=:queryByUnit] [:topUnit | AND top_unit=:topUnit]) b " +
             "ON a.USER_CODE=b.user_code " +
+            "where 1=1 [:(like)userName | and (User_Name LIKE :userName OR LOGIN_NAME LIKE :userName)]"+
             "ORDER BY b.user_order";
         QueryAndNamedParams qap = QueryUtils.translateQuery(querySql, filterMap);
         return DatabaseOptUtils.listObjectsByNamedSqlAsJson(this,qap.getQuery(), qap.getParams(), pageDesc);
