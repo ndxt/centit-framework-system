@@ -154,7 +154,9 @@ public class SysUserUnitManagerImpl
         IDataDictionary dd = CodeRepositoryUtil.getDataPiece("StationType",userunit.getUserStation());
         addUserRoleWhenNotExist(userunit.getUserCode(),dd.getExtraCode2(), userRoles);
         dd = CodeRepositoryUtil.getDataPiece("RankType",userunit.getUserRank());
-        addUserRoleWhenNotExist(userunit.getUserCode(),dd.getExtraCode2(), userRoles);
+        if (null != dd) {
+            addUserRoleWhenNotExist(userunit.getUserCode(), dd.getExtraCode2(), userRoles);
+        }
         CodeRepositoryCache.evictCache("UserUnit");
         return userunit.getUserUnitId();
     }
