@@ -141,8 +141,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
      * @return 树状菜单列表
      */
     private List<OptInfo> formatMenuTree(List<OptInfo> optInfos) {
-        optInfos.sort((a, b) -> a.getOrderInd() == null ? 1 : (
-            b.getOrderInd() == null ? -1 : Long.compare(a.getOrderInd(), b.getOrderInd())
+        optInfos.sort((a, b) -> a.getOrderInd() == null && b.getOrderInd() == null ? 0 : (
+            a.getOrderInd() == null ? 1 : (b.getOrderInd() == null ? -1 : Long.compare(a.getOrderInd(), b.getOrderInd()
+            ))
         ));
 
         List<OptInfo> parentMenu = new ArrayList<>();
