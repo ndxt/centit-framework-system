@@ -1,5 +1,6 @@
 package com.centit.framework.system.service.impl;
 
+import com.centit.framework.common.GlobalConstValue;
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.system.dao.OptDataScopeDao;
 import com.centit.framework.system.dao.OptInfoDao;
@@ -9,6 +10,7 @@ import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.service.OptInfoManager;
 import com.centit.support.algorithm.CollectionsOpt;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -401,7 +403,12 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Override
     public List<OptInfo> listUserOptinfos(String topUnit, String userCode) {
         List<OptInfo> preOpts = optInfoDao.listParentMenuFunc();
-        List<OptInfo> ls = optInfoDao.listUserOptinfos(topUnit, userCode);
+        List<OptInfo> ls;
+        if (StringUtils.isBlank(topUnit) || GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)) {
+            ls = optInfoDao.listUserAllSubMenu(userCode, "o");
+        } else {
+            ls = optInfoDao.listUserOptinfos(topUnit, userCode);
+        }
         List<OptInfo> menuFunsByUser =  DBPlatformEnvironment.getMenuFuncs(preOpts, ls);
         return DBPlatformEnvironment.getFormatMenuTree(menuFunsByUser);
     }

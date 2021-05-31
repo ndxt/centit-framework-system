@@ -203,19 +203,20 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
 
     @Transactional
     public List<OptInfo> listUserOptinfos(String topUnit, String userCode) {
-        String sql =
-            "select DISTINCT d.* " +
-                "from F_V_USERROLES a " +
-                "JOIN F_ROLEPOWER b ON ( a.Role_Code = b.Role_Code ) " +
-                "JOIN F_OPTDEF c ON ( b.OPT_CODE = c.OPT_CODE ) " +
-                "JOIN F_OPTINFO d ON (c.OPT_ID = d.OPT_ID) " +
-                "where USER_CODE= :userCode and d.IS_IN_TOOLBAR = 'Y' and a.role_code in ( " +
-                "select b.ROLE_CODE from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE) " +
-                "where a.USER_CODE = :userCode and a.OBTAIN_DATE <= :currentDateTime and " +
-                " (a.SECEDE_DATE is null  or a.SECEDE_DATE > :currentDateTime) and b.IS_VALID='T' " +
-                " and ( ROLE_TYPE = 'G' or (ROLE_TYPE='D' and b.UNIT_CODE = :unitCode ) ) ) " +
-                " order by d.PRE_OPT_ID,d.ORDER_IND ";
-        Map<String,Object> map = CollectionsOpt.createHashMap("userCode",userCode,
+        String sql = "SELECT DISTINCT a.USER_CODE,d.Opt_ID,d.Opt_Name,d.Pre_Opt_ID,d.Form_Code,d.opt_url,d.opt_Route," +
+            "d.Msg_No,d.Msg_Prm,d.Is_In_ToolBar,d.Img_Index,d.Top_Opt_ID,d.Order_Ind,d.Page_Type,d.Opt_Type,d.flow_code," +
+            "d.icon,d.height,d.width,d.update_date,d.create_date,d.creator,d.updator " +
+            "from F_V_USERROLES a " +
+            "JOIN F_ROLEPOWER b ON a.Role_Code = b.Role_Code " +
+            "JOIN F_OPTDEF c ON b.OPT_CODE = c.OPT_CODE " +
+            "JOIN F_OPTINFO d ON c.OPT_ID = d.OPT_ID " +
+            "where USER_CODE= :userCode and d.IS_IN_TOOLBAR = 'Y' and a.role_code in ( " +
+            "select b.ROLE_CODE from F_USERROLE a join F_ROLEINFO b on a.ROLE_CODE=b.ROLE_CODE " +
+            "where a.USER_CODE = :userCode and a.OBTAIN_DATE <= :currentDateTime and " +
+            " (a.SECEDE_DATE is null or a.SECEDE_DATE > :currentDateTime) and b.IS_VALID='T' " +
+            " and ( ROLE_TYPE = 'G' or (ROLE_TYPE='D' and b.UNIT_CODE = :unitCode ) ) ) " +
+            " order by d.PRE_OPT_ID,d.ORDER_IND ";
+        Map<String, Object> map = CollectionsOpt.createHashMap("userCode", userCode,
             "currentDateTime", DatetimeOpt.currentSqlDate(),
             "unitCode", topUnit);
         return jdbcTemplate.execute(

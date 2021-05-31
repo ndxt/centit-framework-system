@@ -290,11 +290,12 @@ public class RoleInfoController extends BaseController {
     @WrapUpResponseBody
     public void createDepartmentRole(@ParamName("ri") @Valid RoleInfo roleInfo, HttpServletRequest request) {
         roleInfo.setRoleType("D");
-        if (StringUtils.isBlank(roleInfo.getUnitCode())) {
-            roleInfo.setRoleOwner(WebOptUtils.getCurrentUnitCode(request));
-        }
         if (WebOptUtils.isTenantTopUnit(request)) {
-            roleInfo.setUnitCode(WebOptUtils.getCurrentTopUnit(request));
+            roleInfo.setRoleOwner(WebOptUtils.getCurrentTopUnit(request));
+        } else {
+            if (StringUtils.isBlank(roleInfo.getUnitCode())) {
+                roleInfo.setRoleOwner(WebOptUtils.getCurrentUnitCode(request));
+            }
         }
         roleInfo.setCreator(WebOptUtils.getCurrentUserCode(request));
         roleInfo.setCreateDate(new Date());
@@ -460,7 +461,11 @@ public class RoleInfoController extends BaseController {
             throw new ObjectException(roleInfo, "角色信息不存在");
         }
         roleInfo.setRoleType("D");
-        roleInfo.setRoleOwner(WebOptUtils.getCurrentUnitCode(request));
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            roleInfo.setRoleOwner(WebOptUtils.getCurrentTopUnit(request));
+        } else {
+            roleInfo.setRoleOwner(WebOptUtils.getCurrentUnitCode(request));
+        }
         if(!StringUtils.equals(dbRoleInfo.getRoleOwner(), roleInfo.getRoleOwner())){
             throw new ObjectException(roleInfo, "不能修改部门角色的所属机构");
         }
