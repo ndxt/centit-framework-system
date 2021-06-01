@@ -167,7 +167,7 @@ public class UserRoleController extends BaseController {
         filterMap.put("userCode", userCode);
         filterMap.put("roleValid", "T");
         if (WebOptUtils.isTenantTopUnit(request)) {
-            filterMap.put("unitCode", WebOptUtils.getCurrentTopUnit(request));
+            filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         }
         return listObject(filterMap, pageDesc);
     }
