@@ -12,6 +12,7 @@ import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.algorithm.StringRegularOpt;
 import com.centit.support.algorithm.UuidOpt;
 import com.centit.support.database.utils.PageDesc;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -149,6 +150,15 @@ public class SysUserUnitManagerImpl
             }
         }
         // userunit.setIsprimary("T");//modify by hx bug：会默认都是主机构
+        if (StringUtils.isBlank(userunit.getTopUnit())) {
+            UnitInfo unitInfo = unitInfoDao.getObjectById(userunit.getUnitCode());
+            if (null != unitInfo && StringUtils.isNotBlank(unitInfo.getUnitPath())) {
+                String[] unitCodeArray = unitInfo.getUnitPath().split("/");
+                if (ArrayUtils.isNotEmpty(unitCodeArray) && unitCodeArray.length > 1) {
+                    userunit.setTopUnit(unitCodeArray[1]);
+                }
+            }
+        }
         userUnitDao.saveNewObject(userunit);
         List<FVUserRoles> userRoles = userRoleDao.listUserRolesByUserCode(userunit.getUserCode());
         IDataDictionary dd = CodeRepositoryUtil.getDataPiece("StationType",userunit.getUserStation());
