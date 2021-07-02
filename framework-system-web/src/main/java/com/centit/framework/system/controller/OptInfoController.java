@@ -1,8 +1,10 @@
 package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.JSONArray;
-import com.centit.framework.common.*;
-import com.centit.framework.components.CodeRepositoryCache;
+import com.centit.framework.common.ResponseData;
+import com.centit.framework.common.ResponseMapData;
+import com.centit.framework.common.ViewDataTransform;
+import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
@@ -28,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -172,7 +173,6 @@ public class OptInfoController extends BaseController {
     @WrapUpResponseBody
     public OptInfo createOptInfo(@ParamName("optInfo") @Valid OptInfo optInfo) {
         optInfoManager.saveNewOptInfo(optInfo);
-        CodeRepositoryCache.evictCache("OptInfo");
         return optInfo;
     }
 

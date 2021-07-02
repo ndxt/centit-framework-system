@@ -3,7 +3,6 @@ package com.centit.framework.system.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.WebOptUtils;
-import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpContentType;
@@ -269,8 +268,6 @@ public class RoleInfoController extends BaseController {
         roleInfo.setCreator(WebOptUtils.getCurrentUserCode(request));
         roleInfo.setCreateDate(new Date());
         sysRoleManager.saveNewRoleInfo(roleInfo);
-        //刷新缓存
-        CodeRepositoryCache.evictCache("RoleInfo");
     }
 
     /*
@@ -300,7 +297,6 @@ public class RoleInfoController extends BaseController {
         roleInfo.setCreator(WebOptUtils.getCurrentUserCode(request));
         roleInfo.setCreateDate(new Date());
         sysRoleManager.saveNewRoleInfo(roleInfo);
-        CodeRepositoryCache.evictCache("RoleInfo");
     }
 
     /*
@@ -330,8 +326,6 @@ public class RoleInfoController extends BaseController {
         roleInfo.setCreator(WebOptUtils.getCurrentUserCode(request));
         roleInfo.setCreateDate(new Date());
         sysRoleManager.saveNewRoleInfo(roleInfo);
-        //刷新缓存
-        CodeRepositoryCache.evictCache("RoleInfo");
     }
 
 
@@ -367,8 +361,6 @@ public class RoleInfoController extends BaseController {
         }
         dbRoleInfo.getRolePowers().add(rolePower);
         sysRoleManager.updateRoleInfo(dbRoleInfo);
-        //刷新缓存
-        CodeRepositoryCache.evictCache("RolePower");
     }
 
     /*
@@ -405,8 +397,6 @@ public class RoleInfoController extends BaseController {
 
         dbRoleInfo.getRolePowers().remove(rolePower);
         sysRoleManager.updateRoleInfo(dbRoleInfo);
-        //刷新缓存
-        CodeRepositoryCache.evictCache("RolePower");
     }
 
     /*
@@ -435,7 +425,6 @@ public class RoleInfoController extends BaseController {
         }
         roleInfo.setRoleCode(roleCode);
         sysRoleManager.updateRoleInfo(roleInfo);
-        CodeRepositoryCache.evictCache("RoleInfo");
     }
 
 
@@ -471,7 +460,6 @@ public class RoleInfoController extends BaseController {
         }
         roleInfo.setRoleCode(roleCode);
         sysRoleManager.updateRoleInfo(roleInfo);
-        CodeRepositoryCache.evictCache("RoleInfo");
     }
 
     @ApiOperation(value = "更新系统角色", notes = "更新系统角色。")
@@ -504,7 +492,6 @@ public class RoleInfoController extends BaseController {
         }
         roleInfo.setRoleCode(roleCode);
         sysRoleManager.updateRoleInfo(roleInfo);
-        CodeRepositoryCache.evictCache("RoleInfo");
     }
     /*
      * 更新系统角色权限
@@ -531,7 +518,6 @@ public class RoleInfoController extends BaseController {
             throw new ObjectException(roleInfo, "角色信息不存在");
         }
         sysRoleManager.updateRolePower(roleInfo);
-        CodeRepositoryCache.evictCache("RolePower");
     }
 
     /*
