@@ -2,20 +2,20 @@ insert into F_UNITINFO
 (UNIT_CODE, PARENT_UNIT, UNIT_TYPE, IS_VALID, UNIT_TAG,
 UNIT_NAME, ENGLISH_NAME, DEP_NO, UNIT_DESC,
 UNIT_SHORT_NAME, UNIT_WORD, UNIT_GRADE, UNIT_ORDER, UPDATE_DATE,
-CREATE_DATE, CREATOR, UPDATOR, UNIT_PATH,UNIT_MANAGER)
+CREATE_DATE, CREATOR, UPDATOR, UNIT_PATH,TOP_UNIT,UNIT_MANAGER)
 values
 ('U00001', null, 'N', 'T', null,
 '根机构', 'root', null, '根机构',
 'root', 'root', null, 1, sysdate,
-sysdate,  'u0000000', 'u0000000', '/U00001','u0000000');
+sysdate,  'u0000000', 'u0000000', '/U00001','all','u0000000');
 
-insert into F_USERINFO (USER_CODE, USER_PIN, IS_VALID, LOGIN_NAME, USER_NAME, USER_DESC, LOGIN_TIMES, ACTIVE_TIME, REG_EMAIL, USER_ORDER, USER_PWD, REG_CELL_PHONE, CREATE_DATE,CREATOR,UPDATOR,UPDATE_DATE)
-values ('noname', '67b74fe1423796dfe8db34b959b81fbd', 'F', 'noname', '匿名用户', '匿名用户', null, null, 'noname@centit.com', 1, '', '', sysdate,'u0000000','u0000000',sysdate);
-insert into F_USERINFO (USER_CODE, USER_PIN, IS_VALID, LOGIN_NAME, USER_NAME, USER_DESC, LOGIN_TIMES, ACTIVE_TIME, REG_EMAIL, USER_ORDER, USER_PWD, REG_CELL_PHONE, CREATE_DATE ,CREATOR,UPDATOR,UPDATE_DATE,primary_Unit)
-values ('u0000000', '$2a$11$DbyFNhHeCES5CKoMuM5sXepY7GM35sZkUSqQbjYJnFTzJ2GDIYGLK', 'T', 'admin', '管理员', '', null, null, 'codefan@centit.com', 1, '', '18017458877', sysdate,'u0000000','u0000000',sysdate,'U00001');
+insert into F_USERINFO (USER_CODE, USER_PIN, IS_VALID, LOGIN_NAME, USER_NAME, USER_DESC, LOGIN_TIMES, ACTIVE_TIME, TOP_UNIT, REG_EMAIL, USER_ORDER, USER_PWD, REG_CELL_PHONE, CREATE_DATE,CREATOR,UPDATOR,UPDATE_DATE)
+values ('noname', '67b74fe1423796dfe8db34b959b81fbd', 'F', 'noname', '匿名用户', '匿名用户', null, null, null, 'noname@centit.com', 1, '', '', sysdate,'u0000000','u0000000',sysdate);
+insert into F_USERINFO (USER_CODE, USER_PIN, IS_VALID, LOGIN_NAME, USER_NAME, USER_DESC, LOGIN_TIMES, ACTIVE_TIME, TOP_UNIT, REG_EMAIL, USER_ORDER, USER_PWD, REG_CELL_PHONE, CREATE_DATE ,CREATOR,UPDATOR,UPDATE_DATE,primary_Unit)
+values ('u0000000', '$2a$11$DbyFNhHeCES5CKoMuM5sXepY7GM35sZkUSqQbjYJnFTzJ2GDIYGLK', 'T', 'admin', '管理员', '', null, null, 'all', 'codefan@centit.com', 1, '', '18017458877', sysdate,'u0000000','u0000000',sysdate,'U00001');
 
-INSERT INTO F_USERUNIT(USER_UNIT_ID, UNIT_CODE, USER_CODE, REL_TYPE, User_Station, User_Rank, Rank_Memo, User_Order,
-update_Date, Create_Date) VALUES ('s000000000','U00001','u0000000','T','pf','CZ',null,'1',sysdate,sysdate);
+INSERT INTO F_USERUNIT(USER_UNIT_ID, UNIT_CODE, USER_CODE, REL_TYPE, User_Station, User_Rank, Rank_Memo, User_Order,TOP_UNIT,
+update_Date, Create_Date) VALUES ('s000000000','U00001','u0000000','T','pf','CZ',null,'1','all',sysdate,sysdate);
 
 -- 初始化数据字典
 INSERT INTO f_datacatalog (catalog_code, catalog_name, catalog_style, catalog_type, catalog_desc, field_desc, update_date, create_date, opt_id, need_cache, creator, updator) VALUES ('CatalogStyle', '字典类型', 'F', 'L', 'F : 框架固有的 U:用户 S：系统', '{\"dataCode\":{\"value\":\"类型编码\",\"isUse\":\"T\"},\"dataValue\":{\"value\":\"类型说明\",\"isUse\":\"T\"},\"extraCode\":{\"value\":\"扩展编码\",\"isUse\":\"F\"},\"extraCode2\":{\"value\":\"扩展编码2\",\"isUse\":\"F\"},\"dataTag\":{\"value\":\"数据标记\",\"isUse\":\"F\"},\"dataDesc\":{\"value\":\"数据描述\",\"isUse\":\"T\"}}', null, null, 'DICTSET_M', '1', 'u0000000', 'u0000000');
