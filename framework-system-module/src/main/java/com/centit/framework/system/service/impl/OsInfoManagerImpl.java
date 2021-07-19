@@ -110,7 +110,7 @@ public class OsInfoManagerImpl extends BaseEntityManagerImpl<OsInfo, String, OsI
      */
     @Override
     public void evictCache(String cacheName) {
-        List<OsInfo> osInfoList = this.listObjects(new HashMap<>());
+        /*List<OsInfo> osInfoList = this.listObjects(new HashMap<>());
         if(osInfoList != null && osInfoList.isEmpty()){
             return;
         }
@@ -121,7 +121,7 @@ public class OsInfoManagerImpl extends BaseEntityManagerImpl<OsInfo, String, OsI
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     /**
