@@ -1,5 +1,7 @@
 package com.centit.framework.system.po;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.model.basedata.IOptInfo;
 import com.centit.support.database.orm.GeneratorCondition;
@@ -195,6 +197,26 @@ public class OptInfo implements IOptInfo, java.io.Serializable{
 
     public String getOptName() {
         return this.optName;
+    }
+
+    public String getLocalOptName(String lang) {
+        if(optName==null)
+            return null;
+
+        if(this.optName.startsWith("{") && this.optName.endsWith("}")){
+            JSONObject jsonData= JSON.parseObject(optName);
+            String sRet = null;
+            if(lang==null) {
+                sRet = jsonData.getString("zh_CN");
+            } else {
+                sRet = jsonData.getString(lang);
+                if (sRet == null) {
+                    sRet = jsonData.getString("zh_CN");
+                }
+            }
+            return sRet;
+        }
+        return optName;
     }
 
     public void setOptName(String optname) {
