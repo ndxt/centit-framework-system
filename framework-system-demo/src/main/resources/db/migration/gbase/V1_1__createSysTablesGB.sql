@@ -135,7 +135,7 @@ create table F_OPT_LOG
 create table F_OptInfo
 (
    Opt_ID               varchar(32) not null,
-   Opt_Name             varchar(100) not null,
+   Opt_Name             varchar(256) not null,
    Pre_Opt_ID           varchar(32) not null,
    opt_Route            lvarchar(256)  ,
    opt_url              lvarchar(256),

@@ -44,8 +44,8 @@ public class OptInfo implements IOptInfo, java.io.Serializable{
     private String preOptId; // 上级业务模块编号
 
     @Column(name = "OPT_NAME")
-    @Length(max = 100, message = "字段长度不能大于{max}")
-    @ApiModelProperty(value = "业务菜单名称，字段长度不能大于100",name = "optName",required = true)
+    @Length(max = 256, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "业务菜单名称，字段长度不能大于256",name = "optName",required = true)
     private String optName; // 业务名称
     /**
      * S:实施业务, O:普通业务, W:流程业务, I:项目业务

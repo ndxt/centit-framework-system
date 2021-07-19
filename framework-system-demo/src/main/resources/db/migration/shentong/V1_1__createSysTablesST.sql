@@ -152,7 +152,7 @@ alter table F_OPT_LOG  add primary key (log_Id);
 create table F_OptInfo
 (
    Opt_ID               varchar2(32) not null,
-   Opt_Name             varchar2(100) not null,
+   Opt_Name             varchar2(256) not null,
    Pre_Opt_ID           varchar2(32) not null,
    opt_Route            varchar2(256)  ,
    opt_url              varchar2(256),

@@ -169,7 +169,7 @@ alter table F_OPT_LOG
 create table F_OptInfo
 (
    Opt_ID               varchar(32) not null,
-   Opt_Name             varchar(100) not null,
+   Opt_Name             varchar(256) not null,
    Pre_Opt_ID           varchar(32) not null,
    opt_Route            varchar(256) comment '与angularjs路由匹配',
    opt_url              varchar(256),
