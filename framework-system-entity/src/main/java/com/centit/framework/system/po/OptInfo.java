@@ -2,7 +2,9 @@ package com.centit.framework.system.po;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.dao.DictionaryMap;
+import com.centit.framework.filter.RequestThreadLocal;
 import com.centit.framework.model.basedata.IOptInfo;
 import com.centit.support.database.orm.GeneratorCondition;
 import com.centit.support.database.orm.GeneratorType;
@@ -199,7 +201,10 @@ public class OptInfo implements IOptInfo, java.io.Serializable{
         return this.optName;
     }
 
-    public String getLocalOptName(String lang) {
+    public String getLocalOptName() {
+        String lang = WebOptUtils.getCurrentLang(
+            RequestThreadLocal.getLocalThreadWrapperRequest()
+        );
         if(optName==null)
             return null;
 
