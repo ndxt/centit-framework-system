@@ -409,9 +409,16 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         sysuser.setUserUnits((JSONArray) JSON.toJSON(usun));
         for (UserUnit uu : usun) {
             if ("T".equals(uu.getRelType()) || "I".equals(uu.getRelType())) {
-                sysuser.setCurrentStationId(uu.getUserUnitId());
-                currentUnitCode = uu.getUnitCode();
-                break;
+                if (!supportTenant) {
+                    sysuser.setCurrentStationId(uu.getUserUnitId());
+                    currentUnitCode = uu.getUnitCode();
+                    break;
+                } else if (StringUtils.isNotBlank(userinfo.getTopUnit()) && StringUtils.isNotBlank(uu.getTopUnit())
+                    && userinfo.getTopUnit().equals(uu.getTopUnit()) ) {
+                    sysuser.setCurrentStationId(uu.getUserUnitId());
+                    currentUnitCode = uu.getUnitCode();
+                    break;
+                }
             }
         }
         //edit by zhuxw  代码从原框架迁移过来，可和其它地方合并

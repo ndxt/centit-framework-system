@@ -124,7 +124,7 @@ public class SysUserUnitManagerImpl
     public String saveNewUserUnit(UserUnit userunit) {
         // 一对多模式, 删除主机构    多对多，将当前主机构设置为非主机构
         if (! isMultiToMulti()) {
-            UserUnit pUserUnit = userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode());
+            UserUnit pUserUnit = userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode(), userunit.getTopUnit());
             if (null != pUserUnit) {
               userUnitDao.deleteObjectById(pUserUnit.getUserUnitId());
             }
@@ -135,7 +135,7 @@ public class SysUserUnitManagerImpl
         }
 
         if ("T".equals(userunit.getRelType())) {
-            UserUnit origPrimUnit=userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode());
+            UserUnit origPrimUnit=userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode(), userunit.getTopUnit());
             if(origPrimUnit!=null){
                 origPrimUnit.setRelType("F");
                 //userunit.setRelType("T");
@@ -174,8 +174,8 @@ public class SysUserUnitManagerImpl
 
 
     @Override
-    public UserUnit getPrimaryUnitByUserCode(String userCode) {
-        return userUnitDao.getPrimaryUnitByUserId(userCode);
+    public UserUnit getPrimaryUnitByUserCode(String userCode, String topUnit) {
+        return userUnitDao.getPrimaryUnitByUserId(userCode, topUnit);
     }
 
     @Override
@@ -189,7 +189,7 @@ public class SysUserUnitManagerImpl
     @Override
     public void updateUserUnit(UserUnit userunit) {
         if ("T".equals(userunit.getRelType())) {
-            UserUnit origPrimUnit=userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode());
+            UserUnit origPrimUnit=userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode(), userunit.getTopUnit());
             if(origPrimUnit!=null && ! origPrimUnit.getUserUnitId().equals(userunit.getUserUnitId())){
                 origPrimUnit.setRelType("F");
                 userunit.setRelType("T");
@@ -235,9 +235,9 @@ public class SysUserUnitManagerImpl
     }
     @Override
     @Transactional
-    public void deletePrimaryUnitByUserCode(String userCode){
-        if(userUnitDao.getPrimaryUnitByUserId(userCode) != null) {
-            userUnitDao.deleteObject(userUnitDao.getPrimaryUnitByUserId(userCode));
+    public void deletePrimaryUnitByUserCode(String userCode, String topUnit){
+        if(userUnitDao.getPrimaryUnitByUserId(userCode, topUnit) != null) {
+            userUnitDao.deleteObject(userUnitDao.getPrimaryUnitByUserId(userCode, topUnit));
         }
     }
 

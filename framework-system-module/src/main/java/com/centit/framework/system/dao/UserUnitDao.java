@@ -1,5 +1,6 @@
 package com.centit.framework.system.dao;
 
+import com.centit.framework.common.GlobalConstValue;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.system.po.UserUnit;
@@ -114,10 +115,16 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
     }
 
     @Transactional
-    public UserUnit getPrimaryUnitByUserId(String userId) {
-        List<UserUnit> list = super.listObjectsByProperties(CollectionsOpt.createHashMap(
-                "userCode", userId,"isPrimary","T"));
-        if (list != null && list.size()>0) {
+    public UserUnit getPrimaryUnitByUserId(String userId, String topUnit) {
+        List<UserUnit> list = null;
+        if (StringUtils.isBlank(topUnit) || GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)) {
+            list = super.listObjectsByProperties(CollectionsOpt.createHashMap(
+                "userCode", userId, "relType", "T"));
+        } else {
+            list = super.listObjectsByProperties(CollectionsOpt.createHashMap(
+                "userCode", userId, "relType", "T", "topUnit", topUnit));
+        }
+        if (list != null && list.size() > 0) {
             return list.get(0);
         } else {
             return null;

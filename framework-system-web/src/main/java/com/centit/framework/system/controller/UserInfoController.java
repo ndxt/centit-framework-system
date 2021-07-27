@@ -206,7 +206,7 @@ public class UserInfoController extends BaseController {
             return ResponseData.makeErrorMessage("当前用户不存在");
         }
 
-        sysUserUnitManager.deletePrimaryUnitByUserCode(userCode);
+        sysUserUnitManager.deletePrimaryUnitByUserCode(userCode, dbUserInfo.getTopUnit());
         userUnit.setUserCode(userInfo.getUserCode());
         userUnit.setUnitCode(userInfo.getPrimaryUnit());
         userUnit.setRelType("T");
@@ -252,9 +252,14 @@ public class UserInfoController extends BaseController {
         paramType = "path", dataType = "String")
     @RequestMapping(value = "/{userCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseMapData getUserInfo(@PathVariable String userCode) {
+    public ResponseMapData getUserInfo(@PathVariable String userCode, HttpServletRequest request) {
         UserInfo userInfo = sysUserManager.getObjectById(userCode);
-        UserUnit userUnit = sysUserUnitManager.getPrimaryUnitByUserCode(userCode);
+        String topUnit = "";
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            topUnit = WebOptUtils.getCurrentTopUnit(request);
+        }
+        UserUnit userUnit = sysUserUnitManager.getPrimaryUnitByUserCode(userCode, topUnit);
+
         //针对输入框类型做的反转译
         userInfo.setUserCode(StringEscapeUtils.unescapeHtml4(userInfo.getUserCode()));
         userInfo.setLoginName(StringEscapeUtils.unescapeHtml4(userInfo.getLoginName()));

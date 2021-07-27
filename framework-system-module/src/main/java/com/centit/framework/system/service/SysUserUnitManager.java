@@ -22,7 +22,7 @@ public interface SysUserUnitManager{
 
     List<UserUnit> listObjectByUserUnit(String userCode, String unitCode);
 
-    UserUnit getPrimaryUnitByUserCode(String userCode);
+    UserUnit getPrimaryUnitByUserCode(String userCode, String topUnit);
 
     String saveNewUserUnit(UserUnit userUnit);
 
@@ -33,7 +33,7 @@ public interface SysUserUnitManager{
     List<UserUnit> listUnitUsersByUnitCode(String unitCode);
     List<UserUnit> listUserUnitssByUserCode(String userCode);
 
-    void deletePrimaryUnitByUserCode(String userCode);
+    void deletePrimaryUnitByUserCode(String userCode, String topUnit);
 
   /**
    * 获取 某机构及其子机构下 所有 用户组
