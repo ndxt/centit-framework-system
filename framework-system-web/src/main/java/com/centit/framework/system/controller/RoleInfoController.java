@@ -1,6 +1,7 @@
 package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.components.CodeRepositoryUtil;
@@ -178,6 +179,10 @@ public class RoleInfoController extends BaseController {
         filterMap.put("ROLETYPE", "I");
         if (WebOptUtils.isTenantTopUnit(request)) {
             filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
+            JSONObject userInfo = WebOptUtils.getCurrentUserInfo(request);
+            if (null != userInfo && userInfo.getString("topUnit").equals(userInfo.getString("primaryUnit"))) {
+                filterMap.put("isTopUnit", "true");
+            }
         }
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
 

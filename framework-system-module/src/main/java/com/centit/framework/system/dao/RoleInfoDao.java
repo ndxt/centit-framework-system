@@ -37,7 +37,8 @@ public class RoleInfoDao extends BaseDaoImpl<RoleInfo, String>{
 
         filterField.put("unitRole", "(ROLE_TYPE='D' and UNIT_CODE = :unitRole)");
         filterField.put("subSystemROLE", "(ROLE_TYPE='S' and UNIT_CODE = :subSystemROLE)");
-        filterField.put("topUnit", "(ROLE_TYPE = 'G' or (ROLE_TYPE='D' and UNIT_CODE = :topUnit) )");
+        filterField.put("topUnit", "(ROLE_TYPE = 'G' or ROLE_TYPE='P' or (ROLE_TYPE='D' and UNIT_CODE = :topUnit) )");
+        filterField.put("isTopUnit", "(ROLE_TYPE <> 'G')");
         return filterField;
     }
 
