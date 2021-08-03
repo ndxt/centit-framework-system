@@ -44,6 +44,7 @@ public class UnitInfo implements IUnitInfo, java.io.Serializable{
     @ApiModelProperty(value = "上级机构代码",name = "parentUnit")
     private String parentUnit; // 上级机构代码
 
+    //机构、租户、虚拟组
     @Column(name = "UNIT_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
     @DictionaryMap(fieldName="unitTypeText",value="UnitType")
@@ -127,7 +128,7 @@ public class UnitInfo implements IUnitInfo, java.io.Serializable{
     }
     @Column(name = "UNIT_MANAGER")
     @Length(max = 32, message = "字段长度不能大于{max}")
-    private String unitManager; // 部门负责人
+    private String unitManager; // 部门负责人；租户所有人
 
     @Override
     public String getUnitManager() {
