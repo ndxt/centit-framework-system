@@ -45,6 +45,7 @@ public class UserUnit implements IUserUnit, java.io.Serializable {
      */
     @Column(name = "TOP_UNIT")
     @Length(max = 32, message = "字段长度不能大于{max}")
+    @DictionaryMap(fieldName="topUnitName",value="unitCode")
     private String topUnit; // 顶级机构，用于帐套
 
     @Column(name = "USER_CODE")

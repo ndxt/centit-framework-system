@@ -70,6 +70,7 @@ public class RoleInfo implements IRoleInfo, java.io.Serializable {
      */
     @Column(name = "UNIT_CODE")
     @Length(max = 32, message = "字段长度不能大于{max}")
+    @DictionaryMap(fieldName="topUnitName",value="unitCode")
     private String unitCode; // 角色所属机构
 
     @Column(name = "ROLE_DESC")
