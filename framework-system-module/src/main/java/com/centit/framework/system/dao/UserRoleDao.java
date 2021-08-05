@@ -92,7 +92,7 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
             "where a.USER_CODE = :userCode and a.OBTAIN_DATE <= :currentDateTime and " +
              " (a.SECEDE_DATE is null  or a.SECEDE_DATE > :currentDateTime) " +
                 "and b.IS_VALID='T' " +
-            " and ( ROLE_TYPE = 'G' or (ROLE_TYPE='D' and b.UNIT_CODE = :unitCode ) )";
+            " and ( ROLE_TYPE = 'P' or (ROLE_TYPE='D' and b.UNIT_CODE = :unitCode ) )";
 
     private static final String f_v_topunit_role_user =
         "select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'D' as OBTAIN_TYPE, b.ROLE_TYPE, " +
@@ -103,7 +103,7 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
             "where a.ROLE_CODE = :roleCode and a.OBTAIN_DATE <= :currentDateTime and " +
             " (a.SECEDE_DATE is null  or a.SECEDE_DATE > :currentDateTime) " +
             "and b.IS_VALID='T' " +
-            " and ( ROLE_TYPE = 'G' or (ROLE_TYPE='D' and b.UNIT_CODE = :unitCode ) )";
+            " and ( ROLE_TYPE = 'P' or (ROLE_TYPE='D' and b.UNIT_CODE = :unitCode ) )";
 
     @Transactional
     public List<UserRole> listUserRoles(String userCode) {
