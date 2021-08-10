@@ -53,7 +53,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
             "select b.ROLE_CODE from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE) " +
             "where a.USER_CODE = :userCode and a.OBTAIN_DATE <= :currentDateTime and " +
             " (a.SECEDE_DATE is null  or a.SECEDE_DATE > :currentDateTime) and b.IS_VALID='T' " +
-            " and ( ROLE_TYPE = 'P' or (ROLE_TYPE='D' and b.UNIT_CODE = :unitCode ) ) )";
+            " and ( ROLE_TYPE = 'G' or (ROLE_TYPE='D' and b.UNIT_CODE = :unitCode ) ) )";
 
     public Map<String, String> getFilterField() {
         Map<String, String> filterField = new HashMap<>();

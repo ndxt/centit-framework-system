@@ -214,7 +214,7 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
             "select b.ROLE_CODE from F_USERROLE a join F_ROLEINFO b on a.ROLE_CODE=b.ROLE_CODE " +
             "where a.USER_CODE = :userCode and a.OBTAIN_DATE <= :currentDateTime and " +
             " (a.SECEDE_DATE is null or a.SECEDE_DATE > :currentDateTime) and b.IS_VALID='T' " +
-            " and ( ROLE_TYPE = 'P' or (ROLE_TYPE='D' and b.UNIT_CODE = :unitCode ) ) ) " +
+            " and ( ROLE_TYPE = 'G' or (ROLE_TYPE='D' and b.UNIT_CODE = :unitCode ) ) ) " +
             " order by d.PRE_OPT_ID,d.ORDER_IND ";
         Map<String, Object> map = CollectionsOpt.createHashMap("userCode", userCode,
             "currentDateTime", DatetimeOpt.currentSqlDate(),
