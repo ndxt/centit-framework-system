@@ -1,11 +1,13 @@
 package com.centit.prodcts.demoapp.config;
 
+import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.model.adapter.NotificationCenter;
 import com.centit.framework.model.adapter.OperationLogWriter;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
@@ -30,11 +32,14 @@ public class InstantiationServiceBeanPostProcessor implements ApplicationListene
     @NotNull
     private PlatformEnvironment platformEnvironment;
 
+    @Value("${app.support.tenant:false}")
+    protected boolean supportTenant;
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event)
     {
         CodeRepositoryCache.setPlatformEnvironment(platformEnvironment);
-
+        WebOptUtils.setIsTenant(supportTenant);
         if(optLogManager!=null) {
             OperationLogCenter.registerOperationLogWriter(optLogManager);
         }
