@@ -177,13 +177,13 @@ public class SysUserManagerImpl implements SysUserManager {
         userInfo.setUserPin(getDefaultPassword(userInfo.getUserCode()));
         UnitInfo unitInfo = unitInfoDao.getObjectById(userInfo.getPrimaryUnit());
         String topUnitCode = "";
-        if (null != unitInfo && StringUtils.isNotBlank(unitInfo.getUnitPath())) {
+        if (null != unitInfo && StringUtils.isBlank(userInfo.getTopUnit()) && StringUtils.isNotBlank(unitInfo.getUnitPath())) {
             String[] unitCodeArray = unitInfo.getUnitPath().split("/");
             if (ArrayUtils.isNotEmpty(unitCodeArray) && unitCodeArray.length > 1) {
                 topUnitCode = unitCodeArray[1];
+                userInfo.setTopUnit(topUnitCode);
             }
         }
-        userInfo.setTopUnit(topUnitCode);
         userInfoDao.saveNewObject(userInfo);
         //resetPwd(userInfo.getUserCode());
         userUnit.setUserUnitId(userUnitDao.getNextKey());

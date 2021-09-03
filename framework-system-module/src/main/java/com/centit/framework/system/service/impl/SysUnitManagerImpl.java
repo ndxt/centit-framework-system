@@ -119,7 +119,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
         } else {
             unitinfo.setUnitPath(parentUnit.getUnitPath() + "/" + unitinfo.getUnitCode());
         }
-        if (StringUtils.isNotBlank(unitinfo.getUnitPath())) {
+        if (StringUtils.isBlank(unitinfo.getTopUnit()) && StringUtils.isNotBlank(unitinfo.getUnitPath())) {
             String[] unitCodeArray = unitinfo.getUnitPath().split("/");
             if (ArrayUtils.isNotEmpty(unitCodeArray) && unitCodeArray.length > 1) {
                 unitinfo.setTopUnit(unitCodeArray[1]);

@@ -17,6 +17,7 @@ import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
 import io.swagger.annotations.*;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -191,6 +192,7 @@ public class DataDictionaryController extends BaseController {
         dataDictionaryManager.saveNewObject(dataCatalog);
         if(dataCatalog.getDataDictionaries() != null && dataCatalog.getDataDictionaries().size() > 0){
             for (DataDictionary d : dataCatalog.getDataDictionaries()) {
+                d.setDataValue(StringEscapeUtils.unescapeHtml4(d.getDataValue()));
                 if (StringUtils.isBlank(d.getDataStyle())) {
                     d.setDataStyle(isAdmin ? "S" : "U");
                 }
@@ -267,6 +269,7 @@ public class DataDictionaryController extends BaseController {
         boolean isAdmin = isLoginAsAdmin(request);
         String dataStyle = isAdmin ? "S" : "U";
         for (DataDictionary d : dataCatalog.getDataDictionaries()) {
+            d.setDataValue(StringEscapeUtils.unescapeHtml4(d.getDataValue()));
             if (StringUtils.isBlank(d.getDataStyle())) {
                 d.setDataStyle(dataStyle);
             }
@@ -307,6 +310,7 @@ public class DataDictionaryController extends BaseController {
                                          @Valid DataDictionary dataDictionary,
                                          HttpServletRequest request) {
         DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
+        dataDictionary.setDataValue(StringEscapeUtils.unescapeHtml4(dataDictionary.getDataValue()));
         dictionaryPreHandler(dbDataCatalog, dataDictionary);
         dictionaryPreInsertHandler(dbDataCatalog, dataDictionary, request);
         dataDictionaryManager.saveDataDictionaryPiece(dataDictionary);
@@ -348,6 +352,7 @@ public class DataDictionaryController extends BaseController {
 
         DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
 
+        dataDictionary.setDataValue(StringEscapeUtils.unescapeHtml4(dataDictionary.getDataValue()));
         dictionaryPreHandler(dbDataCatalog, dataDictionary);
 
         dictionaryPreUpdateHandler(dbDataCatalog, dbDataDictionary, request);

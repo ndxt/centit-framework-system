@@ -162,7 +162,9 @@ public class SysUserUnitManagerImpl
         userUnitDao.saveNewObject(userunit);
         List<FVUserRoles> userRoles = userRoleDao.listUserRolesByUserCode(userunit.getUserCode());
         IDataDictionary dd = CodeRepositoryUtil.getDataPiece("StationType",userunit.getUserStation());
-        addUserRoleWhenNotExist(userunit.getUserCode(),dd.getExtraCode2(), userRoles);
+        if (null != dd) {
+            addUserRoleWhenNotExist(userunit.getUserCode(), dd.getExtraCode2(), userRoles);
+        }
         dd = CodeRepositoryUtil.getDataPiece("RankType",userunit.getUserRank());
         if (null != dd) {
             addUserRoleWhenNotExist(userunit.getUserCode(), dd.getExtraCode2(), userRoles);
@@ -192,7 +194,6 @@ public class SysUserUnitManagerImpl
             UserUnit origPrimUnit=userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode(), userunit.getTopUnit());
             if(origPrimUnit!=null && ! origPrimUnit.getUserUnitId().equals(userunit.getUserUnitId())){
                 origPrimUnit.setRelType("F");
-                userunit.setRelType("T");
                 userUnitDao.updateUserUnit(origPrimUnit);
             }
             UserInfo user=userInfoDao.getUserByCode(userunit.getUserCode());

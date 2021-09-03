@@ -20,6 +20,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -92,7 +93,7 @@ public class OptInfoController extends BaseController {
                 "optId", "optId",
                 "optCode", "optId",
                 "pid", "preOptId",
-                "text", "optName",
+                "text", "localOptName",
                 "url", "optRoute",
                 "icon", "icon",
                 "children", "children",
@@ -172,6 +173,7 @@ public class OptInfoController extends BaseController {
         tag = "{optInfo.optId}:{optInfo.optName}")
     @WrapUpResponseBody
     public OptInfo createOptInfo(@ParamName("optInfo") @Valid OptInfo optInfo) {
+        optInfo.setOptName(StringEscapeUtils.unescapeHtml4(optInfo.getOptName()));
         optInfoManager.saveNewOptInfo(optInfo);
         return optInfo;
     }
@@ -214,7 +216,7 @@ public class OptInfoController extends BaseController {
         tag = "{optId}")
     @WrapUpResponseBody
     public ResponseData edit(@ParamName("optId") @PathVariable String optId, @Valid OptInfo optInfo) {
-
+        optInfo.setOptName(StringEscapeUtils.unescapeHtml4(optInfo.getOptName()));
         OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
         if (null == dbOptInfo) {
             return ResponseData.makeErrorMessage("当前对象不存在");
@@ -251,7 +253,7 @@ public class OptInfoController extends BaseController {
         tag = "{optId}")
     @WrapUpResponseBody
     public ResponseData editPower(@ParamName("optId") @PathVariable String optId, @Valid OptInfo optInfo) {
-
+        optInfo.setOptName(StringEscapeUtils.unescapeHtml4(optInfo.getOptName()));
         OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
         if (null == dbOptInfo) {
             return ResponseData.makeErrorMessage("当前对象不存在");
