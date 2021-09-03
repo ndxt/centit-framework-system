@@ -176,12 +176,13 @@ public class SysUserManagerImpl implements SysUserManager {
 
         userInfo.setUserPin(getDefaultPassword(userInfo.getUserCode()));
         UnitInfo unitInfo = unitInfoDao.getObjectById(userInfo.getPrimaryUnit());
-        String topUnitCode = "";
+        if (null != unitInfo && StringUtils.isNotBlank(unitInfo.getTopUnit())) {
+            userInfo.setTopUnit(unitInfo.getTopUnit());
+        }
         if (null != unitInfo && StringUtils.isBlank(userInfo.getTopUnit()) && StringUtils.isNotBlank(unitInfo.getUnitPath())) {
             String[] unitCodeArray = unitInfo.getUnitPath().split("/");
             if (ArrayUtils.isNotEmpty(unitCodeArray) && unitCodeArray.length > 1) {
-                topUnitCode = unitCodeArray[1];
-                userInfo.setTopUnit(topUnitCode);
+                userInfo.setTopUnit(unitCodeArray[1]);
             }
         }
         userInfoDao.saveNewObject(userInfo);
@@ -190,7 +191,7 @@ public class SysUserManagerImpl implements SysUserManager {
         userUnit.setUserCode(userInfo.getUserCode());
         userUnit.setUnitCode(userInfo.getPrimaryUnit());
         userUnit.setRelType("T");
-        userUnit.setTopUnit(topUnitCode);
+        userUnit.setTopUnit(userInfo.getTopUnit());
         userUnitDao.saveNewObject(userUnit);
 
         if(null!=userInfo.getUserRoles()){

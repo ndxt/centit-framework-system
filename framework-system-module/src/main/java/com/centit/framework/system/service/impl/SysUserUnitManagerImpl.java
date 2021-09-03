@@ -152,7 +152,10 @@ public class SysUserUnitManagerImpl
         // userunit.setIsprimary("T");//modify by hx bug：会默认都是主机构
         if (StringUtils.isBlank(userunit.getTopUnit())) {
             UnitInfo unitInfo = unitInfoDao.getObjectById(userunit.getUnitCode());
-            if (null != unitInfo && StringUtils.isNotBlank(unitInfo.getUnitPath())) {
+            if (null != unitInfo && StringUtils.isNotBlank(unitInfo.getTopUnit())) {
+                userunit.setTopUnit(unitInfo.getTopUnit());
+            }
+            if (null != unitInfo && StringUtils.isBlank(userunit.getTopUnit()) && StringUtils.isNotBlank(unitInfo.getUnitPath())) {
                 String[] unitCodeArray = unitInfo.getUnitPath().split("/");
                 if (ArrayUtils.isNotEmpty(unitCodeArray) && unitCodeArray.length > 1) {
                     userunit.setTopUnit(unitCodeArray[1]);
