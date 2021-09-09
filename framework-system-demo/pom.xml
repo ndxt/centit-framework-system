@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.centit.product</groupId>
-    <version>5.1-SNAPSHOT</version>
+    <version>5.2-SNAPSHOT</version>
     <artifactId>framework-system-demo</artifactId>
     <packaging>war</packaging>
     <name>com.centit.product:framework-system-demo</name>
@@ -26,6 +26,7 @@
         <dependency>
             <groupId>com.centit.framework</groupId>
             <artifactId>framework-system-web</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
