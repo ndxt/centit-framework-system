@@ -9,7 +9,9 @@ import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysUserManager;
+import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.common.ObjectException;
+import com.centit.support.compiler.Pretreatment;
 import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -49,9 +51,15 @@ public class SysUserManagerImpl implements SysUserManager {
     @Autowired
     private UnitInfoDao unitInfoDao;
 
+    @Value("${framework.password.default.generator:}")
+    protected String defaultPassWorkFormat;
+
     private String getDefaultPassword(String userCode) {
-        //final String defaultPassword = "000000";
-        return passwordEncoder.createPassword("000000", userCode);
+        String rawPass = "000000";
+        if(StringUtils.isNotBlank(defaultPassWorkFormat)){
+            rawPass = Pretreatment.mapTemplateString(defaultPassWorkFormat,userCode);
+        }
+        return passwordEncoder.createPassword(rawPass, userCode);
     }
 
     @Override
