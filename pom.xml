@@ -6,7 +6,7 @@
     <parent>
         <artifactId>centit-framework-dependencies</artifactId>
         <groupId>com.centit.framework</groupId>
-        <version>5.1-SNAPSHOT</version>
+        <version>5.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.centit.framework</groupId>
@@ -19,7 +19,7 @@
     <url>https://github.com/ndxt/centit-framework-system</url>
 
     <properties>
-        <centit.framework.version>5.1-SNAPSHOT</centit.framework.version>
+        <centit.framework.version>5.2-SNAPSHOT</centit.framework.version>
         <centit.persistence.version>5.1-SNAPSHOT</centit.persistence.version>
         <jdk.version>1.8</jdk.version>
     </properties>
