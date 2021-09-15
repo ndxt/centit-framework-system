@@ -1,5 +1,6 @@
 package com.centit.framework.system.po;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.model.basedata.IOsInfo;
 import com.centit.support.database.orm.GeneratorCondition;
@@ -9,13 +10,13 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name = "F_OS_INFO")
 @ApiModel(value="系统信息对象",description="系统信息对象 OsInfo")
 public class OsInfo implements IOsInfo, java.io.Serializable {
@@ -71,7 +72,8 @@ public class OsInfo implements IOsInfo, java.io.Serializable {
      */
     @Column(name = "REL_OPT_ID")
     @Length(max = 32, message = "字段长度不能大于{max}")
-    private String relOptId; // 顶层业务编号
+    // 顶层业务编号
+    private String relOptId;
 
     @Column(name = "CREATED")
     @Length(max = 8, message = "字段长度不能大于{max}")
@@ -86,119 +88,19 @@ public class OsInfo implements IOsInfo, java.io.Serializable {
     @Column(name = "CREATE_TIME")
     private Date createTime;
 
-    // Constructors
-    /**
-     * default constructor
-     */
-    public OsInfo() {
-    }
+    @ApiModelProperty(value = "应用设置")
+    @Column(name = "PAGE_FLOW")
+    @JSONField(serialize=false)
+    @Basic(fetch = FetchType.LAZY)
+    private String  pageFlow;
 
-    public OsInfo(String osId, String osName) {
-        this.osId = osId;
-        this.osType = "I";
-        this.osName = osName;
-    }
+    @Column(name = "is_delete")
+    @NotBlank(message = "字段不能为空[T/F]")
+    @Length(max = 1, message = "字段长度不能大于{max}")
+    private Boolean isDelete;
 
-    public String getOsId() {
-        return osId;
-    }
-
-    public void setOsId(String osId) {
-        this.osId = osId;
-    }
-
-    public String getOsName() {
-        return osName;
-    }
-
-    public void setOsName(String osName) {
-        this.osName = osName;
-    }
-
-    public String getOsUrl() {
-        return osUrl;
-    }
-
-    public void setOsUrl(String osUrl) {
-        this.osUrl = osUrl;
-    }
-
-    public String getOsHomePage() {
-        return osHomePage;
-    }
-
-    public void setOsHomePage(String osHomePage) {
-        this.osHomePage = osHomePage;
-    }
-
-    public String getOauthUser() {
-        return oauthUser;
-    }
-
-    public void setOauthUser(String oauthUser) {
-        this.oauthUser = oauthUser;
-    }
-
-    public String getOauthPassword() {
-        return oauthPassword;
-    }
-
-    public void setTopUnit(String topUnit) {
-        this.topUnit = topUnit;
-    }
-
-    /**
-     * 多租户应用下的租户
-     *
-     * @return 租户
-     */
-    @Override
-    public String getTopUnit() {
-        return this.topUnit;
-    }
-
-    public void setOauthPassword(String oauthPassword) {
-        this.oauthPassword = oauthPassword;
-    }
-
-    public String getRelOptId() {
-        return relOptId;
-    }
-
-    public void setRelOptId(String relOptId) {
-        this.relOptId = relOptId;
-    }
-
-    public String getCreated() {
-        return created;
-    }
-
-    public void setCreated(String created) {
-        this.created = created;
-    }
-
-    public Date getLastModifyDate() {
-        return lastModifyDate;
-    }
-
-    public void setLastModifyDate(Date lastModifyDate) {
-        this.lastModifyDate = lastModifyDate;
-    }
-
-    @Override
-    public String getOsType() {
-        return osType;
-    }
-
-    public void setOsType(String osType) {
-        this.osType = osType;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+    @ApiModelProperty(value = "图片id")
+    @Column(name = "pic_id")
+    @Length(max = 64, message = "字段长度不能大于{max}")
+    private String  picId;
 }

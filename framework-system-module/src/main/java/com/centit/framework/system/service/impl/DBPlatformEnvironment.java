@@ -414,7 +414,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                     currentUnitCode = uu.getUnitCode();
                     break;
                 } else if (StringUtils.isNotBlank(userinfo.getTopUnit()) && StringUtils.isNotBlank(uu.getTopUnit())
-                    && userinfo.getTopUnit().equals(uu.getTopUnit()) ) {
+                    && userinfo.getTopUnit().equals(uu.getTopUnit())) {
                     sysuser.setCurrentStationId(uu.getUserUnitId());
                     currentUnitCode = uu.getUnitCode();
                     break;
@@ -673,6 +673,34 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
             ? osInfoDao.listOsInfoByUnit(topUnit)
             : osInfoDao.listObjects();
+    }
+
+    @Override
+    public IOsInfo getOsInfo(String osId) {
+        return osInfoDao.getObjectById(osId);
+    }
+
+    @Override
+    public IOsInfo deleteOsInfo(String osId) {
+        IOsInfo osInfo = osInfoDao.getObjectById(osId);
+        if (osInfo != null) {
+            osInfoDao.deleteObjectById(osId);
+        }
+        return osInfo;
+    }
+
+    @Override
+    public IOsInfo updateOsInfo(JSONObject osInfo) {
+        OsInfo osInfo1= JSON.toJavaObject(osInfo,OsInfo.class);
+        osInfoDao.updateObject(osInfo1);
+        return osInfo1;
+    }
+
+    @Override
+    public IOsInfo addOsInfo(JSONObject osInfo) {
+        OsInfo osInfo1= JSON.toJavaObject(osInfo,OsInfo.class);
+        osInfoDao.saveNewObject(osInfo1);
+        return osInfo1;
     }
 
 }
