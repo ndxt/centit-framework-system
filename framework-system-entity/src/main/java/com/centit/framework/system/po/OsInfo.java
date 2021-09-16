@@ -90,7 +90,6 @@ public class OsInfo implements IOsInfo, java.io.Serializable {
 
     @ApiModelProperty(value = "应用设置")
     @Column(name = "PAGE_FLOW")
-    @JSONField(serialize=false)
     @Basic(fetch = FetchType.LAZY)
     private String  pageFlow;
 

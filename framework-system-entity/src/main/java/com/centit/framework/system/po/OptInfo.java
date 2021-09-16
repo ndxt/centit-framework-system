@@ -52,7 +52,7 @@ public class OptInfo implements IOptInfo, java.io.Serializable{
      */
     @Column(name = "OPT_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
-    @ApiModelProperty(value = "业务类别 S:实施业务, O:普通业务, W:流程业务, I:项目业务",name = "optType")
+    @ApiModelProperty(value = "业务类别 S:实施业务, O:普通业务, W:流程业务, I:项目业务,C:通用模块A:应用入口页面",name = "optType")
     @DictionaryMap(fieldName = "optTypeText", value = "OptType")
     private String optType; // 业务类别
 

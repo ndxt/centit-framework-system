@@ -699,6 +699,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     public IOsInfo addOsInfo(JSONObject osInfo) {
         OsInfo osInfo1= JSON.toJavaObject(osInfo,OsInfo.class);
+        osInfo1.setOsId(null);
         osInfoDao.saveNewObject(osInfo1);
         return osInfo1;
     }
