@@ -11,6 +11,7 @@ import com.centit.support.database.orm.GeneratorType;
 import com.centit.support.database.orm.ValueGenerator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.util.CollectionUtils;
@@ -25,193 +26,113 @@ import java.util.List;
  *
  * @author codefan@codefan.com
  */
-// 业务模块表
+@Data
 @Entity
 @Table(name = "F_OPTINFO")
-@ApiModel(value="业务菜单对象",description="业务菜单对象 OptInfo")
-public class OptInfo implements IOptInfo, java.io.Serializable{
+@ApiModel(value = "业务菜单对象", description = "业务菜单对象 OptInfo")
+public class OptInfo implements IOptInfo, java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "OPT_ID")
     @ValueGenerator(strategy = GeneratorType.UUID22)
-    @ApiModelProperty(value = "业务菜单编号",name = "optId",required = true)
-    private String optId; // 业务编号
-
+    @ApiModelProperty(value = "业务菜单编号", name = "optId", required = true)
+    private String optId;
     @OrderBy
     @Column(name = "PRE_OPT_ID")
     @Length(max = 32, message = "字段长度不能大于{max}")
-    private String preOptId; // 上级业务模块编号
-
+    private String preOptId;
     @Column(name = "OPT_NAME")
     @Length(max = 256, message = "字段长度不能大于{max}")
-    @ApiModelProperty(value = "业务菜单名称，字段长度不能大于256",name = "optName",required = true)
-    private String optName; // 业务名称
+    @ApiModelProperty(value = "业务菜单名称，字段长度不能大于256", name = "optName", required = true)
+    private String optName;
     /**
      * S:实施业务, O:普通业务, W:流程业务, I:项目业务
      */
     @Column(name = "OPT_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
-    @ApiModelProperty(value = "业务类别 S:实施业务, O:普通业务, W:流程业务, I:项目业务,C:通用模块A:应用入口页面",name = "optType")
+    @ApiModelProperty(value = "业务类别 S:实施业务, O:普通业务, W:流程业务, I:项目业务", name = "optType")
     @DictionaryMap(fieldName = "optTypeText", value = "OptType")
-    private String optType; // 业务类别
-
+    private String optType;
     @Column(name = "FORM_CODE")
     @Length(max = 32, message = "字段长度不能大于{max}")
-    private String formCode; // 界面代码(C/S)
-
-    /**
-     * 系统菜单路由
-     *
-     * 与angularjs路由匹配
-     */
+    @ApiModelProperty(value = "业务类别 O:普通业务C:通用模块A:应用入口页面", name = "formCode")
+    private String formCode;
     @Column(name = "OPT_ROUTE")
     @Length(max = 256, message = "字段长度不能大于{max}")
     private String optRoute;
-
     @Column(name = "OPT_URL")
     @Length(max = 256, message = "字段长度不能大于{max}")
-    private String optUrl; // 业务url（b/s）
-
+    private String optUrl;
     @Column(name = "IS_IN_TOOLBAR")
-    private String isInToolbar; // 是否放入工具栏
-
+    private String isInToolbar;
     @Column(name = "IMG_INDEX")
     @Range(max = 100000, message = "数值不能大于{max}")
-    private Long imgIndex; // 图标编号
-
+    private Long imgIndex;
     @Column(name = "TOP_OPT_ID")
     @Length(max = 32, message = "字段长度不能大于{max}")
     @ValueGenerator(strategy = GeneratorType.FUNCTION, value = "optId")
-    private String topOptId; // 顶层业务编号
-
+    private String topOptId;
     @Column(name = "PAGE_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
-    @ApiModelProperty(value = "页面打开方式 D: DIV I： iFrame",name = "pageType",required = true)
-    private String pageType; // 页面打开方式 D: DIV I： iFrame
-
+    @ApiModelProperty(value = "页面打开方式 D: DIV I： iFrame", name = "pageType", required = true)
+    private String pageType;
     @OrderBy
     @Column(name = "ORDER_IND")
     @Range(max = 100000, message = "数值不能大于{max}")
-    private Long orderInd; // 业务顺序
-
+    private Long orderInd;
     @Column(name = "ICON")
     @Length(max = 512, message = "字段长度不能大于{max}")
-    private String icon;// 图标
-
+    private String icon;
     @Column(name = "HEIGHT")
     @Range(max = 100000, message = "数值不能大于{max}")
-    private Long height;// 高度
-
+    private Long height;
     @Column(name = "WIDTH")
     @Range(max = 100000, message = "数值不能大于{max}")
-    private Long width;// 宽度
-
+    private Long width;
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     protected Date createDate;
-
-    //创建人、更新人、更新时间
-    /**
-     * CREATOR(创建人) 创建人
-     */
     @Column(name = "CREATOR")
     @Length(max = 32, message = "字段长度不能大于{max}")
-    private String  creator;
-       /**
-     * UPDATOR(更新人) 更新人
-     */
+    private String creator;
     @Column(name = "UPDATOR")
     @Length(max = 32, message = "字段长度不能大于{max}")
-    private String  updator;
-    /**
-     * UPDATEDATE(更新时间) 更新时间
-     */
+    private String updator;
     @Column(name = "UPDATE_DATE")
-    @ValueGenerator(strategy= GeneratorType.FUNCTION, condition= GeneratorCondition.ALWAYS, value="today()")
-    private Date  updateDate;
-    //结束
-
+    @ValueGenerator(strategy = GeneratorType.FUNCTION, condition = GeneratorCondition.ALWAYS, value = "today()")
+    private Date updateDate;
+    @Column(name = "DOC_ID")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    private String docId;
     @Transient
     private List<OptInfo> children;
-
     @Transient
     private String state;
-
-    @Override
-    public String getState() {
-        return state;
-    }
-    public void setState(String state) {
-        this.state = state;
-    }
-
     @Transient
     private List<OptMethod> optMethods;
-
     @Transient
     private List<OptDataScope> dataScopes;
 
-    // Constructors
-
     public List<OptDataScope> getDataScopes() {
-         if (null == dataScopes) {
-             dataScopes = new ArrayList<>();
-         }
+        if (null == dataScopes) {
+            dataScopes = new ArrayList<>();
+        }
         return dataScopes;
     }
-    public void setDataScopes(List<OptDataScope> dataScopes) {
-        this.dataScopes = dataScopes;
-    }
-    /**
-     * default constructor
-     */
-    public OptInfo() {
-    }
 
-    public OptInfo(String optid, String optname) {
-
-        this.optId = optid;
-
-        this.optName = optname;
-    }
-    public String getOptId() {
-        return this.optId;
-    }
-
-    public void setOptId(String optid) {
-        this.optId = optid;
-    }
-
-    // Property accessors
-
-    public String getPreOptId() {
-        return this.preOptId;
-    }
-
-    public void setPreOptId(String preoptid) {
-        this.preOptId = preoptid;
-    }
-
-    public String toString() {
-        return this.optName;
-    }
-
-    public String getOptName() {
-        return this.optName;
-    }
-
+    @Override
     public String getLocalOptName() {
         String lang = WebOptUtils.getCurrentLang(
             RequestThreadLocal.getLocalThreadWrapperRequest()
         );
-        if(optName==null)
+        if (optName == null) {
             return null;
-
-        if(this.optName.startsWith("{") && this.optName.endsWith("}")){
-            JSONObject jsonData= JSON.parseObject(optName);
+        }
+        if (this.optName.startsWith("{") && this.optName.endsWith("}")) {
+            JSONObject jsonData = JSON.parseObject(optName);
             String sRet = null;
-            if(lang==null) {
+            if (lang == null) {
                 sRet = jsonData.getString("zh_CN");
             } else {
                 sRet = jsonData.getString(lang);
@@ -224,112 +145,16 @@ public class OptInfo implements IOptInfo, java.io.Serializable{
         return optName;
     }
 
-    public void setOptName(String optname) {
-        this.optName = optname;
-    }
-
-    public String getFormCode() {
-        return this.formCode;
-    }
-
-    public void setFormCode(String formcode) {
-        this.formCode = formcode;
-    }
-
+    @Override
     public String getOptUrl() {
-        if (this.optUrl == null)
+        if (this.optUrl == null) {
             return "...";
+        }
         return this.optUrl;
     }
 
-    public void setOptUrl(String opturl) {
-        this.optUrl = opturl;
-    }
-
-    public String getIsInToolbar() {
-        return this.isInToolbar;
-    }
-
-    public void setIsInToolbar(String isintoolbar) {
-        this.isInToolbar = isintoolbar;
-    }
-
-    public Long getImgIndex() {
-        return this.imgIndex;
-    }
-
-    public void setImgIndex(Long imgindex) {
-        this.imgIndex = imgindex;
-    }
-
-    public String getTopOptId() {
-        return this.topOptId;
-    }
-
-    public void setTopOptId(String topoptid) {
-        this.topOptId = topoptid;
-    }
-
-    /**
-     * S:实施业务, O:普通业务, W:流程业务, I:项目业务
-     * @return OptType
-     */
-    public String getOptType() {
-        return this.optType;
-    }
-
-    /**
-     * S:实施业务, O:普通业务, W:流程业务, I:项目业务
-     * @param opttype  opttype
-     */
-    public void setOptType(String opttype) {
-        this.optType = opttype;
-    }
-
-    public Long getOrderInd() {
-        return this.orderInd;
-    }
-
-    public void setOrderInd(Long orderind) {
-        this.orderInd = orderind;
-    }
-
-    public String getOptRoute() {
-        return optRoute;
-    }
-
-    public void setOptRoute(String optRoute) {
-        this.optRoute = optRoute;
-    }
-
-    /**
-     * 页面打开方式 D: DIV I： iFrame
-     *
-     * @return PageType
-     */
-    public String getPageType() {
-        return pageType;
-    }
-
-    /**
-     * 页面打开方式 D: DIV I： iFrame
-     *
-     * @param pageType pageType
-     */
-    public void setPageType(String pageType) {
-        this.pageType = pageType;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
 
     public void copy(OptInfo other) {
-
         this.preOptId = other.getPreOptId();
         this.optName = other.getOptName();
         this.formCode = other.getFormCode();
@@ -344,48 +169,18 @@ public class OptInfo implements IOptInfo, java.io.Serializable{
         this.height = other.getHeight();
         this.width = other.getWidth();
         this.optRoute = other.getOptRoute();
-        this.creator=other.creator;
-        this.updator=other.updator;
-        this.updateDate=other.updateDate;
+        this.creator = other.creator;
+        this.updator = other.updator;
+        this.updateDate = other.updateDate;
         this.state = other.getState();
         this.createDate = other.getCreateDate();
     }
-    public List<OptInfo> getChildren() {
-        return children;
-    }
 
-    public void  addChild(OptInfo child) {
-        if(children==null)
+    public void addChild(OptInfo child) {
+        if (children == null) {
             children = new ArrayList<>();
+        }
         children.add(child);
-    }
-
-    public void setChildren(List<OptInfo> children) {
-        this.children = children;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public Long getHeight() {
-        return height;
-    }
-
-    public void setHeight(Long height) {
-        this.height = height;
-    }
-
-    public Long getWidth() {
-        return width;
-    }
-
-    public void setWidth(Long width) {
-        this.width = width;
     }
 
     public List<OptMethod> getOptMethods() {
@@ -393,15 +188,6 @@ public class OptInfo implements IOptInfo, java.io.Serializable{
             optMethods = new ArrayList<>();
         }
         return optMethods;
-    }
-
-    public void setOptMethods(List<OptMethod> optDefs) {
-        this.optMethods = optDefs;
-    }
-
-    public OptInfo(String optId) {
-        super();
-        this.optId = optId;
     }
 
     public void addOptMethod(OptMethod optDef) {
@@ -413,14 +199,11 @@ public class OptInfo implements IOptInfo, java.io.Serializable{
         if (CollectionUtils.isEmpty(optDefs)) {
             return;
         }
-
         for (OptMethod optDef : optDefs) {
             optDef.setOptId(this.optId);
         }
-
         getOptMethods().addAll(optDefs);
     }
-
 
     public void addAllDataScopes(List<OptDataScope> dataScopeByOptID) {
         getDataScopes().clear();
@@ -434,31 +217,4 @@ public class OptInfo implements IOptInfo, java.io.Serializable{
 
         getDataScopes().addAll(dataScopeByOptID);
     }
-
-    //创建人、更新人、更新时间
-    public String getCreator() {
-          return this.creator;
-      }
-
-      public void setCreator(String creator) {
-          this.creator = creator;
-      }
-
-      public String getUpdator() {
-          return this.updator;
-      }
-
-      public void setUpdator(String updator) {
-          this.updator = updator;
-      }
-
-      public Date getUpdateDate() {
-          return updateDate;
-      }
-
-      public void setUpdateDate(Date updateDate) {
-          this.updateDate = updateDate;
-      }
-
-
 }

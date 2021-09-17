@@ -11,6 +11,7 @@ import com.centit.framework.security.model.CentitPasswordEncoder;
 import com.centit.framework.security.model.JsonCentitUserDetails;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
+import com.centit.framework.system.service.OptInfoManager;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.StringRegularOpt;
@@ -75,6 +76,8 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Autowired
     private RolePowerDao rolePowerDao;
+    @Autowired
+    private OptInfoManager optInfoManager;
 
 
     private boolean supportTenant;
@@ -215,6 +218,19 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         List<OptInfo> ls = optInfoDao.getMenuFuncByUserID(userCode, optType);
         List<OptInfo> menuFunsByUser = getMenuFuncs(preOpts, ls);
         return formatMenuTree(menuFunsByUser, superOptId);
+    }
+
+    @Override
+    public List<OptInfo> listMenuOptInfosUnderOsId(String osId) {
+        List<OptInfo> allOptsUnderOsId = optInfoDao.listAllOptInfoByTopOpt(osId);
+        return formatMenuTree(allOptsUnderOsId, osId);
+    }
+
+    @Override
+    public IOptInfo addOptInfo(JSONObject optInfo) {
+        OptInfo optInfoPo = JSON.toJavaObject(optInfo, OptInfo.class);
+        optInfoManager.saveNewOptInfo(optInfoPo);
+        return optInfoPo;
     }
 
     @Override
@@ -691,14 +707,14 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     public IOsInfo updateOsInfo(JSONObject osInfo) {
-        OsInfo osInfo1= JSON.toJavaObject(osInfo,OsInfo.class);
+        OsInfo osInfo1 = JSON.toJavaObject(osInfo, OsInfo.class);
         osInfoDao.updateObject(osInfo1);
         return osInfo1;
     }
 
     @Override
     public IOsInfo addOsInfo(JSONObject osInfo) {
-        OsInfo osInfo1= JSON.toJavaObject(osInfo,OsInfo.class);
+        OsInfo osInfo1 = JSON.toJavaObject(osInfo, OsInfo.class);
         osInfo1.setOsId(null);
         osInfoDao.saveNewObject(osInfo1);
         return osInfo1;
