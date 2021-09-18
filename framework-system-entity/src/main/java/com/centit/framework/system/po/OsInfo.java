@@ -102,4 +102,52 @@ public class OsInfo implements IOsInfo, java.io.Serializable {
     @Column(name = "pic_id")
     @Length(max = 64, message = "字段长度不能大于{max}")
     private String  picId;
+
+    public void copyNotNull(IOsInfo osInfo){
+        if(osInfo.getIsDelete()!=null){
+            isDelete = osInfo.getIsDelete();
+        }
+        if(osInfo.getCreated()!=null){
+            created = osInfo.getCreated();
+        }
+        if(osInfo.getOsId()!=null){
+            osId = osInfo.getOsId();
+        }
+        if(osInfo.getOsName()!=null){
+            osName = osInfo.getOsName();
+        }
+        if(osInfo.getOsType()!=null){
+            osType = osInfo.getOsType();
+        }
+        if(osInfo.getTopUnit()!=null){
+            topUnit = osInfo.getTopUnit();
+        }
+        if(osInfo.getCreateTime()!=null){
+            createTime = osInfo.getCreateTime();
+        }
+        if(osInfo.getLastModifyDate()!=null){
+            lastModifyDate = osInfo.getLastModifyDate();
+        }
+        if(osInfo.getOauthPassword()!=null){
+            oauthPassword = osInfo.getOauthPassword();
+        }
+        if(osInfo.getOauthUser()!=null){
+            oauthUser = osInfo.getOauthUser();
+        }
+        if(osInfo.getOsHomePage()!=null){
+            osHomePage = osInfo.getOsHomePage();
+        }
+        if(osInfo.getOsUrl()!=null){
+            osUrl = osInfo.getOsUrl();
+        }
+        if(osInfo.getPageFlow()!=null){
+            pageFlow = osInfo.getPageFlow();
+        }
+        if(osInfo.getPicId()!=null){
+            picId = osInfo.getPicId();
+        }
+        if(osInfo.getRelOptId()!=null){
+            relOptId = osInfo.getRelOptId();
+        }
+    }
 }

@@ -706,16 +706,17 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
-    public IOsInfo updateOsInfo(JSONObject osInfo) {
-        OsInfo osInfo1 = JSON.toJavaObject(osInfo, OsInfo.class);
-        osInfoDao.updateObject(osInfo1);
-        return osInfo1;
+    public IOsInfo updateOsInfo(IOsInfo osInfo) {
+        OsInfo osInfo1 = new OsInfo();
+        osInfo1.copyNotNull(osInfo);
+        osInfoDao.updateObject((OsInfo) osInfo);
+        return osInfo;
     }
 
     @Override
-    public IOsInfo addOsInfo(JSONObject osInfo) {
-        OsInfo osInfo1 = JSON.toJavaObject(osInfo, OsInfo.class);
-        osInfo1.setOsId(null);
+    public IOsInfo addOsInfo(IOsInfo osInfo) {
+        OsInfo osInfo1 = new OsInfo();
+        osInfo1.copyNotNull(osInfo);
         osInfoDao.saveNewObject(osInfo1);
         return osInfo1;
     }
