@@ -707,18 +707,18 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     public IOsInfo updateOsInfo(IOsInfo osInfo) {
-        OsInfo osInfo1 = new OsInfo();
-        osInfo1.copyNotNull(osInfo);
-        osInfoDao.updateObject((OsInfo) osInfo);
-        return osInfo;
+        OsInfo osInfoCopy = new OsInfo();
+        osInfoCopy.copyNotNull(osInfo);
+        osInfoDao.updateObject(osInfoCopy);
+        return osInfoCopy;
     }
 
     @Override
     public IOsInfo addOsInfo(IOsInfo osInfo) {
-        OsInfo osInfo1 = new OsInfo();
-        osInfo1.copyNotNull(osInfo);
-        osInfoDao.saveNewObject(osInfo1);
-        return osInfo1;
+        OsInfo osInfoCopy = new OsInfo();
+        osInfoCopy.copyNotNull(osInfo);
+        osInfoDao.saveNewObject(osInfoCopy);
+        return osInfoCopy;
     }
 
 }
