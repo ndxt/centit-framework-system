@@ -391,6 +391,13 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             : optMethodDao.listObjectsAll();
     }
 
+    @Override
+    public IOptMethod addOptMethod(JSONObject optMethod) {
+        OptMethod optMethodPo = JSON.toJavaObject(optMethod, OptMethod.class);
+        optMethodDao.saveNewObject(optMethodPo);
+        return optMethodPo;
+    }
+
     /**
      * @return 所有的数据范围定义表达式
      */

@@ -96,7 +96,7 @@ public class OsInfo implements IOsInfo, java.io.Serializable {
     @Column(name = "is_delete")
     @NotBlank(message = "字段不能为空[T/F]")
     @Length(max = 1, message = "字段长度不能大于{max}")
-    private Boolean isDelete;
+    private boolean deleted;
 
     @ApiModelProperty(value = "图片id")
     @Column(name = "pic_id")
@@ -104,9 +104,7 @@ public class OsInfo implements IOsInfo, java.io.Serializable {
     private String  picId;
 
     public void copyNotNull(IOsInfo osInfo){
-        if(osInfo.getIsDelete()!=null){
-            isDelete = osInfo.getIsDelete();
-        }
+        deleted = osInfo.isDeleted();
         if(osInfo.getCreated()!=null){
             created = osInfo.getCreated();
         }

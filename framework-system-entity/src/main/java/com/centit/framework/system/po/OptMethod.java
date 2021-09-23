@@ -8,6 +8,7 @@ import com.centit.support.database.orm.GeneratorType;
 import com.centit.support.database.orm.ValueGenerator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
@@ -19,6 +20,7 @@ import java.util.Date;
  *
  * @author codefan@codefan.com
  */
+@Data
 @Entity
 @Table(name = "F_OPTDEF")
 @ApiModel(value="操作方法对象",description="操作方法对象 OptMethod")
@@ -92,8 +94,11 @@ public class OptMethod implements IOptMethod, java.io.Serializable{
      * 方法排序号
      */
     @Column(name = "OPT_ORDER")
-    private Integer optOrder;// 操作方法排序
-
+    private Integer optOrder;
+    @Column(name = "OPT_TYPE")
+    private String optType;
+    @Column(name = "API_ID")
+    private String apiId;
     @Transient
     private String userCode;
     //结束
@@ -113,14 +118,11 @@ public class OptMethod implements IOptMethod, java.io.Serializable{
      * @param optid String
      */
     public OptMethod(String optcode, String optid) {
-
         this.optCode = optcode;
         this.optId = optid;
-
     }
 
     public OptMethod(String optcode, String optname, String optid, String optmethod, String optdesc) {
-
         this.optCode = optcode;
         this.optName = optname;
         this.optMethod = optmethod;
@@ -137,131 +139,8 @@ public class OptMethod implements IOptMethod, java.io.Serializable{
         this.isInWorkflow = isinworkflow;
     }
 
-    public String getOptId() {
-        return optId;
-    }
-
-    public void setOptId(String optId) {
-        this.optId = optId;
-    }
-
-    public String getOptCode() {
-        return this.optCode;
-    }
-
-    public void setOptCode(String optcode) {
-        this.optCode = optcode;
-    }
-
     public String toString() {
         return this.optName;
-    }
-
-    // Property accessors
-
-    public String getOptName() {
-        return this.optName;
-    }
-
-    public void setOptName(String optname) {
-        this.optName = optname;
-    }
-
-    public String getOptMethod() {
-        return this.optMethod;
-    }
-
-    public void setOptMethod(String optmethod) {
-        this.optMethod = optmethod;
-    }
-
-    public String getOptDesc() {
-        return this.optDesc;
-    }
-
-    public void setOptDesc(String optdesc) {
-        this.optDesc = optdesc;
-    }
-
-    public void setIsInWorkflow(String isinworkflow) {
-        this.isInWorkflow = isinworkflow;
-    }
-
-    public String getIsInWorkflow() {
-        return isInWorkflow;
-    }
-
-    public String getOptUrl() {
-        return optUrl;
-    }
-
-    public void setOptUrl(String optUrl) {
-        this.optUrl = optUrl;
-    }
-
-    public String getOptReq() {
-        return optReq;
-    }
-
-    public void setOptReq(String optReq) {
-        this.optReq = optReq;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public void setOptOrder(Integer optOrder) {
-        this.optOrder = optOrder;
-    }
-    @Override
-    public Integer getOptOrder() {
-        return optOrder;
-    }
-
-    //创建人、更新人、更新时间
-    public String getCreator() {
-          return this.creator;
-      }
-
-      public void setCreator(String creator) {
-          this.creator = creator;
-      }
-
-      public String getUpdator() {
-          return this.updator;
-      }
-
-      public void setUpdator(String updator) {
-          this.updator = updator;
-      }
-
-      public Date getUpdateDate() {
-          return updateDate;
-      }
-
-      public void setUpdateDate(Date updateDate) {
-          this.updateDate = updateDate;
-      }
-
-      public Date getLastModifyDate() {
-          return updateDate;
-    }
-
-      public void setLastModifyDate(Date lastModifyDate) {
-          this.updateDate = lastModifyDate;
-    }
-
-    public String getUserCode() {
-        return userCode;
-    }
-
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
     }
 
     //结束
