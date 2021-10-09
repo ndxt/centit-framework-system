@@ -2,9 +2,9 @@ package com.centit.framework.system.po;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.centit.framework.common.WebOptUtils;
+//import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.dao.DictionaryMap;
-import com.centit.framework.filter.RequestThreadLocal;
+//import com.centit.framework.filter.RequestThreadLocal;
 import com.centit.framework.model.basedata.IOptInfo;
 import com.centit.support.database.orm.GeneratorCondition;
 import com.centit.support.database.orm.GeneratorType;
@@ -38,6 +38,12 @@ public class OptInfo implements IOptInfo, java.io.Serializable {
     @ValueGenerator(strategy = GeneratorType.UUID22)
     @ApiModelProperty(value = "业务菜单编号", name = "optId", required = true)
     private String optId;
+
+    @Column(name = "OS_ID")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    @ApiModelProperty(value = "应用系统ID", name = "osId", required = true)
+    private String osId;
+
     @OrderBy
     @Column(name = "PRE_OPT_ID")
     @Length(max = 32, message = "字段长度不能大于{max}")
@@ -51,7 +57,7 @@ public class OptInfo implements IOptInfo, java.io.Serializable {
      */
     @Column(name = "OPT_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
-    @ApiModelProperty(value = "业务类别 S:实施业务, O:普通业务, W:流程业务, I:项目业务", name = "optType")
+    @ApiModelProperty(value = "业务类别 S:实施业务, O:普通业务, W:流程业务, I:项目业务, C:通用模块, A:应用入口页面", name = "optType")
     @DictionaryMap(fieldName = "optTypeText", value = "OptType")
     private String optType;
     @Column(name = "FORM_CODE")
@@ -123,9 +129,10 @@ public class OptInfo implements IOptInfo, java.io.Serializable {
 
     @Override
     public String getLocalOptName() {
-        String lang = WebOptUtils.getCurrentLang(
+        String lang = "";
+      /*  String lang = WebOptUtils.getCurrentLang(
             RequestThreadLocal.getLocalThreadWrapperRequest()
-        );
+        );*/
         if (optName == null) {
             return null;
         }
@@ -174,6 +181,8 @@ public class OptInfo implements IOptInfo, java.io.Serializable {
         this.updateDate = other.updateDate;
         this.state = other.getState();
         this.createDate = other.getCreateDate();
+        this.osId = other.getOsId();
+        this.docId = other.getDocId();
     }
 
     public void addChild(OptInfo child) {

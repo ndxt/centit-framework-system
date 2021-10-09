@@ -18,43 +18,43 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "F_OS_INFO")
-@ApiModel(value="系统信息对象",description="系统信息对象 OsInfo")
+@ApiModel(value="应用系统对象",description="应用系统对象 OsInfo")
 public class OsInfo implements IOsInfo, java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "OS_ID")
     @ValueGenerator(strategy = GeneratorType.UUID22)
-    @ApiModelProperty(value = "业务系统ID",name = "osId",required = true)
+    @ApiModelProperty(value = "应用系统ID",name = "osId",required = true)
     private String osId;
 
     @Column(name = "OS_NAME")
     @Length(max = 200, message = "字段长度不能大于{max}")
-    @ApiModelProperty(value = "系统名",name = "osName")
+    @ApiModelProperty(value = "应用名称",name = "osName")
     private String osName;
 
     @Column(name = "OS_TYPE")
     @Length(max = 16, message = "字段长度不能大于{max}")
-    @ApiModelProperty(value = "系统名",name = "osName")
+    @ApiModelProperty(value = "应用类型 P(PaaS平台业务） I(基于框架研发的业务） T(第三方研发的业务） O（外部业务）", name = "osName")
     private String osType;
     /**
      * 业务系统后台url
      */
     @Column(name = "OS_URL")
     @Length(max = 200, message = "字段长度不能大于{max}")
-    @ApiModelProperty(value = "系统地址",name = "osUrl")
+    @ApiModelProperty(value = "应用后台url",name = "osUrl")
     private String osUrl;
 
     @Column(name = "TOP_UNIT")
     @Length(max = 32, message = "字段长度不能大于{max}")
-    @ApiModelProperty(value = "系统地址",name = "osUrl")
+    @ApiModelProperty(value = "所属租户",name = "osUrl")
     private String topUnit;
     /**
      * 业务系统首页
      */
     @Column(name = "OS_HOME_PAGE")
     @Length(max = 300, message = "字段长度不能大于{max}")
-    @ApiModelProperty(value = "系统地址",name = "osHomePage")
+    @ApiModelProperty(value = "应用系统首页",name = "osHomePage")
     private String osHomePage;
 
     @Column(name = "OAUTH_USER")
@@ -88,18 +88,18 @@ public class OsInfo implements IOsInfo, java.io.Serializable {
     @Column(name = "CREATE_TIME")
     private Date createTime;
 
-    @ApiModelProperty(value = "应用设置")
+    @ApiModelProperty(value = "应用流程设置")
     @Column(name = "PAGE_FLOW")
     @Basic(fetch = FetchType.LAZY)
     private String  pageFlow;
 
-    @Column(name = "is_delete")
+    @Column(name = "IS_DELETE")
     @NotBlank(message = "字段不能为空[T/F]")
     @Length(max = 1, message = "字段长度不能大于{max}")
     private boolean deleted;
 
     @ApiModelProperty(value = "图片id")
-    @Column(name = "pic_id")
+    @Column(name = "PIC_ID")
     @Length(max = 64, message = "字段长度不能大于{max}")
     private String  picId;
 
