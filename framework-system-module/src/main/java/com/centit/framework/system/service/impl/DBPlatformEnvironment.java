@@ -483,12 +483,20 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         }
 
         sysuser.setTopUnitCode(userinfo.getTopUnit());
-        UnitInfo currentUnit = unitInfoDao.getObjectById(currentUnitCode);
-        if (null != currentUnit) {
-            sysuser.getUserInfo().put("primaryUnitName", currentUnit.getUnitName());
+        //当用户还未加入任何租户或者单位时，currentUnitCode为空
+        if (StringUtils.isNotBlank(currentUnitCode)) {
+            UnitInfo currentUnit = unitInfoDao.getObjectById(currentUnitCode);
+            if (null != currentUnit) {
+                sysuser.getUserInfo().put("primaryUnitName", currentUnit.getUnitName());
+            }
         }
+
         if (StringUtils.isBlank(sysuser.getTopUnitCode())) {
-            UnitInfo ui = unitInfoDao.getObjectById(currentUnitCode);
+            //当用户还未加入任何租户或者单位时，currentUnitCode为空
+            UnitInfo ui = null;
+            if (StringUtils.isNotBlank(currentUnitCode)) {
+                ui = unitInfoDao.getObjectById(currentUnitCode);
+            }
             if (ui != null) {
                 sysuser.setTopUnitCode(ui.getTopUnit());
             }
