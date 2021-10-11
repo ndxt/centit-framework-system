@@ -206,7 +206,7 @@ public class UserInfoController extends BaseController {
             return ResponseData.makeErrorMessage("当前用户不存在");
         }
 
-        sysUserUnitManager.deletePrimaryUnitByUserCode(userCode, dbUserInfo.getTopUnit());
+        sysUserUnitManager.deletePrimaryUnitByUserCode(userCode, WebOptUtils.getCurrentTopUnit(request));
         userUnit.setUserCode(userInfo.getUserCode());
         userUnit.setUnitCode(userInfo.getPrimaryUnit());
         userUnit.setRelType("T");
