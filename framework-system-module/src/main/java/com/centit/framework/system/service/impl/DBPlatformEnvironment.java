@@ -228,10 +228,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
-    public IOptInfo addOptInfo(JSONObject optInfo) {
-        OptInfo optInfoPo = JSON.toJavaObject(optInfo, OptInfo.class);
-        optInfoManager.saveNewOptInfo(optInfoPo);
-        return optInfoPo;
+    public IOptInfo addOptInfo(IOptInfo optInfo) {
+        optInfoManager.saveNewOptInfo((OptInfo) optInfo);
+        return optInfo;
     }
 
     @Override
@@ -525,8 +524,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional
     public JsonCentitUserDetails loadUserDetailsByLoginName(String loginName) {
         UserInfo userinfo = userInfoDao.getUserByLoginName(loginName);
-        if (userinfo == null)
+        if (userinfo == null) {
             return null;
+        }
         return fillUserDetailsField(userinfo);
     }
 
@@ -534,8 +534,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional
     public JsonCentitUserDetails loadUserDetailsByUserCode(String userCode) {
         UserInfo userinfo = userInfoDao.getUserByCode(userCode);
-        if (userinfo == null)
+        if (userinfo == null) {
             return null;
+        }
         return fillUserDetailsField(userinfo);
     }
 
@@ -543,8 +544,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional
     public JsonCentitUserDetails loadUserDetailsByRegEmail(String regEmail) {
         UserInfo userinfo = userInfoDao.getUserByRegEmail(regEmail);
-        if (userinfo == null)
+        if (userinfo == null) {
             return null;
+        }
         return fillUserDetailsField(userinfo);
     }
 
@@ -609,8 +611,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                     }
                 }
             }
-            if (nestedMenu == 0)
+            if (nestedMenu == 0) {
                 break;
+            }
 
             needAdd.clear();
             for (int i = 0; i < preOpts.size(); i++) {
@@ -723,18 +726,14 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     public IOsInfo updateOsInfo(IOsInfo osInfo) {
-        OsInfo osInfoCopy = new OsInfo();
-        osInfoCopy.copyNotNull(osInfo);
-        osInfoDao.updateObject(osInfoCopy);
-        return osInfoCopy;
+        osInfoDao.updateObject((OsInfo) osInfo);
+        return osInfo;
     }
 
     @Override
     public IOsInfo addOsInfo(IOsInfo osInfo) {
-        OsInfo osInfoCopy = new OsInfo();
-        osInfoCopy.copyNotNull(osInfo);
-        osInfoDao.saveNewObject(osInfoCopy);
-        return osInfoCopy;
+        osInfoDao.saveNewObject((OsInfo) osInfo);
+        return osInfo;
     }
 
 }
