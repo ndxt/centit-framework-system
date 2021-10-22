@@ -232,6 +232,11 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         optInfoManager.saveNewOptInfo((OptInfo) optInfo);
         return optInfo;
     }
+    @Override
+    public IOptInfo updateOptInfo(IOptInfo optInfo) {
+        optInfoManager.updateOptInfo((OptInfo) optInfo);
+        return optInfo;
+    }
 
     @Override
     @Transactional(readOnly = true)
