@@ -239,7 +239,7 @@ public class OptInfoController extends BaseController {
      * @param optId   主键
      * @param optInfo OptInfo
      */
-    @ApiOperation(value = "更新操作权限", notes = "更新操作权限。")
+    @ApiOperation(value = "批量更新操作权限", notes = "批量更新操作权限。")
     @ApiImplicitParams({
         @ApiImplicitParam(
             name = "optId", value = "菜单id",
@@ -336,10 +336,29 @@ public class OptInfoController extends BaseController {
      * 新建或更新业务操作
      *
      * @param optId   主键
-     * @param optCode optCode
      * @param optDef  OptMethod
      */
-    @ApiOperation(value = "新建或更新业务操作", notes = "新建或更新业务操作。")
+    @ApiOperation(value = "新建业务操作", notes = "新建业务操作。")
+    @ApiImplicitParams({
+        @ApiImplicitParam(
+            name = "optId", value = "菜单id",
+            required = true, paramType = "path", dataType = "String"),
+        @ApiImplicitParam(
+            name = "optDef", value = "更新的菜单操作方法对象",
+            required = true, paramType = "body", dataTypeClass = OptMethod.class)
+    })
+    @RequestMapping(value = "/{optId}", method = RequestMethod.POST)
+    @WrapUpResponseBody
+    public ResponseData optDefSave(@PathVariable String optId, @Valid OptMethod optDef) {
+        OptInfo optInfo = optInfoManager.getObjectById(optId);
+        if (null == optInfo) {
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_INTERNAL_SERVER_ERROR,
+                "数据库不匹配,数据库中不存在optId为" + optId + "的业务信息。");
+        }
+        optMethodManager.saveNewObject(optDef);
+        return ResponseData.successResponse;
+    }
+    @ApiOperation(value = "更新业务操作", notes = "更新业务操作。")
     @ApiImplicitParams({
         @ApiImplicitParam(
             name = "optId", value = "菜单id",
@@ -351,7 +370,7 @@ public class OptInfoController extends BaseController {
             name = "optDef", value = "更新的菜单操作方法对象",
             required = true, paramType = "body", dataTypeClass = OptMethod.class)
     })
-    @RequestMapping(value = "/{optId}/{optCode}", method = {RequestMethod.POST, RequestMethod.PUT})
+    @RequestMapping(value = "/{optId}/{optCode}", method = RequestMethod.PUT)
     @WrapUpResponseBody
     public ResponseData optDefEdit(@PathVariable String optId, @PathVariable String optCode, @Valid OptMethod optDef) {
         OptInfo optInfo = optInfoManager.getObjectById(optId);
