@@ -397,10 +397,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
-    public IOptMethod addOptMethod(JSONObject optMethod) {
-        OptMethod optMethodPo = JSON.toJavaObject(optMethod, OptMethod.class);
-        optMethodDao.saveNewObject(optMethodPo);
-        return optMethodPo;
+    public IOptMethod addOptMethod(IOptMethod optMethod) {
+        optMethodDao.saveNewObject((OptMethod) optMethod);
+        return optMethod;
     }
 
     /**
