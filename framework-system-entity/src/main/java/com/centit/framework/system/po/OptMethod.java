@@ -96,6 +96,7 @@ public class OptMethod implements IOptMethod, java.io.Serializable{
     @Column(name = "OPT_ORDER")
     private Integer optOrder;
     @Column(name = "OPT_TYPE")
+    @ApiModelProperty(value = "业务类别 A:api网关B:元数据C:http调用", name = "optType")
     private String optType;
     @Column(name = "API_ID")
     private String apiId;
