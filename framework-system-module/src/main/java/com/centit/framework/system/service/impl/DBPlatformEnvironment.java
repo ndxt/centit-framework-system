@@ -426,6 +426,12 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         return dataDictionaryDao.listDataDictionary(catalogCode);
     }
 
+    @Override
+    @Transactional(rollbackFor=Exception.class)
+    public int[] updateOptIdByOptCodes(String optId, List<String> optCodes) {
+        return optMethodDao.updateOptIdByOptCodes(optId,optCodes);
+    }
+
     //@Transactional
     private JsonCentitUserDetails fillUserDetailsField(UserInfo userinfo) {
         List<UserUnit> usun = userUnitDao.listUserUnitsByUserCode(userinfo.getUserCode());

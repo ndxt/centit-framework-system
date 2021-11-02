@@ -6,10 +6,13 @@ import com.centit.framework.system.po.OptMethod;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.UuidOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,5 +84,21 @@ public class OptMethodDao extends BaseDaoImpl<OptMethod, String>{
 
     public void updateOptMethod(OptMethod optMethod){
         super.updateObject(optMethod);
+    }
+
+    public int[] updateOptIdByOptCodes(String optId, List<String> optCodes){
+        String sql ="UPDATE f_optdef SET OPT_ID=? WHERE OPT_CODE IN (?)";
+        return super.jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {
+                preparedStatement.setString(1,optId);
+                preparedStatement.setString(2,optCodes.get(i));
+            }
+
+            @Override
+            public int getBatchSize() {
+                return optCodes.size();
+            }
+        });
     }
 }
