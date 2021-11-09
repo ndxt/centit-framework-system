@@ -42,15 +42,6 @@ public class SystemBeanConfig implements EnvironmentAware {
 */
 
     @Bean
-    public PlatformEnvironment platformEnvironment(){
-        boolean supportTenant = BooleanBaseOpt.castObjectToBoolean(
-            env.getProperty("app.support.tenant"), false);
-        DBPlatformEnvironment platformEnvironment = new DBPlatformEnvironment();
-        platformEnvironment.setSupportTenant(supportTenant);
-        return platformEnvironment;
-    }
-
-    @Bean
     public CentitUserDetailsService centitUserDetailsService() {
         DaoUserDetailsService userDetailsService = new DaoUserDetailsService();
         return userDetailsService;
