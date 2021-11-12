@@ -232,6 +232,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         optInfoManager.saveNewOptInfo((OptInfo) optInfo);
         return optInfo;
     }
+
     @Override
     public IOptInfo updateOptInfo(IOptInfo optInfo) {
         optInfoManager.updateOptInfo((OptInfo) optInfo);
@@ -286,9 +287,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional(readOnly = true)
     public List<UserInfo> listAllUsers(String topUnit) {
         if (supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)) {
-            Map<String, Object> filterMap = new HashMap<>();
-            filterMap.put("topUnit", topUnit);
-            return userInfoDao.listObjects(filterMap);
+            return userInfoDao.listAllUserInfo(topUnit);
         } else {
             return userInfoDao.listObjects();
         }
@@ -427,9 +426,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
-    @Transactional(rollbackFor=Exception.class)
+    @Transactional(rollbackFor = Exception.class)
     public int[] updateOptIdByOptCodes(String optId, List<String> optCodes) {
-        return optMethodDao.updateOptIdByOptCodes(optId,optCodes);
+        return optMethodDao.updateOptIdByOptCodes(optId, optCodes);
     }
 
     //@Transactional

@@ -32,7 +32,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     private static String f_v_userroles_sql = "select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'D' as OBTAIN_TYPE, " +
         "b.ROLE_TYPE, b.UNIT_CODE,b.ROLE_DESC, b.CREATE_DATE, b.UPDATE_DATE ,a.USER_CODE, null as INHERITED_FROM " +
         "from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE) " +
-        "where a.OBTAIN_DATE <= :currentDateTime "+
+        "where a.OBTAIN_DATE <= :currentDateTime " +
         " and (a.SECEDE_DATE is null or a.SECEDE_DATE > :currentDateTime )" +
         " and b.IS_VALID='T' and b.ROLE_CODE = :roleCode " +
         "union " +
@@ -68,7 +68,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
         filterField.put("USERWORD", CodeBook.EQUAL_HQL_ID);
         filterField.put("topUnit", CodeBook.EQUAL_HQL_ID);
 
-        filterField.put("(like)likeUserOrLoginName","(User_Name LIKE :likeUserOrLoginName OR LOGIN_NAME LIKE :likeUserOrLoginName)");
+        filterField.put("(like)likeUserOrLoginName", "(User_Name LIKE :likeUserOrLoginName OR LOGIN_NAME LIKE :likeUserOrLoginName)");
         filterField.put("byUnderUnit", "userCode in " +
             "(select us.USER_CODE from f_userunit us where us.UNIT_CODE = :byUnderUnit ) ");
         filterField.put("roleCode", "[(isNotEmpty(roleCode))(roleCode, currentDateTime) | and USER_CODE in " +
@@ -95,34 +95,41 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
 
     @Transactional
     @Override
-    public List<UserInfo> listObjects(Map<String, Object> filterMap){
+    public List<UserInfo> listObjects(Map<String, Object> filterMap) {
         filterMap.put("currentDateTime", DatetimeOpt.currentSqlDate());
         return super.listObjects(filterMap);
     }
 
+    public List<UserInfo> listAllUserInfo(String topUnit) {
+        String querySql = "SELECT a.* FROM F_USERINFO a " +
+            "JOIN " +
+            "(SELECT * FROM f_userunit WHERE top_unit=?) b " +
+            "ON a.USER_CODE=b.user_code ";
+        return this.listObjectsBySql(querySql, new String[]{topUnit});
+    }
 
     @Transactional
     public String getNextKey() {
         return StringBaseOpt.objectToString(
-          DatabaseOptUtils.getSequenceNextValue(this, "S_USERCODE"));
+            DatabaseOptUtils.getSequenceNextValue(this, "S_USERCODE"));
     }
 
     @SuppressWarnings("unchecked")
     @Transactional
     public List<FVUserOptList> listUserOptMethods(String userCode) {
         String sql = "select USER_CODE, OPT_CODE, OPT_NAME, OPT_ID, OPT_METHOD " +
-                "from F_V_USEROPTLIST " +
-                "where USER_CODE=? and OPT_METHOD is not null";
+            "from F_V_USEROPTLIST " +
+            "where USER_CODE=? and OPT_METHOD is not null";
 
         return getJdbcTemplate().execute(
-                (ConnectionCallback<List<FVUserOptList>>) conn ->
-                        OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
-                                new Object[]{userCode}, FVUserOptList.class));
+            (ConnectionCallback<List<FVUserOptList>>) conn ->
+                OrmDaoUtils.queryObjectsByParamsSql(conn, sql,
+                    new Object[]{userCode}, FVUserOptList.class));
     }
 
     @Transactional
     public List<FVUserOptList> listUserPowers(String topUnit, String userCode) {
-        Map<String,Object> map = CollectionsOpt.createHashMap("userCode",userCode,
+        Map<String, Object> map = CollectionsOpt.createHashMap("userCode", userCode,
             "currentDateTime", DatetimeOpt.currentSqlDate(),
             "unitCode", topUnit);
         return jdbcTemplate.execute(
@@ -139,17 +146,18 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     public List<UserInfo> listUnderUnit(Map<String, Object> filterMap, PageDesc pageDesc) {
         return this.listObjectsByProperties(filterMap, pageDesc);
     }
+
     @Transactional
     public JSONArray listObjectsByUnit(Map<String, Object> filterMap, PageDesc pageDesc) {
-        String querySql="SELECT a.* FROM F_USERINFO a " +
+        String querySql = "SELECT a.* FROM F_USERINFO a " +
             "JOIN " +
             "(SELECT * FROM f_userunit WHERE 1=1 "
-        +"[:queryByUnit | AND unit_code=:queryByUnit] [:topUnit | AND top_unit=:topUnit]) b " +
+            + "[:queryByUnit | AND unit_code=:queryByUnit] [:topUnit | AND top_unit=:topUnit]) b " +
             "ON a.USER_CODE=b.user_code " +
-            "where 1=1 [:(like)userName | and (User_Name LIKE :userName OR LOGIN_NAME LIKE :userName)]"+
+            "where 1=1 [:(like)userName | and (User_Name LIKE :userName OR LOGIN_NAME LIKE :userName)]" +
             "ORDER BY b.user_order";
         QueryAndNamedParams qap = QueryUtils.translateQuery(querySql, filterMap);
-        return DatabaseOptUtils.listObjectsByNamedSqlAsJson(this,qap.getQuery(), qap.getParams(), pageDesc);
+        return DatabaseOptUtils.listObjectsByNamedSqlAsJson(this, qap.getQuery(), qap.getParams(), pageDesc);
 
     }
 
@@ -161,7 +169,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     @Transactional
     public UserInfo getUserByLoginName(String loginName) {
         return super.getObjectByProperties(CollectionsOpt.createHashMap(
-                "loginName",loginName));
+            "loginName", loginName));
     }
 
     @Transactional
@@ -185,7 +193,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     }
 
     @Transactional
-    public UserInfo getUserByIdCardNo(String idCardNo){
+    public UserInfo getUserByIdCardNo(String idCardNo) {
         return super.getObjectByProperties(CollectionsOpt.createHashMap("idCardNo", idCardNo));
     }
 
@@ -197,38 +205,40 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     public List<UserInfo> listUsersByRoleCode(String roleCode) {
         return super.listObjects(
             CollectionsOpt.createHashMap("roleCode", roleCode,
-                "currentDateTime", DatetimeOpt.currentSqlDate()) );
+                "currentDateTime", DatetimeOpt.currentSqlDate()));
     }
 
-    public int isLoginNameExist(String userCode, String loginName){
+    public int isLoginNameExist(String userCode, String loginName) {
         String sql = "select count(*) as usersCount from F_USERINFO t " +
-                "where t.USERCODE <> ? and t.LOGINNAME = ?";
+            "where t.USERCODE <> ? and t.LOGINNAME = ?";
         return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
-                    new Object[]{userCode, loginName}));
-    }
-    public int isCellPhoneExist(String userCode, String cellPhone){
-        String sql = "select count(*) as usersCount from F_USERINFO t " +
-                "where t.USERCODE <> ? and t.REGCELLPHONE = ?";
-        return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
-                    new Object[]{userCode, cellPhone}));
-    }
-    public int isEmailExist(String userCode, String email){
-        String sql = "select count(*) as usersCount from F_USERINFO t " +
-                "where t.USERCODE <> ? and t.REGEMAIL = ?";
-        return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
-                    new Object[]{userCode, email}));
+            new Object[]{userCode, loginName}));
     }
 
-    public int isAnyOneExist(String userCode, String loginName,String regPhone,String regEmail) {
+    public int isCellPhoneExist(String userCode, String cellPhone) {
         String sql = "select count(*) as usersCount from F_USERINFO t " +
-                "where t.USER_CODE != ? and " +
-                "(t.LOGIN_NAME = ? or t.REG_CELL_PHONE= ? or t.Reg_Email = ?)";
+            "where t.USERCODE <> ? and t.REGCELLPHONE = ?";
         return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
-                    new Object[]{userCode, loginName, regPhone, regEmail}));
+            new Object[]{userCode, cellPhone}));
+    }
+
+    public int isEmailExist(String userCode, String email) {
+        String sql = "select count(*) as usersCount from F_USERINFO t " +
+            "where t.USERCODE <> ? and t.REGEMAIL = ?";
+        return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
+            new Object[]{userCode, email}));
+    }
+
+    public int isAnyOneExist(String userCode, String loginName, String regPhone, String regEmail) {
+        String sql = "select count(*) as usersCount from F_USERINFO t " +
+            "where t.USER_CODE != ? and " +
+            "(t.LOGIN_NAME = ? or t.REG_CELL_PHONE= ? or t.Reg_Email = ?)";
+        return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
+            new Object[]{userCode, loginName, regPhone, regEmail}));
     }
 
     @Transactional
-    public void updateUser(UserInfo userInfo){
+    public void updateUser(UserInfo userInfo) {
         super.updateObject(userInfo);
     }
 
