@@ -87,7 +87,7 @@ public class OptMethodDao extends BaseDaoImpl<OptMethod, String>{
     }
 
     public int[] updateOptIdByOptCodes(String optId, List<String> optCodes){
-        String sql ="UPDATE f_optdef SET OPT_ID=? WHERE OPT_CODE IN (?)";
+        String sql ="UPDATE f_optdef SET OPT_ID=? WHERE OPT_CODE = ? ";
         return super.jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement preparedStatement, int i) throws SQLException {

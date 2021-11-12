@@ -44,9 +44,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Autowired
     private OsInfoDao osInfoDao;
-
     @Autowired
     private OptInfoDao optInfoDao;
+
 
     @Autowired
     private UserInfoDao userInfoDao;
@@ -429,6 +429,16 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional(rollbackFor = Exception.class)
     public int[] updateOptIdByOptCodes(String optId, List<String> optCodes) {
         return optMethodDao.updateOptIdByOptCodes(optId, optCodes);
+    }
+
+    @Override
+    public boolean deleteOptInfoByOptId(String optId) {
+        optInfoDao.deleteObjectById(optId);
+        OptInfo optInfo = optInfoDao.getObjectById(optId);
+         if (optInfo !=null){
+             return false;
+         }
+        return true;
     }
 
     //@Transactional
