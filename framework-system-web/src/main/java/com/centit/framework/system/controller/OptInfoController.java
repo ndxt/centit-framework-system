@@ -14,6 +14,7 @@ import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.service.OptInfoManager;
 import com.centit.framework.system.service.OptMethodManager;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
 import io.swagger.annotations.Api;
@@ -109,8 +110,13 @@ public class OptInfoController extends BaseController {
     @ApiOperation(value = "查询所有需要通过权限管理的业务", notes = "查询所有需要通过权限管理的业务。")
     @RequestMapping(value = "/poweropts", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public JSONArray listPowerOpts() {
-        List<OptInfo> listObjects = optInfoManager.listSysAndOptPowerOpts();
+    public JSONArray listPowerOpts(HttpServletRequest request) {
+        List<OptInfo> listObjects;
+        if (WebOptUtils.isTenantTopUnit(request)) {
+            listObjects = optInfoManager.listFromParent(CollectionsOpt.createHashMap("topUnit", WebOptUtils.getCurrentTopUnit(request)));
+        }else {
+            listObjects = optInfoManager.listSysAndOptPowerOpts();
+        }
         listObjects = optInfoManager.listObjectFormatTree(listObjects, true);
         return makeMenuFuncsJson(listObjects);
     }
