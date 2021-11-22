@@ -28,6 +28,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -353,19 +354,23 @@ public class RoleInfoController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}给角色添加权限",
         tag="{roleCode}:{optCode}")
     @WrapUpResponseBody
+    @Transactional(rollbackFor = Exception.class)
     public void addOptToRole(@ParamName("roleCode")@PathVariable String roleCode,
                              @ParamName("optCode")@PathVariable String optCode) {
-        RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
-        if (null == dbRoleInfo) {
-            throw new ObjectException(roleCode+":"+optCode, "角色信息不存在");
-        }
-        RolePower rolePower = new RolePower(new RolePowerId(roleCode, optCode));
+        String[] roleCodes = StringUtils.split(roleCode,",");
+        for(String role:roleCodes) {
+            RoleInfo dbRoleInfo = sysRoleManager.getRoleInfo(role);
+            if (null == dbRoleInfo) {
+                continue;
+            }
+            RolePower rolePower = new RolePower(new RolePowerId(role, optCode));
 
-        if (dbRoleInfo.getRolePowers().contains(rolePower)) {
-            return ;
+            if (dbRoleInfo.getRolePowers().contains(rolePower)) {
+                return;
+            }
+            dbRoleInfo.getRolePowers().add(rolePower);
+            sysRoleManager.updateRolePower(dbRoleInfo);
         }
-        dbRoleInfo.getRolePowers().add(rolePower);
-        sysRoleManager.updateRoleInfo(dbRoleInfo);
     }
 
     /*
