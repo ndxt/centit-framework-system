@@ -101,6 +101,8 @@ public class UnitInfoController extends BaseController {
         if (StringUtils.isNotBlank(unitName) && StringUtils.isBlank(id)) {
 
             List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn);
+            //通过名字搜索，也添加状态字段
+            sysUnitManager.checkState(listObjects);
             JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
             if (struct) {
                 ja = CollectionsOpt.srotAsTreeAndToJSON(ja, (p, c) ->
