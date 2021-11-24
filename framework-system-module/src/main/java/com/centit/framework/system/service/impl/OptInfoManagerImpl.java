@@ -2,6 +2,7 @@ package com.centit.framework.system.service.impl;
 
 import com.centit.framework.common.GlobalConstValue;
 import com.centit.framework.components.CodeRepositoryCache;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.OptDataScopeDao;
 import com.centit.framework.system.dao.OptInfoDao;
 import com.centit.framework.system.dao.OptMethodDao;
@@ -207,6 +208,10 @@ public class OptInfoManagerImpl implements OptInfoManager {
         dataScopeDao.deleteDataScopeOfOptID(optId);
         optMethodDao.deleteOptMethodsByOptID(optId);
         optInfoDao.deleteObjectById(optId);
+        String sql="DELETE FROM f_rolepower WHERE OPT_CODE IN  (SELECT OPT_CODE FROM f_optdef WHERE  OPT_ID =?)";
+        DatabaseOptUtils.doExecuteSql(optInfoDao, sql, new Object[]{optId});
+        CodeRepositoryCache.evictCache("RoleInfo");
+        CodeRepositoryCache.evictCache("RolePower");
         CodeRepositoryCache.evictCache("OptInfo");
     }
 

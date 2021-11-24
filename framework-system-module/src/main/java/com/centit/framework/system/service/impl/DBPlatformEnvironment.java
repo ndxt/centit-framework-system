@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.common.GlobalConstValue;
 import com.centit.framework.components.CodeRepositoryUtil;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.*;
 import com.centit.framework.security.model.CentitPasswordEncoder;
@@ -435,9 +436,22 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     public boolean deleteOptInfoByOptId(String optId) {
         optInfoManager.deleteOptInfoById(optId);
         OptInfo optInfo = optInfoDao.getObjectById(optId);
-         if (optInfo !=null){
-             return false;
-         }
+        if (optInfo !=null){
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean deleteOptDefAndRolepowerByOptCode(String optCode) {
+        optMethodDao.deleteObjectById(optCode);
+        String sql="DELETE FROM f_rolepower WHERE OPT_CODE = ?";
+        DatabaseOptUtils.doExecuteSql(optInfoDao, sql, new Object[]{optCode});
+        OptMethod objectById = optMethodDao.getObjectById(optCode);
+        if (objectById!=null){
+            return  false;
+        }
         return true;
     }
 
