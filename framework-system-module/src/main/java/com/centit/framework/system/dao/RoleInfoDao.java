@@ -6,6 +6,8 @@ import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.po.RoleInfo;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;
+import com.centit.support.database.orm.OrmDaoUtils;
+import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -111,5 +113,20 @@ public class RoleInfoDao extends BaseDaoImpl<RoleInfo, String>{
             " where ROLE_TYPE = 'G' or (ROLE_TYPE='D' and UNIT_CODE = ?) ",
             new Object[]{topUnit});
     }
+
+
+    /**
+     * 根据optCode查询角色信息
+     * @param optCode
+     * @return
+     */
+    public List<RoleInfo> listRoleInfoByOptCode(String optCode) {
+        String sql = " SELECT B.ROLE_CODE, B.ROLE_NAME, B.ROLE_TYPE, B.UNIT_CODE, B.ROLE_DESC, B.UPDATE_DATE, B.CREATE_DATE, B.CREATOR, B.UPDATOR " +
+            " FROM F_ROLEPOWER A JOIN F_ROLEINFO B ON A.ROLE_CODE = B.ROLE_CODE " +
+            "WHERE A.OPT_CODE = ?  ";
+       return getJdbcTemplate().execute(
+            (ConnectionCallback<List<RoleInfo>>) conn ->OrmDaoUtils.queryObjectsByParamsSql(conn, sql,new Object[]{optCode}, RoleInfo.class));
+    }
+
 
 }

@@ -731,4 +731,27 @@ public class RoleInfoController extends BaseController {
         return DictionaryMapUtils.objectsToJSONArray(listObjects, field);
     }
 
+    @ApiOperation(value = "根据optCode查询角色信息", notes = "根据optCode查询角色信息。")
+    @ApiImplicitParam(
+        name = "optCode", value = "optCode",
+        required = true, paramType = "path", dataType = "String")
+    @RequestMapping(value = "/listRoleInfoByOptCode/{optCode}", method = RequestMethod.GET)
+    @WrapUpResponseBody
+    public ResponseData listRoleInfoByOptCode(@PathVariable String optCode) {
+
+        List<RoleInfo> roleInfos = sysRoleManager.listRoleInfoByOptCode(optCode);
+        return ResponseData.makeResponseData(roleInfos);
+    }
+
+    @ApiOperation(value = "根据optCode更新rolePower信息", notes = "根据optCode更新rolePower信息。多个roleCode用英文逗号拼接，roleCode为空则不传")
+    @ApiImplicitParam(
+        name = "optCode", value = "optCode",
+        required = true, paramType = "path", dataType = "String")
+    @RequestMapping(value = "/updateRolePower/{optCode}", method = RequestMethod.PUT)
+    @WrapUpResponseBody
+    public ResponseData updateRolePower(@PathVariable String optCode, String roleCode) {
+
+        sysRoleManager.updateRolePower(optCode,roleCode);
+        return ResponseData.makeSuccessResponse();
+    }
 }

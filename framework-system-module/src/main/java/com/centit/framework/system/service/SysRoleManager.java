@@ -50,4 +50,18 @@ public interface SysRoleManager{
    * @return 名称是否可用 （true 可用； false 不可用）
    */
     boolean judgeSysRoleNameCanBeUsed(String roleName, String roleCode, String unitCode);
+
+    /**
+     * 根据optCode查询角色信息
+     * @param optCode
+     * @return
+     */
+    List<RoleInfo> listRoleInfoByOptCode(String optCode);
+
+    /**
+     * 根据optCode更新F_ROLEPOWER中的信息
+     * @param optCode 操作code
+     * @param roleCode 角色code 当roleCode为空时，意味着要删除与optCode相关的所有数据
+     */
+    void updateRolePower(String optCode, String roleCode);
 }

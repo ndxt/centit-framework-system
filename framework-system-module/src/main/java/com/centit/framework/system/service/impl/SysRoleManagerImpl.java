@@ -18,10 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service("sysRoleManager")
 public class SysRoleManagerImpl implements SysRoleManager {
@@ -224,5 +221,22 @@ public class SysRoleManagerImpl implements SysRoleManager {
         List<RoleInfo> roleInfos = roleInfoDao.listObjects(filterMap);
         return roleInfos==null || roleInfos.size() == 0 ||
                StringUtils.equals(roleCode, roleInfos.get(0).getRoleCode());
+    }
+
+    @Override
+    public List<RoleInfo> listRoleInfoByOptCode(String optCode) {
+        return roleInfoDao.listRoleInfoByOptCode(optCode);
+    }
+
+    @Override
+    @Transactional
+    public void updateRolePower(String optCode, String roleCode) {
+        rolePowerDao.deleteRolePowersByOptCode(optCode);
+       if (StringUtils.isBlank(roleCode)){
+           return;
+       }
+        Arrays.stream(roleCode.split(",")).forEach(singleRoleCode->
+            rolePowerDao.saveNewRolePower(new RolePower(new RolePowerId(singleRoleCode,optCode))));
+
     }
 }
