@@ -233,10 +233,12 @@ public class SysRoleManagerImpl implements SysRoleManager {
     public void updateRolePower(String optCode, String roleCode) {
         rolePowerDao.deleteRolePowersByOptCode(optCode);
        if (StringUtils.isBlank(roleCode)){
+           CodeRepositoryCache.evictCache("RolePower");
            return;
        }
         Arrays.stream(roleCode.split(",")).forEach(singleRoleCode->
             rolePowerDao.saveNewRolePower(new RolePower(new RolePowerId(singleRoleCode,optCode))));
+        CodeRepositoryCache.evictCache("RolePower");
 
     }
 }
