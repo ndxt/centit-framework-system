@@ -152,7 +152,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
         String querySql = "SELECT a.* FROM F_USERINFO a " +
             "JOIN " +
             "(SELECT * FROM f_userunit WHERE 1=1 "
-            + "[:queryByUnit | AND unit_code=:queryByUnit] [:topUnit | AND top_unit=:topUnit]) b " +
+            + "[:queryByUnit | AND unit_code=:queryByUnit] [:topUnit | AND top_unit=:topUnit] [ :relType | AND REL_TYPE = :relType ] ) b " +
             "ON a.USER_CODE=b.user_code " +
             "where 1=1 [:(like)userName | and (User_Name LIKE :userName OR LOGIN_NAME LIKE :userName)]" +
             "ORDER BY b.user_order";
