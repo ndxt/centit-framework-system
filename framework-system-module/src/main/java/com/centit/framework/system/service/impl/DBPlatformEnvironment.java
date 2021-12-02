@@ -288,7 +288,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional(readOnly = true)
     public List<UserInfo> listAllUsers(String topUnit) {
         if (supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)) {
-            return userInfoDao.listAllUserInfo(topUnit);
+            return userInfoDao.listObjects(CollectionsOpt.createHashMap("topUnit",topUnit));
         } else {
             return userInfoDao.listObjects();
         }
