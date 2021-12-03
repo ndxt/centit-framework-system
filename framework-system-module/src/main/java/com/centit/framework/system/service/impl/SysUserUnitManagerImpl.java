@@ -240,8 +240,9 @@ public class SysUserUnitManagerImpl
     @Override
     @Transactional
     public void deletePrimaryUnitByUserCode(String userCode, String topUnit){
-        if(userUnitDao.getPrimaryUnitByUserId(userCode, topUnit) != null) {
-            userUnitDao.deleteObject(userUnitDao.getPrimaryUnitByUserId(userCode, topUnit));
+        UserUnit userUnit = userUnitDao.getPrimaryUnitByUserId(userCode, topUnit);
+        if( userUnit!= null) {
+            userUnitDao.deleteObject(userUnit);
         }
     }
 
