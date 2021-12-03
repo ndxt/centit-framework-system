@@ -332,36 +332,18 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                 "T", "不支持租户时的默认顶级机构"));
     }
 
-    private List<UserUnit> fetchUserUnitXzRank(List<UserUnit> userUnits) {
-        if (userUnits != null) {
-            for (UserUnit uu : userUnits) {
-                // 设置行政角色等级
-                IDataDictionary dd = CodeRepositoryUtil.getDataPiece("RankType", uu.getUserRank());
-                if (dd != null && dd.getExtraCode() != null && StringRegularOpt.isNumber(dd.getExtraCode())) {
-                    try {
-                        uu.setXzRank(Integer.valueOf(dd.getExtraCode()));
-                    } catch (Exception e) {
-                        logger.error(e.getMessage(), e);
-                        uu.setXzRank(IUserUnit.MAX_XZ_RANK);
-                    }
-                }
-            }
-        }
-        return userUnits;
-    }
-
     @Override
     @Transactional(readOnly = true)
     public List<UserUnit> listUserUnits(String topUnit, String userCode) {
         return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
-            ? fetchUserUnitXzRank(userUnitDao.listUserUnitsByUserCode(topUnit, userCode))
-            : fetchUserUnitXzRank(userUnitDao.listUserUnitsByUserCode(userCode));
+            ? userUnitDao.listUserUnitsByUserCode(topUnit, userCode)
+            : userUnitDao.listUserUnitsByUserCode(userCode);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<UserUnit> listUnitUsers(String unitCode) {
-        return fetchUserUnitXzRank(userUnitDao.listUnitUsersByUnitCode(unitCode));
+        return userUnitDao.listUnitUsersByUnitCode(unitCode);
     }
 
     @Override
