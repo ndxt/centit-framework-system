@@ -49,7 +49,6 @@ public class OptInfoManagerImpl implements OptInfoManager {
     private void checkOptInfoProperties(OptInfo optInfo){
         if(optInfo.getPreOptId()==null){
             optInfo.setPreOptId("0");
-            optInfo.setTopOptId(optInfo.getOptId());
         }
         if("N".equals(optInfo.getIsInToolbar())){
             List<OptInfo> optInfos = findSubOptInfo(optInfo.getOptId());
@@ -74,7 +73,6 @@ public class OptInfoManagerImpl implements OptInfoManager {
         OptInfo parentOpt = optInfoDao.getObjectById(optInfo.getPreOptId());
         if (parentOpt == null) {
             optInfo.setPreOptId("0");
-            optInfo.setTopOptId(optInfo.getOptId());
         } else {
             optInfo.setTopOptId(parentOpt.getTopOptId());
         }
