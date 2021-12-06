@@ -81,7 +81,6 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Autowired
     private OptInfoManager optInfoManager;
 
-
     private boolean supportTenant;
 
     public DBPlatformEnvironment() {
@@ -236,7 +235,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     public IOptInfo updateOptInfo(IOptInfo optInfo) {
-        optInfoManager.updateOptInfo((OptInfo) optInfo);
+        optInfoDao.updateOptInfo((OptInfo) optInfo);
         return optInfo;
     }
 
