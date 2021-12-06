@@ -69,7 +69,7 @@ public class SysUserUnitManagerImpl
                     continue;
                 }
                 // 设置行政角色等级
-                IDataDictionary dd = CodeRepositoryUtil.getDataPiece("RankType", uu.getUserRank());
+                IDataDictionary dd = CodeRepositoryUtil.getDataPiece("RankType", uu.getUserRank(),unitCode);
                 if (dd != null && dd.getExtraCode() != null && StringRegularOpt.isNumber(dd.getExtraCode())) {
                     try {
                         uu.setXzRank(Integer.valueOf(dd.getExtraCode()));
@@ -84,7 +84,7 @@ public class SysUserUnitManagerImpl
     }
 
     private static boolean isMultiToMulti() {
-        IDataDictionary agencyMode = CodeRepositoryUtil.getDataPiece("SYSPARAM","userUnitMode");
+        IDataDictionary agencyMode = CodeRepositoryUtil.getDataPiece("SYSPARAM","userUnitMode",null);
 
         if (agencyMode!=null) {
             return ("M".equalsIgnoreCase(agencyMode.getDataValue()));
@@ -164,11 +164,11 @@ public class SysUserUnitManagerImpl
         }
         userUnitDao.saveNewObject(userunit);
         List<FVUserRoles> userRoles = userRoleDao.listUserRolesByUserCode(userunit.getUserCode());
-        IDataDictionary dd = CodeRepositoryUtil.getDataPiece("StationType",userunit.getUserStation());
+        IDataDictionary dd = CodeRepositoryUtil.getDataPiece("StationType",userunit.getUserStation(),userunit.getTopUnit());
         if (null != dd) {
             addUserRoleWhenNotExist(userunit.getUserCode(), dd.getExtraCode2(), userRoles);
         }
-        dd = CodeRepositoryUtil.getDataPiece("RankType",userunit.getUserRank());
+        dd = CodeRepositoryUtil.getDataPiece("RankType",userunit.getUserRank(),userunit.getTopUnit());
         if (null != dd) {
             addUserRoleWhenNotExist(userunit.getUserCode(), dd.getExtraCode2(), userRoles);
         }
@@ -240,8 +240,9 @@ public class SysUserUnitManagerImpl
     @Override
     @Transactional
     public void deletePrimaryUnitByUserCode(String userCode, String topUnit){
-        if(userUnitDao.getPrimaryUnitByUserId(userCode, topUnit) != null) {
-            userUnitDao.deleteObject(userUnitDao.getPrimaryUnitByUserId(userCode, topUnit));
+        UserUnit userUnit = userUnitDao.getPrimaryUnitByUserId(userCode, topUnit);
+        if( userUnit!= null) {
+            userUnitDao.deleteObject(userUnit);
         }
     }
 

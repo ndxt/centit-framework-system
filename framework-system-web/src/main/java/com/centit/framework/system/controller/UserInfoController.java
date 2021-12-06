@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
+import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
@@ -27,7 +28,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +37,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -206,7 +205,9 @@ public class UserInfoController extends BaseController {
             return ResponseData.makeErrorMessage("当前用户不存在");
         }
 
-        sysUserUnitManager.deletePrimaryUnitByUserCode(userCode, WebOptUtils.getCurrentTopUnit(request));
+        String topUnit = WebOptUtils.getCurrentTopUnit(request);
+        sysUserUnitManager.deletePrimaryUnitByUserCode(userCode,topUnit);
+        userInfo.setTopUnit(topUnit);
         userUnit.setUserCode(userInfo.getUserCode());
         userUnit.setUnitCode(userInfo.getPrimaryUnit());
         userUnit.setRelType("T");
@@ -218,7 +219,12 @@ public class UserInfoController extends BaseController {
             userInfo.setUserPin(dbUserInfo.getUserPin());
         }
 
+        //由于userinfo已经在sysUserUnitManager.saveNewUserUnit(userUnit)中被修改
+        //防止用户的当前登录租户信息被修改，在这里重新恢复userInfo中的topUnit和primaryUnit
+        userInfo.setPrimaryUnit(dbUserInfo.getPrimaryUnit());
+        userInfo.setTopUnit(dbUserInfo.getTopUnit());
         sysUserManager.updateUserInfo(userInfo);
+        CodeRepositoryCache.evictCache("UserInfo");
         return ResponseData.successResponse;
 
     }
