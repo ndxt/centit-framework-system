@@ -229,6 +229,9 @@ public class OptInfoController extends BaseController {
         }
 
         if (!StringUtils.equals(dbOptInfo.getPreOptId(), optInfo.getPreOptId())) {
+            if(optInfo.getPreOptId()==null){
+                optInfo.setPreOptId("0");
+            }
             OptInfo parentOpt = optInfoManager.getOptInfoById(optInfo.getPreOptId());
             if (parentOpt == null) {
                 optInfo.setPreOptId(dbOptInfo.getPreOptId());

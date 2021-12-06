@@ -77,7 +77,6 @@ public class OptInfo implements IOptInfo, java.io.Serializable {
     private Long imgIndex;
     @Column(name = "TOP_OPT_ID")
     @Length(max = 32, message = "字段长度不能大于{max}")
-    @ValueGenerator(strategy = GeneratorType.FUNCTION, value = "optId")
     private String topOptId;
     @Column(name = "PAGE_TYPE")
     @Length(max = 1, message = "字段长度必须为{max}")
