@@ -69,7 +69,7 @@ public class SysUserUnitManagerImpl
                     continue;
                 }
                 // 设置行政角色等级
-                IDataDictionary dd = CodeRepositoryUtil.getDataPiece("RankType", uu.getUserRank(),unitCode);
+                IDataDictionary dd = CodeRepositoryUtil.getDataPiece("RankType", uu.getUserRank(),uu.getTopUnit());
                 if (dd != null && dd.getExtraCode() != null && StringRegularOpt.isNumber(dd.getExtraCode())) {
                     try {
                         uu.setXzRank(Integer.valueOf(dd.getExtraCode()));
