@@ -178,7 +178,10 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         if (StringUtils.isEmpty(superOptId)) {
             return Collections.emptyList();
         }
-
+        optInfos.sort((a, b) -> a.getOrderInd() == null && b.getOrderInd() == null ? 0 : (
+            a.getOrderInd() == null ? 1 : (b.getOrderInd() == null ? -1 : Long.compare(a.getOrderInd(), b.getOrderInd()
+            ))
+        ));
         Iterator<OptInfo> menus = optInfos.iterator();
         OptInfo parentOpt = null;
 
