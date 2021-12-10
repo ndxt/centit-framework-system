@@ -100,7 +100,8 @@ public class OptInfoController extends BaseController {
                 "children", "children",
                 "isInToolbar", "isInToolbar",
                 "state", "state",
-                "optMethods", "optMethods"
+                "optMethods", "optMethods",
+                "topOptId","topOptId"
             ), (jsonObject, obj) -> jsonObject.put("external", !("D".equals(obj.getPageType()))));
     }
 
