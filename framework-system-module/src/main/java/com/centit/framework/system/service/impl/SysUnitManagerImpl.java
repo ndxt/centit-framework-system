@@ -91,7 +91,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
         //子机构
         for(UnitInfo ui : subUnits){
             ui.setParentUnit(unitinfo.getParentUnit());
-            ui.setUnitPath(unitinfo.getUnitPath());
+            ui.setUnitPath(ui.getUnitPath().replace("/"+oldUnitPath,""));
             unitInfoDao.updateUnit(ui);
         }
 
