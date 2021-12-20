@@ -102,6 +102,10 @@ public class OsInfo implements IOsInfo, java.io.Serializable {
     @Column(name = "PIC_ID")
     @Length(max = 64, message = "字段长度不能大于{max}")
     private String  picId;
+    @ApiModelProperty(value = "默认数据库,用于后台根据表单自动创建表")
+    @Column(name = "DEFAULT_DATABASE")
+    @Length(max = 64, message = "字段长度不能大于{max}")
+    private String  defaultDatabase;
 
     public void copyNotNull(IOsInfo osInfo){
         deleted = osInfo.isDeleted();
