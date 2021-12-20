@@ -754,4 +754,16 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         return osInfo;
     }
 
+
+    @Override
+    public int countUserByTopUnit(String topUnit) {
+        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
+            ? userUnitDao.countUserByTopUnit(topUnit):userUnitDao.countUserByTopUnit(null);
+    }
+
+    @Override
+    public int countUnitByTopUnit(String topUnit) {
+        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
+            ? unitInfoDao.countUnitByTopUnit(topUnit):unitInfoDao.countUnitByTopUnit(null);
+    }
 }

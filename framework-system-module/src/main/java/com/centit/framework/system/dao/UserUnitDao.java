@@ -3,13 +3,16 @@ package com.centit.framework.system.dao;
 import com.centit.framework.common.GlobalConstValue;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.po.UserUnit;
 import com.centit.support.algorithm.CollectionsOpt;
+import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.algorithm.UuidOpt;
 import com.centit.support.database.jsonmaptable.GeneralJsonObjectDao;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.database.utils.QueryAndNamedParams;
+import com.centit.support.database.utils.QueryAndParams;
 import com.centit.support.database.utils.QueryUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.ConnectionCallback;
@@ -210,6 +213,20 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
           (ConnectionCallback<List<UserUnit>>) conn -> OrmDaoUtils
             .queryObjectsByNamedParamsSql(conn, qap2.getQuery(), qap2.getParams(), (Class<UserUnit>) getPoClass(),
               pageDesc.getRowStart(), pageDesc.getPageSize()));
+    }
+
+    /**
+     * 统计单位下的用户数量
+     * @param topUnit
+     * @return
+     */
+    public int countUserByTopUnit(String topUnit) {
+        String sql = " SELECT COUNT(DISTINCT USER_CODE) COUNT FROM F_USERUNIT A JOIN F_UNITINFO B ON ( A.UNIT_CODE = B.UNIT_CODE )  " +
+            "WHERE 1=1 [ :topUnit | AND B.TOP_UNIT = :topUnit ] ";
+        Map<String, Object> params  = StringUtils.isBlank(topUnit)? new HashMap<>():CollectionsOpt.createHashMap("topUnit",topUnit);
+        QueryAndParams queryAndParams = QueryAndParams.createFromQueryAndNamedParams(QueryUtils.translateQuery(sql, params));
+        logger.info("sql: {},参数：{}",queryAndParams.getQuery(),topUnit);
+        return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, queryAndParams.getQuery(),queryAndParams.getParams()));
     }
 
 }

@@ -9,6 +9,9 @@ import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
+import com.centit.support.database.utils.QueryAndParams;
+import com.centit.support.database.utils.QueryUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.ConnectionCallback;
@@ -168,6 +171,19 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
     @Transactional
     public void updateUnit(UnitInfo unitInfo){
         super.updateObject(unitInfo);
+    }
+
+    /**
+     * 统计租户下机构个数
+     * @param topUnit
+     * @return
+     */
+    public int countUnitByTopUnit(String topUnit) {
+        String sql = " SELECT COUNT(1) COUNT FROM F_UNITINFO WHERE 1=1 [  :topUnit | AND TOP_UNIT = :topUnit ] ";
+        Map<String, Object> params  = StringUtils.isBlank(topUnit)? new HashMap<>():CollectionsOpt.createHashMap("topUnit",topUnit);
+        QueryAndParams queryAndParams = QueryAndParams.createFromQueryAndNamedParams(QueryUtils.translateQuery(sql, params));
+        logger.info("sql: {},参数：{}",queryAndParams.getQuery(),topUnit);
+        return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, queryAndParams.getQuery(),queryAndParams.getParams()));
     }
 
 }
