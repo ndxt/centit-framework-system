@@ -57,60 +57,60 @@ public class SysUserUnitManagerImpl
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserUnit> listObjectByUserUnit(String userCode,String unitCode){
-        Map<String,String>map=new HashMap<>();
+    public List<UserUnit> listObjectByUserUnit(String userCode, String unitCode) {
+        Map<String, String> map = new HashMap<>();
         map.put("userCode", userCode);
         map.put("unitCode", unitCode);
 
         List<UserUnit> userUnits = userUnitDao.listObjectByUserUnit(userCode, unitCode);
-        if(userUnits!=null){
+        if (userUnits != null) {
             for (UserUnit uu : userUnits) {
                 if (null == uu) {
                     continue;
                 }
                 // 设置行政角色等级
-                IDataDictionary dd = CodeRepositoryUtil.getDataPiece("RankType", uu.getUserRank(),uu.getTopUnit());
+                IDataDictionary dd = CodeRepositoryUtil.getDataPiece("RankType", uu.getUserRank(), uu.getTopUnit());
                 if (dd != null && dd.getExtraCode() != null && StringRegularOpt.isNumber(dd.getExtraCode())) {
                     try {
                         uu.setXzRank(Integer.valueOf(dd.getExtraCode()));
                     } catch (Exception e) {
-                        logger.error(e.getMessage(),e);
+                        logger.error(e.getMessage(), e);
                         uu.setXzRank(IUserUnit.MAX_XZ_RANK);
                     }
-                 }
+                }
             }
         }
         return userUnits;
     }
 
     private static boolean isMultiToMulti() {
-        IDataDictionary agencyMode = CodeRepositoryUtil.getDataPiece("SYSPARAM","userUnitMode",null);
+        IDataDictionary agencyMode = CodeRepositoryUtil.getDataPiece("SYSPARAM", "userUnitMode", null);
 
-        if (agencyMode!=null) {
+        if (agencyMode != null) {
             return ("M".equalsIgnoreCase(agencyMode.getDataValue()));
         }
         return true;
     }
 
-    private void addUserRoleWhenNotExist(String userCode, String roleCodeOrName , List<FVUserRoles> userRoles){
-        if(StringUtils.isNotBlank(roleCodeOrName)){
+    private void addUserRoleWhenNotExist(String userCode, String roleCodeOrName, List<FVUserRoles> userRoles) {
+        if (StringUtils.isNotBlank(roleCodeOrName)) {
             boolean hasRole = false;
-            for(FVUserRoles userRole : userRoles){
-                if(userRole.getRoleCode().equals(roleCodeOrName) ||
+            for (FVUserRoles userRole : userRoles) {
+                if (userRole.getRoleCode().equals(roleCodeOrName) ||
                     (("G".equals(userRole.getRoleType()) || "P".equals(userRole.getRoleType()))
-                        && userRole.getRoleName().equals(roleCodeOrName))){
-                  hasRole = true;
+                        && userRole.getRoleName().equals(roleCodeOrName))) {
+                    hasRole = true;
                 }
             }
-            if(!hasRole){
-            //            IRoleInfo roleInfo = CodeRepositoryUtil.getRoleByRoleCode(roleCode);
+            if (!hasRole) {
+                //            IRoleInfo roleInfo = CodeRepositoryUtil.getRoleByRoleCode(roleCode);
                 RoleInfo roleInfo = roleInfoDao.getRoleByCodeOrName(roleCodeOrName);
-                if(roleInfo != null){
+                if (roleInfo != null) {
                     UserRole newUserRole = new UserRole(
-                    new UserRoleId(userCode,roleInfo.getRoleCode()),
-                    DatetimeOpt.currentUtilDate(), "根据用户岗位自动授予");
+                        new UserRoleId(userCode, roleInfo.getRoleCode()),
+                        DatetimeOpt.currentUtilDate(), "根据用户岗位自动授予");
                     userRoleDao.saveNewObject(newUserRole);
-                    FVUserRoles fvUserRoles = new FVUserRoles( userCode,roleInfo.getRoleCode());
+                    FVUserRoles fvUserRoles = new FVUserRoles(userCode, roleInfo.getRoleCode());
                     fvUserRoles.setRoleName(roleInfo.getRoleName());
                     fvUserRoles.setRoleType(roleInfo.getRoleType());
                     userRoles.add(fvUserRoles);
@@ -123,26 +123,26 @@ public class SysUserUnitManagerImpl
     @Override
     public String saveNewUserUnit(UserUnit userunit) {
         // 一对多模式, 删除主机构    多对多，将当前主机构设置为非主机构
-        if (! isMultiToMulti()) {
+        if (!isMultiToMulti()) {
             UserUnit pUserUnit = userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode(), userunit.getTopUnit());
             if (null != pUserUnit) {
-              userUnitDao.deleteObjectById(pUserUnit.getUserUnitId());
+                userUnitDao.deleteObjectById(pUserUnit.getUserUnitId());
             }
         }
 
-        if(StringBaseOpt.isNvl(userunit.getUserUnitId())){
+        if (StringBaseOpt.isNvl(userunit.getUserUnitId())) {
             userunit.setUserUnitId(UuidOpt.getUuidAsString22());
         }
 
         if ("T".equals(userunit.getRelType())) {
-            UserUnit origPrimUnit=userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode(), userunit.getTopUnit());
-            if(origPrimUnit!=null){
+            UserUnit origPrimUnit = userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode(), userunit.getTopUnit());
+            if (origPrimUnit != null) {
                 origPrimUnit.setRelType("F");
                 //userunit.setRelType("T");
                 userUnitDao.updateUserUnit(origPrimUnit);
             }
-            UserInfo user=userInfoDao.getUserByCode(userunit.getUserCode());
-            if(user != null) {
+            UserInfo user = userInfoDao.getUserByCode(userunit.getUserCode());
+            if (user != null) {
                 user.setPrimaryUnit(userunit.getUnitCode());
                 user.setTopUnit(userunit.getTopUnit());
                 user.setUserOrder(userunit.getUserOrder());
@@ -164,11 +164,11 @@ public class SysUserUnitManagerImpl
         }
         userUnitDao.saveNewObject(userunit);
         List<FVUserRoles> userRoles = userRoleDao.listUserRolesByUserCode(userunit.getUserCode());
-        IDataDictionary dd = CodeRepositoryUtil.getDataPiece("StationType",userunit.getUserStation(),userunit.getTopUnit());
+        IDataDictionary dd = CodeRepositoryUtil.getDataPiece("StationType", userunit.getUserStation(), userunit.getTopUnit());
         if (null != dd) {
             addUserRoleWhenNotExist(userunit.getUserCode(), dd.getExtraCode2(), userRoles);
         }
-        dd = CodeRepositoryUtil.getDataPiece("RankType",userunit.getUserRank(),userunit.getTopUnit());
+        dd = CodeRepositoryUtil.getDataPiece("RankType", userunit.getUserRank(), userunit.getTopUnit());
         if (null != dd) {
             addUserRoleWhenNotExist(userunit.getUserCode(), dd.getExtraCode2(), userRoles);
         }
@@ -177,30 +177,29 @@ public class SysUserUnitManagerImpl
     }
 
 
-
     @Override
     public UserUnit getPrimaryUnitByUserCode(String userCode, String topUnit) {
         return userUnitDao.getPrimaryUnitByUserId(userCode, topUnit);
     }
 
     @Override
-    public boolean hasUserStation(String stationCode,String userCode) {
-        HashMap <String ,Object>filterDesc=new HashMap<>();
+    public boolean hasUserStation(String stationCode, String userCode) {
+        HashMap<String, Object> filterDesc = new HashMap<>();
         filterDesc.put("userStation", stationCode);
         filterDesc.put("userCode", userCode);
-        return userUnitDao.countObject(filterDesc) > 0 ;
+        return userUnitDao.countObject(filterDesc) > 0;
     }
 
     @Override
     public void updateUserUnit(UserUnit userunit) {
         if ("T".equals(userunit.getRelType())) {
-            UserUnit origPrimUnit=userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode(), userunit.getTopUnit());
-            if(origPrimUnit!=null && ! origPrimUnit.getUserUnitId().equals(userunit.getUserUnitId())){
+            UserUnit origPrimUnit = userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode(), userunit.getTopUnit());
+            if (origPrimUnit != null && !origPrimUnit.getUserUnitId().equals(userunit.getUserUnitId())) {
                 origPrimUnit.setRelType("F");
                 userUnitDao.updateUserUnit(origPrimUnit);
             }
-            UserInfo user=userInfoDao.getUserByCode(userunit.getUserCode());
-            if(user != null) {
+            UserInfo user = userInfoDao.getUserByCode(userunit.getUserCode());
+            if (user != null) {
                 user.setPrimaryUnit(userunit.getUnitCode());
                 user.setTopUnit(userunit.getTopUnit());
                 user.setUserOrder(userunit.getUserOrder());
@@ -219,6 +218,15 @@ public class SysUserUnitManagerImpl
     @Override
     public void deleteObject(UserUnit userUnit) {
         userUnitDao.deleteObject(userUnit);
+        UserInfo user = userInfoDao.getUserByCode(userUnit.getUserCode());
+        boolean canUpdate = user != null && user.getCurrentStationId() != null
+            && user.getCurrentStationId().equals(userUnit.getUserUnitId());
+        if (canUpdate) {
+            user.setPrimaryUnit("");
+            user.setCurrentStationId("");
+            userInfoDao.updateUser(user);
+        }
+        CodeRepositoryCache.evictCache("UserUnit");
     }
 
     @Override
@@ -228,29 +236,30 @@ public class SysUserUnitManagerImpl
 
     @Override
     @Transactional
-    public List<UserUnit> listUnitUsersByUnitCode(String unitCode){
+    public List<UserUnit> listUnitUsersByUnitCode(String unitCode) {
         return userUnitDao.listUnitUsersByUnitCode(unitCode);
     }
 
     @Override
     @Transactional
-    public List<UserUnit> listUserUnitssByUserCode(String userCode){
+    public List<UserUnit> listUserUnitssByUserCode(String userCode) {
         return userUnitDao.listUserUnitsByUserCode(userCode);
     }
+
     @Override
     @Transactional
-    public void deletePrimaryUnitByUserCode(String userCode, String topUnit){
+    public void deletePrimaryUnitByUserCode(String userCode, String topUnit) {
         UserUnit userUnit = userUnitDao.getPrimaryUnitByUserId(userCode, topUnit);
-        if( userUnit!= null) {
+        if (userUnit != null) {
             userUnitDao.deleteObject(userUnit);
         }
     }
 
     @Override
     @Transactional
-    public List<UserUnit> listSubUsersByUnitCode(String unitCode, Map<String, Object> map, PageDesc pageDesc){
+    public List<UserUnit> listSubUsersByUnitCode(String unitCode, Map<String, Object> map, PageDesc pageDesc) {
         UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
-        if(unitInfo != null){
+        if (unitInfo != null) {
             map.put("unitPath", unitInfo.getUnitPath());
             //map.put("isValid", "T");
             return userUnitDao.querySubUserUnits(map, pageDesc);
@@ -258,7 +267,7 @@ public class SysUserUnitManagerImpl
         return null;
     }
 
-    public List<UserUnit> listUserUnitsUnderUnitByUserCode(String userCode, String unitCode, PageDesc pageDesc){
+    public List<UserUnit> listUserUnitsUnderUnitByUserCode(String userCode, String unitCode, PageDesc pageDesc) {
         UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
         Map<String, Object> map = new HashMap<>(5);
         map.put("userCode", userCode);

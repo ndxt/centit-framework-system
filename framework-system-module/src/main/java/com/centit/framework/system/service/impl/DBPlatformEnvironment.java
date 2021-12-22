@@ -109,7 +109,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         if (StringUtils.equalsAny(userSetting.getParamCode(),
             "regCellPhone", "idCardNo", "regEmail")) {
             UserInfo ui = userInfoDao.getUserByCode(userSetting.getUserCode());
-            if (ui == null) return;
+            if (ui == null) {
+                return;
+            }
             if ("regCellPhone".equals(userSetting.getParamCode())) {
                 ui.setRegCellPhone(userSetting.getParamValue());
             } else if ("idCardNo".equals(userSetting.getParamCode())) {
@@ -290,7 +292,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional(readOnly = true)
     public List<UserInfo> listAllUsers(String topUnit) {
         if (supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)) {
-            return userInfoDao.listObjects(CollectionsOpt.createHashMap("topUnit",topUnit));
+            return userInfoDao.listObjects(CollectionsOpt.createHashMap("topUnit", topUnit));
         } else {
             return userInfoDao.listObjects();
         }
@@ -420,7 +422,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     public boolean deleteOptInfoByOptId(String optId) {
         optInfoManager.deleteOptInfoById(optId);
         OptInfo optInfo = optInfoDao.getObjectById(optId);
-        if (optInfo !=null){
+        if (optInfo != null) {
             return false;
         }
         return true;
@@ -430,32 +432,44 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteOptDefAndRolepowerByOptCode(String optCode) {
         optMethodDao.deleteObjectById(optCode);
-        String sql="DELETE FROM f_rolepower WHERE OPT_CODE = ?";
+        String sql = "DELETE FROM f_rolepower WHERE OPT_CODE = ?";
         DatabaseOptUtils.doExecuteSql(optInfoDao, sql, new Object[]{optCode});
         OptMethod objectById = optMethodDao.getObjectById(optCode);
-        if (objectById!=null){
-            return  false;
+        if (objectById != null) {
+            return false;
         }
         return true;
     }
 
     //@Transactional
     private JsonCentitUserDetails fillUserDetailsField(UserInfo userinfo) {
-        List<UserUnit> usun = userUnitDao.listUserUnitsByUserCode(userinfo.getUserCode());
+        List<UserUnit> userUnits = userUnitDao.listUserUnitsByUserCode(userinfo.getUserCode());
         String currentUnitCode = userinfo.getPrimaryUnit();
-        JsonCentitUserDetails sysuser = new JsonCentitUserDetails();
-        sysuser.setUserInfo((JSONObject) JSON.toJSON(userinfo));
-        sysuser.getUserInfo().put("userPin", userinfo.getUserPin());
-        sysuser.setUserUnits((JSONArray) JSON.toJSON(usun));
-        for (UserUnit uu : usun) {
-            if ("T".equals(uu.getRelType()) || "I".equals(uu.getRelType())) {
-                if (!supportTenant) {
-                    sysuser.setCurrentStationId(uu.getUserUnitId());
-                    currentUnitCode = uu.getUnitCode();
-                    break;
-                } else if (StringUtils.isNotBlank(userinfo.getTopUnit()) && StringUtils.isNotBlank(uu.getTopUnit())
+        JsonCentitUserDetails userDetails = new JsonCentitUserDetails();
+        userDetails.setUserInfo((JSONObject) JSON.toJSON(userinfo));
+        userDetails.getUserInfo().put("userPin", userinfo.getUserPin());
+        userDetails.setUserUnits((JSONArray) JSON.toJSON(userUnits));
+        if (StringUtils.isEmpty(userinfo.getCurrentStationId())) {
+            for (UserUnit uu : userUnits) {
+                if ("T".equals(uu.getRelType()) || "I".equals(uu.getRelType())) {
+                    if (!supportTenant) {
+                        userDetails.setCurrentStationId(uu.getUserUnitId());
+                        currentUnitCode = uu.getUnitCode();
+                        break;
+                    } else if (StringUtils.isNotBlank(userinfo.getTopUnit()) && StringUtils.isNotBlank(uu.getTopUnit())
+                        && userinfo.getTopUnit().equals(uu.getTopUnit())) {
+                        userDetails.setCurrentStationId(uu.getUserUnitId());
+                        currentUnitCode = uu.getUnitCode();
+                        break;
+                    }
+                }
+            }
+        }
+        if (StringUtils.isEmpty(userinfo.getCurrentStationId())) {
+            for (UserUnit uu : userUnits) {
+                if (StringUtils.isNotBlank(userinfo.getTopUnit()) && StringUtils.isNotBlank(uu.getTopUnit())
                     && userinfo.getTopUnit().equals(uu.getTopUnit())) {
-                    sysuser.setCurrentStationId(uu.getUserUnitId());
+                    userDetails.setCurrentStationId(uu.getUserUnitId());
                     currentUnitCode = uu.getUnitCode();
                     break;
                 }
@@ -476,8 +490,8 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             }
         }
         //add  end
-        //sysuser.setUserFuncs(functionDao.getMenuFuncByUserID(sysuser.getUserCode()));
-        sysuser.setAuthoritiesByRoles((JSONArray) JSON.toJSON(roles));
+        //userDetails.setUserFuncs(functionDao.getMenuFuncByUserID(userDetails.getUserCode()));
+        userDetails.setAuthoritiesByRoles((JSONArray) JSON.toJSON(roles));
         List<FVUserOptList> uoptlist = userInfoDao.listUserOptMethods(userinfo.getUserCode());
         Map<String, String> userOptList = new HashMap<>();
         if (uoptlist != null) {
@@ -489,53 +503,53 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         }
         // ServletActionContext.getRequest().getSession().setAttribute("userOptList",
         // userOptList);
-        sysuser.setUserOptList(userOptList);
+        userDetails.setUserOptList(userOptList);
 
         List<UserSetting> uss = userSettingDao.getUserSettingsByCode(userinfo.getUserCode());
         if (uss != null) {
             for (UserSetting us : uss) {
-                sysuser.putUserSettingsParams(us.getParamCode(), us.getParamValue());
+                userDetails.putUserSettingsParams(us.getParamCode(), us.getParamValue());
             }
         }
 
-        sysuser.setTopUnitCode(userinfo.getTopUnit());
+        userDetails.setTopUnitCode(userinfo.getTopUnit());
         //当用户还未加入任何租户或者单位时，currentUnitCode为空
         if (StringUtils.isNotBlank(currentUnitCode)) {
             UnitInfo currentUnit = unitInfoDao.getObjectById(currentUnitCode);
             if (null != currentUnit) {
-                sysuser.getUserInfo().put("primaryUnitName", currentUnit.getUnitName());
-                sysuser.getUserInfo().put("primaryUnit", currentUnit.getUnitCode());
+                userDetails.getUserInfo().put("primaryUnitName", currentUnit.getUnitName());
+                userDetails.getUserInfo().put("primaryUnit", currentUnit.getUnitCode());
             }
         }
 
-        if (StringUtils.isBlank(sysuser.getTopUnitCode())) {
+        if (StringUtils.isBlank(userDetails.getTopUnitCode())) {
             //当用户还未加入任何租户或者单位时，currentUnitCode为空
             UnitInfo ui = null;
             if (StringUtils.isNotBlank(currentUnitCode)) {
                 ui = unitInfoDao.getObjectById(currentUnitCode);
             }
             if (ui != null) {
-                sysuser.setTopUnitCode(ui.getTopUnit());
+                userDetails.setTopUnitCode(ui.getTopUnit());
             }
-            if (StringUtils.isBlank(sysuser.getTopUnitCode())) {
-                //sysuser.setTopUnitCode(GlobalConstValue.SYSTEM_TENANT_TOP_UNIT);
+            if (StringUtils.isBlank(userDetails.getTopUnitCode())) {
+                //userDetails.setTopUnitCode(GlobalConstValue.SYSTEM_TENANT_TOP_UNIT);
             } else {
-                UnitInfo topUnit = unitInfoDao.getObjectById(sysuser.getTopUnitCode());
+                UnitInfo topUnit = unitInfoDao.getObjectById(userDetails.getTopUnitCode());
                 if (null != topUnit) {
-                    sysuser.getUserInfo().put("topUnitName", topUnit.getUnitName());
+                    userDetails.getUserInfo().put("topUnitName", topUnit.getUnitName());
                 }
             }
         } else {
-            UnitInfo ui = unitInfoDao.getObjectById(sysuser.getTopUnitCode());
-            if (GlobalConstValue.NO_TENANT_TOP_UNIT.equals(sysuser.getTopUnitCode())
-                || GlobalConstValue.SYSTEM_TENANT_TOP_UNIT.equals(sysuser.getTopUnitCode())) {
+            UnitInfo ui = unitInfoDao.getObjectById(userDetails.getTopUnitCode());
+            if (GlobalConstValue.NO_TENANT_TOP_UNIT.equals(userDetails.getTopUnitCode())
+                || GlobalConstValue.SYSTEM_TENANT_TOP_UNIT.equals(userDetails.getTopUnitCode())) {
                 ui = unitInfoDao.getObjectById(currentUnitCode);
             }
             if (null != ui) {
-                sysuser.getUserInfo().put("topUnitName", ui.getUnitName());
+                userDetails.getUserInfo().put("topUnitName", ui.getUnitName());
             }
         }
-        return sysuser;
+        return userDetails;
     }
 
     @Override
@@ -758,12 +772,12 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     public int countUserByTopUnit(String topUnit) {
         return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
-            ? userUnitDao.countUserByTopUnit(topUnit):userUnitDao.countUserByTopUnit(null);
+            ? userUnitDao.countUserByTopUnit(topUnit) : userUnitDao.countUserByTopUnit(null);
     }
 
     @Override
     public int countUnitByTopUnit(String topUnit) {
         return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
-            ? unitInfoDao.countUnitByTopUnit(topUnit):unitInfoDao.countUnitByTopUnit(null);
+            ? unitInfoDao.countUnitByTopUnit(topUnit) : unitInfoDao.countUnitByTopUnit(null);
     }
 }

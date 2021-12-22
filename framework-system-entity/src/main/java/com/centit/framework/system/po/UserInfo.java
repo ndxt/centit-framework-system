@@ -156,6 +156,7 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
         condition = GeneratorCondition.ALWAYS, value="today()" )
     private Date  updateDate;
 
+
     @Column(name = "CURRENT_STATION_ID")
     @Length(max = 32, message = "字段长度不能大于{max}")
     private String  currentStationId;
@@ -194,7 +195,13 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
     public void setUserWord(String userWord) {
         this.userWord = userWord;
     }
+    public String getCurrentStationId() {
+        return currentStationId;
+    }
 
+    public void setCurrentStationId(String currentStationId) {
+        this.currentStationId = currentStationId;
+    }
     /**
      * 密码失效时间
      * @return  PwdExpiredTime
