@@ -20,13 +20,13 @@
         <dependency>
             <groupId>com.centit.framework</groupId>
             <artifactId>centit-persistence-jdbc</artifactId>
-            <version>${centit.persistence.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.centit.framework</groupId>
             <artifactId>framework-adapter</artifactId>
-            <version>${centit.framework.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>

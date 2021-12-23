@@ -17,7 +17,7 @@
         <dependency>
             <groupId>com.centit.framework</groupId>
             <artifactId>framework-core-web</artifactId>
-            <version>${centit.framework.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
