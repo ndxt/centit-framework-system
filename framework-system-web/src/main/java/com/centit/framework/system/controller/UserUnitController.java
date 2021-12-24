@@ -324,7 +324,7 @@ public class UserUnitController extends BaseController {
         UserUnit dbUserUnit = sysUserUnitManager.getObjectById(userUnitId);
         if ("T".equals(dbUserUnit.getRelType()) ||
             "O".equals(dbUserUnit.getRelType()) ) {
-            return ResponseData.makeErrorMessage("归属部门信息不能删除！");
+            return ResponseData.makeErrorMessage("归属部门，或借出部门信息不能删除！");
         }
         sysUserUnitManager.deleteObject(dbUserUnit);
         return ResponseData.successResponse;
