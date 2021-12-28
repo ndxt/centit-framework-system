@@ -100,6 +100,9 @@ public class OptMethod implements IOptMethod, java.io.Serializable{
     private String optType;
     @Column(name = "API_ID")
     private String apiId;
+    @Column(name = "SOURCE_ID")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    private String sourceId;
     @Transient
     private String userCode;
     //结束

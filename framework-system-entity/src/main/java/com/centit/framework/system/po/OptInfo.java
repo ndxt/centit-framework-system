@@ -111,6 +111,9 @@ public class OptInfo implements IOptInfo, java.io.Serializable {
     @Column(name = "DOC_ID")
     @Length(max = 32, message = "字段长度不能大于{max}")
     private String docId;
+    @Column(name = "SOURCE_ID")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    private String sourceId;
     @Transient
     private List<OptInfo> children;
     @Transient
