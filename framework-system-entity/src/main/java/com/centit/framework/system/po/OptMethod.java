@@ -1,5 +1,6 @@
 package com.centit.framework.system.po;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.centit.framework.model.basedata.IOptDataScope;
 import com.centit.framework.model.basedata.IOptMethod;
 import com.centit.support.database.orm.GeneratorCondition;
@@ -102,6 +103,7 @@ public class OptMethod implements IOptMethod, java.io.Serializable{
     private String apiId;
     @Column(name = "SOURCE_ID")
     @Length(max = 32, message = "字段长度不能大于{max}")
+    @JSONField(serialize = false)
     private String sourceId;
     @Transient
     private String userCode;

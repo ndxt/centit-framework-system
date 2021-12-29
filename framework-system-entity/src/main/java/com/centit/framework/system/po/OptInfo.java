@@ -3,6 +3,7 @@ package com.centit.framework.system.po;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 //import com.centit.framework.common.WebOptUtils;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.centit.framework.core.dao.DictionaryMap;
 //import com.centit.framework.filter.RequestThreadLocal;
 import com.centit.framework.model.basedata.IOptInfo;
@@ -113,6 +114,7 @@ public class OptInfo implements IOptInfo, java.io.Serializable {
     private String docId;
     @Column(name = "SOURCE_ID")
     @Length(max = 32, message = "字段长度不能大于{max}")
+    @JSONField(serialize = false)
     private String sourceId;
     @Transient
     private List<OptInfo> children;
