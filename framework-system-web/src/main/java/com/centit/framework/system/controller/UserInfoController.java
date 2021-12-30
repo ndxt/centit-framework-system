@@ -207,7 +207,7 @@ public class UserInfoController extends BaseController {
 
         String topUnit = WebOptUtils.getCurrentTopUnit(request);
         sysUserUnitManager.deletePrimaryUnitByUserCode(userCode,topUnit);
-        userInfo.setTopUnit(topUnit);
+        userUnit.setTopUnit(topUnit);
         userUnit.setUserCode(userInfo.getUserCode());
         userUnit.setUnitCode(userInfo.getPrimaryUnit());
         userUnit.setRelType("T");
@@ -223,6 +223,7 @@ public class UserInfoController extends BaseController {
         //防止用户的当前登录租户信息被修改，在这里重新恢复userInfo中的topUnit和primaryUnit
         userInfo.setPrimaryUnit(dbUserInfo.getPrimaryUnit());
         userInfo.setTopUnit(dbUserInfo.getTopUnit());
+        userInfo.setUserType(userInfo.getUserType());
         sysUserManager.updateUserInfo(userInfo);
         CodeRepositoryCache.evictCache("UserInfo");
         return ResponseData.successResponse;
