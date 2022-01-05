@@ -90,4 +90,29 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
                 OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
                     new Object[]{topUnit}, RolePower.class));
     }
+
+    @Transactional
+    public List<RolePower> listRolePowerByTopUnitAndRoleCode(String topUnit,String roleCode){
+        String sql = " SELECT DISTINCT " +
+            " A.ROLE_CODE, " +
+            " A.OPT_CODE, " +
+            " A.OPT_SCOPE_CODES, " +
+            " A.UPDATE_DATE, " +
+            " A.CREATE_DATE, " +
+            " A.CREATOR, " +
+            " A.UPDATOR " +
+            " FROM F_ROLEPOWER A " +
+            " JOIN " +
+            " ( SELECT  DISTINCT C_1.OPT_CODE,C_1.OPT_ID " +
+            " FROM F_OPTINFO A_1 JOIN F_OS_INFO B_1 ON A_1.TOP_OPT_ID=B_1.REL_OPT_ID  " +
+            " JOIN F_OPTDEF C_1 ON A_1.OPT_ID = C_1.OPT_ID WHERE B_1.TOP_UNIT = ? " +
+            " ) C " +
+            " ON A.OPT_CODE = C.OPT_CODE OR A.OPT_CODE = C.OPT_ID  " +
+            " WHERE  A.ROLE_CODE = ?  ";
+
+        return getJdbcTemplate().execute(
+            (ConnectionCallback<List<RolePower>>) conn ->
+                OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
+                    new Object[]{topUnit,roleCode}, RolePower.class));
+    }
 }

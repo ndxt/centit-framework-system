@@ -6,6 +6,7 @@ import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysRoleManager;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.database.utils.PageDesc;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -110,8 +111,41 @@ public class SysRoleManagerImpl implements SysRoleManager {
           rolePowerDao.deleteRolePowersByRoleCode(o.getRoleCode());
           return rps;
         }
+        updateRolePower(o, newRPs, rps);
+        CodeRepositoryCache.evictCache("RoleInfo");
+        CodeRepositoryCache.evictCache("RolePower");
+        return rps;
+    }
+
+    @Override
+    @Transactional
+    public List<RolePower> updateRolePower(RoleInfo o,String topUnit) {
+        boolean isAPCode = StringUtils.equalsAny(o.getRoleCode(), "anonymous", "public");
+        if (!isAPCode){
+            roleInfoDao.updateRole(o);
+        }
+        List<RolePower> newRPs = o.getRolePowers();
+        List<RolePower> rps = isAPCode ? rolePowerDao.listRolePowerByTopUnitAndRoleCode(topUnit,o.getRoleCode()):
+            rolePowerDao.listRolePowersByRoleCode(o.getRoleCode());
+        if(CollectionUtils.sizeIsEmpty(newRPs)) {
+            rps.forEach(rp->rolePowerDao.deleteObjectById(rp.getId()));
+            return rps;
+        }
+        updateRolePower(o, newRPs, rps);
+        CodeRepositoryCache.evictCache("RoleInfo");
+        CodeRepositoryCache.evictCache("RolePower");
+        return rps;
+    }
+
+    /**
+     * 更新 rolePower 详情
+     * @param roleInfo
+     * @param newRPs
+     * @param rps
+     */
+    private void updateRolePower(RoleInfo roleInfo, List<RolePower> newRPs, List<RolePower> rps) {
         for(RolePower rp : newRPs){
-            rp.setRoleCode(o.getRoleCode());
+            rp.setRoleCode(roleInfo.getRoleCode());
         }
 
         Triple<List<RolePower>, List<Pair<RolePower,RolePower>>, List<RolePower>>
@@ -126,8 +160,8 @@ public class SysRoleManagerImpl implements SysRoleManager {
                     String unitCode = rp.getRoleCode().substring(2);
                     List<RoleInfo> roleInfos = roleInfoDao.listObjects(
                         CollectionsOpt.createHashMap("unitCode", unitCode, "roleType", "D"));
-                    for(RoleInfo roleInfo : roleInfos){
-                        rolePowerDao.deleteObjectById(new RolePowerId(roleInfo.getRoleCode(), optCode));
+                    for(RoleInfo ri : roleInfos){
+                        rolePowerDao.deleteObjectById(new RolePowerId(ri.getRoleCode(), optCode));
                     }
                 }
             }
@@ -150,9 +184,6 @@ public class SysRoleManagerImpl implements SysRoleManager {
                 }
             }
         }
-        CodeRepositoryCache.evictCache("RoleInfo");
-        CodeRepositoryCache.evictCache("RolePower");
-        return rps;
     }
 
     @Override
