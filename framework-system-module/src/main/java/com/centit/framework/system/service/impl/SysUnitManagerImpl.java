@@ -36,29 +36,9 @@ public class SysUnitManagerImpl implements SysUnitManager {
     @Override
     public List<UnitInfo> listObjectsAsSort(Map<String, Object> searchColumn) {
         List<UnitInfo> listObjects = unitInfoDao.listObjects(searchColumn);
-        Iterator<UnitInfo> unitInfos = listObjects.iterator();
-
-        while (unitInfos.hasNext()) {
-            UnitInfo unitInfo = unitInfos.next();
-            if (StringBaseOpt.isNvl(unitInfo.getParentUnit()) || "0".equals(unitInfo.getParentUnit())) {
-                continue;
-            }
-            for (UnitInfo opt : listObjects) {
-                if (opt.getUnitCode().equals(unitInfo.getParentUnit())) {
-                    opt.getSubUnits().add(unitInfo);
-                    break;
-                }
-            }
-        }
-        // 获取顶级的父级菜单
-        List<UnitInfo> parentUnit = new ArrayList<>();
-        for (UnitInfo unitInfo : listObjects) {
-            if (StringBaseOpt.isNvl(unitInfo.getParentUnit()) || "0".equals(unitInfo.getParentUnit())) {
-                parentUnit.add(unitInfo);
-            }
-        }
-        return parentUnit;
+        return sortUnitInfos(listObjects,"0");
     }
+
 
     @Override
     @Transactional
@@ -176,28 +156,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
     @Transactional
     public List<UnitInfo> listAllSubObjectsAsSort(String primaryUnit) {
         List<UnitInfo> listObjects = listAllSubUnits(primaryUnit);
-        Iterator<UnitInfo> unitInfos = listObjects.iterator();
-        while (unitInfos.hasNext()) {
-            UnitInfo unitInfo = unitInfos.next();
-            if (StringBaseOpt.isNvl(unitInfo.getParentUnit()) || "0".equals(unitInfo.getParentUnit())) {
-                continue;
-            }
-            for (UnitInfo opt : listObjects) {
-                if (opt.getUnitCode().equals(unitInfo.getParentUnit())) {
-                    opt.getSubUnits().add(unitInfo);
-
-                    break;
-                }
-            }
-        }
-        List<UnitInfo> parentUnit = new ArrayList<>();
-        // 获取顶级的父级菜单
-        for (UnitInfo unitInfo : listObjects) {
-            if (StringBaseOpt.isNvl(unitInfo.getParentUnit()) ||primaryUnit.equals(unitInfo.getUnitCode())) {
-                parentUnit.add(unitInfo);
-            }
-        }
-        return parentUnit;
+        return sortUnitInfos(listObjects,primaryUnit);
     }
 
     @Override
@@ -298,5 +257,30 @@ public class SysUnitManagerImpl implements SysUnitManager {
     @Override
     public List<UnitInfo> listAllTopUnits() {
         return unitInfoDao.listAllTopUnits();
+    }
+
+
+    private List<UnitInfo> sortUnitInfos(List<UnitInfo> listObjects,String parentUnitCode) {
+        Iterator<UnitInfo> unitInfos = listObjects.iterator();
+        while (unitInfos.hasNext()) {
+            UnitInfo unitInfo = unitInfos.next();
+            if (StringBaseOpt.isNvl(unitInfo.getParentUnit()) || "0".equals(unitInfo.getParentUnit())) {
+                continue;
+            }
+            for (UnitInfo opt : listObjects) {
+                if (opt.getUnitCode().equals(unitInfo.getParentUnit())) {
+                    opt.getSubUnits().add(unitInfo);
+                    break;
+                }
+            }
+        }
+        // 获取顶级的父级菜单
+        List<UnitInfo> parentUnit = new ArrayList<>();
+        for (UnitInfo unitInfo : listObjects) {
+            if (StringBaseOpt.isNvl(unitInfo.getParentUnit()) || parentUnitCode.equals(unitInfo.getParentUnit())) {
+                parentUnit.add(unitInfo);
+            }
+        }
+        return parentUnit;
     }
 }

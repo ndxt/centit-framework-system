@@ -366,7 +366,7 @@ public class RoleInfoController extends BaseController {
             RolePower rolePower = new RolePower(new RolePowerId(role, optCode));
 
             if (dbRoleInfo.getRolePowers().contains(rolePower)) {
-                return;
+                continue;
             }
             dbRoleInfo.getRolePowers().add(rolePower);
             sysRoleManager.updateRolePower(dbRoleInfo);

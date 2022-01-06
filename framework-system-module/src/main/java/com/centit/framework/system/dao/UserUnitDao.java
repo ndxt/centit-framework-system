@@ -35,7 +35,7 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
         filterField.put("userCode", CodeBook.EQUAL_HQL_ID);
         filterField.put("isPrimary", CodeBook.EQUAL_HQL_ID);
         filterField.put("unitName", CodeBook.LIKE_HQL_ID);
-        filterField.put("topUnit", CodeBook.EQUAL_HQL_ID);
+        filterField.put("topUnit", " UNIT_CODE IN ( SELECT UI.UNIT_CODE FROM F_UNITINFO UI WHERE  UI.TOP_UNIT = :topUnit ) ");
         filterField.put("relType", CodeBook.EQUAL_HQL_ID);
         filterField.put("(like)userName", "userCode in (select us.USER_CODE from f_userinfo us where" +
                 " us.USER_NAME like :userName)");

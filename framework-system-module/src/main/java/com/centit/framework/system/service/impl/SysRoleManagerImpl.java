@@ -1,6 +1,7 @@
 package com.centit.framework.system.service.impl;
 
 import com.centit.framework.components.CodeRepositoryCache;
+import com.centit.framework.security.SecurityContextUtils;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysRoleManager;
@@ -119,19 +120,19 @@ public class SysRoleManagerImpl implements SysRoleManager {
 
     @Override
     @Transactional
-    public List<RolePower> updateRolePower(RoleInfo o,String topUnit) {
-        boolean isAPCode = StringUtils.equalsAny(o.getRoleCode(), "anonymous", "public");
+    public List<RolePower> updateRolePower(RoleInfo roleInfo,String topUnit) {
+        boolean isAPCode = StringUtils.equalsAny(roleInfo.getRoleCode(), SecurityContextUtils.ANONYMOUS_ROLE_CODE,SecurityContextUtils.PUBLIC_ROLE_CODE);
         if (!isAPCode){
-            roleInfoDao.updateRole(o);
+            roleInfoDao.updateRole(roleInfo);
         }
-        List<RolePower> newRPs = o.getRolePowers();
-        List<RolePower> rps = isAPCode ? rolePowerDao.listRolePowerByTopUnitAndRoleCode(topUnit,o.getRoleCode()):
-            rolePowerDao.listRolePowersByRoleCode(o.getRoleCode());
+        List<RolePower> newRPs = roleInfo.getRolePowers();
+        List<RolePower> rps = isAPCode ? rolePowerDao.listRolePowerByTopUnitAndRoleCode(topUnit,roleInfo.getRoleCode()):
+            rolePowerDao.listRolePowersByRoleCode(roleInfo.getRoleCode());
         if(CollectionUtils.sizeIsEmpty(newRPs)) {
             rps.forEach(rp->rolePowerDao.deleteObjectById(rp.getId()));
             return rps;
         }
-        updateRolePower(o, newRPs, rps);
+        updateRolePower(roleInfo, newRPs, rps);
         CodeRepositoryCache.evictCache("RoleInfo");
         CodeRepositoryCache.evictCache("RolePower");
         return rps;
