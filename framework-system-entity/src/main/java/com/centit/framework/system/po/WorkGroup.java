@@ -1,5 +1,6 @@
 package com.centit.framework.system.po;
 
+import com.centit.framework.model.basedata.IWorkGroup;
 import com.centit.support.database.orm.GeneratorCondition;
 import com.centit.support.database.orm.GeneratorTime;
 import com.centit.support.database.orm.GeneratorType;
@@ -24,7 +25,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "work_group")
-public class WorkGroup implements java.io.Serializable {
+public class WorkGroup implements IWorkGroup,java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
     // 主键
@@ -73,4 +74,27 @@ public class WorkGroup implements java.io.Serializable {
     @ApiModelProperty(value = "角色代码")
     private  String  roleCode;
 
+    @Override
+    public String getGroupId() {
+        if (null == workGroupParameter){
+            return "";
+        }
+        return workGroupParameter.getGroupId();
+    }
+
+    @Override
+    public String getUserCode() {
+        if (null == workGroupParameter){
+            return "";
+        }
+        return workGroupParameter.getUserCode();
+    }
+
+    @Override
+    public String getRoleCode() {
+        if (null == workGroupParameter){
+            return "";
+        }
+        return workGroupParameter.getRoleCode();
+    }
 }

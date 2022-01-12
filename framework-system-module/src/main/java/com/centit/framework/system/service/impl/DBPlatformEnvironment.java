@@ -17,6 +17,7 @@ import com.centit.framework.system.service.WorkGroupManager;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.UuidOpt;
+import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -582,7 +583,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             jsonObject.put("unitCode",topUnitCode);
             jsonObject.put("roleType","G");
             jsonObject.put("rolePowers",new JSONArray());
-            jsonObject.put("roleCode","system".equals(topUnitCode)?"sysadmin":"tenantadmin");
+            jsonObject.put("roleCode","system".equals(topUnitCode)?"platadmin":"tenantadmin");
             jsonObject.put("roleName","system".equals(topUnitCode)?"平台管理员":"租户管理员");
             userRoles.add(jsonObject);
         }
@@ -817,13 +818,33 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
-    public JSONArray listWorkGroupMember(String groupId, String roleCode) {
-
+    public List<? extends IWorkGroup> listWorkGroupMember(String groupId, String roleCode) {
+//todo:待删除
         Map<String, Object> filterMap = CollectionsOpt.createHashMap("groupId", groupId);
         if (StringUtils.isNotBlank(roleCode)){
             filterMap.put("roleCode",roleCode);
         }
         List<WorkGroup> workGroups = workGroupManager.listWorkGroup(filterMap, null);
-        return (JSONArray) JSON.toJSON(workGroups);
+        return null;
+    }
+@Override
+public List<? extends IWorkGroup>listWorkGroup(Map<String, Object> filterMap, PageDesc pageDesc) {
+    return workGroupManager.listWorkGroup(filterMap, pageDesc);
+}
+
+    @Override
+    public void batchWorkGroup(List<IWorkGroup> workGroups) {
+        ArrayList<WorkGroup> workGroups1 = new ArrayList<>();
+        for (IWorkGroup workGroup : workGroups) {
+            if (workGroup instanceof WorkGroup){
+                workGroups1.add((WorkGroup) workGroup);
+            }
+        }
+        workGroupManager.batchWorkGroup(workGroups1);
+    }
+
+    @Override
+    public boolean loginUserIsExistWorkGroup(String osId, String userCode) {
+        return workGroupManager.loginUserIsExistWorkGroup(osId,userCode);
     }
 }
