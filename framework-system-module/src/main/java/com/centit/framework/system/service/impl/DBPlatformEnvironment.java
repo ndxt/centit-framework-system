@@ -4,18 +4,18 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.common.GlobalConstValue;
-import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.*;
+import com.centit.framework.security.SecurityContextUtils;
 import com.centit.framework.security.model.CentitPasswordEncoder;
 import com.centit.framework.security.model.JsonCentitUserDetails;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.OptInfoManager;
+import com.centit.framework.system.service.WorkGroupManager;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.DatetimeOpt;
-import com.centit.support.algorithm.StringRegularOpt;
 import com.centit.support.algorithm.UuidOpt;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -80,6 +80,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     private RolePowerDao rolePowerDao;
     @Autowired
     private OptInfoManager optInfoManager;
+
+    @Autowired
+    private WorkGroupManager workGroupManager;
 
     private boolean supportTenant;
 
@@ -361,9 +364,20 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(readOnly = true)
     public List<? extends IRolePower> listAllRolePower(String topUnit) {
-        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
-            ? rolePowerDao.listAllRolePowerByUnit(topUnit)
-            : rolePowerDao.listObjectsAll();
+        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)?
+            StringUtils.isEmpty(topUnit)?rolePowerDao.listRolePowersByRoleCode(SecurityContextUtils.ANONYMOUS_ROLE_CODE):
+            rolePowerDao.listAllRolePowerByUnit(topUnit):
+            rolePowerDao.listObjectsAll();
+    }
+
+    @Override
+    public JSONArray listRolePowerByTopUnitWithApiId(String topUnit) {
+        return rolePowerDao.listRolePowerByTopUnitWithApiId(topUnit);
+    }
+
+    @Override
+    public JSONArray listAllRolePowerByRoleCodeWithApiId(String roleCode) {
+        return rolePowerDao.listAllRolePowerByRoleCodeWithApiId(roleCode);
     }
 
     @Override
@@ -377,9 +391,10 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(readOnly = true)
     public List<? extends IOptMethod> listAllOptMethod(String topUnit) {
-        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
-            ? optMethodDao.listAllOptMethodByUnit(topUnit)
-            : optMethodDao.listObjectsAll();
+        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)?
+            StringUtils.isEmpty(topUnit)?optMethodDao.listOptMethodByRoleCode(SecurityContextUtils.ANONYMOUS_ROLE_CODE):
+             optMethodDao.listAllOptMethodByUnit(topUnit):
+             optMethodDao.listObjectsAll();
     }
 
     @Override
@@ -549,9 +564,29 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                 userDetails.getUserInfo().put("topUnitName", ui.getUnitName());
             }
         }
+        appendAdminRoleToUserDetails(userDetails);
         return userDetails;
     }
 
+    private void appendAdminRoleToUserDetails(JsonCentitUserDetails userDetails){
+        String topUnitCode = userDetails.getTopUnitCode();
+        if (StringUtils.isBlank(topUnitCode)){
+            return ;
+        }
+        String userCode = userDetails.getUserCode();
+        WorkGroup admin = workGroupManager.getWorkGroup(topUnitCode, userCode, "ZHGLY");
+        if (null !=admin){
+            JSONArray userRoles = userDetails.getUserRoles();
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("isValid","T");
+            jsonObject.put("unitCode",topUnitCode);
+            jsonObject.put("roleType","G");
+            jsonObject.put("rolePowers",new JSONArray());
+            jsonObject.put("roleCode","system".equals(topUnitCode)?"sysadmin":"tenantadmin");
+            jsonObject.put("roleName","system".equals(topUnitCode)?"平台管理员":"租户管理员");
+            userRoles.add(jsonObject);
+        }
+    }
     @Override
     @Transactional
     public JsonCentitUserDetails loadUserDetailsByLoginName(String loginName) {
@@ -779,5 +814,16 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     public int countUnitByTopUnit(String topUnit) {
         return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
             ? unitInfoDao.countUnitByTopUnit(topUnit) : unitInfoDao.countUnitByTopUnit(null);
+    }
+
+    @Override
+    public JSONArray listWorkGroupMember(String groupId, String roleCode) {
+
+        Map<String, Object> filterMap = CollectionsOpt.createHashMap("groupId", groupId);
+        if (StringUtils.isNotBlank(roleCode)){
+            filterMap.put("roleCode",roleCode);
+        }
+        List<WorkGroup> workGroups = workGroupManager.listWorkGroup(filterMap, null);
+        return (JSONArray) JSON.toJSON(workGroups);
     }
 }
