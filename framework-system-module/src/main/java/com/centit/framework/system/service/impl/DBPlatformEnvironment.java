@@ -366,9 +366,8 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional(readOnly = true)
     public List<? extends IRolePower> listAllRolePower(String topUnit) {
         return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)?
-            StringUtils.isEmpty(topUnit)?rolePowerDao.listRolePowersByRoleCode(SecurityContextUtils.ANONYMOUS_ROLE_CODE):
-            rolePowerDao.listAllRolePowerByUnit(topUnit):
-            rolePowerDao.listObjectsAll();
+            rolePowerDao.listAllRolePowerByUnit(topUnit)
+            :rolePowerDao.listObjectsAll();
     }
 
     @Override
@@ -393,9 +392,8 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional(readOnly = true)
     public List<? extends IOptMethod> listAllOptMethod(String topUnit) {
         return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)?
-            StringUtils.isEmpty(topUnit)?optMethodDao.listOptMethodByRoleCode(SecurityContextUtils.ANONYMOUS_ROLE_CODE):
-             optMethodDao.listAllOptMethodByUnit(topUnit):
-             optMethodDao.listObjectsAll();
+             optMethodDao.listAllOptMethodByUnit(topUnit)
+            :optMethodDao.listObjectsAll();
     }
 
     @Override
