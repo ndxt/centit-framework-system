@@ -371,16 +371,6 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
-    public JSONArray listRolePowerByTopUnitWithApiId(String topUnit) {
-        return rolePowerDao.listRolePowerByTopUnitWithApiId(topUnit);
-    }
-
-    @Override
-    public JSONArray listAllRolePowerByRoleCodeWithApiId(String roleCode) {
-        return rolePowerDao.listAllRolePowerByRoleCodeWithApiId(roleCode);
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public List<? extends IOptInfo> listAllOptInfo(String topUnit) {
         return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
