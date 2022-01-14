@@ -805,16 +805,6 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             ? unitInfoDao.countUnitByTopUnit(topUnit) : unitInfoDao.countUnitByTopUnit(null);
     }
 
-    @Override
-    public List<? extends IWorkGroup> listWorkGroupMember(String groupId, String roleCode) {
-//todo:待删除
-        Map<String, Object> filterMap = CollectionsOpt.createHashMap("groupId", groupId);
-        if (StringUtils.isNotBlank(roleCode)){
-            filterMap.put("roleCode",roleCode);
-        }
-        List<WorkGroup> workGroups = workGroupManager.listWorkGroup(filterMap, null);
-        return null;
-    }
 @Override
 public List<? extends IWorkGroup>listWorkGroup(Map<String, Object> filterMap, PageDesc pageDesc) {
     return workGroupManager.listWorkGroup(filterMap, pageDesc);
