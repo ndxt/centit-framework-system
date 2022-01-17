@@ -1,6 +1,9 @@
 package com.centit.framework.system.service.impl;
 
+import com.centit.framework.system.dao.RoleInfoDao;
+import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.dao.WorkGroupDao;
+import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.WorkGroup;
 import com.centit.framework.system.po.WorkGroupParameter;
 import com.centit.framework.system.service.WorkGroupManager;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +30,8 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
     @Autowired
     @NotNull
     private WorkGroupDao workGroupDao;
+    @Autowired
+    private UserRoleDao userRoleDao;
 
 
     @Override
@@ -49,6 +55,7 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
     @Override
     public void deleteWorkGroup(String groupId, String userCode, String roleCode) {
         workGroupDao.deleteObjectForceById(new WorkGroupParameter(groupId, userCode, roleCode));
+        userRoleDao.deleteByRoleCodeAndUserCode(UserRole.OS_MEMBER,userCode);
     }
 
     @Override
@@ -59,12 +66,17 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
     @Override
     public void createWorkGroup(WorkGroup workGroup) {
         workGroupDao.saveNewObject(workGroup);
+        UserRole userRole = getUserRole(workGroup);
+        userRoleDao.mergeUserRole(userRole);
     }
+
 
     @Override
     public void batchWorkGroup(List<WorkGroup> workGroups) {
         for (WorkGroup workGroup : workGroups) {
             workGroupDao.saveNewObject(workGroup);
+            UserRole userRole = getUserRole(workGroup);
+            userRoleDao.mergeUserRole(userRole);
         }
     }
 
@@ -74,13 +86,13 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
     }
 
     @Override
-    public boolean loginUserIsExistWorkGroup(String osId,String userCode) {
-        if (StringUtils.isBlank(osId) || StringUtils.isBlank(userCode)){
+    public boolean loginUserIsExistWorkGroup(String osId, String userCode) {
+        if (StringUtils.isBlank(osId) || StringUtils.isBlank(userCode)) {
             return false;
         }
         String[] osids = osId.split(",");
         Map<String, Object> param = new HashMap<>();
-        param.put("groupId_in",osids);
+        param.put("groupId_in", osids);
         List<WorkGroup> workGroups = workGroupDao.listObjects(param, null);
         for (WorkGroup workGroup : workGroups) {
             if (workGroup.getWorkGroupParameter().getUserCode().equals(userCode)) {
@@ -88,6 +100,15 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
             }
         }
         return false;
+    }
+
+    private UserRole getUserRole(WorkGroup workGroup) {
+        UserRole userRole = new UserRole();
+        userRole.setUserCode(workGroup.getWorkGroupParameter().getUserCode());
+        userRole.setObtainDate(new Date());
+        userRole.setChangeDesc("工作组自动分配");
+        userRole.setRoleCode(UserRole.OS_MEMBER);
+        return userRole;
     }
 }
 

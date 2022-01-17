@@ -563,7 +563,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             return ;
         }
         String userCode = userDetails.getUserCode();
-        WorkGroup admin = workGroupManager.getWorkGroup(topUnitCode, userCode, "ZHGLY");
+        WorkGroup admin = workGroupManager.getWorkGroup(topUnitCode, userCode, WorkGroup.WORKGROUP_ROLE_CODE_ADMIN);
         if (null !=admin){
             JSONArray userRoles = userDetails.getUserRoles();
             JSONObject jsonObject = new JSONObject();

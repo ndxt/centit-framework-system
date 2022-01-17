@@ -26,6 +26,9 @@ public class UserRole implements IUserRole, java.io.Serializable {
     // SimpleDateFormat("yyyy-MM-dd");
 
     private static final long serialVersionUID = 8079422314053320707L;
+    public static final String OS_MEMBER="osmember";
+    public static final String PLAT_ADMIN="platadmin";
+    public static final String TENANT_ADMIN="tenantadmin";
 
     @EmbeddedId
     private UserRoleId id; // 主键
