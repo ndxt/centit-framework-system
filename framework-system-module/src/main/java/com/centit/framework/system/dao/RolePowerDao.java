@@ -86,7 +86,7 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
     public List<RolePower> listAllRolePowerByUnit(String topUnit){
         String sql = "select distinct a.* " +
             "from F_ROLEPOWER a join F_ROLEINFO b on(a.ROLE_CODE=b.ROLE_CODE) " +
-            "where (ROLE_TYPE = 'G' or (ROLE_TYPE='D' and UNIT_CODE = ?) or (b.role_code in ('platadmin','tenantadmin')))";
+            "where (ROLE_TYPE = 'G' or (ROLE_TYPE='D' and UNIT_CODE = ?) or (b.role_code in ('platadmin','tenantadmin','osmember')))";
 
         return getJdbcTemplate().execute(
             (ConnectionCallback<List<RolePower>>) conn ->
