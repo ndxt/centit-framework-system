@@ -113,7 +113,7 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
         //组员更新为组长
         String sql1 = "UPDATE  work_group  SET ROLE_CODE ='组长'  WHERE group_id=? and role_code=? and user_code=? ";
         workGroupDao.getJdbcTemplate().update(sql1,
-            new Object[]{workGroupParames.getGroupId(), WorkGroup.WORKGROUP_ROLE_CODE_LEADER, workGroupParames.getNewUserCode()});
+            new Object[]{workGroupParames.getGroupId(), WorkGroup.WORKGROUP_ROLE_CODE_MEMBER, workGroupParames.getNewUserCode()});
     }
 
     private UserRole getUserRole(WorkGroup workGroup) {
