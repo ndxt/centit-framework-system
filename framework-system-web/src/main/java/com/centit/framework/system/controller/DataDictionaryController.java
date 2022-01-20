@@ -1,5 +1,6 @@
 package com.centit.framework.system.controller;
 
+import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
@@ -182,7 +183,7 @@ public class DataDictionaryController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增字典类别",
         tag = "{loginUser.userCode}")
     @WrapUpResponseBody
-    public void createCatalog(@Valid DataCatalog dataCatalog, HttpServletRequest request) {
+    public void createCatalog(@Valid DataCatalog dataCatalog, HttpServletRequest request, HttpServletResponse response) {
         boolean isAdmin = isLoginAsAdmin(request);
         if (isAdmin) {
             dataCatalog.setCatalogStyle("S");
@@ -200,6 +201,7 @@ public class DataDictionaryController extends BaseController {
             }
             dataDictionaryManager.saveCatalogIncludeDataPiece(dataCatalog, isAdmin);
         }
+        JsonResultUtils.writeSingleDataJson(dataCatalog.getCatalogCode(),response);
     }
 
     /**
