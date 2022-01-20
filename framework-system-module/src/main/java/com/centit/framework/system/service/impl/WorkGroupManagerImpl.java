@@ -107,21 +107,13 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
     @Override
     public void leaderHandOver(WorkGroupParames workGroupParames) {
         //组长更新为组员
-        Map<String, Object> propertiesValue = new HashMap<>();
-        propertiesValue.put("roleCode",WorkGroup.WORKGROUP_ROLE_CODE_MEMBER);
-        Map<String, Object> propertiesFilter= new HashMap<>();
-        propertiesFilter.put("groupId",workGroupParames.getGroupId());
-        propertiesFilter.put("userCode",workGroupParames.getUserCode());
-        propertiesFilter.put("roleCode",WorkGroup.WORKGROUP_ROLE_CODE_LEADER);
-        DatabaseOptUtils.batchUpdateObject(workGroupDao,WorkGroup.class,propertiesValue,propertiesFilter);
+        String sql = "UPDATE  work_group  SET ROLE_CODE ='组员'  WHERE group_id=? and role_code=? and user_code=? ";
+        workGroupDao.getJdbcTemplate().update(sql,
+            new Object[]{workGroupParames.getGroupId(), WorkGroup.WORKGROUP_ROLE_CODE_LEADER, workGroupParames.getUserCode()});
         //组员更新为组长
-        Map<String, Object> propertiesValue1 = new HashMap<>();
-        propertiesValue1.put("roleCode",WorkGroup.WORKGROUP_ROLE_CODE_LEADER);
-        Map<String, Object> propertiesFilter1= new HashMap<>();
-        propertiesFilter1.put("groupId",workGroupParames.getGroupId());
-        propertiesFilter1.put("userCode",workGroupParames.getNewUserCode());
-        propertiesFilter1.put("roleCode",WorkGroup.WORKGROUP_ROLE_CODE_MEMBER);
-        DatabaseOptUtils.batchUpdateObject(workGroupDao,WorkGroup.class,propertiesValue,propertiesFilter);
+        String sql1 = "UPDATE  work_group  SET ROLE_CODE ='组长'  WHERE group_id=? and role_code=? and user_code=? ";
+        workGroupDao.getJdbcTemplate().update(sql1,
+            new Object[]{workGroupParames.getGroupId(), WorkGroup.WORKGROUP_ROLE_CODE_LEADER, workGroupParames.getNewUserCode()});
     }
 
     private UserRole getUserRole(WorkGroup workGroup) {
