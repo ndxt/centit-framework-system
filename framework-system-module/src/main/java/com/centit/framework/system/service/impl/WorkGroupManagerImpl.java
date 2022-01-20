@@ -1,10 +1,12 @@
 package com.centit.framework.system.service.impl;
 
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.RoleInfoDao;
 import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.dao.WorkGroupDao;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.WorkGroup;
+import com.centit.framework.system.po.WorkGroupParames;
 import com.centit.framework.system.po.WorkGroupParameter;
 import com.centit.framework.system.service.WorkGroupManager;
 import com.centit.support.database.utils.PageDesc;
@@ -100,6 +102,26 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
             }
         }
         return false;
+    }
+
+    @Override
+    public void leaderHandOver(WorkGroupParames workGroupParames) {
+        //组长更新为组员
+        Map<String, Object> propertiesValue = new HashMap<>();
+        propertiesValue.put("roleCode",WorkGroup.WORKGROUP_ROLE_CODE_MEMBER);
+        Map<String, Object> propertiesFilter= new HashMap<>();
+        propertiesFilter.put("groupId",workGroupParames.getGroupId());
+        propertiesFilter.put("userCode",workGroupParames.getUserCode());
+        propertiesFilter.put("roleCode",WorkGroup.WORKGROUP_ROLE_CODE_LEADER);
+        DatabaseOptUtils.batchUpdateObject(workGroupDao,WorkGroup.class,propertiesValue,propertiesFilter);
+        //组员更新为组长
+        Map<String, Object> propertiesValue1 = new HashMap<>();
+        propertiesValue1.put("roleCode",WorkGroup.WORKGROUP_ROLE_CODE_LEADER);
+        Map<String, Object> propertiesFilter1= new HashMap<>();
+        propertiesFilter1.put("groupId",workGroupParames.getGroupId());
+        propertiesFilter1.put("userCode",workGroupParames.getNewUserCode());
+        propertiesFilter1.put("roleCode",WorkGroup.WORKGROUP_ROLE_CODE_MEMBER);
+        DatabaseOptUtils.batchUpdateObject(workGroupDao,WorkGroup.class,propertiesValue,propertiesFilter);
     }
 
     private UserRole getUserRole(WorkGroup workGroup) {

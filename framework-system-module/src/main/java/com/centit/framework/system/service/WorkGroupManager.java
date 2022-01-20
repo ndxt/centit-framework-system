@@ -1,6 +1,7 @@
 package com.centit.framework.system.service;
 
 import com.centit.framework.system.po.WorkGroup;
+import com.centit.framework.system.po.WorkGroupParames;
 import com.centit.support.database.utils.PageDesc;
 
 import java.util.List;
@@ -33,4 +34,7 @@ public interface WorkGroupManager{
      * @return
      */
     boolean  loginUserIsExistWorkGroup(String osId,String userCode);
+
+    void leaderHandOver(WorkGroupParames workGroupParames);
+
 }

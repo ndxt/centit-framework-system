@@ -235,25 +235,7 @@ public class WorkGroupController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     public void leaderHandOver(@RequestBody WorkGroupParames workGroupParames, HttpServletRequest request) {
         loginUserPermissionCheck(workGroupParames.getGroupId());
-        //将旧组长更新为组员
-        WorkGroup workGroup = new WorkGroup();
-        WorkGroupParameter workGroupParameter = new WorkGroupParameter();
-        workGroupParameter.setGroupId(workGroupParames.getGroupId());
-        workGroupParameter.setRoleCode(WorkGroup.WORKGROUP_ROLE_CODE_LEADER);
-        workGroupParameter.setUserCode(workGroupParames.getUserCode());
-        workGroup.setWorkGroupParameter(workGroupParameter);
-        workGroup.setRoleCode(WorkGroup.WORKGROUP_ROLE_CODE_MEMBER);
-        workGroupManager.updateWorkGroup(workGroup);
-        //新增新的组长
-        workGroupManager.deleteWorkGroup(workGroupParames.getGroupId(), workGroupParames.getNewUserCode(), WorkGroup.WORKGROUP_ROLE_CODE_MEMBER);
-        WorkGroup newWorkGroup = new WorkGroup();
-        WorkGroupParameter newWorkGroupParameter = new WorkGroupParameter();
-        newWorkGroupParameter.setGroupId(workGroupParames.getGroupId());
-        newWorkGroupParameter.setRoleCode(WorkGroup.WORKGROUP_ROLE_CODE_LEADER);
-        newWorkGroupParameter.setUserCode(workGroupParames.getNewUserCode());
-        newWorkGroup.setWorkGroupParameter(newWorkGroupParameter);
-        newWorkGroup.setCreator(WebOptUtils.getCurrentUserCode(request));
-        workGroupManager.createWorkGroup(newWorkGroup);
+        workGroupManager.leaderHandOver(workGroupParames);
     }
 
     private void loginUserPermissionCheck(String osId){
