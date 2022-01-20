@@ -33,7 +33,13 @@ import java.util.List;
 @ApiModel(value = "业务菜单对象", description = "业务菜单对象 OptInfo")
 public class OptInfo implements IOptInfo, java.io.Serializable {
     private static final long serialVersionUID = 1L;
-
+    public final static String OPT_INFO_FORM_CODE_COMMON = "C";
+    public final static String OPT_INFO_FORM_CODE_COMMON_NAME = "通用模块";
+    public final static String OPT_INFO_FORM_CODE_PAGE_ENTER = "A";
+    public final static String OPT_INFO_FORM_CODE_PAGE_ENTER_NAME = "应用入口页面";
+    public final static String OPT_INFO_IN_TOOLBAR_NO = "N";
+    public final static String OPT_INFO_OPT_TYPE_COMMON = "O";
+    public final static String OPT_INFO_FORM_CODE_ITEM = "I";
     @Id
     @Column(name = "OPT_ID")
     @ValueGenerator(strategy = GeneratorType.UUID22)
