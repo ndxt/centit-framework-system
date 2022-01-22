@@ -60,9 +60,4 @@ public class DataCatalogDao extends BaseDaoImpl<DataCatalog, String>{
     public List<DataCatalog> listDataCatalogByUnit(String topUnit){
         return super.listObjectsByProperty("topUnit", topUnit);
     }
-
-    @Transactional
-    public void deletetReferences(String catalogCode){
-        this.getJdbcTemplate().update("DELETE FROM m_application_dictionary WHERE dictionary_id = ? ", new Object[]{catalogCode});
-    }
 }
