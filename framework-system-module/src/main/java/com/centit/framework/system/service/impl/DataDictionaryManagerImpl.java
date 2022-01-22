@@ -98,6 +98,8 @@ public class DataDictionaryManagerImpl implements
     public void deleteDataDictionary(String catalogCode){
         dictionaryDao.deleteDictionary(catalogCode);
         dataCatalogDao.deleteObjectById(catalogCode);
+        //删除应用和数据字典的关联信息
+        dataCatalogDao.deletetReferences(catalogCode);
         CodeRepositoryCache.evictCache("DataDictionary", catalogCode);
     }
 
