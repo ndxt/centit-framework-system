@@ -782,6 +782,8 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     public IOsInfo updateOsInfo(IOsInfo osInfo) {
+        OsInfo osInfo1=osInfoDao.getObjectById(osInfo.getOsId());
+        osInfo.setTopUnit(osInfo1.getTopUnit());
         osInfoDao.updateObject((OsInfo) osInfo);
         return osInfo;
     }
