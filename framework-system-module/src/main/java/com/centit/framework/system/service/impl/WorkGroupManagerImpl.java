@@ -106,14 +106,26 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
 
     @Override
     public void leaderHandOver(WorkGroupParames workGroupParames) {
+        //删除原始组员数据
+        WorkGroup delWorkGroup = new WorkGroup();
+        WorkGroupParameter delWorkGroupParameter = new WorkGroupParameter();
+        delWorkGroupParameter.setGroupId(workGroupParames.getGroupId());
+        delWorkGroupParameter.setRoleCode(WorkGroup.WORKGROUP_ROLE_CODE_MEMBER);
+        delWorkGroupParameter.setUserCode(workGroupParames.getNewUserCode());
+        delWorkGroup.setWorkGroupParameter(delWorkGroupParameter);
+       workGroupDao.deleteObject(delWorkGroup);
+        //新增组长信息
+        WorkGroup workGroup = new WorkGroup();
+        WorkGroupParameter workGroupParameter = new WorkGroupParameter();
+        workGroupParameter.setGroupId(workGroupParames.getGroupId());
+        workGroupParameter.setRoleCode(WorkGroup.WORKGROUP_ROLE_CODE_LEADER);
+        workGroupParameter.setUserCode(workGroupParames.getNewUserCode());
+        workGroup.setWorkGroupParameter(workGroupParameter);
+        workGroupDao.saveNewObject(workGroup);
         //组长更新为组员
         String sql = "UPDATE  work_group  SET ROLE_CODE ='组员'  WHERE group_id=? and role_code=? and user_code=? ";
         workGroupDao.getJdbcTemplate().update(sql,
             new Object[]{workGroupParames.getGroupId(), WorkGroup.WORKGROUP_ROLE_CODE_LEADER, workGroupParames.getUserCode()});
-        //组员更新为组长
-        String sql1 = "UPDATE  work_group  SET ROLE_CODE ='组长'  WHERE group_id=? and role_code=? and user_code=? ";
-        workGroupDao.getJdbcTemplate().update(sql1,
-            new Object[]{workGroupParames.getGroupId(), WorkGroup.WORKGROUP_ROLE_CODE_MEMBER, workGroupParames.getNewUserCode()});
     }
 
     private UserRole getUserRole(WorkGroup workGroup) {
