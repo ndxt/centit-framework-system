@@ -379,11 +379,21 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
+    public List<? extends IOptInfo> listOptInfoByRole(String roleCode) {
+        return optInfoDao.listOptInfoByRoleCode(roleCode);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<? extends IOptMethod> listAllOptMethod(String topUnit) {
         return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)?
              optMethodDao.listAllOptMethodByUnit(topUnit)
             :optMethodDao.listObjectsAll();
+    }
+
+    @Override
+    public List<? extends IOptMethod> listOptMethodByRoleCode(String roleCode) {
+        return optMethodDao.listOptMethodByRoleCode(roleCode);
     }
 
     @Override
