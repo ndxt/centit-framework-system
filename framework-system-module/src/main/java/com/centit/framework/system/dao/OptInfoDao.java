@@ -188,6 +188,37 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
     }
 
     @Transactional
+    public List<OptInfo> listOptInfoByRoleCode(String roleCode){
+        String sql = " SELECT " +
+            " A.OPT_ID, " +
+            " A.OPT_NAME, " +
+            " A.PRE_OPT_ID, " +
+            " A.OPT_ROUTE, " +
+            " A.OPT_URL, " +
+            " A.FORM_CODE, " +
+            " A.OPT_TYPE, " +
+            " A.MSG_NO, " +
+            " A.MSG_PRM, " +
+            " A.IS_IN_TOOLBAR, " +
+            " A.IMG_INDEX, " +
+            " A.TOP_OPT_ID, " +
+            " A.ORDER_IND, " +
+            " A.FLOW_CODE, " +
+            " A.PAGE_TYPE, " +
+            " A.ICON, " +
+            " A.HEIGHT, " +
+            " A.WIDTH, " +
+            " A.DOC_ID, " +
+            " A.OS_ID, " +
+            " A.SOURCE_ID " +
+            " FROM f_optinfo A JOIN f_optdef b on a.OPT_ID = b.OPT_ID   " +
+            " WHERE b.OPT_CODE in (select rp.OPT_CODE from F_ROLEPOWER rp where rp.ROLE_CODE = ? ) ";
+        return getJdbcTemplate().execute(
+            (ConnectionCallback<List<OptInfo>>) conn ->
+                OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,new Object[]{roleCode}, OptInfo.class));
+    }
+
+    @Transactional
     public List<OptInfo> listFromParent(Map<String, Object> filterMap){
         String sql = "select a.* " +
             "from F_OPTINFO a join F_OS_INFO b on(a.TOP_OPT_ID=b.os_id) " +
