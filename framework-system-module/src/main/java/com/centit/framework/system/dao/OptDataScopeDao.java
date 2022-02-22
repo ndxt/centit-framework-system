@@ -5,6 +5,7 @@ import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.po.OptDataScope;
 import com.centit.support.algorithm.CollectionsOpt;
+import com.centit.support.algorithm.UuidOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
@@ -45,8 +46,7 @@ public class OptDataScopeDao extends BaseDaoImpl<OptDataScope, String> {
 
     @Transactional
     public String getNextOptCode() {
-        Long nextValue = DatabaseOptUtils.getSequenceNextValue(this, "S_OPTDEFCODE");
-        return nextValue==null?"":String.valueOf(nextValue);
+        return UuidOpt.getUuidAsString22();
     }
 
 
