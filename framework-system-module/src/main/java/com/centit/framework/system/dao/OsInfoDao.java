@@ -30,7 +30,7 @@ public class OsInfoDao extends BaseDaoImpl<OsInfo, String> {
     @Transactional
     public List<OsInfo> listOsInfoByUnit(String topUnit){
         return super.listObjectsByFilter(
-            " where TOP_UNIT = ?",
+            " where  IS_DELETE = 'F' AND TOP_UNIT = ?",
             new Object[]{topUnit});
     }
 }

@@ -479,7 +479,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                 }
             }
         }
-        if (StringUtils.isEmpty(userinfo.getCurrentStationId())) {
+        if (StringUtils.isEmpty(userDetails.getCurrentStationId())) {
             for (UserUnit uu : userUnits) {
                 if (StringUtils.isNotBlank(userinfo.getTopUnit()) && StringUtils.isNotBlank(uu.getTopUnit())
                     && userinfo.getTopUnit().equals(uu.getTopUnit())) {

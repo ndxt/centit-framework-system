@@ -179,7 +179,7 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
      * @return
      */
     public int countUnitByTopUnit(String topUnit) {
-        String sql = " SELECT COUNT(1) COUNT FROM F_UNITINFO WHERE 1=1 [  :topUnit | AND TOP_UNIT = :topUnit ] ";
+        String sql = " SELECT COUNT(1) COUNT FROM F_UNITINFO WHERE 1=1 AND IS_VALID = 'T'  [  :topUnit | AND TOP_UNIT = :topUnit ] ";
         Map<String, Object> params  = StringUtils.isBlank(topUnit)? new HashMap<>():CollectionsOpt.createHashMap("topUnit",topUnit);
         QueryAndParams queryAndParams = QueryAndParams.createFromQueryAndNamedParams(QueryUtils.translateQuery(sql, params));
         logger.info("sql: {},参数：{}",queryAndParams.getQuery(),topUnit);
