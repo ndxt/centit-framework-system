@@ -160,11 +160,6 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @Transactional
     public boolean isAnyOneExist(String userCode, String loginName,String regPhone,String regEmail){
-        Map<String,String> map =new HashMap<>();
-        map.put("userCode", StringUtils.isBlank(userCode)?"null":userCode);
-        map.put("loginName", StringUtils.isBlank(loginName)?"null":loginName);
-        map.put("regCellPhone", StringUtils.isBlank(regPhone)?"null":regPhone);
-        map.put("regEmail", StringUtils.isBlank(regEmail)?"null":regEmail);
         return userInfoDao.isAnyOneExist(userCode, loginName, regPhone, regEmail) > 0;
     }
 

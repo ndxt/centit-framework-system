@@ -48,8 +48,8 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
 
     @Column(name = "IS_VALID")
     @NotBlank(message = "字段不能为空")
-    @Pattern(regexp = "[TFA]", message = "字段值必须是T或F,A为新建可以删除")
-    @ApiModelProperty(value = "是否生效 T:生效 F:失效 A:新建可以删除",name = "isValid",required = true)
+    @Pattern(regexp = "[TFAW]", message = "字段值必须是T或F,A为新建可以删除,W未加入任何组织")
+    @ApiModelProperty(value = "是否生效 T:生效 F:失效 A:新建可以删除,W未加入任何组织",name = "isValid",required = true)
     private String isValid; // 状态
 
 

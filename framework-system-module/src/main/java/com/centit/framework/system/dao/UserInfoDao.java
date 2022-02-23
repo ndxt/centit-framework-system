@@ -15,13 +15,13 @@ import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.database.utils.QueryAndNamedParams;
 import com.centit.support.database.utils.QueryUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository("userInfoDao")
 public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
@@ -244,11 +244,8 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     }
 
     public int isAnyOneExist(String userCode, String loginName, String regPhone, String regEmail) {
-        String sql = "select count(*) as usersCount from F_USERINFO t " +
-            "where t.USER_CODE != ? and " +
-            "(t.LOGIN_NAME = ? or t.REG_CELL_PHONE= ? or t.Reg_Email = ?)";
-        return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
-            new Object[]{userCode, loginName, regPhone, regEmail}));
+        Pair<String, Object[]> slqAndParams = anyOneExistSqlAndParams(userCode, loginName, regPhone, regEmail);
+        return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, slqAndParams.getLeft(),slqAndParams.getRight()));
     }
 
     @Transactional
@@ -256,4 +253,31 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
         super.updateObject(userInfo);
     }
 
+    private  Pair<String,Object[]> anyOneExistSqlAndParams(String userCode, String loginName, String regPhone, String regEmail){
+        HashMap<String, String> map = new HashMap<>();
+        if (StringUtils.isNotBlank(userCode)){
+            map.put("USER_CODE",userCode);
+        }
+        if (StringUtils.isNotBlank(loginName)){
+            map.put("LOGIN_NAME",loginName);
+        }
+        if (StringUtils.isNotBlank(regPhone)){
+            map.put("REG_CELL_PHONE",regPhone);
+        }
+        if (StringUtils.isNotBlank(regEmail)){
+            map.put("REG_EMAIL",regEmail);
+        }
+        Object[] params = new String[map.size()];
+        StringBuilder stringBuilder = new StringBuilder(" SELECT COUNT(1) AS USERSCOUNT FROM F_USERINFO WHERE ");
+        int i = 0;
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            if (i != 0){
+                stringBuilder.append(" OR ");
+            }
+            stringBuilder.append(entry.getKey()).append(" = ? ");
+            params[i] = entry.getValue();
+            i++;
+        }
+        return Pair.of(stringBuilder.toString(),params);
+    }
 }

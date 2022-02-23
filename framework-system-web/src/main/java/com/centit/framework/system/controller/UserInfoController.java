@@ -17,6 +17,7 @@ import com.centit.framework.system.po.UserUnit;
 import com.centit.framework.system.service.SysUserManager;
 import com.centit.framework.system.service.SysUserUnitManager;
 import com.centit.support.algorithm.BooleanBaseOpt;
+import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
@@ -320,6 +321,9 @@ public class UserInfoController extends BaseController {
         String loginName = request.getParameter("loginName");
         String regPhone = request.getParameter("regPhone");
         String regEmail = request.getParameter("regEmail");
+        if (StringUtils.isAllBlank(userCode,loginName,regPhone,regEmail)){
+            throw new ObjectException("参数不能为空!");
+        }
         return sysUserManager.isAnyOneExist(userCode, loginName, regPhone, regEmail);
     }
 
