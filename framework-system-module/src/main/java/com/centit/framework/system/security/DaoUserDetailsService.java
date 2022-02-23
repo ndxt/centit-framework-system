@@ -68,11 +68,21 @@ public class DaoUserDetailsService
 
     @Override
     public CentitUserDetails loadUserByUsername(String loginname) throws UsernameNotFoundException {
-      CentitUserDetails ud = platformEnvironment.loadUserDetailsByLoginName(loginname);
-      if(ud == null){
+        if(StringUtils.isBlank(loginname)){
+            throw new UsernameNotFoundException("登录名为不能为空！");
+        }
+        CentitUserDetails ud = null;
+        if(loginname.indexOf('@')>0){
+            ud = platformEnvironment.loadUserDetailsByRegEmail(loginname);
+        } else if(loginname.charAt(0) >='0' && loginname.charAt(0) <='9'){
+            ud = platformEnvironment.loadUserDetailsByRegCellPhone(loginname);
+        } else {
+            ud = platformEnvironment.loadUserDetailsByLoginName(loginname);
+        }
+        if(ud == null){
           throw new UsernameNotFoundException("登录名为"+loginname+"的用户不存在！");
-      }
-      return ud;
+        }
+        return ud;
     }
 
     @Override
