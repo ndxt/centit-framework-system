@@ -34,7 +34,7 @@ public class UnitInfo implements IUnitInfo, java.io.Serializable{
 
     @Id
     @Column(name = "UNIT_CODE")
-    @ValueGenerator(strategy = GeneratorType.RANDOM_ID, value = "7:D")
+    @ValueGenerator(strategy = GeneratorType.RANDOM_ID, value = "11:D")
     @ApiModelProperty(value = "机构代码",name = "unitCode")
     private String unitCode; // 机构代码
 

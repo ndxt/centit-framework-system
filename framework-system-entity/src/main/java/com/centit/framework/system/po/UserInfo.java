@@ -35,7 +35,7 @@ public class UserInfo implements IUserInfo, java.io.Serializable{
 
     @Id
     @Column(name = "USER_CODE")
-    @ValueGenerator(strategy = GeneratorType.RANDOM_ID, value = "7:U")
+    @ValueGenerator(strategy = GeneratorType.RANDOM_ID, value = "11:U")
     @ApiModelProperty(value = "用户代码",name = "userCode")
     private String userCode; // 用户代码
 

@@ -43,11 +43,6 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
         return filterField;
     }
 
-    @Transactional
-    public String getNextKey() {
-        return StringBaseOpt.objectToString(
-            DatabaseOptUtils.getSequenceNextValue(this, "S_UNITCODE"));
-    }
 
     @SuppressWarnings("unchecked")
     @Transactional
