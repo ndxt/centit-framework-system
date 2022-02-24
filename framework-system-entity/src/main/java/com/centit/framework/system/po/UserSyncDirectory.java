@@ -73,6 +73,11 @@ public class UserSyncDirectory implements java.io.Serializable {
     @ApiModelProperty(value = "默认角色代码", name = "defaultUserRole")
     private String defaultUserRole;
 
+    @Column(name = "top_unit")
+    @Length(max = 32)
+    @ApiModelProperty(value = "所属租户", name = "topUnit")
+    private String topUnit;
+
     public String getId() {
         return id;
     }
@@ -151,5 +156,13 @@ public class UserSyncDirectory implements java.io.Serializable {
 
     public void setDefaultUserRole(String defaultUserRole) {
         this.defaultUserRole = defaultUserRole;
+    }
+
+    public String getTopUnit() {
+        return topUnit;
+    }
+
+    public void setTopUnit(String topUnit) {
+        this.topUnit = topUnit;
     }
 }

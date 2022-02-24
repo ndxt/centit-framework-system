@@ -1,6 +1,7 @@
 package com.centit.framework.system.controller;
 
 import com.centit.framework.common.JsonResultUtils;
+import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.PageQueryResult;
@@ -31,8 +32,9 @@ public class UserSyncDirectoryController extends BaseController {
     @ApiOperation(value = "新增用户同步目录信息")
     @PostMapping()
     @WrapUpResponseBody
-    public void saveUserSyncDirectory(@RequestBody UserSyncDirectory userSyncDirectory, HttpServletResponse response) {
-        userSyncDirectoryManager.saveUserSyncDirectory(userSyncDirectory);
+    public void saveUserSyncDirectory(@RequestBody UserSyncDirectory userSyncDirectory, HttpServletResponse response, HttpServletRequest request) {
+        String userCode = WebOptUtils.getCurrentUserCode(request);
+        userSyncDirectoryManager.saveUserSyncDirectory(userSyncDirectory, userCode);
         JsonResultUtils.writeSingleDataJson(userSyncDirectory.getId(),response);
     }
 
@@ -54,7 +56,8 @@ public class UserSyncDirectoryController extends BaseController {
     @GetMapping("/list")
     @WrapUpResponseBody
     public PageQueryResult<UserSyncDirectory> listObjects(HttpServletRequest request, PageDesc pageDesc) {
-        List<UserSyncDirectory> list = userSyncDirectoryManager.listObjects(BaseController.collectRequestParameters(request), pageDesc);
+        String userCode = WebOptUtils.getCurrentUserCode(request);
+        List<UserSyncDirectory> list = userSyncDirectoryManager.listObjects(BaseController.collectRequestParameters(request), pageDesc, userCode);
         return PageQueryResult.createResult(list, pageDesc);
     }
 

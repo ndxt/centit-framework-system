@@ -13,11 +13,11 @@ public interface UserSyncDirectoryManager {
 
     List<UserSyncDirectory> listObjects();
 
-    List<UserSyncDirectory> listObjects(Map<String, Object> filterMap, PageDesc pageDesc);
+    List<UserSyncDirectory> listObjects(Map<String, Object> filterMap, PageDesc pageDesc, String userCode);
 
     UserSyncDirectory getObjectById(String Id);
 
-    void saveUserSyncDirectory(UserSyncDirectory userSyncDirectory);
+    void saveUserSyncDirectory(UserSyncDirectory userSyncDirectory, String userCode);
 
     void updateUserSyncDirectory(UserSyncDirectory userSyncDirectory);
 
