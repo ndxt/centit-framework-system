@@ -505,6 +505,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         }
         //add  end
         //userDetails.setUserFuncs(functionDao.getMenuFuncByUserID(userDetails.getUserCode()));
+        appendAdminRoles(userinfo,roles);
         userDetails.setAuthoritiesByRoles((JSONArray) JSON.toJSON(roles));
         List<FVUserOptList> uoptlist = userInfoDao.listUserOptMethods(userinfo.getUserCode());
         Map<String, String> userOptList = new HashMap<>();
@@ -563,27 +564,19 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                 userDetails.getUserInfo().put("topUnitName", ui.getUnitName());
             }
         }
-        appendAdminRoleToUserDetails(userDetails);
         return userDetails;
     }
 
-    private void appendAdminRoleToUserDetails(JsonCentitUserDetails userDetails){
-        String topUnitCode = userDetails.getTopUnitCode();
-        if (StringUtils.isBlank(topUnitCode)){
-            return ;
+    private void appendAdminRoles(UserInfo userInfo,List<RoleInfo> roles){
+        String topUnit = userInfo.getTopUnit();
+        if (StringUtils.isBlank(topUnit)){
+            return;
         }
-        String userCode = userDetails.getUserCode();
-        WorkGroup admin = workGroupManager.getWorkGroup(topUnitCode, userCode, WorkGroup.WORKGROUP_ROLE_CODE_ADMIN);
+        WorkGroup admin = workGroupManager.getWorkGroup(topUnit, userInfo.getUserCode(), WorkGroup.WORKGROUP_ROLE_CODE_ADMIN);
         if (null !=admin){
-            JSONArray userRoles = userDetails.getUserRoles();
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("isValid","T");
-            jsonObject.put("unitCode",topUnitCode);
-            jsonObject.put("roleType","G");
-            jsonObject.put("rolePowers",new JSONArray());
-            jsonObject.put("roleCode","system".equals(topUnitCode)?"platadmin":"tenantadmin");
-            jsonObject.put("roleName","system".equals(topUnitCode)?"平台管理员":"租户管理员");
-            userRoles.add(jsonObject);
+            String roleCode = "system".equals(topUnit) ? "platadmin" : "tenantadmin";
+            String roleName = "system".equals(topUnit) ? "平台管理员" : "租户管理员";
+            roles.add(new RoleInfo(roleCode, roleName, "G",topUnit, "T", roleName));
         }
     }
     @Override
