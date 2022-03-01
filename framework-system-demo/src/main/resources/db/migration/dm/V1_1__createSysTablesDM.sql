@@ -455,6 +455,61 @@ comment on column WORK_GROUP.run_token is   '运行令牌' ;
 comment on column WORK_GROUP.auth_desc is   '授权说明' ;
 alter table WORK_GROUP add primary key (group_id, user_code, role_code);
 
+-- 创建租户信息表
+CREATE TABLE f_tenant_info (
+   top_unit varchar(32) NOT NULL,
+   unit_name varchar(300) DEFAULT NULL,
+   source_url varchar(300) DEFAULT NULL,
+   use_limittime datetime DEFAULT NULL,
+   tenant_fee decimal(10,0) DEFAULT NULL,
+   creator varchar(32) DEFAULT NULL,
+   create_time datetime DEFAULT NULL,
+   updator varchar(32) DEFAULT NULL,
+   update_time datetime DEFAULT NULL,
+   own_user varchar(32) DEFAULT NULL,
+   is_available char(1) DEFAULT NULL,
+   apply_time datetime DEFAULT NULL,
+   pass_time datetime DEFAULT NULL,
+   memo varchar(32) DEFAULT NULL,
+   remarks varchar(500) DEFAULT NULL,
+   database_number_limit decimal(6,0) DEFAULT NULL,
+   os_number_limit decimal(6,0) DEFAULT NULL,
+   file_space_limit decimal(6,0) DEFAULT NULL,
+   data_space_limit decimal(6,0) DEFAULT NULL,
+   user_number_limit decimal(10,0) DEFAULT NULL,
+   unit_number_limit decimal(10,0) DEFAULT NULL
+);
+alter table f_tenant_info add primary key (top_unit);
+
+-- 创建租户成员申请表
+CREATE TABLE t_tenant_member_apply (
+   user_code varchar(32) NOT NULL,
+   top_unit varchar(32) NOT NULL,
+   inviter_user_code varchar(64) DEFAULT NULL,
+   apply_type char(1) DEFAULT NULL,
+   apply_time datetime DEFAULT NULL,
+   apply_state char(1) DEFAULT NULL,
+   apply_remark varchar(500) DEFAULT NULL,
+   approve_remark varchar(500) DEFAULT NULL,
+   unit_code varchar(32) DEFAULT NULL
+);
+alter table t_tenant_member_apply add primary key (user_code,top_unit);
+-- 创建租户交易日志表
+CREATE TABLE t_tenant_business_log (
+  BUSINESS_ID varchar(64) NOT NULL,
+  TOP_UNIT varchar(32) DEFAULT NULL,
+  ASSIGNOR_USER_CODE varchar(64) DEFAULT NULL,
+  ASSIGNOR_USER_NAME varchar(64) DEFAULT NULL,
+  ASSIGNEE_USER_CODE varchar(64) DEFAULT NULL,
+  ASSIGNEE_USER_NAME varchar(64) DEFAULT NULL,
+  BUSINESS_REASON varchar(500) DEFAULT NULL,
+  BUSINESS_REMARK varchar(500) DEFAULT NULL,
+  APPLY_BUSINESS_TIME datetime DEFAULT NULL,
+  SUCCESS_BUSINESS_TIME datetime DEFAULT NULL,
+  BUSINESS_STATE char(1) DEFAULT NULL
+);
+alter table t_tenant_business_log add primary key (BUSINESS_ID);
+
 CREATE OR REPLACE VIEW v_hi_unitinfo AS
 SELECT a.unit_code AS top_unit_code, b.unit_code, b.unit_type, b.parent_unit, b.is_valid, b.unit_name,b.unit_desc,b.unit_short_name, b.unit_order, b.dep_no,
        b.unit_word,b.unit_grade,
