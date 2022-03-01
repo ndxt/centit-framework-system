@@ -32,6 +32,8 @@ drop table if exists F_USERUNIT cascade;
 drop table if exists F_USER_QUERY_FILTER cascade;
 
 drop table if exists F_UNITROLE cascade;
+
+drop table if exists WORK_GROUP cascade;
 drop sequence if exists s_optdefcode;
 drop sequence if exists s_sys_log;
 drop sequence if exists s_unitcode;
@@ -397,6 +399,33 @@ create table F_UNITROLE
    updator              varchar2(32)
 );
 alter table F_UNITROLE add primary key (UNIT_CODE, ROLE_CODE);
+
+create table WORK_GROUP
+(
+   group_id             varchar2(32) not null,
+   user_code            varchar2(32) not null,
+   role_code            varchar2(32) not null,
+   is_valid             varchar2(2),
+   auth_time            date,
+   creator              varchar2(32),
+   updator              varchar2(32),
+   update_date          date,
+   user_order           number(10,0),
+   run_token            varchar2(32),
+   auth_desc            varchar2(256)
+);
+comment on column WORK_GROUP.group_id is   '组id' ;
+comment on column WORK_GROUP.user_code is   '用户代码' ;
+comment on column WORK_GROUP.role_code is   '角色' ;
+comment on column WORK_GROUP.is_valid is   '是否生效' ;
+comment on column WORK_GROUP.auth_time is   '创建时间' ;
+comment on column WORK_GROUP.creator is   '创建人' ;
+comment on column WORK_GROUP.updator is   '更新人' ;
+comment on column WORK_GROUP.update_date is   '更新时间' ;
+comment on column WORK_GROUP.user_order is   '排序号' ;
+comment on column WORK_GROUP.run_token is   '运行令牌' ;
+comment on column WORK_GROUP.auth_desc is   '授权说明' ;
+alter table WORK_GROUP add primary key (group_id, user_code, role_code);
 
 CREATE OR REPLACE VIEW v_hi_unitinfo AS
 SELECT a.unit_code AS top_unit_code, b.unit_code, b.unit_type, b.parent_unit, b.is_valid, b.unit_name,b.unit_desc,b.unit_short_name, b.unit_order, b.dep_no,

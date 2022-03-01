@@ -32,6 +32,8 @@ drop table if exists F_USERUNIT cascade;
 drop table if exists F_USER_QUERY_FILTER cascade;
 
 drop table if exists F_UNITROLE cascade;
+
+drop table if exists WORK_GROUP cascade;
 drop sequence if exists s_optdefcode;
 drop sequence if exists s_sys_log;
 drop sequence if exists s_unitcode;
@@ -334,6 +336,23 @@ create table F_UNITROLE
    updator              varchar(32),
    primary key (UNIT_CODE, ROLE_CODE)
 );
+
+create table WORK_GROUP
+(
+   group_id             varchar(32) not null,
+   user_code            varchar(32) not null,
+   role_code            varchar(32) not null,
+   is_valid             varchar(2),
+   auth_time            date,
+   creator              varchar(32),
+   updator              varchar(32),
+   update_date          date,
+   user_order           int,
+   run_token            varchar(32),
+   auth_desc            varchar(256),
+   primary key (group_id, user_code, role_code);
+);
+
 drop view if exists v_hi_unitinfo;
 CREATE  VIEW v_hi_unitinfo AS
 SELECT a.unit_code AS top_unit_code, b.unit_code, b.unit_type, b.parent_unit, b.is_valid, b.unit_name,b.unit_desc,b.unit_short_name, b.unit_order, b.dep_no,

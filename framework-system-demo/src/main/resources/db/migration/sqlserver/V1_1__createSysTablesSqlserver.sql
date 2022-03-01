@@ -380,6 +380,22 @@ create table F_UNITROLE
 );
 alter table F_UNITROLE add primary key (UNIT_CODE, ROLE_CODE);
 
+create table WORK_GROUP
+(
+   group_id             varchar(32) not null,
+   user_code            varchar(32) not null,
+   role_code            varchar(32) not null,
+   is_valid             varchar(2),
+   auth_time            datetime,
+   creator              varchar(32),
+   updator              varchar(32),
+   update_date          datetime,
+   user_order           numeric(10,0),
+   run_token            varchar(32),
+   auth_desc            varchar(256)
+);
+alter table WORK_GROUP add primary key (group_id, user_code, role_code);
+
 IF EXISTS(SELECT 1 FROM sys.views WHERE name = 'v_hi_unitinfo')
   DROP view v_hi_unitinfo;
 

@@ -69,7 +69,9 @@ drop table if exists F_USERUNIT cascade;
 
 drop table if exists F_USER_QUERY_FILTER cascade;
 
-drop table if exists  F_UNITROLE cascade;
+drop table if exists F_UNITROLE cascade;
+
+drop table if exists WORK_GROUP cascade;
 
 /*==============================================================*/
 /* Table: F_DATACATALOG                                         */
@@ -458,6 +460,22 @@ create table F_UNITROLE
 alter table F_UNITROLE
    add primary key (UNIT_CODE, ROLE_CODE);
 
+create table WORK_GROUP
+(
+   group_id             varchar(32) not null comment '组id',
+   user_code            varchar(32) not null comment '用户代码',
+   role_code            varchar(32) not null comment '角色',
+   is_valid             varchar(2) comment '是否生效',
+   auth_time            datetime comment '创建时间',
+   creator              varchar(32) comment '创建人',
+   updator              varchar(32) comment '更新人',
+   update_date          datetime comment '更新时间',
+   user_order           numeric(10,0) comment '排序号',
+   run_token            varchar(32) comment '运行令牌',
+   auth_desc            varchar(256) comment '授权说明'
+);
+alter table WORK_GROUP
+   add primary key (group_id, user_code, role_code);
 --  函数
 
 
