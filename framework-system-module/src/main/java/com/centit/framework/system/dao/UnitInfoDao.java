@@ -138,12 +138,13 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
      */
     public boolean isUniqueName(String unitName, String parentCode, String unitCode) {
         String sql = "select count(*) as hasSameNameUnit from F_UNITINFO u " +
-                "where u.UNIT_NAME = :unitName and" +
-            " u.PARENT_UNIT = :parentUnit and u.UNIT_CODE <> :unitCode";
-        Object hasSameNameUnit = DatabaseOptUtils.getScalarObjectQuery(this, sql, CollectionsOpt.createHashMap(
-                "unitName", unitName, "parentUnit", parentCode, "unitCode", unitCode));
-
-        return NumberBaseOpt.castObjectToInteger(hasSameNameUnit,0)>0;
+                "where  u.UNIT_NAME = :unitName and" +
+            " u.PARENT_UNIT = :parentUnit [ :unitCode | and u.UNIT_CODE <> :unitCode ]";
+        Map<String, Object> filerMap = CollectionsOpt.createHashMap("unitName", unitName, "parentUnit", parentCode, "unitCode", unitCode);
+        QueryAndParams queryAndParams = QueryAndParams.createFromQueryAndNamedParams(QueryUtils.translateQuery(sql, filerMap));
+        logger.info("sql: {},参数：unitName={},parentCode={},unitCode={}",queryAndParams.getQuery(),unitName,parentCode,unitCode);
+        return NumberBaseOpt.castObjectToInteger(
+            DatabaseOptUtils.getScalarObjectQuery(this, queryAndParams.getQuery(),queryAndParams.getParams()))>0;
     }
 
     /**
