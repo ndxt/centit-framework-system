@@ -465,7 +465,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         userDetails.setUserUnits((JSONArray) JSON.toJSON(userUnits));
         if (StringUtils.isEmpty(userinfo.getCurrentStationId())) {
             for (UserUnit uu : userUnits) {
-                if ("T".equals(uu.getRelType()) || "I".equals(uu.getRelType())) {
+                if ("T".equals(uu.getRelType())) {
                     if (!supportTenant) {
                         userDetails.setCurrentStationId(uu.getUserUnitId());
                         currentUnitCode = uu.getUnitCode();
