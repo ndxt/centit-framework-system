@@ -273,4 +273,18 @@ public class SysRoleManagerImpl implements SysRoleManager {
         CodeRepositoryCache.evictCache("RolePower");
 
     }
+
+    @Override
+    public void updateRolePowersByOptCode(String optCode, List<RolePower> rolePowers) {
+        if (StringUtils.isBlank(optCode)){
+            return;
+        }
+        rolePowerDao.deleteRolePowersByOptCode(optCode);
+        if (CollectionUtils.sizeIsEmpty(rolePowers)){
+            CodeRepositoryCache.evictCache("RolePower");
+            return;
+        }
+        rolePowers.forEach(rolePower -> rolePowerDao.saveNewRolePower(rolePower));
+        CodeRepositoryCache.evictCache("RolePower");
+    }
 }

@@ -72,4 +72,6 @@ public interface SysRoleManager{
      * @param roleCode 角色code 当roleCode为空时，意味着要删除与optCode相关的所有数据
      */
     void updateRolePower(String optCode, String roleCode);
+
+    void updateRolePowersByOptCode(String optCode, List<RolePower> rolePowers);
 }

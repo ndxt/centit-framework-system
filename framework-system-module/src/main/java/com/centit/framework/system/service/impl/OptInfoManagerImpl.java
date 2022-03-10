@@ -159,12 +159,17 @@ public class OptInfoManagerImpl implements OptInfoManager {
 
         if(newDataScopes == null || newDataScopes.size() < 1){
             dataScopeDao.deleteDataScopeOfOptID(optInfo.getOptId());
+        }else {
+            newDataScopes.forEach(dataScope->{
+                    if(StringUtils.isBlank(dataScope.getOptScopeCode())) {
+                    dataScope.setOptScopeCode(dataScopeDao.getNextOptCode());
+                }});
         }
 
         List<OptDataScope> oldDataScopes = dataScopeDao.getDataScopeByOptID(optInfo.getOptId());
 
         Triple<List<OptDataScope>, List<Pair<OptDataScope, OptDataScope>>, List<OptDataScope>> compareScope =
-              CollectionsOpt.compareTwoList(oldDataScopes, newDataScopes, Comparator.comparing(OptDataScope::getOptId));
+              CollectionsOpt.compareTwoList(oldDataScopes, newDataScopes, Comparator.comparing(OptDataScope::getOptScopeCode));
 
         if(compareScope.getRight() != null){
             for(OptDataScope optDataScope : compareScope.getRight()){
@@ -174,7 +179,6 @@ public class OptInfoManagerImpl implements OptInfoManager {
 
         if(compareScope.getLeft() != null){
             for(OptDataScope optDataScope : compareScope.getLeft()){
-                optDataScope.setOptScopeCode(dataScopeDao.getNextOptCode());
                 optDataScope.setOptId(optInfo.getOptId());
                 dataScopeDao.saveNewOPtDataScope(optDataScope);
             }

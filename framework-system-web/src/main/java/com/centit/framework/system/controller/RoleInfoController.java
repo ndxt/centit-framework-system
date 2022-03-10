@@ -1,7 +1,6 @@
 package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.components.CodeRepositoryUtil;
@@ -24,6 +23,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -341,7 +341,7 @@ public class RoleInfoController extends BaseController {
      * @param roleCode 角色代码
      * @param optCode  操作定义
      */
-    @ApiOperation(value = "从操作定义反向添加角色代码", notes = "从操作定义反向添加角色代码。")
+    @ApiOperation(value = "从操作定义反向添加,删除角色代码", notes = "从操作定义反向添加角色代码。")
     @ApiImplicitParams({
         @ApiImplicitParam(
             name = "roleCode", value = "角色代码",
@@ -356,21 +356,22 @@ public class RoleInfoController extends BaseController {
     @WrapUpResponseBody
     @Transactional(rollbackFor = Exception.class)
     public void addOptToRole(@ParamName("roleCode")@PathVariable String roleCode,
-                             @ParamName("optCode")@PathVariable String optCode) {
+                             @ParamName("optCode")@PathVariable String optCode,HttpServletRequest request) {
         String[] roleCodes = StringUtils.split(roleCode,",");
-        for(String role:roleCodes) {
-            RoleInfo dbRoleInfo = sysRoleManager.getRoleInfo(role);
+        Map<String, Object> parameters = collectRequestParameters(request);
+        ArrayList<RolePower> rolePowers = new ArrayList<>();
+        for(String tempRoleCode :roleCodes) {
+            RoleInfo dbRoleInfo = sysRoleManager.getObjectById(tempRoleCode);
             if (null == dbRoleInfo) {
                 continue;
             }
-            RolePower rolePower = new RolePower(new RolePowerId(role, optCode));
-
-            if (dbRoleInfo.getRolePowers().contains(rolePower)) {
-                continue;
+            RolePower rolePower = new RolePower(new RolePowerId(tempRoleCode, optCode));
+            if (StringUtils.isNotBlank(MapUtils.getString(parameters,tempRoleCode))){
+                rolePower.setOptScopeCodes(MapUtils.getString(parameters,tempRoleCode));
             }
-            dbRoleInfo.getRolePowers().add(rolePower);
-            sysRoleManager.updateRolePower(dbRoleInfo);
+            rolePowers.add(rolePower);
         }
+        sysRoleManager.updateRolePowersByOptCode(optCode,rolePowers);
     }
 
     /*
