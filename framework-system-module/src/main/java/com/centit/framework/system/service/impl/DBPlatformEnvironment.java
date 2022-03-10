@@ -223,9 +223,19 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(readOnly = true)
     public List<OptInfo> listUserMenuOptInfosUnderSuperOptId(String userCode, String superOptId, boolean asAdmin) {
-        List<OptInfo> preOpts = optInfoDao.listParentMenuFunc();
+        OptInfo optInfo=optInfoDao.getObjectById(superOptId);
+        String topOptId ="";
+        if(optInfo!=null){
+            topOptId=optInfo.getTopOptId();
+        }
+        List<OptInfo> preOpts;
+        if(StringUtils.isNotBlank(topOptId)){
+            preOpts = optInfoDao.listParentMenuFunc(topOptId);
+        }else {
+            preOpts = optInfoDao.listParentMenuFunc();
+        }
         String optType = asAdmin ? "S" : "O";
-        List<OptInfo> ls = optInfoDao.getMenuFuncByUserID(userCode, optType);
+        List<OptInfo> ls = optInfoDao.getMenuFuncByUserID(userCode, optType,topOptId);
         List<OptInfo> menuFunsByUser = getMenuFuncs(preOpts, ls);
         return formatMenuTree(menuFunsByUser, superOptId);
     }

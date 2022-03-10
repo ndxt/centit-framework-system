@@ -41,10 +41,15 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
         String sql = "where Opt_ID in (select PRE_OPT_ID from f_optinfo group by Pre_Opt_ID) order by order_ind";
         return super.listObjectsByFilter(sql,(Object[]) null);
     }
+    @Transactional
+    public List<OptInfo> listParentMenuFunc(String topOptid){
+        String sql = "where Opt_ID in (select PRE_OPT_ID from f_optinfo group by Pre_Opt_ID) and top_opt_id=? order by order_ind";
+        return super.listObjectsByFilter(sql,new Object[]{topOptid});
+    }
 
     @SuppressWarnings("unchecked")
     @Transactional
-    public List<OptInfo> getMenuFuncByUserID(String userCode, String optType) {
+    public List<OptInfo> getMenuFuncByUserID(String userCode, String optType,String topOptId) {
 
         String querySql = "SELECT DISTINCT a.USER_CODE,d.Opt_ID,d.Opt_Name,d.Pre_Opt_ID,d.Form_Code,d.opt_url,d.opt_Route," +
             "d.Msg_No,d.Msg_Prm,d.Is_In_ToolBar,d.Img_Index,d.Top_Opt_ID,d.Order_Ind,d.Page_Type,d.Opt_Type,d.flow_code," +
@@ -59,6 +64,7 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
             "and d.IS_IN_TOOLBAR = 'Y' " +
             "and a.USER_CODE = ? "+
             "and d.OPT_TYPE = ? "+
+            "and d.top_opt_id = ? "+
             "order by d.ORDER_IND ";
 
 
@@ -75,7 +81,7 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
         return getJdbcTemplate().execute(
                 (ConnectionCallback<List<OptInfo>>) conn ->
                         OrmDaoUtils.queryObjectsByParamsSql(conn, querySql ,
-                                new Object[]{userCode, optType}, OptInfo.class));
+                                new Object[]{userCode, optType,topOptId}, OptInfo.class));
 
     }
 
