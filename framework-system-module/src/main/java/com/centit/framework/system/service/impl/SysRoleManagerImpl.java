@@ -275,6 +275,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
     }
 
     @Override
+    @Transactional
     public void updateRolePowersByOptCode(String optCode, List<RolePower> rolePowers) {
         if (StringUtils.isBlank(optCode)){
             return;

@@ -23,16 +23,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -344,32 +341,18 @@ public class RoleInfoController extends BaseController {
     @ApiOperation(value = "从操作定义反向添加,删除角色代码", notes = "从操作定义反向添加角色代码。")
     @ApiImplicitParams({
         @ApiImplicitParam(
-            name = "roleCode", value = "角色代码",
-            required = true, paramType = "path", dataType = "String"),
-        @ApiImplicitParam(
             name = "optCode", value = "操作定义",
             required = true, paramType = "path", dataType = "String")
     })
-    @RequestMapping(value = "/addopt/{roleCode}/{optCode}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/addopt/{optCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}给角色添加权限",
-        tag="{roleCode}:{optCode}")
+        tag="{optCode}")
     @WrapUpResponseBody
     @Transactional(rollbackFor = Exception.class)
-    public void addOptToRole(@ParamName("roleCode")@PathVariable String roleCode,
-                             @ParamName("optCode")@PathVariable String optCode,HttpServletRequest request) {
-        String[] roleCodes = StringUtils.split(roleCode,",");
-        Map<String, Object> parameters = collectRequestParameters(request);
-        ArrayList<RolePower> rolePowers = new ArrayList<>();
-        for(String tempRoleCode :roleCodes) {
-            RoleInfo dbRoleInfo = sysRoleManager.getObjectById(tempRoleCode);
-            if (null == dbRoleInfo) {
-                continue;
-            }
-            RolePower rolePower = new RolePower(new RolePowerId(tempRoleCode, optCode));
-            if (StringUtils.isNotBlank(MapUtils.getString(parameters,tempRoleCode))){
-                rolePower.setOptScopeCodes(MapUtils.getString(parameters,tempRoleCode));
-            }
-            rolePowers.add(rolePower);
+    public void addOptToRole(@RequestBody List<RolePower> rolePowers,@ParamName("optCode")@PathVariable String optCode) {
+
+        if (!CollectionUtils.sizeIsEmpty(rolePowers)){
+            rolePowers.forEach(rolePower -> rolePower.setOptCode(optCode));
         }
         sysRoleManager.updateRolePowersByOptCode(optCode,rolePowers);
     }
