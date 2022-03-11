@@ -1,5 +1,6 @@
 package com.centit.framework.system.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.security.SecurityContextUtils;
 import com.centit.framework.system.dao.*;
@@ -258,6 +259,12 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Override
     public List<RoleInfo> listRoleInfoByOptCode(String optCode) {
         return roleInfoDao.listRoleInfoByOptCode(optCode);
+    }
+
+    @Override
+    public JSONArray listRoleInfoAndPowerByOptCode(String optCode) {
+
+        return rolePowerDao.listRoleInfoAndPowerByOptCode(optCode);
     }
 
     @Override

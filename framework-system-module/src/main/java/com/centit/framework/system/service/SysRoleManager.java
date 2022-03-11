@@ -1,5 +1,6 @@
 package com.centit.framework.system.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.po.RoleInfo;
 import com.centit.framework.system.po.RolePower;
@@ -65,6 +66,8 @@ public interface SysRoleManager{
      * @return
      */
     List<RoleInfo> listRoleInfoByOptCode(String optCode);
+
+    JSONArray listRoleInfoAndPowerByOptCode(String optCode);
 
     /**
      * 根据optCode更新F_ROLEPOWER中的信息

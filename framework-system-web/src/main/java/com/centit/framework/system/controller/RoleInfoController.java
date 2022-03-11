@@ -730,6 +730,18 @@ public class RoleInfoController extends BaseController {
         return ResponseData.makeResponseData(roleInfos);
     }
 
+    @ApiOperation(value = "根据optCode查询角色信息", notes = "根据optCode查询角色信息。")
+    @ApiImplicitParam(
+        name = "optCode", value = "optCode",
+        required = true, paramType = "path", dataType = "String")
+    @RequestMapping(value = "/listRoleInfoAndPowerByOptCode/{optCode}", method = RequestMethod.GET)
+    @WrapUpResponseBody
+    public ResponseData listRoleInfoAndPowerByOptCode(@PathVariable String optCode) {
+
+        JSONArray jsonArray = sysRoleManager.listRoleInfoAndPowerByOptCode(optCode);
+        return ResponseData.makeResponseData(jsonArray);
+    }
+
     @ApiOperation(value = "根据optCode更新rolePower信息", notes = "根据optCode更新rolePower信息。多个roleCode用英文逗号拼接，roleCode为空则不传")
     @ApiImplicitParam(
         name = "optCode", value = "optCode",

@@ -8,7 +8,8 @@ import com.centit.framework.system.po.RolePower;
 import com.centit.framework.system.po.RolePowerId;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.centit.support.database.utils.QueryAndNamedParams;
+import com.centit.support.database.utils.QueryUtils;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -121,47 +122,11 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
     }
 
 
-    public JSONArray listRolePowerByTopUnitWithApiId(String topUnit){
-        //TODO:待测试
-        String sql = " SELECT DISTINCT " +
-            " A.ROLE_CODE, " +
-            " A.OPT_CODE, " +
-            " A.OPT_SCOPE_CODES, " +
-            " A.UPDATE_DATE, " +
-            " A.CREATE_DATE, " +
-            " A.CREATOR, " +
-            " A.UPDATOR," +
-            " C.API_ID " +
-            " FROM F_ROLEPOWER A " +
-            " JOIN " +
-            " ( SELECT  DISTINCT C_1.OPT_CODE,C_1.OPT_ID,C_1.API_ID " +
-            " FROM F_OPTINFO A_1 JOIN F_OS_INFO B_1 ON A_1.TOP_OPT_ID=B_1.REL_OPT_ID  " +
-            " JOIN F_OPTDEF C_1 ON A_1.OPT_ID = C_1.OPT_ID WHERE 1 = 1 [ :topUnit | AND B_1.TOP_UNIT = :topUnit  ]" +
-            " ) C " +
-            " ON A.OPT_CODE = C.OPT_CODE OR A.OPT_CODE = C.OPT_ID  ";
-
-        Map<String, Object> hashMap = new HashMap<>();
-        if (StringUtils.isNotBlank(topUnit)){
-            hashMap.put("topUnit", topUnit);
-        }
-        return DatabaseOptUtils.listObjectsByParamsDriverSqlAsJson(this, sql, hashMap);
-    }
-
-    public JSONArray listAllRolePowerByRoleCodeWithApiId(String roleCode){
-        //TODO:待测试
-        String sql = " SELECT " +
-            " A.ROLE_CODE, " +
-            " A.OPT_CODE, " +
-            " A.OPT_SCOPE_CODES, " +
-            " A.UPDATE_DATE, " +
-            " A.CREATE_DATE, " +
-            " A.CREATOR, " +
-            " A.UPDATOR, " +
-            " B.API_ID " +
-            " FROM F_ROLEPOWER A JOIN F_OPTDEF B  " +
-            " ON A.OPT_CODE = B.OPT_CODE OR A.OPT_CODE = B.OPT_ID  " +
-            " WHERE 1=1 [ :roleCode | and a.ROLE_CODE = :roleCode ] ";
-        return DatabaseOptUtils.listObjectsByParamsDriverSqlAsJson(this, sql,
-            CollectionsOpt.createHashMap("roleCode",roleCode));
+    public JSONArray listRoleInfoAndPowerByOptCode(String optCode) {
+        String querySql = " SELECT  A.OPT_CODE, A.OPT_SCOPE_CODES,  B.ROLE_CODE, B.ROLE_NAME, B.ROLE_TYPE, B.UNIT_CODE, B.ROLE_DESC, B.UPDATE_DATE, B.CREATE_DATE, B.CREATOR, B.UPDATOR " +
+            " FROM F_ROLEPOWER A JOIN F_ROLEINFO B ON A.ROLE_CODE = B.ROLE_CODE " +
+            "WHERE  [  :optCode | A.OPT_CODE = :optCode  ] ";
+        QueryAndNamedParams qap = QueryUtils.translateQuery(querySql, CollectionsOpt.createHashMap("optCode",optCode));
+        return DatabaseOptUtils.listObjectsByNamedSqlAsJson(this, qap.getQuery(), qap.getParams());
     }
 }
