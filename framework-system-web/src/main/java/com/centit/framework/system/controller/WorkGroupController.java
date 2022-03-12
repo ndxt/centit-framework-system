@@ -17,6 +17,7 @@ import com.centit.framework.system.po.WorkGroup;
 import com.centit.framework.system.po.WorkGroupParames;
 import com.centit.framework.system.po.WorkGroupParameter;
 import com.centit.framework.system.service.WorkGroupManager;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.GeneralAlgorithm;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.common.ObjectException;
@@ -234,8 +235,30 @@ public class WorkGroupController extends BaseController {
     @WrapUpResponseBody
     @Transactional(rollbackFor = Exception.class)
     public void leaderHandOver(@RequestBody WorkGroupParames workGroupParames, HttpServletRequest request) {
-        loginUserPermissionCheck(workGroupParames.getGroupId());
+        leaderHandOverPermissionCheck(workGroupParames.getGroupId(), request);
         workGroupManager.leaderHandOver(workGroupParames);
+    }
+
+    private void leaderHandOverPermissionCheck(String  workGroupId, HttpServletRequest request) {
+        if (StringUtils.isBlank(workGroupId)){
+            throw new ObjectException("groupId不能为空!");
+        }
+        String loginUser = WebOptUtils.getCurrentUserCode(request);
+        if (StringBaseOpt.isNvl(loginUser)) {
+            loginUser = WebOptUtils.getRequestFirstOneParameter(request, "userCode");
+        }
+        if (StringUtils.isBlank(loginUser)){
+            throw new ObjectException(ResponseData.HTTP_MOVE_TEMPORARILY, "您未登录，请先登录！");
+        }
+        String topUnit = WebOptUtils.getCurrentTopUnit(request);
+        if (StringUtils.isBlank(topUnit)){
+            throw new ObjectException(ResponseData.HTTP_UNAUTHORIZED,"您没有操作权限!");
+        }
+        Map<String, Object> filterMap = CollectionsOpt.createHashMap("groupId_in", new Object[]{workGroupId, topUnit}, "userCode", loginUser,
+            "roleCode_in",new Object[]{"ZHGLY","组长"});
+        if (workGroupManager.countWorkGroup(filterMap) <1 ){
+            throw new ObjectException(ResponseData.HTTP_UNAUTHORIZED,"您没有操作权限!");
+        }
     }
 
     private void loginUserPermissionCheck(String osId){

@@ -23,6 +23,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -356,13 +357,12 @@ public class UnitInfoController extends BaseController {
                 "机构名" + unitInfo.getUnitName() + "已存在，请更换！");
         }
 
-        HashMap<String, Object> map = new HashMap();
-        map.put("unitWord", unitInfo.getUnitWord());
-        List<UnitInfo> unitInfos = sysUnitManager.listObjects(map);
-        if (unitInfos != null && unitInfos.size() > 0) {
-            if (!unitCode.equals(unitInfos.get(0).getUnitCode())) {
+        if (StringUtils.isNotBlank(unitInfo.getDepNo())){
+            List<UnitInfo> unitInfos = sysUnitManager.listObjects(
+                CollectionsOpt.createHashMap("topUnit",unitInfo.getTopUnit(),"depNo", unitInfo.getDepNo()));
+            if (!CollectionUtils.sizeIsEmpty(unitInfos) && !unitCode.equals(unitInfos.get(0).getUnitCode())){
                 return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
-                    "机构编码" + unitInfo.getUnitWord() + "已存在，请更换！");
+                    "机构内部编码" + unitInfo.getUnitWord() + "已存在，请更换！");
             }
         }
 

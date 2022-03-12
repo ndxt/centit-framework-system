@@ -28,6 +28,8 @@ public interface WorkGroupManager{
 
     List<WorkGroup> listWorkGroup(Map<String, Object> param, PageDesc pageDesc);
 
+    int countWorkGroup(Map<String, Object> param);
+
     /**
      * 通过osid 判断当前登录用户是否属于当前工作组成员
      * @param osId

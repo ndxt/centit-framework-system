@@ -88,6 +88,12 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
     }
 
     @Override
+    public int countWorkGroup(Map<String, Object> param) {
+
+        return workGroupDao.countObject(param);
+    }
+
+    @Override
     public boolean loginUserIsExistWorkGroup(String osId, String userCode) {
         if (StringUtils.isBlank(osId) || StringUtils.isBlank(userCode)) {
             return false;
@@ -105,7 +111,13 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
     }
 
     @Override
+    @Transactional
     public void leaderHandOver(WorkGroupParames workGroupParames) {
+        //组长更新为组员(只能有一个组长)
+        String sql = "UPDATE  work_group  SET ROLE_CODE ='组员'  WHERE group_id=? and role_code=?  ";
+        workGroupDao.getJdbcTemplate().update(sql,
+            new Object[]{workGroupParames.getGroupId(), WorkGroup.WORKGROUP_ROLE_CODE_LEADER});
+
         //删除原始组员数据
         WorkGroup delWorkGroup = new WorkGroup();
         WorkGroupParameter delWorkGroupParameter = new WorkGroupParameter();
@@ -113,7 +125,7 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
         delWorkGroupParameter.setRoleCode(WorkGroup.WORKGROUP_ROLE_CODE_MEMBER);
         delWorkGroupParameter.setUserCode(workGroupParames.getNewUserCode());
         delWorkGroup.setWorkGroupParameter(delWorkGroupParameter);
-       workGroupDao.deleteObject(delWorkGroup);
+        workGroupDao.deleteObject(delWorkGroup);
         //新增组长信息
         WorkGroup workGroup = new WorkGroup();
         WorkGroupParameter workGroupParameter = new WorkGroupParameter();
@@ -122,10 +134,6 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
         workGroupParameter.setUserCode(workGroupParames.getNewUserCode());
         workGroup.setWorkGroupParameter(workGroupParameter);
         workGroupDao.saveNewObject(workGroup);
-        //组长更新为组员
-        String sql = "UPDATE  work_group  SET ROLE_CODE ='组员'  WHERE group_id=? and role_code=? and user_code=? ";
-        workGroupDao.getJdbcTemplate().update(sql,
-            new Object[]{workGroupParames.getGroupId(), WorkGroup.WORKGROUP_ROLE_CODE_LEADER, workGroupParames.getUserCode()});
     }
 
     private UserRole getUserRole(WorkGroup workGroup) {
