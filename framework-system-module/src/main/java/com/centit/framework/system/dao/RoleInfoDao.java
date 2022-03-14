@@ -43,11 +43,6 @@ public class RoleInfoDao extends BaseDaoImpl<RoleInfo, String>{
         return filterField;
     }
 
-    public String getNextKey() {
-        return StringBaseOpt.objectToString(
-            DatabaseOptUtils.getSequenceNextValue(
-                this, "S_ROLECODE"));
-    }
 
     public List<RoleInfo> listObjectsAll() {
         return super.listObjects();

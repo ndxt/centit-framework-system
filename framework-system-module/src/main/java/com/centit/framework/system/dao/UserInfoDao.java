@@ -101,12 +101,6 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     }
 
 
-    @Transactional
-    public String getNextKey() {
-        return StringBaseOpt.objectToString(
-            DatabaseOptUtils.getSequenceNextValue(this, "S_USERCODE"));
-    }
-
     @SuppressWarnings("unchecked")
     @Transactional
     public List<FVUserOptList> listUserOptMethods(String userCode) {
