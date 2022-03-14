@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -168,7 +167,7 @@ public class SysUserManagerImpl implements SysUserManager {
             "g0_regCellPhone_nn", "regCellPhone", "g1_regEmail_nn", "regEmail");
         boolean hashLinkWay = userInfoDao.countObjectByProperties(filterMap) > 0;
         if (hashLinkWay){
-            throw new ObjectException("改用户不允许重置密码");
+            throw new ObjectException("该用户不允许重置密码");
         }
     }
     @Override
