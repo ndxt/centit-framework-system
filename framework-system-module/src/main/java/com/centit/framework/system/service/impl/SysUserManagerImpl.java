@@ -1,12 +1,12 @@
 package com.centit.framework.system.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
+import com.centit.framework.common.ResponseData;
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.security.model.CentitPasswordEncoder;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysUserManager;
-import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.common.ObjectException;
 import com.centit.support.compiler.Pretreatment;
 import com.centit.support.database.utils.PageDesc;
@@ -70,10 +70,8 @@ public class SysUserManagerImpl implements SysUserManager {
             }
         }else {
             //用户没有已经注册的手机号或邮箱号
-            Map<String, Object> filterMap = CollectionsOpt.createHashMap("userCode", userCode,
-                "g0_regCellPhone_nn", "regCellPhone", "g1_regEmail_nn", "regEmail");
-            boolean hashLinkWay = userInfoDao.countObjectByProperties(filterMap) > 0;
-            if (hashLinkWay){
+            UserInfo dbUserInfo = userInfoDao.getUserByCode(userCode);
+            if (null != dbUserInfo && !StringUtils.isAllBlank(dbUserInfo.getRegEmail(),dbUserInfo.getRegCellPhone())){
                 //如果已经存在联系方式，不允许设置密码
                 return null;
             }else if (StringUtils.isNotBlank(userPwd)){
@@ -163,11 +161,13 @@ public class SysUserManagerImpl implements SysUserManager {
      * @param userCode 用户code
      */
     private void forceSetPasswordPermissionCheck(String userCode) {
-        Map<String, Object> filterMap = CollectionsOpt.createHashMap("userCode", userCode,
-            "g0_regCellPhone_nn", "regCellPhone", "g1_regEmail_nn", "regEmail");
-        boolean hashLinkWay = userInfoDao.countObjectByProperties(filterMap) > 0;
-        if (hashLinkWay){
-            throw new ObjectException("该用户不允许重置密码");
+        UserInfo userInfo = userInfoDao.getUserByCode(userCode);
+        if (null == userInfo){
+            throw new ObjectException(ResponseData.ERROR_PRECONDITION_FAILED,"用户信息不存在!");
+        }
+
+        if (!StringUtils.isAllBlank(userInfo.getRegCellPhone(),userInfo.getRegEmail())){
+            throw new ObjectException(ResponseData.ERROR_PRECONDITION_FAILED,"该用户不允许重置密码");
         }
     }
     @Override

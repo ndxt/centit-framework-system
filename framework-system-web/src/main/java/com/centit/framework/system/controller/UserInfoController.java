@@ -91,6 +91,9 @@ public class UserInfoController extends BaseController {
     ), @ApiImplicitParam(
         name = "_search", value = "强制关闭分页查询",
         paramType = "query", dataType = "Boolean"
+    ),@ApiImplicitParam(
+        name = "all", value = "平台管理员根据具体的topUnit查询",
+        paramType = "query", dataType = "Boolean"
     ), @ApiImplicitParam(
         name = "field", value = "过滤返回的字段信息",
         allowMultiple = true, paramType = "query", dataType = "String"
