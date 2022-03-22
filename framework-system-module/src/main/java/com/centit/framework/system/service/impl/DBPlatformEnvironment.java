@@ -8,8 +8,7 @@ import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.*;
 import com.centit.framework.security.SecurityContextUtils;
-import com.centit.framework.security.model.CentitPasswordEncoder;
-import com.centit.framework.security.model.JsonCentitUserDetails;
+import com.centit.framework.security.model.*;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.OptInfoManager;
@@ -25,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.ConfigAttribute;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +34,7 @@ import java.util.*;
 public class DBPlatformEnvironment implements PlatformEnvironment {
 
     public static final Logger logger = LoggerFactory.getLogger(DBPlatformEnvironment.class);
+    public static final String SYSTEM = "system";
 
     @Autowired
     private CentitPasswordEncoder passwordEncoder;
@@ -223,19 +224,19 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(readOnly = true)
     public List<OptInfo> listUserMenuOptInfosUnderSuperOptId(String userCode, String superOptId, boolean asAdmin) {
-        OptInfo optInfo=optInfoDao.getObjectById(superOptId);
-        String topOptId ="";
-        if(optInfo!=null){
-            topOptId=optInfo.getTopOptId();
+        OptInfo optInfo = optInfoDao.getObjectById(superOptId);
+        String topOptId = "";
+        if (optInfo != null) {
+            topOptId = optInfo.getTopOptId();
         }
         List<OptInfo> preOpts;
-        if(StringUtils.isNotBlank(topOptId)){
+        if (StringUtils.isNotBlank(topOptId)) {
             preOpts = optInfoDao.listParentMenuFunc(topOptId);
-        }else {
+        } else {
             preOpts = optInfoDao.listParentMenuFunc();
         }
         String optType = asAdmin ? "S" : "O";
-        List<OptInfo> ls = optInfoDao.getMenuFuncByUserID(userCode, optType,topOptId);
+        List<OptInfo> ls = optInfoDao.getMenuFuncByUserID(userCode, optType, topOptId);
         List<OptInfo> menuFunsByUser = getMenuFuncs(preOpts, ls);
         return formatMenuTree(menuFunsByUser, superOptId);
     }
@@ -375,9 +376,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(readOnly = true)
     public List<? extends IRolePower> listAllRolePower(String topUnit) {
-        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)?
+        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit) ?
             rolePowerDao.listAllRolePowerByUnit(topUnit)
-            :rolePowerDao.listObjectsAll();
+            : rolePowerDao.listObjectsAll();
     }
 
     @Override
@@ -396,9 +397,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(readOnly = true)
     public List<? extends IOptMethod> listAllOptMethod(String topUnit) {
-        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)?
-             optMethodDao.listAllOptMethodByUnit(topUnit)
-            :optMethodDao.listObjectsAll();
+        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit) ?
+            optMethodDao.listAllOptMethodByUnit(topUnit)
+            : optMethodDao.listObjectsAll();
     }
 
     @Override
@@ -502,7 +503,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         //edit by zhuxw  代码从原框架迁移过来，可和其它地方合并
         List<RoleInfo> roles = new ArrayList<>();
         //所有的用户 都要添加这个角色
-        roles.add(new RoleInfo("public", "general public", "G",
+        roles.add(new RoleInfo("public" + userinfo.getTopUnit(), "general public", "G",
             "G", "T", "general public"));
         List<FVUserRoles> userRolesList = userRoleDao.listUserRolesByUserCode(userinfo.getUserCode());
         if (userRolesList != null) {
@@ -515,7 +516,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         }
         //add  end
         //userDetails.setUserFuncs(functionDao.getMenuFuncByUserID(userDetails.getUserCode()));
-        appendAdminRoles(userinfo,roles);
+        appendAdminRoles(userinfo, roles);
         userDetails.setAuthoritiesByRoles((JSONArray) JSON.toJSON(roles));
         List<FVUserOptList> uoptlist = userInfoDao.listUserOptMethods(userinfo.getUserCode());
         Map<String, String> userOptList = new HashMap<>();
@@ -577,18 +578,19 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         return userDetails;
     }
 
-    private void appendAdminRoles(UserInfo userInfo,List<RoleInfo> roles){
+    private void appendAdminRoles(UserInfo userInfo, List<RoleInfo> roles) {
         String topUnit = userInfo.getTopUnit();
-        if (StringUtils.isBlank(topUnit)){
+        if (StringUtils.isBlank(topUnit)) {
             return;
         }
         WorkGroup admin = workGroupManager.getWorkGroup(topUnit, userInfo.getUserCode(), WorkGroup.WORKGROUP_ROLE_CODE_ADMIN);
-        if (null !=admin){
-            String roleCode = "system".equals(topUnit) ? "platadmin" : "tenantadmin";
-            String roleName = "system".equals(topUnit) ? "平台管理员" : "租户管理员";
-            roles.add(new RoleInfo(roleCode, roleName, "G",topUnit, "T", roleName));
+        if (null != admin) {
+            String roleCode = SYSTEM.equals(topUnit) ? "platadmin" : "tenantadmin";
+            String roleName = SYSTEM.equals(topUnit) ? "平台管理员" : "租户管理员";
+            roles.add(new RoleInfo(roleCode, roleName, "G", topUnit, "T", roleName));
         }
     }
+
     @Override
     @Transactional
     public JsonCentitUserDetails loadUserDetailsByLoginName(String loginName) {
@@ -795,7 +797,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     public IOsInfo updateOsInfo(IOsInfo osInfo) {
-        OsInfo osInfo1=osInfoDao.getObjectById(osInfo.getOsId());
+        OsInfo osInfo1 = osInfoDao.getObjectById(osInfo.getOsId());
         osInfo.setTopUnit(osInfo1.getTopUnit());
         osInfoDao.updateObject((OsInfo) osInfo);
         return osInfo;
@@ -820,16 +822,16 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             ? unitInfoDao.countUnitByTopUnit(topUnit) : unitInfoDao.countUnitByTopUnit(null);
     }
 
-@Override
-public List<? extends IWorkGroup>listWorkGroup(Map<String, Object> filterMap, PageDesc pageDesc) {
-    return workGroupManager.listWorkGroup(filterMap, pageDesc);
-}
+    @Override
+    public List<? extends IWorkGroup> listWorkGroup(Map<String, Object> filterMap, PageDesc pageDesc) {
+        return workGroupManager.listWorkGroup(filterMap, pageDesc);
+    }
 
     @Override
     public void batchWorkGroup(List<IWorkGroup> workGroups) {
         ArrayList<WorkGroup> workGroups1 = new ArrayList<>();
         for (IWorkGroup workGroup : workGroups) {
-            if (workGroup instanceof WorkGroup){
+            if (workGroup instanceof WorkGroup) {
                 workGroups1.add((WorkGroup) workGroup);
             }
         }
@@ -838,6 +840,62 @@ public List<? extends IWorkGroup>listWorkGroup(Map<String, Object> filterMap, Pa
 
     @Override
     public boolean loginUserIsExistWorkGroup(String osId, String userCode) {
-        return workGroupManager.loginUserIsExistWorkGroup(osId,userCode);
+        return workGroupManager.loginUserIsExistWorkGroup(osId, userCode);
+    }
+
+    @Override
+    public List<ConfigAttribute> getRolesWithApiId(String apiId) {
+        List<? extends IRolePower> rolePowers = rolePowerDao.listRolePowerWithTopUnit(apiId);
+        List<ConfigAttribute> roles = new ArrayList<>();
+        for (IRolePower rp : rolePowers) {
+            dealRolePower(roles, rp);
+        }
+        return roles;
+    }
+
+    @Override
+    public OptTreeNode getSysOptTree() {
+        Map<String, List<ConfigAttribute>> optMethodRoleMap = new HashMap<>(100);
+        List<? extends IRolePower> rolePowers = rolePowerDao.listSysRolePower();
+        if (rolePowers == null || rolePowers.size() == 0) {
+            return null;
+        }
+        for (IRolePower rp : rolePowers) {
+            List<ConfigAttribute> roles = optMethodRoleMap.get(rp.getOptCode());
+            if (roles == null) {
+                roles = new ArrayList<>();
+            }
+            dealRolePower(roles, rp);
+            optMethodRoleMap.put(rp.getOptCode(), roles);
+        }
+        OptTreeNode optTreeNode = new OptTreeNode();
+        List<? extends IOptMethod> iOptMethods = optMethodDao.listAllOptMethodByUnit(SYSTEM);
+        for (IOptMethod ou : iOptMethods) {
+            if (ou != null) {
+                if (StringUtils.isNotBlank(ou.getOptUrl()) && StringUtils.isNotBlank(ou.getOptReq())) {
+                    List<List<String>> sOpt = optTreeNode.parsePowerDefineUrl(
+                        ou.getOptUrl(), ou.getOptReq());
+                    for (List<String> surls : sOpt) {
+                        OptTreeNode opt = optTreeNode;
+                        for (String surl : surls) {
+                            opt = opt.setChildPath(surl);
+                        }
+                        List<ConfigAttribute> roles = optMethodRoleMap.get(ou.getOptCode());
+                        opt.addRoleList(roles);
+                    }
+                }
+            }
+        }
+        return optTreeNode;
+    }
+
+    private void dealRolePower(List<ConfigAttribute> roles, IRolePower rp) {
+        if (SecurityContextUtils.PUBLIC_ROLE_CODE.equalsIgnoreCase(rp.getRoleCode())) {
+            roles.add(new CentitSecurityConfig(CentitSecurityMetadata.ROLE_PREFIX + StringUtils.trim(rp.getRoleCode()) + rp.getTopOptId()));
+        } else if (SecurityContextUtils.ANONYMOUS_ROLE_CODE.equalsIgnoreCase(rp.getRoleCode())) {
+            roles.add(new CentitSecurityConfig(SecurityContextUtils.SPRING_ANONYMOUS_ROLE_CODE));
+        } else {
+            roles.add(new CentitSecurityConfig(CentitSecurityMetadata.ROLE_PREFIX + StringUtils.trim(rp.getRoleCode())));
+        }
     }
 }

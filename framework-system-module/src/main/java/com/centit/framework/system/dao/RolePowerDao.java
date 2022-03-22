@@ -1,9 +1,12 @@
 package com.centit.framework.system.dao;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
+import com.centit.framework.model.basedata.IRolePower;
 import com.centit.framework.system.po.RolePower;
 import com.centit.framework.system.po.RolePowerId;
 import com.centit.support.algorithm.CollectionsOpt;
@@ -15,9 +18,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -46,12 +47,12 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
 
     @Transactional
     public void deleteRolePowersByRoleCode(String roleCode) {
-        super.deleteObjectsByProperties(CollectionsOpt.createHashMap("roleCode",roleCode));
+        super.deleteObjectsByProperties(CollectionsOpt.createHashMap("roleCode", roleCode));
     }
 
     @Transactional
     public void deleteRolePowersByOptCode(String optCode) {
-        super.deleteObjectsByProperties(CollectionsOpt.createHashMap("optCode",optCode));
+        super.deleteObjectsByProperties(CollectionsOpt.createHashMap("optCode", optCode));
     }
 
 
@@ -68,36 +69,63 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
     }
 
     @Transactional
-    public void updateRolePower(RolePower rolePower){
+    public void updateRolePower(RolePower rolePower) {
         super.updateObject(rolePower);
     }
 
     @Transactional
-    public void saveNewRolePower(RolePower rolePower){
-      super.saveNewObject(rolePower);
+    public void saveNewRolePower(RolePower rolePower) {
+        super.saveNewObject(rolePower);
     }
 
     @Transactional
-    public void deleteObjectById(RolePowerId id){
+    public void deleteObjectById(RolePowerId id) {
         super.deleteObjectById(id);
     }
 
 
     @Transactional
-    public List<RolePower> listAllRolePowerByUnit(String topUnit){
+    public List<RolePower> listAllRolePowerByUnit(String topUnit) {
         String sql = "select distinct a.* " +
             "from F_ROLEPOWER a join F_ROLEINFO b on(a.ROLE_CODE=b.ROLE_CODE) " +
             "where (ROLE_TYPE = 'G' or (ROLE_TYPE='D' and UNIT_CODE = ?) or " +
             "(b.role_code in ('platadmin','tenantadmin','osmember')))";
-
         return getJdbcTemplate().execute(
             (ConnectionCallback<List<RolePower>>) conn ->
-                OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
+                OrmDaoUtils.queryObjectsByParamsSql(conn, sql,
                     new Object[]{topUnit}, RolePower.class));
     }
 
     @Transactional
-    public List<RolePower> listRolePowerByTopUnitAndRoleCode(String topUnit,String roleCode){
+    public List<IRolePower> listSysRolePower() {
+        List<IRolePower> rolePowers = new ArrayList<>();
+        String sql = "select distinct a.ROLE_CODE,a.opt_code,a.opt_scope_codes,d.top_opt_id " +
+            "from F_ROLEPOWER a join F_ROLEINFO b on a.ROLE_CODE=b.ROLE_CODE " +
+            "join f_optdef c on a.opt_code=c.opt_code join f_optinfo d on c.opt_id=d.opt_id " +
+            "where  d.top_opt_id='system'";
+        JSONArray jsonArray=DatabaseOptUtils.listObjectsByNamedSqlAsJson(this,sql,CollectionsOpt.createHashMap());
+        for(Object jsonObject:jsonArray){
+            rolePowers.add(JSON.toJavaObject((JSON) jsonObject,IRolePower.class));
+        }
+        return rolePowers;
+    }
+
+    @Transactional
+    public List<IRolePower> listRolePowerWithTopUnit(String apiId) {
+        List<IRolePower> rolePowers = new ArrayList<>();
+        String sql = "select distinct a.ROLE_CODE,a.opt_code,a.opt_scope_codes,d.top_opt_id " +
+            "from F_ROLEPOWER a join F_ROLEINFO b on a.ROLE_CODE=b.ROLE_CODE " +
+            "join f_optdef c on a.opt_code=c.opt_code join f_optinfo d on c.opt_id=d.opt_id " +
+            "where  c.api_id=:apiId";
+        JSONArray jsonArray=DatabaseOptUtils.listObjectsByNamedSqlAsJson(this,sql,CollectionsOpt.createHashMap("apiId",apiId));
+        for(Object jsonObject:jsonArray){
+            rolePowers.add(JSON.toJavaObject((JSON) jsonObject,IRolePower.class));
+        }
+        return rolePowers;
+    }
+
+    @Transactional
+    public List<RolePower> listRolePowerByTopUnitAndRoleCode(String topUnit, String roleCode) {
         String sql = " SELECT DISTINCT " +
             " A.ROLE_CODE, " +
             " A.OPT_CODE, " +
@@ -117,8 +145,8 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
 
         return getJdbcTemplate().execute(
             (ConnectionCallback<List<RolePower>>) conn ->
-                OrmDaoUtils.queryObjectsByParamsSql(conn, sql ,
-                    new Object[]{topUnit,roleCode}, RolePower.class));
+                OrmDaoUtils.queryObjectsByParamsSql(conn, sql,
+                    new Object[]{topUnit, roleCode}, RolePower.class));
     }
 
 
@@ -126,7 +154,7 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
         String querySql = " SELECT  A.OPT_CODE, A.OPT_SCOPE_CODES,  B.ROLE_CODE, B.ROLE_NAME, B.ROLE_TYPE, B.UNIT_CODE, B.ROLE_DESC, B.UPDATE_DATE, B.CREATE_DATE, B.CREATOR, B.UPDATOR " +
             " FROM F_ROLEPOWER A JOIN F_ROLEINFO B ON A.ROLE_CODE = B.ROLE_CODE " +
             "WHERE  [  :optCode | A.OPT_CODE = :optCode  ] ";
-        QueryAndNamedParams qap = QueryUtils.translateQuery(querySql, CollectionsOpt.createHashMap("optCode",optCode));
+        QueryAndNamedParams qap = QueryUtils.translateQuery(querySql, CollectionsOpt.createHashMap("optCode", optCode));
         return DatabaseOptUtils.listObjectsByNamedSqlAsJson(this, qap.getQuery(), qap.getParams());
     }
 }
