@@ -16,6 +16,7 @@ import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserUnit;
 import com.centit.framework.system.service.SysUserManager;
 import com.centit.framework.system.service.SysUserUnitManager;
+import com.centit.framework.system.service.WorkGroupManager;
 import com.centit.support.algorithm.BooleanBaseOpt;
 import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
@@ -25,6 +26,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -54,6 +56,8 @@ public class UserInfoController extends BaseController {
     @NotNull
     private SysUserUnitManager sysUserUnitManager;
 
+    @Autowired
+    private WorkGroupManager workGroupManager;
     /*@Autowired
     @NotNull
     private UserSettingManager userSettingManager;*/
@@ -87,6 +91,9 @@ public class UserInfoController extends BaseController {
     ), @ApiImplicitParam(
         name = "_search", value = "强制关闭分页查询",
         paramType = "query", dataType = "Boolean"
+    ),@ApiImplicitParam(
+        name = "all", value = "平台管理员根据具体的topUnit查询",
+        paramType = "query", dataType = "Boolean"
     ), @ApiImplicitParam(
         name = "field", value = "过滤返回的字段信息",
         allowMultiple = true, paramType = "query", dataType = "String"
@@ -100,12 +107,21 @@ public class UserInfoController extends BaseController {
             searchColumn.put("likeUserOrLoginName", StringEscapeUtils.escapeHtml4(searchColumn.get("userName").toString()));
             searchColumn.remove("userName");
         }
+
+        List<UserInfo> listObjects;
+        if (MapUtils.getBoolean(searchColumn,"all",false) && userIsSystemMember(request)){
+            //平台租户查询所用用户
+            listObjects = sysUserManager.listObjects(searchColumn);
+            return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
+        }
+
         if (WebOptUtils.isTenantTopUnit(request)) {
             searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         }
-        List<UserInfo> listObjects;
+
         //List<UserInfo> listTransObjects = new ArrayList<>();
         if (BooleanBaseOpt.castObjectToBoolean(_search,false)) {
+
             listObjects = sysUserManager.listObjects(searchColumn);
             //pageDesc = null;
         } else {
@@ -496,5 +512,19 @@ public class UserInfoController extends BaseController {
             result.put(name, userInfo.getRegEmail());
         }
         return ResponseData.makeResponseData(result);
+    }
+
+    /**
+     * 当前人员是否是系统租户的中成员
+     * @param request
+     * @return
+     */
+    private boolean userIsSystemMember( HttpServletRequest request ){
+        String currentUserCode = WebOptUtils.getCurrentUserCode(request);
+        String topUnit = WebOptUtils.getCurrentTopUnit(request);
+        if ( !"system".equals(topUnit) || StringUtils.isBlank(currentUserCode) ){
+            return false;
+        }
+        return workGroupManager.loginUserIsExistWorkGroup("system",currentUserCode);
     }
 }

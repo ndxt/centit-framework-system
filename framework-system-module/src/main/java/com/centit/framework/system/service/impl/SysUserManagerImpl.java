@@ -1,15 +1,12 @@
 package com.centit.framework.system.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
+import com.centit.framework.common.ResponseData;
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.security.model.CentitPasswordEncoder;
-import com.centit.framework.system.dao.UnitInfoDao;
-import com.centit.framework.system.dao.UserInfoDao;
-import com.centit.framework.system.dao.UserRoleDao;
-import com.centit.framework.system.dao.UserUnitDao;
+import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysUserManager;
-import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.common.ObjectException;
 import com.centit.support.compiler.Pretreatment;
 import com.centit.support.database.utils.PageDesc;
@@ -25,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,6 +58,32 @@ public class SysUserManagerImpl implements SysUserManager {
         return passwordEncoder.createPassword(rawPass, userCode);
     }
 
+    private String getPasswordOnCondition(UserInfo userInfo) {
+        String rawPass = "000000";
+        String userCode = userInfo.getUserCode();
+        String userPwd = userInfo.getUserPwd();
+
+        if (StringUtils.isBlank(userCode)){
+            //新注册用户
+            if (StringUtils.isNotBlank(userPwd)){
+                return passwordEncoder.createPassword(userPwd, userCode);
+            }
+        }else {
+            //用户没有已经注册的手机号或邮箱号
+            UserInfo dbUserInfo = userInfoDao.getUserByCode(userCode);
+            if (null != dbUserInfo && !StringUtils.isAllBlank(dbUserInfo.getRegEmail(),dbUserInfo.getRegCellPhone())){
+                //如果已经存在联系方式，不允许设置密码
+                return null;
+            }else if (StringUtils.isNotBlank(userPwd)){
+                return passwordEncoder.createPassword(userPwd, userCode);
+            }
+        }
+
+        if(StringUtils.isNotBlank(defaultPassWorkFormat)){
+            rawPass = Pretreatment.mapTemplateString(defaultPassWorkFormat,userCode);
+        }
+        return passwordEncoder.createPassword(rawPass, userCode);
+    }
     @Override
     @Transactional
     public List<RoleInfo> listUserValidRoles(String userCode) {
@@ -127,12 +149,27 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @Transactional
     public void forceSetPassword(String userCode, String newPassword){
+        forceSetPasswordPermissionCheck(userCode);
         UserInfo user = userInfoDao.getUserByCode(userCode);
         user.setUserPin(passwordEncoder.encodePassword(newPassword, user.getUserCode()));
         userInfoDao.updateUser(user);
     }
 
+    /**
+     * 强制重置密码权限验证
+     * 租户管理员且用户没有绑定联系方式可以重置密码
+     * @param userCode 用户code
+     */
+    private void forceSetPasswordPermissionCheck(String userCode) {
+        UserInfo userInfo = userInfoDao.getUserByCode(userCode);
+        if (null == userInfo){
+            throw new ObjectException(ResponseData.ERROR_PRECONDITION_FAILED,"用户信息不存在!");
+        }
 
+        if (!StringUtils.isAllBlank(userInfo.getRegCellPhone(),userInfo.getRegEmail())){
+            throw new ObjectException(ResponseData.ERROR_PRECONDITION_FAILED,"该用户不允许重置密码");
+        }
+    }
     @Override
     @Transactional
     public boolean checkIfUserExists(UserInfo user) {
@@ -169,7 +206,8 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @Transactional
     public void saveNewUserInfo(UserInfo userInfo, UserUnit userUnit){
-        userInfo.setUserPin(getDefaultPassword(userInfo.getUserCode()));
+        userInfo.setUserPin(getPasswordOnCondition(userInfo));
+        userInfo.setUserPwd(null);
         UnitInfo unitInfo = unitInfoDao.getObjectById(userInfo.getPrimaryUnit());
         if (null != unitInfo && StringUtils.isNotBlank(unitInfo.getTopUnit())) {
             userInfo.setTopUnit(unitInfo.getTopUnit());
