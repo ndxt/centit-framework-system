@@ -891,7 +891,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     private void dealRolePower(List<ConfigAttribute> roles, IRolePower rp) {
         if (SecurityContextUtils.PUBLIC_ROLE_CODE.equalsIgnoreCase(rp.getRoleCode())) {
-            roles.add(new CentitSecurityConfig(CentitSecurityMetadata.ROLE_PREFIX + StringUtils.trim(rp.getRoleCode()) + rp.getTopOptId()));
+            roles.add(new CentitSecurityConfig(CentitSecurityMetadata.ROLE_PREFIX + StringUtils.trim(rp.getRoleCode()) + rp.getTopUnit()));
         } else if (SecurityContextUtils.ANONYMOUS_ROLE_CODE.equalsIgnoreCase(rp.getRoleCode())) {
             roles.add(new CentitSecurityConfig(SecurityContextUtils.SPRING_ANONYMOUS_ROLE_CODE));
         } else {
