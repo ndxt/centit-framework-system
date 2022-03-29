@@ -95,6 +95,7 @@ public class DataDictionaryController extends BaseController {
         return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
     }
 
+
     /**
      * 查询单个字典目录
      *
@@ -569,8 +570,10 @@ public class DataDictionaryController extends BaseController {
     )
     @RequestMapping(value = "/editDictionary/{catalogCode}", method = {RequestMethod.GET})
     @WrapUpResponseBody
-    public ResponseData getDataDictionaryDetail(@PathVariable String catalogCode) {
-        List<DataDictionary> datas = dataDictionaryManager.getDataDictionary(catalogCode);
+    public ResponseData getDataDictionaryDetail(@PathVariable String catalogCode,HttpServletRequest request) {
+        Map<String, Object> searchColumn=BaseController.collectRequestParameters(request);
+        searchColumn.put("catalogCode",catalogCode);
+        List<DataDictionary> datas = dataDictionaryManager.listDataDictionarys(searchColumn);
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData("dataDictionary", datas);
         resData.addResponseData("multiLang", multiLang);
