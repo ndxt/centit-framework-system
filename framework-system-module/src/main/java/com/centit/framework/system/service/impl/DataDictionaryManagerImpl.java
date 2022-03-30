@@ -116,7 +116,7 @@ public class DataDictionaryManagerImpl implements
     }
 
     public String[] getFieldsDesc(String sDesc, String sType) {
-        String[] nRes = {"数据代码", "扩展代码(父代码)", "扩展代码(排序号)", "标记", "数值", "类型", "数据描述"};
+        String[] nRes = {"数据代码", "扩展代码(父代码)", "扩展代码2(自定义)", "标记", "数值", "类型", "数据描述"};
         if ("T".equals(sType))
             nRes[1] = "上级代码";
         if (sDesc == null || "".equals(sDesc))

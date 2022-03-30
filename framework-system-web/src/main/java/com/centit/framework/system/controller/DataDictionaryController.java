@@ -14,6 +14,7 @@ import com.centit.framework.system.po.DataCatalog;
 import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.DataDictionaryId;
 import com.centit.framework.system.service.DataDictionaryManager;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
@@ -553,6 +554,7 @@ public class DataDictionaryController extends BaseController {
     @RequestMapping(value = "/dictionaryPiece/{catalogCode}", method = {RequestMethod.GET})
     @WrapUpResponseBody
     public ResponseData getDataDictionary(@PathVariable String catalogCode) {
+
         List<DataDictionary> datas = dataDictionaryManager.getDataDictionary(catalogCode);
         return ResponseData.makeResponseData(datas);
     }
@@ -574,6 +576,11 @@ public class DataDictionaryController extends BaseController {
         Map<String, Object> searchColumn=BaseController.collectRequestParameters(request);
         searchColumn.put("catalogCode",catalogCode);
         List<DataDictionary> datas = dataDictionaryManager.listDataDictionarys(searchColumn);
+        DataCatalog catalog = dataDictionaryManager.getObjectById(catalogCode);
+        if("T".equals(catalog.getCatalogType())){
+            CollectionsOpt.sortAsTree(datas ,
+                (p, c) -> StringUtils.equals(p.getDataCode(),c.getExtraCode()));
+        }
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData("dataDictionary", datas);
         resData.addResponseData("multiLang", multiLang);
