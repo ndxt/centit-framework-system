@@ -15,9 +15,11 @@ import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.DataDictionaryId;
 import com.centit.framework.system.service.DataDictionaryManager;
 import com.centit.support.algorithm.CollectionsOpt;
+import com.centit.support.common.JavaBeanMetaData;
 import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
+import com.centit.support.report.ExcelImportUtil;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -36,10 +38,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.InputStream;
+import java.util.*;
 
 /**
  * 数据字典
@@ -74,7 +74,7 @@ public class DataDictionaryController extends BaseController {
      * @param pageDesc 分页信息
      * @param request  {@link HttpServletRequest}
      * @param response {@link HttpServletResponse}
-     * @return  PageQueryResult
+     * @return PageQueryResult
      */
     @ApiOperation(value = "查询所有字典目录列表", notes = "查询所有字典目录列表。")
     @ApiImplicitParams({
@@ -101,7 +101,7 @@ public class DataDictionaryController extends BaseController {
      * 查询单个字典目录
      *
      * @param catalogCode DataCatalog主键
-     * @return  DataCatalog
+     * @return DataCatalog
      */
     @ApiOperation(value = "查询单个字典目录", notes = "根据数据字典类别代码查询单个字典目录。")
     @ApiImplicitParam(
@@ -112,14 +112,14 @@ public class DataDictionaryController extends BaseController {
     @WrapUpResponseBody
     public DataCatalog getCatalog(@PathVariable String catalogCode) {
         return dataDictionaryManager.getCatalogIncludeDataPiece(catalogCode);
-   }
+    }
 
     /**
      * catalogCode是否不存在
      *
      * @param catalogCode catalogCode
      * @return result
-     * */
+     */
     @ApiOperation(value = "根据数据字典类别代码查询字典是否不存在", notes = "根据数据字典类别代码查询字典是否不存在。")
     @ApiImplicitParam(
         name = "catalogCode", value = "数据字典的类别代码",
@@ -193,7 +193,7 @@ public class DataDictionaryController extends BaseController {
             dataCatalog.setCatalogStyle("U");
         }
         dataDictionaryManager.saveNewObject(dataCatalog);
-        if(dataCatalog.getDataDictionaries() != null && dataCatalog.getDataDictionaries().size() > 0){
+        if (dataCatalog.getDataDictionaries() != null && dataCatalog.getDataDictionaries().size() > 0) {
             for (DataDictionary d : dataCatalog.getDataDictionaries()) {
                 d.setDataValue(StringEscapeUtils.unescapeHtml4(d.getDataValue()));
                 if (StringUtils.isBlank(d.getDataStyle())) {
@@ -203,7 +203,7 @@ public class DataDictionaryController extends BaseController {
             }
             dataDictionaryManager.saveCatalogIncludeDataPiece(dataCatalog, isAdmin);
         }
-        JsonResultUtils.writeSingleDataJson(dataCatalog.getCatalogCode(),response);
+        JsonResultUtils.writeSingleDataJson(dataCatalog.getCatalogCode(), response);
     }
 
     /**
@@ -309,7 +309,7 @@ public class DataDictionaryController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增数据字典",
         tag = "{catalogCode}:{dataCode}")
     @WrapUpResponseBody
-    public ResponseData createDictionary(@ParamName("catalogCode")@PathVariable String catalogCode,
+    public ResponseData createDictionary(@ParamName("catalogCode") @PathVariable String catalogCode,
                                          @ParamName("dataCode") @PathVariable String dataCode,
                                          @Valid DataDictionary dataDictionary,
                                          HttpServletRequest request) {
@@ -572,14 +572,14 @@ public class DataDictionaryController extends BaseController {
     )
     @RequestMapping(value = "/editDictionary/{catalogCode}", method = {RequestMethod.GET})
     @WrapUpResponseBody
-    public ResponseData getDataDictionaryDetail(@PathVariable String catalogCode,HttpServletRequest request) {
-        Map<String, Object> searchColumn=BaseController.collectRequestParameters(request);
-        searchColumn.put("catalogCode",catalogCode);
+    public ResponseData getDataDictionaryDetail(@PathVariable String catalogCode, HttpServletRequest request) {
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
+        searchColumn.put("catalogCode", catalogCode);
         List<DataDictionary> datas = dataDictionaryManager.listDataDictionarys(searchColumn);
         DataCatalog catalog = dataDictionaryManager.getObjectById(catalogCode);
-        if("T".equals(catalog.getCatalogType())){
-            CollectionsOpt.sortAsTree(datas ,
-                (p, c) -> StringUtils.equals(p.getDataCode(),c.getExtraCode()));
+        if ("T".equals(catalog.getCatalogType())) {
+            CollectionsOpt.sortAsTree(datas,
+                (p, c) -> StringUtils.equals(p.getDataCode(), c.getExtraCode()));
         }
         ResponseMapData resData = new ResponseMapData();
         resData.addResponseData("dataDictionary", datas);
@@ -590,6 +590,7 @@ public class DataDictionaryController extends BaseController {
 
     /**
      * 获取所有字典目录信息
+     *
      * @param request 请求体
      * @return result
      */
@@ -632,9 +633,10 @@ public class DataDictionaryController extends BaseController {
 
     /**
      * 将字典明细信息导入到Properties文件
+     *
      * @param request 请求体
      * @return result
-     * @exception IOException 异常
+     * @throws IOException 异常
      */
     @ApiOperation(value = "将字典明细信息导入到Properties文件", notes = "将字典明细信息导入到Properties文件")
     @GetMapping("/dictionaryprop")
@@ -661,5 +663,38 @@ public class DataDictionaryController extends BaseController {
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 
         return new ResponseEntity<byte[]>(out.toByteArray(), headers, HttpStatus.CREATED);
+    }
+
+    @ApiOperation(value = "导入excel到数据字典明细")
+    @CrossOrigin(origins = "*", allowCredentials = "true", maxAge = 86400, methods = RequestMethod.POST)
+    @RequestMapping(value = "/excelData/{catalogCode}", method = {RequestMethod.POST})
+    @WrapUpResponseBody
+    public DataCatalog importDataFromExcel(@PathVariable String catalogCode,
+                                           HttpServletRequest request, HttpServletResponse response)
+        throws IOException {
+        try {
+            InputStream fileInfo = request.getInputStream();
+            List<Map<String, Object>> excelList = ExcelImportUtil.loadMapFromExcelSheet(fileInfo, 0);
+            List<DataDictionary> object = new ArrayList<>();
+            JavaBeanMetaData javaBeanMetaData = JavaBeanMetaData.createBeanMetaDataFromType(DataDictionary.class);
+            for (Map<String, Object> map : excelList) {
+                DataDictionary dataDictionary = (DataDictionary) javaBeanMetaData.createBeanObjectFromMap(map);
+                dataDictionary.setCatalogCode(catalogCode);
+                dataDictionary.setDataStyle("U");
+                dataDictionary.setDataTag("T");
+                dataDictionary.setCreateDate(new Date());
+                object.add(dataDictionary);
+            }
+            DataCatalog dataCatalog = dataDictionaryManager.getObjectById(catalogCode);
+            if (dataCatalog==null){
+                return null;
+            }
+            dataCatalog.getDataDictionaries().addAll(object);
+            dataDictionaryManager.saveCatalogIncludeDataPiece(dataCatalog, false);
+            return dataCatalog;
+        } catch (ObjectException | IllegalAccessException | InstantiationException e) {
+            JsonResultUtils.writeMessageJson(e.getMessage(), response);
+        }
+        return null;
     }
 }
