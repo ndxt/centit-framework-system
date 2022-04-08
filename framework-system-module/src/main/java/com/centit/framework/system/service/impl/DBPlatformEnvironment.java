@@ -438,6 +438,12 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
+    public void deleteDataDictionary(String catalogCode) {
+        dataDictionaryDao.deleteDictionary(catalogCode);
+        dataCatalogDao.deleteObjectById(catalogCode);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public int[] updateOptIdByOptCodes(String optId, List<String> optCodes) {
         return optMethodDao.updateOptIdByOptCodes(optId, optCodes);
