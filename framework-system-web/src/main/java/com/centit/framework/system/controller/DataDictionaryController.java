@@ -305,7 +305,7 @@ public class DataDictionaryController extends BaseController {
         )
     })
     @ApiParam(name = "dataDictionary", value = "字典明细的对象信息", required = true)
-    @RequestMapping(value = "/dictionary/{catalogCode}", method = {RequestMethod.POST})
+    @RequestMapping(value = "/dictionaryPiece/{catalogCode}", method = {RequestMethod.POST})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增数据字典",
         tag = "{catalogCode}:{dataCode}")
     @WrapUpResponseBody
@@ -324,7 +324,6 @@ public class DataDictionaryController extends BaseController {
      * 更新数据字典
      *
      * @param catalogCode    DataCatalog主键
-     * @param dataCode       DataDictionary主键
      * @param dataDictionary {@link DataDictionary}
      * @param request        {@link HttpServletRequest}
      * @return result
@@ -341,17 +340,16 @@ public class DataDictionaryController extends BaseController {
         )
     })
     @ApiParam(name = "dataDictionary", value = "字典明细的对象信息", required = true)
-    @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}", method = {RequestMethod.PUT})
+    @RequestMapping(value = "/dictionaryPiece/{catalogCode}", method = {RequestMethod.PUT})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新数据字典",
         tag = "{catalogCode}:{dataCode}")
     @WrapUpResponseBody
     public ResponseData editDictionary(@ParamName("catalogCode") @PathVariable String catalogCode,
-                                       @ParamName("dataCode") @PathVariable String dataCode,
                                        @Valid DataDictionary dataDictionary,
                                        HttpServletRequest request) {
 
         DataDictionary dbDataDictionary = dataDictionaryManager.getDataDictionaryPiece(new DataDictionaryId(catalogCode,
-            dataCode));
+            dataDictionary.getDataCode()));
 
         DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
 
@@ -372,7 +370,7 @@ public class DataDictionaryController extends BaseController {
      * @param dataCatalog    DataCatalog
      * @param dataDictionary DataDictionary
      */
-    protected void dictionaryPreHandler(DataCatalog dataCatalog, DataDictionary dataDictionary) {
+    private void dictionaryPreHandler(DataCatalog dataCatalog, DataDictionary dataDictionary) {
         //附加代码 EXTRACODE  字段
         //这是一个自解释字段，业务系统可以自行解释这个字段的意义，单作为树形结构的数据字典时，这个字段必需为上级字典的代码。
         if (T.equalsIgnoreCase(dataCatalog.getCatalogType())) {
@@ -399,8 +397,8 @@ public class DataDictionaryController extends BaseController {
      * @param dataDictionary DataDictionary
      * @param request        HttpServletRequest
      */
-    protected void dictionaryPreInsertHandler(DataCatalog dataCatalog, DataDictionary dataDictionary,
-                                              HttpServletRequest request) {
+    private void dictionaryPreInsertHandler(DataCatalog dataCatalog, DataDictionary dataDictionary,
+                                            HttpServletRequest request) {
         if (isLoginAsAdmin(request)) {
             dataDictionary.setDataStyle(S);
         } else {
@@ -418,11 +416,10 @@ public class DataDictionaryController extends BaseController {
      * 数据字典的删除权限进行业务数据判断
      *
      * @param request        HttpServletRequest
-     * @param dataCatalog    DataCatalog
      * @param dataDictionary DataDictionary
      */
-    protected void dictionaryPreDeleteHandler(DataCatalog dataCatalog, DataDictionary dataDictionary,
-                                              HttpServletRequest request) {
+    private void dictionaryPreDeleteHandler(DataDictionary dataDictionary,
+                                            HttpServletRequest request) {
         if (isLoginAsAdmin(request)) {
             if (!S.equalsIgnoreCase(dataDictionary.getDataStyle()) && !U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
                 throw new ObjectException("只能删除 catalogStyle为 S 或 U 的字典目录");
@@ -465,7 +462,7 @@ public class DataDictionaryController extends BaseController {
         }
     }
 
-    protected void catalogPrDeleteHandler(DataCatalog dataCatalog, HttpServletRequest request) {
+    private void catalogPrDeleteHandler(DataCatalog dataCatalog, HttpServletRequest request) {
         if (isLoginAsAdmin(request)) {
             if (!S.equalsIgnoreCase(dataCatalog.getCatalogStyle()) && !U.equalsIgnoreCase(dataCatalog.getCatalogStyle())) {
                 throw new ObjectException("只能删除 catalogStyle为 S 或 U 的字典目录");
@@ -522,20 +519,16 @@ public class DataDictionaryController extends BaseController {
             required = true, paramType = "path", dataType = "String"
         )
     })
-    @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/dictionaryPiece/{catalogCode}/{dataCode}", method = RequestMethod.DELETE)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除数据字典",
         tag = "{catalogCode}:{dataCode}")
     @WrapUpResponseBody
     public ResponseData deleteDictionary(@ParamName("catalogCode") @PathVariable String catalogCode,
                                          @ParamName("dataCode") @PathVariable String dataCode,
                                          HttpServletRequest request) {
-        DataCatalog dataCatalog = dataDictionaryManager.getObjectById(catalogCode);
         DataDictionary dataDictionary = dataDictionaryManager.getDataDictionaryPiece(new DataDictionaryId(catalogCode, dataCode));
-
-        dictionaryPreDeleteHandler(dataCatalog, dataDictionary, request);
-
+        dictionaryPreDeleteHandler(dataDictionary, request);
         dataDictionaryManager.deleteDataDictionaryPiece(dataDictionary.getId());
-
         return ResponseData.successResponse;
     }
 
@@ -685,7 +678,7 @@ public class DataDictionaryController extends BaseController {
                 object.add(dataDictionary);
             }
             DataCatalog dataCatalog = dataDictionaryManager.getObjectById(catalogCode);
-            if (dataCatalog==null){
+            if (dataCatalog == null) {
                 return null;
             }
             dataCatalog.getDataDictionaries().addAll(object);
