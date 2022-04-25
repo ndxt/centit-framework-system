@@ -174,10 +174,10 @@ public class DataDictionaryController extends BaseController {
     }
 
     /**
-     * 新增字典类别
      *
-     * @param dataCatalog {@link DataCatalog}
-     * @param request     {@link HttpServletRequest}
+     * @param dataCatalog
+     * @param request
+     * @param response
      */
     @ApiOperation(value = "新增字典类别", notes = "新增字典类别")
     @ApiParam(name = "dataCatalog", value = "新增字典类别,输入框有提示的都是必填项", required = true)
@@ -288,7 +288,6 @@ public class DataDictionaryController extends BaseController {
      * 新增数据字典
      *
      * @param catalogCode    DataCatalog主键
-     * @param dataCode       DataDictionary主键
      * @param dataDictionary {@link DataDictionary}
      * @param request        {@link HttpServletRequest}
      * @return result
