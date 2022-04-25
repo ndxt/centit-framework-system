@@ -111,7 +111,7 @@ public class DataDictionaryManagerImpl implements
     @Override
     @Transactional(propagation=Propagation.REQUIRED)
     public void saveDataDictionaryPiece(DataDictionary dd) {
-        dictionaryDao.updateDictionary(dd);
+        dictionaryDao.mergeObject(dd);
         CodeRepositoryCache.evictCache("DataDictionary", dd.getCatalogCode());
     }
 

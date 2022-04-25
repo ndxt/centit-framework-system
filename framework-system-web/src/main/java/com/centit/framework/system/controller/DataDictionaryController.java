@@ -15,6 +15,7 @@ import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.DataDictionaryId;
 import com.centit.framework.system.service.DataDictionaryManager;
 import com.centit.support.algorithm.CollectionsOpt;
+import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.common.JavaBeanMetaData;
 import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
@@ -304,19 +305,22 @@ public class DataDictionaryController extends BaseController {
         )
     })
     @ApiParam(name = "dataDictionary", value = "字典明细的对象信息", required = true)
-    @RequestMapping(value = "/dictionaryPiece/{catalogCode}", method = {RequestMethod.POST})
+    @RequestMapping(value = "/dictionaryPiece/{catalogCode}/{dataCode}", method = {RequestMethod.POST})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增数据字典",
         tag = "{catalogCode}:{dataCode}")
     @WrapUpResponseBody
-    public ResponseData createDictionary(@ParamName("catalogCode") @PathVariable String catalogCode,
+    public DataDictionary createDictionary(@ParamName("catalogCode") @PathVariable String catalogCode,
+                                         @PathVariable String dataCode,
                                          @Valid DataDictionary dataDictionary,
                                          HttpServletRequest request) {
         DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
+        dataDictionary.setCatalogCode(catalogCode);
+        dataDictionary.setDataCode(dataCode);
         dataDictionary.setDataValue(StringEscapeUtils.unescapeHtml4(dataDictionary.getDataValue()));
         dictionaryPreHandler(dbDataCatalog, dataDictionary);
         dictionaryPreInsertHandler(dbDataCatalog, dataDictionary, request);
         dataDictionaryManager.saveDataDictionaryPiece(dataDictionary);
-        return ResponseData.successResponse;
+        return dataDictionary;
     }
 
     /**
@@ -339,28 +343,27 @@ public class DataDictionaryController extends BaseController {
         )
     })
     @ApiParam(name = "dataDictionary", value = "字典明细的对象信息", required = true)
-    @RequestMapping(value = "/dictionaryPiece/{catalogCode}", method = {RequestMethod.PUT})
+    @RequestMapping(value = "/dictionaryPiece/{catalogCode}/{dataCode}", method = {RequestMethod.PUT})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新数据字典",
         tag = "{catalogCode}:{dataCode}")
     @WrapUpResponseBody
-    public ResponseData editDictionary(@ParamName("catalogCode") @PathVariable String catalogCode,
+    public DataDictionary editDictionary(@ParamName("catalogCode") @PathVariable String catalogCode,
+                                       @PathVariable String dataCode,
                                        @Valid DataDictionary dataDictionary,
                                        HttpServletRequest request) {
 
         DataDictionary dbDataDictionary = dataDictionaryManager.getDataDictionaryPiece(new DataDictionaryId(catalogCode,
-            dataDictionary.getDataCode()));
-
+           dataCode));
         DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
-
+        dataDictionary.setDataCode(dataCode);
+        dataDictionary.setCatalogCode(catalogCode);
         dataDictionary.setDataValue(StringEscapeUtils.unescapeHtml4(dataDictionary.getDataValue()));
         dictionaryPreHandler(dbDataCatalog, dataDictionary);
-
         dictionaryPreUpdateHandler(dbDataCatalog, dbDataDictionary, request);
         BeanUtils.copyProperties(dataDictionary, dbDataDictionary, "id", "dataStyle");
         dictionaryPreUpdateHandler(dbDataCatalog, dbDataDictionary, request);
         dataDictionaryManager.saveDataDictionaryPiece(dbDataDictionary);
-
-        return ResponseData.successResponse;
+        return dbDataDictionary;
     }
 
     /**
@@ -372,11 +375,9 @@ public class DataDictionaryController extends BaseController {
     private void dictionaryPreHandler(DataCatalog dataCatalog, DataDictionary dataDictionary) {
         //附加代码 EXTRACODE  字段
         //这是一个自解释字段，业务系统可以自行解释这个字段的意义，单作为树形结构的数据字典时，这个字段必需为上级字典的代码。
-        if (T.equalsIgnoreCase(dataCatalog.getCatalogType())) {
+        if (T.equalsIgnoreCase(dataCatalog.getCatalogType()) && !StringBaseOpt.isNvl(dataDictionary.getExtraCode())) {
             String extraCode = dataDictionary.getExtraCode();
-            if (StringUtils.isBlank(extraCode)) {
-                throw new ObjectException("extraCode 字段不可为空");
-            }
+
 
             if (extraCode.equals(dataDictionary.getDataCode())) {
                 throw new ObjectException("extraCode 与 dataCode 不能一致");
