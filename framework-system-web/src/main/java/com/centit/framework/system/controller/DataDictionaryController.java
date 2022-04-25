@@ -305,12 +305,11 @@ public class DataDictionaryController extends BaseController {
         )
     })
     @ApiParam(name = "dataDictionary", value = "字典明细的对象信息", required = true)
-    @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}", method = {RequestMethod.PUT})
+    @RequestMapping(value = "/dictionary/{catalogCode}", method = {RequestMethod.POST})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增数据字典",
         tag = "{catalogCode}:{dataCode}")
     @WrapUpResponseBody
     public ResponseData createDictionary(@ParamName("catalogCode") @PathVariable String catalogCode,
-                                         @ParamName("dataCode") @PathVariable String dataCode,
                                          @Valid DataDictionary dataDictionary,
                                          HttpServletRequest request) {
         DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
@@ -342,7 +341,7 @@ public class DataDictionaryController extends BaseController {
         )
     })
     @ApiParam(name = "dataDictionary", value = "字典明细的对象信息", required = true)
-    @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}", method = {RequestMethod.POST})
+    @RequestMapping(value = "/dictionary/{catalogCode}/{dataCode}", method = {RequestMethod.PUT})
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新数据字典",
         tag = "{catalogCode}:{dataCode}")
     @WrapUpResponseBody
