@@ -14,6 +14,7 @@ import com.centit.framework.system.po.DataCatalog;
 import com.centit.framework.system.po.DataDictionary;
 import com.centit.framework.system.po.DataDictionaryId;
 import com.centit.framework.system.service.DataDictionaryManager;
+import com.centit.framework.system.service.impl.DBPlatformEnvironment;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.common.JavaBeanMetaData;
@@ -243,8 +244,7 @@ public class DataDictionaryController extends BaseController {
     }
 
     private boolean isLoginAsAdmin(HttpServletRequest request) {
-        Object obj = request.getSession().getAttribute(MainFrameController.ENTRANCE_TYPE);
-        return obj != null && MainFrameController.DEPLOY_LOGIN.equals(obj.toString());
+        return WebOptUtils.getCurrentTopUnit(request).equals(DBPlatformEnvironment.SYSTEM);
     }
 
     /**
