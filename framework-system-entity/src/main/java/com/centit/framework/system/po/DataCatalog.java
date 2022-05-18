@@ -1,5 +1,6 @@
 package com.centit.framework.system.po;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.model.basedata.IDataCatalog;
 import com.centit.support.database.orm.GeneratorCondition;
@@ -140,6 +141,11 @@ public class DataCatalog implements IDataCatalog, java.io.Serializable{
     @ValueGenerator(strategy = GeneratorType.FUNCTION, occasion = GeneratorTime.NEW_UPDATE,
             condition = GeneratorCondition.ALWAYS, value="today()" )
     private Date  updateDate;
+
+    @Column(name = "SOURCE_ID")
+    @Length(max = 32, message = "字段长度不能大于{max}")
+    @JSONField(serialize = false)
+    private String sourceId;
 
     @Transient
     private List<DataDictionary> dataDictionaries;
