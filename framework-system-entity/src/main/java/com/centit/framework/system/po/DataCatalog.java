@@ -304,6 +304,13 @@ public class DataCatalog implements IDataCatalog, java.io.Serializable{
     public Date getLastModifyDate() {
         return updateDate;
     }
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
+    }
+
+    public String getSourceId() {
+        return sourceId;
+    }
 
     public void setLastModifyDate(Date lastModifyDate) {
         this.updateDate = lastModifyDate;
