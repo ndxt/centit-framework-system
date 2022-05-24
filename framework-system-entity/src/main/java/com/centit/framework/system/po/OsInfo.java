@@ -1,6 +1,5 @@
 package com.centit.framework.system.po;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.centit.framework.core.dao.DictionaryMap;
 import com.centit.framework.model.basedata.IOsInfo;
 import com.centit.support.database.orm.GeneratorCondition;
@@ -8,12 +7,12 @@ import com.centit.support.database.orm.GeneratorType;
 import com.centit.support.database.orm.ValueGenerator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
-import lombok.Data;
 
 @Entity
 @Data
@@ -102,10 +101,17 @@ public class OsInfo implements IOsInfo, java.io.Serializable {
     @Column(name = "PIC_ID")
     @Length(max = 64, message = "字段长度不能大于{max}")
     private String  picId;
+
+
     @ApiModelProperty(value = "默认数据库,用于后台根据表单自动创建表")
     @Column(name = "DEFAULT_DATABASE")
     @Length(max = 64, message = "字段长度不能大于{max}")
     private String  defaultDatabase;
+
+    @ApiModelProperty(value = "网页logo图片主键")
+    @Column(name = "LOGO_FILE_ID")
+    @Length(max = 64, message = "字段长度不能大于{max}")
+    private String  logoFileId;
 
     public void copyNotNull(IOsInfo osInfo){
         deleted = osInfo.isDeleted();
@@ -150,6 +156,9 @@ public class OsInfo implements IOsInfo, java.io.Serializable {
         }
         if(osInfo.getRelOptId()!=null){
             relOptId = osInfo.getRelOptId();
+        }
+        if(osInfo.getLogoFileId()!=null){
+            logoFileId = osInfo.getLogoFileId();
         }
     }
 }
