@@ -6,11 +6,13 @@ import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.dao.OptDataScopeDao;
 import com.centit.framework.system.dao.OptInfoDao;
 import com.centit.framework.system.dao.OptMethodDao;
+import com.centit.framework.system.dao.RolePowerDao;
 import com.centit.framework.system.po.OptDataScope;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;
 import com.centit.framework.system.service.OptInfoManager;
 import com.centit.support.algorithm.CollectionsOpt;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -31,6 +33,9 @@ public class OptInfoManagerImpl implements OptInfoManager {
 
     @Autowired
     private OptDataScopeDao dataScopeDao;
+
+    @Autowired
+    private RolePowerDao rolePowerDao;
 
     @Override
     @Transactional
@@ -126,11 +131,18 @@ public class OptInfoManagerImpl implements OptInfoManager {
 
         List<OptMethod> newOptMethods = optInfo.getOptMethods();
 
+        List<OptMethod> oldOptMethods = optMethodDao.listOptMethodByOptID(optInfo.getOptId());
+
         if(newOptMethods == null || newOptMethods.size() < 1){
             optMethodDao.deleteOptMethodsByOptID(optInfo.getOptId());
+            if(CollectionUtils.isNotEmpty(oldOptMethods)){
+                for (OptMethod oldOptMethod : oldOptMethods) {
+                    rolePowerDao.deleteRolePowersByOptCode(oldOptMethod.getOptCode());
+                }
+            }
+
         }
 
-        List<OptMethod> oldOptMethods = optMethodDao.listOptMethodByOptID(optInfo.getOptId());
 
         Triple<List<OptMethod>, List<Pair<OptMethod,OptMethod>>, List<OptMethod>> compareMethod =
             CollectionsOpt.compareTwoList(oldOptMethods, newOptMethods, Comparator.comparing(OptMethod::getOptCode));
@@ -138,6 +150,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
         if(compareMethod.getRight() != null) {
             for (OptMethod optMethod : compareMethod.getRight()) {
                 optMethodDao.deleteObject(optMethod);
+                rolePowerDao.deleteRolePowersByOptCode(optMethod.getOptCode());
             }
         }
 

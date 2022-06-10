@@ -106,7 +106,7 @@ public class UnitInfoController extends BaseController {
             sysUnitManager.checkState(listObjects);
             JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
             if (struct) {
-                ja = CollectionsOpt.srotAsTreeAndToJSON(ja, (p, c) ->
+                ja = CollectionsOpt.sortAsTreeAndToJSON(ja, (p, c) ->
                     StringUtils.equals(
                         ((JSONObject) p).getString("unitCode"),
                         ((JSONObject) c).getString("parentUnit")), "children");
@@ -173,7 +173,7 @@ public class UnitInfoController extends BaseController {
                 ((JSONObject) o).put("id", ((JSONObject) o).getString("unitCode"));
                 ((JSONObject) o).put("text", ((JSONObject) o).getString("unitName"));
             }
-            ja = CollectionsOpt.srotAsTreeAndToJSON(ja, (p, c) ->
+            ja = CollectionsOpt.sortAsTreeAndToJSON(ja, (p, c) ->
                 StringUtils.equals(
                     ((JSONObject) p).getString("unitCode"),
                     ((JSONObject) c).getString("parentUnit")), "children");
@@ -199,7 +199,7 @@ public class UnitInfoController extends BaseController {
             ((JSONObject) o).put("id", ((JSONObject) o).getString("unitCode"));
             ((JSONObject) o).put("text", ((JSONObject) o).getString("unitName"));
         }
-        ja = CollectionsOpt.srotAsTreeAndToJSON(ja, (p, c) ->
+        ja = CollectionsOpt.sortAsTreeAndToJSON(ja, (p, c) ->
                 StringUtils.equals(
                     ((JSONObject) p).getString("unitCode"),
                     ((JSONObject) c).getString("parentUnit")),
