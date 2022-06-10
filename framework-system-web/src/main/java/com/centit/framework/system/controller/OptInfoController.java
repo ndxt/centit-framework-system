@@ -92,6 +92,7 @@ public class OptInfoController extends BaseController {
         return ViewDataTransform.makeTreeViewJson(menuFunsByUser,
             ViewDataTransform.createStringHashMap("id", "optId",
                 "optId", "optId",
+                "optCode", "optId",
                 "pid", "preOptId",
                 "text", "localOptName",
                 "url", "optRoute",
