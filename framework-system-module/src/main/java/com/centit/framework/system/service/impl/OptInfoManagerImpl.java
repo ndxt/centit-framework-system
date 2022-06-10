@@ -99,16 +99,6 @@ public class OptInfoManagerImpl implements OptInfoManager {
                 o.setOptId(optInfo.getOptId());
                 optMethodDao.saveNewObject(o);
             }
-        }else if (!"W".equals(optInfo.getOptType())) {
-            OptMethod createDef = new OptMethod();
-            createDef.setOptCode(optMethodDao.getNextOptCode());
-            createDef.setOptId(optInfo.getOptId());
-            createDef.setOptName("查看");
-            createDef.setOptMethod("search");
-            createDef.setOptUrl("/changeme");
-            createDef.setOptReq("CRUD");
-            createDef.setOptDesc("查看（系统默认）");
-            optMethodDao.saveNewObject(createDef);
         }
         CodeRepositoryCache.evictCache("OptInfo");
         CodeRepositoryCache.evictCache("OptMethod");
