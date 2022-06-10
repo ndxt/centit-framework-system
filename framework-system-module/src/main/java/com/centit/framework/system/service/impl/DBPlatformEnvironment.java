@@ -413,6 +413,19 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         return optMethod;
     }
 
+    @Override
+    public IOptMethod mergeOptMethod(IOptMethod optMethod) {
+        optMethodDao.mergeObject((OptMethod)optMethod);
+        return optMethod;
+    }
+
+    @Override
+    public void deleteOptMethod(String optMethod) {
+        optMethodDao.deleteObjectById(optMethod);
+    }
+
+
+
     /**
      * @return 所有的数据范围定义表达式
      */
