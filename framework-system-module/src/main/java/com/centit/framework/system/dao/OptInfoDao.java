@@ -184,7 +184,7 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
     @Transactional
     public List<OptInfo> listAllOptInfoByUnit(String topUnit){
         String sql = "select a.* " +
-            "from F_OPTINFO a join F_OS_INFO b on(a.TOP_OPT_ID=b.REL_OPT_ID) " +
+            "from F_OPTINFO a join F_OS_INFO b on(a.TOP_OPT_ID=b.os_id) " +
             "where b.TOP_UNIT = ?";
 
         return getJdbcTemplate().execute(
