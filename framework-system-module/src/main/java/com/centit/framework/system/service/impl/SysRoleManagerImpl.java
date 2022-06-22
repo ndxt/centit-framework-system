@@ -181,7 +181,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
                 if(!StringUtils.equals(oldRolePower.getOptScopeCodes(),
                     newRolePower.getOptScopeCodes())) {
                     rolePowerDao.updateObject(
-                        CollectionsOpt.createList("optScopeCodes", "updator", "updateDate"),
+                        CollectionsOpt.createList("updator", "updateDate"),
                         newRolePower);
                 }
             }
