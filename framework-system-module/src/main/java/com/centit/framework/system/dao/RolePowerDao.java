@@ -30,6 +30,7 @@ import java.util.*;
 @Repository("rolePowerDao")
 public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
 
+    @Override
     public Map<String, String> getFilterField() {
         Map<String, String> filterField = new HashMap<>();
         filterField.put("optCode", CodeBook.EQUAL_HQL_ID);
@@ -110,7 +111,7 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
     }
 
     @Transactional
-    public List<IRolePower> listRolePowerWithTopUnit(String apiId) {
+    public List<IRolePower> listRolePowerUseApiId(String apiId) {
         List<IRolePower> rolePowers = new ArrayList<>();
         String sql = "select distinct a.ROLE_CODE,a.opt_code,a.opt_scope_codes,e.top_unit " +
             "from F_ROLEPOWER a join F_ROLEINFO b on a.ROLE_CODE=b.ROLE_CODE " +

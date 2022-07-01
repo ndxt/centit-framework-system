@@ -413,13 +413,13 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         return optMethod;
     }
 
-    @Override
+
     public IOptMethod mergeOptMethod(IOptMethod optMethod) {
         optMethodDao.mergeObject((OptMethod)optMethod);
         return optMethod;
     }
 
-    @Override
+
     public void deleteOptMethod(String optMethod) {
         optMethodDao.deleteObjectById(optMethod);
     }
@@ -522,9 +522,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         //edit by zhuxw  代码从原框架迁移过来，可和其它地方合并
         List<RoleInfo> roles = new ArrayList<>();
         //所有的用户 都要添加这个角色
-        roles.add(new RoleInfo("public" + userinfo.getTopUnit(), "general public", "G",
-            "G", "T", "general public"));
-        List<FVUserRoles> userRolesList = userRoleDao.listUserRolesByUserCode(userinfo.getUserCode());
+        roles.add(new RoleInfo("public", "general public", "G",
+            userinfo.getTopUnit(), "T", "general public"));
+        List<FVUserRoles> userRolesList = userRoleDao.listUserRolesByTopUnit(userinfo.getTopUnit(),userinfo.getUserCode());
         if (userRolesList != null) {
             for (FVUserRoles role : userRolesList) {
                 RoleInfo roleInfo = new RoleInfo();
@@ -537,12 +537,26 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         //userDetails.setUserFuncs(functionDao.getMenuFuncByUserID(userDetails.getUserCode()));
         appendAdminRoles(userinfo, roles);
         userDetails.setAuthoritiesByRoles((JSONArray) JSON.toJSON(roles));
-        List<FVUserOptList> uoptlist = userInfoDao.listUserOptMethods(userinfo.getUserCode());
+        List<OptMethod> publicOptMethod = optMethodDao.listPublicOptMethodByUnit(userinfo.getTopUnit());
         Map<String, String> userOptList = new HashMap<>();
-        if (uoptlist != null) {
-            for (FVUserOptList opt : uoptlist) {
+        if (publicOptMethod != null) {
+            for (OptMethod opt : publicOptMethod) {
                 if (!StringUtils.isBlank(opt.getOptMethod())) {
-                    userOptList.put(opt.getOptId() + "-" + opt.getOptMethod(), opt.getOptMethod());
+                    userOptList.put(opt.getOptCode(), opt.getOptId());
+                }
+            }
+        }
+        if(userRolesList!=null){
+            String[] userRole=new String[userRolesList.size()];
+            for(int i=0;i<userRolesList.size();i++){
+                userRole[i]=userRolesList.get(i).getRoleCode();
+            }
+            List<OptMethod> userOptMethod=optMethodDao.listUserOptMethodByRoleCode(userRole);
+            if(userOptMethod!=null){
+                for (OptMethod opt : userOptMethod) {
+                    if (!StringUtils.isBlank(opt.getOptMethod())) {
+                        userOptList.put(opt.getOptCode(), opt.getOptId());
+                    }
                 }
             }
         }
@@ -864,7 +878,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     public List<ConfigAttribute> getRolesWithApiId(String apiId) {
-        List<? extends IRolePower> rolePowers = rolePowerDao.listRolePowerWithTopUnit(apiId);
+        List<? extends IRolePower> rolePowers = rolePowerDao.listRolePowerUseApiId(apiId);
         List<ConfigAttribute> roles = new ArrayList<>();
         for (IRolePower rp : rolePowers) {
             dealRolePower(roles, rp);
