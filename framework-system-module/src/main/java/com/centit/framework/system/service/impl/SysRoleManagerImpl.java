@@ -200,7 +200,9 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Transactional
     public RoleInfo getRoleInfo(String roleCode){
         RoleInfo rf = roleInfoDao.getObjectById(roleCode);
-        rf.addAllRolePowers( rolePowerDao.listRolePowersByRoleCode(roleCode) );
+        if(rf!=null) {
+            rf.addAllRolePowers(rolePowerDao.listRolePowersByRoleCode(roleCode));
+        }
         return rf;
 
     }
