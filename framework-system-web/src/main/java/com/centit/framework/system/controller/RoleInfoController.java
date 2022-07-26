@@ -16,6 +16,7 @@ import com.centit.framework.system.service.OptMethodManager;
 import com.centit.framework.system.service.SysRoleManager;
 import com.centit.framework.system.service.SysUnitRoleManager;
 import com.centit.framework.system.service.SysUserRoleManager;
+import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
@@ -99,7 +100,7 @@ public class RoleInfoController extends BaseController {
     })
     @RequestMapping(value = "/subSysRole/{topOptId}", method = RequestMethod.GET)
     @WrapUpResponseBody()
-    public PageQueryResult<RoleInfo> listSubSystemRole(@PathVariable String topOptId,PageDesc pageDesc, HttpServletRequest request) {
+    public PageQueryResult<RoleInfo> listSubSystemRole(@PathVariable String topOptId, PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("subSystemROLE", topOptId);
         List<RoleInfo> list = sysRoleManager.listObjects(filterMap, pageDesc);
@@ -149,8 +150,8 @@ public class RoleInfoController extends BaseController {
         String currentUnit;
         if (WebOptUtils.isTenantTopUnit(request)) {
             currentUnit = WebOptUtils.getCurrentTopUnit(request);
-        }else {
-            currentUnit=WebOptUtils.getCurrentUnitCode(request);
+        } else {
+            currentUnit = WebOptUtils.getCurrentUnitCode(request);
         }
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("publicUnitRole", currentUnit);
@@ -256,7 +257,7 @@ public class RoleInfoController extends BaseController {
         required = true, paramType = "body", dataTypeClass = RoleInfo.class)
     @RequestMapping(method = RequestMethod.POST)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增角色",
-        tag="{ri.roleCode}")
+        tag = "{ri.roleCode}")
     @WrapUpResponseBody
     public void createRole(@ParamName("ri") @Valid RoleInfo roleInfo, HttpServletRequest request) {
         String roleType = roleInfo.getRoleType();
@@ -286,7 +287,7 @@ public class RoleInfoController extends BaseController {
 
     @RequestMapping(value = "/departmentRole", method = RequestMethod.POST)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增角色",
-        tag="{ri.roleCode}")
+        tag = "{ri.roleCode}")
     @WrapUpResponseBody
     public void createDepartmentRole(@ParamName("ri") @Valid RoleInfo roleInfo, HttpServletRequest request) {
         roleInfo.setRoleType("D");
@@ -319,7 +320,7 @@ public class RoleInfoController extends BaseController {
     })
     @RequestMapping(value = "/subSysRole/{topOptId}", method = RequestMethod.POST)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增角色",
-        tag="{topOptId}:{ri.roleCode}")
+        tag = "{topOptId}:{ri.roleCode}")
     @WrapUpResponseBody
     public void createSubSystemRole(@ParamName("topOptId") @PathVariable String topOptId,
                                     @ParamName("ri") @Valid RoleInfo roleInfo, HttpServletRequest request) {
@@ -346,15 +347,15 @@ public class RoleInfoController extends BaseController {
     })
     @RequestMapping(value = "/addopt/{optCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}给角色添加权限",
-        tag="{optCode}")
+        tag = "{optCode}")
     @WrapUpResponseBody
     @Transactional(rollbackFor = Exception.class)
-    public void addOptToRole(@RequestBody List<RolePower> rolePowers,@ParamName("optCode")@PathVariable String optCode) {
+    public void addOptToRole(@RequestBody List<RolePower> rolePowers, @ParamName("optCode") @PathVariable String optCode) {
 
-        if (!CollectionUtils.sizeIsEmpty(rolePowers)){
+        if (!CollectionUtils.sizeIsEmpty(rolePowers)) {
             rolePowers.forEach(rolePower -> rolePower.setOptCode(optCode));
         }
-        sysRoleManager.updateRolePowersByOptCode(optCode,rolePowers);
+        sysRoleManager.updateRolePowersByOptCode(optCode, rolePowers);
     }
 
     /*
@@ -374,14 +375,14 @@ public class RoleInfoController extends BaseController {
     })
     @RequestMapping(value = "/delopt/{roleCode}/{optCode}", method = RequestMethod.DELETE)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除角色权限",
-        tag="{roleCode}:{optCode}")
+        tag = "{roleCode}:{optCode}")
     @WrapUpResponseBody
-    public void deleteOptFormRole(@ParamName("roleCode")@PathVariable String roleCode,
-                                  @ParamName("optCode")@PathVariable String optCode) {
+    public void deleteOptFormRole(@ParamName("roleCode") @PathVariable String roleCode,
+                                  @ParamName("optCode") @PathVariable String optCode) {
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
 
         if (null == dbRoleInfo) {
-            throw new ObjectException(roleCode+":"+optCode, "角色信息不存在");
+            throw new ObjectException(roleCode + ":" + optCode, "角色信息不存在");
         }
 
         RolePower rolePower = new RolePower(new RolePowerId(roleCode, optCode));
@@ -410,9 +411,9 @@ public class RoleInfoController extends BaseController {
     })
     @RequestMapping(value = "/{roleCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新角色",
-        tag="{roleCode}")
+        tag = "{roleCode}")
     @WrapUpResponseBody
-    public void updateRole(@ParamName("roleCode")@PathVariable String roleCode, @Valid RoleInfo roleInfo) {
+    public void updateRole(@ParamName("roleCode") @PathVariable String roleCode, @Valid RoleInfo roleInfo) {
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         if (null == dbRoleInfo) {
             throw new ObjectException(roleInfo, "角色信息不存在");
@@ -433,11 +434,11 @@ public class RoleInfoController extends BaseController {
     })
     @RequestMapping(value = "/departmentRole/{roleCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新角色",
-        tag="{roleCode}")
+        tag = "{roleCode}")
     @WrapUpResponseBody
-    public void updateDepartmentRole(@ParamName("roleCode")@PathVariable String roleCode,
-                                             @Valid RoleInfo roleInfo,
-                                            HttpServletRequest request) {
+    public void updateDepartmentRole(@ParamName("roleCode") @PathVariable String roleCode,
+                                     @Valid RoleInfo roleInfo,
+                                     HttpServletRequest request) {
 
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         if (null == dbRoleInfo) {
@@ -449,7 +450,7 @@ public class RoleInfoController extends BaseController {
         } else {
             roleInfo.setRoleOwner(WebOptUtils.getCurrentUnitCode(request));
         }
-        if(!StringUtils.equals(dbRoleInfo.getRoleOwner(), roleInfo.getRoleOwner())){
+        if (!StringUtils.equals(dbRoleInfo.getRoleOwner(), roleInfo.getRoleOwner())) {
             throw new ObjectException(roleInfo, "不能修改部门角色的所属机构");
         }
         roleInfo.setRoleCode(roleCode);
@@ -470,10 +471,10 @@ public class RoleInfoController extends BaseController {
     })
     @RequestMapping(value = "/subSysRole/{topOptId}/{roleCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新角色",
-        tag="{topOptId}:{roleCode}")
+        tag = "{topOptId}:{roleCode}")
     @WrapUpResponseBody
-    public void updateSubSystemRole(@ParamName("topOptId")@PathVariable String topOptId,
-                                    @ParamName("roleCode")@PathVariable String roleCode, @Valid RoleInfo roleInfo) {
+    public void updateSubSystemRole(@ParamName("topOptId") @PathVariable String topOptId,
+                                    @ParamName("roleCode") @PathVariable String roleCode, @Valid RoleInfo roleInfo) {
 
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         if (null == dbRoleInfo) {
@@ -481,12 +482,13 @@ public class RoleInfoController extends BaseController {
         }
         roleInfo.setRoleType("S");
         roleInfo.setRoleOwner(topOptId);
-        if(!StringUtils.equals(dbRoleInfo.getRoleOwner(),topOptId)){
+        if (!StringUtils.equals(dbRoleInfo.getRoleOwner(), topOptId)) {
             throw new ObjectException(roleInfo, "不能修改子系统角色的归属系统");
         }
         roleInfo.setRoleCode(roleCode);
         sysRoleManager.updateRoleInfo(roleInfo);
     }
+
     /*
      * 更新系统角色权限
      *
@@ -504,17 +506,17 @@ public class RoleInfoController extends BaseController {
     })
     @RequestMapping(value = "/power/{roleCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新角色权限",
-        tag="{roleCode}")
+        tag = "{roleCode}")
     @WrapUpResponseBody
-    public void updateRolePower(@ParamName("roleCode")@PathVariable String roleCode, RoleInfo roleInfo,HttpServletRequest request) {
-        if (StringUtils.isBlank(WebOptUtils.getCurrentUserCode(request))){
-            throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN,"您还未登录!");
+    public void updateRolePower(@ParamName("roleCode") @PathVariable String roleCode, RoleInfo roleInfo, HttpServletRequest request) {
+        if (StringUtils.isBlank(WebOptUtils.getCurrentUserCode(request))) {
+            throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN, "您还未登录!");
         }
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         if (null == dbRoleInfo) {
             throw new ObjectException(roleInfo, "角色信息不存在");
         }
-        sysRoleManager.updateRolePower(roleInfo,WebOptUtils.getCurrentTopUnit(request));
+        sysRoleManager.updateRolePower(roleInfo, WebOptUtils.getCurrentTopUnit(request));
     }
 
     /*
@@ -611,7 +613,7 @@ public class RoleInfoController extends BaseController {
         required = true, paramType = "path", dataType = "String")
     @RequestMapping(value = "/{roleCode}", method = RequestMethod.DELETE)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除角色",
-        tag="{roleCode}")
+        tag = "{roleCode}")
     @WrapUpResponseBody
     public ResponseData deleteRole(@ParamName("roleCode") @PathVariable String roleCode) {
         if (StringUtils.equalsAny(roleCode, "public", "anonymous", "forbidden")) {
@@ -689,14 +691,14 @@ public class RoleInfoController extends BaseController {
     })
     @RequestMapping(value = "/listRoles/{type}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public JSONArray listRoles(@PathVariable String type,String owner, String[] field, HttpServletRequest request) {
+    public JSONArray listRoles(@PathVariable String type, String owner, String[] field, HttpServletRequest request) {
         if (ArrayUtils.isEmpty(field)) {
             field = new String[]{"roleCode", "roleName"};
         }
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
 //        filterMap.put("roleType", type);
         filterMap.put("isValid", "T");
-        filterMap.put("roleType",type);
+        filterMap.put("roleType", type);
         if (WebOptUtils.isTenantTopUnit(request)) {
             filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         }
@@ -707,10 +709,10 @@ public class RoleInfoController extends BaseController {
                 WebOptUtils.getCurrentTopUnit(request),
                 WebOptUtils.getCurrentUserCode(request));
             if (unit != null) {
-                owner =  unit.getUnitCode();
+                owner = unit.getUnitCode();
             }
         }
-        if(StringUtils.isNotBlank(owner)) {
+        if (StringUtils.isNotBlank(owner)) {
             filterMap.put("unitCode", owner);
         }
 
@@ -737,7 +739,9 @@ public class RoleInfoController extends BaseController {
     @RequestMapping(value = "/listRoleInfoAndPowerByOptCode/{optCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
     public ResponseData listRoleInfoAndPowerByOptCode(@PathVariable String optCode) {
-
+        if (StringBaseOpt.isNvl(optCode)) {
+            throw new ObjectException("optCode不能为空！");
+        }
         JSONArray jsonArray = sysRoleManager.listRoleInfoAndPowerByOptCode(optCode);
         return ResponseData.makeResponseData(jsonArray);
     }
@@ -750,7 +754,7 @@ public class RoleInfoController extends BaseController {
     @WrapUpResponseBody
     public ResponseData updateRolePower(@PathVariable String optCode, String roleCode) {
 
-        sysRoleManager.updateRolePower(optCode,roleCode);
+        sysRoleManager.updateRolePower(optCode, roleCode);
         return ResponseData.makeSuccessResponse();
     }
 }
