@@ -600,8 +600,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             }
         } else {
             UnitInfo ui = unitInfoDao.getObjectById(userDetails.getTopUnitCode());
-            if (GlobalConstValue.NO_TENANT_TOP_UNIT.equals(userDetails.getTopUnitCode())
-                || GlobalConstValue.SYSTEM_TENANT_TOP_UNIT.equals(userDetails.getTopUnitCode())) {
+            if (GlobalConstValue.NO_TENANT_TOP_UNIT.equals(userDetails.getTopUnitCode())) {
                 ui = unitInfoDao.getObjectById(currentUnitCode);
             }
             if (null != ui) {
