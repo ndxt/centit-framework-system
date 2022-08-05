@@ -112,6 +112,10 @@ public class OsInfo implements IOsInfo, java.io.Serializable {
     @Column(name = "LOGO_FILE_ID")
     @Length(max = 64, message = "字段长度不能大于{max}")
     private String  logoFileId;
+    @ApiModelProperty(value = "应用描述")
+    @Column(name = "OS_DESC")
+    @Length(max = 1023, message = "字段长度不能大于{max}")
+    private String  osDesc;
 
     public void copyNotNull(IOsInfo osInfo){
         deleted = osInfo.isDeleted();
@@ -159,6 +163,9 @@ public class OsInfo implements IOsInfo, java.io.Serializable {
         }
         if(osInfo.getLogoFileId()!=null){
             logoFileId = osInfo.getLogoFileId();
+        }
+        if(osInfo.getOsDesc()!=null){
+            logoFileId = osInfo.getOsDesc();
         }
     }
 }
