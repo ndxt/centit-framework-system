@@ -220,6 +220,7 @@ public class WorkGroupController extends BaseController {
                         requestParams.put("uidList", allUsers.toString());
                         requestParams.put("name", osInfo.getOsName());
                         HttpReceiveJSON valueOfJson = HttpReceiveJSON.valueOfJson(HttpExecutor.simpleGet(HttpExecutorContext.create(httpClient), tioServer + "/chat/createGroup.tio_x", requestParams));
+                        logger.info(String.valueOf(valueOfJson));
                         if (valueOfJson.getData() != null && valueOfJson.getData("id") != null) {
                             osInfo.setGroupId(NumberBaseOpt.castObjectToLong(valueOfJson.getData("id")));
                             osInfoDao.updateObject(new String[]{"groupId"}, osInfo);
@@ -235,6 +236,7 @@ public class WorkGroupController extends BaseController {
                         requestParams.put("uids", users.toString());
                         requestParams.put("groupid", osInfo.getGroupId());
                         HttpReceiveJSON valueOfJson = HttpReceiveJSON.valueOfJson(HttpExecutor.simpleGet(HttpExecutorContext.create(httpClient), tioServer + "/chat/joinGroup.tio_x", requestParams));
+                        logger.info(String.valueOf(valueOfJson));
                     }
                 }
             } catch (Exception e) {
