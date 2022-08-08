@@ -116,6 +116,9 @@ public class OsInfo implements IOsInfo, java.io.Serializable {
     @Column(name = "OS_DESC")
     @Length(max = 1023, message = "字段长度不能大于{max}")
     private String  osDesc;
+    @ApiModelProperty(value = "群聊id")
+    @Column(name = "GROUP_ID")
+    private Long  groupId;
 
     public void copyNotNull(IOsInfo osInfo){
         deleted = osInfo.isDeleted();
