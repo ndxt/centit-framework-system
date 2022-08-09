@@ -182,20 +182,20 @@ public class WorkGroupController extends BaseController {
         if (workGroups == null || workGroups.size() == 0) {
             throw new ObjectException(ResponseData.ERROR_INTERNAL_SERVER_ERROR, "workGroup参数必传！");
         }
-//        for (WorkGroup workGroup : workGroups) {
-//            loginUserPermissionCheck(workGroup.getWorkGroupParameter().getGroupId());
-//        }
-//        String currentUserCode = WebOptUtils.getCurrentUserCode(request);
+        for (WorkGroup workGroup : workGroups) {
+            loginUserPermissionCheck(workGroup.getWorkGroupParameter().getGroupId());
+        }
+        String currentUserCode = WebOptUtils.getCurrentUserCode(request);
         for (WorkGroup workGroup : workGroups) {
             workGroup.getWorkGroupParameter().setRoleCode(WorkGroup.WORKGROUP_ROLE_CODE_MEMBER);
-//            workGroup.setCreator(currentUserCode);//创建人  当前登录人
+            workGroup.setCreator(currentUserCode);//创建人  当前登录人
         }
         workGroupManager.batchWorkGroup(workGroups);
         JsonResultUtils.writeSingleDataJson(workGroups, response);
         if (!StringBaseOpt.isNvl(tioServer)) {
             try (CloseableHttpClient httpClient = HttpExecutor.createHttpClient()) {
                 OsInfo osInfo = osInfoDao.getObjectById(workGroups.get(0).getGroupId());
-                Map<String, Object> requestParams = new HashMap<>();
+                Map<String, Object> requestParams = new HashMap<>(10);
                 if (osInfo != null) {
                     if (osInfo.getGroupId() == null) {
                         PageDesc pageDesc = new PageDesc();
