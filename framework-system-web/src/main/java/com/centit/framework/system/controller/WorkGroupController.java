@@ -3,6 +3,7 @@ package com.centit.framework.system.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.centit.framework.appclient.AppSession;
 import com.centit.framework.appclient.HttpReceiveJSON;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseData;
@@ -32,7 +33,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -188,7 +194,7 @@ public class WorkGroupController extends BaseController {
         String currentUserCode = WebOptUtils.getCurrentUserCode(request);
         for (WorkGroup workGroup : workGroups) {
             workGroup.getWorkGroupParameter().setRoleCode(WorkGroup.WORKGROUP_ROLE_CODE_MEMBER);
-            workGroup.setCreator(currentUserCode);//创建人  当前登录人
+            workGroup.setCreator(currentUserCode);
         }
         workGroupManager.batchWorkGroup(workGroups);
         JsonResultUtils.writeSingleDataJson(workGroups, response);
@@ -219,8 +225,9 @@ public class WorkGroupController extends BaseController {
                         allUsers.append(",").append(users);
                         requestParams.put("uidList", allUsers.toString());
                         requestParams.put("name", osInfo.getOsName());
-                        HttpReceiveJSON valueOfJson = HttpReceiveJSON.valueOfJson(HttpExecutor.simpleGet(HttpExecutorContext.create(httpClient), tioServer + "/chat/createGroup.tio_x", requestParams));
-                        logger.info(String.valueOf(valueOfJson));
+                        HttpExecutorContext httpExecutorContext=HttpExecutorContext.create(httpClient);
+                        HttpReceiveJSON valueOfJson = HttpReceiveJSON.valueOfJson(HttpExecutor.simpleGet(httpExecutorContext, tioServer + "/chat/createGroup.tio_x", requestParams));
+                        logger.info(valueOfJson.getDataAsString());
                         if (valueOfJson.getData() != null && valueOfJson.getData("id") != null) {
                             osInfo.setGroupId(NumberBaseOpt.castObjectToLong(valueOfJson.getData("id")));
                             osInfoDao.updateObject(new String[]{"groupId"}, osInfo);
@@ -236,7 +243,7 @@ public class WorkGroupController extends BaseController {
                         requestParams.put("uids", users.toString());
                         requestParams.put("groupid", osInfo.getGroupId());
                         HttpReceiveJSON valueOfJson = HttpReceiveJSON.valueOfJson(HttpExecutor.simpleGet(HttpExecutorContext.create(httpClient), tioServer + "/chat/joinGroup.tio_x", requestParams));
-                        logger.info(String.valueOf(valueOfJson));
+                        logger.info(valueOfJson.getDataAsString());
                     }
                 }
             } catch (Exception e) {
