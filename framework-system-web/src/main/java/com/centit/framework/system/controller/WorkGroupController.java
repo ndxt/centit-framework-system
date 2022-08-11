@@ -225,11 +225,11 @@ public class WorkGroupController extends BaseController {
                         allUsers.append(",").append(users);
                         requestParams.put("uidList", allUsers.toString());
                         requestParams.put("name", osInfo.getOsName());
-                        HttpExecutorContext httpExecutorContext=HttpExecutorContext.create(httpClient);
+                        HttpExecutorContext httpExecutorContext = HttpExecutorContext.create(httpClient);
                         HttpReceiveJSON valueOfJson = HttpReceiveJSON.valueOfJson(HttpExecutor.simpleGet(httpExecutorContext, tioServer + "/chat/createGroup.tio_x", requestParams));
                         logger.info(valueOfJson.getDataAsString());
-                        if (valueOfJson.getData() != null && valueOfJson.getData("id") != null) {
-                            osInfo.setGroupId(NumberBaseOpt.castObjectToLong(valueOfJson.getData("id")));
+                        if (valueOfJson.getJSONObject("data") != null && valueOfJson.getJSONObject("data").get("id") != null) {
+                            osInfo.setGroupId(valueOfJson.getJSONObject("data").getLong("id"));
                             osInfoDao.updateObject(new String[]{"groupId"}, osInfo);
                         }
                     } else {
@@ -242,6 +242,10 @@ public class WorkGroupController extends BaseController {
                         }
                         requestParams.put("uids", users.toString());
                         requestParams.put("groupid", osInfo.getGroupId());
+                        List<WorkGroup> leaderWorkGroup = workGroupManager.listWorkGroup(CollectionsOpt.createHashMap("groupId", workGroups.get(0).getGroupId(), "roleCode", WorkGroup.WORKGROUP_ROLE_CODE_LEADER), null);
+                        if (leaderWorkGroup != null) {
+                            requestParams.put("applyuid", leaderWorkGroup.get(0).getUserCode());
+                        }
                         HttpReceiveJSON valueOfJson = HttpReceiveJSON.valueOfJson(HttpExecutor.simpleGet(HttpExecutorContext.create(httpClient), tioServer + "/chat/joinGroup.tio_x", requestParams));
                         logger.info(valueOfJson.getDataAsString());
                     }
