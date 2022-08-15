@@ -1,6 +1,8 @@
 package com.centit.framework.system.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.system.dao.UserInfoDao;
 import com.centit.framework.system.dao.UserRoleDao;
@@ -9,6 +11,7 @@ import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
 import com.centit.framework.system.service.SysUserRoleManager;
+import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JSONOpt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,12 +50,14 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
 
     @Override
     public JSONArray listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-        List<UserRole> userRolesList= userRoleDao.listObjects(filterMap, pageDesc);
-        /*for(UserRole userRole:userRolesList){
-            userRole.setUserPrimaryUnit(userRole.getUserPrimaryUnit());
-            userRole.setLoginName(userRole.getLoginName());
-        }*/
+        List<UserRole> userRolesList = userRoleDao.listObjects(filterMap, pageDesc);
         JSONArray userRoles = JSONOpt.arrayToJSONArray(userRolesList);
+        for (Object a : userRoles) {
+            JSONObject aa = (JSONObject) a;
+            String userCode = aa.getString("userCode");
+            String loginName = CodeRepositoryUtil.getUserInfoByCode(StringBaseOpt.objectToString(filterMap.get("topUnit")), userCode).getLoginName();
+            aa.put("loginName", loginName);
+        }
         return DictionaryMapUtils.mapJsonArray(userRoles, UserRole.class);
     }
 
@@ -73,7 +78,7 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
 
     @Override
     @Transactional
-    public List<UserInfo> listUsersByRole(String roleCode){
+    public List<UserInfo> listUsersByRole(String roleCode) {
         Map<String, Object> map = new HashMap<>(2);
         map.put("queryByRole", roleCode);
         return userInfoDao.listObjects(map);
@@ -99,22 +104,25 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
 
     /**
      * 查询全部
+     *
      * @param userCode 用户编码
      * @return List &lt; UserRole &gt;
      */
     @Override
     @Transactional
-    public List<UserRole> listUserRoles(String userCode){
+    public List<UserRole> listUserRoles(String userCode) {
         return userRoleDao.listUserRoles(userCode);
     }
+
     /**
      * 查询全部
+     *
      * @param roleCode 角色编码
      * @return List &lt; UserRole &gt;
      */
     @Override
     @Transactional
-    public List<UserRole> listRoleUsers(String roleCode){
+    public List<UserRole> listRoleUsers(String roleCode) {
         return userRoleDao.listRoleUsers(roleCode);
     }
 }
