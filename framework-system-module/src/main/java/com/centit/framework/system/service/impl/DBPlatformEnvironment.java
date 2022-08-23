@@ -414,16 +414,26 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
 
+    @Override
     public IOptMethod mergeOptMethod(IOptMethod optMethod) {
-        optMethodDao.mergeObject((OptMethod)optMethod);
+        optMethodDao.mergeObject((OptMethod) optMethod);
+        List<RolePower> rolePowers = rolePowerDao.listObjects(CollectionsOpt.createHashMap("optCode", optMethod.getOptCode()));
+        if(rolePowers==null || rolePowers.size()==0){
+            RolePower rolePower=new RolePower();
+            rolePower.setOptCode(optMethod.getOptCode());
+            rolePower.setRoleCode("public");
+            rolePower.setCreateDate(new Date());
+            rolePower.setUpdateDate(new Date());
+            rolePowerDao.saveNewRolePower(rolePower);
+        }
         return optMethod;
     }
 
 
+    @Override
     public void deleteOptMethod(String optMethod) {
         optMethodDao.deleteObjectById(optMethod);
     }
-
 
 
     /**
@@ -522,9 +532,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         //edit by zhuxw  代码从原框架迁移过来，可和其它地方合并
         List<RoleInfo> roles = new ArrayList<>();
         //所有的用户 都要添加这个角色
-        roles.add(new RoleInfo("public"+userinfo.getTopUnit(), "general public", "G",
+        roles.add(new RoleInfo("public" + userinfo.getTopUnit(), "general public", "G",
             userinfo.getTopUnit(), "T", "general public"));
-        List<FVUserRoles> userRolesList = userRoleDao.listUserRolesByTopUnit(userinfo.getTopUnit(),userinfo.getUserCode());
+        List<FVUserRoles> userRolesList = userRoleDao.listUserRolesByTopUnit(userinfo.getTopUnit(), userinfo.getUserCode());
         if (userRolesList != null) {
             for (FVUserRoles role : userRolesList) {
                 RoleInfo roleInfo = new RoleInfo();
@@ -546,13 +556,13 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                 }
             }
         }
-        if(userRolesList!=null){
-            String[] userRole=new String[userRolesList.size()];
-            for(int i=0;i<userRolesList.size();i++){
-                userRole[i]=userRolesList.get(i).getRoleCode();
+        if (userRolesList != null) {
+            String[] userRole = new String[userRolesList.size()];
+            for (int i = 0; i < userRolesList.size(); i++) {
+                userRole[i] = userRolesList.get(i).getRoleCode();
             }
-            List<OptMethod> userOptMethod=optMethodDao.listUserOptMethodByRoleCode(userRole);
-            if(userOptMethod!=null){
+            List<OptMethod> userOptMethod = optMethodDao.listUserOptMethodByRoleCode(userRole);
+            if (userOptMethod != null) {
                 for (OptMethod opt : userOptMethod) {
                     if (!StringUtils.isBlank(opt.getOptMethod())) {
                         userOptList.put(opt.getOptCode(), opt.getOptId());
