@@ -1,5 +1,6 @@
 package com.centit.framework.system.controller;
 
+import com.centit.fileserver.utils.UploadDownloadUtils;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
@@ -21,8 +22,10 @@ import com.centit.support.common.JavaBeanMetaData;
 import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
+import com.centit.support.file.FileSystemOpt;
 import com.centit.support.report.ExcelImportUtil;
 import io.swagger.annotations.*;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -39,6 +42,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -665,7 +669,7 @@ public class DataDictionaryController extends BaseController {
                                            HttpServletRequest request, HttpServletResponse response)
         throws IOException {
         try {
-            InputStream fileInfo = request.getInputStream();
+            InputStream fileInfo = UploadDownloadUtils.fetchInputStreamFromMultipartResolver(request).getRight();
             List<Map<String, Object>> excelList = ExcelImportUtil.loadMapFromExcelSheet(fileInfo, 0);
             List<DataDictionary> object = new ArrayList<>();
             JavaBeanMetaData javaBeanMetaData = JavaBeanMetaData.createBeanMetaDataFromType(DataDictionary.class);
