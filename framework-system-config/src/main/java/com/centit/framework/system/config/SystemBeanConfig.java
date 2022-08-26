@@ -1,10 +1,7 @@
 package com.centit.framework.system.config;
 
-import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.security.model.CentitUserDetailsService;
 import com.centit.framework.system.security.DaoUserDetailsService;
-import com.centit.framework.system.service.impl.DBPlatformEnvironment;
-import com.centit.support.algorithm.BooleanBaseOpt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.context.EnvironmentAware;

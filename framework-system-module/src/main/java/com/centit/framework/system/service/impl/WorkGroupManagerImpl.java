@@ -1,7 +1,5 @@
 package com.centit.framework.system.service.impl;
 
-import com.centit.framework.jdbc.dao.DatabaseOptUtils;
-import com.centit.framework.system.dao.RoleInfoDao;
 import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.dao.WorkGroupDao;
 import com.centit.framework.system.po.UserRole;
