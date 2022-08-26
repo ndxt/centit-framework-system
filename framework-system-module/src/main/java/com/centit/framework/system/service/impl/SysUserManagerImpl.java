@@ -121,17 +121,19 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @Transactional
     public void resetPwd(String userCode) {
-        UserInfo user = userInfoDao.getUserByCode(userCode);
+        throw new ObjectException("不能重置密码，请设置符合安全强度要求的密码！");
+        /*UserInfo user = userInfoDao.getUserByCode(userCode);
         user.setUserPin(getDefaultPassword(user.getUserCode()));
-        userInfoDao.updateUser(user);
+        userInfoDao.updateUser(user);*/
     }
 
     @Override
     @Transactional
     public void resetPwd(String[] userCodes) {
-        for (String userCode : userCodes) {
+        throw new ObjectException("不能重置密码，请逐个设置符合安全强度要求的密码！");
+        /*for (String userCode : userCodes) {
             resetPwd(userCode);
-        }
+        }*/
     }
 
     /**
@@ -150,6 +152,9 @@ public class SysUserManagerImpl implements SysUserManager {
         if (user.getUserPin().equals(passwordEncoder.encodePassword(newPassword, user.getUserCode())))
             throw new ObjectException("新密码和旧密码一致，请重新输入新密码！");
 
+        if (CentitPasswordEncoder.checkPasswordStrength(newPassword, passwordMinLength ) < passwordStrength) {
+            throw new ObjectException("新的密码强度太低，请输入符合要求的密码！");
+        }
         user.setUserPin(passwordEncoder.encodePassword(newPassword, user.getUserCode()));
         userInfoDao.updateUser(user);
     }
