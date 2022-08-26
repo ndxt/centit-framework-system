@@ -10,6 +10,8 @@ import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysUserManager;
+import com.centit.support.algorithm.StringBaseOpt;
+import com.centit.support.algorithm.UuidOpt;
 import com.centit.support.common.ObjectException;
 import com.centit.support.compiler.Pretreatment;
 import com.centit.support.database.utils.PageDesc;
@@ -50,11 +52,17 @@ public class SysUserManagerImpl implements SysUserManager {
     @Autowired
     private UnitInfoDao unitInfoDao;
 
+    @Value("${login.password.minLength:8}")
+    private int passwordMinLength;
+
+    @Value("${login.password.strength:3}")
+    private int passwordStrength;
+
     @Value("${framework.password.default.generator:}")
     protected String defaultPassWorkFormat;
 
     private String getDefaultPassword(String userCode) {
-        String rawPass = "000000";
+        String rawPass = UuidOpt.randomString(passwordMinLength);
         if(StringUtils.isNotBlank(defaultPassWorkFormat)){
             rawPass = Pretreatment.mapTemplateString(defaultPassWorkFormat,userCode);
         }
@@ -62,7 +70,6 @@ public class SysUserManagerImpl implements SysUserManager {
     }
 
     private String getPasswordOnCondition(UserInfo userInfo) {
-        String rawPass = "000000";
         String userCode = userInfo.getUserCode();
         String userPwd = userInfo.getUserPwd();
 
@@ -78,15 +85,18 @@ public class SysUserManagerImpl implements SysUserManager {
                 //如果已经存在联系方式，不允许设置密码
                 return null;
             }else if (StringUtils.isNotBlank(userPwd)){
+                // CentitPasswordEncoder.checkPasswordStrength(userPwd, passwordMinLength ) > passwordStrength){
+                // 密码必须符合一定的复杂度，否则自动生成
                 return passwordEncoder.createPassword(userPwd, userCode);
             }
         }
-
+        String rawPass = UuidOpt.randomString(passwordMinLength);
         if(StringUtils.isNotBlank(defaultPassWorkFormat)){
-            rawPass = Pretreatment.mapTemplateString(defaultPassWorkFormat,userCode);
+            rawPass = Pretreatment.mapTemplateString(defaultPassWorkFormat, userCode);
         }
         return passwordEncoder.createPassword(rawPass, userCode);
     }
+
     @Override
     @Transactional
     public List<RoleInfo> listUserValidRoles(String userCode) {
@@ -152,6 +162,11 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @Transactional
     public void forceSetPassword(String userCode, String newPassword){
+
+        if (CentitPasswordEncoder.checkPasswordStrength(newPassword, passwordMinLength ) < passwordStrength) {
+            throw new ObjectException("新的密码强度太低，请输入符合要求的密码！");
+        }
+
         forceSetPasswordPermissionCheck(userCode);
         UserInfo user = userInfoDao.getUserByCode(userCode);
         user.setUserPin(passwordEncoder.encodePassword(newPassword, user.getUserCode()));
@@ -173,6 +188,7 @@ public class SysUserManagerImpl implements SysUserManager {
             throw new ObjectException(ResponseData.ERROR_PRECONDITION_FAILED,"该用户不允许重置密码");
         }
     }
+
     @Override
     @Transactional
     public boolean checkIfUserExists(UserInfo user) {
@@ -209,7 +225,9 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @Transactional
     public void saveNewUserInfo(UserInfo userInfo, UserUnit userUnit){
+
         userInfo.setUserPin(getPasswordOnCondition(userInfo));
+
         userInfo.setUserPwd(null);
         UnitInfo unitInfo = unitInfoDao.getObjectById(userInfo.getPrimaryUnit());
         if (null != unitInfo && StringUtils.isNotBlank(unitInfo.getTopUnit())) {
