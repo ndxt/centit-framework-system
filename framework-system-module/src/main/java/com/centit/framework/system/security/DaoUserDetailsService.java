@@ -76,9 +76,11 @@ public class DaoUserDetailsService
             ud = platformEnvironment.loadUserDetailsByRegEmail(loginname);
         } else if(loginname.charAt(0) >='0' && loginname.charAt(0) <='9'){
             ud = platformEnvironment.loadUserDetailsByRegCellPhone(loginname);
-        } else {
+        }
+        if(ud == null){
             ud = platformEnvironment.loadUserDetailsByLoginName(loginname);
         }
+
         if(ud == null){
           throw new UsernameNotFoundException("登录名为"+loginname+"的用户不存在！");
         }
