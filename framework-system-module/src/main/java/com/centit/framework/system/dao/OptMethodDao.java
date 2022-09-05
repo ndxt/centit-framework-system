@@ -104,7 +104,7 @@ public class OptMethodDao extends BaseDaoImpl<OptMethod, String> {
         return getJdbcTemplate().execute(
             (ConnectionCallback<List<OptMethod>>) conn ->
                 OrmDaoUtils.queryObjectsByNamedParamsSql(conn, sql,
-                    CollectionsOpt.createHashMap(roleCodes,roleCodes), OptMethod.class));
+                    CollectionsOpt.createHashMap("roleCodes",roleCodes), OptMethod.class));
     }
 
     public void updateOptMethod(OptMethod optMethod) {
