@@ -556,7 +556,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                 }
             }
         }
-        if (userRolesList != null) {
+        if (userRolesList != null && userRolesList.size()>0) {
             String[] userRole = new String[userRolesList.size()];
             for (int i = 0; i < userRolesList.size(); i++) {
                 userRole[i] = userRolesList.get(i).getRoleCode();
