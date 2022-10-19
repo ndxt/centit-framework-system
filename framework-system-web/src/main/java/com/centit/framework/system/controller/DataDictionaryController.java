@@ -204,7 +204,7 @@ public class DataDictionaryController extends BaseController {
                 }
                 d.setCatalogCode(dataCatalog.getCatalogCode());
             }
-            dataDictionaryManager.saveCatalogIncludeDataPiece(dataCatalog, isAdmin);
+            dataDictionaryManager.saveCatalogIncludeDataPiece(dataCatalog);
         }
         JsonResultUtils.writeSingleDataJson(dataCatalog.getCatalogCode(), response);
     }
@@ -282,7 +282,7 @@ public class DataDictionaryController extends BaseController {
         }
         dbDataCatalog.addAllDataPiece(dataCatalog.getDataDictionaries());
         dataDictionaryManager.updateCatalog(dataCatalog);
-        dataDictionaryManager.saveCatalogIncludeDataPiece(dbDataCatalog, isAdmin);
+        dataDictionaryManager.saveCatalogIncludeDataPiece(dbDataCatalog);
         return ResponseData.successResponse;
     }
 
@@ -683,7 +683,7 @@ public class DataDictionaryController extends BaseController {
                 return null;
             }
             dataCatalog.getDataDictionaries().addAll(object);
-            dataDictionaryManager.saveCatalogIncludeDataPiece(dataCatalog, false);
+            dataDictionaryManager.saveCatalogIncludeDataPiece(dataCatalog);
             return dataCatalog;
         } catch (ObjectException | IllegalAccessException | InstantiationException e) {
             JsonResultUtils.writeMessageJson(e.getMessage(), response);
