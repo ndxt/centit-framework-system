@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.DictionaryMapUtils;
+import com.centit.framework.model.basedata.IUserInfo;
 import com.centit.framework.system.dao.UserInfoDao;
 import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.po.FVUserRoles;
@@ -55,8 +56,12 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
         for (Object a : userRoles) {
             JSONObject aa = (JSONObject) a;
             String userCode = aa.getString("userCode");
-            String loginName = CodeRepositoryUtil.getUserInfoByCode(StringBaseOpt.objectToString(filterMap.get("topUnit")), userCode).getLoginName();
-            aa.put("loginName", loginName);
+            IUserInfo userinfo = CodeRepositoryUtil.getUserInfoByCode(
+                StringBaseOpt.objectToString(filterMap.get("topUnit")), userCode);
+            if(userinfo!=null) {
+                String loginName = userinfo.getLoginName();
+                aa.put("loginName", loginName);
+            }
         }
         return DictionaryMapUtils.mapJsonArray(userRoles, UserRole.class);
     }
