@@ -24,7 +24,7 @@ import java.util.*;
 
 @Service("dataDictionaryManager")
 public class DataDictionaryManagerImpl implements
-        DataDictionaryManager {
+    DataDictionaryManager {
 
     protected Logger logger = LoggerFactory.getLogger(DataDictionaryManagerImpl.class);
 
@@ -40,14 +40,14 @@ public class DataDictionaryManagerImpl implements
     @Override
     @Transactional
     public List<DataDictionary> getDataDictionary(String catalogCode) {
-        logger.info("缓存数据字典  DataDictionary ：" + catalogCode+" ......");
+        logger.info("缓存数据字典  DataDictionary ：" + catalogCode + " ......");
         return dictionaryDao.listDataDictionary(catalogCode);
         //logger.info("loading DataDictionary end");
     }
 
     @Override
     @Transactional
-    public DataCatalog getCatalogIncludeDataPiece(String catalogCode){
+    public DataCatalog getCatalogIncludeDataPiece(String catalogCode) {
         DataCatalog dc = dataCatalogDao.getObjectById(catalogCode);
         dc.addAllDataPiece(dictionaryDao.listDataDictionary(catalogCode));
         return dc;
@@ -55,37 +55,32 @@ public class DataDictionaryManagerImpl implements
 
     @Override
     @Transactional
-    public List<DataDictionary> saveCatalogIncludeDataPiece(DataCatalog dataCatalog,boolean isAdmin){
+    public List<DataDictionary> saveCatalogIncludeDataPiece(DataCatalog dataCatalog) {
 //        dataCatalogDao.updateOptMethod(dataCatalog);
         List<DataDictionary> oldData = dictionaryDao.listDataDictionary(dataCatalog.getCatalogCode());
         List<DataDictionary> newData = dataCatalog.getDataDictionaries();
-        Triple<List<DataDictionary>, List<Pair<DataDictionary,DataDictionary>>, List<DataDictionary>>
+        Triple<List<DataDictionary>, List<Pair<DataDictionary, DataDictionary>>, List<DataDictionary>>
             dbOptList = CollectionsOpt.compareTwoList(oldData, newData,
-                  Comparator.comparing(DataDictionary::getDataCode));
+            Comparator.comparing(DataDictionary::getDataCode));
 
-         if(dbOptList.getRight()!=null){
-            for(DataDictionary dp: dbOptList.getRight() ){
-                if("U".equals(dp.getDataStyle()) || (isAdmin && "S".equals(dp.getDataStyle()) ) ){
-                    dictionaryDao.deleteObject(dp);
-                }
+        if (dbOptList.getRight() != null) {
+            for (DataDictionary dp : dbOptList.getRight()) {
+                dictionaryDao.deleteObject(dp);
             }
         }
-        if(dbOptList.getLeft() != null) {
+        if (dbOptList.getLeft() != null) {
             for (DataDictionary dp : dbOptList.getLeft()) {
                 //if ((isAdmin || !"F".equals(dp.getDataStyle()))) {
-                    dictionaryDao.saveNewObject(dp);
+                dictionaryDao.saveNewObject(dp);
                 //}
             }
         }
 
-        if(null != dbOptList.getMiddle()){
-            for(Pair<DataDictionary,DataDictionary> updateDp: dbOptList.getMiddle()){
+        if (null != dbOptList.getMiddle()) {
+            for (Pair<DataDictionary, DataDictionary> updateDp : dbOptList.getMiddle()) {
                 DataDictionary oldD = updateDp.getLeft();
                 DataDictionary newD = updateDp.getRight();
-
-                if(isAdmin || "U".equals(oldD.getDataStyle())){
-                    dictionaryDao.updateDictionary(newD);
-                }
+                dictionaryDao.updateDictionary(newD);
             }
         }
         CodeRepositoryCache.evictCache("DataCatalog");
@@ -95,21 +90,21 @@ public class DataDictionaryManagerImpl implements
 
     @Override
     @Transactional
-    public void deleteDataDictionary(String catalogCode){
+    public void deleteDataDictionary(String catalogCode) {
         dictionaryDao.deleteDictionary(catalogCode);
         dataCatalogDao.deleteObjectById(catalogCode);
         CodeRepositoryCache.evictCache("DataDictionary", catalogCode);
     }
 
     @Override
-    @Transactional(propagation=Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED)
     public void deleteDataDictionaryPiece(DataDictionaryId dd) {
         dictionaryDao.deleteObjectById(dd);
         CodeRepositoryCache.evictCache("DataDictionary", dd.getCatalogCode());
     }
 
     @Override
-    @Transactional(propagation=Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED)
     public void saveDataDictionaryPiece(DataDictionary dd) {
         dictionaryDao.mergeObject(dd);
         CodeRepositoryCache.evictCache("DataDictionary", dd.getCatalogCode());
@@ -158,7 +153,7 @@ public class DataDictionaryManagerImpl implements
     }
 
     @Transactional
-    public List<DataCatalog> listAllDataCatalog(Map<String, Object> filterMap){
+    public List<DataCatalog> listAllDataCatalog(Map<String, Object> filterMap) {
         return dataCatalogDao.listObjects(filterMap);
     }
 
@@ -168,7 +163,7 @@ public class DataDictionaryManagerImpl implements
     }
 
     @Transactional
-    public List<DataDictionary> getWholeDictionary(Collection<String> catalogCodes){
+    public List<DataDictionary> getWholeDictionary(Collection<String> catalogCodes) {
         Map<String, Object> filterMap = new HashMap<>();
         filterMap.put("catalogcodes", CollectionsOpt.listToArray(catalogCodes));
         return dictionaryDao.getWholeDictionary(filterMap);
@@ -183,8 +178,8 @@ public class DataDictionaryManagerImpl implements
     @Override
     @Transactional
     public int existCatalogName(String catalogName) {
-        HashMap<String,Object> map = new HashMap();
-        map.put("catalogName",catalogName);
+        HashMap<String, Object> map = new HashMap();
+        map.put("catalogName", catalogName);
         return dataCatalogDao.countObject(map);
     }
 
@@ -197,7 +192,7 @@ public class DataDictionaryManagerImpl implements
 
     @Override
     @Transactional
-    public void saveNewObject(DataCatalog dataCatalog){
+    public void saveNewObject(DataCatalog dataCatalog) {
         dataCatalogDao.saveNewObject(dataCatalog);
     }
 

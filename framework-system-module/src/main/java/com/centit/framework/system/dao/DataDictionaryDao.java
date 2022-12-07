@@ -17,6 +17,7 @@ public class DataDictionaryDao
     extends BaseDaoImpl<DataDictionary, DataDictionaryId>{
 
     // 转换主键中的 字段描述 对应关系
+    @Override
     public Map<String, String> getFilterField() {
         Map<String, String> filterField = new HashMap<>();
         filterField.put("datacode", CodeBook.EQUAL_HQL_ID);
@@ -25,13 +26,11 @@ public class DataDictionaryDao
         filterField.put("NP_system", "dataStyle = 'S'");
         filterField.put("dataValue", CodeBook.LIKE_HQL_ID);
         filterField.put("catalogcodes", "catalogcode in (:catalogcodes)");
+        filterField.put("treeCode","data_code=:treeCode or extra_code=:treeCode");
         return filterField;
     }
 
-    @Override
-    public List<DataDictionary> listObjects(Map<String, Object> filterDescMap) {
-        return this.listObjectsByProperties(filterDescMap);
-    }
+
 
     public DataDictionary getObjectById(DataDictionaryId dd) {
         return super.getObjectById(dd);

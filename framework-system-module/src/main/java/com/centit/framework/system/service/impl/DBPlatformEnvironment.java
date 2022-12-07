@@ -554,7 +554,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         if (publicOptMethod != null) {
             for (OptMethod opt : publicOptMethod) {
                 if (!StringUtils.isBlank(opt.getOptMethod())) {
-                    userOptList.put(opt.getOptCode(), opt.getOptId());
+                    userOptList.put(opt.getOptCode(), opt.getOptName());
                 }
             }
         }
@@ -567,7 +567,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             if (userOptMethod != null) {
                 for (OptMethod opt : userOptMethod) {
                     if (!StringUtils.isBlank(opt.getOptMethod())) {
-                        userOptList.put(opt.getOptCode(), opt.getOptId());
+                        userOptList.put(opt.getOptCode(), opt.getOptName());
                     }
                 }
             }

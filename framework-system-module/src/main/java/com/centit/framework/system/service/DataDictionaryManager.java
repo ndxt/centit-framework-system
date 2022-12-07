@@ -35,7 +35,7 @@ public interface DataDictionaryManager {
 
     DataCatalog getCatalogIncludeDataPiece(String catalogCode);
 
-    List<DataDictionary> saveCatalogIncludeDataPiece(DataCatalog dataCatalog,boolean isAdmin);
+    List<DataDictionary> saveCatalogIncludeDataPiece(DataCatalog dataCatalog);
 
     void deleteDataDictionary(String catalogCode);
 
