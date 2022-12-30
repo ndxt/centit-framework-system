@@ -256,10 +256,6 @@ public class UnitInfoController extends BaseController {
         }
 
         return ResponseData.successResponse;
-        /********log*********/
-//        OperationLogCenter.logDeleteObject(request,optId,unitInfo.getUnitCode(), OperationLog.P_OPT_LOG_METHOD_D,
-//                "删除机构"+unitInfo.getUnitName(), unitInfo);
-        /********log*********/
     }
 
     /*
@@ -296,11 +292,6 @@ public class UnitInfoController extends BaseController {
         sysUnitManager.saveNewUnitInfo(unitInfo);
 
         return ResponseData.makeResponseData(unitInfo);
-
-        /********log*********/
-//        OperationLogCenter.logNewObject(request,optId,unitInfo.getUnitCode(),
-//                OperationLog.P_OPT_LOG_METHOD_C,  "新增机构" , unitInfo);
-        /********log*********/
     }
 
     /*
@@ -379,11 +370,6 @@ public class UnitInfoController extends BaseController {
         sysUnitManager.updateUnitInfo(unitInfo);
 
         return ResponseData.makeResponseData(unitInfo);
-
-        /********log*********/
-//        OperationLogCenter.logUpdateObject(request, optId, unitCode, OperationLog.P_OPT_LOG_METHOD_U,
-//                "更新机构信息", unitInfo, oldValue);
-        /********log*********/
     }
 
     /*
@@ -414,16 +400,8 @@ public class UnitInfoController extends BaseController {
         if (!"T".equals(statusValue) && !"F".equals(statusValue)) {
             return ResponseData.makeErrorMessage("机构状态不正确");
         }
-
         sysUnitManager.changeStatus(unitCode, statusValue);
-
         return ResponseData.successResponse;
-
-        /********log*********/
-//         String optContent = "更新机构状态,机构名称:" + CodeRepositoryUtil.getCode(CodeRepositoryUtil.UNIT_CODE, unitCode) + ",机构是否启用:" + ("T".equals
-//                (statusValue) ? "是" : "否");
-//        OperationLogCenter.log(request,optId,unitCode, OperationLog.P_OPT_LOG_METHOD_U,  optContent);
-        /********log*********/
     }
 
     /*

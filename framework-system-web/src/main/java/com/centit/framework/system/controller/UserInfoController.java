@@ -184,10 +184,6 @@ public class UserInfoController extends BaseController {
         sysUserManager.saveNewUserInfo(userInfo, userUnit);
 
         return ResponseData.makeResponseData(userInfo);
-
-        /********log*********/
-//        OperationLogCenter.logNewObject(request,optId,userInfo.getUserCode(),
-//                OperationLog.P_OPT_LOG_METHOD_C,  "新增用户", userInfo);
     }
 
     /*
@@ -480,11 +476,6 @@ public class UserInfoController extends BaseController {
             } else {
                 return ResponseData.makeErrorMessage("该用户不存在");
             }
-
-            /********log*********/
-//            OperationLogCenter.logDeleteObject(request, optId, userCode, OperationLog.P_OPT_LOG_METHOD_D,
-//                    "删除用户"+userInfo.getUserName(), userInfo);
-            /********log*********/
         }
         return ResponseData.successResponse;
     }

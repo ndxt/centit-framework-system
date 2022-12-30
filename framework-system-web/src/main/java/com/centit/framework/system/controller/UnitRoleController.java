@@ -200,11 +200,6 @@ public class UnitRoleController extends BaseController {
             sysUnitRoleManager.mergeUnitRole(unitRole);
         }
         return ResponseData.successResponse;
-
-        /********log*********/
-        //OperationLogCenter.logNewObject(request,optId, unitRole.getUnitCode()+"-"+ unitRole.getRoleCode(),
-        //OperationLog.P_OPT_LOG_METHOD_C, "新增用户角色关联" , unitCodes);
-        /********log*********/
     }
 
     /*
@@ -266,10 +261,6 @@ public class UnitRoleController extends BaseController {
             UnitRole dbUnitRole = sysUnitRoleManager.getUnitRoleById(unitCode, roleCode);
             if (dbUnitRole != null) {
                 sysUnitRoleManager.deleteUnitRole(unitCode, roleCode);
-                /********log*********/
-                //OperationLogCenter.logDeleteObject(request, optId, unitCode + "-" + roleCode,
-                //OperationLog.P_OPT_LOG_METHOD_D, "删除用户角色关联信息", dbUnitRole);
-                /********log*********/
             }
         }
         return ResponseData.successResponse;

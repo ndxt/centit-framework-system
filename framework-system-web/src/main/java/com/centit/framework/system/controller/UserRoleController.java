@@ -349,11 +349,6 @@ public class UserRoleController extends BaseController {
             sysUserRoleManager.mergeObject(userRole);
         }
         return ResponseData.successResponse;
-
-        /********log*********/
-//        OperationLogCenter.logNewObject(request,optId, userRole.getUserCode()+"-"+ userRole.getRoleCode(),
-//                OperationLog.P_OPT_LOG_METHOD_C, "新增用户角色关联" , userRole);
-        /********log*********/
     }
 
 
@@ -388,11 +383,6 @@ public class UserRoleController extends BaseController {
         }
         sysUserRoleManager.mergeObject(dbUserRole, userRole);
         return ResponseData.makeResponseData(userRole);
-
-        /********log*********/
-//        OperationLogCenter.logUpdateObject(request,optId,dbUserRole.getUserCode(),
-//                OperationLog.P_OPT_LOG_METHOD_U,"更改用户角色信息:" + JSON.toJSONString(userRole.getId()) ,userRole,dbUserRole);
-        /********log*********/
     }
 
     /*
