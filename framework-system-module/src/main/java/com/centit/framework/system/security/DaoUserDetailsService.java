@@ -82,7 +82,7 @@ public class DaoUserDetailsService
         }
 
         if(ud == null){
-          throw new UsernameNotFoundException("登录名为"+loginname+"的用户不存在！");
+          throw new UsernameNotFoundException("登录名或密码错误！");
         }
         return ud;
     }
