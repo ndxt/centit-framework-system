@@ -37,6 +37,11 @@ public class UserSyncDirectoryManagerImpl implements UserSyncDirectoryManager {
     }
 
     @Override
+    public List<UserSyncDirectory> listLdapDirectory() {
+        return userSyncDirectoryDao.listObjectsByProperty("type", "LDAP");
+    }
+
+    @Override
     public List<UserSyncDirectory> listObjects(Map<String, Object> filterMap, PageDesc pageDesc, String userCode) {
         UserInfo userInfo = userInfoDao.getUserByCode(userCode);
         UnitInfo unitInfo = unitInfoDao.getObjectById(userInfo.getPrimaryUnit());

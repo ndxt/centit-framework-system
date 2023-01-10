@@ -13,6 +13,8 @@ public interface UserSyncDirectoryManager {
 
     List<UserSyncDirectory> listObjects();
 
+    List<UserSyncDirectory> listLdapDirectory();
+
     List<UserSyncDirectory> listObjects(Map<String, Object> filterMap, PageDesc pageDesc, String userCode);
 
     UserSyncDirectory getObjectById(String Id);
