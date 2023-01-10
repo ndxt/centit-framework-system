@@ -54,8 +54,8 @@ public class UserSyncDirectory implements java.io.Serializable {
     private String userPwd;
 
     @Column(name = "SEARCH_BASE")
-    @Length(max = 32)
-    @ApiModelProperty(value = "标签", name = "searchBase")
+    @Length(max = 4096)
+    @ApiModelProperty(value = "拓展参数JSON", name = "searchBase")
     private String searchBase;
 
     @Column(name = "DEFAULT_RANK")
