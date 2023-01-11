@@ -1,9 +1,12 @@
 package com.centit.framework.system.po;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.centit.support.database.orm.GeneratorType;
 import com.centit.support.database.orm.ValueGenerator;
+import com.centit.support.security.AESSecurityUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Column;
@@ -122,8 +125,25 @@ public class UserSyncDirectory implements java.io.Serializable {
         return userPwd;
     }
 
-    public void setUserPwd(String userPwd) {
-        this.userPwd = userPwd;
+
+    public void setUserPwd(String password) {
+        if (StringUtils.isNotBlank(password)) {
+            if (password.startsWith("cipher:")) {
+                this.userPwd = password;
+            } else {
+                this.userPwd = "cipher:" + AESSecurityUtils.encryptAndBase64(
+                    password, AESSecurityUtils.AES_DEFAULT_KEY);
+            }
+        }
+    }
+
+    @JSONField(serialize = false)
+    public String getClearPassword() {
+        if(userPwd.startsWith("cipher:"))
+         return AESSecurityUtils.decryptBase64String(
+            userPwd.substring(7), AESSecurityUtils.AES_DEFAULT_KEY);
+        else
+            return userPwd;
     }
 
     public String getSearchBase() {
