@@ -170,8 +170,8 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
 
     /**
      * 统计租户下机构个数
-     * @param topUnit
-     * @return
+     * @param topUnit 用户租户
+     * @return 机构个数
      */
     public int countUnitByTopUnit(String topUnit) {
         String sql = " SELECT COUNT(1) COUNT FROM F_UNITINFO WHERE 1=1 AND IS_VALID = 'T'  [  :topUnit | AND TOP_UNIT = :topUnit ] ";

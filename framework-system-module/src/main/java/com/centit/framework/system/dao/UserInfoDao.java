@@ -152,9 +152,9 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     /**
      * 根据 topUnit，userName，queryByUnit 查询用户信息
      * 用户信息包括用户基本信息，用户所属单位code和名称
-     * @param filterMap
-     * @param pageDesc
-     * @return
+     * @param filterMap 过滤条件
+     * @param pageDesc PageDesc
+     * @return JSONArray
      */
     @Transactional
     public JSONArray listUsersWithUnit(Map<String, Object> filterMap, PageDesc pageDesc) {

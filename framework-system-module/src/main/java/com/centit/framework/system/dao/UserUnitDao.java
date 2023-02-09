@@ -217,8 +217,8 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
 
     /**
      * 统计单位下的用户数量
-     * @param topUnit
-     * @return
+     * @param topUnit 租户信息
+     * @return 用户个数
      */
     public int countUserByTopUnit(String topUnit) {
         String sql = " SELECT COUNT(DISTINCT USER_CODE) COUNT FROM F_USERUNIT A JOIN F_UNITINFO B ON ( A.UNIT_CODE = B.UNIT_CODE )  " +

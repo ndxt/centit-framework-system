@@ -68,7 +68,7 @@ public class WorkGroupController extends BaseController {
     @Value("${tio.url:}")
     private String tioServer;
 
-    /**
+    /*
      * 查询所有   项目库授权信息  列表
      *
      * @return {data:[]}
@@ -89,7 +89,7 @@ public class WorkGroupController extends BaseController {
         return PageQueryResult.createResult(jsonArray, pageDesc);
     }
 
-    /**
+    /*
      * 查询查询租户中管理员列表
      *
      * @return {data:[]}
@@ -149,7 +149,7 @@ public class WorkGroupController extends BaseController {
     }
 
 
-    /**
+    /*
      * 新增 项目组成员
      *
      * @param workGroup {@link WorkGroup}
@@ -169,7 +169,7 @@ public class WorkGroupController extends BaseController {
     }
 
 
-    /**
+    /*
      * 新增 项目组成员
      *
      * @param workGroups {@link WorkGroup}
@@ -249,7 +249,7 @@ public class WorkGroupController extends BaseController {
         }
     }
 
-    /**
+    /*
      * 删除单个  项目库授权信息
      */
     @RequestMapping(value = "/{groupId}/{userCode}", method = {RequestMethod.DELETE})
@@ -273,7 +273,7 @@ public class WorkGroupController extends BaseController {
         workGroupManager.deleteWorkGroup(groupId, userCode, WorkGroup.WORKGROUP_ROLE_CODE_MEMBER);
     }
 
-    /**
+    /*
      * 更新 项目库授权信息
      *
      * @param workGroup {@link WorkGroup}
@@ -292,7 +292,7 @@ public class WorkGroupController extends BaseController {
     }
 
 
-    /**
+    /*
      * 组长移交
      */
     @RequestMapping(value = "hand-over", method = {RequestMethod.PUT})

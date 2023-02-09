@@ -176,12 +176,6 @@ public class DataDictionaryController extends BaseController {
         return null == dbDataDictionary;
     }
 
-    /**
-     *
-     * @param dataCatalog
-     * @param request
-     * @param response
-     */
     @ApiOperation(value = "新增字典类别", notes = "新增字典类别")
     @ApiParam(name = "dataCatalog", value = "新增字典类别,输入框有提示的都是必填项", required = true)
     @RequestMapping(method = {RequestMethod.POST})
@@ -286,7 +280,7 @@ public class DataDictionaryController extends BaseController {
         return ResponseData.successResponse;
     }
 
-    /**
+    /*
      * 新增数据字典
      *
      * @param catalogCode    DataCatalog主键
@@ -324,7 +318,7 @@ public class DataDictionaryController extends BaseController {
         return dataDictionary;
     }
 
-    /**
+    /*
      * 更新数据字典
      *
      * @param catalogCode    DataCatalog主键
@@ -552,9 +546,8 @@ public class DataDictionaryController extends BaseController {
         return ResponseData.makeResponseData(datas);
     }
 
-    /**
+    /*
      * 获取字典的详细信息
-     *
      * @param catalogCode 数据字典的类别代码
      * @return result
      */
@@ -581,9 +574,7 @@ public class DataDictionaryController extends BaseController {
         return resData;
     }
 
-    /**
-     * 获取所有字典目录信息
-     *
+    /* 获取所有字典目录信息
      * @param request 请求体
      * @return result
      */

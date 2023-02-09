@@ -111,8 +111,8 @@ public class RoleInfoDao extends BaseDaoImpl<RoleInfo, String>{
 
     /**
      * 根据optCode查询角色信息
-     * @param optCode
-     * @return
+     * @param optCode String
+     * @return List RoleInfo
      */
     public List<RoleInfo> listRoleInfoByOptCode(String optCode) {
         String sql = " SELECT B.ROLE_CODE, B.ROLE_NAME, B.ROLE_TYPE, B.UNIT_CODE, B.ROLE_DESC, B.UPDATE_DATE, B.CREATE_DATE, B.CREATOR, B.UPDATOR " +

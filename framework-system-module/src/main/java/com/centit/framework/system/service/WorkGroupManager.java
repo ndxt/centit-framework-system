@@ -32,8 +32,9 @@ public interface WorkGroupManager{
 
     /**
      * 通过osid 判断当前登录用户是否属于当前工作组成员
-     * @param osId
-     * @return
+     * @param osId String
+     * @param userCode String
+     * @return boolean
      */
     boolean  loginUserIsExistWorkGroup(String osId,String userCode);
 

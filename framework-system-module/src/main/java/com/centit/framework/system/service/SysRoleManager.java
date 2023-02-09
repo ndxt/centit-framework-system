@@ -35,9 +35,9 @@ public interface SysRoleManager{
 
     /**
      * 根据单位code更新角色权限
-     * @param roleInfo
-     * @param topUnit
-     * @return
+     * @param roleInfo RoleInfo
+     * @param topUnit String
+     * @return List RolePower
      */
     List<RolePower> updateRolePower(RoleInfo roleInfo,String topUnit);
 
@@ -62,8 +62,8 @@ public interface SysRoleManager{
 
     /**
      * 根据optCode查询角色信息
-     * @param optCode
-     * @return
+     * @param optCode String
+     * @return List RoleInfo
      */
     List<RoleInfo> listRoleInfoByOptCode(String optCode);
 
