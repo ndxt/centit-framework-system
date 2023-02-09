@@ -78,6 +78,8 @@ public class DataDictionary implements IDataDictionary, java.io.Serializable {
 
     @Column(name = "CREATE_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
+    @ValueGenerator(strategy = GeneratorType.FUNCTION, occasion = GeneratorTime.NEW,
+        condition = GeneratorCondition.IFNULL, value="today()" )
     protected Date createDate;
 
     @Column(name = "LAST_MODIFY_DATE")
