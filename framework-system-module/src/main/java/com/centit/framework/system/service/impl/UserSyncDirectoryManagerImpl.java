@@ -7,6 +7,7 @@ import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserSyncDirectory;
 import com.centit.framework.system.service.UserSyncDirectoryManager;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -38,7 +39,7 @@ public class UserSyncDirectoryManagerImpl implements UserSyncDirectoryManager {
 
     @Override
     public List<UserSyncDirectory> listLdapDirectory() {
-        return userSyncDirectoryDao.listObjectsByProperty("type", "LDAP");
+        return userSyncDirectoryDao.listObjectsByProperties(CollectionsOpt.createHashMap("type", "LDAP"));
     }
 
     @Override
@@ -56,7 +57,7 @@ public class UserSyncDirectoryManagerImpl implements UserSyncDirectoryManager {
             }
         }
         filterMap.put("topUnit", topUnit);
-        return userSyncDirectoryDao.listObjects(filterMap, pageDesc);
+        return userSyncDirectoryDao.listObjectsByProperties(filterMap, pageDesc);
     }
 
     @Override

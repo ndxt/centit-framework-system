@@ -310,7 +310,7 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @Transactional
     public List<UserInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return userInfoDao.listObjects(filterMap,pageDesc);
+        return userInfoDao.listObjectsByProperties(filterMap,pageDesc);
     }
     @Override
     public JSONArray listObjectsByUnit(Map<String, Object> filterMap, PageDesc pageDesc){

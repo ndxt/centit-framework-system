@@ -41,13 +41,13 @@ public class DataDictionaryDao
     }
 
     public List<DataDictionary> getWholeDictionary(Map<String, Object> filterMap){
-        return listObjects(filterMap);
+        return listObjectsByProperties(filterMap);
 
     }
 
     @Transactional
     public List<DataDictionary> listDataDictionary(String catalogCode) {
-        return listObjectsByProperty("catalogCode", catalogCode);
+        return listObjectsByProperties(CollectionsOpt.createHashMap("catalogCode", catalogCode));
     }
 
     @Transactional

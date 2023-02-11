@@ -82,13 +82,13 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
 
     @Override
     public List<WorkGroup> listWorkGroup(Map<String, Object> param, PageDesc pageDesc) {
-        return workGroupDao.listObjects(param, pageDesc);
+        return workGroupDao.listObjectsByProperties(param, pageDesc);
     }
 
     @Override
     public int countWorkGroup(Map<String, Object> param) {
 
-        return workGroupDao.countObject(param);
+        return workGroupDao.countObjectByProperties(param);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
         String[] osids = osId.split(",");
         Map<String, Object> param = new HashMap<>();
         param.put("groupId_in", osids);
-        List<WorkGroup> workGroups = workGroupDao.listObjects(param, null);
+        List<WorkGroup> workGroups = workGroupDao.listObjectsByProperties(param);
         for (WorkGroup workGroup : workGroups) {
             if (workGroup.getWorkGroupParameter().getUserCode().equals(userCode)) {
                 return true;

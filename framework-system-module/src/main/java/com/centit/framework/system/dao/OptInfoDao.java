@@ -104,7 +104,7 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
     }
 
     public List<OptInfo> listObjectByParentOptid(String optId){
-        return this.listObjectsByProperty("preOptId", optId);
+        return this.listObjectsByProperties(CollectionsOpt.createHashMap("preOptId", optId));
     }
 
 
@@ -133,7 +133,7 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
         }else {
             map.put("optTypes", types);
         }
-        return listObjects(map);
+        return listObjectsByProperties(map);
     }
 
     @Transactional

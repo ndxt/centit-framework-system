@@ -91,7 +91,6 @@ public class RoleInfoDao extends BaseDaoImpl<RoleInfo, String>{
         return listObjectsByProperties(filter);
     }
 
-    @Override
     public RoleInfo getObjectByProperty(String propertyName, Object propertyValue) {
         return super.getObjectByProperties(CollectionsOpt.createHashMap(propertyName, propertyValue));
     }

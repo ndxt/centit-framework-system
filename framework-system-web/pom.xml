@@ -5,7 +5,7 @@
     <parent>
         <artifactId>framework-system-parent</artifactId>
         <groupId>com.centit.framework</groupId>
-        <version>5.2-SNAPSHOT</version>
+        <version>5.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -25,11 +25,13 @@
             <artifactId>framework-system-module</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.centit.product</groupId>
             <artifactId>fileserver-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
@@ -60,7 +62,7 @@
         <dependency>
             <groupId>com.centit.support</groupId>
             <artifactId>centit-report-utils</artifactId>
-            <version>5.2-SNAPSHOT</version>
+            <version>5.3-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 

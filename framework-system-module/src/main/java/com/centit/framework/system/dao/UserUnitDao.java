@@ -48,7 +48,7 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
     }
 
     public List<UserUnit> listObjectsAll(Map<String, Object> filterMap) {
-        return listObjects(filterMap);
+        return listObjectsByProperties(filterMap);
     }
 
     public UserUnit getObjectById(String userUnitId) {
@@ -76,7 +76,7 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
 
     @Transactional
     public List<UserUnit> listUserUnitsByUserCode(String userId) {
-        List<UserUnit> ls = listObjectsByProperty("userCode", userId);
+        List<UserUnit> ls = listObjectsByProperties(CollectionsOpt.createHashMap("userCode", userId));
         /*
          * for (FUserunit usun : ls) {
          * usun.setUnitname(CodeRepositoryUtil.getValue
@@ -136,7 +136,7 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
 
     @Transactional
     public List<UserUnit> listUnitUsersByUnitCode(String unitCode) {
-        return listObjectsByProperty("unitCode", unitCode);
+        return listObjectsByProperties(CollectionsOpt.createHashMap("unitCode", unitCode));
     }
 
     /**
@@ -162,9 +162,9 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
             }
         } else {
             if ("gw".equals(roleType)) {
-              ls = listObjectsByProperty("userStation", roleCode);
+              ls = listObjectsByProperties(CollectionsOpt.createHashMap("userStation", roleCode));
             } else if ("xz".equals(roleType)) {
-              ls = listObjectsByProperty("userRank", roleCode);
+              ls = listObjectsByProperties(CollectionsOpt.createHashMap("userRank", roleCode));
             }
         }
         return ls;

@@ -61,7 +61,7 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
 
     @Transactional
     public List<RolePower> listRolePowersByRoleCode(String rolecode) {
-        return listObjectsByProperty("roleCode", rolecode);
+        return listObjectsByProperties(CollectionsOpt.createHashMap("roleCode", rolecode));
     }
 
     @Transactional

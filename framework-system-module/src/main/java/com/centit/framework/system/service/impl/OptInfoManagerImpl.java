@@ -40,7 +40,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Override
     @Transactional
     public boolean hasChildren(String optId){
-        return optInfoDao.countObject(
+        return optInfoDao.countObjectByProperties(
             CollectionsOpt.createHashMap("preOptId", optId)) > 0;
     }
 
@@ -223,7 +223,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Override
     @Transactional
     public int countSubOptInfo(String optId){
-        return optInfoDao.countObject(
+        return optInfoDao.countObjectByProperties(
             CollectionsOpt.createHashMap("preOptId", optId));
     }
 
@@ -359,7 +359,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
 
     @Override
     public List<OptInfo> listObjects(Map<String, Object> filterMap) {
-        return optInfoDao.listObjects(filterMap);
+        return optInfoDao.listObjectsByProperties(filterMap);
     }
 
     @Override

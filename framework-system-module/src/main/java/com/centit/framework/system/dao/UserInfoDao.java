@@ -95,10 +95,9 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     }
 
     @Transactional
-    @Override
     public List<UserInfo> listObjects(Map<String, Object> filterMap) {
         filterMap.put("currentDateTime", DatetimeOpt.currentSqlDate());
-        return super.listObjects(filterMap);
+        return super.listObjectsByProperties(filterMap);
     }
 
 
@@ -212,7 +211,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     }
 
     public List<UserInfo> listUsersByRoleCode(String roleCode) {
-        return super.listObjects(
+        return super.listObjectsByProperties(
             CollectionsOpt.createHashMap("roleCode", roleCode,
                 "currentDateTime", DatetimeOpt.currentSqlDate()));
     }

@@ -6,6 +6,7 @@ import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.service.SysUnitManager;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.ArrayUtils;
@@ -35,7 +36,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
 
     @Override
     public List<UnitInfo> listObjectsAsSort(Map<String, Object> searchColumn) {
-        List<UnitInfo> listObjects = unitInfoDao.listObjects(searchColumn);
+        List<UnitInfo> listObjects = unitInfoDao.listObjectsByProperties(searchColumn);
         return sortUnitInfos(listObjects,"0");
     }
 
@@ -155,13 +156,13 @@ public class SysUnitManagerImpl implements SysUnitManager {
     @Override
     @Transactional
     public List<UnitInfo> listObjects(Map<String, Object> filterMap) {
-        return unitInfoDao.listObjects(filterMap);
+        return unitInfoDao.listObjectsByProperties(filterMap);
     }
 
     @Override
     @Transactional
     public List<UnitInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return unitInfoDao.listObjects(filterMap,pageDesc);
+        return unitInfoDao.listObjectsByProperties(filterMap,pageDesc);
     }
 
     @Override
@@ -197,7 +198,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
         Map<String, Object> map = new HashMap<>();
         map.put("parentUnit", unitCode);
         map.put("isValid", "T");
-        return unitInfoDao.listObjects(map);
+        return unitInfoDao.listObjectsByProperties(map);
     }
 
     @Override
@@ -209,7 +210,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
         if (null != unitInfo) {
             filterMap.put("unitPath", unitInfo.getUnitPath());
         }
-        return  unitInfoDao.listObjects(filterMap);
+        return  unitInfoDao.listObjectsByProperties(filterMap);
     }
 
     /**
@@ -223,14 +224,14 @@ public class SysUnitManagerImpl implements SysUnitManager {
         UnitInfo unitInfo = unitInfoDao.getObjectById(unitCode);
         filterMap.put("unitPath", unitInfo.getUnitPath());
         filterMap.put("isValid", "T");
-        return unitInfoDao.listObjects(filterMap);
+        return unitInfoDao.listObjectsByProperties(filterMap);
     }
 
     @Override
     public boolean isDepNoUnique(String depNo, String unitCode) {
         Map<String, Object> filterMap = new HashMap<>(2);
         filterMap.put("depNo", depNo);
-        List<UnitInfo> list = unitInfoDao.listObjects(filterMap);
+        List<UnitInfo> list = unitInfoDao.listObjectsByProperties(filterMap);
         return list == null || list.size() == 0 || (unitCode != null && unitCode.equals(list.get(0).getUnitCode()));
     }
 
@@ -238,7 +239,7 @@ public class SysUnitManagerImpl implements SysUnitManager {
     public boolean isUnitWordUnique(String unitWord, String unitCode) {
         Map<String, Object> filterMap = new HashMap<>(2);
         filterMap.put("unitWord", unitWord);
-        List<UnitInfo> list = unitInfoDao.listObjects(filterMap);
+        List<UnitInfo> list = unitInfoDao.listObjectsByProperties(filterMap);
         return list == null || list.size() == 0 || (unitCode != null && unitCode.equals(list.get(0).getUnitCode()));
     }
 

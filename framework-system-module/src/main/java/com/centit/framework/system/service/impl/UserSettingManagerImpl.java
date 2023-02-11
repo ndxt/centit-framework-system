@@ -83,7 +83,7 @@ public class UserSettingManagerImpl implements UserSettingManager {
     @Override
     public JSONArray listObjects(Map<String, Object> searchColumn, PageDesc pageDesc) {
         searchColumn.put("catalogCode", "userSettingKey");
-        List<DataDictionary> dataDictionaries = dataDictionaryDao.listObjects(searchColumn, pageDesc);
+        List<DataDictionary> dataDictionaries = dataDictionaryDao.listObjectsByProperties(searchColumn, pageDesc);
 
         JSONArray userSettings = new JSONArray(10);
         for(DataDictionary d : dataDictionaries){
@@ -121,7 +121,7 @@ public class UserSettingManagerImpl implements UserSettingManager {
         List<UserSetting> userSettings = new ArrayList<>();
 
         map.put("catalogCode", "userSettingKey");
-        List<DataDictionary> dataDictionaries = dataDictionaryDao.listObjects(map, pageDesc);
+        List<DataDictionary> dataDictionaries = dataDictionaryDao.listObjectsByProperties(map, pageDesc);
 
         for(DataDictionary d : dataDictionaries){
             UserSetting userSetting = new UserSetting(new UserSettingId("default", d.getDataCode()));

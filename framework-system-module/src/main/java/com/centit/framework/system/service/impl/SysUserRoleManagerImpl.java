@@ -12,6 +12,7 @@ import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserRole;
 import com.centit.framework.system.po.UserRoleId;
 import com.centit.framework.system.service.SysUserRoleManager;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JSONOpt;
@@ -51,7 +52,7 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
 
     @Override
     public JSONArray listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-        List<UserRole> userRolesList = userRoleDao.listObjects(filterMap, pageDesc);
+        List<UserRole> userRolesList = userRoleDao.listObjectsByProperties(filterMap, pageDesc);
         JSONArray userRoles = JSONOpt.arrayToJSONArray(userRolesList);
         for (Object a : userRoles) {
             JSONObject aa = (JSONObject) a;

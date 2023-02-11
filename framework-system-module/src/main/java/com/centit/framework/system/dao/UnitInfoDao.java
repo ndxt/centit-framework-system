@@ -106,12 +106,12 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
 
     @Transactional
     public List<UnitInfo> listSubUnits(String unitCode){
-        return super.listObjectsByProperty("parentUnit", unitCode);
+        return super.listObjectsByProperties(CollectionsOpt.createHashMap("parentUnit", unitCode));
     }
 
     @Transactional
     public List<UnitInfo> listSubUnitsByUnitPaht(String unitPath){
-        return listObjects(CollectionsOpt.createHashMap("unitPath", unitPath+"/%" ));
+        return listObjectsByProperties(CollectionsOpt.createHashMap("unitPath", unitPath+"/%" ));
     }
 
     public List<String> getAllParentUnit(){

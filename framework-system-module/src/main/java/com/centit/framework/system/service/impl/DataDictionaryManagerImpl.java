@@ -154,12 +154,12 @@ public class DataDictionaryManagerImpl implements
 
     @Transactional
     public List<DataCatalog> listAllDataCatalog(Map<String, Object> filterMap) {
-        return dataCatalogDao.listObjects(filterMap);
+        return dataCatalogDao.listObjectsByProperties(filterMap);
     }
 
     @Transactional
     public List<DataDictionary> listDataDictionarys(Map<String, Object> filterDescMap) {
-        return dictionaryDao.listObjects(filterDescMap);
+        return dictionaryDao.listObjectsByProperties(filterDescMap);
     }
 
     @Transactional
@@ -180,7 +180,7 @@ public class DataDictionaryManagerImpl implements
     public int existCatalogName(String catalogName) {
         HashMap<String, Object> map = new HashMap();
         map.put("catalogName", catalogName);
-        return dataCatalogDao.countObject(map);
+        return dataCatalogDao.countObjectByProperties(map);
     }
 
 
@@ -200,7 +200,7 @@ public class DataDictionaryManagerImpl implements
     @Override
     @Transactional
     public List<DataCatalog> listObjects(Map<String, Object> filterDescMap, PageDesc pageDesc) {
-        return dataCatalogDao.listObjects(filterDescMap, pageDesc);
+        return dataCatalogDao.listObjectsByProperties(filterDescMap, pageDesc);
     }
 
 }

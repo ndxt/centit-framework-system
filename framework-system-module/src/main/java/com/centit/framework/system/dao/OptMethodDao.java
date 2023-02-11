@@ -43,7 +43,7 @@ public class OptMethodDao extends BaseDaoImpl<OptMethod, String> {
 
     @Transactional
     public List<OptMethod> listOptMethodByOptID(String sOptID) {
-        return listObjectsByProperty("optId", sOptID);
+        return listObjectsByProperties(CollectionsOpt.createHashMap("optId", sOptID));
     }
 
     @Transactional

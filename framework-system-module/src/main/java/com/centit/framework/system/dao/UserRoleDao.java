@@ -106,12 +106,12 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
 
     @Transactional
     public List<UserRole> listUserRoles(String userCode) {
-        return super.listObjects(CollectionsOpt.createHashMap("userCode",userCode));
+        return super.listObjectsByProperties(CollectionsOpt.createHashMap("userCode",userCode));
     }
 
     @Transactional
     public List<UserRole> listRoleUsers(String roleCode) {
-        return super.listObjects(CollectionsOpt.createHashMap("roleCode",roleCode));
+        return super.listObjectsByProperties(CollectionsOpt.createHashMap("roleCode",roleCode));
     }
 
     @Transactional

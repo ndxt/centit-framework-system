@@ -54,12 +54,12 @@ public class UnitRoleDao extends BaseDaoImpl<UnitRole, UnitRoleId> {
 
     @Transactional
     public List<UnitRole> listUnitRolesByUnitCode(String unitCode){
-        return super.listObjects(CollectionsOpt.createHashMap("unitCode",unitCode));
+        return super.listObjectsByProperties(CollectionsOpt.createHashMap("unitCode",unitCode));
     }
 
     @Transactional
     public List<UnitRole> listUnitRolesByRoleCode(String roleCode){
-        return super.listObjects(CollectionsOpt.createHashMap("roleCode",roleCode));
+        return super.listObjectsByProperties(CollectionsOpt.createHashMap("roleCode",roleCode));
     }
 
 }

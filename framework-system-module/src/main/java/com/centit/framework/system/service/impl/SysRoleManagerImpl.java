@@ -60,7 +60,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
         Map<String, Object> filterMap = new HashMap<>();
         filterMap.put("optCode", optCode);
 
-        return rolePowerDao.listObjects(filterMap);
+        return rolePowerDao.listObjectsByProperties(filterMap);
     }
 
     @Value("${framework.roleinfo.id.generator:}")
@@ -160,7 +160,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
                 if(rp.getRoleCode().startsWith("G$")){
                     String optCode = rp.getOptCode();
                     String unitCode = rp.getRoleCode().substring(2);
-                    List<RoleInfo> roleInfos = roleInfoDao.listObjects(
+                    List<RoleInfo> roleInfos = roleInfoDao.listObjectsByProperties(
                         CollectionsOpt.createHashMap("unitCode", unitCode, "roleType", "D"));
                     for(RoleInfo ri : roleInfos){
                         rolePowerDao.deleteObjectById(new RolePowerId(ri.getRoleCode(), optCode));
@@ -210,13 +210,13 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Override
     @Transactional
     public List<RoleInfo> listObjects(Map<String, Object> filterMap) {
-        return roleInfoDao.listObjects(filterMap);
+        return roleInfoDao.listObjectsByProperties(filterMap);
     }
 
     @Override
     @Transactional
     public List<RoleInfo> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return roleInfoDao.listObjects(filterMap,pageDesc);
+        return roleInfoDao.listObjectsByProperties(filterMap,pageDesc);
     }
 
     @Override
@@ -229,7 +229,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Transactional
     public int countRoleUserSum(String roleCode){
 //        return roleInfoDao.countRoleUserSum(roleCode);
-        return userRoleDao.countObject(CollectionsOpt.createHashMap("roleCode",roleCode));
+        return userRoleDao.countObjectByProperties(CollectionsOpt.createHashMap("roleCode",roleCode));
     }
 
     /**
@@ -253,7 +253,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
         }
         filterMap.put("roleNameEq", roleName);
 
-        List<RoleInfo> roleInfos = roleInfoDao.listObjects(filterMap);
+        List<RoleInfo> roleInfos = roleInfoDao.listObjectsByProperties(filterMap);
         return roleInfos==null || roleInfos.size() == 0 ||
                StringUtils.equals(roleCode, roleInfos.get(0).getRoleCode());
     }

@@ -3,6 +3,7 @@ package com.centit.framework.system.dao;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.system.po.DataCatalog;
+import com.centit.support.algorithm.CollectionsOpt;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,17 +39,17 @@ public class DataCatalogDao extends BaseDaoImpl<DataCatalog, String>{
 
     @Transactional
     public List<DataCatalog> listFixCatalog() {
-        return listObjectsByProperty("catalogStyle","F");
+        return listObjectsByProperties(CollectionsOpt.createHashMap("catalogStyle","F"));
     }
 
     @Transactional
     public List<DataCatalog> listUserCatalog() {
-        return listObjectsByProperty("catalogStyle","U");
+        return listObjectsByProperties(CollectionsOpt.createHashMap("catalogStyle","U"));
     }
 
     @Transactional
     public List<DataCatalog> listSysCatalog() {
-        return listObjectsByProperty("catalogStyle","S");
+        return listObjectsByProperties(CollectionsOpt.createHashMap("catalogStyle","S"));
     }
 
     @Transactional
@@ -58,6 +59,6 @@ public class DataCatalogDao extends BaseDaoImpl<DataCatalog, String>{
 
     @Transactional
     public List<DataCatalog> listDataCatalogByUnit(String topUnit){
-        return super.listObjectsByProperty("topUnit", topUnit);
+        return super.listObjectsByProperties(CollectionsOpt.createHashMap("topUnit", topUnit));
     }
 }

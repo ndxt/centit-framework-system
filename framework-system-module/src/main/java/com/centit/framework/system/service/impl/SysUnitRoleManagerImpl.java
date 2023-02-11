@@ -27,7 +27,7 @@ public class SysUnitRoleManagerImpl implements SysUnitRoleManager {
     @Override
     @Transactional
     public JSONArray listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-        JSONArray unitRoles = unitRoleDao.listObjectsAsJson(filterMap,pageDesc);
+        JSONArray unitRoles = unitRoleDao.listObjectsByPropertiesAsJson(filterMap,pageDesc);
         return DictionaryMapUtils.mapJsonArray(unitRoles,  UnitRole.class);
     }
 
@@ -36,7 +36,7 @@ public class SysUnitRoleManagerImpl implements SysUnitRoleManager {
     public JSONArray listUnitRoles(String unitCode, PageDesc pageDesc) {
         Map<String, Object> filterMap = new HashMap<>(5);
         filterMap.put("unitCode",unitCode);
-        JSONArray unitRoles = unitRoleDao.listObjectsAsJson(filterMap, pageDesc);
+        JSONArray unitRoles = unitRoleDao.listObjectsByPropertiesAsJson(filterMap, pageDesc);
         return DictionaryMapUtils.mapJsonArray(unitRoles,  UnitRole.class);
     }
 
@@ -45,7 +45,7 @@ public class SysUnitRoleManagerImpl implements SysUnitRoleManager {
     public JSONArray listRoleUnits(String roleCode,PageDesc pageDesc) {
         Map<String, Object> filterMap = new HashMap<>(5);
         filterMap.put("roleCode",roleCode);
-        JSONArray unitRoles = unitRoleDao.listObjectsAsJson(filterMap, pageDesc);
+        JSONArray unitRoles = unitRoleDao.listObjectsByPropertiesAsJson(filterMap, pageDesc);
         return DictionaryMapUtils.mapJsonArray(unitRoles,  UnitRole.class);
     }
 
@@ -85,7 +85,7 @@ public class SysUnitRoleManagerImpl implements SysUnitRoleManager {
         Map<String, Object> filterMap = new HashMap<>(4);
         filterMap.put("roleCode", roleCode);
         filterMap.put("unitPathPrefix", unitPathPrefix);
-        JSONArray unitRoles = unitRoleDao.listObjectsAsJson(filterMap, pageDesc);
+        JSONArray unitRoles = unitRoleDao.listObjectsByPropertiesAsJson(filterMap, pageDesc);
         return DictionaryMapUtils.mapJsonArray(unitRoles,  UnitRole.class);
     }
 
@@ -95,7 +95,7 @@ public class SysUnitRoleManagerImpl implements SysUnitRoleManager {
         Map<String, Object> filterMap = new HashMap<>(4);
         filterMap.put("unitCode", unitCode);
         filterMap.put("currentUnitCode", unitCode);
-        JSONArray unitRoles = unitRoleDao.listObjectsAsJson(filterMap, pageDesc);
+        JSONArray unitRoles = unitRoleDao.listObjectsByPropertiesAsJson(filterMap, pageDesc);
         return DictionaryMapUtils.mapJsonArray(unitRoles,  UnitRole.class);
     }
 }

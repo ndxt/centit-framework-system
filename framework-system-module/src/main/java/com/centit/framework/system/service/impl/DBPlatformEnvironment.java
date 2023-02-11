@@ -319,7 +319,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         if (supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)) {
             Map<String, Object> filterMap = new HashMap<>();
             filterMap.put("topUnit", topUnit);
-            return unitInfoDao.listObjects(filterMap);
+            return unitInfoDao.listObjectsByProperties(filterMap);
         } else {
             return unitInfoDao.listObjects();
         }
@@ -417,7 +417,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     public IOptMethod mergeOptMethod(IOptMethod optMethod) {
         optMethodDao.mergeObject((OptMethod) optMethod);
-        List<RolePower> rolePowers = rolePowerDao.listObjects(CollectionsOpt.createHashMap("optCode", optMethod.getOptCode()));
+        List<RolePower> rolePowers = rolePowerDao.listObjectsByProperties(CollectionsOpt.createHashMap("optCode", optMethod.getOptCode()));
         if(rolePowers==null || rolePowers.size()==0){
             RolePower rolePower=new RolePower();
             rolePower.setOptCode(optMethod.getOptCode());

@@ -6,6 +6,7 @@ import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.system.po.UserSetting;
 import com.centit.framework.system.po.UserSettingId;
+import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +45,7 @@ public class UserSettingDao extends BaseDaoImpl<UserSetting, UserSettingId> {
 
     @Transactional
     public List<UserSetting> getUserSettingsByCode(String userCode) {
-        return listObjectsByProperty("userCode",userCode);
+        return listObjectsByProperties(CollectionsOpt.createHashMap("userCode",userCode));
     }
 
     public List<UserSetting> getAllSettings(){

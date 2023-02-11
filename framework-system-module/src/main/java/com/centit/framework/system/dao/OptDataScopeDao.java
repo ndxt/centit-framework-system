@@ -34,7 +34,7 @@ public class OptDataScopeDao extends BaseDaoImpl<OptDataScope, String> {
 
     @Transactional
     public List<OptDataScope> getDataScopeByOptID(String sOptID) {
-        return this.listObjectsByProperty("optId", sOptID);
+        return this.listObjectsByProperties(CollectionsOpt.createHashMap("optId", sOptID));
     }
 
     @Transactional

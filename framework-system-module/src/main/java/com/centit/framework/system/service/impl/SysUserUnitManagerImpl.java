@@ -7,10 +7,7 @@ import com.centit.framework.model.basedata.IUserUnit;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysUserUnitManager;
-import com.centit.support.algorithm.DatetimeOpt;
-import com.centit.support.algorithm.StringBaseOpt;
-import com.centit.support.algorithm.StringRegularOpt;
-import com.centit.support.algorithm.UuidOpt;
+import com.centit.support.algorithm.*;
 import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -187,7 +184,7 @@ public class SysUserUnitManagerImpl
         HashMap<String, Object> filterDesc = new HashMap<>();
         filterDesc.put("userStation", stationCode);
         filterDesc.put("userCode", userCode);
-        return userUnitDao.countObject(filterDesc) > 0;
+        return userUnitDao.countObjectByProperties(filterDesc) > 0;
     }
 
     @Override
@@ -231,7 +228,7 @@ public class SysUserUnitManagerImpl
 
     @Override
     public List<UserUnit> listObjects(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return userUnitDao.listObjects(filterMap, pageDesc);
+        return userUnitDao.listObjectsByProperties(filterMap, pageDesc);
     }
 
     @Override

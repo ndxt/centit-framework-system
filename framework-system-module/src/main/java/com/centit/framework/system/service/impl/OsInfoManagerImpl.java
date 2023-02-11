@@ -39,7 +39,7 @@ public class OsInfoManagerImpl extends BaseEntityManagerImpl<OsInfo, String, OsI
 
     @Override
     public List<OsInfo> listObjects(Map<String, Object> map){
-        return baseDao.listObjects(map);
+        return baseDao.listObjectsByProperties(map);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class OsInfoManagerImpl extends BaseEntityManagerImpl<OsInfo, String, OsI
 
     @Override
     public JSONArray listOsInfoAsJson(Map<String, Object> filterMap, PageDesc pageDesc){
-        return baseDao.listObjectsAsJson(filterMap, pageDesc);
+        return baseDao.listObjectsByPropertiesAsJson(filterMap, pageDesc);
     }
 
     /**
