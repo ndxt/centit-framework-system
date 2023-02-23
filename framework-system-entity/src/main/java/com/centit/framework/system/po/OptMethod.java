@@ -107,6 +107,8 @@ public class OptMethod implements IOptMethod, java.io.Serializable{
     private String sourceId;
     @Transient
     private String userCode;
+    @Transient
+    private String topOptId;
     //结束
 
     // Constructors
