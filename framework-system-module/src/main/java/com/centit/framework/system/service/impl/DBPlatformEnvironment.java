@@ -531,9 +531,11 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         }
         //edit by zhuxw  代码从原框架迁移过来，可和其它地方合并
         List<RoleInfo> roles = new ArrayList<>();
-        //所有的用户 都要添加这个角色
-        roles.add(new RoleInfo("public" + userinfo.getTopUnit(), "general public", "G",
-            userinfo.getTopUnit(), "T", "general public"));
+        //所有的用户 都要平台公共角色和所属租户公共角色
+        roles.add(new RoleInfo("publicsystem", "general public", "G",
+            "system", "T", "general public"));
+        roles.add(new RoleInfo("public" + userinfo.getTopUnit(), "topunit public", "G",
+            userinfo.getTopUnit(), "T", "topunit public"));
         List<FVUserRoles> userRolesList = userRoleDao.listUserRolesByTopUnit(userinfo.getTopUnit(), userinfo.getUserCode());
         if (userRolesList != null) {
             for (FVUserRoles role : userRolesList) {

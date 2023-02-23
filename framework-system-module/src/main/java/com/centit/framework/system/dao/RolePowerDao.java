@@ -102,7 +102,7 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
     @Transactional
     public List<IRolePower> listSysRolePower() {
         List<IRolePower> rolePowers = new ArrayList<>();
-        String sql = "select distinct a.ROLE_CODE,a.opt_code,a.opt_scope_codes,d.top_opt_id " +
+        String sql = "select distinct a.ROLE_CODE,a.opt_code,a.opt_scope_codes,d.top_opt_id as top_unit " +
             "from F_ROLEPOWER a join F_ROLEINFO b on a.ROLE_CODE=b.ROLE_CODE " +
             "join f_optdef c on a.opt_code=c.opt_code join f_optinfo d on c.opt_id=d.opt_id " +
             "where  d.top_opt_id='system'";
