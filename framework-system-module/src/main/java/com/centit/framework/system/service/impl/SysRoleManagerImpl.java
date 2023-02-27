@@ -136,6 +136,9 @@ public class SysRoleManagerImpl implements SysRoleManager {
         updateRolePower(roleInfo, newRPs, rps);
         CodeRepositoryCache.evictCache("RoleInfo");
         CodeRepositoryCache.evictCache("RolePower");
+        if(DBPlatformEnvironment.SYSTEM.equals(topUnit)) {
+            CodeRepositoryCache.evictCache("SystemOpt");
+        }
         return rps;
     }
 
