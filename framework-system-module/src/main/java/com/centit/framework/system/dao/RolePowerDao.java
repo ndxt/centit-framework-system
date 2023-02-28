@@ -108,7 +108,7 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
             "where  d.top_opt_id='system'";
         JSONArray jsonArray=DatabaseOptUtils.listObjectsByNamedSqlAsJson(this,sql,CollectionsOpt.createHashMap());
         for(Object jsonObject:jsonArray){
-            rolePowers.add(JSON.toJavaObject((JSON) jsonObject,IRolePower.class));
+            rolePowers.add(JSON.to(RolePower.class, jsonObject));
         }
         return rolePowers;
     }
@@ -122,7 +122,7 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
             "join f_os_info e on d.top_opt_id=e.os_id where  c.api_id=:apiId";
         JSONArray jsonArray=DatabaseOptUtils.listObjectsByNamedSqlAsJson(this,sql,CollectionsOpt.createHashMap("apiId",apiId));
         for(Object jsonObject:jsonArray){
-            rolePowers.add(JSON.toJavaObject((JSON) jsonObject,IRolePower.class));
+            rolePowers.add(JSON.to(RolePower.class, jsonObject));
         }
         return rolePowers;
     }
