@@ -1,6 +1,6 @@
 package com.centit.framework.system.po;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.centit.framework.model.basedata.IOptDataScope;
 import com.centit.framework.model.basedata.IOptMethod;
 import com.centit.support.database.orm.GeneratorCondition;

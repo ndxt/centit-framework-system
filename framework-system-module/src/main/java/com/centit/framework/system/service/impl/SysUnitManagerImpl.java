@@ -6,7 +6,6 @@ import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.po.UnitInfo;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.service.SysUnitManager;
-import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.ArrayUtils;

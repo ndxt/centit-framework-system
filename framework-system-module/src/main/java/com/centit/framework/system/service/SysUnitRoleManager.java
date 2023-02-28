@@ -1,6 +1,6 @@
 package com.centit.framework.system.service;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson2.JSONArray;
 import com.centit.framework.system.po.UnitRole;
 import com.centit.support.database.utils.PageDesc;
 

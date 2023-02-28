@@ -1,6 +1,6 @@
 package com.centit.framework.system.service;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson2.JSONArray;
 import com.centit.framework.system.po.FVUserRoles;
 import com.centit.framework.system.po.UserInfo;
 import com.centit.framework.system.po.UserRole;

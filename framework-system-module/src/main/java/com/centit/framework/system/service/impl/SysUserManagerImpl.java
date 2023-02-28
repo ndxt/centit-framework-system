@@ -1,6 +1,6 @@
 package com.centit.framework.system.service.impl;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson2.JSONArray;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.security.model.CentitPasswordEncoder;

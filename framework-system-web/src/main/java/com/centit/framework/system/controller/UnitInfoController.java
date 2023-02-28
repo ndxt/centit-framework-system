@@ -1,8 +1,8 @@
 package com.centit.framework.system.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
@@ -246,12 +246,14 @@ public class UnitInfoController extends BaseController {
             return ResponseData.makeErrorMessage("该机构存在关联用户，不能删除！");
         }
         sysUnitManager.deleteUnitInfo(unitInfo);
+
         //删除unitrole关系表
-        JSONArray unitRoles = sysUnitRoleManager.listUnitRoles(unitCode, new PageDesc());
+
+        JSONArray unitRoles = sysUnitRoleManager.listUnitRoles(unitCode, PageDesc.createNotPaging());
         if (unitRoles != null && unitRoles.size() > 0) {
             for (Object obj : unitRoles) {
                 sysUnitRoleManager.deleteUnitRole(unitCode,
-                    JSONObject.toJavaObject((JSON) DictionaryMapUtils.objectToJSON(obj), UnitRole.class).getRoleCode());
+                    JSON.to(UnitRole.class,obj).getRoleCode());
             }
         }
 

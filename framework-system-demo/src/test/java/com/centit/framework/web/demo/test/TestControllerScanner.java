@@ -1,7 +1,7 @@
 package com.centit.framework.web.demo.test;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.centit.framework.common.RequestMappingUtils;
 import com.centit.framework.system.po.OptInfo;
 import com.centit.framework.system.po.OptMethod;

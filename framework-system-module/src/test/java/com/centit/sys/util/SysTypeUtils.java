@@ -1,7 +1,7 @@
 package com.centit.sys.util;
 
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.filter.SimplePropertyPreFilter;
 import com.centit.framework.system.po.UserInfo;
 
 import java.util.ArrayList;
@@ -34,10 +34,10 @@ public class SysTypeUtils {
         params.put("userinfos", userInfos);
 
         SimplePropertyPreFilter p = new SimplePropertyPreFilter(UserInfo.class);
-        p.getExcludes().add("userName");
+        p.getExcludes().add("loginName");
 
 
-        String text = JSONObject.toJSONString(params, p);
+        String text = JSON.toJSONString(params, p);
 
         System.out.println(text);
 

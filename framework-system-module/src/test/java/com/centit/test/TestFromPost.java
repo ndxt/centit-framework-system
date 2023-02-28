@@ -1,6 +1,6 @@
 package com.centit.test;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import com.centit.framework.common.ValidatorUtils;
 import com.centit.framework.system.po.DataCatalog;
 import com.centit.framework.system.po.RoleInfo;

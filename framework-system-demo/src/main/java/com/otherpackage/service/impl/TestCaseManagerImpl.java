@@ -1,6 +1,6 @@
 package com.otherpackage.service.impl;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson2.JSONArray;
 import com.centit.framework.core.dao.DataPowerFilter;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.core.service.DataScopePowerManager;
