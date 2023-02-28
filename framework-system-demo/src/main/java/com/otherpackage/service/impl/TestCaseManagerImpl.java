@@ -41,9 +41,10 @@ public class TestCaseManagerImpl implements TestCaseManager {
         List<String> filters = dataScopePowerManager.listUserDataFiltersByOptIdAndMethod(
             ud.getTopUnitCode(), ud.getUserCode(), getOptId(), "query");
         return DictionaryMapUtils.mapJsonArray( // 数据字典翻译工作
-            this.testCaseDao.listObjectsAsJson( // 执行数据驱动查询
+            this.testCaseDao.listObjectsByPropertiesAsJson(// 执行数据驱动查询
                 dataPowerFilter.getSourceData(),// 当前用户相关参数（已包括查询信息）
-                filters,                        // 用户数据范围权限过滤条件
+                filters,
+                dataPowerFilter.getPowerFilterTranslater(), // 用户数据范围权限过滤条件
                 pageDesc), TestCase.class);
     }
 

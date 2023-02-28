@@ -3,8 +3,7 @@ package com.centit.framework.web.demo.test;
 import com.centit.framework.common.SysParametersUtils;
 import com.centit.prodcts.demoapp.config.ServiceConfig;
 import com.centit.support.algorithm.NumberBaseOpt;
-import com.centit.support.algorithm.StringRegularOpt;
-import org.apache.commons.dbcp2.BasicDataSource;
+import com.centit.support.database.utils.DataSourceDescription;
 
 import java.lang.annotation.Annotation;
 import java.util.Properties;
@@ -15,18 +14,18 @@ import java.util.Properties;
 public class TestQuerySystemTable {
 
 
-    public static BasicDataSource getDataSource() {
-        BasicDataSource dataSource = new BasicDataSource();
+    public static DataSourceDescription getDataSource() {
+        DataSourceDescription dataSource = new DataSourceDescription();
         Properties env = SysParametersUtils.loadProperties();
-        dataSource.setDriverClassName(env.getProperty("jdbc.driver"));
-        dataSource.setUrl(env.getProperty("jdbc.url"));
+        //dataSource.setDriverClassName(env.getProperty("jdbc.driver"));
+        dataSource.setConnUrl(env.getProperty("jdbc.url"));
         dataSource.setUsername(env.getProperty("jdbc.user"));
         dataSource.setPassword(env.getProperty("jdbc.password"));
         dataSource.setMaxTotal(NumberBaseOpt.castObjectToInteger(env.getProperty("jdbc.maxActive")));
         dataSource.setMaxIdle(NumberBaseOpt.castObjectToInteger(env.getProperty("jdbc.maxIdle")));
         dataSource.setMaxWaitMillis(NumberBaseOpt.castObjectToInteger(env.getProperty("jdbc.maxWait")));
-        dataSource.setDefaultAutoCommit(StringRegularOpt.isTrue(env.getProperty("jdbc.defaultAutoCommit")));
-        dataSource.setRemoveAbandonedTimeout(NumberBaseOpt.castObjectToInteger(env.getProperty("jdbc.removeAbandonedTimeout")));
+        //dataSource.setDefaultAutoCommit(StringRegularOpt.isTrue(env.getProperty("jdbc.defaultAutoCommit")));
+        //dataSource.setRemoveAbandonedTimeout(NumberBaseOpt.castObjectToInteger(env.getProperty("jdbc.removeAbandonedTimeout")));
         return dataSource;
     }
 
