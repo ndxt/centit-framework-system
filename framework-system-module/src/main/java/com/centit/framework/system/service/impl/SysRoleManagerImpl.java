@@ -3,6 +3,7 @@ package com.centit.framework.system.service.impl;
 import com.alibaba.fastjson2.JSONArray;
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.security.SecurityContextUtils;
+import com.centit.framework.security.model.CentitSecurityMetadata;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysRoleManager;
@@ -139,6 +140,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
         if(DBPlatformEnvironment.SYSTEM.equals(topUnit)) {
             CodeRepositoryCache.evictCache("SystemOpt");
         }
+        CentitSecurityMetadata.evictCache(1);
         return rps;
     }
 
