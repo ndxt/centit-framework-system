@@ -48,8 +48,7 @@ public class TestFromPost {
             ui.setUserName("hello");
             ui.setLoginName("guest");
             String s = HttpExecutor.jsonPost(HttpExecutorContext.create(),
-                     "http://codefanbook:8180/framework-sys-module/service/testJson",JSON.parseObject(
-                             JSON.toJSONString(ui)) );
+                     "http://codefanbook:8180/framework-sys-module/service/testJson", ui);
             System.out.println(s);
         }  catch (IOException e) {
             e.printStackTrace();

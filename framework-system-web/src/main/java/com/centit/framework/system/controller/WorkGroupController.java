@@ -1,6 +1,5 @@
 package com.centit.framework.system.controller;
 
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.centit.framework.appclient.HttpReceiveJSON;
@@ -81,7 +80,7 @@ public class WorkGroupController extends BaseController {
         String topUnit = WebOptUtils.getCurrentTopUnit(request);
         JSONArray jsonArray = new JSONArray();
         for (WorkGroup workGroup : list) {
-            JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(workGroup));
+            JSONObject jsonObject = JSONObject.from(workGroup);
             String userName = CodeRepositoryUtil.getUserName(topUnit, workGroup.getWorkGroupParameter().getUserCode());
             jsonObject.put("userName", userName);
             jsonArray.add(jsonObject);
