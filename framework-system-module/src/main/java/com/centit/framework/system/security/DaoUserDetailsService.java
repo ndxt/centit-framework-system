@@ -69,7 +69,7 @@ public class DaoUserDetailsService
     @Override
     public CentitUserDetails loadUserByUsername(String loginname) throws UsernameNotFoundException {
         if(StringUtils.isBlank(loginname)){
-            throw new UsernameNotFoundException("用户名不能为空用户名不能为空");
+            throw new UsernameNotFoundException("用户名不能为空");
         }
         CentitUserDetails ud = null;
         if(loginname.indexOf('@')>0){
@@ -82,7 +82,7 @@ public class DaoUserDetailsService
         }
 
         if(ud == null){
-          throw new UsernameNotFoundException("用户名或密码错误！");
+          throw new UsernameNotFoundException("用户名或密码错误");
         }
         return ud;
     }
