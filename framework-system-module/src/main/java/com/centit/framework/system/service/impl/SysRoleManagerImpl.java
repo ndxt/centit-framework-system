@@ -301,5 +301,6 @@ public class SysRoleManagerImpl implements SysRoleManager {
         }
         rolePowers.forEach(rolePower -> rolePowerDao.saveNewRolePower(rolePower));
         CodeRepositoryCache.evictCache("RolePower");
+        CentitSecurityMetadata.evictCache(1);
     }
 }
