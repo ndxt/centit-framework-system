@@ -62,6 +62,17 @@ public class RolePower implements IRolePower, java.io.Serializable{
     private Date  updateDate;
     //结束
 
+    private String topUnit;
+
+    @Override
+    public String getTopUnit() {
+        return topUnit;
+    }
+
+    public void setTopUnit(String topUnit) {
+        this.topUnit = topUnit;
+    }
+
     /**
      * default constructor
      */
