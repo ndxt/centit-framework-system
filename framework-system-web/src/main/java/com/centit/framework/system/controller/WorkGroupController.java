@@ -20,7 +20,6 @@ import com.centit.framework.system.po.WorkGroupParames;
 import com.centit.framework.system.po.WorkGroupParameter;
 import com.centit.framework.system.service.WorkGroupManager;
 import com.centit.support.algorithm.CollectionsOpt;
-import com.centit.support.algorithm.GeneralAlgorithm;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.common.ObjectException;
 import com.centit.support.database.utils.PageDesc;
