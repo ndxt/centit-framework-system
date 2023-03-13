@@ -123,11 +123,12 @@ public class WorkGroupController extends BaseController {
                 iUserInfo = CodeRepositoryUtil.getUserInfoByCode(topUnit, workGroupParameter.getUserCode());
             }
             if (null != iUserInfo) {
-                Map userInfoMap = (Map) GeneralAlgorithm.castObjectToType(iUserInfo, Map.class);
+                Map userInfoMap = JSONObject.from(iUserInfo);
                 map.putAll(userInfoMap);
             }
-            Map workGroupMap = (Map) GeneralAlgorithm.castObjectToType(workGroup, Map.class);
-            Map workGroupParameterMap = (Map) GeneralAlgorithm.castObjectToType(workGroup.getWorkGroupParameter(), Map.class);
+            Map workGroupMap = JSONObject.from(workGroup);
+
+            Map workGroupParameterMap = JSONObject.from(workGroup.getWorkGroupParameter());
             map.putAll(workGroupMap);
             map.putAll(workGroupParameterMap);
             if (WorkGroup.WORKGROUP_ROLE_CODE_ADMIN.equals(workGroupParameter.getRoleCode())) {
