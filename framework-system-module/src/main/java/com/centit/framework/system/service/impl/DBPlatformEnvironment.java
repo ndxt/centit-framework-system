@@ -899,6 +899,8 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         for (IRolePower rp : rolePowers) {
             dealRolePower(roles, rp);
         }
+        Collections.sort(roles,
+            Comparator.comparing(ConfigAttribute::getAttribute));
         return roles;
     }
 
