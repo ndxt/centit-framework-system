@@ -32,6 +32,7 @@ import java.util.Map;
 @Service("sysUserManager")
 public class SysUserManagerImpl implements SysUserManager {
     public static Logger logger = LoggerFactory.getLogger(SysUserManagerImpl.class);
+
     // 加密
     @Autowired
     @NotNull
@@ -59,6 +60,9 @@ public class SysUserManagerImpl implements SysUserManager {
 
     @Value("${framework.password.default.generator:}")
     protected String defaultPassWorkFormat;
+
+    @Value("${framework.password.force.change:false}")
+    protected  Boolean passwordForceChange;
 
     private String getDefaultPassword(String userCode) {
         String rawPass = UuidOpt.randomString(passwordMinLength);
@@ -188,7 +192,7 @@ public class SysUserManagerImpl implements SysUserManager {
             throw new ObjectException(ResponseData.ERROR_PRECONDITION_FAILED,"用户信息不存在!");
         }
 
-        if (!StringUtils.isAllBlank(userInfo.getRegCellPhone(),userInfo.getRegEmail())){
+        if (!passwordForceChange && !StringUtils.isAllBlank(userInfo.getRegCellPhone(),userInfo.getRegEmail())){
             throw new ObjectException(ResponseData.ERROR_PRECONDITION_FAILED,"该用户不允许重置密码");
         }
     }
