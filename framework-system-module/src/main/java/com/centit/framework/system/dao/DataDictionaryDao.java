@@ -25,7 +25,7 @@ public class DataDictionaryDao
         filterField.put("catalogCode", CodeBook.EQUAL_HQL_ID);
         filterField.put("NP_system", "dataStyle = 'S'");
         filterField.put("dataValue", CodeBook.LIKE_HQL_ID);
-        filterField.put("catalogcodes", "catalogcode in (:catalogcodes)");
+        filterField.put("(splitforin)catalogcodes", "catalog_code in (:catalogcodes)");
         filterField.put("treeCode","data_code=:treeCode or extra_code=:treeCode");
         return filterField;
     }

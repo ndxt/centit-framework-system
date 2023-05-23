@@ -573,6 +573,22 @@ public class DataDictionaryController extends BaseController {
         resData.addResponseData("langs", CodeRepositoryUtil.getLabelValueMap("SUPPORT_LANG"));
         return resData;
     }
+    @ApiOperation(value = "获取字典的详细信息", notes = "根据字典类别代码获取字典的详细信息")
+    @ApiImplicitParam(
+        name = "catalogCode", value = "数据字典的类别代码",
+        required = true, paramType = "path", dataType = "String"
+    )
+    @RequestMapping(value = "/dictionarys", method = {RequestMethod.GET})
+    @WrapUpResponseBody
+    public ResponseData getDataDictionarys(HttpServletRequest request) {
+        Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
+        List<DataDictionary> datas = dataDictionaryManager.listDataDictionarys(searchColumn);
+        ResponseMapData resData = new ResponseMapData();
+        resData.addResponseData("dataDictionary", datas);
+        resData.addResponseData("multiLang", multiLang);
+        resData.addResponseData("langs", CodeRepositoryUtil.getLabelValueMap("SUPPORT_LANG"));
+        return resData;
+    }
 
     /* 获取所有字典目录信息
      * @param request 请求体
