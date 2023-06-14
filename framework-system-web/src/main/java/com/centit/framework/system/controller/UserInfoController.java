@@ -1,6 +1,7 @@
 package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
@@ -22,6 +23,7 @@ import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
+import com.centit.support.security.SecurityOptUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -33,6 +35,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -399,8 +402,15 @@ public class UserInfoController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}强制更新用户密码",
         tag = "{userCode}")
     @WrapUpResponseBody
-    public void forceChangePwd(@ParamName("userCode") @PathVariable String userCode, HttpServletRequest request) {
-        String newPassword = request.getParameter("newPassword");
+    public void forceChangePwd(@ParamName("userCode") @PathVariable String userCode,
+                               @RequestBody String jsonBody,  HttpServletRequest request) {
+        String currentUser = WebOptUtils.getCurrentUserCode(request);
+        if(StringUtils.isBlank(currentUser)){
+            throw new ObjectException(ResponseData.ERROR_SESSION_TIMEOUT,"您没有权限强制设置密码。");
+        }
+
+        JSONObject objBody = JSONObject.parseObject(jsonBody);
+        String newPassword = SecurityOptUtils.decodeSecurityString(objBody.getString("password") );
         if (StringUtils.isBlank(newPassword)) {
             sysUserManager.resetPwd(userCode);
         } else {

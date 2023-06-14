@@ -61,7 +61,7 @@ public class SysUserManagerImpl implements SysUserManager {
     @Value("${framework.password.default.generator:}")
     protected String defaultPassWorkFormat;
 
-    @Value("${framework.password.force.change:false}")
+    @Value("${framework.password.force.change:true}")
     protected  Boolean passwordForceChange;
 
     private String getDefaultPassword(String userCode) {
@@ -192,7 +192,7 @@ public class SysUserManagerImpl implements SysUserManager {
             throw new ObjectException(ResponseData.ERROR_PRECONDITION_FAILED,"用户信息不存在!");
         }
 
-        if (!passwordForceChange && !StringUtils.isAllBlank(userInfo.getRegCellPhone(),userInfo.getRegEmail())){
+        if (!passwordForceChange && !StringUtils.isAllBlank(userInfo.getRegCellPhone(), userInfo.getRegEmail())){
             throw new ObjectException(ResponseData.ERROR_PRECONDITION_FAILED,"该用户不允许重置密码");
         }
     }
