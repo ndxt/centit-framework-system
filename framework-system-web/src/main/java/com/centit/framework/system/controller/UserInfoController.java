@@ -409,7 +409,7 @@ public class UserInfoController extends BaseController {
         if(StringUtils.isBlank(currentUser)){
             throw new ObjectException(ResponseData.ERROR_SESSION_TIMEOUT,"您没有权限强制设置密码。");
         }
-        String newPassword = SecurityOptUtils.decodeSecurityString(request.getParameter("password"));
+        String newPassword = SecurityOptUtils.decodeSecurityString(request.getParameter("newPassword"));
 
         if (StringUtils.isBlank(newPassword)) {
             sysUserManager.resetPwd(userCode);
