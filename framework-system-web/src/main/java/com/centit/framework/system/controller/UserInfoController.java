@@ -304,7 +304,6 @@ public class UserInfoController extends BaseController {
         return responseData;
     }
 
-
     /*
      * 当前登录名是否已存在
      *
@@ -356,7 +355,6 @@ public class UserInfoController extends BaseController {
         return null != userInfo;
     }
 
-
     /*
      * 强制更新用户密码
      *
@@ -380,7 +378,8 @@ public class UserInfoController extends BaseController {
             throw new ObjectException(ResponseData.ERROR_SESSION_TIMEOUT,"您没有权限强制设置密码。");
         }
         JSONObject objBody = JSONObject.parseObject(jsonBody);
-        String newPassword = SecurityOptUtils.decodeSecurityString(objBody.getString("password"));
+        //newPassword
+        String newPassword = SecurityOptUtils.decodeSecurityString(objBody.getString("newPassword"));
 
         if (StringUtils.isBlank(newPassword)) {
             throw new ObjectException(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,"您没有设置新的密码。");
@@ -408,8 +407,8 @@ public class UserInfoController extends BaseController {
     @RequestMapping(value = "/canchange/{userCode}/{oldPassword}", method = RequestMethod.GET)
     @WrapUpResponseBody
     public ResponseData canChangePwd(@PathVariable String userCode, @PathVariable String oldPassword) {
-        boolean bo = true;
-        bo = sysUserManager.checkUserPassword(userCode, oldPassword);
+        oldPassword = SecurityOptUtils.decodeSecurityString(oldPassword);
+        boolean bo = sysUserManager.checkUserPassword(userCode, oldPassword);
         return ResponseData.makeResponseData(bo);
     }
 
