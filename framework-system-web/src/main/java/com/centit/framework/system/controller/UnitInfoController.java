@@ -67,12 +67,8 @@ public class UnitInfoController extends BaseController {
     @NotNull
     private SysUnitRoleManager sysUnitRoleManager;
 
-    @Autowired
-    private PlatformEnvironment platformEnvironment;
-
-    /*
+    /**
      * 系统日志中记录
-     *
      * @return 业务标识ID
      */
     public String getOptId() {

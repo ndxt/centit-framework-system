@@ -1,6 +1,7 @@
 package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
@@ -28,12 +29,12 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -59,9 +60,7 @@ public class UserInfoController extends BaseController {
 
     @Autowired
     private WorkGroupManager workGroupManager;
-    /*@Autowired
-    @NotNull
-    private UserSettingManager userSettingManager;*/
+
 
     /*
      * 系统日志中记录
@@ -357,33 +356,6 @@ public class UserInfoController extends BaseController {
         return null != userInfo;
     }
 
-    /*
-     * 更新用户密码
-     *
-     * @param userCode    用户代码
-     * @param password    旧密码
-     * @param newPassword 新密码
-     * @return 结果
-     * */
-    @ApiOperation(value = "更新用户密码", notes = "更新用户密码。")
-    @ApiImplicitParams({
-        @ApiImplicitParam(
-            name = "userCode", value = "用户代码", required = true,
-            paramType = "path", dataType = "String"),
-        @ApiImplicitParam(
-            name = "password", value = "旧密码", required = true,
-            paramType = "query", dataType = "String"),
-        @ApiImplicitParam(
-            name = "newPassword", value = "新密码", required = true,
-            paramType = "query", dataType = "String")
-    })
-    @RequestMapping(value = "/change/{userCode}", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新用户密码",
-        tag = "{userCode}")
-    @WrapUpResponseBody
-    public void changePwd(@ParamName("userCode") @PathVariable String userCode, String password, String newPassword) {
-        sysUserManager.setNewPassword(userCode, password, newPassword);
-    }
 
     /*
      * 强制更新用户密码
@@ -393,26 +365,25 @@ public class UserInfoController extends BaseController {
      * @return 结果
      */
     @ApiOperation(value = "强制更新用户密码", notes = "强制更新用户密码。")
-    @ApiImplicitParams({@ApiImplicitParam(
-        name = "password", value = "密码",
-        required = true, paramType = "form", dataType = "String"),
-        @ApiImplicitParam(
+    @ApiImplicitParam(
         name = "userCode", value = "用户代码", required = true,
-        paramType = "path", dataType = "String")})
+        paramType = "path", dataType = "String")
     @RequestMapping(value = "/changePwd/{userCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}强制更新用户密码",
         tag = "{userCode}")
     @WrapUpResponseBody
     public void forceChangePwd(@ParamName("userCode") @PathVariable String userCode,
+                               @RequestBody String jsonBody,
                                HttpServletRequest request) {
         String currentUser = WebOptUtils.getCurrentUserCode(request);
         if(StringUtils.isBlank(currentUser)){
             throw new ObjectException(ResponseData.ERROR_SESSION_TIMEOUT,"您没有权限强制设置密码。");
         }
-        String newPassword = SecurityOptUtils.decodeSecurityString(request.getParameter("password"));
+        JSONObject objBody = JSONObject.parseObject(jsonBody);
+        String newPassword = SecurityOptUtils.decodeSecurityString(objBody.getString("password"));
 
         if (StringUtils.isBlank(newPassword)) {
-            sysUserManager.resetPwd(userCode);
+            throw new ObjectException(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,"您没有设置新的密码。");
         } else {
             sysUserManager.forceSetPassword(userCode, newPassword);
         }
@@ -442,29 +413,7 @@ public class UserInfoController extends BaseController {
         return ResponseData.makeResponseData(bo);
     }
 
-    /*
-     * 批量重置密码
-     *
-     * @param userCodes 用户代码集合
-     * @return 结果
-     * */
-    @ApiOperation(value = "批量重置密码", notes = "批量重置密码。")
-    @ApiImplicitParam(
-        name = "userCodes", value = "用户代码集合(数组)", allowMultiple = true,
-        paramType = "path", dataType = "String")
-    @RequestMapping(value = "/reset", method = RequestMethod.PUT)
-    @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}重置用户密码",
-        tag = "{userCodes}")
-    @WrapUpResponseBody
-    public ResponseData resetBatchPwd(@ParamName("userCodes") String[] userCodes) {
-        if (ArrayUtils.isEmpty(userCodes)) {
-            return ResponseData.makeErrorMessage("用户代码集合为空");
-        }
-        sysUserManager.resetPwd(userCodes);
-        return ResponseData.successResponse;
-    }
-
-    /*
+     /*
      * 删除用户
      *
      * @param userCodes 用户代码

@@ -121,24 +121,6 @@ public class SysUserManagerImpl implements SysUserManager {
         return roles;
     }
 
-    @Override
-    @Transactional
-    public void resetPwd(String userCode) {
-        throw new ObjectException("不能重置密码，请设置符合安全强度要求的密码！");
-        /*UserInfo user = userInfoDao.getUserByCode(userCode);
-        user.setUserPin(getDefaultPassword(user.getUserCode()));
-        userInfoDao.updateUser(user);*/
-    }
-
-    @Override
-    @Transactional
-    public void resetPwd(String[] userCodes) {
-        throw new ObjectException("不能重置密码，请逐个设置符合安全强度要求的密码！");
-        /*for (String userCode : userCodes) {
-            resetPwd(userCode);
-        }*/
-    }
-
     /**
      * 用户修改密码
      * @param userCode userCode

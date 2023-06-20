@@ -33,12 +33,6 @@ public interface SysUserManager{
      UserInfo getUserByRegCellPhone(String regCellPhone);
 
 
-    //  Collection<GrantedAuthority> loadUserAuthorities(String username);
-
-     void resetPwd(String userCode);
-
-     void resetPwd(String[] userCodes);
-
      void setNewPassword(String userID, String oldPassword, String newPassword);
 
      void forceSetPassword(String userCode, String newPassword);

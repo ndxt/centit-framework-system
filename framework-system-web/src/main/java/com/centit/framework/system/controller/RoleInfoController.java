@@ -41,12 +41,13 @@ import java.util.*;
 @RequestMapping("/roleinfo")
 @Api(value = "系统角色操作接口", tags = "系统角色操作接口")
 public class RoleInfoController extends BaseController {
-    @Autowired
+
     @NotNull
+    @Autowired
     private SysRoleManager sysRoleManager;
 
-    @Autowired
     @NotNull
+    @Autowired
     private OptMethodManager optMethodManager;
 
     @Autowired
@@ -54,6 +55,7 @@ public class RoleInfoController extends BaseController {
 
     @Autowired
     private SysUnitRoleManager sysUnitRoleManager;
+
 
     /*
      * 系统日志中记录

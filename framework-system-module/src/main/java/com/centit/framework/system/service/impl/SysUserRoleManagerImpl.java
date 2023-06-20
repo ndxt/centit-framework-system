@@ -31,7 +31,7 @@ import java.util.Map;
  * Time: 下午3:06
  * To change this template use File | Settings | File Templates.
  */
-@Service
+@Service("sysUserRoleManager")
 @Transactional
 public class SysUserRoleManagerImpl implements SysUserRoleManager {
 
