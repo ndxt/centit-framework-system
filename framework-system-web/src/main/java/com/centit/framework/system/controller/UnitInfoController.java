@@ -10,7 +10,6 @@ import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.core.dao.PageQueryResult;
-import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.*;
