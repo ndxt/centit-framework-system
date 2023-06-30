@@ -128,9 +128,11 @@ public class UserInfoController extends BaseController {
             listObjects = sysUserManager.listObjects(searchColumn, pageDesc);
         }
         //脱敏操作
-        /*listTransObjects.addAll(listObjects);
-        listObjects.clear();
-        listTransObjects.forEach(user -> listObjects.add(Sensitive.desensitize(user)));*/
+        if(listObjects!=null){
+            for (UserInfo userInfo : listObjects)
+                userInfo.setIdCardNo("");
+        }
+
         return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
     }
     @ApiOperation(value = "用户信息按机构分页查询", notes = "用户信息按机构分页查询")
