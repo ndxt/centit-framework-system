@@ -1,7 +1,6 @@
 package com.centit.prodcts.demoapp.config;
 
 import com.centit.framework.components.impl.NotificationCenterImpl;
-import com.centit.framework.config.InitialWebRuntimeEnvironment;
 import com.centit.framework.config.SpringSecurityCasConfig;
 import com.centit.framework.config.SpringSecurityDaoConfig;
 import com.centit.framework.core.service.DataScopePowerManager;
@@ -12,7 +11,10 @@ import com.centit.framework.security.model.StandardPasswordEncoderImpl;
 import com.centit.framework.session.SimpleMapSessionRepository;
 import com.centit.framework.system.config.SystemBeanConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
@@ -32,13 +34,6 @@ import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 @EnableSpringHttpSession
 public class ServiceConfig {
 
-    @Bean
-    @Lazy(value = false)
-    public InitialWebRuntimeEnvironment initialEnvironment() {
-        InitialWebRuntimeEnvironment initialWebRuntimeEnvironment = new InitialWebRuntimeEnvironment();
-        initialWebRuntimeEnvironment.initialEnvironment();
-        return initialWebRuntimeEnvironment;
-    }
     /**
      * 这个bean必须要有 可以配置不同策略的加密方式
      * @return CentitPasswordEncoder 密码加密算法

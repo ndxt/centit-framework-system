@@ -7,6 +7,7 @@ import com.centit.framework.model.adapter.NotificationCenter;
 import com.centit.framework.model.adapter.OperationLogWriter;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.system.service.impl.DBPlatformEnvironment;
+import com.centit.support.json.JSONOpt;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,6 +49,7 @@ public class InstantiationServiceBeanPostProcessor implements ApplicationListene
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event)
     {
+        JSONOpt.fastjsonGlobalConfig();
         CodeRepositoryCache.setPlatformEnvironment(platformEnvironment);
         WebOptUtils.setIsTenant(supportTenant);
         if(optLogManager!=null) {
