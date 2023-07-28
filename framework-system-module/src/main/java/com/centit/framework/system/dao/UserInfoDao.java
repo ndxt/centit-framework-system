@@ -157,12 +157,14 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
      */
     @Transactional
     public JSONArray listUsersWithUnit(Map<String, Object> filterMap, PageDesc pageDesc) {
-        String querySql = " SELECT A.USER_CODE, A.USER_TYPE, A.LOGIN_NAME, A.USER_NAME, A.USER_TAG, A.ENGLISH_NAME, A.USER_DESC, A.TOP_UNIT, A.REG_EMAIL, A.REG_CELL_PHONE, A.PRIMARY_UNIT, A.USER_WORD, A.USER_ORDER ,\n" +
-            " B.USER_UNIT_ID, B.UNIT_CODE, B.USER_STATION, B.USER_RANK ,\n" +
-            " C.UNIT_NAME \n" +
-            " FROM F_USERINFO A JOIN F_USERUNIT B ON A.USER_CODE = B.USER_CODE \n" +
-            " LEFT JOIN F_UNITINFO C ON B.UNIT_CODE = C.UNIT_CODE\n" +
-            " WHERE 1 = 1 [ :topUnit | AND B.TOP_UNIT = :topUnit ] [:(like)userName | AND ( A.USER_NAME LIKE :userName OR A.LOGIN_NAME LIKE :userName)] " +
+        String querySql = " SELECT A.USER_CODE, A.USER_TYPE, A.LOGIN_NAME, A.USER_NAME, A.USER_TAG," +
+            " A.ENGLISH_NAME, A.USER_DESC, A.TOP_UNIT, A.REG_EMAIL, A.REG_CELL_PHONE," +
+            " A.PRIMARY_UNIT, A.USER_WORD, A.USER_ORDER, B.USER_UNIT_ID, B.UNIT_CODE," +
+            " B.USER_STATION, B.USER_RANK, C.UNIT_NAME " +
+            " FROM F_USERINFO A JOIN F_USERUNIT B ON A.USER_CODE = B.USER_CODE " +
+            " LEFT JOIN F_UNITINFO C ON B.UNIT_CODE = C.UNIT_CODE " +
+            " WHERE 1 = 1 [ :topUnit | AND B.TOP_UNIT = :topUnit ] " +
+            " [:(like)userName | AND ( A.USER_NAME LIKE :userName OR A.LOGIN_NAME LIKE :userName)] " +
             " [:queryByUnit | AND B.UNIT_CODE = :queryByUnit ] " +
             " ORDER BY A.USER_ORDER ";
         QueryAndNamedParams qap = QueryUtils.translateQuery(querySql, filterMap);
