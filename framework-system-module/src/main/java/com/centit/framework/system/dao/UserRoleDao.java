@@ -54,10 +54,10 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
     //  b.CREATE_DATE, b.UPDATE_DATE
     private static final String f_v_user_appoint_roles_sql =
         "select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'D' as OBTAIN_TYPE, b.ROLE_TYPE, " +
-            " b.UNIT_CODE, b.ROLE_DESC, a.USER_CODE, null as INHERITED_FROM,c.user_name,d.unit_name " +
+            " b.UNIT_CODE, b.ROLE_DESC, a.USER_CODE, null as INHERITED_FROM, c.user_name, d.unit_name " +
         "from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE) " +
             "join f_userinfo c on a.user_code=c.user_code "+
-            "join f_unitinfo d on c.primary_unit=d.unit_code "+
+            "left join f_unitinfo d on c.primary_unit=d.unit_code "+
         "where [:currentDateTime | a.OBTAIN_DATE <=  :currentDateTime and] " +
             "(a.SECEDE_DATE is null [:currentDateTime | or a.SECEDE_DATE > :currentDateTime]) " +
             "and b.IS_VALID='T' " +
@@ -84,10 +84,10 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
 
     private static final String f_v_topunit_user_role =
         "select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'D' as OBTAIN_TYPE, b.ROLE_TYPE, " +
-            " b.UNIT_CODE, b.ROLE_DESC, a.USER_CODE, null as INHERITED_FROM,c.user_name,d.unit_name " +
+            " b.UNIT_CODE, b.ROLE_DESC, a.USER_CODE, null as INHERITED_FROM, c.user_name, d.unit_name " +
             "from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE) " +
             "join f_userinfo c on a.user_code=c.user_code "+
-            "join f_unitinfo d on c.primary_unit=d.unit_code "+
+            "left join f_unitinfo d on c.primary_unit=d.unit_code "+
             "where a.USER_CODE = :userCode and a.OBTAIN_DATE <= :currentDateTime and " +
              " (a.SECEDE_DATE is null  or a.SECEDE_DATE > :currentDateTime) " +
                 "and b.IS_VALID='T' " +
@@ -95,10 +95,10 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
 
     private static final String f_v_topunit_role_user =
         "select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'D' as OBTAIN_TYPE, b.ROLE_TYPE, " +
-            " b.UNIT_CODE, b.ROLE_DESC, a.USER_CODE, null as INHERITED_FROM,c.user_name,d.unit_name " +
+            " b.UNIT_CODE, b.ROLE_DESC, a.USER_CODE, null as INHERITED_FROM,c.user_name, d.unit_name " +
             "from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE) " +
             "join f_userinfo c on a.user_code=c.user_code "+
-            "join f_unitinfo d on c.primary_unit=d.unit_code "+
+            "left join f_unitinfo d on c.primary_unit=d.unit_code "+
             "where a.ROLE_CODE = :roleCode and a.OBTAIN_DATE <= :currentDateTime and " +
             " (a.SECEDE_DATE is null  or a.SECEDE_DATE > :currentDateTime) " +
             "and b.IS_VALID='T' " +
