@@ -4,7 +4,7 @@ import com.alibaba.fastjson2.JSONArray;
 import com.centit.framework.core.dao.DataPowerFilter;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.core.service.DataScopePowerManager;
-import com.centit.framework.security.model.CentitUserDetails;
+import com.centit.framework.model.security.CentitUserDetails;
 import com.centit.support.database.utils.PageDesc;
 import com.otherpackage.dao.TestCaseDao;
 import com.otherpackage.po.TestCase;

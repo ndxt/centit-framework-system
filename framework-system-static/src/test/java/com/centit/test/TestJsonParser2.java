@@ -16,7 +16,7 @@ public class TestJsonParser2 {
 
     public static void main(String[] args) {
         JsonPlatformEnvironment plat =  new JsonPlatformEnvironment();
-        plat.setAppHome("/home/codefan/projects/framework/centit-framework/framework-web-demo/src/main/resources");
+        plat.setAppHome("/home/codefan/projects/framework/centit-framework/framework-static-demo/src/main/resources");
         CodeRepositoryCache.setPlatformEnvironment(plat);
         List<DictionaryMapColumn> maps = DictionaryMapUtils.getDictionaryMapColumns(UserUnit.class);
         for(DictionaryMapColumn dmc : maps){

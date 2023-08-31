@@ -2,8 +2,8 @@ package com.centit.framework.test;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.centit.framework.staticsystem.po.RoleInfo;
-import com.centit.framework.staticsystem.po.UserInfo;
+import com.centit.framework.model.basedata.RoleInfo;
+import com.centit.framework.model.basedata.UserInfo;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.json.JSONOpt;
 

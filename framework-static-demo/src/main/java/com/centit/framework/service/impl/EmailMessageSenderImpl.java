@@ -8,6 +8,7 @@ import com.centit.framework.common.ResponseData;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.model.adapter.MessageSender;
 import com.centit.framework.model.basedata.NoticeMessage;
+import com.centit.framework.model.basedata.UserInfo;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.slf4j.Logger;

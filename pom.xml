@@ -79,6 +79,8 @@
         <module>framework-system-config</module>
         <module>framework-system-web</module>
         <module>framework-system-static</module>
+        <module>framework-system-static-jdbc</module>
+        <module>framework-system-static-config</module>
     </modules>
 
     <build>

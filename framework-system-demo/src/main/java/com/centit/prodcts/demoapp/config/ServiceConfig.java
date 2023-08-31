@@ -7,7 +7,7 @@ import com.centit.framework.core.service.DataScopePowerManager;
 import com.centit.framework.core.service.impl.DataScopePowerManagerImpl;
 import com.centit.framework.jdbc.config.JdbcConfig;
 import com.centit.framework.model.adapter.NotificationCenter;
-import com.centit.framework.security.model.StandardPasswordEncoderImpl;
+import com.centit.framework.security.StandardPasswordEncoderImpl;
 import com.centit.framework.session.SimpleMapSessionRepository;
 import com.centit.framework.system.config.SystemBeanConfig;
 import org.springframework.beans.factory.annotation.Autowired;
