@@ -1,8 +1,8 @@
 package com.centit.framework.system.dao;
 
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.system.po.UnitRole;
-import com.centit.framework.system.po.UnitRoleId;
+import com.centit.framework.model.basedata.UnitRole;
+import com.centit.framework.model.basedata.UnitRoleId;
 import com.centit.support.algorithm.CollectionsOpt;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

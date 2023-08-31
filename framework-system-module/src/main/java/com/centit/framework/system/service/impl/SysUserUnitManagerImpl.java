@@ -2,10 +2,8 @@ package com.centit.framework.system.service.impl;
 
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.components.CodeRepositoryUtil;
-import com.centit.framework.model.basedata.IDataDictionary;
-import com.centit.framework.model.basedata.IUserUnit;
+import com.centit.framework.model.basedata.*;
 import com.centit.framework.system.dao.*;
-import com.centit.framework.system.po.*;
 import com.centit.framework.system.service.SysUserUnitManager;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.StringBaseOpt;
@@ -69,13 +67,13 @@ public class SysUserUnitManagerImpl
                     continue;
                 }
                 // 设置行政角色等级
-                IDataDictionary dd = CodeRepositoryUtil.getDataPiece("RankType", uu.getUserRank(), uu.getTopUnit());
+                DataDictionary dd = CodeRepositoryUtil.getDataPiece("RankType", uu.getUserRank(), uu.getTopUnit());
                 if (dd != null && dd.getExtraCode() != null && StringRegularOpt.isNumber(dd.getExtraCode())) {
                     try {
                         uu.setXzRank(Integer.valueOf(dd.getExtraCode()));
                     } catch (Exception e) {
                         logger.error(e.getMessage(), e);
-                        uu.setXzRank(IUserUnit.MAX_XZ_RANK);
+                        uu.setXzRank(UserUnit.MAX_XZ_RANK);
                     }
                 }
             }
@@ -84,7 +82,7 @@ public class SysUserUnitManagerImpl
     }
 
     private static boolean isMultiToMulti() {
-        IDataDictionary agencyMode = CodeRepositoryUtil.getDataPiece("SYSPARAM", "userUnitMode", null);
+        DataDictionary agencyMode = CodeRepositoryUtil.getDataPiece("SYSPARAM", "userUnitMode", null);
 
         if (agencyMode != null) {
             return ("M".equalsIgnoreCase(agencyMode.getDataValue()));
@@ -103,7 +101,7 @@ public class SysUserUnitManagerImpl
                 }
             }
             if (!hasRole) {
-                //            IRoleInfo roleInfo = CodeRepositoryUtil.getRoleByRoleCode(roleCode);
+                //            RoleInfo roleInfo = CodeRepositoryUtil.getRoleByRoleCode(roleCode);
                 RoleInfo roleInfo = roleInfoDao.getRoleByCodeOrName(roleCodeOrName);
                 if (roleInfo != null) {
                     UserRole newUserRole = new UserRole(
@@ -164,7 +162,7 @@ public class SysUserUnitManagerImpl
         }
         userUnitDao.saveNewObject(userunit);
         List<FVUserRoles> userRoles = userRoleDao.listUserRolesByUserCode(userunit.getUserCode());
-        IDataDictionary dd = CodeRepositoryUtil.getDataPiece("StationType", userunit.getUserStation(), userunit.getTopUnit());
+        DataDictionary dd = CodeRepositoryUtil.getDataPiece("StationType", userunit.getUserStation(), userunit.getTopUnit());
         if (null != dd) {
             addUserRoleWhenNotExist(userunit.getUserCode(), dd.getExtraCode2(), userRoles);
         }

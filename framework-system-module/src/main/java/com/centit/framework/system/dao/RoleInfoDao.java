@@ -3,7 +3,7 @@ package com.centit.framework.system.dao;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
-import com.centit.framework.system.po.RoleInfo;
+import com.centit.framework.model.basedata.RoleInfo;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
 import org.springframework.jdbc.core.ConnectionCallback;

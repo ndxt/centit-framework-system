@@ -6,12 +6,12 @@
     <parent>
         <artifactId>framework-system-parent</artifactId>
         <groupId>com.centit.framework</groupId>
-        <version>5.3-SNAPSHOT</version>
+        <version>5.4-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.centit.product</groupId>
-    <version>5.3-SNAPSHOT</version>
+    <version>5.4-SNAPSHOT</version>
     <artifactId>framework-system-demo</artifactId>
     <packaging>war</packaging>
     <name>com.centit.product:framework-system-demo</name>
@@ -19,12 +19,7 @@
         基于框架开发的应用示例，根据项目的需要
     </description>
 
-    <properties>
-        <centit.stat.version>5.3-SNAPSHOT</centit.stat.version>
-    </properties>
-
     <dependencies>
-
         <dependency>
             <groupId>com.centit.support</groupId>
             <artifactId>centit-database-datasource</artifactId>
@@ -160,7 +155,7 @@
         <dependency>
             <groupId>com.centit.support</groupId>
             <artifactId>centit-report-utils</artifactId>
-            <version>${centit.stat.version}</version>
+            <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

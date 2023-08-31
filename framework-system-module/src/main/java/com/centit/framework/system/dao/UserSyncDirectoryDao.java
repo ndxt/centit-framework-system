@@ -1,7 +1,7 @@
 package com.centit.framework.system.dao;
 
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.system.po.UserSyncDirectory;
+import com.centit.framework.model.basedata.UserSyncDirectory;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

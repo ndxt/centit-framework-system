@@ -1,10 +1,10 @@
 package com.centit.framework.system.service;
 
 import com.alibaba.fastjson2.JSONArray;
-import com.centit.framework.system.po.FVUserRoles;
-import com.centit.framework.system.po.UserInfo;
-import com.centit.framework.system.po.UserRole;
-import com.centit.framework.system.po.UserRoleId;
+import com.centit.framework.model.basedata.FVUserRoles;
+import com.centit.framework.model.basedata.UserInfo;
+import com.centit.framework.model.basedata.UserRole;
+import com.centit.framework.model.basedata.UserRoleId;
 import com.centit.support.database.utils.PageDesc;
 
 import java.util.List;

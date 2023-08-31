@@ -1,7 +1,7 @@
 package com.centit.framework.system.service;
 
-import com.centit.framework.system.po.OptDataScope;
-import com.centit.framework.system.po.OptInfo;
+import com.centit.framework.model.basedata.OptDataScope;
+import com.centit.framework.model.basedata.OptInfo;
 
 import java.util.List;
 import java.util.Map;

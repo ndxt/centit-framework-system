@@ -1,6 +1,6 @@
 package com.centit.framework.system.service;
 
-import com.centit.framework.system.po.UserSyncDirectory;
+import com.centit.framework.model.basedata.UserSyncDirectory;
 import com.centit.support.database.utils.PageDesc;
 
 import java.util.List;

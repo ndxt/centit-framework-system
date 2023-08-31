@@ -4,7 +4,7 @@ import com.alibaba.fastjson2.JSONArray;
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.jdbc.service.BaseEntityManagerImpl;
 import com.centit.framework.system.dao.OsInfoDao;
-import com.centit.framework.system.po.OsInfo;
+import com.centit.framework.model.basedata.OsInfo;
 import com.centit.framework.system.service.OsInfoManager;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.network.HttpExecutor;

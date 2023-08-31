@@ -1,8 +1,8 @@
 package com.centit.framework.system.service;
 
-import com.centit.framework.system.po.DataCatalog;
-import com.centit.framework.system.po.DataDictionary;
-import com.centit.framework.system.po.DataDictionaryId;
+import com.centit.framework.model.basedata.DataCatalog;
+import com.centit.framework.model.basedata.DataDictionary;
+import com.centit.framework.model.basedata.DataDictionaryId;
 import com.centit.support.database.utils.PageDesc;
 
 import java.util.Collection;

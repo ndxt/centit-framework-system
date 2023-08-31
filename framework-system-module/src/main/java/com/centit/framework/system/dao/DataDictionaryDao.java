@@ -2,8 +2,8 @@ package com.centit.framework.system.dao;
 
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.system.po.DataDictionary;
-import com.centit.framework.system.po.DataDictionaryId;
+import com.centit.framework.model.basedata.DataDictionary;
+import com.centit.framework.model.basedata.DataDictionaryId;
 import com.centit.support.algorithm.CollectionsOpt;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

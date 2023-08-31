@@ -12,12 +12,8 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.filter.RequestThreadLocal;
-import com.centit.framework.model.basedata.IUserInfo;
+import com.centit.framework.model.basedata.*;
 import com.centit.framework.system.dao.OsInfoDao;
-import com.centit.framework.system.po.OsInfo;
-import com.centit.framework.system.po.WorkGroup;
-import com.centit.framework.system.po.WorkGroupParames;
-import com.centit.framework.system.po.WorkGroupParameter;
 import com.centit.framework.system.service.WorkGroupManager;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;
@@ -52,7 +48,6 @@ import java.util.Map;
  * @author codefan@sina.com
  * 项目库授权信息
  */
-
 
 @Controller
 @RequestMapping("/workGroup")
@@ -115,14 +110,14 @@ public class WorkGroupController extends BaseController {
             //补充用户信息 groupId对应租户topUnit
             HashMap<String, Object> map = new HashMap<>(32);
             WorkGroupParameter workGroupParameter = workGroup.getWorkGroupParameter();
-            IUserInfo iUserInfo = CodeRepositoryUtil.getUserInfoByCode(topUnit, workGroupParameter.getUserCode());
+            UserInfo UserInfo = CodeRepositoryUtil.getUserInfoByCode(topUnit, workGroupParameter.getUserCode());
             //如果缓存中不存在,重新刷新缓存
-            if (null == iUserInfo) {
+            if (null == UserInfo) {
                 CodeRepositoryCache.evictCache("UserInfo");
-                iUserInfo = CodeRepositoryUtil.getUserInfoByCode(topUnit, workGroupParameter.getUserCode());
+                UserInfo = CodeRepositoryUtil.getUserInfoByCode(topUnit, workGroupParameter.getUserCode());
             }
-            if (null != iUserInfo) {
-                Map userInfoMap = JSONObject.from(iUserInfo);
+            if (null != UserInfo) {
+                Map userInfoMap = JSONObject.from(UserInfo);
                 map.putAll(userInfoMap);
             }
             Map workGroupMap = JSONObject.from(workGroup);

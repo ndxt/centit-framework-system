@@ -19,7 +19,7 @@ public abstract class EntityManagerWithDataPowerImpl{
 
     public DataPowerFilter createDataPowerFilter(String userCode){
         DataPowerFilter dpf = new DataPowerFilter();
-        IUserInfo currUser = CodeRepositoryUtil.getUserInfoByCode(userCode);
+        UserInfo currUser = CodeRepositoryUtil.getUserInfoByCode(userCode);
         dpf.addSourceData( currUser );
         dpf.addSourceData("PrimaryUnit",CodeRepositoryUtil.getUnitInfoByCode(currUser.getPrimaryUnit()) );
         dpf.addSourceData("UserUnits", CodeRepositoryUtil.getUserUnits(userCode));

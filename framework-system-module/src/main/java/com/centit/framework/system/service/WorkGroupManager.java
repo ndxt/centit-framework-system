@@ -1,7 +1,7 @@
 package com.centit.framework.system.service;
 
-import com.centit.framework.system.po.WorkGroup;
-import com.centit.framework.system.po.WorkGroupParames;
+import com.centit.framework.model.basedata.WorkGroup;
+import com.centit.framework.model.basedata.WorkGroupParames;
 import com.centit.support.database.utils.PageDesc;
 
 import java.util.List;

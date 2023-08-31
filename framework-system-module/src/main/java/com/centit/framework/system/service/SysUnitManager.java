@@ -1,7 +1,7 @@
 package com.centit.framework.system.service;
 
-import com.centit.framework.system.po.UnitInfo;
-import com.centit.framework.system.po.UserInfo;
+import com.centit.framework.model.basedata.UnitInfo;
+import com.centit.framework.model.basedata.UserInfo;
 import com.centit.support.database.utils.PageDesc;
 
 import java.util.List;

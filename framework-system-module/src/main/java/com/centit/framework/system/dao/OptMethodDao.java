@@ -2,7 +2,7 @@ package com.centit.framework.system.dao;
 
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.system.po.OptMethod;
+import com.centit.framework.model.basedata.OptMethod;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.UuidOpt;
 import com.centit.support.database.orm.OrmDaoUtils;

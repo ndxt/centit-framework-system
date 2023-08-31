@@ -9,9 +9,9 @@ import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.core.dao.PageQueryResult;
-import com.centit.framework.model.basedata.IUserUnit;
+import com.centit.framework.model.basedata.UserUnit;
 import com.centit.framework.operationlog.RecordOperationLog;
-import com.centit.framework.system.po.*;
+import com.centit.framework.model.basedata.*;
 import com.centit.framework.system.service.OptMethodManager;
 import com.centit.framework.system.service.SysRoleManager;
 import com.centit.framework.system.service.SysUnitRoleManager;
@@ -707,7 +707,7 @@ public class RoleInfoController extends BaseController {
 
         if ("D".equals(type) && StringUtils.isBlank(owner)) {
 
-            IUserUnit unit = CodeRepositoryUtil.getUserPrimaryUnit(
+            UserUnit unit = CodeRepositoryUtil.getUserPrimaryUnit(
                 WebOptUtils.getCurrentTopUnit(request),
                 WebOptUtils.getCurrentUserCode(request));
             if (unit != null) {

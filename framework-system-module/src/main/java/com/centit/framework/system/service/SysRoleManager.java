@@ -1,9 +1,9 @@
 package com.centit.framework.system.service;
 
 import com.alibaba.fastjson2.JSONArray;
-import com.centit.framework.system.po.OptMethod;
-import com.centit.framework.system.po.RoleInfo;
-import com.centit.framework.system.po.RolePower;
+import com.centit.framework.model.basedata.OptMethod;
+import com.centit.framework.model.basedata.RoleInfo;
+import com.centit.framework.model.basedata.RolePower;
 import com.centit.support.database.utils.PageDesc;
 
 import java.io.Serializable;

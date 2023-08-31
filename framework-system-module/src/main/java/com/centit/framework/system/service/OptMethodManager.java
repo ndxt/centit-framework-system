@@ -1,6 +1,6 @@
 package com.centit.framework.system.service;
 
-import com.centit.framework.system.po.OptMethod;
+import com.centit.framework.model.basedata.OptMethod;
 
 import java.util.List;
 

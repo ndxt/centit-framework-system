@@ -1,15 +1,15 @@
 package com.centit.framework.system.security;
 
 import com.centit.framework.model.adapter.PlatformEnvironment;
-import com.centit.framework.security.model.CentitSecurityMetadata;
-import com.centit.framework.security.model.CentitUserDetails;
-import com.centit.framework.security.model.CentitUserDetailsService;
+import com.centit.framework.model.basedata.FVUserRoles;
+import com.centit.framework.model.basedata.UserInfo;
+import com.centit.framework.model.basedata.UserSetting;
+import com.centit.framework.security.CentitSecurityMetadata;
+import com.centit.framework.model.security.CentitUserDetails;
+import com.centit.framework.model.security.CentitUserDetailsService;
 import com.centit.framework.system.dao.UserInfoDao;
 import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.dao.UserSettingDao;
-import com.centit.framework.system.po.FVUserRoles;
-import com.centit.framework.system.po.UserInfo;
-import com.centit.framework.system.po.UserSetting;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -25,7 +25,7 @@ import java.util.*;
 
 //@Service("centitUserDetailsService")
 public class DaoUserDetailsService
-    implements CentitUserDetailsService,UserDetailsService,
+    implements CentitUserDetailsService, UserDetailsService,
         AuthenticationUserDetailsService<Authentication> {
 
     @Autowired

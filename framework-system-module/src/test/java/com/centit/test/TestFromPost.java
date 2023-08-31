@@ -2,9 +2,9 @@ package com.centit.test;
 
 import com.alibaba.fastjson2.JSON;
 import com.centit.framework.common.ValidatorUtils;
-import com.centit.framework.system.po.DataCatalog;
-import com.centit.framework.system.po.RoleInfo;
-import com.centit.framework.system.po.UserInfo;
+import com.centit.framework.model.basedata.DataCatalog;
+import com.centit.framework.model.basedata.RoleInfo;
+import com.centit.framework.model.basedata.UserInfo;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.network.HttpExecutor;
 import com.centit.support.network.HttpExecutorContext;

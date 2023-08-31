@@ -5,9 +5,9 @@ import com.alibaba.fastjson2.JSONArray;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
-import com.centit.framework.model.basedata.IRolePower;
-import com.centit.framework.system.po.RolePower;
-import com.centit.framework.system.po.RolePowerId;
+import com.centit.framework.model.basedata.RolePower;
+import com.centit.framework.model.basedata.RolePower;
+import com.centit.framework.model.basedata.RolePowerId;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.QueryAndNamedParams;
@@ -100,8 +100,8 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
     }
 
     @Transactional
-    public List<IRolePower> listSysRolePower() {
-        List<IRolePower> rolePowers = new ArrayList<>();
+    public List<RolePower> listSysRolePower() {
+        List<RolePower> rolePowers = new ArrayList<>();
         String sql = "select distinct a.ROLE_CODE,a.opt_code,a.opt_scope_codes,d.top_opt_id as top_unit " +
             "from F_ROLEPOWER a join F_ROLEINFO b on a.ROLE_CODE=b.ROLE_CODE " +
             "join f_optdef c on a.opt_code=c.opt_code join f_optinfo d on c.opt_id=d.opt_id " +
@@ -114,8 +114,8 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
     }
 
     @Transactional
-    public List<IRolePower> listRolePowerUseApiId(String apiId) {
-        List<IRolePower> rolePowers = new ArrayList<>();
+    public List<RolePower> listRolePowerUseApiId(String apiId) {
+        List<RolePower> rolePowers = new ArrayList<>();
         String sql = "select distinct a.ROLE_CODE,a.opt_code,a.opt_scope_codes,e.top_unit " +
             "from F_ROLEPOWER a join F_ROLEINFO b on a.ROLE_CODE=b.ROLE_CODE " +
             "join f_optdef c on a.opt_code=c.opt_code join f_optinfo d on c.opt_id=d.opt_id " +

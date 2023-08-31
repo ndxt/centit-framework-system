@@ -4,13 +4,13 @@ import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.DictionaryMapUtils;
-import com.centit.framework.model.basedata.IUserInfo;
+import com.centit.framework.model.basedata.UserInfo;
 import com.centit.framework.system.dao.UserInfoDao;
 import com.centit.framework.system.dao.UserRoleDao;
-import com.centit.framework.system.po.FVUserRoles;
-import com.centit.framework.system.po.UserInfo;
-import com.centit.framework.system.po.UserRole;
-import com.centit.framework.system.po.UserRoleId;
+import com.centit.framework.model.basedata.FVUserRoles;
+import com.centit.framework.model.basedata.UserInfo;
+import com.centit.framework.model.basedata.UserRole;
+import com.centit.framework.model.basedata.UserRoleId;
 import com.centit.framework.system.service.SysUserRoleManager;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.utils.PageDesc;
@@ -56,7 +56,7 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
         for (Object a : userRoles) {
             JSONObject aa = (JSONObject) a;
             String userCode = aa.getString("userCode");
-            IUserInfo userinfo = CodeRepositoryUtil.getUserInfoByCode(
+            UserInfo userinfo = CodeRepositoryUtil.getUserInfoByCode(
                 StringBaseOpt.objectToString(filterMap.get("topUnit")), userCode);
             if(userinfo!=null) {
                 String loginName = userinfo.getLoginName();

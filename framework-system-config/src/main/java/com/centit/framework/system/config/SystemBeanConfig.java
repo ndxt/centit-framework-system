@@ -1,6 +1,6 @@
 package com.centit.framework.system.config;
 
-import com.centit.framework.security.model.CentitUserDetailsService;
+import com.centit.framework.model.security.CentitUserDetailsService;
 import com.centit.framework.system.security.DaoUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
@@ -18,9 +18,8 @@ public class SystemBeanConfig implements EnvironmentAware {
 
     private Environment env;
 
-    @Autowired
     @Override
-    public void setEnvironment(Environment environment) {
+    public void setEnvironment(@Autowired Environment environment) {
         if(environment!=null) {
             this.env = environment;
         }
@@ -48,20 +47,5 @@ public class SystemBeanConfig implements EnvironmentAware {
     public CsrfTokenRepository csrfTokenRepository() {
         return new HttpSessionCsrfTokenRepository();
     }
-    // 这bean从框架中移除，由开发人员自行定义; 可以定义不同的策略
-    /*@Bean
-    public SessionRegistry sessionRegistry(){
-        return new MemorySessionRegistryImpl();
-    }*/
-
-    /*
-     * 缓存配置信息
-     */
-    /*@Bean
-    public EhCacheManagerFactoryBean cacheManagerFactory() {
-        EhCacheManagerFactoryBean ehCacheManagerFactoryBean = new EhCacheManagerFactoryBean();
-        ehCacheManagerFactoryBean.setConfigLocation(new ClassPathResource("ehcache.xml"));
-        return ehCacheManagerFactoryBean;
-    }*/
 
 }

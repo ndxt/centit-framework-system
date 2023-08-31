@@ -7,10 +7,11 @@ import com.centit.framework.common.GlobalConstValue;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.*;
+import com.centit.framework.security.CentitSecurityMetadata;
 import com.centit.framework.security.SecurityContextUtils;
-import com.centit.framework.security.model.*;
+import com.centit.framework.model.security.*;
 import com.centit.framework.system.dao.*;
-import com.centit.framework.system.po.*;
+import com.centit.framework.model.basedata.*;
 import com.centit.framework.system.service.OptInfoManager;
 import com.centit.framework.system.service.WorkGroupManager;
 import com.centit.support.algorithm.CollectionsOpt;
@@ -109,7 +110,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional
-    public void saveUserSetting(IUserSetting userSetting) {
+    public void saveUserSetting(UserSetting userSetting) {
         // regCellPhone  idCardNo  regEmail
         if (StringUtils.equalsAny(userSetting.getParamCode(),
             "regCellPhone", "idCardNo", "regEmail")) {
@@ -134,11 +135,11 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                     new UserSettingId(userSetting.getUserCode(), userSetting.getParamCode()));
                 if (us == null) {
                     us = new UserSetting();
-                    us.copyFromIUserSetting(userSetting);
+                    us.copyFromUserSetting(userSetting);
                     us.setCreateDate(DatetimeOpt.currentUtilDate());
                     userSettingDao.saveNewUserSetting(us);
                 } else {
-                    us.copyFromIUserSetting(userSetting);
+                    us.copyFromUserSetting(userSetting);
                     userSettingDao.updateUserSetting(us);
                 }
             }
@@ -248,42 +249,42 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
-    public IOptInfo addOptInfo(IOptInfo optInfo) {
+    public OptInfo addOptInfo(OptInfo optInfo) {
         optInfoManager.saveNewOptInfo((OptInfo) optInfo);
         return optInfo;
     }
 
     @Override
-    public IOptInfo updateOptInfo(IOptInfo optInfo) {
+    public OptInfo updateOptInfo(OptInfo optInfo) {
         optInfoDao.updateOptInfo((OptInfo) optInfo);
         return optInfo;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<? extends IUserRole> listUserRoles(String topUnit, String userCode) {
+    public List<UserRole> listUserRoles(String topUnit, String userCode) {
         return supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
-            ? userRoleDao.listUserRolesByTopUnit(topUnit, userCode)
+            ? FVUserRoles.mapToUserRoles(userRoleDao.listUserRolesByTopUnit(topUnit, userCode))
             : userRoleDao.listUserRoles(userCode);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<? extends IUserRole> listRoleUsers(String topUnit, String roleCode) {
+    public List<UserRole> listRoleUsers(String topUnit, String roleCode) {
         return supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
-            ? userRoleDao.listRoleUsersByTopUnit(topUnit, roleCode)
+            ? FVUserRoles.mapToUserRoles(userRoleDao.listRoleUsersByTopUnit(topUnit, roleCode))
             : userRoleDao.listRoleUsers(roleCode);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<? extends IUnitRole> listUnitRoles(String unitCode) {
+    public List<UnitRole> listUnitRoles(String unitCode) {
         return unitRoleDao.listUnitRolesByUnitCode(unitCode);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<? extends IUnitRole> listRoleUnits(String roleCode) {
+    public List<UnitRole> listRoleUnits(String roleCode) {
         return unitRoleDao.listUnitRolesByRoleCode(roleCode);
     }
 
@@ -344,7 +345,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
      * @return List 用户所有的机构信息
      */
     @Override
-    public List<? extends IUnitInfo> listUserTopUnits(String userCode) {
+    public List<UnitInfo> listUserTopUnits(String userCode) {
         return supportTenant ? unitInfoDao.listUserTopUnits(userCode)
             : CollectionsOpt.createList(
             new UnitInfo(GlobalConstValue.NO_TENANT_TOP_UNIT,
@@ -367,7 +368,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional(readOnly = true)
-    public List<? extends IRoleInfo> listAllRoleInfo(String topUnit) {
+    public List<RoleInfo> listAllRoleInfo(String topUnit) {
         return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
             ? roleInfoDao.listAllRoleByUnit(topUnit)
             : roleInfoDao.listObjectsAll();
@@ -375,7 +376,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional(readOnly = true)
-    public List<? extends IRolePower> listAllRolePower(String topUnit) {
+    public List<RolePower> listAllRolePower(String topUnit) {
         return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit) ?
             rolePowerDao.listAllRolePowerByUnit(topUnit)
             : rolePowerDao.listObjectsAll();
@@ -383,39 +384,39 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional(readOnly = true)
-    public List<? extends IOptInfo> listAllOptInfo(String topUnit) {
+    public List<OptInfo> listAllOptInfo(String topUnit) {
         return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
             ? optInfoDao.listAllOptInfoByUnit(topUnit)
             : optInfoDao.listObjectsAll();
     }
 
     @Override
-    public List<? extends IOptInfo> listOptInfoByRole(String roleCode) {
+    public List<OptInfo> listOptInfoByRole(String roleCode) {
         return optInfoDao.listOptInfoByRoleCode(roleCode);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<? extends IOptMethod> listAllOptMethod(String topUnit) {
+    public List<OptMethod> listAllOptMethod(String topUnit) {
         return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit) ?
             optMethodDao.listAllOptMethodByUnit(topUnit)
             : optMethodDao.listObjectsAll();
     }
 
     @Override
-    public List<? extends IOptMethod> listOptMethodByRoleCode(String roleCode) {
+    public List<OptMethod> listOptMethodByRoleCode(String roleCode) {
         return optMethodDao.listOptMethodByRoleCode(roleCode);
     }
 
     @Override
-    public IOptMethod addOptMethod(IOptMethod optMethod) {
+    public OptMethod addOptMethod(OptMethod optMethod) {
         optMethodDao.saveNewObject((OptMethod) optMethod);
         return optMethod;
     }
 
 
     @Override
-    public IOptMethod mergeOptMethod(IOptMethod optMethod) {
+    public OptMethod mergeOptMethod(OptMethod optMethod) {
         optMethodDao.mergeObject((OptMethod) optMethod);
         List<RolePower> rolePowers = rolePowerDao.listObjectsByProperties(CollectionsOpt.createHashMap("optCode", optMethod.getOptCode()));
         if(rolePowers==null || rolePowers.size()==0){
@@ -440,7 +441,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
      * @return 所有的数据范围定义表达式
      */
     @Override
-    public List<? extends IOptDataScope> listAllOptDataScope(String topUnit) {
+    public List<OptDataScope> listAllOptDataScope(String topUnit) {
         return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
             ? dataScopeDao.listAllDataScopeByUnit(topUnit)
             : dataScopeDao.listAllDataScope();
@@ -496,13 +497,13 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     //@Transactional
-    private JsonCentitUserDetails fillUserDetailsField(UserInfo userinfo) {
+    private CentitUserDetails fillUserDetailsField(UserInfo userinfo) {
         List<UserUnit> userUnits = userUnitDao.listUserUnitsByUserCode(userinfo.getUserCode());
         String currentUnitCode = userinfo.getPrimaryUnit();
-        JsonCentitUserDetails userDetails = new JsonCentitUserDetails();
-        userDetails.setUserInfo((JSONObject) JSON.toJSON(userinfo));
-        userDetails.getUserInfo().put("userPin", userinfo.getUserPin());
-        userDetails.setUserUnits((JSONArray) JSON.toJSON(userUnits));
+        CentitUserDetails userDetails = new CentitUserDetails();
+        userDetails.setUserInfo(userinfo);
+        //userDetails.getUserInfo().put("userPin", userinfo.getUserPin());
+        userDetails.setUserUnits(userUnits);
         if (StringUtils.isEmpty(userinfo.getCurrentStationId())) {
             for (UserUnit uu : userUnits) {
                 if ("T".equals(uu.getRelType())) {
@@ -548,7 +549,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         //add  end
         //userDetails.setUserFuncs(functionDao.getMenuFuncByUserID(userDetails.getUserCode()));
         appendAdminRoles(userinfo, roles);
-        userDetails.setAuthoritiesByRoles((JSONArray) JSON.toJSON(roles));
+        userDetails.mapAuthoritiesByRoles(roles);
         List<OptMethod> publicOptMethod = optMethodDao.listPublicOptMethodByUnit(userinfo.getTopUnit());
         Map<String, String> userOptList = new HashMap<>();
         if (publicOptMethod != null) {
@@ -584,30 +585,28 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         }
 
         userDetails.setTopUnitCode(userinfo.getTopUnit());
+        UnitInfo currentUnit = null;
         //当用户还未加入任何租户或者单位时，currentUnitCode为空
         if (StringUtils.isNotBlank(currentUnitCode)) {
-            UnitInfo currentUnit = unitInfoDao.getObjectById(currentUnitCode);
+            currentUnit = unitInfoDao.getObjectById(currentUnitCode);
             if (null != currentUnit) {
-                userDetails.getUserInfo().put("primaryUnitName", currentUnit.getUnitName());
-                userDetails.getUserInfo().put("primaryUnit", currentUnit.getUnitCode());
+                userDetails.setCurrentUnitName(currentUnit.getUnitName());
+                //.getUserInfo().put("primaryUnitName", currentUnit.getUnitName());
+                userDetails.getUserInfo().setPrimaryUnit(currentUnit.getUnitCode());
             }
         }
 
         if (StringUtils.isBlank(userDetails.getTopUnitCode())) {
             //当用户还未加入任何租户或者单位时，currentUnitCode为空
-            UnitInfo ui = null;
-            if (StringUtils.isNotBlank(currentUnitCode)) {
-                ui = unitInfoDao.getObjectById(currentUnitCode);
-            }
-            if (ui != null) {
-                userDetails.setTopUnitCode(ui.getTopUnit());
+            if (currentUnit != null) {
+                userDetails.setTopUnitCode(currentUnit.getTopUnit());
             }
             if (StringUtils.isBlank(userDetails.getTopUnitCode())) {
                 //userDetails.setTopUnitCode(GlobalConstValue.SYSTEM_TENANT_TOP_UNIT);
             } else {
                 UnitInfo topUnit = unitInfoDao.getObjectById(userDetails.getTopUnitCode());
                 if (null != topUnit) {
-                    userDetails.getUserInfo().put("topUnitName", topUnit.getUnitName());
+                    userDetails.setTopUnitName(topUnit.getUnitName());//.getUserInfo().put("topUnitName", topUnit.getUnitName());
                 }
             }
         } else {
@@ -616,7 +615,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                 ui = unitInfoDao.getObjectById(currentUnitCode);
             }
             if (null != ui) {
-                userDetails.getUserInfo().put("topUnitName", ui.getUnitName());
+                userDetails.setTopUnitName(ui.getUnitName());
             }
         }
         return userDetails;
@@ -637,7 +636,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional
-    public JsonCentitUserDetails loadUserDetailsByLoginName(String loginName) {
+    public CentitUserDetails loadUserDetailsByLoginName(String loginName) {
         UserInfo userinfo = userInfoDao.getUserByLoginName(loginName);
         if (userinfo == null) {
             return null;
@@ -647,7 +646,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional
-    public JsonCentitUserDetails loadUserDetailsByUserCode(String userCode) {
+    public CentitUserDetails loadUserDetailsByUserCode(String userCode) {
         UserInfo userinfo = userInfoDao.getUserByCode(userCode);
         if (userinfo == null) {
             return null;
@@ -656,13 +655,13 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
-    public IUnitInfo loadUnitInfo(String unitCode){
+    public UnitInfo loadUnitInfo(String unitCode){
         return unitInfoDao.getObjectById(unitCode);
     }
 
     @Override
     @Transactional
-    public JsonCentitUserDetails loadUserDetailsByRegEmail(String regEmail) {
+    public CentitUserDetails loadUserDetailsByRegEmail(String regEmail) {
         UserInfo userinfo = userInfoDao.getUserByRegEmail(regEmail);
         if (userinfo == null) {
             return null;
@@ -672,7 +671,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional
-    public JsonCentitUserDetails loadUserDetailsByRegCellPhone(String regCellPhone) {
+    public CentitUserDetails loadUserDetailsByRegCellPhone(String regCellPhone) {
         UserInfo userinfo = userInfoDao.getUserByRegCellPhone(regCellPhone);
         if (userinfo == null) {
             return null;
@@ -682,12 +681,12 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional
-    public void updateUserInfo(IUserInfo userInfo) {
+    public void updateUserInfo(UserInfo userInfo) {
         UserInfo ui = userInfoDao.getUserByCode(userInfo.getUserCode());
         if (ui == null) {
             return;
         }
-        ui.copyFromIUserInfo(userInfo);
+        ui.copyFromUserInfo(userInfo);
         userInfoDao.updateUser(ui);
     }
 
@@ -774,7 +773,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
      */
     //@Override
     @Transactional
-    public void insertOrUpdateMenu(List<? extends IOptInfo> optInfos, List<? extends IOptMethod> optMethods) {
+    public void insertOrUpdateMenu(List<OptInfo> optInfos, List<OptMethod> optMethods) {
         List<OptMethod> dbMethods = new ArrayList<>();
         for (OptInfo optInfo : (List<OptInfo>) optInfos) {
             if (StringUtils.isEmpty(optInfo.getPreOptId())) {
@@ -824,20 +823,20 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
-    public List<? extends IOsInfo> listOsInfos(String topUnit) {
+    public List<OsInfo> listOsInfos(String topUnit) {
         return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
             ? osInfoDao.listOsInfoByUnit(topUnit)
             : osInfoDao.listObjects();
     }
 
     @Override
-    public IOsInfo getOsInfo(String osId) {
+    public OsInfo getOsInfo(String osId) {
         return osInfoDao.getObjectById(osId);
     }
 
     @Override
-    public IOsInfo deleteOsInfo(String osId) {
-        IOsInfo osInfo = osInfoDao.getObjectById(osId);
+    public OsInfo deleteOsInfo(String osId) {
+        OsInfo osInfo = osInfoDao.getObjectById(osId);
         if (osInfo != null) {
             osInfoDao.deleteObjectById(osId);
         }
@@ -845,7 +844,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
-    public IOsInfo updateOsInfo(IOsInfo osInfo) {
+    public OsInfo updateOsInfo(OsInfo osInfo) {
         OsInfo osInfo1 = osInfoDao.getObjectById(osInfo.getOsId());
         osInfo.setTopUnit(osInfo1.getTopUnit());
         osInfoDao.updateObject((OsInfo) osInfo);
@@ -853,7 +852,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
-    public IOsInfo addOsInfo(IOsInfo osInfo) {
+    public OsInfo addOsInfo(OsInfo osInfo) {
         osInfoDao.saveNewObject((OsInfo) osInfo);
         return osInfo;
     }
@@ -872,14 +871,14 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
-    public List<? extends IWorkGroup> listWorkGroup(Map<String, Object> filterMap, PageDesc pageDesc) {
+    public List<WorkGroup> listWorkGroup(Map<String, Object> filterMap, PageDesc pageDesc) {
         return workGroupManager.listWorkGroup(filterMap, pageDesc);
     }
 
     @Override
-    public void batchWorkGroup(List<IWorkGroup> workGroups) {
+    public void batchWorkGroup(List<WorkGroup> workGroups) {
         ArrayList<WorkGroup> workGroups1 = new ArrayList<>();
-        for (IWorkGroup workGroup : workGroups) {
+        for (WorkGroup workGroup : workGroups) {
             if (workGroup instanceof WorkGroup) {
                 workGroups1.add((WorkGroup) workGroup);
             }
@@ -894,9 +893,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     public List<ConfigAttribute> getRolesWithApiId(String apiId) {
-        List<? extends IRolePower> rolePowers = rolePowerDao.listRolePowerUseApiId(apiId);
+        List<RolePower> rolePowers = rolePowerDao.listRolePowerUseApiId(apiId);
         List<ConfigAttribute> roles = new ArrayList<>();
-        for (IRolePower rp : rolePowers) {
+        for (RolePower rp : rolePowers) {
             dealRolePower(roles, rp);
         }
         Collections.sort(roles,
@@ -907,11 +906,11 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     public OptTreeNode getSysOptTree() {
         Map<String, List<ConfigAttribute>> optMethodRoleMap = new HashMap<>(100);
-        List<? extends IRolePower> rolePowers = rolePowerDao.listSysRolePower();
+        List<RolePower> rolePowers = rolePowerDao.listSysRolePower();
         if (rolePowers == null || rolePowers.size() == 0) {
             return null;
         }
-        for (IRolePower rp : rolePowers) {
+        for (RolePower rp : rolePowers) {
             List<ConfigAttribute> roles = optMethodRoleMap.get(rp.getOptCode());
             if (roles == null) {
                 roles = new ArrayList<>();
@@ -920,8 +919,8 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             optMethodRoleMap.put(rp.getOptCode(), roles);
         }
         OptTreeNode optTreeNode = new OptTreeNode();
-        List<? extends IOptMethod> iOptMethods = optMethodDao.listAllOptMethodByUnit(SYSTEM);
-        for (IOptMethod ou : iOptMethods) {
+        List<OptMethod> OptMethods = optMethodDao.listAllOptMethodByUnit(SYSTEM);
+        for (OptMethod ou : OptMethods) {
             if (ou != null) {
                 if (StringUtils.isNotBlank(ou.getOptUrl()) && StringUtils.isNotBlank(ou.getOptReq())) {
                     List<List<String>> sOpt = optTreeNode.parsePowerDefineUrl(
@@ -940,7 +939,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         return optTreeNode;
     }
 
-    private void dealRolePower(List<ConfigAttribute> roles, IRolePower rp) {
+    private void dealRolePower(List<ConfigAttribute> roles, RolePower rp) {
         if (SecurityContextUtils.PUBLIC_ROLE_CODE.equalsIgnoreCase(rp.getRoleCode())) {
             roles.add(new CentitSecurityConfig(CentitSecurityMetadata.ROLE_PREFIX + StringUtils.trim(rp.getRoleCode()) + rp.getTopUnit()));
         } else if (SecurityContextUtils.ANONYMOUS_ROLE_CODE.equalsIgnoreCase(rp.getRoleCode())) {

@@ -5,7 +5,7 @@ import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.PageQueryResult;
-import com.centit.framework.system.po.UserSyncDirectory;
+import com.centit.framework.model.basedata.UserSyncDirectory;
 import com.centit.framework.system.service.UserSyncDirectoryManager;
 import com.centit.support.database.utils.PageDesc;
 import io.swagger.annotations.Api;

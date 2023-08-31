@@ -2,7 +2,7 @@ package com.centit.sys.util;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.filter.SimplePropertyPreFilter;
-import com.centit.framework.system.po.UserInfo;
+import com.centit.framework.model.basedata.UserInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
