@@ -1,7 +1,8 @@
 package com.centit.framework.system.config;
 
+import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.security.CentitUserDetailsService;
-import com.centit.framework.system.security.DaoUserDetailsService;
+import com.centit.framework.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.context.EnvironmentAware;
@@ -36,13 +37,12 @@ public class SystemBeanConfig implements EnvironmentAware {
         return  new StandardPasswordEncoderImpl();
     }
 */
-
     @Bean
-    public CentitUserDetailsService centitUserDetailsService() {
-        DaoUserDetailsService userDetailsService = new DaoUserDetailsService();
+    public CentitUserDetailsService centitUserDetailsService(@Autowired PlatformEnvironment platformEnvironment) {
+        UserDetailsServiceImpl userDetailsService = new UserDetailsServiceImpl();
+        userDetailsService.setPlatformEnvironment(platformEnvironment);
         return userDetailsService;
     }
-
     @Bean
     public CsrfTokenRepository csrfTokenRepository() {
         return new HttpSessionCsrfTokenRepository();

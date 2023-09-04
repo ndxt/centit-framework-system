@@ -540,10 +540,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         List<FVUserRoles> userRolesList = userRoleDao.listUserRolesByTopUnit(userinfo.getTopUnit(), userinfo.getUserCode());
         if (userRolesList != null) {
             for (FVUserRoles role : userRolesList) {
-                RoleInfo roleInfo = new RoleInfo();
-                //roleInfo.copy(role);
-                BeanUtils.copyProperties(role, roleInfo);
-                roles.add(roleInfo);
+                roles.add(role.toRoleInfo());
             }
         }
         //add  end
