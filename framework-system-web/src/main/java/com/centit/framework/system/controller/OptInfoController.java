@@ -9,6 +9,7 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.DictionaryMapUtils;
+import com.centit.framework.model.basedata.OptDataScope;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.model.basedata.OptInfo;
 import com.centit.framework.model.basedata.OptMethod;
@@ -282,7 +283,9 @@ public class OptInfoController extends BaseController {
                 optDef.setOptCode(optMethodManager.getNextOptCode());
             }
         }
-
+        for (OptDataScope optDef : optInfo.getDataScopes()) {
+           optDef.setFilterCondition(StringEscapeUtils.unescapeHtml4(optDef.getFilterCondition()));
+        }
     /*  dbOptInfo.addAllOptMethods(optInfo.getOptMethods());
         dbOptInfo.addAllDataScopes(optInfo.getDataScopes());*/
         optInfoManager.updateOperationPower(optInfo);
