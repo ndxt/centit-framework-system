@@ -23,6 +23,8 @@ public class DataCatalogDao extends BaseDaoImpl<DataCatalog, String>{
         filterField.put("catalogType", CodeBook.EQUAL_HQL_ID);
         filterField.put("optId", CodeBook.EQUAL_HQL_ID);
         filterField.put("topUnit", CodeBook.EQUAL_HQL_ID);
+        filterField.put("osId",
+            "CATALOG_CODE in (select dictionary_id from m_application_dictionary where os_id = :osId)");
 
         return filterField;
     }

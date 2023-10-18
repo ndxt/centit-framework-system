@@ -1,11 +1,14 @@
 package com.centit.framework.system.service.impl;
 
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.centit.framework.components.CodeRepositoryCache;
-import com.centit.framework.system.dao.DataCatalogDao;
-import com.centit.framework.system.dao.DataDictionaryDao;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.model.basedata.DataCatalog;
 import com.centit.framework.model.basedata.DataDictionary;
 import com.centit.framework.model.basedata.DataDictionaryId;
+import com.centit.framework.system.dao.DataCatalogDao;
+import com.centit.framework.system.dao.DataDictionaryDao;
 import com.centit.framework.system.service.DataDictionaryManager;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.database.utils.PageDesc;
@@ -203,4 +206,26 @@ public class DataDictionaryManagerImpl implements
         return dataCatalogDao.listObjectsByProperties(filterDescMap, pageDesc);
     }
 
+    //select dictionary_id from m_application_dictionary where os_id = :osId
+    @Override
+    @Transactional
+    public JSONArray appendRelativeOsInfo(List<DataCatalog> catalogList){
+        if(catalogList==null || catalogList.size()==0)
+            return null;
+        JSONArray jsonArray = JSONArray.from(catalogList);
+        for(Object obj : jsonArray){
+            if(obj instanceof JSONObject){
+                JSONObject jsonObject = (JSONObject) obj;
+                String catalogId = jsonObject.getString("catalogCode");
+                String sqlSen = "select a.OS_ID, a.OS_NAME "+
+                "from m_application_dictionary b join F_OS_INFO a on (b.os_id = a.os_id) "+
+                "where b.dictionary_id = ?";
+                JSONArray osList = DatabaseOptUtils.listObjectsBySqlAsJson(dataCatalogDao, sqlSen, new Object[]{catalogId});
+                if(osList!=null){
+                    jsonObject.put("relativeOs", osList);
+                }
+            }
+        }
+        return jsonArray;
+    }
 }

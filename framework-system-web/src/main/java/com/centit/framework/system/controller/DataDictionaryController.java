@@ -10,10 +10,10 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.PageQueryResult;
-import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.model.basedata.DataCatalog;
 import com.centit.framework.model.basedata.DataDictionary;
 import com.centit.framework.model.basedata.DataDictionaryId;
+import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.service.DataDictionaryManager;
 import com.centit.framework.system.service.impl.DBPlatformEnvironment;
 import com.centit.support.algorithm.CollectionsOpt;
@@ -90,15 +90,16 @@ public class DataDictionaryController extends BaseController {
     })
     @RequestMapping(method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult<DataCatalog> list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
+    public PageQueryResult<Object> list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         if (WebOptUtils.isTenantTopUnit(request)) {
             searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         }
         List<DataCatalog> listObjects = dataDictionaryManager.listObjects(searchColumn, pageDesc);
-        return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
-    }
 
+        return PageQueryResult.createJSONArrayResult(
+            dataDictionaryManager.appendRelativeOsInfo(listObjects), pageDesc, field);
+    }
 
     /**
      * 查询单个字典目录

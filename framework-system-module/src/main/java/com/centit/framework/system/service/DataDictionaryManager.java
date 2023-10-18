@@ -1,5 +1,6 @@
 package com.centit.framework.system.service;
 
+import com.alibaba.fastjson2.JSONArray;
 import com.centit.framework.model.basedata.DataCatalog;
 import com.centit.framework.model.basedata.DataDictionary;
 import com.centit.framework.model.basedata.DataDictionaryId;
@@ -19,7 +20,6 @@ public interface DataDictionaryManager {
 
     void updateCatalog(DataCatalog dataCatalog);
 
-
     @Deprecated
     List<DataCatalog> listSysDataCatalog();
 
@@ -28,6 +28,8 @@ public interface DataDictionaryManager {
     List<DataCatalog> listFixDataCatalog();
 
     List<DataCatalog> listAllDataCatalog(Map<String, Object> filterMap);
+
+    JSONArray appendRelativeOsInfo(List<DataCatalog> catalogList);
 
     List<DataDictionary> listDataDictionarys(Map<String, Object> filterDescMap);
 

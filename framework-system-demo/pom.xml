@@ -134,14 +134,6 @@
 
         <!-- server runtime library -->
         <dependency>
-            <groupId>com.sun</groupId>
-            <artifactId>tools</artifactId>
-            <version>${jdk.version}</version>
-            <scope>system</scope>
-            <systemPath>${java.home}/../lib/tools.jar</systemPath>
-        </dependency>
-
-        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
@@ -171,10 +163,6 @@
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
                     <encoding>UTF-8</encoding>
-                    <compilerArguments>
-                        <verbose />
-                        <bootclasspath>${java.home}/../lib/rt.jar;${java.home}/../lib/jce.jar</bootclasspath>
-                    </compilerArguments>
                 </configuration>
             </plugin>
 

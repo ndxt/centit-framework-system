@@ -1,8 +1,8 @@
 package com.centit.framework.system.service.impl;
 
 import com.centit.framework.components.CodeRepositoryCache;
-import com.centit.framework.system.dao.OptMethodDao;
 import com.centit.framework.model.basedata.OptMethod;
+import com.centit.framework.system.dao.OptMethodDao;
 import com.centit.framework.system.service.OptMethodManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -6,7 +6,6 @@ import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.model.basedata.RolePower;
-import com.centit.framework.model.basedata.RolePower;
 import com.centit.framework.model.basedata.RolePowerId;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
