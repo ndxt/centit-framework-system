@@ -6,12 +6,11 @@ import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.model.basedata.OptDataScope;
 import com.centit.framework.model.basedata.OptInfo;
 import com.centit.framework.model.basedata.OptMethod;
-import com.centit.framework.system.dao.OptDataScopeDao;
-import com.centit.framework.system.dao.OptInfoDao;
-import com.centit.framework.system.dao.OptMethodDao;
-import com.centit.framework.system.dao.RolePowerDao;
+import com.centit.framework.model.basedata.OsInfo;
+import com.centit.framework.system.dao.*;
 import com.centit.framework.system.service.OptInfoManager;
 import com.centit.support.algorithm.CollectionsOpt;
+import com.centit.support.common.ObjectException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -35,6 +34,8 @@ public class OptInfoManagerImpl implements OptInfoManager {
     private OptDataScopeDao dataScopeDao;
 
     @Autowired
+    private OsInfoDao osInfoDao;
+    @Autowired
     private RolePowerDao rolePowerDao;
 
     @Override
@@ -55,22 +56,26 @@ public class OptInfoManagerImpl implements OptInfoManager {
         if(optInfo.getPreOptId()==null){
             optInfo.setPreOptId("0");
         }
+
+        List<OptInfo> allSubOpts = findSubOptInfo(optInfo.getOptId());
+        List<OptInfo> allPreOpts = findPreOptInfo(optInfo.getPreOptId());
+
         if("N".equals(optInfo.getIsInToolbar())){
-            List<OptInfo> optInfos = findSubOptInfo(optInfo.getOptId());
-            for(OptInfo o : optInfos){
+            for(OptInfo o : allSubOpts){
                 o.setIsInToolbar("N");
-                optInfoDao.updateOptInfo(o);
             }
         }else{
-            List<OptInfo> optInfos = findPreOptInfo(optInfo.getPreOptId());
-            for(OptInfo o : optInfos){
+            optInfo.setIsInToolbar("Y");
+            for(OptInfo o : allPreOpts){
                 o.setIsInToolbar("Y");
-                optInfoDao.updateOptInfo(o);
             }
         }
-        List<OptInfo> optInfos = findSubOptInfo(optInfo.getOptId());
-        optInfos.addAll(findPreOptInfo(optInfo.getPreOptId()));
-        for(OptInfo o : optInfos) {
+
+        for(OptInfo o : allSubOpts) {
+            o.setOptType(optInfo.getOptType());
+            optInfoDao.updateOptInfo(o);
+        }
+        for(OptInfo o : allPreOpts) {
             o.setOptType(optInfo.getOptType());
             optInfoDao.updateOptInfo(o);
         }
@@ -80,6 +85,17 @@ public class OptInfoManagerImpl implements OptInfoManager {
             optInfo.setPreOptId("0");
         } else {
             optInfo.setTopOptId(parentOpt.getTopOptId());
+            optInfo.setOsId(parentOpt.getOsId());
+        }
+
+        if(StringUtils.isBlank(optInfo.getTopOptId())){
+            throw new ObjectException(ObjectException.DATA_NOT_FOUND_EXCEPTION, "数据校验不通过，没有对应的 TOP_OPT_ID");
+        }
+        if(StringUtils.isBlank(optInfo.getTopOptId())){
+            OsInfo osInfo = osInfoDao.getOsInfoByRelOpt(optInfo.getTopOptId());
+            if(osInfo !=null){
+                optInfo.setOsId(osInfo.getOsId());
+            }
         }
     }
 
