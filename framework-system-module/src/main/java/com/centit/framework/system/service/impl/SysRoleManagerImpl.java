@@ -175,6 +175,7 @@ public class SysRoleManagerImpl implements SysRoleManager {
         }
         if( forUpdate.getLeft() != null){
             for(RolePower rp : forUpdate.getLeft()){
+
                 rolePowerDao.saveNewRolePower(rp);
             }
         }

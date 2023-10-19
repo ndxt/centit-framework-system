@@ -379,11 +379,6 @@ public abstract class AbstractStaticPlatformEnvironment
     }
 
     @Override
-    public boolean deleteOptDefAndRolepowerByOptCode(String optCode) {
-        return false;
-    }
-
-    @Override
     public int countUserByTopUnit(String topUnit) {
         return 0;
     }

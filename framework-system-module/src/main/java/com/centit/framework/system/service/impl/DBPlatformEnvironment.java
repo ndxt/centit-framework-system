@@ -428,13 +428,6 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         return optMethod;
     }
 
-
-    @Override
-    public void deleteOptMethod(String optMethod) {
-        optMethodDao.deleteObjectById(optMethod);
-    }
-
-
     /**
      * @return 所有的数据范围定义表达式
      */
@@ -483,16 +476,11 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean deleteOptDefAndRolepowerByOptCode(String optCode) {
-        optMethodDao.deleteObjectById(optCode);
-        String sql = "DELETE FROM f_rolepower WHERE OPT_CODE = ?";
-        DatabaseOptUtils.doExecuteSql(optInfoDao, sql, new Object[]{optCode});
-        OptMethod objectById = optMethodDao.getObjectById(optCode);
-        if (objectById != null) {
-            return false;
-        }
-        return true;
+    public void deleteOptMethod(String optCode) {
+        optMethodDao.deleteOptMethodById(optCode);
+        rolePowerDao.deleteRolePowersByOptCode(optCode);
     }
+
 
     //@Transactional
     private CentitUserDetails fillUserDetailsField(UserInfo userinfo) {

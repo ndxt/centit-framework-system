@@ -229,7 +229,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
         dataScopeDao.deleteDataScopeOfOptID(optId);
         optMethodDao.deleteOptMethodsByOptID(optId);
         optInfoDao.deleteObjectById(optId);
-        String sql="DELETE FROM f_rolepower WHERE OPT_CODE IN  (SELECT OPT_CODE FROM f_optdef WHERE  OPT_ID =?)";
+        String sql="DELETE FROM f_rolepower WHERE OPT_CODE IN (SELECT OPT_CODE FROM f_optdef WHERE OPT_ID =?)";
         DatabaseOptUtils.doExecuteSql(optInfoDao, sql, new Object[]{optId});
         CodeRepositoryCache.evictCache("RoleInfo");
         CodeRepositoryCache.evictCache("RolePower");

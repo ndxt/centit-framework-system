@@ -37,7 +37,7 @@ public class OptMethodDao extends BaseDaoImpl<OptMethod, String> {
         return super.getObjectById(optCode);
     }
 
-    public void deleteObjectById(String optCode) {
+    public void deleteOptMethodById(String optCode) {
         super.deleteObjectById(optCode);
     }
 
