@@ -56,28 +56,45 @@ public class OptInfoManagerImpl implements OptInfoManager {
         if(optInfo.getPreOptId()==null){
             optInfo.setPreOptId("0");
         }
+        if(StringUtils.isBlank(optInfo.getIsInToolbar())){
+            optInfo.setIsInToolbar("Y");
+        }
 
         List<OptInfo> allSubOpts = findSubOptInfo(optInfo.getOptId());
         List<OptInfo> allPreOpts = findPreOptInfo(optInfo.getPreOptId());
 
-        if("N".equals(optInfo.getIsInToolbar())){
-            for(OptInfo o : allSubOpts){
-                o.setIsInToolbar("N");
+        for(OptInfo o : allSubOpts) {
+            boolean needUpdate = false;
+            if(!StringUtils.equals(o.getOptType(), optInfo.getOptType())){
+                needUpdate = true;
+                o.setOptType(optInfo.getOptType());
             }
-        }else{
-            optInfo.setIsInToolbar("Y");
-            for(OptInfo o : allPreOpts){
-                o.setIsInToolbar("Y");
+            if("N".equals(optInfo.getIsInToolbar())){
+                if(!"N".equals(o.getIsInToolbar())){
+                    o.setIsInToolbar("N");
+                    needUpdate = true;
+                }
+            }
+            if( needUpdate ) {
+                optInfoDao.updateOptInfo(o);
             }
         }
 
-        for(OptInfo o : allSubOpts) {
-            o.setOptType(optInfo.getOptType());
-            optInfoDao.updateOptInfo(o);
-        }
         for(OptInfo o : allPreOpts) {
-            o.setOptType(optInfo.getOptType());
-            optInfoDao.updateOptInfo(o);
+            boolean needUpdate = false;
+            if(!StringUtils.equals(o.getOptType(), optInfo.getOptType())){
+                needUpdate = true;
+                o.setOptType(optInfo.getOptType());
+            }
+            if("Y".equals(optInfo.getIsInToolbar())){
+                if(!"Y".equals(o.getIsInToolbar())){
+                    o.setIsInToolbar("Y");
+                    needUpdate = true;
+                }
+            }
+            if( needUpdate ) {
+                optInfoDao.updateOptInfo(o);
+            }
         }
 
         OptInfo parentOpt = optInfoDao.getObjectById(optInfo.getPreOptId());
@@ -85,7 +102,9 @@ public class OptInfoManagerImpl implements OptInfoManager {
             optInfo.setPreOptId("0");
         } else {
             optInfo.setTopOptId(parentOpt.getTopOptId());
-            optInfo.setOsId(parentOpt.getOsId());
+            if(StringUtils.isBlank(optInfo.getOsId())) {
+                optInfo.setOsId(parentOpt.getOsId());
+            }
         }
 
         if(StringUtils.isBlank(optInfo.getTopOptId())){
@@ -104,8 +123,6 @@ public class OptInfoManagerImpl implements OptInfoManager {
     public void saveNewOptInfo(OptInfo optInfo){
         //同步菜单上下级显示与否
         checkOptInfoProperties(optInfo);
-
-
         optInfoDao.saveNewObject( optInfo );
 
         if(optInfo.getOptMethods()!=null && optInfo.getOptMethods().size()>0 ){
