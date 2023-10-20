@@ -39,10 +39,8 @@ public class OsInfoController extends BaseController {
     @Autowired
     private OsInfoManager osInfoMag;
 
-
     @Autowired
     private CentitPasswordEncoder passwordEncoder;
-
 
     private String optId = "OS";
 

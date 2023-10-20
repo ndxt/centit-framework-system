@@ -52,70 +52,79 @@ public class OptInfoManagerImpl implements OptInfoManager {
     }
 
 
-    private void checkOptInfoProperties(OptInfo optInfo){
-        if(optInfo.getPreOptId()==null){
+    private void checkOptInfoProperties(OptInfo optInfo) {
+        if (optInfo.getPreOptId() == null) {
             optInfo.setPreOptId("0");
         }
-        if(StringUtils.isBlank(optInfo.getIsInToolbar())){
+        if (StringUtils.isBlank(optInfo.getIsInToolbar())) {
             optInfo.setIsInToolbar("Y");
         }
 
         List<OptInfo> allSubOpts = findSubOptInfo(optInfo.getOptId());
         List<OptInfo> allPreOpts = findPreOptInfo(optInfo.getPreOptId());
 
-        for(OptInfo o : allSubOpts) {
+        for (OptInfo o : allSubOpts) {
             boolean needUpdate = false;
-            if(!StringUtils.equals(o.getOptType(), optInfo.getOptType())){
+            if (!StringUtils.equals(o.getOptType(), optInfo.getOptType())) {
                 needUpdate = true;
                 o.setOptType(optInfo.getOptType());
             }
-            if("N".equals(optInfo.getIsInToolbar())){
-                if(!"N".equals(o.getIsInToolbar())){
+            if ("N".equals(optInfo.getIsInToolbar())) {
+                if (!"N".equals(o.getIsInToolbar())) {
                     o.setIsInToolbar("N");
                     needUpdate = true;
                 }
             }
-            if( needUpdate ) {
+            if (needUpdate) {
                 optInfoDao.updateOptInfo(o);
             }
         }
 
-        for(OptInfo o : allPreOpts) {
+        for (OptInfo o : allPreOpts) {
             boolean needUpdate = false;
-            if(!StringUtils.equals(o.getOptType(), optInfo.getOptType())){
+            if (!StringUtils.equals(o.getOptType(), optInfo.getOptType())) {
                 needUpdate = true;
                 o.setOptType(optInfo.getOptType());
             }
-            if("Y".equals(optInfo.getIsInToolbar())){
-                if(!"Y".equals(o.getIsInToolbar())){
+            if ("Y".equals(optInfo.getIsInToolbar())) {
+                if (!"Y".equals(o.getIsInToolbar())) {
                     o.setIsInToolbar("Y");
                     needUpdate = true;
                 }
             }
-            if( needUpdate ) {
+            if (needUpdate) {
                 optInfoDao.updateOptInfo(o);
             }
         }
 
-        OptInfo parentOpt = optInfoDao.getObjectById(optInfo.getPreOptId());
-        if (parentOpt == null) {
+        if(StringUtils.isBlank(optInfo.getPreOptId()) || "0".equalsIgnoreCase(optInfo.getPreOptId())){
             optInfo.setPreOptId("0");
         } else {
-            optInfo.setTopOptId(parentOpt.getTopOptId());
-            if(StringUtils.isBlank(optInfo.getOsId())) {
-                optInfo.setOsId(parentOpt.getOsId());
+            OptInfo parentOpt = optInfoDao.getObjectById(optInfo.getPreOptId());
+            if (parentOpt == null) {
+                optInfo.setPreOptId("0");
+            } else {
+                optInfo.setTopOptId(parentOpt.getTopOptId());
+                if (StringUtils.isBlank(optInfo.getOsId())) {
+                    optInfo.setOsId(parentOpt.getOsId());
+                }
             }
+        }
+        //添加校验数据
+        OsInfo osInfo = null;
+        if (StringUtils.isNotBlank(optInfo.getTopOptId())) {
+            osInfo = osInfoDao.getOsInfoByRelOpt(optInfo.getTopOptId());
+        }
+        if (osInfo == null && StringUtils.isNotBlank(optInfo.getOsId())){
+            osInfo = osInfoDao.getObjectById(optInfo.getOsId());
+        }
+        if (osInfo == null){
+            throw new ObjectException(ObjectException.DATA_NOT_FOUND_EXCEPTION,
+                "数据校验不通过，没有对应的应用，TOP_OPT_ID= " + optInfo.getTopOptId() +" ，OS_ID=" + optInfo.getOsId());
         }
 
-        if(StringUtils.isBlank(optInfo.getTopOptId())){
-            throw new ObjectException(ObjectException.DATA_NOT_FOUND_EXCEPTION, "数据校验不通过，没有对应的 TOP_OPT_ID");
-        }
-        if(StringUtils.isBlank(optInfo.getTopOptId())){
-            OsInfo osInfo = osInfoDao.getOsInfoByRelOpt(optInfo.getTopOptId());
-            if(osInfo !=null){
-                optInfo.setOsId(osInfo.getOsId());
-            }
-        }
+        optInfo.setTopOptId(osInfo.getRelOptId());
+        optInfo.setOsId(osInfo.getOsId());
     }
 
     @Override
