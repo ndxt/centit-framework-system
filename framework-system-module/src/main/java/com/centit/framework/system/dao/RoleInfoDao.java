@@ -37,8 +37,8 @@ public class RoleInfoDao extends BaseDaoImpl<RoleInfo, String>{
         filterField.put("(nextday)createDateEnd", "CREATE_DATE< :createDateEnd");
 
         filterField.put("unitRole", "(ROLE_TYPE='D' and UNIT_CODE = :unitRole)");
-        filterField.put("subSystemROLE", "(ROLE_TYPE='S' and UNIT_CODE = :subSystemROLE)");
-        filterField.put("topUnit", "(ROLE_TYPE='G' or ROLE_TYPE='P' or (ROLE_TYPE='D' and UNIT_CODE = :topUnit) )");
+        filterField.put("subSystemROLE", "(ROLE_TYPE='S' and OS_ID = :subSystemROLE)");
+        filterField.put("topUnit", "(ROLE_TYPE='G' or ROLE_TYPE='P' or UNIT_CODE = :topUnit)"); //(ROLE_TYPE='D' and
         return filterField;
     }
 

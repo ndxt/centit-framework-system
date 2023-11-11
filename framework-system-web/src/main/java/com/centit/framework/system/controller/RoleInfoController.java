@@ -90,20 +90,20 @@ public class RoleInfoController extends BaseController {
         return PageQueryResult.createResultMapDict(list, pageDesc);
     }
 
-    @ApiOperation(value = "查询子系统角色", notes = "查询子系统角色。")
+    @ApiOperation(value = "查询系统应用角色角色", notes = "查询系统应用角色角色。")
     @ApiImplicitParams({
         @ApiImplicitParam(
-            name = "topOptId", value = "子系统代码",
+            name = "osId", value = "子系统代码",
             allowMultiple = true, paramType = "path", dataType = "String"),
         @ApiImplicitParam(
             name = "pageDesc", value = "json格式的分页对象信息",
             paramType = "body", dataTypeClass = PageDesc.class)
     })
-    @RequestMapping(value = "/subSysRole/{topOptId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/subSysRole/{osId}", method = RequestMethod.GET)
     @WrapUpResponseBody()
-    public PageQueryResult<RoleInfo> listSubSystemRole(@PathVariable String topOptId, PageDesc pageDesc, HttpServletRequest request) {
+    public PageQueryResult<RoleInfo> listSubSystemRole(@PathVariable String osId, PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
-        filterMap.put("subSystemROLE", topOptId);
+        filterMap.put("subSystemROLE", osId);
         List<RoleInfo> list = sysRoleManager.listObjects(filterMap, pageDesc);
         return PageQueryResult.createResultMapDict(list, pageDesc);
     }
@@ -160,34 +160,6 @@ public class RoleInfoController extends BaseController {
         return PageQueryResult.createResultMapDict(roleInfos, pageDesc);
     }
 
-    /*
-     * 查询所有某部门的部门角色
-     *
-     * @param field    field[]
-     * @param pageDesc PageDesc
-     * @param request  HttpServletRequest
-     */
-    @ApiOperation(value = "查询所有某部门的部门角色", notes = "查询所有某部门的部门角色。")
-    @ApiImplicitParams({
-        @ApiImplicitParam(
-            name = "field", value = "指需要显示的属性名",
-            allowMultiple = true, paramType = "query", dataType = "String"),
-        @ApiImplicitParam(
-            name = "pageDesc", value = "分页对象",
-            paramType = "body", dataTypeClass = PageDesc.class)
-    })
-    @RequestMapping(value = "/item", method = RequestMethod.GET)
-    @WrapUpResponseBody
-    public PageQueryResult<RoleInfo> listItemRole(String[] field, PageDesc pageDesc, HttpServletRequest request) {
-        Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
-        filterMap.put("ROLETYPE", "I");
-        if (null == filterMap.get("topUnit") && WebOptUtils.isTenantTopUnit(request)) {
-            filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
-        List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
-
-        return PageQueryResult.createResultMapDict(roleInfos, pageDesc, field);
-    }
 
     /*
      * 根据角色代码获取角色操作定义信息
@@ -269,7 +241,7 @@ public class RoleInfoController extends BaseController {
         if ("D".equals(roleType) || "S".equals(roleType)) {
             throw new ObjectException(roleInfo, "不能用这个接口创建 子系统角色或者机构角色");
         }
-
+        roleInfo.setUnitCode(WebOptUtils.getCurrentTopUnit(request));
         roleInfo.setCreator(WebOptUtils.getCurrentUserCode(request));
         roleInfo.setCreateDate(new Date());
         sysRoleManager.saveNewRoleInfo(roleInfo);
@@ -292,13 +264,7 @@ public class RoleInfoController extends BaseController {
     @WrapUpResponseBody
     public void createDepartmentRole(@ParamName("ri") @Valid RoleInfo roleInfo, HttpServletRequest request) {
         roleInfo.setRoleType("D");
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            roleInfo.setRoleOwner(WebOptUtils.getCurrentTopUnit(request));
-        } else {
-            if (StringUtils.isBlank(roleInfo.getUnitCode())) {
-                roleInfo.setRoleOwner(WebOptUtils.getCurrentUnitCode(request));
-            }
-        }
+        roleInfo.setUnitCode(WebOptUtils.getCurrentTopUnit(request));
         roleInfo.setCreator(WebOptUtils.getCurrentUserCode(request));
         roleInfo.setCreateDate(new Date());
         sysRoleManager.saveNewRoleInfo(roleInfo);
@@ -310,24 +276,24 @@ public class RoleInfoController extends BaseController {
      * @param roleInfo RoleInfo
      * @param request  HttpServletRequest
      */
-    @ApiOperation(value = "创建子系统角色", notes = "创建子系统角色。")
+    @ApiOperation(value = "创建应用系统角色", notes = "创建应用系统角色。")
     @ApiImplicitParams({
         @ApiImplicitParam(
             name = "roleInfo", value = "json格式，系统角色对象",
             required = true, paramType = "body", dataTypeClass = RoleInfo.class),
         @ApiImplicitParam(
-            name = "topOptId", value = "子系统代码，为系统顶级菜单编码",
+            name = "osId", value = "应用id（osId），应用系统的顶级菜单编码",
             required = true, paramType = "path", dataType = "String")
     })
-    @RequestMapping(value = "/subSysRole/{topOptId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/subSysRole/{osId}", method = RequestMethod.POST)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增角色",
         tag = "{topOptId}:{ri.roleCode}")
     @WrapUpResponseBody
-    public void createSubSystemRole(@ParamName("topOptId") @PathVariable String topOptId,
+    public void createSubSystemRole(@ParamName("osId") @PathVariable String osId,
                                     @ParamName("ri") @Valid RoleInfo roleInfo, HttpServletRequest request) {
         roleInfo.setRoleType("S");
-        roleInfo.setRoleOwner(topOptId);
-
+        roleInfo.setOsId(osId);
+        roleInfo.setUnitCode(WebOptUtils.getCurrentTopUnit(request));
         roleInfo.setCreator(WebOptUtils.getCurrentUserCode(request));
         roleInfo.setCreateDate(new Date());
         sysRoleManager.saveNewRoleInfo(roleInfo);
@@ -446,22 +412,19 @@ public class RoleInfoController extends BaseController {
             throw new ObjectException(roleInfo, "角色信息不存在");
         }
         roleInfo.setRoleType("D");
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            roleInfo.setRoleOwner(WebOptUtils.getCurrentTopUnit(request));
-        } else {
-            roleInfo.setRoleOwner(WebOptUtils.getCurrentUnitCode(request));
-        }
-        if (!StringUtils.equals(dbRoleInfo.getRoleOwner(), roleInfo.getRoleOwner())) {
+        roleInfo.setUnitCode(WebOptUtils.getCurrentTopUnit(request));
+
+        if (!StringUtils.equals(dbRoleInfo.getUnitCode(), roleInfo.getUnitCode())) {
             throw new ObjectException(roleInfo, "不能修改部门角色的所属机构");
         }
         roleInfo.setRoleCode(roleCode);
         sysRoleManager.updateRoleInfo(roleInfo);
     }
 
-    @ApiOperation(value = "更新系统角色", notes = "更新系统角色。")
+    @ApiOperation(value = "更新应用系统角色", notes = "更新应用系统角色。")
     @ApiImplicitParams({
         @ApiImplicitParam(
-            name = "topOptId", value = "子系统代码，为系统顶级菜单编码",
+            name = "osId", value = "业务系统ID（OS_ID），为系统顶级菜单编码",
             required = true, paramType = "path", dataType = "String"),
         @ApiImplicitParam(
             name = "roleCode", value = "角色代码",
@@ -470,11 +433,11 @@ public class RoleInfoController extends BaseController {
             name = "roleInfo", value = "json格式，角色修改的对象信息",
             required = true, paramType = "path", dataTypeClass = RoleInfo.class)
     })
-    @RequestMapping(value = "/subSysRole/{topOptId}/{roleCode}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/subSysRole/{osId}/{roleCode}", method = RequestMethod.PUT)
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新角色",
         tag = "{topOptId}:{roleCode}")
     @WrapUpResponseBody
-    public void updateSubSystemRole(@ParamName("topOptId") @PathVariable String topOptId,
+    public void updateSubSystemRole(@ParamName("osId") @PathVariable String osId,
                                     @ParamName("roleCode") @PathVariable String roleCode, @Valid RoleInfo roleInfo) {
 
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
@@ -482,8 +445,8 @@ public class RoleInfoController extends BaseController {
             throw new ObjectException(roleInfo, "角色信息不存在");
         }
         roleInfo.setRoleType("S");
-        roleInfo.setRoleOwner(topOptId);
-        if (!StringUtils.equals(dbRoleInfo.getRoleOwner(), topOptId)) {
+        roleInfo.setOsId(osId);
+        if (!StringUtils.equals(dbRoleInfo.getOsId(), osId)) {
             throw new ObjectException(roleInfo, "不能修改子系统角色的归属系统");
         }
         roleInfo.setRoleCode(roleCode);
