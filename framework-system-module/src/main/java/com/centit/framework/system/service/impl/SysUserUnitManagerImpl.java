@@ -59,31 +59,11 @@ public class SysUserUnitManagerImpl
         Map<String, String> map = new HashMap<>();
         map.put("userCode", userCode);
         map.put("unitCode", unitCode);
-
-        List<UserUnit> userUnits = userUnitDao.listObjectByUserUnit(userCode, unitCode);
-        if (userUnits != null) {
-            for (UserUnit uu : userUnits) {
-                if (null == uu) {
-                    continue;
-                }
-                // 设置行政角色等级
-                DataDictionary dd = CodeRepositoryUtil.getDataPiece("RankType", uu.getUserRank(), uu.getTopUnit());
-                if (dd != null && dd.getExtraCode() != null && StringRegularOpt.isNumber(dd.getExtraCode())) {
-                    try {
-                        uu.setXzRank(Integer.valueOf(dd.getExtraCode()));
-                    } catch (Exception e) {
-                        logger.error(e.getMessage(), e);
-                        uu.setXzRank(UserUnit.MAX_XZ_RANK);
-                    }
-                }
-            }
-        }
-        return userUnits;
+        return userUnitDao.listObjectByUserUnit(userCode, unitCode);
     }
 
     private static boolean isMultiToMulti() {
         DataDictionary agencyMode = CodeRepositoryUtil.getDataPiece("SYSPARAM", "userUnitMode", null);
-
         if (agencyMode != null) {
             return ("M".equalsIgnoreCase(agencyMode.getDataValue()));
         }
