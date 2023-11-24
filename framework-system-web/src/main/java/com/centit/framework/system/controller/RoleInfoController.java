@@ -721,4 +721,34 @@ public class RoleInfoController extends BaseController {
         sysRoleManager.updateRolePower(optCode, roleCode);
         return ResponseData.makeSuccessResponse();
     }
+
+    /*
+     * 1, 查询 住户下面的所有角色
+     * 2, 查询 系统的角色，包括子系统角色和 租户全局角色
+     * 3, 修改角色为 系统角色 或者 为租户角色
+     */
+    @ApiOperation(value = "查询所有 当前部门角色", notes = "查询所有 当前部门角色。")
+    @GetMapping(value = "/topUnit")
+    @WrapUpResponseBody()
+    public List<RoleInfo> listTopUnitRole(HttpServletRequest request) {
+        String currentUnit = WebOptUtils.getCurrentTopUnit(request);
+        Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
+        filterMap.put("topUnit", currentUnit);
+        return sysRoleManager.listObjects(filterMap);
+    }
+
+    @ApiOperation(value = "查询系统应用角色角色", notes = "查询系统应用角色角色。")
+    @ApiImplicitParam(
+        name = "osId", value = "子系统代码",
+        allowMultiple = true, paramType = "path", dataType = "String")
+
+    @RequestMapping(value = "/osRole/{osId}", method = RequestMethod.GET)
+    @WrapUpResponseBody()
+    public List<RoleInfo> listOsRole(@PathVariable String osId, HttpServletRequest request) {
+        Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
+        filterMap.put("osRole", osId);
+        return sysRoleManager.listObjects(filterMap);
+    }
+
+
 }
