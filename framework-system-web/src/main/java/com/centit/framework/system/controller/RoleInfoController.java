@@ -103,7 +103,7 @@ public class RoleInfoController extends BaseController {
     @WrapUpResponseBody()
     public PageQueryResult<RoleInfo> listSubSystemRole(@PathVariable String osId, PageDesc pageDesc, HttpServletRequest request) {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
-        filterMap.put("subSystemROLE", osId);
+        filterMap.put("subSystemRole", osId);
         List<RoleInfo> list = sysRoleManager.listObjects(filterMap, pageDesc);
         return PageQueryResult.createResultMapDict(list, pageDesc);
     }
