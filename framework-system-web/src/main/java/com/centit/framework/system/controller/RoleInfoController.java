@@ -746,6 +746,8 @@ public class RoleInfoController extends BaseController {
     @WrapUpResponseBody()
     public List<RoleInfo> listOsRole(@PathVariable String osId, HttpServletRequest request) {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
+        String currentUnit = WebOptUtils.getCurrentTopUnit(request);
+        filterMap.put("topUnit", currentUnit);
         filterMap.put("osRole", osId);
         return sysRoleManager.listObjects(filterMap);
     }
