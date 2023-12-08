@@ -380,12 +380,17 @@ public class RoleInfoController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新角色",
         tag = "{roleCode}")
     @WrapUpResponseBody
-    public void updateRole(@ParamName("roleCode") @PathVariable String roleCode, @Valid RoleInfo roleInfo) {
+    public void updateRole(@ParamName("roleCode") @PathVariable String roleCode,
+                           @Valid RoleInfo roleInfo) {
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         if (null == dbRoleInfo) {
             throw new ObjectException(roleInfo, "角色信息不存在");
         }
         roleInfo.setRoleCode(roleCode);
+        if (!StringUtils.equals(dbRoleInfo.getUnitCode(), roleInfo.getUnitCode())) {
+            throw new ObjectException(roleInfo, "不能修改部门角色的所属机构");
+        }
+
         sysRoleManager.updateRoleInfo(roleInfo);
     }
 
