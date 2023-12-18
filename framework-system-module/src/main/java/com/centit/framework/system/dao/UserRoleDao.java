@@ -34,7 +34,7 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
         filterField.put("roleUnitCode", "ROLE_CODE in (select ro.ROLE_CODE from f_roleinfo ro " +
                 "where (ro.ROLE_TYPE = 'P' or (ro.ROLE_TYPE = 'D' and ro.UNIT_CODE = :roleUnitCode)))");
         filterField.put("unitCode", "USER_CODE in (select uu.USER_CODE from F_USERUNIT uu where uu.UNIT_CODE = :unitCode)");
-        filterField.put("topUnit", "ROLE_CODE in (select ro.ROLE_CODE from f_roleinfo ro where ROLE_TYPE = 'G' or ROLE_TYPE='P' or (ro.ROLE_TYPE='D' and ro.UNIT_CODE = :topUnit))");
+        filterField.put("topUnit", "ROLE_CODE in (select ro.ROLE_CODE from f_roleinfo ro where ROLE_TYPE = 'G' or ROLE_TYPE='P' or ro.UNIT_CODE = :topUnit)");
         filterField.put("userCode_isValid", "userCode in (select us.USER_CODE from f_userinfo us " +
                 "where us.IS_VALID = :userCode_isValid)");
         //filterField.put(CodeBook.ORDER_BY_HQL_ID, " userCode ");
