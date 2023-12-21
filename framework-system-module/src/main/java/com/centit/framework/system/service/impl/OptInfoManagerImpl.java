@@ -118,6 +118,10 @@ public class OptInfoManagerImpl implements OptInfoManager {
         if (osInfo == null && StringUtils.isNotBlank(optInfo.getOsId())){
             osInfo = osInfoDao.getObjectById(optInfo.getOsId());
         }
+        if (osInfo == null && StringUtils.isNotBlank(optInfo.getTopOptId())){
+            osInfo = osInfoDao.getObjectById(optInfo.getTopOptId());
+        }
+
         if (osInfo == null){
             throw new ObjectException(ObjectException.DATA_NOT_FOUND_EXCEPTION,
                 "数据校验不通过，没有对应的应用，TOP_OPT_ID= " + optInfo.getTopOptId() +" ，OS_ID=" + optInfo.getOsId());
