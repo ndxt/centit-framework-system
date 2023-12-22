@@ -6,6 +6,7 @@ import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
 import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.components.CodeRepositoryCache;
+import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
@@ -107,7 +108,7 @@ public class UserInfoController extends BaseController {
             searchColumn.put("likeUserOrLoginName", StringEscapeUtils.escapeHtml4(searchColumn.get("userName").toString()));
             searchColumn.remove("userName");
         }
-
+        String topUnit = WebOptUtils.getCurrentTopUnit(request);
         List<UserInfo> listObjects;
         if (MapUtils.getBoolean(searchColumn,"all",false) && userIsSystemMember(request)){
             //平台租户查询所用用户
@@ -116,23 +117,25 @@ public class UserInfoController extends BaseController {
         }
 
         if (WebOptUtils.isTenantTopUnit(request)) {
-            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
+            searchColumn.put("topUnit", topUnit);
         }
-
-        //List<UserInfo> listTransObjects = new ArrayList<>();
+        //name = "_search", value = "强制关闭分页查询",
         if (BooleanBaseOpt.castObjectToBoolean(_search,false)) {
-
             listObjects = sysUserManager.listObjects(searchColumn);
             //pageDesc = null;
         } else {
             listObjects = sysUserManager.listObjects(searchColumn, pageDesc);
         }
-        //脱敏操作
+        //脱敏操作, 添加归属部门信息
         if(listObjects!=null){
-            for (UserInfo userInfo : listObjects)
+            for (UserInfo userInfo : listObjects) {
+                UserUnit uu = CodeRepositoryUtil.getUserPrimaryUnit(topUnit, userInfo.getUserCode());
+                if(uu!=null){
+                    userInfo.setPrimaryUnit(uu.getUnitCode());
+                }
                 userInfo.setIdCardNo("");
+            }
         }
-
         return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
     }
     @ApiOperation(value = "用户信息按机构分页查询", notes = "用户信息按机构分页查询")
@@ -236,11 +239,14 @@ public class UserInfoController extends BaseController {
 
         //由于userinfo已经在sysUserUnitManager.saveNewUserUnit(userUnit)中被修改
         //防止用户的当前登录租户信息被修改，在这里重新恢复userInfo中的topUnit和primaryUnit
+        CodeRepositoryCache.evictCache("UnitUser", userInfo.getPrimaryUnit());
         userInfo.setPrimaryUnit(dbUserInfo.getPrimaryUnit());
         userInfo.setTopUnit(dbUserInfo.getTopUnit());
         userInfo.setUserType(userInfo.getUserType());
         sysUserManager.updateUserInfo(userInfo);
-        CodeRepositoryCache.evictCache("UserInfo");
+        CodeRepositoryCache.evictCache("UserInfo", topUnit);
+        CodeRepositoryCache.userUnitsMap.getCachedValue(topUnit).evictIdentifiedCache(userCode);
+        CodeRepositoryCache.evictCache("UnitUser", userInfo.getPrimaryUnit());
         return ResponseData.successResponse;
 
     }
