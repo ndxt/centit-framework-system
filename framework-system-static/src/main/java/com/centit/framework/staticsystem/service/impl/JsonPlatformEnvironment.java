@@ -197,15 +197,4 @@ public class JsonPlatformEnvironment extends AbstractStaticPlatformEnvironment {
             logger.error(e.getMessage(),e);
         }
     }
-
-    @Override
-    public List<UserInfo> listUsersByProperties(Map<String, Object> filters, String topUnit) {
-        throw new ObjectException(ObjectException.FUNCTION_NOT_SUPPORT, "静态环境不支持动态查询");
-    }
-
-    @Override
-    public List<UnitInfo> listUnitsByProperties(Map<String, Object> filters, String topUnit) {
-        throw new ObjectException(ObjectException.FUNCTION_NOT_SUPPORT, "静态环境不支持动态查询");
-    }
-
 }

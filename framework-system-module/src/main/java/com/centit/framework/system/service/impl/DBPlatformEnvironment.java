@@ -313,14 +313,14 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         }
     }
 
-    @Override
+    /*@Override
     public List<UserInfo> listUsersByProperties(Map<String, Object> filters, String topUnit) {
         if(StringUtils.isBlank(topUnit)){
             throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "topUnit不能为空");
         }
         filters.put("topUnit", topUnit);
         return userInfoDao.listObjectsByProperties(filters);
-    }
+    }*/
 
     @Override
     @Transactional(readOnly = true)
@@ -334,14 +334,14 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         }
     }
 
-    @Override
+    /*@Override
     public List<UnitInfo> listUnitsByProperties(Map<String, Object> filters, String topUnit) {
         if(StringUtils.isBlank(topUnit)){
             throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "topUnit不能为空");
         }
         filters.put("topUnit", topUnit);
         return unitInfoDao.listObjectsByProperties(filters);
-    }
+    }*/
 
     @Override
     @Transactional(readOnly = true)
