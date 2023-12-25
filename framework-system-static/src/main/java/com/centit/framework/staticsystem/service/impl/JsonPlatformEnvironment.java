@@ -7,6 +7,7 @@ import com.centit.framework.common.GlobalConstValue;
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.model.basedata.*;
 import com.centit.support.common.ListAppendMap;
+import com.centit.support.common.ObjectException;
 import com.centit.support.file.FileIOOpt;
 import com.centit.support.file.FileSystemOpt;
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class JsonPlatformEnvironment extends AbstractStaticPlatformEnvironment {
 
@@ -194,6 +196,16 @@ public class JsonPlatformEnvironment extends AbstractStaticPlatformEnvironment {
         } catch (IOException e) {
             logger.error(e.getMessage(),e);
         }
+    }
+
+    @Override
+    public List<UserInfo> listUsersByProperties(Map<String, Object> filters, String topUnit) {
+        throw new ObjectException(ObjectException.FUNCTION_NOT_SUPPORT, "静态环境不支持动态查询");
+    }
+
+    @Override
+    public List<UnitInfo> listUnitsByProperties(Map<String, Object> filters, String topUnit) {
+        throw new ObjectException(ObjectException.FUNCTION_NOT_SUPPORT, "静态环境不支持动态查询");
     }
 
 }

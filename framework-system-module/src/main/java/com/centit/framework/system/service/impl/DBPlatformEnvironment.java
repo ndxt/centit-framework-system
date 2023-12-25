@@ -16,6 +16,7 @@ import com.centit.framework.system.service.WorkGroupManager;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.UuidOpt;
+import com.centit.support.common.ObjectException;
 import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -46,9 +47,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Autowired
     private OsInfoDao osInfoDao;
+
     @Autowired
     private OptInfoDao optInfoDao;
-
 
     @Autowired
     private UserInfoDao userInfoDao;
@@ -313,6 +314,15 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
+    public List<UserInfo> listUsersByProperties(Map<String, Object> filters, String topUnit) {
+        if(StringUtils.isBlank(topUnit)){
+            throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "topUnit不能为空");
+        }
+        filters.put("topUnit", topUnit);
+        return userInfoDao.listObjectsByProperties(filters);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<UnitInfo> listAllUnits(String topUnit) {
         if (supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)) {
@@ -322,6 +332,15 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         } else {
             return unitInfoDao.listObjects();
         }
+    }
+
+    @Override
+    public List<UnitInfo> listUnitsByProperties(Map<String, Object> filters, String topUnit) {
+        if(StringUtils.isBlank(topUnit)){
+            throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "topUnit不能为空");
+        }
+        filters.put("topUnit", topUnit);
+        return unitInfoDao.listObjectsByProperties(filters);
     }
 
     @Override

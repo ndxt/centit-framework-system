@@ -6,6 +6,7 @@ import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.core.dao.ExtendedQueryPool;
 import com.centit.framework.model.basedata.*;
 import com.centit.support.common.ListAppendMap;
+import com.centit.support.common.ObjectException;
 import com.centit.support.database.utils.DataSourceDescription;
 import com.centit.support.database.utils.DatabaseAccess;
 import com.centit.support.database.utils.DbcpConnectPools;
@@ -20,6 +21,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class JdbcPlatformEnvironment extends AbstractStaticPlatformEnvironment {
 
@@ -153,5 +155,15 @@ public class JdbcPlatformEnvironment extends AbstractStaticPlatformEnvironment {
         }catch (Exception e){
             //conn.rollback();
         }
+    }
+
+    @Override
+    public List<UserInfo> listUsersByProperties(Map<String, Object> filters, String topUnit) {
+        throw new ObjectException(ObjectException.FUNCTION_NOT_SUPPORT, "静态环境不支持动态查询");
+    }
+
+    @Override
+    public List<UnitInfo> listUnitsByProperties(Map<String, Object> filters, String topUnit) {
+        throw new ObjectException(ObjectException.FUNCTION_NOT_SUPPORT, "静态环境不支持动态查询");
     }
 }
