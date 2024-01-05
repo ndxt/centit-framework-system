@@ -86,6 +86,7 @@ public class OsInfoController extends BaseController {
         paramType = "body", dataTypeClass = PageDesc.class)
     @WrapUpResponseBody
     public PageQueryResult<Object> list(PageDesc pageDesc, HttpServletRequest request) {
+        WebOptUtils.assertUserLogin(request);
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         if (WebOptUtils.isTenantTopUnit(request)) {
             searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));

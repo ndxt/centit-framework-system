@@ -102,6 +102,7 @@ public class UserInfoController extends BaseController {
     @RequestMapping(method = RequestMethod.GET)
     @WrapUpResponseBody
     public PageQueryResult<UserInfo> list(String[] field, PageDesc pageDesc, String _search, HttpServletRequest request) {
+        WebOptUtils.assertUserLogin(request);
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         //特殊字符转义
         if (searchColumn.get("userName") != null) {
@@ -141,7 +142,8 @@ public class UserInfoController extends BaseController {
     @ApiOperation(value = "用户信息按机构分页查询", notes = "用户信息按机构分页查询")
     @RequestMapping(value = "/querybyunit",method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult<Object> listQueryByUnit(PageDesc pageDesc,HttpServletRequest request) {
+    public PageQueryResult<Object> listQueryByUnit(PageDesc pageDesc, HttpServletRequest request) {
+        WebOptUtils.assertUserLogin(request);
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         if (WebOptUtils.isTenantTopUnit(request)) {
             searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
@@ -171,7 +173,7 @@ public class UserInfoController extends BaseController {
         tag = "{us.userCode}")
     @WrapUpResponseBody
     public ResponseData create(@ParamName("us") @Valid UserInfo userInfo, UserUnit userUnit, HttpServletRequest request) {
-
+        WebOptUtils.assertUserLogin(request);
         UserInfo dbuserinfo = sysUserManager.loadUserByLoginname(userInfo.getLoginName());
         if (null != dbuserinfo) {
             return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
@@ -281,6 +283,7 @@ public class UserInfoController extends BaseController {
     @RequestMapping(value = "/{userCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
     public ResponseMapData getUserInfo(@PathVariable String userCode, HttpServletRequest request) {
+        WebOptUtils.assertUserLogin(request);
         UserInfo userInfo = sysUserManager.getObjectById(userCode);
         String topUnit = "";
         if (WebOptUtils.isTenantTopUnit(request)) {

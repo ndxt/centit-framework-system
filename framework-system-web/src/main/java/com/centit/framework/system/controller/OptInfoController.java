@@ -69,6 +69,7 @@ public class OptInfoController extends BaseController {
     @RequestMapping(value = "/sub", method = RequestMethod.GET)
     @WrapUpResponseBody
     public ResponseData listFromParent(String id, HttpServletRequest request) {
+        WebOptUtils.assertUserLogin(request);
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         if (StringUtils.isNotBlank(id)) {
             searchColumn.put("preOptId", id);

@@ -89,6 +89,7 @@ public class UnitInfoController extends BaseController {
     @RequestMapping(method = RequestMethod.GET)
     @WrapUpResponseBody
     public ResponseData listAsTree(boolean struct, String id, HttpServletRequest request) {
+        WebOptUtils.assertUserLogin(request);
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         String unitName = (String) searchColumn.get("unitName");
         if (WebOptUtils.isTenantTopUnit(request)) {
@@ -128,6 +129,7 @@ public class UnitInfoController extends BaseController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @WrapUpResponseBody
     public PageQueryResult<UnitInfo> list(PageDesc pageDesc, HttpServletRequest request) {
+        WebOptUtils.assertUserLogin(request);
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         if (WebOptUtils.isTenantTopUnit(request)) {
             searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
@@ -149,6 +151,7 @@ public class UnitInfoController extends BaseController {
     @RequestMapping(value = "/subunits", method = RequestMethod.GET)
     @WrapUpResponseBody
     public ResponseData listSub(String id, HttpServletRequest request) {
+        WebOptUtils.assertUserLogin(request);
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         String currentUnitCode = WebOptUtils.getCurrentUnitCode(request);
         searchColumn.put("parentUnit", StringUtils.isNotBlank(id) ? id : currentUnitCode);
@@ -183,6 +186,7 @@ public class UnitInfoController extends BaseController {
     @RequestMapping(value = "/validsubunits", method = RequestMethod.GET)
     @WrapUpResponseBody
     public ResponseData listValidSubUnit(HttpServletRequest request) {
+        WebOptUtils.assertUserLogin(request);
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         String unitName = (String) searchColumn.get("unitName");
         String currentUnitCode = WebOptUtils.getCurrentUnitCode(request);
@@ -213,7 +217,8 @@ public class UnitInfoController extends BaseController {
         paramType = "query", dataType = "String")
     @RequestMapping(value = "/{unitCode}", method = RequestMethod.GET)
     @WrapUpResponseBody(contentType = WrapUpContentType.MAP_DICT)
-    public UnitInfo getUnitInfo(@PathVariable String unitCode) {
+    public UnitInfo getUnitInfo(@PathVariable String unitCode, HttpServletRequest request) {
+        WebOptUtils.assertUserLogin(request);
         return sysUnitManager.getObjectById(unitCode);
     }
 
