@@ -175,8 +175,8 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
 
     @Transactional
     public List<OptInfo> listAllOptInfoByTopOpt(String topOptId){
-       return super.listObjectsByFilter("where TOP_OPT_ID = ?",
-           new Object[]{topOptId});
+       return super.listObjectsByFilter("where TOP_OPT_ID = ? or OS_ID = ?",
+           new Object[]{topOptId, topOptId});
 
     }
 
