@@ -27,6 +27,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.centit.framework</groupId>
+            <artifactId>framework-thirdparty-user-plugin</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.centit.product</groupId>
             <artifactId>fileserver-utils</artifactId>
             <version>${project.version}</version>
