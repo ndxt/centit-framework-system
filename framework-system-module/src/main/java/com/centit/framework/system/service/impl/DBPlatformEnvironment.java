@@ -1,7 +1,8 @@
 package com.centit.framework.system.service.impl;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.centit.framework.common.GlobalConstValue;
-import com.centit.framework.jdbc.dao.DatabaseOptUtils;
+import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.*;
 import com.centit.framework.model.security.CentitPasswordEncoder;
@@ -16,7 +17,6 @@ import com.centit.framework.system.service.WorkGroupManager;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.UuidOpt;
-import com.centit.support.common.ObjectException;
 import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -86,6 +86,8 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Autowired
     private WorkGroupManager workGroupManager;
 
+    @Autowired
+    private TenantInfoDao tenantInfoDao;
     private boolean supportTenant;
 
     public DBPlatformEnvironment() {
@@ -949,5 +951,20 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         } else {
             roles.add(new CentitSecurityConfig(CentitSecurityMetadata.ROLE_PREFIX + StringUtils.trim(rp.getRoleCode())));
         }
+    }
+
+
+    @Override
+    public JSONObject getTenantInfoByTopUnit(String topUnit) {
+        TenantInfo tenantInfo = tenantInfoDao.getObjectById(topUnit);
+        if (null == tenantInfo) {
+            return null;
+        }
+        //单独翻译租户所有者姓名
+        Map<String, UserInfo> userRepo = CodeRepositoryUtil.getUserRepo(topUnit);
+        UserInfo ownUserInfo = userRepo.get(tenantInfo.getOwnUser());
+        JSONObject jsonObject = JSONObject.from(tenantInfo);
+        jsonObject.put("ownUserName", null == ownUserInfo ? "" : ownUserInfo.getUserName());
+        return jsonObject;
     }
 }

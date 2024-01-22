@@ -50,6 +50,25 @@
             <version>${persistence-api.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.centit.support</groupId>
+            <artifactId>centit-report-utils</artifactId>
+            <version>${revision}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>dysmsapi20170525</artifactId>
+            <version>2.0.9</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+        </dependency>
+
         <!-- server runtime library -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -57,12 +76,8 @@
             <version>${servlet-api.version}</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.centit.support</groupId>
-            <artifactId>centit-report-utils</artifactId>
-            <version>${revision}</version>
-            <scope>compile</scope>
-        </dependency>
+
+
 
     </dependencies>
 

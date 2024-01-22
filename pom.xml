@@ -81,7 +81,6 @@
         <module>framework-system-web</module>
         <module>framework-system-dubbo-client</module>
         <module>framework-system-dubbo-server</module>
-        <module>framework-system-server</module>
         <module>framework-thirdparty-user-plugin</module>
     </modules>
 
@@ -121,7 +120,7 @@
                 </executions>
             </plugin>
 
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.10.4</version>
@@ -133,7 +132,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
 
             <!-- GPG自动签名的插件-->
             <!--<plugin>

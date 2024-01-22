@@ -1,0 +1,41 @@
+﻿<html>
+<body>
+<form class="centit form" novalidate="true">
+
+	<div class="fields two">
+		<div class="field required">
+			<label>数据库名</label>
+			<input type="text" class="easyui-textbox" name="databaseName"  id="databaseName"  required	/>
+		</div>
+		<div class="field">
+			<label>业务系统名称</label>
+			<input class="easyui-combobox" name="osId" panelHeight="auto"
+					url="system/sys/os?pageNo=1&pageSize=100" method="get"
+					data-options="valueField:'osId',textField:'osName',loadFilter:function(data){return data.objList;}">
+		</div>
+	</div>
+	<div class="fields two">
+		<div class="field required">
+			<label>用户名</label>
+			<input type="text" class="easyui-textbox" name="username" required />
+		</div>
+		<div class="field  required">
+			<label>密码</label>
+			<input type="text" class="easyui-textbox" name="password"  required />
+		</div>	
+	</div>
+		
+	<div class="field" required>
+		<label>数据库连接URL</label>
+		<input type="text"  name="databaseUrl" class="easyui-textbox"  id="databaseUrl" />
+	</div>
+	
+	<div class="field ">
+		<label>数据库描述</label>
+		<input type="text" class="easyui-textbox" data-options="multiline:true" style="height:80px;" 
+		name="databaseDesc" />
+	</div>
+
+</form>
+</body>
+</html>
