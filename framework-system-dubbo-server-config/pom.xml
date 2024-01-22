@@ -9,18 +9,18 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>framework-system-dubbo-client</artifactId>
+    <artifactId>framework-system-dubbo-server-config</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.centit.framework</groupId>
-            <artifactId>framework-dubbo-client-config</artifactId>
-            <version>${revision}</version>
+            <artifactId>framework-dubbo-server-config</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.centit.framework</groupId>
-            <artifactId>framework-core</artifactId>
+            <artifactId>framework-adapter</artifactId>
             <version>${revision}</version>
         </dependency>
 

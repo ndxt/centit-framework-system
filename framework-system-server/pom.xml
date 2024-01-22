@@ -24,7 +24,7 @@
     <dependencies>
         <dependency>
             <groupId>com.centit.framework</groupId>
-            <artifactId>framework-system-dubbo-server</artifactId>
+            <artifactId>framework-system-dubbo-server-config</artifactId>
             <version>${project.version}</version>
         </dependency>
 
