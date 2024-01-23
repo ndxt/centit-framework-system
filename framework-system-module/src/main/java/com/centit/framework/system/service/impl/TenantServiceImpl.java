@@ -367,42 +367,20 @@ public class TenantServiceImpl implements TenantService {
         return ResponseData.makeSuccessResponse();
     }
 
-
     @Override
     @Transactional
-    public ResponseData updateUserInfo(UserInfo userinfo) {
+    public ResponseData updateUserCurrentUnit(UserInfo userinfo) {
         if (StringUtils.isBlank(userinfo.getUserCode())) {
             return ResponseData.makeErrorMessage(ResponseData.ERROR_USER_NOT_LOGIN, "userCode不能为空");
         }
-        if (!userinfo.getUserCode().equals(WebOptUtils.getCurrentUserCode(
-            ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest()))) {
-            return ResponseData.makeErrorMessage("无权限修改其他人的用户信息");
-        }
-        UserInfo oldUserByCode = userInfoDao.getUserByCode(userinfo.getUserCode());
-        if (null == oldUserByCode) {
-            return ResponseData.makeErrorMessage("用户信息不存在");
-        }
         //由于需要根据邮箱或这手机号确认用户身份，所以不允许用户直接修改邮箱和手机号码
-        userinfo.setRegEmail(null);
-        userinfo.setRegCellPhone(null);
-
-        userinfo.setUpdateDate(nowDate());
-        userinfo.setUpdator(userinfo.getUserCode());
-        userinfo.setCreateDate(oldUserByCode.getCreateDate());
-        if (StringUtils.isNotBlank(userinfo.getUserPwd())) {
-            userinfo.setUserPin(passwordEncoder.createPassword(userinfo.getUserPwd(), ""));
-        }else{
-            userinfo.setUserPwd(null);
-            userinfo.setUserPin(null);
-        }
-        userInfoDao.updateUser(userinfo);
+        userInfoDao.updateObject(new String[]{"topUnit", "primaryUnit", "currentStationId"}, userinfo);
         //刷新缓存中的人员信息
         reloadAuthentication(userinfo.getUserCode());
         //人员新增更新成功后刷新缓存
         CodeRepositoryCache.evictCache("UserInfo");
         return ResponseData.makeSuccessResponse();
     }
-
 
     @Override
     @Transactional

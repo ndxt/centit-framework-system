@@ -60,17 +60,17 @@ public class TenantPowerManageImpl implements TenantPowerManage {
 
 
     @Override
-    public String userTenantRole(String topUnit) {
+    public String userTenantRole(String userCode, String topUnit) {
         if (StringUtils.isBlank(topUnit)) {
             throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN, "topUnit不能为空");
         }
-        if (this.userIsTenantOwner(topUnit)) {
+        if (this.userIsTenantOwner(userCode, topUnit)) {
             return TenantConstant.TENANT_OWNE_ROLE_CODE;
         }
-        if (this.userIsTenantAdmin(topUnit)) {
+        if (this.userIsTenantAdmin(userCode, topUnit)) {
             return TenantConstant.TENANT_ADMIN_ROLE_CODE;
         }
-        if (this.userIsTenantMember(topUnit)) {
+        if (this.userIsTenantMember(userCode, topUnit)) {
             return TenantConstant.TENANT_NORMAL_MEMBER_ROLE_CODE;
         }
         return "";

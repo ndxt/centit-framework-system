@@ -90,11 +90,11 @@ public interface TenantService {
     ResponseData agreeJoin(TenantMemberApplyVo tenantMemberApplyVo);
 
     /**
-     * 更新用户信息
+     * 更新用户当前机构信息
      * @param userInfo 用户信息
      * @return ResponseData
      */
-    ResponseData updateUserInfo(UserInfo userInfo);
+    ResponseData updateUserCurrentUnit(UserInfo userInfo);
 
     /**
      * 退出租户

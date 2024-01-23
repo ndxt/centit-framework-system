@@ -1,9 +1,11 @@
 package com.centit.framework.system.controller;
 
 import com.centit.framework.common.ResponseData;
+import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.system.service.TenantPowerManage;
+import com.centit.support.common.ObjectException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/tenantPower")
@@ -65,13 +69,17 @@ public class TenantPowerController extends BaseController {
     )
     @RequestMapping(value = "/userTenantRole", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData userTenantRole(@RequestParam("topUnit")String topUnit) {
+    public ResponseData userTenantRole(@RequestParam("topUnit")String topUnit, HttpServletRequest request) {
 
         if (StringUtils.isBlank(topUnit)){
-            return ResponseData.makeResponseData("");
+            throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "输入的参数topUnit为空！");
+        }
+        String userCode = WebOptUtils.getCurrentUserCode(request);
+        if(StringUtils.isBlank(userCode)){
+            throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN, "获取当前用户失败，请确认用户是否登录！");
         }
         try {
-            return ResponseData.makeResponseData(tenantPowerManage.userTenantRole(topUnit));
+            return ResponseData.makeResponseData(tenantPowerManage.userTenantRole(userCode, topUnit));
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("当前用户是否在租户中的角色,错误原因{},租户id：{}", e, topUnit);

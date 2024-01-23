@@ -41,7 +41,7 @@ public interface TenantPowerManage {
      * @param topUnit 租户
      * @return String
      */
-    String userTenantRole(String topUnit);
+    String userTenantRole(String userCode, String topUnit);
 
     /**
      * 判断当前用户是否为租户管理员

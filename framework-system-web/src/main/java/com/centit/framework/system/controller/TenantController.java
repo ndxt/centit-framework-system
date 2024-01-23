@@ -431,19 +431,19 @@ public class TenantController extends BaseController {
     }
 
     @ApiOperation(
-        value = "更新用户基本信息",
-        notes = "更新用户基本信息，请求体(用户信息)"
+        value = "更新用户当前机构信息",
+        notes = "更新用户当前机构信息，请求体(用户信息)"
     )
     @RequestMapping(value = "/updateUserInfo", method = RequestMethod.PUT)
     @WrapUpResponseBody
     //@RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新用户信息",tag = "{userCodes}")
-    public ResponseData updateUserInfo(@RequestBody UserInfo userInfo, HttpServletRequest request) {
+    public ResponseData updateUserCurrentUnit(@RequestBody UserInfo userInfo, HttpServletRequest request) {
         String userCode = WebOptUtils.getCurrentUserCode(request);
         if(!StringUtils.equals(userCode, userInfo.getUserCode())){
-            throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR,"只有用户自己才能修改自己的信息！");
+            throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "只有用户自己才能修改自己的信息！");
         }
         try {
-            return tenantService.updateUserInfo(userInfo);
+            return tenantService.updateUserCurrentUnit(userInfo);
         } catch (Exception e) {
             throw new ObjectException(ObjectException.DATABASE_OPERATE_EXCEPTION,
                 "更新人员信息失败。失败原因：" + e.getMessage() );
@@ -524,9 +524,7 @@ public class TenantController extends BaseController {
     @RequestMapping(value = "/pageListTenantApply", method = RequestMethod.GET)
     @WrapUpResponseBody
     public PageQueryResult pageListTenantApply(PageListTenantInfoQo tenantInfo, PageDesc pageDesc) {
-
         return tenantService.pageListTenantApply(tenantInfo, pageDesc);
-
     }
 
     @ApiOperation(
@@ -538,7 +536,6 @@ public class TenantController extends BaseController {
     public PageQueryResult<Object> pageListTenantMember(HttpServletRequest request, PageDesc pageDesc) {
         Map<String, Object> parameters = collectRequestParameters(request);
         return tenantService.pageListTenantMember(parameters, pageDesc);
-
     }
 
     @ApiOperation(
@@ -548,7 +545,6 @@ public class TenantController extends BaseController {
     @RequestMapping(value = "/assignTenantRole", method = RequestMethod.POST)
     @WrapUpResponseBody
     public ResponseData assignTenantRole(@RequestBody TenantMemberQo tenantMemberQo) {
-
         try {
             return tenantService.assignTenantRole(tenantMemberQo);
         } catch (ObjectException obe) {
@@ -648,7 +644,6 @@ public class TenantController extends BaseController {
         return tenantService.searchUsers(paramMap);
     }
 
-
     @ApiOperation(
         value = "修改租户信息",
         notes = "修改租户信息"
@@ -680,7 +675,7 @@ public class TenantController extends BaseController {
             String topUnitCode = centitUserDetails.getTopUnitCode();
             String tenantRole = "";
             if (StringUtils.isNotBlank(topUnitCode)) {
-                tenantRole = tenantPowerManage.userTenantRole(topUnitCode);
+                tenantRole = tenantPowerManage.userTenantRole(userCode, topUnitCode);
             }
             centitUserDetails.setTenantRole(tenantRole);
             jsonObject = centitUserDetails.toJsonWithoutSensitive();
