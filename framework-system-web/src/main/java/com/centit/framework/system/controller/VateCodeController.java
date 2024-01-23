@@ -15,6 +15,7 @@ import com.centit.framework.model.basedata.NoticeMessage;
 import com.centit.framework.model.basedata.UserInfo;
 import com.centit.framework.model.security.CentitUserDetails;
 import com.centit.framework.system.dao.UserInfoDao;
+import com.centit.framework.system.utils.VotaCode;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.common.ObjectException;
@@ -32,9 +33,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.net.InetAddress;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,6 +65,34 @@ public class VateCodeController extends BaseController {
     private RedisTemplate<String, JSONObject> redisTemplate;
 
     private static Pattern pattern = Pattern.compile("[0-9]*");
+
+    private ConcurrentHashMap
+            <String, VotaCode> votaCodeMap = new ConcurrentHashMap<>();
+
+    private VotaCode fetchVotaCode(String key){
+        if (redisTemplate == null){
+            return votaCodeMap.get(key);
+        } else {
+            JSONObject jsonObject = redisTemplate.boundValueOps(key).get();
+            return jsonObject.toJavaObject(VotaCode.class);
+        }
+    }
+
+    private void saveVotaCode(String key, VotaCode votaCode){
+        if (redisTemplate == null){
+            votaCodeMap.put(key, votaCode);
+        } else {
+            redisTemplate.boundValueOps(key).set(JSONObject.from(votaCode));
+        }
+    }
+
+    private void deleteVotaCode(String key){
+        if (redisTemplate == null){
+            votaCodeMap.remove(key);
+        } else {
+            redisTemplate.delete(key);
+        }
+    }
 
     @ApiOperation(
         value = "验证唯一性",
@@ -101,22 +129,20 @@ public class VateCodeController extends BaseController {
     @WrapUpResponseBody
     public ResponseData getEmailCode(@RequestParam("email") String email,
                                      HttpServletRequest request) {
-        JSONObject jsonObject = redisTemplate.boundValueOps(email).get();
-        Map<String, Object> bodyMap = new HashMap<>();
-        if(jsonObject != null){
-            Long createTime = jsonObject.getLong("createTime");
-            if ((System.currentTimeMillis() - createTime) < 1000 * 60) {
+        VotaCode votaCode = fetchVotaCode(email);
+        if(votaCode != null){
+            if ((System.currentTimeMillis() - votaCode.getCreateTime()) < 1000 * 60) {
                 return ResponseData.makeErrorMessage(ObjectException.DATA_VALIDATE_ERROR, "验证码发送时间小于1分钟，请稍后再试。");
             }else{
                 //重新发送则删除之前存入redis中的数据
-                redisTemplate.delete(email);
+                deleteVotaCode(email);
             }
         }
         UserInfo userInfo = userInfoDao.getUserByRegEmail(email);
         if (userInfo != null) {
             return ResponseData.makeErrorMessage("此邮箱已被使用！");
         }
-        return sendEmail(email, request);
+        return sendEmail(email);
     }
 
     @ApiOperation(
@@ -127,15 +153,14 @@ public class VateCodeController extends BaseController {
     @WrapUpResponseBody
     public ResponseData getPhoneCode(@RequestParam(value = "userCode", required = false) String userCode,
                                             @RequestParam("phone") String phone,
-                                            HttpServletRequest request, HttpServletResponse response) throws Exception {
-        JSONObject jsonObject = redisTemplate.boundValueOps(phone).get();
-        if(jsonObject != null){
-            Long createTime = jsonObject.getLong("createTime");
-            if ((System.currentTimeMillis() - createTime) < 1000 * 60) {
+                                            HttpServletRequest request) throws Exception {
+        VotaCode votaCode = fetchVotaCode(phone);
+        if(votaCode != null){
+            if ((System.currentTimeMillis() - votaCode.getCreateTime()) < 1000 * 60) {
                 return ResponseData.makeErrorMessage(ObjectException.DATA_VALIDATE_ERROR, "验证码发送时间小于1分钟，请稍后再试。");
             }else{
                 //重新发送则删除之前存入redis中的数据
-                redisTemplate.delete(phone);
+                deleteVotaCode(phone);
             }
         }
         if(phone != null && !phone.equals("")){
@@ -178,31 +203,24 @@ public class VateCodeController extends BaseController {
                 return ResponseData.makeErrorMessage(500, "请输入验证码！");
             }
             //从Redis中获取验证码和部分信息
-            JSONObject json = redisTemplate.boundValueOps(key).get();
-            if(json == null){
-                json = JSONObject.parseObject(request.getHeader("verifyCode"));
-            }
-            if(json == null){
+            VotaCode votaCode = fetchVotaCode(key);
+            if(votaCode == null){
                 return ResponseData.makeErrorMessage(500, "未发送验证码！");
             }
-            String verifyCode = json.getString("verifyCode");
-            Long createTime = json.getLong("createTime");
-            String email = json.getString("email");
-            String phone = json.getString("phone");
-            if (!verifyCode.equals(code)) {
+            if (!StringUtils.equals(votaCode.getVerifyCode(), (code))) {
                 return ResponseData.makeErrorMessage(500, "验证码错误！");
             }
-            if ((System.currentTimeMillis() - createTime) > 1000 * 60 * 5) {
+            if ((System.currentTimeMillis() - votaCode.getCreateTime()) > 1000 * 60 * 5) {
                 return ResponseData.makeErrorMessage(500, "验证码已过期！");
             }
             if(StringUtils.isNotBlank(userCode)){
                 UserInfo user = userInfoDao.getUserByCode(userCode);
                 if (user != null) {
-                    if(StringUtils.isNotBlank(email)){
-                        user.setRegEmail(email);
+                    if(StringUtils.isNotBlank(votaCode.getEmail())){
+                        user.setRegEmail(votaCode.getEmail());
                         logger.info("用户:{}修改用户信息邮箱",userCode);
-                    }else if(StringUtils.isNotBlank(phone)){
-                        user.setRegCellPhone(phone);
+                    }else if(StringUtils.isNotBlank(votaCode.getPhone())){
+                        user.setRegCellPhone(votaCode.getPhone());
                         logger.info("用户:{}修改用户信息手机",userCode);
                     }
                     userInfoDao.updateUser(user);
@@ -212,7 +230,7 @@ public class VateCodeController extends BaseController {
                     CodeRepositoryCache.evictCache("UserInfo");
                 }
             }
-            redisTemplate.delete(key);
+            deleteVotaCode(key);
             return ResponseData.makeSuccessResponse();
         }catch (Exception e) {
             e.printStackTrace();
@@ -234,7 +252,7 @@ public class VateCodeController extends BaseController {
     @RequestMapping(value = "/findPwd", method = RequestMethod.POST)
     @WrapUpResponseBody
     public ResponseData findPwd(@RequestParam(value = "loginname") String loginname,
-                                HttpServletRequest request) throws Exception {
+                                HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         try {
             UserInfo userInfo;
@@ -243,7 +261,7 @@ public class VateCodeController extends BaseController {
                 if(userInfo == null){
                     return ResponseData.makeErrorMessage("用户不存在");
                 }
-                sendEmail(loginname, request);
+                sendEmail(loginname);
             }else{
                 userInfo = userInfoDao.getUserByRegCellPhone(loginname);
                 if(userInfo == null){
@@ -275,30 +293,27 @@ public class VateCodeController extends BaseController {
                 return ResponseData.makeErrorMessage(500, "请输入验证码！");
             }
             //从Redis中获取验证码和部分信息
-            JSONObject json = redisTemplate.boundValueOps(key).get();
-            if(json == null){
+            VotaCode votaCode = fetchVotaCode(key);
+            /*if(json == null){
                 json = JSONObject.parseObject(request.getHeader("verifyCode"));
-            }
-            if(json == null){
+            }*/
+            if(votaCode == null){
                 return ResponseData.makeErrorMessage(500, "未发送验证码！");
             }
-            String verifyCode = json.getString("verifyCode");
-            Long createTime = json.getLong("createTime");
-            String email = json.getString("email");
-            String phone = json.getString("phone");
-            if (!verifyCode.equals(code)) {
+
+            if (!StringUtils.equals(votaCode.getVerifyCode(),code)) {
                 return ResponseData.makeErrorMessage(500, "验证码错误！");
             }
-            if ((System.currentTimeMillis() - createTime) > 1000 * 60 * 5) {
+            if ((System.currentTimeMillis() - votaCode.getCreateTime()) > 1000 * 60 * 5) {
                 return ResponseData.makeErrorMessage(500, "验证码已过期！");
             }
             UserInfo userInfo = new UserInfo();
-            if(StringUtils.isNotBlank(email)){
-                userInfo = userInfoDao.getUserByRegEmail(email);
-            }else if(StringUtils.isNotBlank(phone)){
-                userInfo = userInfoDao.getUserByRegCellPhone(phone);
+            if(StringUtils.isNotBlank(votaCode.getEmail())){
+                userInfo = userInfoDao.getUserByRegEmail(votaCode.getEmail());
+            }else if(StringUtils.isNotBlank(votaCode.getPhone())){
+                userInfo = userInfoDao.getUserByRegCellPhone(votaCode.getPhone());
             }
-            redisTemplate.delete(key);
+            deleteVotaCode(key);
             return ResponseData.makeResponseData(userInfo);
         }catch (Exception e) {
             e.printStackTrace();
@@ -306,28 +321,27 @@ public class VateCodeController extends BaseController {
         return ResponseData.errorResponse;
     }
 
-
-    public ResponseData sendEmail(String email, HttpServletRequest request){
+    public ResponseData sendEmail(String email){
         String verifyCode = String.valueOf(new Random().nextInt(899999) + 100000);
         String message = "您的验证码为:" + verifyCode + "，该码有效期为5分钟，该码只能使用一次!";
         List<String> sendMessageUser = new ArrayList<>();
         sendMessageUser.add(email);
-        JSONObject json = new JSONObject();
-        json.put("email", email);
-        json.put("verifyCode", verifyCode);
-        json.put("createTime", System.currentTimeMillis());
+
         ResponseData result = notificationCenter.sendMessage("system", sendMessageUser,
             NoticeMessage.create().operation("email").method("post").subject("您有新邮件")
                 .content(message));
         if(result.getCode() == 0){
             //发送成功则将JSON保存到session和Redis中
-            redisTemplate.boundValueOps(email).set(json);
+            VotaCode votaCode = new VotaCode();
+            votaCode.setVerifyCode(verifyCode);
+            votaCode.setEmail(email);
+            votaCode.setCreateTime(System.currentTimeMillis());
+            saveVotaCode(email, votaCode);
         }
         return result;
     }
 
-    public SendSmsResponseBody sendPhone(String phone, String userCode)
-            throws Exception{
+    public SendSmsResponseBody sendPhone(String phone, String userCode) {
         String verifyCode = String.valueOf(new Random().nextInt(899999) + 100000);
         JSONObject jSONObject = new JSONObject();
         jSONObject.put("code", verifyCode);
@@ -341,25 +355,31 @@ public class VateCodeController extends BaseController {
         }else{
             jSONObject.put("product", "用户");
         }
-        com.aliyun.dysmsapi20170525.Client client = this.createClient();
-        SendSmsRequest sendSmsRequest = new SendSmsRequest()
-            .setSignName("身份验证")
-            .setTemplateCode("SMS_65920066")
-            .setPhoneNumbers(phone)
-            .setTemplateParam(jSONObject.toString());
-        JSONObject json = new JSONObject();
-        json.put("phone", phone);
-        json.put("verifyCode", verifyCode);
-        json.put("createTime", System.currentTimeMillis());
-        json.put("IP", InetAddress.getLocalHost().getHostAddress());
-        // 复制代码运行请自行打印 API 的返回值
-        SendSmsResponseBody result = client.sendSms(sendSmsRequest).getBody();
-        if(result.getCode().equals("OK")){
-            //发送成功
-            //将验证码存入到Redis中
-            redisTemplate.boundValueOps(phone).set(json);
+        try {
+            com.aliyun.dysmsapi20170525.Client client = this.createClient();
+
+            SendSmsRequest sendSmsRequest = new SendSmsRequest()
+                .setSignName("身份验证")
+                .setTemplateCode("SMS_65920066")
+                .setPhoneNumbers(phone)
+                .setTemplateParam(jSONObject.toString());
+
+
+            // 复制代码运行请自行打印 API 的返回值
+            SendSmsResponseBody result = client.sendSms(sendSmsRequest).getBody();
+            if(result.getCode().equals("OK")){
+                //发送成功
+                //将验证码存入到Redis中
+                VotaCode votaCode = new VotaCode();
+                votaCode.setVerifyCode(verifyCode);
+                votaCode.setPhone(phone);
+                votaCode.setCreateTime(System.currentTimeMillis());
+                saveVotaCode(phone, votaCode);
+            }
+            return result;
+        } catch (Exception e) {
+            throw new ObjectException(ResponseData.ERROR_PROCESS_ERROR,"发送短信异常："+ e.getMessage(), e);
         }
-        return result;
     }
 
     /**
