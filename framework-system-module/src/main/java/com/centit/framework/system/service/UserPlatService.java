@@ -1,6 +1,6 @@
-package com.centit.framework.users.service;
+package com.centit.framework.system.service;
 
-import com.centit.framework.users.po.UserPlat;
+import com.centit.framework.model.basedata.UserPlat;
 import com.centit.support.database.utils.PageDesc;
 
 import java.util.List;

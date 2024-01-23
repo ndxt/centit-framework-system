@@ -1,4 +1,4 @@
-package com.centit.framework.users.controller;
+package com.centit.framework.system.controller;
 
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.WebOptUtils;
@@ -6,8 +6,8 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.operationlog.RecordOperationLog;
-import com.centit.framework.users.po.UserPlat;
-import com.centit.framework.users.service.UserPlatService;
+import com.centit.framework.model.basedata.UserPlat;
+import com.centit.framework.system.service.UserPlatService;
 import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
 import io.swagger.annotations.Api;

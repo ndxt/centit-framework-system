@@ -1,8 +1,8 @@
-package com.centit.framework.users.dao;
+package com.centit.framework.system.dao;
 
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
-import com.centit.framework.users.po.UserPlat;
+import com.centit.framework.model.basedata.UserPlat;
 import com.centit.support.algorithm.CollectionsOpt;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

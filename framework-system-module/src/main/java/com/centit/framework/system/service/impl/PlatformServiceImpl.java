@@ -1,8 +1,8 @@
-package com.centit.framework.users.service.impl;
+package com.centit.framework.system.service.impl;
 
-import com.centit.framework.users.dao.PlatformDao;
-import com.centit.framework.users.po.Platform;
-import com.centit.framework.users.service.PlatformService;
+import com.centit.framework.system.dao.PlatformDao;
+import com.centit.framework.model.basedata.Platform;
+import com.centit.framework.system.service.PlatformService;
 import com.centit.support.database.utils.PageDesc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

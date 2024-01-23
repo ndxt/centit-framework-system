@@ -9,22 +9,17 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.model.adapter.PlatformEnvironment;
-import com.centit.framework.model.basedata.UnitInfo;
-import com.centit.framework.model.basedata.UserInfo;
-import com.centit.framework.model.basedata.UserUnit;
+import com.centit.framework.model.basedata.*;
 import com.centit.framework.model.security.CentitUserDetails;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.TenantBusinessLog;
-import com.centit.framework.model.basedata.TenantInfo;
 import com.centit.framework.system.po.TenantMemberApply;
 import com.centit.framework.system.service.TenantPowerManage;
 import com.centit.framework.system.service.TenantService;
 import com.centit.framework.system.vo.PageListTenantInfoQo;
 import com.centit.framework.system.vo.TenantMemberApplyVo;
 import com.centit.framework.system.vo.TenantMemberQo;
-import com.centit.framework.users.config.WxAppConfig;
-import com.centit.framework.users.po.UserPlat;
-import com.centit.framework.users.service.UserPlatService;
+import com.centit.framework.system.service.UserPlatService;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
@@ -65,9 +60,6 @@ public class TenantController extends BaseController {
 
     @Autowired
     protected PlatformEnvironment platformEnvironment;
-
-    @Autowired
-    private WxAppConfig wxAppConfig;
 
     @Autowired
     private UserPlatService userPlatService;

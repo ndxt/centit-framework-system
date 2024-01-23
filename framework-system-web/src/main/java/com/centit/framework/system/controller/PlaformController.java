@@ -1,4 +1,4 @@
-package com.centit.framework.users.controller;
+package com.centit.framework.system.controller;
 
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.core.controller.BaseController;
@@ -8,11 +8,11 @@ import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.users.config.AppConfig;
-import com.centit.framework.users.po.Platform;
-import com.centit.framework.users.po.UserPlat;
-import com.centit.framework.users.service.PlatformService;
+import com.centit.framework.model.basedata.Platform;
+import com.centit.framework.model.basedata.UserPlat;
+import com.centit.framework.system.service.PlatformService;
 import com.centit.framework.users.service.TokenService;
-import com.centit.framework.users.service.UserPlatService;
+import com.centit.framework.system.service.UserPlatService;
 import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
 import io.swagger.annotations.Api;

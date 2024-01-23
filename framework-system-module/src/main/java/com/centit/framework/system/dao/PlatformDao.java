@@ -1,9 +1,9 @@
-package com.centit.framework.users.dao;
+package com.centit.framework.system.dao;
 
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.jdbc.dao.DatabaseOptUtils;
-import com.centit.framework.users.po.Platform;
+import com.centit.framework.model.basedata.Platform;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.NumberBaseOpt;
 import org.springframework.stereotype.Repository;
