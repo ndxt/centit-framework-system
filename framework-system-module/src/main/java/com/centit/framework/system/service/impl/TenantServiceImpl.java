@@ -155,6 +155,12 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     @Transactional
+    public TenantInfo  getTenantInfo(String topUnit){
+        return tenantInfoDao.getObjectById(topUnit);
+    }
+
+    @Override
+    @Transactional
     public ResponseData registerUserAccount(UserInfo userInfo) {
 
         String userPwd = userInfo.getUserPwd();

@@ -18,8 +18,12 @@ import java.util.List;
 import java.util.Map;
 
 public interface TenantService {
-
-
+    /**
+     *
+     * @param topUnit 租户主键
+     * @return 租户信息
+     */
+    TenantInfo  getTenantInfo(String topUnit);
     /**
      * 用户注册
      * @param userinfo 用户信息
@@ -177,7 +181,7 @@ public interface TenantService {
      * @param pageDesc 分页
      * @return PageQueryResult
      */
-    PageQueryResult pageListTenants(Map<String,Object> filterMap , PageDesc pageDesc);
+    PageQueryResult pageListTenants(Map<String, Object> filterMap , PageDesc pageDesc);
 
     /**
      * 精确查找用户

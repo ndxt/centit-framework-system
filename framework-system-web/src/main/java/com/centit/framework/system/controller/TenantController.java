@@ -1,16 +1,16 @@
 package com.centit.framework.system.controller;
 
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.model.adapter.PlatformEnvironment;
-import com.centit.framework.model.basedata.*;
-import com.centit.framework.model.security.CentitUserDetails;
+import com.centit.framework.model.basedata.TenantInfo;
+import com.centit.framework.model.basedata.UnitInfo;
+import com.centit.framework.model.basedata.UserInfo;
+import com.centit.framework.model.basedata.UserUnit;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.po.TenantBusinessLog;
 import com.centit.framework.system.po.TenantMemberApply;
@@ -19,7 +19,6 @@ import com.centit.framework.system.service.TenantService;
 import com.centit.framework.system.vo.PageListTenantInfoQo;
 import com.centit.framework.system.vo.TenantMemberApplyVo;
 import com.centit.framework.system.vo.TenantMemberQo;
-import com.centit.framework.system.service.UserPlatService;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
@@ -39,8 +38,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,9 +57,6 @@ public class TenantController extends BaseController {
 
     @Autowired
     protected PlatformEnvironment platformEnvironment;
-
-    @Autowired
-    private UserPlatService userPlatService;
 
     public String getOptId() {
         return "TENANMAG";
@@ -650,44 +644,6 @@ public class TenantController extends BaseController {
         String userCode = WebOptUtils.getCurrentUserCode(request);
         return tenantService.updateTenant(userCode, tenantInfo);
 
-    }
-
-    @ApiOperation(value = "获取用户登录信息", notes = "是对/mainframe/currentuser接口的扩展")
-    @RequestMapping(value = {"/currentuser"}, method = {RequestMethod.GET})
-    @WrapUpResponseBody
-    public Object getCurrentUser(HttpServletRequest request) {
-        Object ud = WebOptUtils.getLoginUser(request);
-        if (ud == null) {
-            throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN, "用户没有登录或者超时，请重新登录！");
-        }
-        JSONObject jsonObject;
-        String userCode = "";
-        //tenantRole和userTenant信息随时有可能改变，所以不建议放到SecurityContext中
-        if (ud instanceof CentitUserDetails) {
-            //补充tenantRole字段信息
-            CentitUserDetails centitUserDetails = (CentitUserDetails) ud;
-            UserInfo userInfo = centitUserDetails.getUserInfo();
-            userCode = userInfo.getUserCode();
-            String topUnitCode = centitUserDetails.getTopUnitCode();
-            String tenantRole = "";
-            if (StringUtils.isNotBlank(topUnitCode)) {
-                tenantRole = tenantPowerManage.userTenantRole(userCode, topUnitCode);
-            }
-            centitUserDetails.setTenantRole(tenantRole);
-            jsonObject = centitUserDetails.toJsonWithoutSensitive();
-        } else {
-            //补充userTenants字段信息
-            jsonObject = (JSONObject) JSON.toJSON(ud);
-        }
-        JSONArray userTenants = tenantService.userTenants(userCode);
-        jsonObject.put("userTenants", userTenants);
-        //获取微信用户信息
-        Map<String, Object> paramsMap = new HashMap<>();
-        paramsMap.put("userCode", userCode);
-        List<UserPlat> userPlats = userPlatService.listObjects(paramsMap, null);
-        //第三方登录信息
-        jsonObject.put("userPlats", (userPlats != null && userPlats.size() > 0) ? userPlats : new ArrayList<>());
-        return jsonObject;
     }
 
     @ApiOperation(value = "新建机构", notes = "新建一个机构。")
