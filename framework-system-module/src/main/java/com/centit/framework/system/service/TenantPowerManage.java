@@ -17,16 +17,6 @@ public interface TenantPowerManage {
      */
     boolean userIsTenantOwner(String userCode, String topUnit);
 
-
-    /**
-     * 判断当前用户是否为租户所有者
-     *
-     * @param topUnit topUnit 租户id
-     * @return true:是所有者
-     * @throws ObjectException 如果当前用户未登录抛出异常
-     */
-    boolean userIsTenantOwner(String topUnit) throws ObjectException;
-
     /**
      * 判断用户是否为租户管理员
      *
@@ -44,15 +34,6 @@ public interface TenantPowerManage {
     String userTenantRole(String userCode, String topUnit);
 
     /**
-     * 判断当前用户是否为租户管理员
-     *
-     * @param topUnit topUnit 租户id
-     * @return true:是管理员
-     * @throws ObjectException 如果当前用户未登录抛出异常
-     */
-    boolean userIsTenantAdmin(String topUnit) throws ObjectException;
-
-    /**
      * 判断用户是否为租户成员
      *
      * @param userCode 用户code
@@ -62,15 +43,6 @@ public interface TenantPowerManage {
     boolean userIsTenantMember(String userCode, String topUnit);
 
     /**
-     * 判断当前用户是否为租户成员
-     *
-     * @param topUnit 租户id
-     * @return true:是成员
-     * @throws ObjectException 如果当前用户未登录抛出异常
-     */
-    boolean userIsTenantMember(String topUnit) throws ObjectException;
-
-    /**
      * 判断用户是否为应用管理员
      *
      * @param userCode 用户code
@@ -78,15 +50,6 @@ public interface TenantPowerManage {
      * @return true:是管理员
      */
     boolean userIsApplicationAdmin(String userCode, String osId);
-
-    /**
-     * 判断当前用户是否为应用管理员
-     *
-     * @param osId 应用id
-     * @return true:是管理员
-     * @throws ObjectException 如果当前用户未登录抛出异常
-     */
-    boolean userIsApplicationAdmin(String osId) throws ObjectException;
 
     /**
      * 判断用户是否为应用成员
@@ -99,16 +62,6 @@ public interface TenantPowerManage {
     boolean userIsApplicationMember(String userCode, String osId) throws ObjectException;
 
     /**
-     * 判断当前用户是否为应用成员
-     *
-     * @param osId 应用id
-     * @return true:是成员
-     * @throws ObjectException 如果当前用户未登录抛出异常
-     */
-    boolean userIsApplicationMember(String osId) throws ObjectException;
-
-
-    /**
      * 校验用户是否为system租户成员
      * @param userCode 用户code
      * @return true：是 false：否
@@ -116,23 +69,11 @@ public interface TenantPowerManage {
     boolean userIsSystemMember(String userCode);
 
     /**
-     * 校验当前用户是否为system租户成员
-     * @return true：是 false：否
-     */
-    boolean userIsSystemMember();
-
-    /**
      * 校验当前用户是否为system租户管理员
      * @param userCode 用户code
      * @return true：是 false：否
      */
     boolean userIsSystemAdmin(String userCode);
-
-    /**
-     * 校验当前用户是否为system租户管理员
-     * @return true：是 false：否
-     */
-    boolean userIsSystemAdmin();
 
     /**
      * 租户中用户数量是否达到限制

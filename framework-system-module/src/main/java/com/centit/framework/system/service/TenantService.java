@@ -36,7 +36,7 @@ public interface TenantService {
      * @param tenantInfo 租户信息
      * @return ResponseData
      */
-    ResponseData applyAddTenant(TenantInfo tenantInfo);
+    ResponseData applyAddTenant(String userCode, TenantInfo tenantInfo);
 
     /**
      * 申请加入租户
@@ -78,7 +78,7 @@ public interface TenantService {
      * @param tenantInfo 租户信息
      * @return ResponseData
      */
-    ResponseData adminCheckTenant(TenantInfo tenantInfo);
+    ResponseData adminCheckTenant(String userCode, TenantInfo tenantInfo);
 
     /**
      * 同意加入
@@ -116,7 +116,7 @@ public interface TenantService {
      * @param tenantBusinessLog 转让日志
      * @return ResponseData
      */
-    ResponseData businessTenant(TenantBusinessLog tenantBusinessLog);
+    ResponseData businessTenant(String userCode, TenantBusinessLog tenantBusinessLog);
 
 
     /**
@@ -136,7 +136,7 @@ public interface TenantService {
      * @param tenantInfo 租户信息
      * @return PageQueryResult
      */
-    PageQueryResult pageListTenantApply(PageListTenantInfoQo tenantInfo, PageDesc pageDesc);
+    PageQueryResult pageListTenantApply(String userCode, PageListTenantInfoQo tenantInfo, PageDesc pageDesc);
 
 
     /**
@@ -152,7 +152,7 @@ public interface TenantService {
      * @param tenantMemberQo 租户成员
      * @return ResponseData
      */
-    ResponseData assignTenantRole(TenantMemberQo tenantMemberQo);
+    ResponseData assignTenantRole(String userCode, TenantMemberQo tenantMemberQo);
 
 
     /**
@@ -160,7 +160,7 @@ public interface TenantService {
      * @param tenantMemberQo 租户成员
      * @return ResponseData
      */
-    ResponseData deleteTenantRole(TenantMemberQo tenantMemberQo);
+    ResponseData deleteTenantRole(String userCode, TenantMemberQo tenantMemberQo);
 
 
     /**
@@ -203,14 +203,14 @@ public interface TenantService {
      * @param parameters topUnit必传
      * @return ResponseData
      */
-    ResponseData deleteTenant(Map<String, Object> parameters);
+    ResponseData deleteTenant(String userCode, Map<String, Object> parameters);
 
     /**
      * 更新租户信息，为系统管理员和租户所有者，租户管理员使用
      * @param tenantInfo 租户信息
      * @return ResponseData
      */
-    ResponseData updateTenant(TenantInfo tenantInfo);
+    ResponseData updateTenant(String userCode, TenantInfo tenantInfo);
 
     /**
      * 创建单位 是对 com.centit.framework.system.service.SysUnitManager#saveNewUnitInfo(com.centit.framework.model.basedata.UnitInfo)

@@ -184,10 +184,10 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     @Transactional
-    public ResponseData applyAddTenant(TenantInfo tenantInfo) {
+    public ResponseData applyAddTenant(String userCode, TenantInfo tenantInfo) {
 
         //系统管理员可以帮助其他用户创建多个租户
-        if (!tenantPowerManage.userIsSystemAdmin()) {
+        if (!tenantPowerManage.userIsSystemAdmin(userCode)) {
             //限制一个用户只能申请一个租户
             int tenantCount = tenantInfoDao.countObjectByProperties(CollectionsOpt.createHashMap("ownUser", tenantInfo.getOwnUser(), "isAvailable", "T"));
             if (tenantCount > 0) {
@@ -304,9 +304,9 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     @Transactional
-    public ResponseData adminCheckTenant(TenantInfo tenantInfo) {
+    public ResponseData adminCheckTenant(String userCode, TenantInfo tenantInfo) {
 
-        if (!tenantPowerManage.userIsSystemMember()) {
+        if (!tenantPowerManage.userIsSystemMember(userCode)) {
             return ResponseData.makeResponseData("您不是系统用户，无法审核");
         }
 
@@ -397,7 +397,7 @@ public class TenantServiceImpl implements TenantService {
     @Override
     @Transactional
     public ResponseData removeTenantMember(String topUnit, String userCode) {
-        if (!isTenantManger(topUnit)) {
+        if (!isTenantManger(userCode, topUnit)) {
             return ResponseData.makeErrorMessage("该用户没有操作权限!");
         }
         if (!tenantPowerManage.userIsTenantMember(userCode, topUnit)) {
@@ -412,16 +412,6 @@ public class TenantServiceImpl implements TenantService {
     }
 
     /**
-     * 判断当前用户是否为管理员或者租户所有者
-     *
-     * @param topUnit 租户id
-     * @return true：是 false ：否
-     */
-    private boolean isTenantManger(String topUnit) {
-        return tenantPowerManage.userIsTenantAdmin(topUnit) || tenantPowerManage.userIsTenantOwner(topUnit);
-    }
-
-    /**
      * 判断指定用户是否为管理员或者租户所有者
      *
      * @param userCode 用户code
@@ -429,7 +419,8 @@ public class TenantServiceImpl implements TenantService {
      * @return true：是 false ：否
      */
     private boolean isTenantManger(String userCode, String topUnit) {
-        return tenantPowerManage.userIsTenantAdmin(userCode, topUnit) || tenantPowerManage.userIsTenantOwner(userCode, topUnit);
+        return tenantPowerManage.userIsTenantAdmin(userCode, topUnit)
+            || tenantPowerManage.userIsTenantOwner(userCode, topUnit);
     }
 
     /**
@@ -516,9 +507,9 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     @Transactional
-    public ResponseData businessTenant(TenantBusinessLog tenantBusinessLog) {
+    public ResponseData businessTenant(String userCode, TenantBusinessLog tenantBusinessLog) {
 
-        if (!tenantPowerManage.userIsTenantOwner(tenantBusinessLog.getTopUnit())) {
+        if (!tenantPowerManage.userIsTenantOwner(userCode, tenantBusinessLog.getTopUnit())) {
             //如果租户所有人和转让人不是同一个人停止交易
             return ResponseData.makeSuccessResponse("无权转让该租户!");
         }
@@ -584,8 +575,8 @@ public class TenantServiceImpl implements TenantService {
     }
 
     @Override
-    public PageQueryResult pageListTenantApply(PageListTenantInfoQo tenantInfo, PageDesc pageDesc) {
-        if (tenantPowerManage.userIsSystemMember()) {
+    public PageQueryResult pageListTenantApply(String userCode, PageListTenantInfoQo tenantInfo, PageDesc pageDesc) {
+        if (tenantPowerManage.userIsSystemMember(userCode)) {
             //如果当前用户是平台管理员，则可以查看所有人的申请信息
             tenantInfo.setOwnUser(null);
         } else {
@@ -610,8 +601,8 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     @Transactional
-    public ResponseData assignTenantRole(TenantMemberQo tenantMemberQo) {
-        String checkString = optTenantRoleCheck(tenantMemberQo);
+    public ResponseData assignTenantRole(String userCode, TenantMemberQo tenantMemberQo) {
+        String checkString = optTenantRoleCheck(userCode, tenantMemberQo);
         if (StringUtils.isNotBlank(checkString)) {
             return ResponseData.makeErrorMessage(checkString);
         }
@@ -624,8 +615,8 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     @Transactional
-    public ResponseData deleteTenantRole(TenantMemberQo tenantMemberQo) {
-        String checkString = optTenantRoleCheck(tenantMemberQo);
+    public ResponseData deleteTenantRole(String userCode, TenantMemberQo tenantMemberQo) {
+        String checkString = optTenantRoleCheck(userCode, tenantMemberQo);
         if (StringUtils.isNotBlank(checkString)) {
             return ResponseData.makeErrorMessage(checkString);
         }
@@ -646,14 +637,15 @@ public class TenantServiceImpl implements TenantService {
      * @param tenantMemberQo
      * @return
      */
-    private String optTenantRoleCheck(TenantMemberQo tenantMemberQo) {
+    private String optTenantRoleCheck(String userCode, TenantMemberQo tenantMemberQo) {
         boolean check = StringUtils.isAnyBlank(tenantMemberQo.getRoleCode(),
             tenantMemberQo.getMemberUserCode(), tenantMemberQo.getTopUnit());
         if (check) {
             return "参数roleCode,topUnit,memberUserCode不能为空!";
         }
         String topUnit = tenantMemberQo.getTopUnit();
-        boolean userHasPower = tenantPowerManage.userIsTenantOwner(topUnit) || tenantPowerManage.userIsTenantAdmin(topUnit);
+        boolean userHasPower = tenantPowerManage.userIsTenantOwner(userCode, topUnit)
+            || tenantPowerManage.userIsTenantAdmin(userCode, topUnit);
         if (!userHasPower) {
             return "当前人员没有操作权限!";
         }
@@ -741,9 +733,9 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     @Transactional
-    public ResponseData deleteTenant(Map<String, Object> parameters) {
+    public ResponseData deleteTenant(String userCode, Map<String, Object> parameters) {
         String topUnit = MapUtils.getString(parameters, "topUnit");
-        if (!tenantPowerManage.userIsTenantOwner(topUnit)) {
+        if (!tenantPowerManage.userIsTenantOwner(userCode, topUnit)) {
             return ResponseData.makeErrorMessage("只有租户所有者才能注销租户");
         }
         //删除租户信息
@@ -776,20 +768,20 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     @Transactional
-    public ResponseData updateTenant(TenantInfo tenantInfo) {
+    public ResponseData updateTenant(String userCode, TenantInfo tenantInfo) {
         if (StringUtils.isBlank(tenantInfo.getTopUnit())) {
             return ResponseData.makeErrorMessage("topUnit 不能为空!");
         }
 
-        boolean isSystemAdmin = tenantPowerManage.userIsSystemAdmin();
+        boolean isSystemAdmin = tenantPowerManage.userIsSystemAdmin(userCode);
         TenantInfo dbTenant = tenantInfoDao.getObjectById(tenantInfo);
         //平台管理员,可以修改租户基本信息中的所有属性
         if (isSystemAdmin) {
             tenantInfoDao.updateObject(tenantInfo);
         }
         //管理员或租户所有者只能修改租户信息中的名称
-        boolean isTenantManage = tenantPowerManage.userIsTenantAdmin(tenantInfo.getTopUnit())
-            || tenantPowerManage.userIsTenantOwner(tenantInfo.getTopUnit());
+        boolean isTenantManage = tenantPowerManage.userIsTenantAdmin(userCode, tenantInfo.getTopUnit())
+            || tenantPowerManage.userIsTenantOwner(userCode, tenantInfo.getTopUnit());
         String oldUnitName = dbTenant.getUnitName();
         if (isTenantManage && !dbTenant.getUnitName().equals(tenantInfo.getUnitName())) {
             dbTenant.setUnitName(tenantInfo.getUnitName());

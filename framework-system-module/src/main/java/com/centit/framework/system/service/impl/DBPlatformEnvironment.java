@@ -18,6 +18,7 @@ import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.UuidOpt;
 import com.centit.support.database.utils.PageDesc;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -80,6 +81,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Autowired
     private RolePowerDao rolePowerDao;
+
     @Autowired
     private OptInfoManager optInfoManager;
 
@@ -861,19 +863,6 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         return osInfo;
     }
 
-
-    @Override
-    public int countUserByTopUnit(String topUnit) {
-        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
-            ? userUnitDao.countUserByTopUnit(topUnit) : userUnitDao.countUserByTopUnit(null);
-    }
-
-    @Override
-    public int countUnitByTopUnit(String topUnit) {
-        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
-            ? unitInfoDao.countUnitByTopUnit(topUnit) : unitInfoDao.countUnitByTopUnit(null);
-    }
-
     @Override
     public List<WorkGroup> listWorkGroup(Map<String, Object> filterMap, PageDesc pageDesc) {
         return workGroupManager.listWorkGroup(filterMap, pageDesc);
@@ -961,10 +950,26 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             return null;
         }
         //单独翻译租户所有者姓名
-        Map<String, UserInfo> userRepo = CodeRepositoryUtil.getUserRepo(topUnit);
-        UserInfo ownUserInfo = userRepo.get(tenantInfo.getOwnUser());
+        String ownUserName = CodeRepositoryUtil.getUserName(topUnit, tenantInfo.getOwnUser());
         JSONObject jsonObject = JSONObject.from(tenantInfo);
-        jsonObject.put("ownUserName", null == ownUserInfo ? "" : ownUserInfo.getUserName());
+        jsonObject.put("ownUserName", ownUserName);
+        //添加实际资源占用量
+        //int dataBaseCount = sourceInfoDao.countDataBase(CollectionsOpt.createHashMap("topUnit", topUnit));
+        int unitCount =  unitInfoDao.countUnitByTopUnit(topUnit);
+        int userCount = userUnitDao.countUserByTopUnit(topUnit);
+        int osCount = osInfoDao.countOsInfoByTopUnit(topUnit);
+
+        //jsonObject.put("databaseCount",dataBaseCount);
+        jsonObject.put("unitCount",unitCount);
+        jsonObject.put("userCount",userCount);
+        jsonObject.put("osCount",osCount);
+
         return jsonObject;
     }
+
+    @Override
+    public JSONObject fetchUserTenantGroupInfo(String userCode) {
+        return null;
+    }
+
 }

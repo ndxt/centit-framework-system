@@ -96,7 +96,7 @@ public class TenantController extends BaseController {
             throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN,"您未登录!");
         }
         tenantInfo.setCreator(userCode);
-        if (tenantPowerManage.userIsSystemMember()){
+        if (tenantPowerManage.userIsSystemMember(userCode)){
             if (StringUtils.isBlank(tenantInfo.getOwnUser())){
                 throw new ObjectException("ownUser不能为空");
             }
@@ -104,7 +104,7 @@ public class TenantController extends BaseController {
             tenantInfo.setOwnUser(userCode);
         }
         try {
-            return tenantService.applyAddTenant(tenantInfo);
+            return tenantService.applyAddTenant(userCode, tenantInfo);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("用户申请新建租户失败,错误原因{},用户名数据：{}", e, tenantInfo.toString());
@@ -227,10 +227,9 @@ public class TenantController extends BaseController {
         )})
     @RequestMapping(value = "/listApplyInfo", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult listApplyInfo(HttpServletRequest httpServletRequest,
+    public PageQueryResult listApplyInfo(HttpServletRequest request,
                                          PageDesc pageDesc) {
-
-        return tenantService.listApplyInfo(collectRequestParameters(httpServletRequest), pageDesc);
+        return tenantService.listApplyInfo(collectRequestParameters(request), pageDesc);
     }
 
     @ApiOperation(
@@ -297,13 +296,13 @@ public class TenantController extends BaseController {
     )
     @RequestMapping(value = "/adminCancelApply", method = RequestMethod.PUT)
     @WrapUpResponseBody
-    public ResponseData adminCancelApply(@RequestBody TenantMemberApply tenantMemberApply,HttpServletRequest request) {
+    public ResponseData adminCancelApply(@RequestBody TenantMemberApply tenantMemberApply, HttpServletRequest request) {
         String userCode = tenantMemberApply.getUserCode();
         if (StringUtils.isBlank(userCode)){
             return ResponseData.makeErrorMessage("userCode不能为空");
         }
         String topUnit = WebOptUtils.getCurrentTopUnit(request);
-        if (!tenantPowerManage.userIsTenantAdmin(topUnit)){
+        if (!tenantPowerManage.userIsTenantAdmin(WebOptUtils.getCurrentUserCode(request), topUnit)){
             throw new ObjectException(ResponseData.HTTP_UNAUTHORIZED,"您没有操作权限!");
         }
         Map<String, Object> parameters = CollectionsOpt.createHashMap("userCode",userCode, "topUnit",  topUnit);
@@ -328,7 +327,7 @@ public class TenantController extends BaseController {
         }
         parameters.put("userCode",userCode);
         logger.info("用户:{}注销租户{}信息",userCode,MapUtils.getString(parameters, "topUnit"));
-        return tenantService.deleteTenant(parameters);
+        return tenantService.deleteTenant(userCode, parameters);
     }
 
     @ApiOperation(
@@ -400,7 +399,8 @@ public class TenantController extends BaseController {
             return ResponseData.makeErrorMessage(ResponseData.ERROR_USER_NOT_LOGIN,"您未登录!");
         }
         String topUnit = WebOptUtils.getCurrentTopUnit(request);
-        if (StringUtils.isBlank(topUnit) || !tenantPowerManage.userIsTenantAdmin(topUnit)){
+        String currentUserCode = WebOptUtils.getCurrentUserCode(request);
+        if (StringUtils.isBlank(topUnit) || !tenantPowerManage.userIsTenantAdmin(currentUserCode, topUnit)){
             return ResponseData.makeErrorMessage(ResponseData.HTTP_UNAUTHORIZED,"您没有权限操作!");
         }
         tenantMemberApply.setTopUnit(topUnit);
@@ -419,7 +419,7 @@ public class TenantController extends BaseController {
             throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN,ResponseData.ERROR_NOT_LOGIN_MSG);
         }
         tenantInfo.setUpdator(userCode);
-        return tenantService.adminCheckTenant(tenantInfo);
+        return tenantService.adminCheckTenant(userCode, tenantInfo);
     }
 
     @ApiOperation(
@@ -497,10 +497,11 @@ public class TenantController extends BaseController {
     @RequestMapping(value = "/businessTenant", method = RequestMethod.POST)
     @WrapUpResponseBody
     //@RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}租户转让申请",tag = "{userCodes}")
-    public ResponseData businessTenant(@RequestBody @Validated TenantBusinessLog tenantBusinessLog) {
-
+    public ResponseData businessTenant(@RequestBody @Validated TenantBusinessLog tenantBusinessLog,
+                                       HttpServletRequest request) {
+        String userCode = WebOptUtils.getCurrentUserCode(request);
         try {
-            return tenantService.businessTenant(tenantBusinessLog);
+            return tenantService.businessTenant(userCode, tenantBusinessLog);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("租户转让申请失败。失败原因：{},入参：tenantBusinessLog={}", e, tenantBusinessLog.toString());
@@ -515,8 +516,10 @@ public class TenantController extends BaseController {
     )
     @RequestMapping(value = "/pageListTenantApply", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult pageListTenantApply(PageListTenantInfoQo tenantInfo, PageDesc pageDesc) {
-        return tenantService.pageListTenantApply(tenantInfo, pageDesc);
+    public PageQueryResult pageListTenantApply(PageListTenantInfoQo tenantInfo, PageDesc pageDesc,
+                                               HttpServletRequest request) {
+        String userCode = WebOptUtils.getCurrentUserCode(request);
+        return tenantService.pageListTenantApply(userCode, tenantInfo, pageDesc);
     }
 
     @ApiOperation(
@@ -536,9 +539,10 @@ public class TenantController extends BaseController {
     )
     @RequestMapping(value = "/assignTenantRole", method = RequestMethod.POST)
     @WrapUpResponseBody
-    public ResponseData assignTenantRole(@RequestBody TenantMemberQo tenantMemberQo) {
+    public ResponseData assignTenantRole(@RequestBody TenantMemberQo tenantMemberQo, HttpServletRequest request) {
+        String userCode = WebOptUtils.getCurrentUserCode(request);
         try {
-            return tenantService.assignTenantRole(tenantMemberQo);
+            return tenantService.assignTenantRole(userCode, tenantMemberQo);
         } catch (ObjectException obe) {
             return ResponseData.makeErrorMessage(obe.getExceptionCode(), obe.getMessage());
         } catch (Exception e) {
@@ -556,10 +560,10 @@ public class TenantController extends BaseController {
     @RequestMapping(value = "/deleteTenantRole", method = RequestMethod.DELETE)
     @WrapUpResponseBody
     //@RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}移除租户成员角色",tag = "{userCodes}")
-    public ResponseData deleteTenantRole(TenantMemberQo tenantMemberQo) {
-
+    public ResponseData deleteTenantRole(TenantMemberQo tenantMemberQo, HttpServletRequest request) {
+        String userCode = WebOptUtils.getCurrentUserCode(request);
         try {
-            return tenantService.deleteTenantRole(tenantMemberQo);
+            return tenantService.deleteTenantRole(userCode, tenantMemberQo);
         } catch (ObjectException obe) {
             return ResponseData.makeErrorMessage(obe.getExceptionCode(), obe.getMessage());
         } catch (Exception e) {
@@ -592,7 +596,6 @@ public class TenantController extends BaseController {
         return ResponseData.makeErrorMessage("获取用户所在租户出错");
 
     }
-
 
     @ApiOperation(
         value = "查询租户信息",
@@ -643,8 +646,9 @@ public class TenantController extends BaseController {
     @RequestMapping(value = "/updateTenant", method = RequestMethod.PUT)
     @WrapUpResponseBody
     //@RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}修改租户信息",tag = "{userCodes}")
-    public ResponseData updateTenant(@RequestBody TenantInfo tenantInfo) {
-        return tenantService.updateTenant(tenantInfo);
+    public ResponseData updateTenant(@RequestBody TenantInfo tenantInfo, HttpServletRequest request) {
+        String userCode = WebOptUtils.getCurrentUserCode(request);
+        return tenantService.updateTenant(userCode, tenantInfo);
 
     }
 

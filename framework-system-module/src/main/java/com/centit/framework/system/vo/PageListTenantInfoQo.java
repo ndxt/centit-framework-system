@@ -12,7 +12,6 @@ import java.util.Date;
 @ApiModel(value = "租户列表分页查询实体类", description = "租户列表分页查询实体类")
 public class PageListTenantInfoQo {
 
-
     @Length(max = 1)
     @ApiModelProperty(value = "租户名称", name = "unitName")
     private String unitName;
