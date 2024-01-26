@@ -4,7 +4,9 @@ import com.centit.framework.common.ResponseData;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.model.basedata.UnitInfo;
+import com.centit.framework.model.basedata.UserSyncDirectory;
 import com.centit.framework.system.dao.UnitInfoDao;
+import com.centit.framework.system.service.UserSyncDirectoryManager;
 import com.centit.framework.users.config.AppConfig;
 import com.centit.framework.users.config.UrlConstant;
 import com.centit.framework.users.dto.DingUnitDTO;
@@ -18,10 +20,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,6 +42,9 @@ public class DingTalkLogin extends BaseController {
 
     @Autowired
     private DingTalkLoginService dingTalkLoginService;
+
+    @Autowired
+    private UserSyncDirectoryManager userSyncDirectoryManager;
 
     @Autowired
     private SocialDeptAuthService socialDeptAuthService;
@@ -119,4 +121,14 @@ public class DingTalkLogin extends BaseController {
         return dingTalkLoginService.getUnitInfo(accessToken, deptId);
     }
 
+    @ApiOperation(value="用户组织同步",notes="用户组织同步")
+    @WrapUpResponseBody
+    @RequestMapping(value = "/syncuserdirectory",
+        method = RequestMethod.POST)
+    public void syncUserDirectory(@RequestParam("directory") String directory) {
+        UserSyncDirectory userSyncDirectory = userSyncDirectoryManager.getObjectById(directory);
+        if(userSyncDirectory != null && userSyncDirectory.getType().equalsIgnoreCase("DING")){
+            dingTalkLoginService.synchroniseUserDirectory(userSyncDirectory);
+        }
+    }
 }

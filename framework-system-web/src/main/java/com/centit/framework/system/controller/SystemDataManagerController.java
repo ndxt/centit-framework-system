@@ -5,7 +5,6 @@ import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.system.service.UserDirectory;
 import com.centit.framework.model.basedata.UserSyncDirectory;
 import com.centit.framework.system.service.UserSyncDirectoryManager;
-import com.centit.framework.users.service.DingTalkLoginService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +24,6 @@ public class SystemDataManagerController  extends BaseController {
     private UserDirectory activeDirectoryUserDirectory;
 
     @Autowired
-    private DingTalkLoginService dingTalkLoginService;
-
-    @Autowired
     private UserSyncDirectoryManager userSyncDirectoryManager;
 
     @ApiOperation(value="用户组织同步",notes="用户组织同步")
@@ -38,8 +34,6 @@ public class SystemDataManagerController  extends BaseController {
         UserSyncDirectory userSyncDirectory = userSyncDirectoryManager.getObjectById(directory);
         if(userSyncDirectory != null && userSyncDirectory.getType().equalsIgnoreCase("LDAP")){
             activeDirectoryUserDirectory.synchroniseUserDirectory(userSyncDirectory);
-        }else if(userSyncDirectory != null && userSyncDirectory.getType().equalsIgnoreCase("DING")){
-            dingTalkLoginService.synchroniseUserDirectory(userSyncDirectory);
         }
     }
 }

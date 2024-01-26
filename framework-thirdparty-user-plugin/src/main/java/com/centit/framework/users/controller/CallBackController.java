@@ -2,18 +2,22 @@ package com.centit.framework.users.controller;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
+import com.centit.framework.common.ResponseData;
 import com.centit.framework.core.controller.BaseController;
+import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.users.config.AppConfig;
 import com.centit.framework.users.dingtalk.DingTalkEncryptException;
 import com.centit.framework.users.dingtalk.DingTalkEncryptor;
 import com.centit.framework.users.po.DingTalkSuite;
 import com.centit.framework.users.service.DingTalkSuiteService;
 import com.centit.framework.users.service.TokenService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -197,5 +201,12 @@ public class CallBackController extends BaseController {
     private String updateSuiteCheck(JSONObject decodeEncryptJson) {
         //此事件需要返回的"Random"字段，
         return decodeEncryptJson.getString("Random");
+    }
+
+    @ApiOperation(value = "获取AccessToken", notes = "获取AccessToken。")
+    @GetMapping(value = "/getCacheToken")
+    @WrapUpResponseBody
+    public ResponseData test(HttpServletRequest request, HttpServletResponse response) {
+        return tokenService.getAccessToken();
     }
 }

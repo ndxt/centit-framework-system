@@ -34,10 +34,10 @@ public class TenantPowerController extends BaseController {
     )
     @RequestMapping(value = "/userIsTenantOwner", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData userIsTenantOwner(@RequestParam("topUnit") String topUnit) {
-
+    public ResponseData userIsTenantOwner(@RequestParam("topUnit") String topUnit, HttpServletRequest request) {
+        String userCode = WebOptUtils.getCurrentUserCode(request);
         try {
-            return ResponseData.makeResponseData(tenantPowerManage.userIsTenantOwner(topUnit));
+            return ResponseData.makeResponseData(tenantPowerManage.userIsTenantOwner(userCode, topUnit));
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("判断当前用户是否为租户所有者失败,错误原因{},租户id：{}", e, topUnit);
@@ -51,10 +51,10 @@ public class TenantPowerController extends BaseController {
     )
     @RequestMapping(value = "/userIsTenantAdmin", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData userIsTenantAdmin(@RequestParam("topUnit")String topUnit) {
-
+    public ResponseData userIsTenantAdmin(@RequestParam("topUnit")String topUnit, HttpServletRequest request) {
+        String userCode = WebOptUtils.getCurrentUserCode(request);
         try {
-            return ResponseData.makeResponseData(tenantPowerManage.userIsTenantAdmin(topUnit));
+            return ResponseData.makeResponseData(tenantPowerManage.userIsTenantAdmin(userCode, topUnit));
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("判断当前用户是否为租户管理员失败,错误原因{},租户id：{}", e, topUnit);
@@ -93,10 +93,10 @@ public class TenantPowerController extends BaseController {
     )
     @RequestMapping(value = "/userIsTenantMember", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData userIsTenantMember(@RequestParam("topUnit")String topUnit) {
-
+    public ResponseData userIsTenantMember(@RequestParam("topUnit")String topUnit, HttpServletRequest request) {
+        String userCode = WebOptUtils.getCurrentUserCode(request);
         try {
-            return ResponseData.makeResponseData(tenantPowerManage.userIsTenantMember(topUnit));
+            return ResponseData.makeResponseData(tenantPowerManage.userIsTenantMember(userCode, topUnit));
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("判断当前用户是否为租户成员失败,错误原因{},租户id：{}", e, topUnit);
@@ -110,10 +110,10 @@ public class TenantPowerController extends BaseController {
     )
     @RequestMapping(value = "/userIsApplicationAdmin", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData userIsApplicationAdmin(@RequestParam("osId")String osId) {
-
+    public ResponseData userIsApplicationAdmin(@RequestParam("osId")String osId, HttpServletRequest request) {
+        String userCode = WebOptUtils.getCurrentUserCode(request);
         try {
-            return ResponseData.makeResponseData(tenantPowerManage.userIsApplicationAdmin(osId));
+            return ResponseData.makeResponseData(tenantPowerManage.userIsApplicationAdmin(userCode, osId));
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("判断当前用户是否为应用管理员失败,错误原因{},应用id：{}", e, osId);
@@ -127,10 +127,10 @@ public class TenantPowerController extends BaseController {
     )
     @RequestMapping(value = "/userIsApplicationMember", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData userIsApplicationMember(@RequestParam("osId")String osId) {
-
+    public ResponseData userIsApplicationMember(@RequestParam("osId")String osId, HttpServletRequest request) {
+        String userCode = WebOptUtils.getCurrentUserCode(request);
         try {
-            return ResponseData.makeResponseData(tenantPowerManage.userIsApplicationMember(osId));
+            return ResponseData.makeResponseData(tenantPowerManage.userIsApplicationMember(userCode, osId));
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("判断当前用户是否为应用成员失败,错误原因{},应用id：{}", e, osId);

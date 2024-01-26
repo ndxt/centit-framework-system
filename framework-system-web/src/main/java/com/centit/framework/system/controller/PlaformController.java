@@ -6,12 +6,10 @@ import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.model.adapter.PlatformEnvironment;
-import com.centit.framework.operationlog.RecordOperationLog;
-import com.centit.framework.users.config.AppConfig;
 import com.centit.framework.model.basedata.Platform;
 import com.centit.framework.model.basedata.UserPlat;
+import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.service.PlatformService;
-import com.centit.framework.users.service.TokenService;
 import com.centit.framework.system.service.UserPlatService;
 import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
@@ -43,12 +41,6 @@ public class PlaformController extends BaseController {
 
     @Autowired
     private UserPlatService userPlatService;
-
-    @Autowired
-    private TokenService tokenService;
-
-    @Autowired
-    private AppConfig appConfig;
 
     @Autowired
     protected PlatformEnvironment platformEnvironment;
@@ -163,13 +155,6 @@ public class PlaformController extends BaseController {
         }
         platformService.updatePlatform(platform);
         return ResponseData.makeResponseData(platform);
-    }
-
-    @ApiOperation(value = "获取AccessToken", notes = "获取AccessToken。")
-    @GetMapping(value = "/getCacheToken")
-    @WrapUpResponseBody
-    public ResponseData test(HttpServletRequest request, HttpServletResponse response) {
-        return tokenService.getAccessToken();
     }
 
 }
