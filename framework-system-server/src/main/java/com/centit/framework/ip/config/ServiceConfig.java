@@ -56,7 +56,6 @@ public class ServiceConfig {
         messageManager.setEmailServerPort(25);
         messageManager.setEmailServerUser("alertmail2@centit.com");
         messageManager.setEmailServerPwd(SecurityOptUtils.decodeSecurityString("cipher:o6YOHiUOg8jBZFkQtGW/9Q=="));
-
         messageManager.setUserEmailSupport(new SystemUserEmailSupport());
 
         NotificationCenterImpl notificationCenter = new NotificationCenterImpl();
@@ -66,22 +65,6 @@ public class ServiceConfig {
         notificationCenter.appointDefaultSendType("email");
         return notificationCenter;
     }
-
-
-    /*引入依赖包含这个日志写入bean
-      <dependency>
-            <groupId>com.centit.product</groupId>
-            <artifactId>opt-log-module</artifactId>
-            <version>1.1-SNAPSHOT</version>
-      </dependency>
-    */
-    /*@Bean
-    @Lazy(value = false)
-    public OperationLogWriter operationLogWriter() {
-        TextOperationLogWriterImpl operationLog =  new TextOperationLogWriterImpl();
-        operationLog.init();
-        return operationLog;
-    }*/
 
     @Bean
     public InstantiationServiceBeanPostProcessor instantiationServiceBeanPostProcessor() {
