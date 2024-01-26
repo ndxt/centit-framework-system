@@ -127,8 +127,7 @@ public class VateCodeController extends BaseController {
     )
     @RequestMapping(value = "/getEmailCode", method = RequestMethod.POST)
     @WrapUpResponseBody
-    public ResponseData getEmailCode(@RequestParam("email") String email,
-                                     HttpServletRequest request) {
+    public ResponseData getEmailCode(@RequestParam("email") String email) {
         VotaCode votaCode = fetchVotaCode(email);
         if(votaCode != null){
             if ((System.currentTimeMillis() - votaCode.getCreateTime()) < 1000 * 60) {
@@ -142,7 +141,7 @@ public class VateCodeController extends BaseController {
         if (userInfo != null) {
             return ResponseData.makeErrorMessage("此邮箱已被使用！");
         }
-        return sendEmail(email);
+        return sendEmail(userInfo.getUserCode(), email);
     }
 
     @ApiOperation(
@@ -261,7 +260,7 @@ public class VateCodeController extends BaseController {
                 if(userInfo == null){
                     return ResponseData.makeErrorMessage("用户不存在");
                 }
-                sendEmail(loginname);
+                sendEmail(userInfo.getUserCode(), loginname);
             }else{
                 userInfo = userInfoDao.getUserByRegCellPhone(loginname);
                 if(userInfo == null){
@@ -321,14 +320,14 @@ public class VateCodeController extends BaseController {
         return ResponseData.errorResponse;
     }
 
-    public ResponseData sendEmail(String email){
+    public ResponseData sendEmail(String userCode, String email){
         String verifyCode = String.valueOf(new Random().nextInt(899999) + 100000);
         String message = "您的验证码为:" + verifyCode + "，该码有效期为5分钟，该码只能使用一次!";
-        List<String> sendMessageUser = new ArrayList<>();
-        sendMessageUser.add(email);
 
-        ResponseData result = notificationCenter.sendMessage("system", sendMessageUser,
-            NoticeMessage.create().operation("email").method("post").subject("您有新邮件")
+
+        ResponseData result = notificationCenter.sendMessageAppointedType("email",
+            "system", userCode,
+            NoticeMessage.create().operation("system").method("post").subject("您有新邮件")
                 .content(message));
         if(result.getCode() == 0){
             //发送成功则将JSON保存到session和Redis中
