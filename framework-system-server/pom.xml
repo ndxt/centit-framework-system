@@ -19,7 +19,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <finalName>${project.artifactId}-${project.version}</finalName>
-        <revision>5.5-SNAPSHOT</revision>
     </properties>
 
     <dependencies>
@@ -91,6 +90,12 @@
             <version>${revision}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.centit.product</groupId>
+            <artifactId>msgpusher-plugin-email</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
         <!-- spring-security-oauth 这个包中同时实现了OAuth2 的服务端和客户端
             http://blog.csdn.net/monkeyking1987/article/details/16828059
             http://www.open-open.com/lib/view/open1412731740452.html
@@ -152,24 +157,6 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.centit.framework</groupId>
-            <artifactId>centit-ip-users-register</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.centit.product</groupId>
-            <artifactId>msgpusher-plugin-email</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.centit.framework</groupId>
-            <artifactId>jtt-ip-users-register</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
     </dependencies>
