@@ -225,6 +225,24 @@ public class UserInfoController extends BaseController {
             return ResponseData.makeErrorMessage("当前用户不存在");
         }
 
+        if(!StringUtils.equals(userInfo.getLoginName(), dbUserInfo.getLoginName())) {
+            if(sysUserManager.isLoginNameExist(userInfo.getUserCode(), userInfo.getLoginName())){
+                throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "用户的登录名已存在，");
+            }
+        }
+        if(StringUtils.isNotBlank(userInfo.getRegCellPhone()) &&
+            !StringUtils.equals(userInfo.getRegCellPhone(), dbUserInfo.getRegCellPhone())) {
+            if(sysUserManager.isCellPhoneExist(userInfo.getUserCode(), userInfo.getRegCellPhone())){
+                throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "用户的预留的电话号码已存在，");
+            }
+        }
+        if(StringUtils.isNotBlank(userInfo.getRegEmail()) &&
+            !StringUtils.equals(userInfo.getRegEmail(), dbUserInfo.getRegEmail())) {
+            if(sysUserManager.isEmailExist(userInfo.getUserCode(), userInfo.getRegEmail())){
+                throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "用户的预留的email已存在，");
+            }
+        }
+
         String topUnit = WebOptUtils.getCurrentTopUnit(request);
         sysUserUnitManager.deletePrimaryUnitByUserCode(userCode,topUnit);
         userUnit.setTopUnit(topUnit);
@@ -235,10 +253,9 @@ public class UserInfoController extends BaseController {
         userUnit.setUserOrder(userInfo.getUserOrder());
         sysUserUnitManager.saveNewUserUnit(userUnit);
 
-        if (StringUtils.isBlank(userInfo.getUserPin())) {
-            userInfo.setUserPin(dbUserInfo.getUserPin());
-        }
-
+        //if (StringUtils.isBlank(userInfo.getUserPin())) {
+        userInfo.setUserPin(dbUserInfo.getUserPin());
+        //}
         //由于userinfo已经在sysUserUnitManager.saveNewUserUnit(userUnit)中被修改
         //防止用户的当前登录租户信息被修改，在这里重新恢复userInfo中的topUnit和primaryUnit
         CodeRepositoryCache.evictCache("UnitUser", userInfo.getPrimaryUnit());
