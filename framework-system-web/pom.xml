@@ -16,7 +16,7 @@
 
     <artifactId>framework-system-web</artifactId>
     <name>com.centit.framework:framework-system-web</name>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <description>定义了一组和core兼容的表结构，并用mybatis实现了表的增删改查</description>
     <dependencies>
         <dependency>
