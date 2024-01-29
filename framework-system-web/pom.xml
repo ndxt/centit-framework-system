@@ -5,9 +5,14 @@
     <parent>
         <artifactId>framework-system-parent</artifactId>
         <groupId>com.centit.framework</groupId>
-        <version>${revision}</version>
+        <version>5.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    
+    <properties>
+        <finalName>${project.artifactId}-${project.version}</finalName>
+        <revision>5.5-SNAPSHOT</revision>
+    </properties>
 
     <artifactId>framework-system-web</artifactId>
     <name>com.centit.framework:framework-system-web</name>
