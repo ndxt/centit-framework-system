@@ -80,6 +80,12 @@
 
         <dependency>
             <groupId>com.centit.framework</groupId>
+            <artifactId>framework-core-web</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.centit.framework</groupId>
             <artifactId>framework-system-web</artifactId>
             <version>${revision}</version>
         </dependency>
