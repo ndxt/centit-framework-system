@@ -85,6 +85,7 @@
     </dependencies>
 
     <build>
+        <finalName>${finalName}</finalName>
         <resources>
             <resource>
                 <directory>src/main/java</directory>
