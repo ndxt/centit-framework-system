@@ -5,18 +5,16 @@
     <parent>
         <artifactId>framework-system-parent</artifactId>
         <groupId>com.centit.framework</groupId>
-        <version>5.5-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     
     <properties>
         <finalName>${project.artifactId}-${project.version}</finalName>
-        <revision>5.5-SNAPSHOT</revision>
     </properties>
 
     <artifactId>framework-system-web</artifactId>
     <name>com.centit.framework:framework-system-web</name>
-    <packaging>war</packaging>
     <description>定义了一组和core兼容的表结构，并用mybatis实现了表的增删改查</description>
     <dependencies>
         <dependency>
