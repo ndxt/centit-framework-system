@@ -2,8 +2,13 @@ package com.centit.framework.system.dao;
 
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
+import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.model.basedata.OsInfo;
 import com.centit.support.algorithm.CollectionsOpt;
+import com.centit.support.algorithm.NumberBaseOpt;
+import com.centit.support.database.utils.QueryAndParams;
+import com.centit.support.database.utils.QueryUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,12 +36,16 @@ public class OsInfoDao extends BaseDaoImpl<OsInfo, String> {
     @Transactional
     public List<OsInfo> listOsInfoByUnit(String topUnit){
         return super.listObjectsByFilter(
-            " where  IS_DELETE = 'F' AND TOP_UNIT = ?",
+            " where IS_DELETE = 'F' AND TOP_UNIT = ?",
             new Object[]{topUnit});
     }
 
     @Transactional
     public OsInfo getOsInfoByRelOpt(String relOptId){
         return super.getObjectByProperties(CollectionsOpt.createHashMap("relOptId", relOptId));
+    }
+
+    public int countOsInfoByTopUnit(String topUnit) {
+        return this.countObjectByProperties(CollectionsOpt.createHashMap("topUnit", topUnit));
     }
 }

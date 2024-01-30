@@ -1,7 +1,9 @@
 package com.centit.framework.system.service.impl;
 
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.centit.framework.common.GlobalConstValue;
-import com.centit.framework.jdbc.dao.DatabaseOptUtils;
+import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.*;
 import com.centit.framework.model.security.CentitPasswordEncoder;
@@ -11,13 +13,12 @@ import com.centit.framework.model.security.OptTreeNode;
 import com.centit.framework.security.CentitSecurityMetadata;
 import com.centit.framework.security.SecurityContextUtils;
 import com.centit.framework.system.dao.*;
-import com.centit.framework.system.service.OptInfoManager;
-import com.centit.framework.system.service.WorkGroupManager;
+import com.centit.framework.system.service.*;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.UuidOpt;
-import com.centit.support.common.ObjectException;
 import com.centit.support.database.utils.PageDesc;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -80,11 +81,21 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Autowired
     private RolePowerDao rolePowerDao;
+
     @Autowired
     private OptInfoManager optInfoManager;
 
     @Autowired
     private WorkGroupManager workGroupManager;
+
+    @Autowired
+    private TenantService tenantService;
+
+    @Autowired
+    private TenantPowerManage tenantPowerManage;
+
+    @Autowired
+    private UserPlatService userPlatService;
 
     private boolean supportTenant;
 
@@ -859,19 +870,6 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         return osInfo;
     }
 
-
-    @Override
-    public int countUserByTopUnit(String topUnit) {
-        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
-            ? userUnitDao.countUserByTopUnit(topUnit) : userUnitDao.countUserByTopUnit(null);
-    }
-
-    @Override
-    public int countUnitByTopUnit(String topUnit) {
-        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
-            ? unitInfoDao.countUnitByTopUnit(topUnit) : unitInfoDao.countUnitByTopUnit(null);
-    }
-
     @Override
     public List<WorkGroup> listWorkGroup(Map<String, Object> filterMap, PageDesc pageDesc) {
         return workGroupManager.listWorkGroup(filterMap, pageDesc);
@@ -950,4 +948,45 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             roles.add(new CentitSecurityConfig(CentitSecurityMetadata.ROLE_PREFIX + StringUtils.trim(rp.getRoleCode())));
         }
     }
+
+
+    @Override
+    public JSONObject getTenantInfoByTopUnit(String topUnit) {
+        TenantInfo tenantInfo = tenantService.getTenantInfo(topUnit);
+        if (null == tenantInfo) {
+            return null;
+        }
+        //单独翻译租户所有者姓名
+        String ownUserName = CodeRepositoryUtil.getUserName(topUnit, tenantInfo.getOwnUser());
+        JSONObject jsonObject = JSONObject.from(tenantInfo);
+        jsonObject.put("ownUserName", ownUserName);
+        //添加实际资源占用量
+        //int dataBaseCount = sourceInfoDao.countDataBase(CollectionsOpt.createHashMap("topUnit", topUnit));
+        int unitCount =  unitInfoDao.countUnitByTopUnit(topUnit);
+        int userCount = userUnitDao.countUserByTopUnit(topUnit);
+        int osCount = osInfoDao.countOsInfoByTopUnit(topUnit);
+
+        //jsonObject.put("databaseCount",dataBaseCount);
+        jsonObject.put("unitCount",unitCount);
+        jsonObject.put("userCount",userCount);
+        jsonObject.put("osCount",osCount);
+
+        return jsonObject;
+    }
+
+    @Override
+    public JSONObject fetchUserTenantGroupInfo(String userCode, String topUnit) {
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("tenantRole", tenantPowerManage.userTenantRole(userCode, topUnit));
+        JSONArray userTenants = tenantService.userTenants(userCode);
+        jsonObj.put("userTenants", userTenants);
+        //获取微信用户信息
+        Map<String, Object> paramsMap = new HashMap<>();
+        paramsMap.put("userCode", userCode);
+        List<UserPlat> userPlats = userPlatService.listObjects(paramsMap, null);
+        //第三方登录信息
+        jsonObj.put("userPlats", (userPlats != null && userPlats.size() > 0) ? userPlats : new ArrayList<>());
+        return jsonObj;
+    }
+
 }

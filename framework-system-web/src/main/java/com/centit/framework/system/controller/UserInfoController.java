@@ -224,6 +224,23 @@ public class UserInfoController extends BaseController {
         if (null == dbUserInfo) {
             return ResponseData.makeErrorMessage("当前用户不存在");
         }
+        if(!StringUtils.equals(userInfo.getLoginName(), dbUserInfo.getLoginName())) {
+            if(sysUserManager.isLoginNameExist(userInfo.getUserCode(), userInfo.getLoginName())){
+                throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "用户的登录名已存在，");
+            }
+        }
+        if(StringUtils.isNotBlank(userInfo.getRegCellPhone()) &&
+                !StringUtils.equals(userInfo.getRegCellPhone(), dbUserInfo.getRegCellPhone())) {
+            if(sysUserManager.isCellPhoneExist(userInfo.getUserCode(), userInfo.getRegCellPhone())){
+                throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "用户的预留的电话号码已存在，");
+            }
+        }
+        if(StringUtils.isNotBlank(userInfo.getRegEmail()) &&
+            !StringUtils.equals(userInfo.getRegEmail(), dbUserInfo.getRegEmail())) {
+            if(sysUserManager.isEmailExist(userInfo.getUserCode(), userInfo.getRegEmail())){
+                throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "用户的预留的email已存在，");
+            }
+        }
 
         if(!StringUtils.equals(userInfo.getLoginName(), dbUserInfo.getLoginName())) {
             if(sysUserManager.isLoginNameExist(userInfo.getUserCode(), userInfo.getLoginName())){

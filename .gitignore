@@ -1,4 +1,13 @@
-**/.idea/
+.idea
+target
 **/*.iml
-**/target/
+**/target
+**/node_modules
+.mvn
+mvn*
+.settings
+**/~$*
+out.*
 .flattened-pom.xml
+.DS_Store
+*/.DS_Store

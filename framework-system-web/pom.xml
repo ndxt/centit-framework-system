@@ -5,13 +5,18 @@
     <parent>
         <artifactId>framework-system-parent</artifactId>
         <groupId>com.centit.framework</groupId>
-        <version>5.4-SNAPSHOT</version>
+        <version>5.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    
+    <properties>
+        <finalName>${project.artifactId}-${project.version}</finalName>
+        <revision>5.5-SNAPSHOT</revision>
+    </properties>
 
     <artifactId>framework-system-web</artifactId>
     <name>com.centit.framework:framework-system-web</name>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <description>定义了一组和core兼容的表结构，并用mybatis实现了表的增删改查</description>
     <dependencies>
         <dependency>
@@ -44,6 +49,25 @@
             <version>${persistence-api.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.centit.support</groupId>
+            <artifactId>centit-report-utils</artifactId>
+            <version>${revision}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>dysmsapi20170525</artifactId>
+            <version>2.0.9</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+        </dependency>
+
         <!-- server runtime library -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -51,16 +75,17 @@
             <version>${servlet-api.version}</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
-            <groupId>com.centit.support</groupId>
-            <artifactId>centit-report-utils</artifactId>
-            <version>5.4-SNAPSHOT</version>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
             <scope>compile</scope>
         </dependency>
 
     </dependencies>
 
     <build>
+        <finalName>${finalName}</finalName>
         <resources>
             <resource>
                 <directory>src/main/java</directory>

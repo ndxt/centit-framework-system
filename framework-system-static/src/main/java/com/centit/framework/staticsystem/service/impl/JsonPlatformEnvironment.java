@@ -197,4 +197,5 @@ public class JsonPlatformEnvironment extends AbstractStaticPlatformEnvironment {
             logger.error(e.getMessage(),e);
         }
     }
+
 }

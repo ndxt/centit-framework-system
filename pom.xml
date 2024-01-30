@@ -4,14 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>centit-framework-dependencies</artifactId>
         <groupId>com.centit.framework</groupId>
-        <version>5.4-SNAPSHOT</version>
+        <artifactId>centit-project-bulid-parent</artifactId>
+        <version>5.5-SNAPSHOT</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
     <artifactId>framework-system-parent</artifactId>
     <packaging>pom</packaging>
-    <version>5.4-SNAPSHOT</version>
+    <version>${revision}</version>
     <name>com.centit.framework:framework-system-parent</name>
     <description>设计了一套兼容基础用户、组织机构和功能权限、数据权限体系的系统维护页面，作为公司内部研发的基础平台。
     </description>
@@ -78,6 +79,9 @@
         <module>framework-system-module</module>
         <module>framework-system-config</module>
         <module>framework-system-web</module>
+        <module>framework-system-dubbo-client-config</module>
+        <module>framework-system-dubbo-server-config</module>
+        <module>framework-thirdparty-user-plugin</module>
         <module>framework-system-static</module>
         <module>framework-system-static-jdbc</module>
         <module>framework-system-static-config</module>
@@ -119,7 +123,7 @@
                 </executions>
             </plugin>
 
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.10.4</version>
@@ -131,7 +135,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
 
             <!-- GPG自动签名的插件-->
             <!--<plugin>

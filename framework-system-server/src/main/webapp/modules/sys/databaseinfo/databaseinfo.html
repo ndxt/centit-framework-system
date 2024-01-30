@@ -1,0 +1,76 @@
+﻿<html>
+<div class="easyui-panel search-body" cls="search">
+	<form id="databaseinfoform">
+		<div class="search-item">
+			<label>数据库名</label>
+			<input type="text" class="easyui-textbox" name="s_databaseName" />
+		</div>
+		<a class="easyui-linkbutton btn-search" iconCls="icon-search">搜索</a>
+		<a class="easyui-linkbutton" style="margin-top:8px;" iconcls="icon-reload" onclick="javascript:$('#databaseinfoform').form('clear');$('.defaultChecked').prop('checked','true');" group="" id="">
+			<p>重置</p>
+		</a>
+	</form>
+</div>
+<table url="system/sys/database"
+	layoutH=".search"
+	idField="databaseCode"
+	search=".search"
+	sortName="createTime"
+	sortOrder="desc"
+	toolbar=".temp-toolbar"
+	>
+	<thead data-options="frozen:true">
+		<tr>
+			<th data-options="field:'databaseCode'" hidden="true" sortable="true">数据库标识</th>
+			<th data-options="field:'databaseName'" width="15%" sortable="true">数据库名</th>
+			<th data-options="field:'databaseUrl'" width="30%"  align="center" sortable="true">数据库连接URL</th>
+			<th data-options="field:'username'" width="10%"  align="center" sortable="true">用户名</th>
+			<th data-options="field:'osId'" width="20%"  align="center" sortable="true">业务系统名称</th>
+			<th data-options="field:'createTime'" width="15%" sortable="true" align="center">创建时间</th>
+			<th data-options="field:'created'" width="10%"  align="center" format="User" sortable="true">创建人员</th>
+			<!-- <th data-options="field:'dataDesc'" width="8%" >数据库描述</th> -->
+		</tr>
+	</thead>
+	
+</table>
+
+<div class="temp-toolbar">
+	<a iconCls="icon-add"
+	   href="/modules/sys/databaseinfo/databaseinfo-info.html"
+	   trigger="none"
+	   target="dialog"
+	   rel="databaseinfo_add"
+	   title="新增数据库"
+	   width="550"
+	   height="430"
+	   btnValue="添加"
+	   buttons="[{method:'testConnect',text:'连接测试'},{method:'submit',text:'添加'},{method:'close',text:'取消'}]"
+	>新增</a>
+		
+	<a iconCls="icon-edit"
+       href="/modules/sys/databaseinfo/databaseinfo-info.html"
+       trigger="single"
+		target="dialog"
+       rel="databaseinfo_edit"
+       title="编辑 {{databaseName}} 数据库"
+       width="550" height="430"
+       btnValue="更新"
+       buttons="[{method:'testConnect',text:'连接测试'},{method:'submit',text:'更新'},{method:'close',text:'取消'}]"
+    >编辑</a>
+		
+	<hr>
+	
+	<a iconCls="icon-base icon-base-ban" trigger="single"
+		target="confirm" rel="databaseinfo_remove" title="是否确定删除 {{databaseName}}？">删除</a>
+</div>
+<script>
+	$.parser.onComplete = function(panel) {
+		$.parser.onComplete = $.noop;
+		requirejs([
+		           '../modules/sys/databaseinfo/ctrl/databaseinfo',
+		          ], function(DatabaseInfo) {
+			new DatabaseInfo('databaseinfo', panel).load(panel);
+		});
+	};
+</script>
+</html>

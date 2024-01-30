@@ -1,5 +1,6 @@
 package com.centit.framework.staticsystem.service.impl;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.centit.framework.common.GlobalConstValue;
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.model.adapter.PlatformEnvironment;
@@ -380,16 +381,6 @@ public abstract class AbstractStaticPlatformEnvironment
     }
 
     @Override
-    public int countUserByTopUnit(String topUnit) {
-        return 0;
-    }
-
-    @Override
-    public int countUnitByTopUnit(String topUnit) {
-        return 0;
-    }
-
-    @Override
     public List<WorkGroup> listWorkGroup(Map<String, Object> filterMap, PageDesc pageDesc)  {
         return Collections.emptyList();
     }
@@ -743,5 +734,13 @@ public abstract class AbstractStaticPlatformEnvironment
         return Collections.emptyList();
     }
 
+    @Override
+    public JSONObject getTenantInfoByTopUnit(String topUnit) {
+        return null;
+    }
 
+    @Override
+    public JSONObject fetchUserTenantGroupInfo(String userCode, String topUnit) {
+        return null;
+    }
 }
