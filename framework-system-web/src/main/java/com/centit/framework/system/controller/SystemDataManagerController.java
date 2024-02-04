@@ -2,8 +2,8 @@ package com.centit.framework.system.controller;
 
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
-import com.centit.framework.system.service.UserDirectory;
 import com.centit.framework.model.basedata.UserSyncDirectory;
+import com.centit.framework.system.service.UserDirectory;
 import com.centit.framework.system.service.UserSyncDirectoryManager;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

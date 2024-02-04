@@ -3,11 +3,11 @@ package com.centit.framework.system.service;
 import com.alibaba.fastjson2.JSONArray;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.core.dao.PageQueryResult;
+import com.centit.framework.model.basedata.TenantInfo;
 import com.centit.framework.model.basedata.UnitInfo;
 import com.centit.framework.model.basedata.UserInfo;
 import com.centit.framework.model.basedata.UserUnit;
 import com.centit.framework.system.po.TenantBusinessLog;
-import com.centit.framework.model.basedata.TenantInfo;
 import com.centit.framework.system.po.TenantMemberApply;
 import com.centit.framework.system.vo.PageListTenantInfoQo;
 import com.centit.framework.system.vo.TenantMemberApplyVo;
@@ -63,7 +63,6 @@ public interface TenantService {
      * @return ResponseData
      */
     ResponseData adminApplyUserJoinTenant(TenantMemberApply tenantMemberApply);
-
 
     /**
      * 列出申请信息
@@ -122,7 +121,6 @@ public interface TenantService {
      */
     ResponseData businessTenant(String userCode, TenantBusinessLog tenantBusinessLog);
 
-
     /**
      * 平台审核租户转让
      * 租户所有者交易租户，不需要平台审核
@@ -158,7 +156,6 @@ public interface TenantService {
      */
     ResponseData assignTenantRole(String userCode, TenantMemberQo tenantMemberQo);
 
-
     /**
      * 删除租户成员角色
      * @param tenantMemberQo 租户成员
@@ -166,14 +163,12 @@ public interface TenantService {
      */
     ResponseData deleteTenantRole(String userCode, TenantMemberQo tenantMemberQo);
 
-
     /**
      * 用户所在租户
      * @param userCode 用户code
      * @return JSONArray
      */
     JSONArray userTenants(String userCode);
-
 
     /**
      * 根据unitName 模糊查询租户信息
@@ -191,7 +186,6 @@ public interface TenantService {
      * @return ResponseData 查找userinfo结果
      */
     ResponseData findUsers(Map<String,Object> paramMap);
-
 
     List<UserInfo> searchUsers(Map<String,Object> paramMap);
 

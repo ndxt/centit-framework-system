@@ -1,7 +1,7 @@
 package com.centit.framework.system.service.impl;
 
-import com.centit.framework.system.dao.UserPlatDao;
 import com.centit.framework.model.basedata.UserPlat;
+import com.centit.framework.system.dao.UserPlatDao;
 import com.centit.framework.system.service.UserPlatService;
 import com.centit.support.database.utils.PageDesc;
 import org.springframework.beans.factory.annotation.Autowired;

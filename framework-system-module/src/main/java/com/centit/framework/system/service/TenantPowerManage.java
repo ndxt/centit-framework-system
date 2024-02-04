@@ -1,5 +1,6 @@
 package com.centit.framework.system.service;
 
+import com.alibaba.fastjson2.JSONArray;
 import com.centit.support.common.ObjectException;
 
 /**
@@ -26,6 +27,13 @@ public interface TenantPowerManage {
      */
     boolean userIsTenantAdmin(String userCode, String topUnit);
 
+
+    /**
+     * 获取租户的管理员列表
+     * @param topUnit 租户代码
+     * @return 管理员列表
+     */
+    JSONArray listTenantAdmin(String topUnit);
     /**
      * 租户是否为管理员或所有者
      * @param topUnit 租户

@@ -1,12 +1,17 @@
 package com.centit.framework.system.service.impl;
 
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.centit.framework.common.ResponseData;
+import com.centit.framework.components.CodeRepositoryUtil;
+import com.centit.framework.model.basedata.TenantInfo;
+import com.centit.framework.model.basedata.UserInfo;
+import com.centit.framework.model.basedata.WorkGroup;
+import com.centit.framework.system.constant.TenantConstant;
+import com.centit.framework.system.dao.TenantInfoDao;
 import com.centit.framework.system.dao.UnitInfoDao;
 import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.dao.WorkGroupDao;
-import com.centit.framework.system.constant.TenantConstant;
-import com.centit.framework.system.dao.TenantInfoDao;
-import com.centit.framework.model.basedata.TenantInfo;
 import com.centit.framework.system.service.TenantPowerManage;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.common.ObjectException;
@@ -17,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -35,6 +41,7 @@ public class TenantPowerManageImpl implements TenantPowerManage {
     @Autowired
     private UnitInfoDao unitInfoDao;
 
+
     @Override
     public boolean userIsTenantOwner(String userCode, String topUnit) {
         return tenantInfoDao.userIsOwner(topUnit, userCode);
@@ -46,7 +53,6 @@ public class TenantPowerManageImpl implements TenantPowerManage {
             "roleCode", TenantConstant.TENANT_ADMIN_ROLE_CODE);
         return workGroupDao.listObjectsByProperties(filterMap).size() > 0;
     }
-
 
     @Override
     public String userTenantRole(String userCode, String topUnit) {
@@ -65,13 +71,32 @@ public class TenantPowerManageImpl implements TenantPowerManage {
         return "";
     }
 
+    @Override
+    public JSONArray listTenantAdmin(String topUnit) {
+        Map<String, Object> filterMap = CollectionsOpt.createHashMap("groupId", topUnit,
+            "roleCode", TenantConstant.TENANT_ADMIN_ROLE_CODE);
+        List<WorkGroup> works = workGroupDao.listObjectsByProperties(filterMap);
+        if(works==null|| works.isEmpty())
+            return null;
+        JSONArray users = new JSONArray();
+        for(WorkGroup work:works){
+            JSONObject user = new JSONObject();
+            user.put("userCode", work.getUserCode());
+            UserInfo ui = CodeRepositoryUtil.getUserInfoByCode(topUnit, work.getUserCode());
+            if(ui!=null) {
+                user.put("userName", ui.getUserName());
+                user.put("loginName", ui.getLoginName());
+            }
+            users.add(user);
+        }
+        return users;
+    }
 
     @Override
     public boolean userIsTenantMember(String userCode, String topUnit) {
         Map<String, Object> filterMap = CollectionsOpt.createHashMap("userCode", userCode, "topUnit", topUnit);
         return userUnitDao.countObjectByProperties(filterMap)>0;
     }
-
 
     @Override
     public boolean userIsApplicationAdmin(String userCode, String osId) {

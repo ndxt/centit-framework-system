@@ -2,10 +2,10 @@ package com.centit.test;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.centit.framework.system.service.impl.ActiveDirectoryUserDirectoryImpl;
 import com.centit.framework.model.basedata.UnitInfo;
 import com.centit.framework.model.basedata.UserInfo;
 import com.centit.framework.model.basedata.UserSyncDirectory;
+import com.centit.framework.system.service.impl.ActiveDirectoryUserDirectoryImpl;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.StringBaseOpt;

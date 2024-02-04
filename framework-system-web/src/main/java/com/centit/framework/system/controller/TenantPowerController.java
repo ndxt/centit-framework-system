@@ -1,5 +1,6 @@
 package com.centit.framework.system.controller;
 
+import com.alibaba.fastjson2.JSONArray;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.core.controller.BaseController;
@@ -56,12 +57,21 @@ public class TenantPowerController extends BaseController {
         try {
             return ResponseData.makeResponseData(tenantPowerManage.userIsTenantAdmin(userCode, topUnit));
         } catch (Exception e) {
-            e.printStackTrace();
             logger.error("判断当前用户是否为租户管理员失败,错误原因{},租户id：{}", e, topUnit);
             return ResponseData.makeErrorMessage("判断当前用户是否为租户管理员失败!");
         }
     }
 
+    @ApiOperation(
+        value = "获取当前租户管理员",
+        notes = "判断当前租户管理员列表"
+    )
+    @RequestMapping(value = "/tenantAdmin", method = RequestMethod.GET)
+    @WrapUpResponseBody
+    public JSONArray tenantAdmin(HttpServletRequest request) {
+        String topUnit = WebOptUtils.getCurrentTopUnit(request);
+        return tenantPowerManage.listTenantAdmin(topUnit);
+    }
 
     @ApiOperation(
         value = "当前用户是否在租户中的角色",

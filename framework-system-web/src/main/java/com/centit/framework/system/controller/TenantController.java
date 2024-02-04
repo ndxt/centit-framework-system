@@ -461,7 +461,6 @@ public class TenantController extends BaseController {
         return ResponseData.errorResponse;
     }
 
-
     @ApiOperation(
         value = "把成员移除租户",
         notes = "把成员移除租户，请求示例：{\"userCode\":\"U6n6uge0\",\"topUnit\":\"f0c0368da826434bbb158ed2ef0b1726\"}"
@@ -502,7 +501,6 @@ public class TenantController extends BaseController {
         }
         return ResponseData.makeErrorMessage("租户转让申请失败");
     }
-
 
     @ApiOperation(
         value = "分页展示租户列表",

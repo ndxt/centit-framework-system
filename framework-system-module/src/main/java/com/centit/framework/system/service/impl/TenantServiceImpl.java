@@ -13,19 +13,11 @@ import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.*;
 import com.centit.framework.model.security.CentitPasswordEncoder;
 import com.centit.framework.model.security.CentitUserDetails;
-import com.centit.framework.system.dao.*;
-import com.centit.framework.system.service.SysUnitManager;
-import com.centit.framework.system.service.SysUserManager;
-import com.centit.framework.system.service.WorkGroupManager;
 import com.centit.framework.system.constant.TenantConstant;
-import com.centit.framework.system.dao.TenantBusinessLogDao;
-import com.centit.framework.system.dao.TenantInfoDao;
-import com.centit.framework.system.dao.TenantMemberApplyDao;
+import com.centit.framework.system.dao.*;
 import com.centit.framework.system.po.TenantBusinessLog;
-import com.centit.framework.model.basedata.TenantInfo;
 import com.centit.framework.system.po.TenantMemberApply;
-import com.centit.framework.system.service.TenantPowerManage;
-import com.centit.framework.system.service.TenantService;
+import com.centit.framework.system.service.*;
 import com.centit.framework.system.vo.PageListTenantInfoQo;
 import com.centit.framework.system.vo.TenantMemberApplyVo;
 import com.centit.framework.system.vo.TenantMemberQo;
@@ -187,7 +179,6 @@ public class TenantServiceImpl implements TenantService {
         return ResponseData.makeSuccessResponse("注册成功!");
     }
 
-
     @Override
     @Transactional
     public ResponseData applyAddTenant(String userCode, TenantInfo tenantInfo) {
@@ -206,7 +197,6 @@ public class TenantServiceImpl implements TenantService {
         batchEvictCache(newTenantInfo.getTopUnit(), "UserInfo", "UnitInfo", "UnitUser", "UserUnit", "UserRole", "DataDictionary");
         return ResponseData.makeSuccessResponse("租户申请成功!");
     }
-
 
     @Override
     @Transactional
@@ -306,7 +296,6 @@ public class TenantServiceImpl implements TenantService {
 
         return PageQueryResult.createResult(formatMemberApply(tenantMemberApplies), pageDesc);
     }
-
 
     @Override
     @Transactional

@@ -100,7 +100,6 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
         return super.listObjectsByProperties(filterMap);
     }
 
-
     @SuppressWarnings("unchecked")
     @Transactional
     public List<FVUserOptList> listUserOptMethods(String userCode) {
