@@ -135,6 +135,8 @@ public class UserInfoController extends BaseController {
                     userInfo.setPrimaryUnit(uu.getUnitCode());
                 }
                 userInfo.setIdCardNo("");
+                userInfo.setUserPwd("");
+                userInfo.setUserPin("");
             }
         }
         return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
