@@ -219,21 +219,21 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
 
     public int isLoginNameExist(String userCode, String loginName) {
         String sql = "select count(*) as usersCount from F_USERINFO t " +
-            "where t.USERCODE <> ? and t.LOGINNAME = ?";
+            "where t.USER_CODE <> ? and t.LOGIN_NAME = ?";
         return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
             new Object[]{userCode, loginName}));
     }
 
     public int isCellPhoneExist(String userCode, String cellPhone) {
         String sql = "select count(*) as usersCount from F_USERINFO t " +
-            "where t.USERCODE <> ? and t.REGCELLPHONE = ?";
+            "where t.USER_CODE <> ? and t.REG_CELL_PHONE = ?";
         return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
             new Object[]{userCode, cellPhone}));
     }
 
     public int isEmailExist(String userCode, String email) {
         String sql = "select count(*) as usersCount from F_USERINFO t " +
-            "where t.USERCODE <> ? and t.REGEMAIL = ?";
+            "where t.USER_CODE <> ? and t.REG_EMAIL = ?";
         return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
             new Object[]{userCode, email}));
     }
