@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-@Service("dbPlatformEnvironment")
+@Service("platformEnvironment")
 public class DBPlatformEnvironment implements PlatformEnvironment {
 
     public static final Logger logger = LoggerFactory.getLogger(DBPlatformEnvironment.class);
@@ -669,6 +669,11 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     public UnitInfo loadUnitInfo(String unitCode){
         return unitInfoDao.getObjectById(unitCode);
+    }
+
+    @Override
+    public UserInfo getUserInfoByIdCardNo(String idCardNo) {
+        return userInfoDao.getUserByIdCardNo(idCardNo);
     }
 
     @Override
