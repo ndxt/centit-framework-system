@@ -677,6 +677,11 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
+    public UserInfo getUserInfoByUserWord(String userWord) {
+        return userInfoDao.getUserByUserWord(userWord);
+    }
+
+    @Override
     @Transactional
     public CentitUserDetails loadUserDetailsByRegEmail(String regEmail) {
         UserInfo userinfo = userInfoDao.getUserByRegEmail(regEmail);
