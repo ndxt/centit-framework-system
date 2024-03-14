@@ -194,6 +194,7 @@ public class DataDictionaryController extends BaseController {
         if (dataCatalog.getDataDictionaries() != null && dataCatalog.getDataDictionaries().size() > 0) {
             for (DataDictionary d : dataCatalog.getDataDictionaries()) {
                 d.setDataValue(StringEscapeUtils.unescapeHtml4(d.getDataValue()));
+                d.setDataDesc(StringEscapeUtils.unescapeHtml4(d.getDataDesc()));
                 if (StringUtils.isBlank(d.getDataStyle())) {
                     d.setDataStyle(isAdmin ? "S" : "U");
                 }
@@ -271,6 +272,7 @@ public class DataDictionaryController extends BaseController {
         String dataStyle = isAdmin ? "S" : "U";
         for (DataDictionary d : dataCatalog.getDataDictionaries()) {
             d.setDataValue(StringEscapeUtils.unescapeHtml4(d.getDataValue()));
+            d.setDataDesc(StringEscapeUtils.unescapeHtml4(d.getDataDesc()));
             if (StringUtils.isBlank(d.getDataStyle())) {
                 d.setDataStyle(dataStyle);
             }
@@ -313,6 +315,7 @@ public class DataDictionaryController extends BaseController {
         dataDictionary.setCatalogCode(catalogCode);
         dataDictionary.setDataCode(dataCode);
         dataDictionary.setDataValue(StringEscapeUtils.unescapeHtml4(dataDictionary.getDataValue()));
+        dataDictionary.setDataDesc(StringEscapeUtils.unescapeHtml4(dataDictionary.getDataDesc()));
         dictionaryPreHandler(dbDataCatalog, dataDictionary);
         dictionaryPreInsertHandler(dbDataCatalog, dataDictionary, request);
         dataDictionaryManager.saveDataDictionaryPiece(dataDictionary);
@@ -354,6 +357,7 @@ public class DataDictionaryController extends BaseController {
         dataDictionary.setDataCode(dataCode);
         dataDictionary.setCatalogCode(catalogCode);
         dataDictionary.setDataValue(StringEscapeUtils.unescapeHtml4(dataDictionary.getDataValue()));
+        dataDictionary.setDataDesc(StringEscapeUtils.unescapeHtml4(dataDictionary.getDataDesc()));
         dictionaryPreHandler(dbDataCatalog, dataDictionary);
         dictionaryPreUpdateHandler(dbDataCatalog, dbDataDictionary, request);
         BeanUtils.copyProperties(dataDictionary, dbDataDictionary, "id", "dataStyle");
@@ -373,8 +377,6 @@ public class DataDictionaryController extends BaseController {
         //这是一个自解释字段，业务系统可以自行解释这个字段的意义，单作为树形结构的数据字典时，这个字段必需为上级字典的代码。
         if (T.equalsIgnoreCase(dataCatalog.getCatalogType()) && !StringBaseOpt.isNvl(dataDictionary.getExtraCode())) {
             String extraCode = dataDictionary.getExtraCode();
-
-
             if (extraCode.equals(dataDictionary.getDataCode())) {
                 throw new ObjectException("extraCode 与 dataCode 不能一致");
             }
