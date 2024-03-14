@@ -742,4 +742,14 @@ public abstract class AbstractStaticPlatformEnvironment
     public JSONObject fetchUserTenantGroupInfo(String userCode, String topUnit) {
         return null;
     }
+
+    @Override
+    public UserInfo getUserInfoByIdCardNo(String idCardNo) {
+        return null;
+    }
+
+    @Override
+    public UserInfo getUserInfoByUserWord(String userWord) {
+        return null;
+    }
 }
