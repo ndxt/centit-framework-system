@@ -55,7 +55,7 @@ public class InstantiationServiceBeanPostProcessor implements ApplicationListene
         if(optLogManager!=null) {
             OperationLogCenter.registerOperationLogWriter(optLogManager);
         }
-        DBPlatformEnvironment dbPlatformEnvironment = applicationContext.getBean("dbPlatformEnvironment", DBPlatformEnvironment.class);
+        DBPlatformEnvironment dbPlatformEnvironment = applicationContext.getBean("platformEnvironment", DBPlatformEnvironment.class);
         dbPlatformEnvironment.setSupportTenant(supportTenant);
         /*if(operationLogWriter!=null) {
             OperationLogCenter.registerOperationLogWriter(operationLogWriter);

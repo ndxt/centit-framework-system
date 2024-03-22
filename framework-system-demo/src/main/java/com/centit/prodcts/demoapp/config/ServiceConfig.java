@@ -1,5 +1,6 @@
 package com.centit.prodcts.demoapp.config;
 
+import com.centit.framework.common.SysParametersUtils;
 import com.centit.framework.components.impl.NotificationCenterImpl;
 import com.centit.framework.config.SpringSecurityCasConfig;
 import com.centit.framework.config.SpringSecurityDaoConfig;
@@ -10,6 +11,8 @@ import com.centit.framework.model.adapter.NotificationCenter;
 import com.centit.framework.security.StandardPasswordEncoderImpl;
 import com.centit.framework.session.SimpleMapSessionRepository;
 import com.centit.framework.system.config.SystemBeanConfig;
+import com.centit.search.service.ESServerConfig;
+import com.centit.search.service.IndexerSearcherFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -79,4 +82,12 @@ public class ServiceConfig {
         @Autowired FindByIndexNameSessionRepository sessionRepository){
         return new SpringSessionBackedSessionRegistry(sessionRepository);
     }
+
+    @Bean
+    public ESServerConfig esServerConfig() {
+        return IndexerSearcherFactory.loadESServerConfigFormProperties(
+            SysParametersUtils.loadProperties()
+        );
+    }
+
 }

@@ -1,12 +1,17 @@
 package com.otherpackage.po;
 
+import lombok.Data;
+import org.hibernate.validator.constraints.Range;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "TEST_CASE")
+@Data
 public class TestCase implements java.io.Serializable{
     private static final long serialVersionUID = 1L;
 
@@ -17,11 +22,9 @@ public class TestCase implements java.io.Serializable{
     @Column(name = "CASE_ID")
     private String caseId;
 
-    public String getCaseId() {
-        return caseId;
-    }
+    @Size(max = 20)
+    private String name;
 
-    public void setCaseId(String caseId) {
-        this.caseId = caseId;
-    }
+    @Range(max = 120)
+    private Integer age;
 }
