@@ -143,10 +143,10 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
+                <!--<configuration>
                     <updatePomFile>true</updatePomFile>
                     <flattenMode>resolveCiFriendliesOnly</flattenMode>
-                </configuration>
+                </configuration>-->
             </plugin>
             <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
