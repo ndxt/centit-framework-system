@@ -62,7 +62,6 @@ public class UserInfoController extends BaseController {
     @Autowired
     private WorkGroupManager workGroupManager;
 
-
     /*
      * 系统日志中记录
      *
