@@ -679,9 +679,14 @@ public class TenantController extends BaseController {
     @WrapUpResponseBody
     public ResponseData addTenantUser(@ParamName("us") @Valid UserInfo userInfo, UserUnit userUnit, HttpServletRequest request) {
         String userCode = WebOptUtils.getCurrentUserCode(request);
+        String topUnit = WebOptUtils.getCurrentTopUnit(request);
         if (null == userUnit || StringUtils.isBlank(userUnit.getTopUnit())){
             return ResponseData.makeErrorMessage("topUnit不能为空!");
         }
+        if(!StringUtils.equals(userUnit.getTopUnit(), topUnit)){
+            return ResponseData.makeErrorMessage(403, "只能添加本租户下的用户!");
+        }
+
         userUnit.setCreator(userCode);
         return tenantService.addTenantUser(userInfo, userUnit);
 
