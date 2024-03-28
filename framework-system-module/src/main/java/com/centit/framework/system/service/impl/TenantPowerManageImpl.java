@@ -51,7 +51,7 @@ public class TenantPowerManageImpl implements TenantPowerManage {
     public boolean userIsTenantAdmin(String userCode, String topUnit) {
         Map<String, Object> filterMap = CollectionsOpt.createHashMap("groupId", topUnit, "userCode", userCode,
             "roleCode", TenantConstant.TENANT_ADMIN_ROLE_CODE);
-        return workGroupDao.listObjectsByProperties(filterMap).size() > 0;
+        return workGroupDao.countObjectByProperties(filterMap) > 0;
     }
 
     @Override
@@ -102,13 +102,13 @@ public class TenantPowerManageImpl implements TenantPowerManage {
     public boolean userIsApplicationAdmin(String userCode, String osId) {
         Map<String, Object> filterMap = CollectionsOpt.createHashMap("groupId", osId, "userCode", userCode, "roleCode",
             TenantConstant.APPLICATION_ADMIN_ROLE_CODE);
-        return workGroupDao.listObjectsByProperties(filterMap).size() > 0;
+        return workGroupDao.countObjectByProperties(filterMap) > 0;
     }
 
     @Override
     public boolean userIsApplicationMember(String userCode, String osId) throws ObjectException {
         Map<String, Object> filterMap = CollectionsOpt.createHashMap("groupId", osId, "userCode", userCode);
-        return workGroupDao.listObjectsByProperties(filterMap).size() > 0;
+        return workGroupDao.countObjectByProperties(filterMap) > 0;
     }
 
     @Override
