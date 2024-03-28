@@ -639,10 +639,11 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             return;
         }
         WorkGroup admin = workGroupManager.getWorkGroup(topUnit, userInfo.getUserCode(), WorkGroup.WORKGROUP_ROLE_CODE_ADMIN);
-        if (null != admin) {
-            String roleCode = SYSTEM.equals(topUnit) ? "platadmin" : "tenantadmin";
-            String roleName = SYSTEM.equals(topUnit) ? "平台管理员" : "租户管理员";
-            roles.add(new RoleInfo(roleCode, roleName, "G", topUnit, "T", roleName));
+        if (null != admin || tenantPowerManage.userIsTenantAdmin(userInfo.getUserCode(), topUnit)) {
+            if(SYSTEM.equals(topUnit)){
+                roles.add(new RoleInfo("platadmin" , "平台管理员", "G", topUnit, "T", "平台管理员"));
+            }
+            roles.add(new RoleInfo("tenantadmin", "租户管理员", "G", topUnit, "T", "租户管理员"));
         }
     }
 

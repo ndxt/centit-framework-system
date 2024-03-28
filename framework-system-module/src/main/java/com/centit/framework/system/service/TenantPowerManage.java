@@ -27,7 +27,6 @@ public interface TenantPowerManage {
      */
     boolean userIsTenantAdmin(String userCode, String topUnit);
 
-
     /**
      * 获取租户的管理员列表
      * @param topUnit 租户代码
