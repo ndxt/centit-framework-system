@@ -8,7 +8,7 @@
 	 http://code.alibabatech.com/schema/dubbo
 	 http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
     <!-- 声明需要暴露的服务接口 -->
-    <dubbo:service interface="com.centit.framework.model.adapter.PlatformEnvironment" ref="dbPlatformEnvironment" protocol="dubbo">
+    <dubbo:service interface="com.centit.framework.model.adapter.PlatformEnvironment" ref="platformEnvironment" protocol="dubbo">
         <!--<dubbo:method name="listAllUsers" retries="0" />-->
     </dubbo:service>
 
