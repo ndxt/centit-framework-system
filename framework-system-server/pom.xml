@@ -230,7 +230,6 @@
                 <excludes>
                     <exclude>test/*</exclude>
                     <exclude>prod/*</exclude>
-                    <exclude>system.properties</exclude>
                     <exclude>demo/*</exclude>
                     <exclude>pressure-test/*</exclude>
                     <exclude>prev/*</exclude>
