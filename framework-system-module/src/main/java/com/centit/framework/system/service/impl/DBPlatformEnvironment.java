@@ -99,7 +99,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     private boolean supportTenant;
 
     public DBPlatformEnvironment() {
-        supportTenant = false;
+        supportTenant = true;
     }
 
     public void setSupportTenant(boolean supportTenant) {

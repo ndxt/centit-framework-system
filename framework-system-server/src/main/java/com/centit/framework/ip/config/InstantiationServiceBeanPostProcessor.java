@@ -30,7 +30,7 @@ public class InstantiationServiceBeanPostProcessor implements ApplicationListene
     @Value("${http.exception.notAsHttpError:false}")
     protected boolean httpExceptionNotAsHttpError;
 
-    @Value("${app.support.tenant:false}")
+    @Value("${app.support.tenant:true}")
     protected boolean supportTenant;
 
     @Autowired
