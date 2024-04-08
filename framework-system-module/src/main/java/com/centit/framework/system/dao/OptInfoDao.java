@@ -138,7 +138,7 @@ public class OptInfoDao extends BaseDaoImpl<OptInfo, String> {
 
     @Transactional
     public void updateOptInfo(OptInfo optInfo){
-        optInfo.setTopOptId(optInfo.getOsId());
+//        optInfo.setTopOptId(optInfo.getOsId());
         super.updateObject(optInfo);
     }
 
