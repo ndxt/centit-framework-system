@@ -56,7 +56,7 @@ public class SystemBeanConfig implements EnvironmentAware {
     MessageSource messageSource() {
         ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
         ms.setUseCodeAsDefaultMessage(true);
-        ms.setBasename("classpath:i18n/messages");
+        ms.addBasenames("classpath:i18n/messages");
         ms.setDefaultEncoding("UTF-8");
         return ms;
     }

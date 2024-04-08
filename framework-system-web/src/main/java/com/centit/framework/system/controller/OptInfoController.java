@@ -264,11 +264,14 @@ public class OptInfoController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新操作权限",
         tag = "{optId}")
     @WrapUpResponseBody
-    public ResponseData editPower(@ParamName("optId") @PathVariable String optId, @Valid OptInfo optInfo) {
+    public ResponseData editPower(@ParamName("optId") @PathVariable String optId, @Valid OptInfo optInfo,
+                                  HttpServletRequest request) {
         optInfo.setOptName(StringEscapeUtils.unescapeHtml4(optInfo.getOptName()));
         OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
         if (null == dbOptInfo) {
-            return ResponseData.makeErrorMessage("当前对象不存在");
+            return ResponseData.makeErrorMessage(604,
+                getI18nMessage("error.604.object_not_found", request,
+                    "OptInfo", optId));//"当前对象不存在");
         }
 
         if (!StringUtils.equals(dbOptInfo.getPreOptId(), optInfo.getPreOptId())) {
@@ -306,11 +309,12 @@ public class OptInfoController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除菜单",
         tag = "{optId}")
     @WrapUpResponseBody
-    public ResponseData delete(@ParamName("optId") @PathVariable String optId) {
+    public ResponseData delete(@ParamName("optId") @PathVariable String optId, HttpServletRequest request) {
         int hasChild = optInfoManager.countSubOptInfo(optId);
         if(hasChild > 0){
-            throw new ObjectException(optId, ResponseData.ERROR_BAD_PROCESS_DATASCOPE,
-                "不能删除有子菜单的菜单！");
+            throw new ObjectException(optId, ObjectException.DATA_NOT_INTEGRATED,
+                getI18nMessage("error.610.cannot_delete_parent", request));
+            //"不能删除有子菜单的菜单！");
         }
         optInfoManager.deleteOptInfoById(optId);
         return ResponseData.successResponse;
@@ -362,11 +366,13 @@ public class OptInfoController extends BaseController {
     })
     @RequestMapping(value = "/{optId}", method = RequestMethod.POST)
     @WrapUpResponseBody
-    public ResponseData optDefSave(@PathVariable String optId, @Valid OptMethod optDef) {
+    public ResponseData optDefSave(@PathVariable String optId, @Valid OptMethod optDef,
+                                   HttpServletRequest request) {
         OptInfo optInfo = optInfoManager.getObjectById(optId);
         if (null == optInfo) {
-            return ResponseData.makeErrorMessage(ResponseData.ERROR_INTERNAL_SERVER_ERROR,
-                "数据库不匹配,数据库中不存在optId为" + optId + "的业务信息。");
+            return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_INTEGRATED,
+                getI18nMessage("error.604.object_not_found", request, "OptInfo", optId));
+            //"数据库不匹配,数据库中不存在optId为" + optId + "的业务信息。");
         }
         optMethodManager.saveNewObject(optDef);
         return ResponseData.successResponse;
@@ -386,11 +392,13 @@ public class OptInfoController extends BaseController {
     })
     @RequestMapping(value = "/{optId}/{optCode}", method = RequestMethod.PUT)
     @WrapUpResponseBody
-    public ResponseData optDefEdit(@PathVariable String optId, @PathVariable String optCode, @Valid OptMethod optDef) {
+    public ResponseData optDefEdit(@PathVariable String optId, @PathVariable String optCode,
+                                   @Valid OptMethod optDef, HttpServletRequest request) {
         OptInfo optInfo = optInfoManager.getObjectById(optId);
         if (null == optInfo) {
-            return ResponseData.makeErrorMessage(ResponseData.ERROR_INTERNAL_SERVER_ERROR,
-                "数据库不匹配,数据库中不存在optId为" + optId + "的业务信息。");
+            return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_INTEGRATED,
+                getI18nMessage("error.604.object_not_found", request, "OptInfo", optId));
+            //"数据库不匹配,数据库中不存在optId为" + optId + "的业务信息。");
         }
         optDef.setOptCode(optCode);
         optMethodManager.updateOptMethod(optDef);
