@@ -124,7 +124,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
 
         if (osInfo == null){
             throw new ObjectException(ObjectException.DATA_NOT_FOUND_EXCEPTION,
-                "数据校验不通过，没有对应的应用，TOP_OPT_ID= " + optInfo.getTopOptId() +" ，OS_ID=" + optInfo.getOsId());
+                "Data invalid, OSInfo is not found. TopOptId=" + optInfo.getTopOptId() +"，OS_ID=" + optInfo.getOsId());
         }
 
         optInfo.setTopOptId(StringUtils.isBlank(osInfo.getRelOptId())?osInfo.getOsId():osInfo.getRelOptId());
@@ -310,7 +310,6 @@ public class OptInfoManagerImpl implements OptInfoManager {
         if(scopeCodes.size()==0) {
           return null;
         }
-
         return dataScopeDao.listDataFiltersByIds(scopeCodes);
     }
 

@@ -65,9 +65,9 @@ public class DataDictionaryController extends BaseController {
     @Autowired
     private DataDictionaryManager dataDictionaryManager;
 
-    //private String optId = "DICTSET";
+    //private String optId = "DICTIONARY";
     public String getOptId() {
-        return "DICTSET";
+        return "DICTIONARY";
     }
 
     /**
@@ -223,20 +223,18 @@ public class DataDictionaryController extends BaseController {
         tag = "{catalogCode}")
     @WrapUpResponseBody
     public ResponseData updateCatalog(@ParamName("catalogCode") @PathVariable String catalogCode,
-                                      @Valid DataCatalog dataCatalog) {
-
+                                      @Valid DataCatalog dataCatalog, HttpServletRequest request) {
         DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
-
         if (null == dbDataCatalog) {
-            return ResponseData.makeErrorMessage("当前对象不存在");
+            return ResponseData.makeErrorMessage(604,
+                getI18nMessage("error.604.object_not_found", request,
+                    "DataCatalog", catalogCode));
         }
 
         DataCatalog oldValue = new DataCatalog();
         BeanUtils.copyProperties(dbDataCatalog, oldValue);
-
         BeanUtils.copyProperties(dataCatalog, dbDataCatalog, "catalogStyle", "catalogCode", "dataDictionaries");
         dataDictionaryManager.updateCatalog(dbDataCatalog);
-
         return ResponseData.successResponse;
     }
 
@@ -266,7 +264,9 @@ public class DataDictionaryController extends BaseController {
                                          HttpServletRequest request) {
         DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
         if (null == dbDataCatalog) {
-            return ResponseData.makeErrorMessage("当前对象不存在");
+            return ResponseData.makeErrorMessage(604,
+                getI18nMessage("error.604.object_not_found", request,
+                    "DataCatalog", catalogCode));
         }
         boolean isAdmin = isLoginAsAdmin(request);
         String dataStyle = isAdmin ? "S" : "U";
@@ -316,7 +316,7 @@ public class DataDictionaryController extends BaseController {
         dataDictionary.setDataCode(dataCode);
         dataDictionary.setDataValue(StringEscapeUtils.unescapeHtml4(dataDictionary.getDataValue()));
         dataDictionary.setDataDesc(StringEscapeUtils.unescapeHtml4(dataDictionary.getDataDesc()));
-        dictionaryPreHandler(dbDataCatalog, dataDictionary);
+        dictionaryPreHandler(dbDataCatalog, dataDictionary, request);
         dictionaryPreInsertHandler(dbDataCatalog, dataDictionary, request);
         dataDictionaryManager.saveDataDictionaryPiece(dataDictionary);
         return dataDictionary;
@@ -358,7 +358,7 @@ public class DataDictionaryController extends BaseController {
         dataDictionary.setCatalogCode(catalogCode);
         dataDictionary.setDataValue(StringEscapeUtils.unescapeHtml4(dataDictionary.getDataValue()));
         dataDictionary.setDataDesc(StringEscapeUtils.unescapeHtml4(dataDictionary.getDataDesc()));
-        dictionaryPreHandler(dbDataCatalog, dataDictionary);
+        dictionaryPreHandler(dbDataCatalog, dataDictionary, request);
         dictionaryPreUpdateHandler(dbDataCatalog, dbDataDictionary, request);
         BeanUtils.copyProperties(dataDictionary, dbDataDictionary, "id", "dataStyle");
         dictionaryPreUpdateHandler(dbDataCatalog, dbDataDictionary, request);
@@ -372,18 +372,20 @@ public class DataDictionaryController extends BaseController {
      * @param dataCatalog    DataCatalog
      * @param dataDictionary DataDictionary
      */
-    private void dictionaryPreHandler(DataCatalog dataCatalog, DataDictionary dataDictionary) {
+    private void dictionaryPreHandler(DataCatalog dataCatalog, DataDictionary dataDictionary, HttpServletRequest request) {
         //附加代码 EXTRACODE  字段
         //这是一个自解释字段，业务系统可以自行解释这个字段的意义，单作为树形结构的数据字典时，这个字段必需为上级字典的代码。
         if (T.equalsIgnoreCase(dataCatalog.getCatalogType()) && !StringBaseOpt.isNvl(dataDictionary.getExtraCode())) {
             String extraCode = dataDictionary.getExtraCode();
-            if (extraCode.equals(dataDictionary.getDataCode())) {
-                throw new ObjectException("extraCode 与 dataCode 不能一致");
+            if (dataDictionary.getDataCode().equals(extraCode)) {
+                throw new ObjectException(dataDictionary, 701,
+                    getI18nMessage("error.701.cycle_in_tree", request));
             }
             DataDictionary dd = dataDictionaryManager.getDataDictionaryPiece(
                 new DataDictionaryId(dataDictionary.getCatalogCode(), extraCode));
             if (null == dd) {
-                throw new ObjectException("当前父节点不存在");
+                throw new ObjectException(dataDictionary, 604,
+                    getI18nMessage("error.604.object_not_found", request, "DataDictionary", dd.getDataCode()));
             }
         }
     }
@@ -401,12 +403,14 @@ public class DataDictionaryController extends BaseController {
             dataDictionary.setDataStyle(S);
         } else {
             if (!S.equalsIgnoreCase(dataCatalog.getCatalogStyle()) && !U.equalsIgnoreCase(dataCatalog.getCatalogStyle())) {
-                throw new ObjectException("catalogStyle 字段只可填写 S 或 U");
+                throw new ObjectException(dataCatalog, 701,
+                    getI18nMessage("error.701.field_must_be", request, "catalogStyle", "[SU]"));
             }
             dataDictionary.setDataStyle(U);
-            if (!U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
-                throw new ObjectException("dataStyle 字段只可填写 U");
-            }
+            /*if (!U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
+                throw new ObjectException(dataDictionary, 701,
+                    getI18nMessage("error.701.field_must_be", request, "dataStyle", "U"));
+            }*/
         }
     }
 
@@ -420,11 +424,13 @@ public class DataDictionaryController extends BaseController {
                                             HttpServletRequest request) {
         if (isLoginAsAdmin(request)) {
             if (!S.equalsIgnoreCase(dataDictionary.getDataStyle()) && !U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
-                throw new ObjectException("只能删除 catalogStyle为 S 或 U 的字典目录");
+                throw new ObjectException(dataDictionary, 701,
+                    getI18nMessage("error.701.field_must_be", request, "catalogStyle", "[SU]"));
             }
         } else {
             if (!U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
-                throw new ObjectException("dataStyle 字段只可填写 U");
+                throw new ObjectException(dataDictionary, 701,
+                    getI18nMessage("error.701.field_must_be", request, "dataStyle", "U"));
             }
         }
     }
@@ -438,24 +444,33 @@ public class DataDictionaryController extends BaseController {
      */
     protected void dictionaryPreUpdateHandler(DataCatalog dataCatalog, DataDictionary dataDictionary,
                                               HttpServletRequest request) {
-        if (isLoginAsAdmin(request)) {
-
+        if (isLoginAsAdmin(request)) { //F,S,U
             if (F.equalsIgnoreCase(dataDictionary.getDataStyle())) {
-                throw new ObjectException("dataStyle 为 F 类型的数据字典，任何地方都不允许编辑，只能有开发人员给出更新脚本添加、更改和删除");
+                throw new ObjectException(dataDictionary, 701,
+                    getI18nMessage("error.701.field_must_be", request, "dataStyle", "[SU]"));
+                //"dataStyle 为 F 类型的数据字典，任何地方都不允许编辑，只能有开发人员给出更新脚本添加、更改和删除"
             }
 
             if (F.equalsIgnoreCase(dataCatalog.getCatalogStyle()) && !S.equalsIgnoreCase(dataDictionary.getDataStyle())) {
-                throw new ObjectException("只能修改 dataStyle 为 S 的数据字典");
+                throw new ObjectException(dataDictionary, 701,
+                    getI18nMessage("error.701.field_must_be", request, "dataStyle", "U"));
+                //"只能修改 dataStyle 为 S 的数据字典");
             }
             if (!S.equalsIgnoreCase(dataCatalog.getCatalogStyle()) && !U.equalsIgnoreCase(dataCatalog.getCatalogStyle())) {
-                throw new ObjectException("catalogStyle 字段只可填写 S 或 U");
+                throw new ObjectException(dataCatalog, 701,
+                    getI18nMessage("error.701.field_must_be", request, "catalogStyle", "[SU]"));
+                //"catalogStyle 字段只可填写 S 或 U");
             }
             if (!S.equalsIgnoreCase(dataDictionary.getDataStyle()) && !U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
-                throw new ObjectException("dataStyle 字段只可填写 S 或 U");
+                throw new ObjectException(dataDictionary, 701,
+                    getI18nMessage("error.701.field_must_be", request, "dataStyle", "[SU]"));
+                //"dataStyle 字段只可填写 S 或 U");
             }
         } else {
             if (!U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
-                throw new ObjectException("dataStyle 字段只可填写 U");
+                throw new ObjectException(dataDictionary, 701,
+                    getI18nMessage("error.701.field_must_be", request, "dataStyle", "U"));
+                //"dataStyle 字段只可填写 U");
             }
         }
     }
@@ -463,11 +478,15 @@ public class DataDictionaryController extends BaseController {
     private void catalogPrDeleteHandler(DataCatalog dataCatalog, HttpServletRequest request) {
         if (isLoginAsAdmin(request)) {
             if (!S.equalsIgnoreCase(dataCatalog.getCatalogStyle()) && !U.equalsIgnoreCase(dataCatalog.getCatalogStyle())) {
-                throw new ObjectException("只能删除 catalogStyle为 S 或 U 的字典目录");
+                throw new ObjectException(dataCatalog, 701,
+                    getI18nMessage("error.701.field_must_be", request, "catalogStyle", "[SU]"));
+                //"只能删除 catalogStyle为 S 或 U 的字典目录");
             }
         } else {
             if (!U.equalsIgnoreCase(dataCatalog.getCatalogStyle())) {
-                throw new ObjectException("只可删除 catalogStyle 为 U 的字典目录");
+                throw new ObjectException(dataCatalog, 701,
+                    getI18nMessage("error.701.field_must_be", request, "catalogStyle", "U"));
+                //"只可删除 catalogStyle 为 U 的字典目录");
             }
         }
     }
@@ -492,7 +511,6 @@ public class DataDictionaryController extends BaseController {
                                       HttpServletRequest request) {
         DataCatalog dataCatalog = dataDictionaryManager.getObjectById(catalogCode);
         catalogPrDeleteHandler(dataCatalog, request);
-
         dataDictionaryManager.deleteDataDictionary(catalogCode);
         return ResponseData.successResponse;
 
