@@ -2,6 +2,7 @@ package com.centit.framework.system.controller;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.centit.framework.common.JsonResultUtils;
+import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.components.OperationLogCenter;
 import com.centit.framework.core.controller.BaseController;
@@ -11,6 +12,7 @@ import com.centit.framework.model.basedata.OperationLog;
 import com.centit.framework.model.basedata.OsInfo;
 import com.centit.framework.model.security.CentitPasswordEncoder;
 import com.centit.framework.system.service.OsInfoManager;
+import com.centit.support.common.ObjectException;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
 import io.swagger.annotations.Api;
@@ -108,11 +110,15 @@ public class OsInfoController extends BaseController {
     @RequestMapping(method = {RequestMethod.POST})
     public void saveOsInfo(@Valid OsInfo osinfo,HttpServletRequest request, HttpServletResponse response) {
         if (osinfo == null) {
-            JsonResultUtils.writeErrorMessageJson("对象不能为空", response);
+            JsonResultUtils.writeErrorMessageJson(ObjectException.DATA_NOT_INTEGRATED,
+                getI18nMessage("error.610.data_not_integrated", request),
+                response);
             return;
         }
         if(osInfoMag.getObjectById(osinfo.getOsId())!=null){
-            JsonResultUtils.writeErrorMessageJson("业务系统ID已存在", response);
+            JsonResultUtils.writeErrorMessageJson(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                getI18nMessage("error.702.duplicate_primary_key", request, "OsInfo", osinfo.getOsId()),
+                response);//"业务系统ID已存在",
             return;
         }
         osinfo.setCreated(WebOptUtils.getCurrentUserCode(request));

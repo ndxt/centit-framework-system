@@ -424,7 +424,7 @@ public class DataDictionaryController extends BaseController {
                                             HttpServletRequest request) {
         if (isLoginAsAdmin(request)) {
             if (!S.equalsIgnoreCase(dataDictionary.getDataStyle()) && !U.equalsIgnoreCase(dataDictionary.getDataStyle())) {
-                throw new ObjectException(dataDictionary, 701,
+                throw new ObjectException(dataDictionary, ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
                     getI18nMessage("error.701.field_must_be", request, "catalogStyle", "[SU]"));
             }
         } else {

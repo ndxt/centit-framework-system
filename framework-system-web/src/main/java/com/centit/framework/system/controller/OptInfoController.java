@@ -269,7 +269,7 @@ public class OptInfoController extends BaseController {
         optInfo.setOptName(StringEscapeUtils.unescapeHtml4(optInfo.getOptName()));
         OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
         if (null == dbOptInfo) {
-            return ResponseData.makeErrorMessage(604,
+            return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_FOUND_EXCEPTION,
                 getI18nMessage("error.604.object_not_found", request,
                     "OptInfo", optId));//"当前对象不存在");
         }

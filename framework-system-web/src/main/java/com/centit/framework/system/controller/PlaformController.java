@@ -11,6 +11,7 @@ import com.centit.framework.model.basedata.UserPlat;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.service.PlatformService;
 import com.centit.framework.system.service.UserPlatService;
+import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
 import io.swagger.annotations.Api;
@@ -85,15 +86,19 @@ public class PlaformController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除平台",
         tag = "{platId}")
     @WrapUpResponseBody
-    public ResponseData delete(@ParamName("platId") @PathVariable String platId) {
+    public ResponseData delete(@ParamName("platId") @PathVariable String platId, HttpServletRequest request) {
         Platform platform = platformService.getObjectById(platId);
         if (platform == null) {
-            return ResponseData.makeErrorMessage("The object not found!");
+            return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_FOUND_EXCEPTION,
+                getI18nMessage("error.604.object_not_found", request,
+                    "Platform", platId));//"当前对象不存在");
         }
 
         List<UserPlat> userPlats = userPlatService.listPlatUsersByPlatId(platId);
         if (!CollectionUtils.isEmpty(userPlats)) {
-            return ResponseData.makeErrorMessage("该平台存在关联用户，不能删除！");
+            return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_INTEGRATED,
+                getI18nMessage("error.610.cannot_delete_parent", request));
+            //"该平台存在关联用户，不能删除！");
         }
         platformService.deletePlatform(platform);
         return ResponseData.successResponse;
@@ -101,8 +106,7 @@ public class PlaformController extends BaseController {
 
     /*
      * 新建平台
-     *
-     * @param platform Platform
+     * @param platform pf
      */
     @ApiOperation(value = "新建平台", notes = "新建一个平台。")
     @ApiImplicitParam(
@@ -112,21 +116,21 @@ public class PlaformController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增平台",
         tag = "{pf.platId}:{pf.platSourceCode}")
     @WrapUpResponseBody
-    public ResponseData create(@ParamName("pf") @Valid Platform platform) {
+    public ResponseData create(@ParamName("pf") @Valid Platform pf, HttpServletRequest request) {
 
-        if (platformService.hasSamePlat(platform)) {
+        if (platformService.hasSamePlat(pf)) {
             return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
-                "平台代码" + platform.getPlatSourceCode() + "已存在，请更换！");
+                getI18nMessage("error.702.duplicate_primary_key", request,"Platform", pf.getPlatSourceCode()));
+                //"平台代码" + platform.getPlatSourceCode() + "已存在，请更换！");
         }
-        platformService.savePlatform(platform);
-        return ResponseData.makeResponseData(platform);
+        platformService.savePlatform(pf);
+        return ResponseData.makeResponseData(pf);
     }
 
     /*
      * 更新平台信息
-     *
      * @param platId 平台id
-     * @param platform Platform
+     * @param platform platform
      */
     @ApiOperation(value = "更新平台信息", notes = "更新平台信息。")
     @ApiImplicitParams({
@@ -141,16 +145,20 @@ public class PlaformController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新平台",
         tag = "{platId}")
     @WrapUpResponseBody
-    public ResponseData edit(@ParamName("platId") @PathVariable String platId, @Valid Platform platform) {
+    public ResponseData edit(@ParamName("platId") @PathVariable String platId,
+                             @Valid Platform platform, HttpServletRequest request) {
 
         Platform dbPlatform = platformService.getObjectById(platId);
         if (null == dbPlatform) {
-            return ResponseData.makeErrorMessage("平台不存在");
+            return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_FOUND_EXCEPTION,
+                getI18nMessage("error.604.object_not_found", request,
+                    "Platform", platId));//"当前对象不存在");
         }
         if (!dbPlatform.getPlatSourceCode().equals(platform.getPlatSourceCode()) &&
             platformService.hasSamePlat(platform)) {
             return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
-                "平台代码" + platform.getPlatSourceCode() + "已存在，请更换！");
+                getI18nMessage("error.702.duplicate_primary_key", request,"Platform", platform.getPlatSourceCode()));
+                //"平台代码" + platform.getPlatSourceCode() + "已存在，请更换！");
         }
         platformService.updatePlatform(platform);
         return ResponseData.makeResponseData(platform);
