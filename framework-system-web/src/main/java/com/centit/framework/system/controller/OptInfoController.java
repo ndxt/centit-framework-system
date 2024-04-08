@@ -340,7 +340,6 @@ public class OptInfoController extends BaseController {
     @WrapUpResponseBody
     public ResponseData getNextOptCode() {
         String optCode = optMethodManager.getNextOptCode();
-
         ResponseMapData responseData = new ResponseMapData();
         responseData.addResponseData("optCode", optCode);
         return responseData;
@@ -372,6 +371,7 @@ public class OptInfoController extends BaseController {
         optMethodManager.saveNewObject(optDef);
         return ResponseData.successResponse;
     }
+
     @ApiOperation(value = "更新业务操作", notes = "更新业务操作。")
     @ApiImplicitParams({
         @ApiImplicitParam(

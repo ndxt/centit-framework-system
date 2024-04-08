@@ -76,7 +76,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
                 }
             }
             if (needUpdate) {
-                optInfoDao.updateOptInfo(o);
+                optInfoDao.updateObject(new String[]{"isInToolbar", "optType"}, o);
             }
         }
 
@@ -93,7 +93,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
                 }
             }
             if (needUpdate) {
-                optInfoDao.updateOptInfo(o);
+                optInfoDao.updateObject(new String[]{"isInToolbar", "optType"}, o);
             }
         }
 
@@ -127,7 +127,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
                 "数据校验不通过，没有对应的应用，TOP_OPT_ID= " + optInfo.getTopOptId() +" ，OS_ID=" + optInfo.getOsId());
         }
 
-        optInfo.setTopOptId(osInfo.getRelOptId());
+        optInfo.setTopOptId(StringUtils.isBlank(osInfo.getRelOptId())?osInfo.getOsId():osInfo.getRelOptId());
         optInfo.setOsId(osInfo.getOsId());
     }
 
@@ -162,13 +162,9 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Override
     @Transactional
     public void updateOperationPower(OptInfo optInfo) {
-
-        optInfoDao.updateOptInfo(optInfo);
-
+        //optInfoDao.updateOptInfo(optInfo);
         List<OptMethod> newOptMethods = optInfo.getOptMethods();
-
         List<OptMethod> oldOptMethods = optMethodDao.listOptMethodByOptID(optInfo.getOptId());
-
         if(newOptMethods == null || newOptMethods.size() < 1){
             optMethodDao.deleteOptMethodsByOptID(optInfo.getOptId());
             if(CollectionUtils.isNotEmpty(oldOptMethods)){
@@ -176,9 +172,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
                     rolePowerDao.deleteRolePowersByOptCode(oldOptMethod.getOptCode());
                 }
             }
-
         }
-
 
         Triple<List<OptMethod>, List<Pair<OptMethod,OptMethod>>, List<OptMethod>> compareMethod =
             CollectionsOpt.compareTwoList(oldOptMethods, newOptMethods, Comparator.comparing(OptMethod::getOptCode));
@@ -216,7 +210,6 @@ public class OptInfoManagerImpl implements OptInfoManager {
         }
 
         List<OptDataScope> oldDataScopes = dataScopeDao.getDataScopeByOptID(optInfo.getOptId());
-
         Triple<List<OptDataScope>, List<Pair<OptDataScope, OptDataScope>>, List<OptDataScope>> compareScope =
               CollectionsOpt.compareTwoList(oldDataScopes, newDataScopes, Comparator.comparing(OptDataScope::getOptScopeCode));
 

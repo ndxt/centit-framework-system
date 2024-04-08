@@ -259,13 +259,13 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     public OptInfo addOptInfo(OptInfo optInfo) {
-        optInfoManager.saveNewOptInfo((OptInfo) optInfo);
+        optInfoManager.saveNewOptInfo(optInfo);
         return optInfo;
     }
 
     @Override
     public OptInfo updateOptInfo(OptInfo optInfo) {
-        optInfoDao.updateOptInfo((OptInfo) optInfo);
+        optInfoDao.updateOptInfo(optInfo);
         return optInfo;
     }
 
@@ -798,7 +798,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Transactional
     public void insertOrUpdateMenu(List<OptInfo> optInfos, List<OptMethod> optMethods) {
         List<OptMethod> dbMethods = new ArrayList<>();
-        for (OptInfo optInfo : (List<OptInfo>) optInfos) {
+        for (OptInfo optInfo : optInfos) {
             if (StringUtils.isEmpty(optInfo.getPreOptId())) {
                 optInfo.setPreOptId("0");
             }
