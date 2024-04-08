@@ -162,7 +162,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Override
     @Transactional
     public void updateOperationPower(OptInfo optInfo) {
-        //optInfoDao.updateOptInfo(optInfo);
+        optInfoDao.updateObject(new String[]{"formCode", "optRoute", "optUrl", "pageType"}, optInfo);
         List<OptMethod> newOptMethods = optInfo.getOptMethods();
         List<OptMethod> oldOptMethods = optMethodDao.listOptMethodByOptID(optInfo.getOptId());
         if(newOptMethods == null || newOptMethods.size() < 1){
