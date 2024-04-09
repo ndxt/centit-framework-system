@@ -51,35 +51,34 @@ public class OptInfoManagerImpl implements OptInfoManager {
         return dataScopeDao.listAllDataScope();
     }
 
-
-    private void checkOptInfoProperties(OptInfo optInfo) {
+    private void checkOptInfoProperties(OptInfo optInfo, boolean checkDown) {
         if (optInfo.getPreOptId() == null) {
             optInfo.setPreOptId("0");
         }
         if (StringUtils.isBlank(optInfo.getIsInToolbar())) {
             optInfo.setIsInToolbar("Y");
         }
-
-        List<OptInfo> allSubOpts = findSubOptInfo(optInfo.getOptId());
-        List<OptInfo> allPreOpts = findPreOptInfo(optInfo.getPreOptId());
-
-        for (OptInfo o : allSubOpts) {
-            boolean needUpdate = false;
-            if (!StringUtils.equals(o.getOptType(), optInfo.getOptType())) {
-                needUpdate = true;
-                o.setOptType(optInfo.getOptType());
-            }
-            if ("N".equals(optInfo.getIsInToolbar())) {
-                if (!"N".equals(o.getIsInToolbar())) {
-                    o.setIsInToolbar("N");
+        if(checkDown) {
+            List<OptInfo> allSubOpts = findSubOptInfo(optInfo.getOptId());
+            for (OptInfo o : allSubOpts) {
+                boolean needUpdate = false;
+                if (!StringUtils.equals(o.getOptType(), optInfo.getOptType())) {
                     needUpdate = true;
+                    o.setOptType(optInfo.getOptType());
                 }
-            }
-            if (needUpdate) {
-                optInfoDao.updateObject(new String[]{"isInToolbar", "optType"}, o);
+                if ("N".equals(optInfo.getIsInToolbar())) {
+                    if (!"N".equals(o.getIsInToolbar())) {
+                        o.setIsInToolbar("N");
+                        needUpdate = true;
+                    }
+                }
+                if (needUpdate) {
+                    optInfoDao.updateObject(new String[]{"isInToolbar", "optType"}, o);
+                }
             }
         }
 
+        List<OptInfo> allPreOpts = findPreOptInfo(optInfo.getPreOptId());
         for (OptInfo o : allPreOpts) {
             boolean needUpdate = false;
             if (!StringUtils.equals(o.getOptType(), optInfo.getOptType())) {
@@ -134,9 +133,9 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Override
     @Transactional
     public void saveNewOptInfo(OptInfo optInfo){
-        //同步菜单上下级显示与否
-        checkOptInfoProperties(optInfo);
-        optInfoDao.saveNewObject( optInfo );
+        //同步菜单上下级显示与否, 新建的菜单不会有子菜单
+        checkOptInfoProperties(optInfo, false);
+        optInfoDao.saveNewObject(optInfo);
 
         if(optInfo.getOptMethods()!=null && optInfo.getOptMethods().size()>0 ){
             // 对于显示的菜单添加显示权限
@@ -154,7 +153,11 @@ public class OptInfoManagerImpl implements OptInfoManager {
     @Override
     @Transactional
     public void updateOptInfo(OptInfo optInfo) {
-        checkOptInfoProperties(optInfo);
+        OptInfo dbOptInfo = optInfoDao.getObjectById(optInfo.getOptId());
+        if(dbOptInfo==null){
+            return;
+        }
+        checkOptInfoProperties(optInfo, true);
         optInfoDao.updateOptInfo(optInfo);
         CodeRepositoryCache.evictCache("OptInfo");
     }
