@@ -55,7 +55,6 @@ public class RoleInfoController extends BaseController {
     @Autowired
     private SysUnitRoleManager sysUnitRoleManager;
 
-
     /*
      * 系统日志中记录
      *
@@ -208,9 +207,7 @@ public class RoleInfoController extends BaseController {
 
         for (OptMethod def : optDefs) {
             Map<String, Object> temp = new HashMap<>();
-
             List<RolePower> rolePowers = sysRoleManager.getRolePowersByDefCode(def.getOptCode());
-
             temp.put("optDef", def);
             temp.put("rolePowers", rolePowers);
             result.add(temp);
@@ -234,12 +231,10 @@ public class RoleInfoController extends BaseController {
     @WrapUpResponseBody
     public void createRole(@ParamName("ri") @Valid RoleInfo roleInfo, HttpServletRequest request) {
         String roleType = roleInfo.getRoleType();
-        if (StringUtils.isBlank(roleType)) {
-            throw new ObjectException(roleInfo, "新建角色必须指定角色类别。");
-        }
-
-        if ("D".equals(roleType) || "S".equals(roleType)) {
-            throw new ObjectException(roleInfo, "不能用这个接口创建 子系统角色或者机构角色");
+        if ("D".equals(roleType) || "S".equals(roleType)) { //F/G/P/D/I/W/H
+            throw new ObjectException(roleInfo, ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
+                getI18nMessage("error.701.field_must_be", request, "roleType", "[PG]"));
+                //"不能用这个接口创建 子系统角色或者机构角色");
         }
         roleInfo.setUnitCode(WebOptUtils.getCurrentTopUnit(request));
         roleInfo.setCreator(WebOptUtils.getCurrentUserCode(request));
@@ -345,11 +340,14 @@ public class RoleInfoController extends BaseController {
         tag = "{roleCode}:{optCode}")
     @WrapUpResponseBody
     public void deleteOptFormRole(@ParamName("roleCode") @PathVariable String roleCode,
-                                  @ParamName("optCode") @PathVariable String optCode) {
+                                  @ParamName("optCode") @PathVariable String optCode,
+                                  HttpServletRequest request) {
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
-
         if (null == dbRoleInfo) {
-            throw new ObjectException(roleCode + ":" + optCode, "角色信息不存在");
+            throw new ObjectException(ObjectException.DATA_NOT_FOUND_EXCEPTION,
+                getI18nMessage("error.604.object_not_found", request,
+                    "RoleInfo",  roleCode + ":" + optCode));
+               // roleCode + ":" + optCode, "角色信息不存在");
         }
 
         RolePower rolePower = new RolePower(new RolePowerId(roleCode, optCode));
@@ -381,16 +379,21 @@ public class RoleInfoController extends BaseController {
         tag = "{roleCode}")
     @WrapUpResponseBody
     public void updateRole(@ParamName("roleCode") @PathVariable String roleCode,
-                           @Valid RoleInfo roleInfo) {
+                           @Valid RoleInfo roleInfo, HttpServletRequest request) {
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         if (null == dbRoleInfo) {
-            throw new ObjectException(roleInfo, "角色信息不存在");
+            throw new ObjectException(roleInfo, ObjectException.DATA_NOT_FOUND_EXCEPTION,
+                getI18nMessage("error.604.object_not_found", request,
+                    "RoleInfo",  roleCode));
+            // "角色信息不存在");
         }
         roleInfo.setRoleCode(roleCode);
         if (!StringUtils.equals(dbRoleInfo.getUnitCode(), roleInfo.getUnitCode())) {
-            throw new ObjectException(roleInfo, "不能修改部门角色的所属机构");
+            throw new ObjectException(roleInfo, ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                getI18nMessage("error.702.field_readonly", request,
+                    "RoleInfo",  "unitCode"));
+                //"不能修改部门角色的所属机构");
         }
-
         sysRoleManager.updateRoleInfo(roleInfo);
     }
 
@@ -414,13 +417,19 @@ public class RoleInfoController extends BaseController {
 
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         if (null == dbRoleInfo) {
-            throw new ObjectException(roleInfo, "角色信息不存在");
+            throw new ObjectException(roleInfo, ObjectException.DATA_NOT_FOUND_EXCEPTION,
+                getI18nMessage("error.604.object_not_found", request,
+                    "RoleInfo",  roleCode));
+            // "角色信息不存在");
         }
         roleInfo.setRoleType("D");
         roleInfo.setUnitCode(WebOptUtils.getCurrentTopUnit(request));
 
         if (!StringUtils.equals(dbRoleInfo.getUnitCode(), roleInfo.getUnitCode())) {
-            throw new ObjectException(roleInfo, "不能修改部门角色的所属机构");
+            throw new ObjectException(roleInfo, ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                getI18nMessage("error.702.field_readonly", request,
+                    "RoleInfo",  "unitCode"));
+            //"不能修改部门角色的所属机构");
         }
         roleInfo.setRoleCode(roleCode);
         sysRoleManager.updateRoleInfo(roleInfo);
@@ -443,16 +452,23 @@ public class RoleInfoController extends BaseController {
         tag = "{topOptId}:{roleCode}")
     @WrapUpResponseBody
     public void updateSubSystemRole(@ParamName("osId") @PathVariable String osId,
-                                    @ParamName("roleCode") @PathVariable String roleCode, @Valid RoleInfo roleInfo) {
+                                    @ParamName("roleCode") @PathVariable String roleCode,
+                                    @Valid RoleInfo roleInfo, HttpServletRequest request) {
 
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         if (null == dbRoleInfo) {
-            throw new ObjectException(roleInfo, "角色信息不存在");
+            throw new ObjectException(roleInfo, ObjectException.DATA_NOT_FOUND_EXCEPTION,
+                getI18nMessage("error.604.object_not_found", request,
+                    "RoleInfo",  roleCode));
+            // "角色信息不存在");
         }
         roleInfo.setRoleType("S");
         roleInfo.setOsId(osId);
         if (!StringUtils.equals(dbRoleInfo.getOsId(), osId)) {
-            throw new ObjectException(roleInfo, "不能修改子系统角色的归属系统");
+            throw new ObjectException(roleInfo, ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                getI18nMessage("error.702.field_readonly", request,
+                    "RoleInfo",  "osId"));
+            // "不能修改子系统角色的归属系统");
         }
         roleInfo.setRoleCode(roleCode);
         sysRoleManager.updateRoleInfo(roleInfo);
@@ -483,7 +499,10 @@ public class RoleInfoController extends BaseController {
         }
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         if (null == dbRoleInfo) {
-            throw new ObjectException(roleInfo, "角色信息不存在");
+            throw new ObjectException(roleInfo, ObjectException.DATA_NOT_FOUND_EXCEPTION,
+                getI18nMessage("error.604.object_not_found", request,
+                    "RoleInfo",  roleCode));
+            // "角色信息不存在");
         }
         sysRoleManager.updateRolePower(roleInfo, WebOptUtils.getCurrentTopUnit(request));
     }
@@ -567,7 +586,8 @@ public class RoleInfoController extends BaseController {
     })
     @GetMapping(value = "/isunitroleunique/{unitCode}/{roleName}/{roleCode}")
     @WrapUpResponseBody(contentType = WrapUpContentType.RAW)
-    public boolean isUnitRoleUnique(@PathVariable String unitCode, @PathVariable String roleName, @PathVariable String roleCode) {
+    public boolean isUnitRoleUnique(@PathVariable String unitCode, @PathVariable String roleName,
+                                    @PathVariable String roleCode) {
         return sysRoleManager.judgeSysRoleNameCanBeUsed(roleName, roleCode, unitCode);
     }
 
@@ -584,25 +604,35 @@ public class RoleInfoController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除角色",
         tag = "{roleCode}")
     @WrapUpResponseBody
-    public ResponseData deleteRole(@ParamName("roleCode") @PathVariable String roleCode) {
+    public ResponseData deleteRole(@ParamName("roleCode") @PathVariable String roleCode,
+                                   HttpServletRequest request) {
         if (StringUtils.equalsAny(roleCode, "public", "anonymous", "forbidden")) {
-            return ResponseData.makeErrorMessage("系统内置角色不能删除。");
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                getI18nMessage("error.702.field_readonly", request,
+                    "RoleInfo", "Fixed Role"));
+                //"系统内置角色不能删除。");
         }
 //        int n = sysRoleManager.countRoleUserSum(roleCode);
         List<UserInfo> users = sysUserRoleManager.listUsersByRole(roleCode);
         boolean isValid = true;
         for (UserInfo u : users) {
             if ("T".equals(u.getIsValid())) {
-                return ResponseData.makeErrorMessage("有用户引用这个角色，不能删除。");
+                return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_INTEGRATED,
+                    getI18nMessage("error.610.cannot_delete_parent", request));
+                //"有用户引用这个角色，不能删除。");
             }
             isValid = false;
         }
         if (!isValid) {
-            return ResponseData.makeErrorMessage("有禁用用户引用这个角色，不能删除。");
+            return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_INTEGRATED,
+                getI18nMessage("error.610.cannot_delete_parent", request));
+            //"有禁用用户引用这个角色，不能删除。");
         }
         JSONArray roleUnts = sysUnitRoleManager.listRoleUnits(roleCode, new PageDesc(1, 2));
-        if (roleUnts != null && roleUnts.size() > 0) {
-            return ResponseData.makeErrorMessage("有机构引用这个角色，不能删除。");
+        if (roleUnts != null && !roleUnts.isEmpty()) {
+            return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_INTEGRATED,
+                getI18nMessage("error.610.cannot_delete_parent", request));
+            //"有机构引用这个角色，不能删除。");
         }
         //RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         sysRoleManager.deleteRoleInfo(roleCode);
@@ -636,9 +666,7 @@ public class RoleInfoController extends BaseController {
     @RequestMapping(value = "/power/unit/{unitCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
     public ResponseData getUnitInfoPower(@PathVariable String unitCode) {
-
         List<RolePower> rolePowers = sysRoleManager.getRolePowers("G$" + unitCode);
-
         return ResponseData.makeResponseData(rolePowers);
     }
 
@@ -707,9 +735,11 @@ public class RoleInfoController extends BaseController {
         required = true, paramType = "path", dataType = "String")
     @RequestMapping(value = "/listRoleInfoAndPowerByOptCode/{optCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData listRoleInfoAndPowerByOptCode(@PathVariable String optCode) {
-        if (StringBaseOpt.isNvl(optCode)) {
-            throw new ObjectException("optCode不能为空！");
+    public ResponseData listRoleInfoAndPowerByOptCode(@PathVariable String optCode, HttpServletRequest request) {
+        if (StringUtils.isBlank(optCode)) {
+            throw new ObjectException(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
+                getI18nMessage("error.701.field_is_blank", request,
+                    "optCode"));//"optCode不能为空！");
         }
         JSONArray jsonArray = sysRoleManager.listRoleInfoAndPowerByOptCode(optCode);
         return ResponseData.makeResponseData(jsonArray);
@@ -722,7 +752,6 @@ public class RoleInfoController extends BaseController {
     @RequestMapping(value = "/updateRolePower/{optCode}", method = RequestMethod.PUT)
     @WrapUpResponseBody
     public ResponseData updateRolePower(@PathVariable String optCode, String roleCode) {
-
         sysRoleManager.updateRolePower(optCode, roleCode);
         return ResponseData.makeSuccessResponse();
     }
@@ -746,7 +775,6 @@ public class RoleInfoController extends BaseController {
     @ApiImplicitParam(
         name = "osId", value = "子系统代码",
         allowMultiple = true, paramType = "path", dataType = "String")
-
     @RequestMapping(value = "/osRole/{osId}", method = RequestMethod.GET)
     @WrapUpResponseBody()
     public List<RoleInfo> listOsRole(@PathVariable String osId, HttpServletRequest request) {
@@ -756,6 +784,5 @@ public class RoleInfoController extends BaseController {
         filterMap.put("osRole", osId);
         return sysRoleManager.listObjects(filterMap);
     }
-
 
 }
