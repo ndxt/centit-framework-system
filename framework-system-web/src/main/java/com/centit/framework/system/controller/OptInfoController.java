@@ -313,7 +313,7 @@ public class OptInfoController extends BaseController {
         int hasChild = optInfoManager.countSubOptInfo(optId);
         if(hasChild > 0){
             throw new ObjectException(optId, ObjectException.DATA_NOT_INTEGRATED,
-                getI18nMessage("error.610.cannot_delete_parent", request));
+                getI18nMessage("error.610.cannot_delete_parent", request, "Children-"+optId));
             //"不能删除有子菜单的菜单！");
         }
         optInfoManager.deleteOptInfoById(optId);

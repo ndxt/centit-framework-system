@@ -97,7 +97,7 @@ public class PlaformController extends BaseController {
         List<UserPlat> userPlats = userPlatService.listPlatUsersByPlatId(platId);
         if (!CollectionUtils.isEmpty(userPlats)) {
             return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_INTEGRATED,
-                getI18nMessage("error.610.cannot_delete_parent", request));
+                getI18nMessage("error.610.cannot_delete_parent", request, "PlatUser-"+platId));
             //"该平台存在关联用户，不能删除！");
         }
         platformService.deletePlatform(platform);

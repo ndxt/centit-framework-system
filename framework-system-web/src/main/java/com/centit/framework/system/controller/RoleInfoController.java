@@ -618,20 +618,20 @@ public class RoleInfoController extends BaseController {
         for (UserInfo u : users) {
             if ("T".equals(u.getIsValid())) {
                 return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_INTEGRATED,
-                    getI18nMessage("error.610.cannot_delete_parent", request));
+                    getI18nMessage("error.610.cannot_delete_parent", request, "RoleUser-"+roleCode));
                 //"有用户引用这个角色，不能删除。");
             }
             isValid = false;
         }
         if (!isValid) {
             return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_INTEGRATED,
-                getI18nMessage("error.610.cannot_delete_parent", request));
+                getI18nMessage("error.610.cannot_delete_parent", request, "RoleInvalidUser-"+roleCode));
             //"有禁用用户引用这个角色，不能删除。");
         }
         JSONArray roleUnts = sysUnitRoleManager.listRoleUnits(roleCode, new PageDesc(1, 2));
         if (roleUnts != null && !roleUnts.isEmpty()) {
             return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_INTEGRATED,
-                getI18nMessage("error.610.cannot_delete_parent", request));
+                getI18nMessage("error.610.cannot_delete_parent", request, "RoleUnit-"+roleCode));
             //"有机构引用这个角色，不能删除。");
         }
         //RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
