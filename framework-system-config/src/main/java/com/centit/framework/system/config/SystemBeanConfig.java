@@ -56,7 +56,8 @@ public class SystemBeanConfig implements EnvironmentAware {
     MessageSource messageSource() {
         ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
         ms.setUseCodeAsDefaultMessage(true);
-        ms.setBasenames("classpath:i18n/locodemsgs", "classpath:messages");
+        //"classpath:org/springframework/security/messages"
+        ms.setBasenames("classpath:i18n/messages");
         ms.setDefaultEncoding("UTF-8");
         return ms;
     }

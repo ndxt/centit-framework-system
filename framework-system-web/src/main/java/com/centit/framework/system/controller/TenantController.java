@@ -67,15 +67,11 @@ public class TenantController extends BaseController {
     )
     @RequestMapping(value = "/registerUserAccount", method = RequestMethod.POST)
     @WrapUpResponseBody
-    public ResponseData registerUserAccount(@RequestBody @Validated UserInfo userInfo) {
-
-        try {
-            return tenantService.registerUserAccount(userInfo);
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("用户注册失败,错误原因{},用户名数据：{}", e, userInfo.toString());
-            return ResponseData.makeErrorMessage("用户注册失败!");
-        }
+    public ResponseData registerUserAccount(@RequestBody @Validated UserInfo userInfo,
+            HttpServletRequest request) {
+        ResponseData responseData = tenantService.registerUserAccount(userInfo);
+        return ResponseData.makeErrorMessage(responseData.getCode(),
+            getI18nMessage(responseData.getMessage(), request));
     }
 
     @ApiOperation(
@@ -86,24 +82,22 @@ public class TenantController extends BaseController {
     @WrapUpResponseBody
     public ResponseData applyAddTenant(@RequestBody @Validated TenantInfo tenantInfo, HttpServletRequest request) {
         String userCode = WebOptUtils.getCurrentUserCode(request);
-        if (StringUtils.isBlank(userCode)) {
-            throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN,"您未登录!");
+        if (StringUtils.isBlank(userCode)) { //"您未登录!"
+            throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN,
+                getI18nMessage("error.302.user_not_login", request));
         }
         tenantInfo.setCreator(userCode);
         if (tenantPowerManage.userIsSystemMember(userCode)){
             if (StringUtils.isBlank(tenantInfo.getOwnUser())){
-                throw new ObjectException("ownUser不能为空");
+                throw new ObjectException(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
+                    getI18nMessage("error.701.field_is_blank", request,"ownUser"));
             }
         }else {
             tenantInfo.setOwnUser(userCode);
         }
-        try {
-            return tenantService.applyAddTenant(userCode, tenantInfo);
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("用户申请新建租户失败,错误原因{},用户名数据：{}", e, tenantInfo.toString());
-            return ResponseData.makeErrorMessage("用户申请新建租户失败!");
-        }
+        ResponseData responseData = tenantService.applyAddTenant(userCode, tenantInfo);
+        return ResponseData.makeErrorMessage(responseData.getCode(),
+            getI18nMessage(responseData.getMessage(), request, (Object[]) responseData.getData()));
     }
 
     @ApiOperation(
@@ -112,15 +106,13 @@ public class TenantController extends BaseController {
     )
     @RequestMapping(value = "/applyJoinTenant", method = RequestMethod.POST)
     @WrapUpResponseBody
-    public ResponseData applyJoinTenant(@RequestBody @Validated TenantMemberApply tenantMemberApply) {
-
-        try {
-            return tenantService.applyJoinTenant(tenantMemberApply);
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("成员申请失败,错误原因{},申请数据：{}", e, tenantMemberApply.toString());
-            return ResponseData.makeErrorMessage("成员申请失败!");
-        }
+    public ResponseData applyJoinTenant(@RequestBody @Validated TenantMemberApply tenantMemberApply,
+                        HttpServletRequest request) {
+        String userCode = WebOptUtils.getCurrentUserCode(request);
+        tenantMemberApply.setUserCode(userCode);
+        ResponseData responseData = tenantService.applyJoinTenant(tenantMemberApply);
+        return ResponseData.makeErrorMessage(responseData.getCode(),
+            getI18nMessage(responseData.getMessage(), request, (Object[]) responseData.getData()));
     }
 
     @ApiOperation(

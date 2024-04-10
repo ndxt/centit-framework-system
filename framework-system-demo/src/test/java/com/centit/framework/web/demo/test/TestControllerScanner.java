@@ -28,6 +28,10 @@ import java.util.Map;
  * Created by codefan on 17-9-11.
  */
 public class TestControllerScanner {
+    public static void main(String[] args) {
+        testControllerMapping();
+    }
+
     //@Test
     public void testClassScanner() {
         List<Class<?>> classes = ClassScannerOpt.getClassList("com.centit" ,
@@ -40,9 +44,9 @@ public class TestControllerScanner {
     }
 
     //@Test
-    public void testControllerMapping() {
+    public static void testControllerMapping() {
         JSONArray optInfoList = RequestMappingUtils.mapControllerInfosByPackage("com.centit" );
-        String excelFileName = "D:/Projects/RunData/demo_home/optInfos.xlsx";
+        String excelFileName = "/Users/codefan/temp/optInfos.xlsx";
         try (OutputStream newExcelFile = new FileOutputStream(new File(excelFileName))) {
             ExcelExportUtil.generateExcel(newExcelFile,"optInfo",optInfoList,
                 new String[]{"业务代码","业务名称","业务Url","页面Url","父类业务代码"},
