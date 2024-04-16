@@ -17,9 +17,16 @@ import com.centit.search.service.ESServerConfig;
 import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.security.SecurityOptUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import com.centit.framework.dubbo.config.DubboConfig;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+
 /**
  * Created by codefan on 17-7-18.
  */
@@ -84,4 +91,28 @@ public class ServiceConfig {
         return config;
     }
 
+    @Bean
+    public AutowiredAnnotationBeanPostProcessor autowiredAnnotationBeanPostProcessor() {
+        return new AutowiredAnnotationBeanPostProcessor();
+    }
+
+    @Bean
+    public CsrfTokenRepository csrfTokenRepository() {
+        return new HttpSessionCsrfTokenRepository();
+    }
+
+    @Bean
+    MessageSource messageSource() {
+        ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
+        ms.setUseCodeAsDefaultMessage(true);
+        //"classpath:org/springframework/security/messages"
+        ms.setBasenames("classpath:i18n/messages", "classpath:org/springframework/security/messages");
+        ms.setDefaultEncoding("UTF-8");
+        return ms;
+    }
+
+    @Bean
+    public LocalValidatorFactoryBean validatorFactory() {
+        return new LocalValidatorFactoryBean();
+    }
 }
