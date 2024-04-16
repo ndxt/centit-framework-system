@@ -34,8 +34,8 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 @PropertySource("classpath:system.properties")
 @ComponentScan(basePackages = "com.centit",
     excludeFilters = @ComponentScan.Filter(value = org.springframework.stereotype.Controller.class))
-@Import({SystemBeanConfig.class,
-    DubboConfig.class,
+@Import({DubboConfig.class,
+    SystemBeanConfig.class,
     SpringSecurityCasConfig.class,
     SpringSecurityDaoConfig.class,
     JdbcConfig.class})
