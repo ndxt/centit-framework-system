@@ -14,10 +14,7 @@ import com.centit.framework.system.config.SystemBeanConfig;
 import com.centit.search.service.ESServerConfig;
 import com.centit.search.service.IndexerSearcherFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
@@ -27,6 +24,7 @@ import org.springframework.session.security.SpringSessionBackedSessionRegistry;
  * Created by codefan on 17-7-18.
  */
 @Configuration
+@PropertySource("classpath:system.properties")
 @ComponentScan(basePackages = {"com.centit", "com.otherpackage"},
     excludeFilters = @ComponentScan.Filter(
         value = org.springframework.stereotype.Controller.class))

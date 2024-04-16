@@ -3,7 +3,6 @@ package com.centit.framework.ip.config;
 import com.alibaba.nacos.api.annotation.NacosProperties;
 import com.alibaba.nacos.spring.context.annotation.config.EnableNacosConfig;
 import com.alibaba.nacos.spring.context.annotation.config.NacosPropertySource;
-import com.alibaba.nacos.spring.context.annotation.config.NacosPropertySources;
 import com.centit.framework.components.impl.NotificationCenterImpl;
 import com.centit.framework.config.SpringSecurityCasConfig;
 import com.centit.framework.config.SpringSecurityDaoConfig;
@@ -18,25 +17,23 @@ import com.centit.search.service.ESServerConfig;
 import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.security.SecurityOptUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
-
+import com.centit.framework.dubbo.config.DubboConfig;
 /**
  * Created by codefan on 17-7-18.
  */
 @Configuration
+@PropertySource("classpath:system.properties")
 @ComponentScan(basePackages = "com.centit",
     excludeFilters = @ComponentScan.Filter(value = org.springframework.stereotype.Controller.class))
 @Import({SystemBeanConfig.class,
+    DubboConfig.class,
     SpringSecurityCasConfig.class,
     SpringSecurityDaoConfig.class,
     JdbcConfig.class})
 @EnableNacosConfig(globalProperties = @NacosProperties(serverAddr = "${nacos.server-addr}"))
-@NacosPropertySources({@NacosPropertySource(dataId = "${nacos.system-dataid}",groupId = "CENTIT", autoRefreshed = true)}
-)
+@NacosPropertySource(dataId = "${nacos.system-dataid}",groupId = "CENTIT", autoRefreshed = true)
 public class ServiceConfig {
 
     /**
