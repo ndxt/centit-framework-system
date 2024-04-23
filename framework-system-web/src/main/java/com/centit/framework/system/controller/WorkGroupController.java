@@ -92,11 +92,13 @@ public class WorkGroupController extends BaseController {
     @WrapUpResponseBody
     public PageQueryResult tenantAdminList(HttpServletRequest request, PageDesc pageDesc) {
         if (StringUtils.isBlank(WebOptUtils.getCurrentUserCode(request))) {
-            throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN, "您未登录!");
+            throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN,
+                getI18nMessage( "error.302.user_not_login", request));
         }
         String topUnit = WebOptUtils.getCurrentTopUnit(request);
         if (StringUtils.isBlank(topUnit)) {
-            throw new ObjectException(ResponseData.ERROR_INTERNAL_SERVER_ERROR, "您还未加入租户!");
+            throw new ObjectException(ResponseData.ERROR_INTERNAL_SERVER_ERROR,
+                getI18nMessage( "error.403.user_not_in_tenant", request));
         }
         Map<String, Object> parameters = BaseController.collectRequestParameters(request);
         parameters.put("groupId", topUnit);
@@ -152,7 +154,7 @@ public class WorkGroupController extends BaseController {
     @ApiOperation(value = "新增单个工作组成员")
     @WrapUpResponseBody
     public void createTeamUser(@RequestBody WorkGroup workGroup, HttpServletRequest request, HttpServletResponse response) {
-        loginUserPermissionCheck(workGroup.getWorkGroupParameter().getGroupId());
+        loginUserPermissionCheck(workGroup.getWorkGroupParameter().getGroupId(), request);
         String currentUserCode = WebOptUtils.getCurrentUserCode(request);
         if (StringUtils.isNotBlank(currentUserCode)) {
             workGroup.setCreator(currentUserCode);//创建人  当前登录人
@@ -173,10 +175,11 @@ public class WorkGroupController extends BaseController {
     @WrapUpResponseBody
     public void batchCreateTeamUser(@RequestBody List<WorkGroup> workGroups, HttpServletRequest request, HttpServletResponse response) {
         if (workGroups == null || workGroups.size() == 0) {
-            throw new ObjectException(ResponseData.ERROR_INTERNAL_SERVER_ERROR, "workGroup参数必传！");
+            throw new ObjectException(ResponseData.ERROR_INTERNAL_SERVER_ERROR,
+                getI18nMessage("error.701.field_is_blank", request,"workGroup"));
         }
         for (WorkGroup workGroup : workGroups) {
-            loginUserPermissionCheck(workGroup.getWorkGroupParameter().getGroupId());
+            loginUserPermissionCheck(workGroup.getWorkGroupParameter().getGroupId(), request);
         }
         String currentUserCode = WebOptUtils.getCurrentUserCode(request);
         for (WorkGroup workGroup : workGroups) {
@@ -193,7 +196,8 @@ public class WorkGroupController extends BaseController {
                     if (osInfo.getGroupId() == null) {
                         PageDesc pageDesc = new PageDesc();
                         pageDesc.setPageSize(-1);
-                        List<WorkGroup> allWorkGroup = workGroupManager.listWorkGroup(CollectionsOpt.createHashMap("groupId", workGroups.get(0).getGroupId()), pageDesc);
+                        List<WorkGroup> allWorkGroup = workGroupManager.listWorkGroup(CollectionsOpt.createHashMap(
+                            "groupId", workGroups.get(0).getGroupId()), pageDesc);
                         StringBuilder users = new StringBuilder();
                         StringBuilder allUsers = new StringBuilder();
                         for (WorkGroup workGroup : allWorkGroup) {
@@ -213,7 +217,8 @@ public class WorkGroupController extends BaseController {
                         requestParams.put("uidList", allUsers.toString());
                         requestParams.put("name", osInfo.getOsName());
                         HttpExecutorContext httpExecutorContext = HttpExecutorContext.create(httpClient);
-                        HttpReceiveJSON valueOfJson = HttpReceiveJSON.valueOfJson(HttpExecutor.simpleGet(httpExecutorContext, tioServer + "/chat/createGroup.tio_x", requestParams));
+                        HttpReceiveJSON valueOfJson = HttpReceiveJSON.valueOfJson(HttpExecutor.simpleGet(httpExecutorContext,
+                            tioServer + "/chat/createGroup.tio_x", requestParams));
                         logger.info(valueOfJson.getDataAsString());
                         if (valueOfJson.getJSONObject("data") != null && valueOfJson.getJSONObject("data").get("id") != null) {
                             osInfo.setGroupId(valueOfJson.getJSONObject("data").getLong("id"));
@@ -229,7 +234,8 @@ public class WorkGroupController extends BaseController {
                         }
                         requestParams.put("uids", users.toString());
                         requestParams.put("groupid", osInfo.getGroupId());
-                        List<WorkGroup> leaderWorkGroup = workGroupManager.listWorkGroup(CollectionsOpt.createHashMap("groupId", workGroups.get(0).getGroupId(), "roleCode", WorkGroup.WORKGROUP_ROLE_CODE_LEADER), null);
+                        List<WorkGroup> leaderWorkGroup = workGroupManager.listWorkGroup(CollectionsOpt.createHashMap(
+                            "groupId", workGroups.get(0).getGroupId(), "roleCode", WorkGroup.WORKGROUP_ROLE_CODE_LEADER), null);
                         if (leaderWorkGroup != null) {
                             requestParams.put("applyuid", leaderWorkGroup.get(0).getUserCode());
                         }
@@ -249,20 +255,23 @@ public class WorkGroupController extends BaseController {
     @RequestMapping(value = "/{groupId}/{userCode}", method = {RequestMethod.DELETE})
     @ApiOperation(value = "删除单个工作组成员")
     @WrapUpResponseBody
-    public void deleteTeamUser(@PathVariable String groupId, @PathVariable String userCode) {
+    public void deleteTeamUser(@PathVariable String groupId, @PathVariable String userCode, HttpServletRequest request) {
         String loginUser = WebOptUtils.getCurrentUserCode(RequestThreadLocal.getLocalThreadWrapperRequest());
         if (StringBaseOpt.isNvl(loginUser)) {
             loginUser = WebOptUtils.getRequestFirstOneParameter(RequestThreadLocal.getLocalThreadWrapperRequest(), "userCode");
         }
         if (StringUtils.isBlank(loginUser)) {
-            throw new ObjectException(ResponseData.HTTP_MOVE_TEMPORARILY, "您未登录，请先登录！");
+            throw new ObjectException(ResponseData.HTTP_MOVE_TEMPORARILY,
+                getI18nMessage( "error.302.user_not_login", request));
         }
         WorkGroup workGroup = workGroupManager.getWorkGroup(groupId, loginUser, WorkGroup.WORKGROUP_ROLE_CODE_LEADER);
         if (workGroup == null || !WorkGroup.WORKGROUP_ROLE_CODE_LEADER.equals(workGroup.getWorkGroupParameter().getRoleCode())) {
-            throw new ObjectException(ResponseData.ERROR_INTERNAL_SERVER_ERROR, "你非组长不能删除成员！");
+            throw new ObjectException(ResponseData.ERROR_FORBIDDEN,
+                getI18nMessage( "error.403.access_forbidden", request)); //"你非组长不能删除成员！");
         }
         if (loginUser.equals(userCode)) {
-            throw new ObjectException(ResponseData.ERROR_INTERNAL_SERVER_ERROR, "组长不能删除组长！");
+            throw new ObjectException(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                getI18nMessage( "error.702.operate_conflict", request)); //组长不能删除组长！");
         }
         workGroupManager.deleteWorkGroup(groupId, userCode, WorkGroup.WORKGROUP_ROLE_CODE_MEMBER);
     }
@@ -276,7 +285,7 @@ public class WorkGroupController extends BaseController {
     @ApiOperation(value = "更新单个工作组成员")
     @WrapUpResponseBody
     public void updateTeamUser(@RequestBody WorkGroup workGroup, HttpServletRequest request) {
-        loginUserPermissionCheck(workGroup.getWorkGroupParameter().getGroupId());
+        loginUserPermissionCheck(workGroup.getWorkGroupParameter().getGroupId(), request);
         String currentUserCode = WebOptUtils.getCurrentUserCode(request);
         if (StringUtils.isNotBlank(currentUserCode)) {
             workGroup.setUpdator(currentUserCode);//更新人  当前登录人
@@ -284,7 +293,6 @@ public class WorkGroupController extends BaseController {
         workGroup.getWorkGroupParameter().setRoleCode(WorkGroup.WORKGROUP_ROLE_CODE_MEMBER);
         workGroupManager.updateWorkGroup(workGroup);
     }
-
 
     /*
      * 组长移交
@@ -300,36 +308,43 @@ public class WorkGroupController extends BaseController {
 
     private void leaderHandOverPermissionCheck(String workGroupId, HttpServletRequest request) {
         if (StringUtils.isBlank(workGroupId)) {
-            throw new ObjectException("groupId不能为空!");
+            throw new ObjectException(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
+                getI18nMessage( "error.701.field_is_blank", request, "groupId"));
         }
         String loginUser = WebOptUtils.getCurrentUserCode(request);
         if (StringBaseOpt.isNvl(loginUser)) {
             loginUser = WebOptUtils.getRequestFirstOneParameter(request, "userCode");
         }
         if (StringUtils.isBlank(loginUser)) {
-            throw new ObjectException(ResponseData.HTTP_MOVE_TEMPORARILY, "您未登录，请先登录！");
+            throw new ObjectException(ResponseData.HTTP_MOVE_TEMPORARILY,
+                getI18nMessage( "error.302.user_not_login", request));
         }
         String topUnit = WebOptUtils.getCurrentTopUnit(request);
         if (StringUtils.isBlank(topUnit)) {
-            throw new ObjectException(ResponseData.HTTP_UNAUTHORIZED, "您没有操作权限!");
+            throw new ObjectException(ResponseData.HTTP_UNAUTHORIZED,
+                getI18nMessage( "error.403.access_forbidden", request));
         }
-        Map<String, Object> filterMap = CollectionsOpt.createHashMap("groupId_in", new Object[]{workGroupId, topUnit}, "userCode", loginUser,
+        Map<String, Object> filterMap = CollectionsOpt.createHashMap("groupId_in",
+            new Object[]{workGroupId, topUnit}, "userCode", loginUser,
             "roleCode_in", new Object[]{"ZHGLY", "组长"});
         if (workGroupManager.countWorkGroup(filterMap) < 1) {
-            throw new ObjectException(ResponseData.HTTP_UNAUTHORIZED, "您没有操作权限!");
+            throw new ObjectException(ResponseData.HTTP_UNAUTHORIZED,
+                getI18nMessage( "error.403.access_forbidden", request));
         }
     }
 
-    private void loginUserPermissionCheck(String osId) {
+    private void loginUserPermissionCheck(String osId, HttpServletRequest request) {
         String loginUser = WebOptUtils.getCurrentUserCode(RequestThreadLocal.getLocalThreadWrapperRequest());
         if (StringBaseOpt.isNvl(loginUser)) {
             loginUser = WebOptUtils.getRequestFirstOneParameter(RequestThreadLocal.getLocalThreadWrapperRequest(), "userCode");
         }
         if (StringUtils.isBlank(loginUser)) {
-            throw new ObjectException(ResponseData.HTTP_MOVE_TEMPORARILY, "您未登录，请先登录！");
+            throw new ObjectException(ResponseData.HTTP_MOVE_TEMPORARILY,
+                getI18nMessage( "error.302.user_not_login", request));
         }
         if (!workGroupManager.loginUserIsExistWorkGroup(osId, loginUser)) {
-            throw new ObjectException(ResponseData.HTTP_NON_AUTHORITATIVE_INFORMATION, "您没有权限，请联系管理员！");
+            throw new ObjectException(ResponseData.HTTP_NON_AUTHORITATIVE_INFORMATION,
+                getI18nMessage( "error.403.access_forbidden", request));
         }
     }
 }

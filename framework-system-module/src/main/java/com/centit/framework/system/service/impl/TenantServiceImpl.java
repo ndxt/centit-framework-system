@@ -254,42 +254,50 @@ public class TenantServiceImpl implements TenantService {
     public ResponseData userApplyJoinTenant(TenantMemberApply tenantMemberApply) {
 
         UserInfo userInfo = CodeRepositoryUtil.getUserInfoByCode(tenantMemberApply.getTopUnit(), tenantMemberApply.getUserCode());
-        if (Objects.nonNull(userInfo)) {
-            return ResponseData.makeErrorMessage("您已经是改租户成员，无需重复申请");
+        if (userInfo != null) {
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_DUPLICATE_OPERATION,
+                "error.801.duplicate_operation");
         }
 
         TenantInfo tenantInfo = tenantInfoDao.getObjectById(tenantMemberApply.getTopUnit());
         if (null == tenantInfo || !"T".equals(tenantInfo.getIsAvailable())) {
-            return ResponseData.makeErrorMessage("租户信息不存在,或租户状态不可用!");
+            return ResponseData.makeErrorMessageWithData(new Object[] {tenantMemberApply.getTopUnit()},
+                ObjectException.DATA_NOT_FOUND_EXCEPTION ,"error.604.unit_not_found");
         }
         tenantMemberApply.setApplyTime(DatetimeOpt.currentUtilDate());
         tenantMemberApply.setApplyType("1");
         tenantMemberApply.setUnitCode(null);
         tenantMemberApplyDao.saveTenantMemberApply(tenantMemberApply);
-        return ResponseData.makeSuccessResponse("申请成功,等待对方同意!");
+        return ResponseData.makeSuccessResponse("info.200.apply_success");
     }
 
     @Override
     public ResponseData adminApplyUserJoinTenant(TenantMemberApply tenantMemberApply) {
         boolean isTenantAdmin = tenantPowerManage.userIsTenantAdmin(tenantMemberApply.getInviterUserCode(), tenantMemberApply.getTopUnit());
         if (!isTenantAdmin) {
-            return ResponseData.makeErrorMessage(ResponseData.ERROR_UNAUTHORIZED, "您没有邀请权限");
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_UNAUTHORIZED,
+                "error.401.unauthorized");
         }
         UserInfo userInfo = CodeRepositoryUtil.getUserInfoByCode(tenantMemberApply.getTopUnit(), tenantMemberApply.getUserCode());
-        if (Objects.nonNull(userInfo)) {
-            return ResponseData.makeErrorMessage("用户已经是本租户成员，无需重复邀请!");
+        if (userInfo != null)  {
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_DUPLICATE_OPERATION,
+                "error.801.duplicate_operation");
         }
-        if (Objects.isNull(userInfoDao.getUserByCode(tenantMemberApply.getUserCode()))) {
-            return ResponseData.makeErrorMessage("用户信息不存在!");
+        if (userInfoDao.getUserByCode(tenantMemberApply.getUserCode()) == null) {
+            return ResponseData.makeErrorMessageWithData(new Object[] {tenantMemberApply.getUserCode()},
+                ObjectException.DATA_NOT_FOUND_EXCEPTION ,"error.604.user_not_found");
         }
         tenantMemberApply.setApplyTime(DatetimeOpt.currentUtilDate());
         tenantMemberApply.setApplyType("2");
         //如果是租户邀请用户，判断租户下用户数量是否达到限制
         if (tenantPowerManage.userNumberLimitIsOver(tenantMemberApply.getTopUnit())) {
-            return ResponseData.makeErrorMessage("用户数量达到上限!");
+            TenantInfo tenantInfo = tenantInfoDao.getObjectById(tenantMemberApply.getTopUnit());
+            return ResponseData.makeErrorMessageWithData(
+                new Object[] {tenantInfo.getUserNumberLimit(), "user"},
+                ResponseData.ERROR_FIELD_INPUT_NOT_VALID, "info.701.resource_limit");
         }
         tenantMemberApplyDao.saveTenantMemberApply(tenantMemberApply);
-        return ResponseData.makeSuccessResponse("申请成功,等待对方同意!");
+        return ResponseData.makeSuccessResponse("info.200.apply_success");
     }
 
     @Override
@@ -345,7 +353,6 @@ public class TenantServiceImpl implements TenantService {
         }
         return ResponseData.makeSuccessResponse();
     }
-
 
     @Override
     @Transactional
