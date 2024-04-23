@@ -6,6 +6,7 @@ import com.aliyun.dysmsapi20170525.models.SendSmsResponseBody;
 import com.aliyun.teaopenapi.models.Config;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.ResponseMapData;
+import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
@@ -226,7 +227,7 @@ public class VateCodeController extends BaseController {
                     }
                     userInfoDao.updateUser(user);
                     //刷新缓存中的人员信息
-                    reloadAuthentication(user.getUserCode());
+                    reloadAuthentication(user.getUserCode(), request);
                     //人员新增更新成功后刷新缓存
                     CodeRepositoryCache.evictCache("UserInfo");
                 }
@@ -400,22 +401,10 @@ public class VateCodeController extends BaseController {
         return new com.aliyun.dysmsapi20170525.Client(config);
     }
 
-    private void reloadAuthentication(String userCode) {
+    private void reloadAuthentication(String userCode, HttpServletRequest request) {
         CentitUserDetails centitUserDetails = platformEnvironment.loadUserDetailsByUserCode(userCode);
-        centitUserDetails.setLoginIp(getUserIp());
+        centitUserDetails.setLoginIp(WebOptUtils.getRequestAddr(request));
         SecurityContextHolder.getContext().setAuthentication(centitUserDetails);
-    }
-    /**
-     * 获取用户ip地址
-     * @return
-     */
-    private String getUserIp(){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(principal instanceof CentitUserDetails){
-            CentitUserDetails userDetails = (CentitUserDetails) principal;
-            return userDetails.getLoginIp();
-        }
-        return "";
     }
 
 }
