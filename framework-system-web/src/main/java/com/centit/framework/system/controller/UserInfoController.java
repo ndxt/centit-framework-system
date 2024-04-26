@@ -178,7 +178,7 @@ public class UserInfoController extends BaseController {
         UserInfo dbuserinfo = sysUserManager.loadUserByLoginname(userInfo.getLoginName());
         if (null != dbuserinfo) {
             return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
-                "登录名" + userInfo.getLoginName() + "已存在，请更换！");
+                getI18nMessage("error.702.userinfo_conflict", request));
         }
 
         if (null != userInfo.getUserRoles()) {
@@ -218,46 +218,32 @@ public class UserInfoController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新用户信息",
         tag = "{userCode}")
     @WrapUpResponseBody
-    public ResponseData updateUserInfo(@ParamName("userCode") @PathVariable String userCode, @Valid UserInfo userInfo, UserUnit userUnit,
-                             HttpServletRequest request) {
+    public ResponseData updateUserInfo(@ParamName("userCode") @PathVariable String userCode, @Valid UserInfo userInfo,
+                                       UserUnit userUnit, HttpServletRequest request) {
 
         UserInfo dbUserInfo = sysUserManager.getObjectById(userCode);
         if (null == dbUserInfo) {
-            return ResponseData.makeErrorMessage("当前用户不存在");
+            return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_FOUND_EXCEPTION,
+                getI18nMessage("error.604.user_not_found", request, userCode));
         }
         if(!StringUtils.equals(userInfo.getLoginName(), dbUserInfo.getLoginName())) {
             if(sysUserManager.isLoginNameExist(userInfo.getUserCode(), userInfo.getLoginName())){
-                throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "用户的登录名已存在，");
+                throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR,
+                    getI18nMessage("error.611.loginname_already_exists", request));
             }
         }
         if(StringUtils.isNotBlank(userInfo.getRegCellPhone()) &&
                 !StringUtils.equals(userInfo.getRegCellPhone(), dbUserInfo.getRegCellPhone())) {
             if(sysUserManager.isCellPhoneExist(userInfo.getUserCode(), userInfo.getRegCellPhone())){
-                throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "用户的预留的电话号码已存在，");
+                throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR,
+                    getI18nMessage("error.611.phone_already_exists", request));
             }
         }
         if(StringUtils.isNotBlank(userInfo.getRegEmail()) &&
             !StringUtils.equals(userInfo.getRegEmail(), dbUserInfo.getRegEmail())) {
             if(sysUserManager.isEmailExist(userInfo.getUserCode(), userInfo.getRegEmail())){
-                throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "用户的预留的email已存在，");
-            }
-        }
-
-        if(!StringUtils.equals(userInfo.getLoginName(), dbUserInfo.getLoginName())) {
-            if(sysUserManager.isLoginNameExist(userInfo.getUserCode(), userInfo.getLoginName())){
-                throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "用户的登录名已存在，");
-            }
-        }
-        if(StringUtils.isNotBlank(userInfo.getRegCellPhone()) &&
-            !StringUtils.equals(userInfo.getRegCellPhone(), dbUserInfo.getRegCellPhone())) {
-            if(sysUserManager.isCellPhoneExist(userInfo.getUserCode(), userInfo.getRegCellPhone())){
-                throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "用户的预留的电话号码已存在，");
-            }
-        }
-        if(StringUtils.isNotBlank(userInfo.getRegEmail()) &&
-            !StringUtils.equals(userInfo.getRegEmail(), dbUserInfo.getRegEmail())) {
-            if(sysUserManager.isEmailExist(userInfo.getUserCode(), userInfo.getRegEmail())){
-                throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "用户的预留的email已存在，");
+                throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR,
+                    getI18nMessage("error.611.email_already_exists", request));
             }
         }
 
@@ -379,7 +365,9 @@ public class UserInfoController extends BaseController {
         String regPhone = request.getParameter("regPhone");
         String regEmail = request.getParameter("regEmail");
         if (StringUtils.isAllBlank(userCode,loginName,regPhone,regEmail)){
-            throw new ObjectException("参数不能为空!");
+            throw new ObjectException(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
+                getI18nMessage("error.701.field_is_blank" , request,
+                    "userCode/loginName/regPhone/regEmail"));
         }
         return sysUserManager.isAnyOneExist(userCode, loginName, regPhone, regEmail);
     }
@@ -426,9 +414,9 @@ public class UserInfoController extends BaseController {
         JSONObject objBody = JSONObject.parseObject(jsonBody);
         //newPassword
         String newPassword = SecurityOptUtils.decodeSecurityString(objBody.getString("newPassword"));
-
         if (StringUtils.isBlank(newPassword)) {
-            throw new ObjectException(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,"您没有设置新的密码。");
+            throw new ObjectException(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
+                getI18nMessage("error.701.field_is_blank" , request, "newPassword"));
         } else {
             sysUserManager.forceSetPassword(userCode, newPassword);
         }
@@ -472,14 +460,16 @@ public class UserInfoController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户",
         tag = "{userCodes}")
     @WrapUpResponseBody
-    public ResponseData deleteUser(@ParamName("userCodes") @PathVariable String[] userCodes) {
+    public ResponseData deleteUser(@ParamName("userCodes") @PathVariable String[] userCodes,
+                                   HttpServletRequest request) {
         for (String userCode : userCodes) {
             UserInfo userInfo = sysUserManager.getObjectById(userCode);
             if (null != userInfo) {
                 sysUserManager.deleteUserInfo(userCode);
-            } else {
-                return ResponseData.makeErrorMessage("该用户不存在");
-            }
+            }/* else {
+                return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_FOUND_EXCEPTION,
+                    getI18nMessage("error.604.user_not_found", request, userCode));
+            }*/
         }
         return ResponseData.successResponse;
     }

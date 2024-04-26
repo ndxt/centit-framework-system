@@ -527,15 +527,16 @@ public class UnitInfoController extends BaseController {
      */
     @ApiOperation(value = "当前机构下用户", notes = "当前机构下用户。")
     @ApiImplicitParam(
-        name = "userunitid", value = "用户机构代码",
+        name = "userUnitId", value = "用户机构代码",
         required = true, paramType = "path", dataType = "String")
-    @RequestMapping(value = "/unitusers/{userunitid}", method = RequestMethod.GET)
+    @RequestMapping(value = "/unitusers/{userUnitId}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData getUnitUser(@PathVariable String userunitid) {
-        UserUnit userUnit = sysUserUnitManager.getObjectById(userunitid);
+    public ResponseData getUnitUser(@PathVariable String userUnitId, HttpServletRequest request)  {
+        UserUnit userUnit = sysUserUnitManager.getObjectById(userUnitId);
 
         if (null == userUnit) {
-            return ResponseData.makeErrorMessage("当前机构中无此用户");
+            return ResponseData.makeErrorMessage(
+                getI18nMessage("error.604.user_not_in_unit", request));
         }
         return ResponseData.makeResponseData(userUnit);
     }

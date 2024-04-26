@@ -136,7 +136,7 @@ public class TenantController extends BaseController {
         }
         if (StringUtils.isBlank(tenantMemberApply.getTopUnit())){
             return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
-                getI18nMessage("error.701.field_is_blank",request, "topUnit"));
+                getI18nMessage("error.701.field_is_blank", request, "topUnit"));
         }
         tenantMemberApply.setUserCode(userCode);
         tenantMemberApply.setInviterUserCode(userCode);
@@ -256,14 +256,15 @@ public class TenantController extends BaseController {
     public ResponseData userCancelApply(@RequestBody TenantMemberApply tenantMemberApply,HttpServletRequest request) {
         String topUnit = tenantMemberApply.getTopUnit();
         if (StringUtils.isBlank(topUnit)){
-            return ResponseData.makeErrorMessage("topUnit不能为空");
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
+                getI18nMessage( "error.701.field_is_blank", request, "topUnit"));
         }
         String currentUserCode = WebOptUtils.getCurrentUserCode(request);
         if (StringUtils.isBlank(currentUserCode)){
             throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN,
                 getI18nMessage( "error.302.user_not_login", request));
         }
-        Map<String, Object> parameters = CollectionsOpt.createHashMap("userCode", currentUserCode,"topUnit",  topUnit);
+        Map<String, Object> parameters = CollectionsOpt.createHashMap("userCode", currentUserCode, "topUnit", topUnit);
         return tenantService.cancelApply(parameters);
     }
 
@@ -306,11 +307,13 @@ public class TenantController extends BaseController {
     public ResponseData deleteTenant(HttpServletRequest request) {
         Map<String, Object> parameters = collectRequestParameters(request);
         if (StringUtils.isBlank(MapUtils.getString(parameters, "topUnit"))) {
-            return ResponseData.makeErrorMessage("topUnit不能为空");
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
+                getI18nMessage( "error.701.field_is_blank", request, "topUnit"));
         }
         String userCode = WebOptUtils.getCurrentUserCode(request);
         if (StringUtils.isBlank(userCode)){
-            throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN,"您未登录");
+            throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN,
+                getI18nMessage( "error.302.user_not_login", request));
         }
         parameters.put("userCode",userCode);
         logger.info("用户:{}注销租户{}信息",userCode,MapUtils.getString(parameters, "topUnit"));
@@ -325,10 +328,12 @@ public class TenantController extends BaseController {
     @WrapUpResponseBody
     public ResponseData agreeJoin(@RequestBody @Validated TenantMemberApplyVo tenantMemberApply, HttpServletRequest request) {
         if (StringUtils.isBlank(WebOptUtils.getCurrentUserCode(request))){
-            throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN,"您未登录!");
+            throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN,
+                getI18nMessage( "error.302.user_not_login", request));
         }
         if (StringUtils.isBlank(tenantMemberApply.getTopUnit())){
-            throw new ObjectException(ResponseData.ERROR_INTERNAL_SERVER_ERROR,"topUnit不能为空!");
+            throw new ObjectException(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
+                getI18nMessage( "error.701.field_is_blank", request, "topUnit"));
         }
         return tenantService.agreeJoin(tenantMemberApply);
     }
@@ -354,10 +359,12 @@ public class TenantController extends BaseController {
     public ResponseData userAgreeJoin(@RequestBody TenantMemberApplyVo tenantMemberApply, HttpServletRequest request) {
         String userCode = WebOptUtils.getCurrentUserCode(request);
         if (StringUtils.isBlank(userCode)){
-            throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN,"您未登录!");
+            throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN,
+                getI18nMessage( "error.302.user_not_login", request));
         }
         if (StringUtils.isBlank(tenantMemberApply.getTopUnit())){
-            throw new ObjectException(ResponseData.ERROR_INTERNAL_SERVER_ERROR,"topUnit不能为空!");
+            throw new ObjectException(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
+                getI18nMessage( "error.701.field_is_blank", request, "topUnit"));
         }
         tenantMemberApply.setUserCode(userCode);
         return tenantService.agreeJoin(tenantMemberApply);
@@ -383,12 +390,14 @@ public class TenantController extends BaseController {
     @WrapUpResponseBody
     public ResponseData adminAgreeJoin(@RequestBody TenantMemberApplyVo tenantMemberApply, HttpServletRequest request) {
         if (StringUtils.isBlank(WebOptUtils.getCurrentUserCode(request))){
-            return ResponseData.makeErrorMessage(ResponseData.ERROR_USER_NOT_LOGIN,"您未登录!");
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_USER_NOT_LOGIN,
+                getI18nMessage( "error.302.user_not_login", request));
         }
         String topUnit = WebOptUtils.getCurrentTopUnit(request);
         String currentUserCode = WebOptUtils.getCurrentUserCode(request);
         if (StringUtils.isBlank(topUnit) || !tenantPowerManage.userIsTenantAdmin(currentUserCode, topUnit)){
-            return ResponseData.makeErrorMessage(ResponseData.HTTP_UNAUTHORIZED,"您没有权限操作!");
+            return ResponseData.makeErrorMessage(ResponseData.HTTP_UNAUTHORIZED,
+                getI18nMessage( "error.401.unauthorized", request));
         }
         tenantMemberApply.setTopUnit(topUnit);
         return tenantService.agreeJoin(tenantMemberApply);
@@ -419,7 +428,8 @@ public class TenantController extends BaseController {
     public ResponseData updateUserCurrentUnit(@RequestBody UserInfo userInfo, HttpServletRequest request) {
         String userCode = WebOptUtils.getCurrentUserCode(request);
         if(!StringUtils.equals(userCode, userInfo.getUserCode())){
-            throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "只有用户自己才能修改自己的信息！");
+            throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR,
+                "只有用户自己才能修改自己的信息！");
         }
         try {
             return tenantService.updateUserCurrentUnit(userInfo);
@@ -439,16 +449,18 @@ public class TenantController extends BaseController {
         //paraMaps 也可以通过 collectRequestParameters(request)获取
         String topUnit = MapUtils.getString(paraMaps, "topUnit");
         if (StringUtils.isBlank(topUnit)) {
-            return ResponseData.makeErrorMessage("参数topUnit不能为空");
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
+                getI18nMessage( "error.701.field_is_blank", request, "topUnit"));
         }
         String userCode = WebOptUtils.getCurrentUserCode(request);
         if (StringUtils.isBlank(userCode)) {
-            return ResponseData.makeErrorMessage(ResponseData.ERROR_USER_NOT_LOGIN, "当前用户未登录");
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_USER_NOT_LOGIN,
+                getI18nMessage( "error.302.user_not_login", request));
         }
         try {
             return tenantService.quitTenant(topUnit, userCode);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             logger.error("退出租户失败。失败原因：{},入参：userCode={},topUnit={}", e, userCode, topUnit);
         }
         return ResponseData.errorResponse;
@@ -461,16 +473,17 @@ public class TenantController extends BaseController {
     @RequestMapping(value = "/removeTenantMember", method = RequestMethod.PUT)
     @WrapUpResponseBody
     //@RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}把成员移除租户",tag = "{userCodes}")
-    public ResponseData removeTenantMember(@RequestBody Map<String, Object> paraMaps) {
+    public ResponseData removeTenantMember(@RequestBody Map<String, Object> paraMaps, HttpServletRequest request) {
         String topUnit = MapUtils.getString(paraMaps, "topUnit");
         String userCode = MapUtils.getString(paraMaps, "userCode");
         if (StringUtils.isAnyBlank(topUnit, userCode)) {
-            return ResponseData.makeErrorMessage("参数topUnit,userCode不能为空");
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
+                getI18nMessage( "error.701.field_is_blank", request, "topUnit,userCode"));
         }
         try {
             return tenantService.removeTenantMember(topUnit, userCode);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             logger.error("移除租户失败。失败原因：{},入参：userCode={},topUnit={}", e, userCode, topUnit);
         }
         return ResponseData.errorResponse;
@@ -489,10 +502,11 @@ public class TenantController extends BaseController {
         try {
             return tenantService.businessTenant(userCode, tenantBusinessLog);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             logger.error("租户转让申请失败。失败原因：{},入参：tenantBusinessLog={}", e, tenantBusinessLog.toString());
         }
-        return ResponseData.makeErrorMessage("租户转让申请失败");
+        return ResponseData.makeErrorMessage(ResponseData.ERROR_PROCESS_FAILED,
+           getI18nMessage("error.704.process_failed", request)); //
     }
 
     @ApiOperation(
@@ -513,7 +527,7 @@ public class TenantController extends BaseController {
     )
     @RequestMapping(value = "/pageListTenantMember", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult<Object> pageListTenantMember(HttpServletRequest request, PageDesc pageDesc) {
+    public PageQueryResult pageListTenantMember(HttpServletRequest request, PageDesc pageDesc) {
         Map<String, Object> parameters = collectRequestParameters(request);
         return tenantService.pageListTenantMember(parameters, pageDesc);
     }
@@ -531,10 +545,11 @@ public class TenantController extends BaseController {
         } catch (ObjectException obe) {
             return ResponseData.makeErrorMessage(obe.getExceptionCode(), obe.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             logger.error("设置租户成员角色出错，错误原因:{},入参:{}", e, tenantMemberQo.toString());
         }
-        return ResponseData.makeErrorMessage("设置租户成员角色出错");
+        return ResponseData.makeErrorMessage(ResponseData.ERROR_PROCESS_FAILED,
+            getI18nMessage("error.704.process_failed", request)); //"设置租户成员角色出错");
 
     }
 
@@ -552,10 +567,11 @@ public class TenantController extends BaseController {
         } catch (ObjectException obe) {
             return ResponseData.makeErrorMessage(obe.getExceptionCode(), obe.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             logger.error("删除租户成员角色出错，错误原因:{},入参:{}", e, tenantMemberQo.toString());
         }
-        return ResponseData.makeErrorMessage("删除租户成员角色出错");
+        return ResponseData.makeErrorMessage(ResponseData.ERROR_PROCESS_FAILED,
+            getI18nMessage("error.704.process_failed", request)); //"删除租户成员角色出错");
 
     }
 
@@ -578,7 +594,8 @@ public class TenantController extends BaseController {
             e.printStackTrace();
             logger.error("获取用户所在租户出错，错误原因:{},入参:{}", e, userCode);
         }
-        return ResponseData.makeErrorMessage("获取用户所在租户出错");
+        return ResponseData.makeErrorMessage(ResponseData.ERROR_PROCESS_FAILED,
+            getI18nMessage("error.704.process_failed", request)); //"获取用户所在租户出错");
 
     }
 
@@ -649,7 +666,8 @@ public class TenantController extends BaseController {
         if (WebOptUtils.isTenant){
             String topUnit = WebOptUtils.getCurrentTopUnit(request);
             if (StringUtils.isBlank(topUnit)){
-                throw new ObjectException("topUnit不能为空!");
+                throw new ObjectException(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
+                    getI18nMessage( "error.701.field_is_blank", request, "topUnit"));
             }
             unitInfo.setTopUnit(topUnit);
         }
@@ -673,7 +691,8 @@ public class TenantController extends BaseController {
     public ResponseData addTenantUser(@ParamName("us") @Valid UserInfo userInfo, UserUnit userUnit, HttpServletRequest request) {
         String userCode = WebOptUtils.getCurrentUserCode(request);
         if (null == userUnit || StringUtils.isBlank(userUnit.getTopUnit())){
-            return ResponseData.makeErrorMessage("topUnit不能为空!");
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
+                getI18nMessage( "error.701.field_is_blank", request, "topUnit"));
         }
         String topUnit = WebOptUtils.getCurrentTopUnit(request);
         if(!StringUtils.equals(userUnit.getTopUnit(), topUnit)){

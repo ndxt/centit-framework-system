@@ -100,7 +100,8 @@ public class UnitRoleController extends BaseController {
     })
     @RequestMapping(value = "/rolesubunits/{roleCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult<Object> listSubUnitByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request) {
+    public PageQueryResult<Object> listSubUnitByRole(@PathVariable String roleCode, PageDesc pageDesc,
+                                                     HttpServletRequest request) {
 
         String currentUnitCode = WebOptUtils.getCurrentUnitCode(request);
         UnitInfo currentUnit = sysUnitManager.getObjectById(currentUnitCode);
@@ -185,9 +186,10 @@ public class UnitRoleController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}给机构{arg1}赋予权限{arg0.roleCode}",
         tag = "{arg0.roleCode}:{arg1}")
     @WrapUpResponseBody
-    public ResponseData create(@Valid UnitRole unitRole, @Valid String[] unitCode) {
+    public ResponseData create(@Valid UnitRole unitRole, @Valid String[] unitCode, HttpServletRequest request) {
         if (sysUnitRoleManager.getUnitRoleById(unitRole.getUnitCode(), unitRole.getRoleCode()) != null) {
-            return ResponseData.makeErrorMessage("该角色已经关联此机构");
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_DUPLICATE_OPERATION,
+                getI18nMessage("error.801.duplicate_operation", request));
         }
 
         unitRole.setCreateDate(new Date());
@@ -226,10 +228,12 @@ public class UnitRoleController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}修改机构角色关联信息",
         tag = "{arg0}:{arg1}")
     @WrapUpResponseBody
-    public UnitRole updateUnitRole(@PathVariable String roleCode, @PathVariable String unitCode, @Valid UnitRole unitRole) {
+    public UnitRole updateUnitRole(@PathVariable String roleCode, @PathVariable String unitCode,
+                                   @Valid UnitRole unitRole, HttpServletRequest request) {
         UnitRole dbUnitRole = sysUnitRoleManager.getUnitRoleById(unitCode, roleCode);
         if (null == dbUnitRole) {
-            throw new ObjectException(unitRole, "当前角色中无此机构");
+            throw new ObjectException(unitRole, ObjectException.DATA_NOT_FOUND_EXCEPTION,
+                getI18nMessage("error.604.unit_without_role", request));
         }
         sysUnitRoleManager.updateUnitRole(unitRole);
         return dbUnitRole;

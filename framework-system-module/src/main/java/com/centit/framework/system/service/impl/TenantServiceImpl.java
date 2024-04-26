@@ -673,7 +673,8 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     public JSONArray userTenants(String userCode) {
-        List<TenantInfo> tenantInfos = tenantInfoDao.listUserTenant(CollectionsOpt.createHashMap("userCode", userCode));
+        List<TenantInfo> tenantInfos = tenantInfoDao.listUserTenant(CollectionsOpt.createHashMap(
+            "userCode", userCode));
         if (CollectionUtils.sizeIsEmpty(tenantInfos)) {
             return new JSONArray();
         }
@@ -723,13 +724,17 @@ public class TenantServiceImpl implements TenantService {
         }
         //排除已经被邀请的用户且没有审核,或者属于本单位的人员
         Set<String> userInfoUserCodes = userInfos.stream().map(UserInfo::getUserCode).collect(Collectors.toSet());
-        Map<String, Object> filterMap = CollectionsOpt.createHashMap("userCode_in", CollectionsOpt.listToArray(userInfoUserCodes),
+        Map<String, Object> filterMap = CollectionsOpt.createHashMap("userCode_in",
+            CollectionsOpt.listToArray(userInfoUserCodes),
             "topUnit", unitCode, "applyState_in", TenantMemberApplyDao.NOT_APPROVE_ARRAY);
         List<TenantMemberApply> alreadyApply = tenantMemberApplyDao.listObjectsByProperties(filterMap);
-        List<String> applyUserCodes = alreadyApply.stream().map(TenantMemberApply::getUserCode).collect(Collectors.toList());
-        List<UserUnit> userUnits = userUnitDao.listObjectsByProperties(CollectionsOpt.createHashMap("topUnit", unitCode));
+        List<String> applyUserCodes = alreadyApply.stream().map(TenantMemberApply::getUserCode)
+            .collect(Collectors.toList());
+        List<UserUnit> userUnits = userUnitDao.listObjectsByProperties(
+            CollectionsOpt.createHashMap("topUnit", unitCode));
         userInfos = userInfos.stream().filter(userInfo ->
-            null == getUserUnitByUserCode(userUnits, userInfo.getUserCode()) && !applyUserCodes.contains(userInfo.getUserCode())).collect(Collectors.toList());
+            null == getUserUnitByUserCode(userUnits, userInfo.getUserCode()) &&
+                !applyUserCodes.contains(userInfo.getUserCode())).collect(Collectors.toList());
         //脱敏操作
         userInfos.forEach(userInfo -> {
             userInfo.setUserPwd(null);
@@ -824,13 +829,16 @@ public class TenantServiceImpl implements TenantService {
             return ResponseData.makeErrorMessage("单位数量达到上限!");
         }
         if (sysUnitManager.hasSameName(unitInfo)) {
-            return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT, String.format("机构名%s已存在，请更换！", unitInfo.getUnitName()));
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                String.format("机构名%s已存在，请更换！", unitInfo.getUnitName()));
         }
         if (StringUtils.isNotBlank(unitInfo.getDepNo())) {
-            Map<String, Object> filterMap = CollectionsOpt.createHashMap("depNo", unitInfo.getDepNo(), "topUnit", unitInfo.getTopUnit());
+            Map<String, Object> filterMap = CollectionsOpt.createHashMap("depNo",
+                unitInfo.getDepNo(), "topUnit", unitInfo.getTopUnit());
             List<UnitInfo> unitInfos = sysUnitManager.listObjects(filterMap);
             if (unitInfos != null && unitInfos.size() > 0) {
-                return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT, String.format("机构编码%s已存在，请更换！", unitInfo.getDepNo()));
+                return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                    String.format("机构编码%s已存在，请更换！", unitInfo.getDepNo()));
             }
         }
         if (unitInfo.getUnitOrder() == null || unitInfo.getUnitOrder() == 0) {
@@ -850,7 +858,8 @@ public class TenantServiceImpl implements TenantService {
         }
         UserInfo dbUserInfo = sysUserManager.loadUserByLoginname(userInfo.getLoginName());
         if (null != dbUserInfo) {
-            return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT, String.format("登录名%s已存在，请更换！", userInfo.getLoginName()));
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                String.format("登录名%s已存在，请更换！", userInfo.getLoginName()));
         }
         if (CentitPasswordEncoder.checkPasswordStrength(userInfo.getUserPwd(), passwordMinLength ) < passwordStrength) {
             throw new ObjectException("用户密码强度太低，请输入符合要求的密码！");
@@ -907,7 +916,8 @@ public class TenantServiceImpl implements TenantService {
         tenantJson.put("roleName", translateTenantRole(roleCode));
 
         //判断当前用户是否为租户所有者或管理员
-        boolean isAdmin = MapUtils.getString(tenantJson, "roleCode", "").equals(TenantConstant.TENANT_ADMIN_ROLE_CODE)
+        boolean isAdmin = MapUtils.getString(tenantJson, "roleCode", "")
+            .equals(TenantConstant.TENANT_ADMIN_ROLE_CODE)
             || MapUtils.getString(tenantJson, "isOwner").equals("T");
         tenantJson.put("isAdmin", isAdmin);
 
@@ -920,7 +930,8 @@ public class TenantServiceImpl implements TenantService {
        List<UserUnit> iUserUnitList = CodeRepositoryUtil.listUserUnits(topUnit, userCode);
        for(UserUnit userUnit:iUserUnitList){
            JSONObject jsonObject=  JSONObject.from(userUnit);
-           jsonObject.put("unitName",CodeRepositoryUtil.getValue("unitCode",userUnit.getUnitCode(),topUnit,"zh_CN"));
+           jsonObject.put("unitName",CodeRepositoryUtil.getValue("unitCode",
+               userUnit.getUnitCode(),topUnit,"zh_CN"));
           jsonObject.put("userRankText",CodeRepositoryUtil.getValue("RankType",
               userUnit.getUserRank(),topUnit,"zh_CN"));
            jsonArray.add(jsonObject);
@@ -968,7 +979,8 @@ public class TenantServiceImpl implements TenantService {
                 UnitInfo unitInfo = (UnitInfo) CodeRepositoryUtil.getUnitInfoByCode(topUnit, unitCode);
                 if (null != unitInfo) {
                     if (StringUtils.isBlank(unitInfo.getParentUnit())
-                        || unitInfo.getUnitCode().equals(unitInfo.getParentUnit()) || "0".equals(unitInfo.getParentUnit())) {
+                        || unitInfo.getUnitCode().equals(unitInfo.getParentUnit())
+                        || "0".equals(unitInfo.getParentUnit())) {
                         if (unitCods.add(unitInfo.getUnitCode())) {
                             unitInfos.add(unitInfo);
                         }
@@ -994,7 +1006,8 @@ public class TenantServiceImpl implements TenantService {
             return null;
         }
         List<UserUnit> userUnitMatch = userUnits.stream()
-            .filter(un -> unitInfoJsonObject.getString("unitCode").equals(un.getUnitCode())).collect(Collectors.toList());
+            .filter(un -> unitInfoJsonObject.getString("unitCode").equals(un.getUnitCode()))
+            .collect(Collectors.toList());
         if (CollectionUtils.sizeIsEmpty(userUnitMatch)) {
             return unitInfoJsonObject;
         }
@@ -1192,7 +1205,8 @@ public class TenantServiceImpl implements TenantService {
             //如果没有指定分配到哪个部门，则默认分配到顶级部门
             oldTenantMemberApply.setUnitCode(oldTenantMemberApply.getTopUnit());
         }
-        List<UserUnit> userUnits = userUnitDao.listObjectByUserUnit(oldTenantMemberApply.getUserCode(), oldTenantMemberApply.getUnitCode());
+        List<UserUnit> userUnits = userUnitDao.listObjectByUserUnit(oldTenantMemberApply.getUserCode(),
+            oldTenantMemberApply.getUnitCode());
         if (userUnits.size() == 0) {
             UserUnit userUnit = new UserUnit();
             //设置被邀请的单位为主机构
@@ -1419,22 +1433,28 @@ public class TenantServiceImpl implements TenantService {
             DATA_CATALOG_RANK_SUFFIX, "职位");
         dataCatalogDao.saveNewObject(rankTypeDataCatalog);
         String rankTypeCatalogCode = rankTypeDataCatalog.getCatalogCode();
-        String[][] rankTypeElements = {{rankTypeCatalogCode, "CM", "董事长"}, {rankTypeCatalogCode, "DM", "部门经理"}, {rankTypeCatalogCode, "FG", "分管高层"},
-            {rankTypeCatalogCode, "GM", "总经理"}, {rankTypeCatalogCode, "PM", "副总经理"}, {rankTypeCatalogCode, "YG", "普通员工"}};
+        String[][] rankTypeElements = {{rankTypeCatalogCode, "CM", "董事长"},
+            {rankTypeCatalogCode, "DM", "部门经理"},
+            {rankTypeCatalogCode, "FG", "分管高层"},
+            {rankTypeCatalogCode, "GM", "总经理"},
+            {rankTypeCatalogCode, "PM", "副总经理"},
+            {rankTypeCatalogCode, "YG", "普通员工"}};
         batchSaveDataDictionary(rankTypeElements);
 
         //用户岗位类型字典 stationType
         DataCatalog stationTypeDataCatalog = defaultDataCatalog(userCode, topUnitCode,
             DATA_CATALOG_STATION_SUFFIX, "用户岗位");
         dataCatalogDao.saveNewObject(stationTypeDataCatalog);
-        String[][] stationTypeElements = {{stationTypeDataCatalog.getCatalogCode(), "PT", "普通岗位"}, {stationTypeDataCatalog.getCatalogCode(), "LD", "领导岗位"}};
+        String[][] stationTypeElements = {{stationTypeDataCatalog.getCatalogCode(), "PT", "普通岗位"},
+            {stationTypeDataCatalog.getCatalogCode(), "LD", "领导岗位"}};
         batchSaveDataDictionary(stationTypeElements);
 
         //初始化职级字典 PostRank
         DataCatalog postRankDataCatalog = defaultDataCatalog(userCode, topUnitCode,
             DATA_CATALOG_POSTRANK_SUFFIX, "职级");
         dataCatalogDao.saveNewObject(postRankDataCatalog);
-        String[][] postRankElements = {{postRankDataCatalog.getCatalogCode(), "ZJ", "专家"}, {postRankDataCatalog.getCatalogCode(), "GCS", "工程师"}};
+        String[][] postRankElements = {{postRankDataCatalog.getCatalogCode(), "ZJ", "专家"},
+            {postRankDataCatalog.getCatalogCode(), "GCS", "工程师"}};
         batchSaveDataDictionary(postRankElements);
     }
 

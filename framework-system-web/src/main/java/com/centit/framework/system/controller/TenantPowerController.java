@@ -40,7 +40,7 @@ public class TenantPowerController extends BaseController {
         try {
             return ResponseData.makeResponseData(tenantPowerManage.userIsTenantOwner(userCode, topUnit));
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
             logger.error("判断当前用户是否为租户所有者失败,错误原因{},租户id：{}", e, topUnit);
             return ResponseData.makeErrorMessage("判断当前用户是否为租户所有者失败!");
         }
@@ -91,7 +91,7 @@ public class TenantPowerController extends BaseController {
         try {
             return ResponseData.makeResponseData(tenantPowerManage.userTenantRole(userCode, topUnit));
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
             logger.error("当前用户是否在租户中的角色,错误原因{},租户id：{}", e, topUnit);
             return ResponseData.makeErrorMessage("当前用户不在租户中的角色!");
         }
@@ -125,7 +125,7 @@ public class TenantPowerController extends BaseController {
         try {
             return ResponseData.makeResponseData(tenantPowerManage.userIsApplicationAdmin(userCode, osId));
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
             logger.error("判断当前用户是否为应用管理员失败,错误原因{},应用id：{}", e, osId);
             return ResponseData.makeErrorMessage("判断当前用户是否为应用管理员失败!");
         }
@@ -142,7 +142,7 @@ public class TenantPowerController extends BaseController {
         try {
             return ResponseData.makeResponseData(tenantPowerManage.userIsApplicationMember(userCode, osId));
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
             logger.error("判断当前用户是否为应用成员失败,错误原因{},应用id：{}", e, osId);
             return ResponseData.makeErrorMessage("判断当前用户是否为应用成员失败!");
         }

@@ -322,7 +322,7 @@ public class UserRoleController extends BaseController {
         UserRole userRole = sysUserRoleManager.getObjectById(new UserRoleId(userCode, roleCode));
         if (null == userRole) {
             throw new ObjectException(ObjectException.DATA_NOT_FOUND_EXCEPTION,
-                getI18nMessage("error.604.user_without_role",request));
+                getI18nMessage("error.604.user_without_role", request));
         }
         return (JSONObject)DictionaryMapUtils.objectToJSON(userRole);
     }
