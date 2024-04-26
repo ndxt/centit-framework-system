@@ -106,20 +106,21 @@ public class VateCodeController extends BaseController {
     public ResponseData checkOnly(@RequestParam(value = "loginname") String loginname,
                                   HttpServletRequest request) throws Exception{
         UserInfo userInfo;
-        String msg = "";
+        String msg;
         Matcher isNum = pattern.matcher(loginname);
         if(loginname.indexOf('@')>0){
-            msg = "邮件";
+            msg = "邮件/Email";
             userInfo = userInfoDao.getUserByRegEmail(loginname);
         }else if(loginname.length() == 11 && isNum.matches()){
-            msg = "手机号";
+            msg = "手机号/phone";
             userInfo = userInfoDao.getUserByRegCellPhone(loginname);
         }else{
-            msg = "账号";
+            msg = "登录名/login name";
             userInfo = userInfoDao.getUserByLoginName(loginname);
         }
         if(userInfo != null){
-            return ResponseData.makeErrorMessage("此" + msg + "已被使用！");
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                getI18nMessage("error.702.field_conflict", request, "UserInfo", msg));
         }
         return ResponseData.successResponse;
     }
@@ -130,11 +131,12 @@ public class VateCodeController extends BaseController {
     )
     @RequestMapping(value = "/getEmailCode", method = RequestMethod.POST)
     @WrapUpResponseBody
-    public ResponseData getEmailCode(@RequestParam("email") String email) {
+    public ResponseData getEmailCode(@RequestParam("email") String email, HttpServletRequest request) {
         VotaCode votaCode = fetchVotaCode(email);
         if(votaCode != null){
             if ((System.currentTimeMillis() - votaCode.getCreateTime()) < 1000 * 60) {
-                return ResponseData.makeErrorMessage(ObjectException.DATA_VALIDATE_ERROR, "验证码发送时间小于1分钟，请稍后再试。");
+                return ResponseData.makeErrorMessage(ObjectException.DATA_VALIDATE_ERROR,
+                    getI18nMessage("error.611.send_code_time_limit", request));
             }else{
                 //重新发送则删除之前存入redis中的数据
                 deleteVotaCode(email);
@@ -142,7 +144,8 @@ public class VateCodeController extends BaseController {
         }
         UserInfo userInfo = userInfoDao.getUserByRegEmail(email);
         if (userInfo != null) {
-            return ResponseData.makeErrorMessage("此邮箱已被使用！");
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                getI18nMessage("error.702.field_conflict", request, "UserInfo", "邮件/Email"));
         }
         return sendEmail(userInfo.getUserCode(), email);
     }
@@ -159,7 +162,8 @@ public class VateCodeController extends BaseController {
         VotaCode votaCode = fetchVotaCode(phone);
         if(votaCode != null){
             if ((System.currentTimeMillis() - votaCode.getCreateTime()) < 1000 * 60) {
-                return ResponseData.makeErrorMessage(ObjectException.DATA_VALIDATE_ERROR, "验证码发送时间小于1分钟，请稍后再试。");
+                return ResponseData.makeErrorMessage(ObjectException.DATA_VALIDATE_ERROR,
+                    getI18nMessage("error.611.send_code_time_limit", request));
             }else{
                 //重新发送则删除之前存入redis中的数据
                 deleteVotaCode(phone);
@@ -168,10 +172,11 @@ public class VateCodeController extends BaseController {
         if(phone != null && !phone.equals("")){
             UserInfo userInfo = userInfoDao.getUserByRegCellPhone(phone);
             if (userInfo != null) {
-                return ResponseData.makeErrorMessage(ObjectException.DATA_VALIDATE_ERROR, "此手机号已被使用");
+                return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                    getI18nMessage("error.702.field_conflict", request, "UserInfo", "手机号/phone"));
             }
         }
-        SendSmsResponseBody s = sendPhone(phone, userCode);
+        SendSmsResponseBody s = sendPhone(phone, userCode, request);
         if(s != null && s.getCode() != null && s.getCode().equals("OK")){
             s.setCode("0");
         }
@@ -202,19 +207,26 @@ public class VateCodeController extends BaseController {
                                        HttpServletRequest request){
         try {
             if (code == null) {
-                return ResponseData.makeErrorMessage(500, "请输入验证码！");
+                return ResponseData.makeErrorMessage(ObjectException.DATA_VALIDATE_ERROR,
+                    getI18nMessage("error.611.verify_code_is_blank", request));
             }
             //从Redis中获取验证码和部分信息
             VotaCode votaCode = fetchVotaCode(key);
             if(votaCode == null){
-                return ResponseData.makeErrorMessage(500, "未发送验证码！");
+                return ResponseData.makeErrorMessage(ObjectException.DATA_VALIDATE_ERROR,
+                    getI18nMessage("error.611.verify_code_not_create", request));
+                //500, "未发送验证码！";
             }
-            if (!StringUtils.equals(votaCode.getVerifyCode(), (code))) {
-                return ResponseData.makeErrorMessage(500, "验证码错误！");
+
+            if (!StringUtils.equals(votaCode.getVerifyCode(),code)) {
+                return ResponseData.makeErrorMessage(ObjectException.DATA_VALIDATE_ERROR,
+                    getI18nMessage("error.611.verify_code_not_correct", request));
             }
             if ((System.currentTimeMillis() - votaCode.getCreateTime()) > 1000 * 60 * 5) {
-                return ResponseData.makeErrorMessage(500, "验证码已过期！");
+                return ResponseData.makeErrorMessage(ObjectException.DATA_VALIDATE_ERROR,
+                    getI18nMessage("error.611.verify_code_is_expired", request));
             }
+
             if(StringUtils.isNotBlank(userCode)){
                 UserInfo user = userInfoDao.getUserByCode(userCode);
                 if (user != null) {
@@ -261,15 +273,17 @@ public class VateCodeController extends BaseController {
             if(loginname.indexOf('@')>0){
                 userInfo = userInfoDao.getUserByRegEmail(loginname);
                 if(userInfo == null){
-                    return ResponseData.makeErrorMessage("用户不存在");
+                    return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_FOUND_EXCEPTION,
+                        getI18nMessage("error.604.user_not_found", request));
                 }
                 sendEmail(userInfo.getUserCode(), loginname);
             }else{
                 userInfo = userInfoDao.getUserByRegCellPhone(loginname);
                 if(userInfo == null){
-                    return ResponseData.makeErrorMessage("用户不存在");
+                    return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_FOUND_EXCEPTION,
+                        getI18nMessage("error.604.user_not_found", request));
                 }
-                sendPhone(loginname, "");
+                sendPhone(loginname, "", request);
             }
             result.put("x-auth-token", request.getSession().getId());
             return ResponseData.makeResponseData(result);
@@ -292,22 +306,24 @@ public class VateCodeController extends BaseController {
                                        HttpServletRequest request){
         try {
             if (code == null) {
-                return ResponseData.makeErrorMessage(500, "请输入验证码！");
+                return ResponseData.makeErrorMessage(ObjectException.DATA_VALIDATE_ERROR,
+                    getI18nMessage("error.611.verify_code_is_blank", request));
             }
             //从Redis中获取验证码和部分信息
             VotaCode votaCode = fetchVotaCode(key);
-            /*if(json == null){
-                json = JSONObject.parseObject(request.getHeader("verifyCode"));
-            }*/
             if(votaCode == null){
-                return ResponseData.makeErrorMessage(500, "未发送验证码！");
+                return ResponseData.makeErrorMessage(ObjectException.DATA_VALIDATE_ERROR,
+                    getI18nMessage("error.611.verify_code_not_create", request));
+                //500, "未发送验证码！";
             }
 
             if (!StringUtils.equals(votaCode.getVerifyCode(),code)) {
-                return ResponseData.makeErrorMessage(500, "验证码错误！");
+                return ResponseData.makeErrorMessage(ObjectException.DATA_VALIDATE_ERROR,
+                    getI18nMessage("error.611.verify_code_not_correct", request));
             }
             if ((System.currentTimeMillis() - votaCode.getCreateTime()) > 1000 * 60 * 5) {
-                return ResponseData.makeErrorMessage(500, "验证码已过期！");
+                return ResponseData.makeErrorMessage(ObjectException.DATA_VALIDATE_ERROR,
+                    getI18nMessage("error.611.verify_code_is_expired", request));
             }
             UserInfo userInfo = new UserInfo();
             if(StringUtils.isNotBlank(votaCode.getEmail())){
@@ -325,12 +341,12 @@ public class VateCodeController extends BaseController {
 
     public ResponseData sendEmail(String userCode, String email){
         String verifyCode = String.valueOf(new Random().nextInt(899999) + 100000);
-        String message = "您的验证码为:" + verifyCode + "，该码有效期为5分钟，该码只能使用一次!";
-
-
+        String message = "您的验证码为:" + verifyCode + "，该码有效期为5分钟，该码只能使用一次!\n" +
+            "Your verify code is :" + verifyCode + ", validity period is 5 minutes, and the code can only be used once!";
         ResponseData result = notificationCenter.sendMessageAppointedType("email",
             "system", userCode,
-            NoticeMessage.create().operation("system").method("post").subject("您有新邮件")
+            NoticeMessage.create().operation("system").method("post")
+                .subject("Locode verify code/平台验证码")
                 .content(message));
         if(result.getCode() == 0){
             //发送成功则将JSON保存到session和Redis中
@@ -343,11 +359,11 @@ public class VateCodeController extends BaseController {
         return result;
     }
 
-    public SendSmsResponseBody sendPhone(String phone, String userCode) {
+    public SendSmsResponseBody sendPhone(String phone, String userCode, HttpServletRequest request) {
         String verifyCode = String.valueOf(new Random().nextInt(899999) + 100000);
         JSONObject jSONObject = new JSONObject();
         jSONObject.put("code", verifyCode);
-        if(userCode != null && !userCode.equals("")){
+        if(StringUtils.isNotBlank(userCode)){
             UserInfo userInfo = userInfoDao.getUserByCode(userCode);
             if(userInfo != null){
                 jSONObject.put("product", "用户"+userInfo.getUserName());
@@ -380,7 +396,8 @@ public class VateCodeController extends BaseController {
             }
             return result;
         } catch (Exception e) {
-            throw new ObjectException(ResponseData.ERROR_PROCESS_ERROR,"发送短信异常："+ e.getMessage(), e);
+            throw new ObjectException(ResponseData.ERROR_PROCESS_FAILED,
+                getI18nMessage("error.704.sms_send_fail", request));
         }
     }
 

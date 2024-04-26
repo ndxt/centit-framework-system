@@ -172,8 +172,8 @@ public class UserUnitController extends BaseController {
     })
     @RequestMapping(value = "/userunits/{userCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult<UserUnit> listUnitsByUser(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request) {
-
+    public PageQueryResult<UserUnit> listUnitsByUser(@PathVariable String userCode, PageDesc pageDesc,
+                                                     HttpServletRequest request) {
 //        UserInfo user = sysUserManager.getObjectById(this.WebOptUtils.getCurrentUserCode(request));
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("userCode", userCode);
@@ -181,7 +181,6 @@ public class UserUnitController extends BaseController {
             filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         }
 //        filterMap.put("unitCode", user.getPrimaryUnit());
-
         List<UserUnit> listObjects = sysUserUnitManager.listObjects(filterMap, pageDesc);
         return PageQueryResult.createResultMapDict(listObjects, pageDesc);
     }
@@ -193,7 +192,8 @@ public class UserUnitController extends BaseController {
     public PageQueryResult<UserUnit> listUserUnitsUnderUnitByUserCode(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request){
         String currentUnitCode  = WebOptUtils.getCurrentUnitCode(request);
         if(StringUtils.isBlank(currentUnitCode )){
-            throw new ObjectException("未登录");
+            throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN,
+                getI18nMessage("error.302.user_not_login", request));
         }
 
         List<UserUnit> userUnits = sysUserUnitManager.listUserUnitsUnderUnitByUserCode(userCode, currentUnitCode, pageDesc);
@@ -211,11 +211,12 @@ public class UserUnitController extends BaseController {
         required = true, paramType = "path", dataType = "String")
     @RequestMapping(value = "/{userUnitId}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData getUserUnitById(@PathVariable String userUnitId) {
+    public ResponseData getUserUnitById(@PathVariable String userUnitId, HttpServletRequest request) {
         UserUnit userUnit = sysUserUnitManager.getObjectById(userUnitId);
 
         if (null == userUnit) {
-            return ResponseData.makeErrorMessage("当前机构中无此用户");
+            return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_FOUND_EXCEPTION,
+                getI18nMessage("error.604.user_not_in_unit", request));
         }
         return ResponseData.makeResponseData(DictionaryMapUtils.objectToJSON(userUnit));
     }
@@ -237,11 +238,13 @@ public class UserUnitController extends BaseController {
     })
     @RequestMapping(value = "/{unitCode}/{userCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData getUserUnit(@PathVariable String unitCode, @PathVariable String userCode) {
+    public ResponseData getUserUnit(@PathVariable String unitCode, @PathVariable String userCode,
+                                HttpServletRequest request) {
         List<UserUnit> userUnits = sysUserUnitManager.listObjectByUserUnit(userCode, unitCode);
 
         if (null == userUnits || userUnits.size() == 0) {
-            return ResponseData.makeErrorMessage("当前机构中无此用户");
+            return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_FOUND_EXCEPTION,
+                getI18nMessage("error.604.user_not_in_unit", request));
         }
         return ResponseData.makeResponseData(DictionaryMapUtils.objectsToJSONArray(userUnits));
     }
@@ -268,7 +271,8 @@ public class UserUnitController extends BaseController {
         map.put("userCode", userUnit.getUserCode());
         List<UserUnit> list = sysUserUnitManager.listObjects(map, new PageDesc());
         if (list != null && list.size() > 0) {
-            return ResponseData.makeErrorMessage("该用户已存在");
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                getI18nMessage("error.702.user_has_in_unit", request));
         }
         userUnit.setCreator(WebOptUtils.getCurrentUserCode(request));
         sysUserUnitManager.saveNewUserUnit(userUnit);
@@ -301,7 +305,8 @@ public class UserUnitController extends BaseController {
         userUnit.setUpdator(WebOptUtils.getCurrentUserCode(request));
         UserUnit dbUserUnit = sysUserUnitManager.getObjectById(userUnitId);
         if (null == dbUserUnit) {
-            return ResponseData.makeErrorMessage("当前机构中无此用户");
+            return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_FOUND_EXCEPTION,
+                getI18nMessage("error.604.user_not_in_unit", request));
         }
         sysUserUnitManager.updateUserUnit(userUnit);
         return ResponseData.makeResponseData(userUnit);
@@ -320,11 +325,13 @@ public class UserUnitController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户机构关联信息",
         tag = "{userUnitId}")
     @WrapUpResponseBody
-    public ResponseData delete(@ParamName("userUnitId") @PathVariable String userUnitId) {
+    public ResponseData delete(@ParamName("userUnitId") @PathVariable String userUnitId,
+                               HttpServletRequest request) {
         UserUnit dbUserUnit = sysUserUnitManager.getObjectById(userUnitId);
         if ("T".equals(dbUserUnit.getRelType()) ||
             "O".equals(dbUserUnit.getRelType()) ) {
-            return ResponseData.makeErrorMessage("归属部门，或借出部门信息不能删除！");
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_PRECONDITION_FAILED,
+                getI18nMessage("error.703.cannot_delete_userunit", request));
         }
         sysUserUnitManager.deleteObject(dbUserUnit);
         return ResponseData.successResponse;
