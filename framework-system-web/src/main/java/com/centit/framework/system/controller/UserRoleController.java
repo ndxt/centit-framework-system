@@ -72,7 +72,8 @@ public class UserRoleController extends BaseController {
     @ApiOperation(value = "通过继承得到的用户", notes = "通过继承得到的用户")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "roleCode", value = "角色代码", required = true, paramType = "path"),
-        @ApiImplicitParam(name = "pageDesc", value = "json格式的分页对象信息", paramType = "body", dataTypeClass = PageDesc.class)
+        @ApiImplicitParam(name = "pageDesc", value = "json格式的分页对象信息", paramType = "body",
+            dataTypeClass = PageDesc.class)
     })
     @RequestMapping(value = "/roleusersinherited/{roleCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
@@ -124,7 +125,8 @@ public class UserRoleController extends BaseController {
     )})
     @RequestMapping(value = "/userrolesall/{userCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult<Object> listRoleUsersAll(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request) {
+    public PageQueryResult<Object> listRoleUsersAll(@PathVariable String userCode, PageDesc pageDesc,
+                                                    HttpServletRequest request) {
         Map<String, Object> filterMap = new HashMap<>(8);
         filterMap.put("userCode", userCode);
         if (WebOptUtils.isTenantTopUnit(request)) {
@@ -162,7 +164,8 @@ public class UserRoleController extends BaseController {
     )})
     @RequestMapping(value = "/userroles/{userCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult<Object> listRolesByUser(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request) {
+    public PageQueryResult<Object> listRolesByUser(@PathVariable String userCode, PageDesc pageDesc,
+                                                   HttpServletRequest request) {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("userCode", userCode);
         filterMap.put("roleValid", "T");
@@ -190,7 +193,8 @@ public class UserRoleController extends BaseController {
     )})
     @RequestMapping(value = "/roleusers/{roleCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult<Object> listUsersByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request) {
+    public PageQueryResult<Object> listUsersByRole(@PathVariable String roleCode, PageDesc pageDesc,
+                                                   HttpServletRequest request) {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         //特殊字符转义
         if (filterMap.get("userName") != null) {
@@ -221,7 +225,8 @@ public class UserRoleController extends BaseController {
     )})
     @RequestMapping(value = "/rolecurrentusers/{roleCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult<Object> listCurrentUsersByRole(@PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request) {
+    public PageQueryResult<Object> listCurrentUsersByRole(@PathVariable String roleCode, PageDesc pageDesc,
+                                                          HttpServletRequest request) {
         String currentUnitCode = WebOptUtils.getCurrentUnitCode(request);
         UnitInfo currentUnitInfo = sysUnitManager.getObjectById(currentUnitCode);
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
@@ -251,7 +256,8 @@ public class UserRoleController extends BaseController {
     )})
     @RequestMapping(value = "/usercurrentroles/{userCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult<Object> listUserUnitRoles(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request) {
+    public PageQueryResult<Object> listUserUnitRoles(@PathVariable String userCode, PageDesc pageDesc,
+                                                     HttpServletRequest request) {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         String currentUnitCode = WebOptUtils.getCurrentUnitCode(request);
         filterMap.put("userCode", userCode);
@@ -284,7 +290,8 @@ public class UserRoleController extends BaseController {
     )})
     @RequestMapping(value = "/unitroleusers/{unitCode}/{roleCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult<Object> listUnitRoleUsers(@PathVariable String unitCode, @PathVariable String roleCode, PageDesc pageDesc, HttpServletRequest request) {
+    public PageQueryResult<Object> listUnitRoleUsers(@PathVariable String unitCode, @PathVariable String roleCode,
+                                                     PageDesc pageDesc, HttpServletRequest request) {
         RoleInfo role = sysRoleManager.getObjectById(roleCode);
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("roleCode", roleCode);
@@ -310,11 +317,12 @@ public class UserRoleController extends BaseController {
     )})
     @RequestMapping(value = "/{roleCode}/{userCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public JSONObject getUserRole(@PathVariable String roleCode, @PathVariable String userCode) {
-
+    public JSONObject getUserRole(@PathVariable String roleCode, @PathVariable String userCode,
+                                  HttpServletRequest request) {
         UserRole userRole = sysUserRoleManager.getObjectById(new UserRoleId(userCode, roleCode));
         if (null == userRole) {
-            throw new ObjectException("当前角色中无此用户");
+            throw new ObjectException(ObjectException.DATA_NOT_FOUND_EXCEPTION,
+                getI18nMessage("error.604.user_without_role",request));
         }
         return (JSONObject)DictionaryMapUtils.objectToJSON(userRole);
     }
@@ -375,11 +383,12 @@ public class UserRoleController extends BaseController {
         tag="{roleCode}:{userCode}")
     @WrapUpResponseBody
     public ResponseData edit(@ParamName("roleCode") @PathVariable String roleCode,
-                             @ParamName("userCode") @PathVariable String userCode, @Valid UserRole userRole) {
+                             @ParamName("userCode") @PathVariable String userCode, @Valid UserRole userRole,
+                             HttpServletRequest request) {
         UserRole dbUserRole = sysUserRoleManager.getObjectById(new UserRoleId(userCode, roleCode));
-
         if (null == userRole) {
-            return ResponseData.makeErrorMessage("当前角色中无此用户");
+            throw  new ObjectException(ObjectException.DATA_NOT_FOUND_EXCEPTION,
+                getI18nMessage("error.604.user_without_role",request));
         }
         sysUserRoleManager.mergeObject(dbUserRole, userRole);
         return ResponseData.makeResponseData(userRole);

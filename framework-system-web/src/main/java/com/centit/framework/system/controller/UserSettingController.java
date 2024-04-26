@@ -86,7 +86,8 @@ public class UserSettingController extends BaseController {
     )})
     @GetMapping(value = "/list/{userCode}")
     @WrapUpResponseBody
-    public PageQueryResult<Object> listUserSetting(@PathVariable String userCode, PageDesc pageDesc, HttpServletRequest request) {
+    public PageQueryResult<Object> listUserSetting(@PathVariable String userCode, PageDesc pageDesc,
+                                                   HttpServletRequest request) {
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         searchColumn.put(CodeRepositoryUtil.USER_CODE, userCode);
 
@@ -250,11 +251,13 @@ public class UserSettingController extends BaseController {
         tag = "{userCode}:{paramCode}")
     @WrapUpResponseBody
     public ResponseData delete(@ParamName("userCode") @PathVariable String userCode,
-                               @ParamName("paramCode") @PathVariable String paramCode) {
+                               @ParamName("paramCode") @PathVariable String paramCode,
+                               HttpServletRequest request) {
         UserSetting userSetting = userSettingManager.getUserSetting(userCode, paramCode);
         if (userSetting != null) {
             if ("default".equals(userSetting.getUserCode())) {
-                return ResponseData.makeErrorMessage("默认设置不能删除！");
+                return ResponseData.makeErrorMessage(ResponseData.ERROR_PRECONDITION_FAILED,
+                    getI18nMessage("error.703.cannt_delete_default", request));
             }
             userSettingManager.deleteObject(userSetting);
         }
@@ -274,12 +277,15 @@ public class UserSettingController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}删除用户设置参数",
         tag = "{paramCode}")
     @WrapUpResponseBody
-    public ResponseData deleteDefault(@ParamName("paramCode") @PathVariable String paramCode) {
+    public ResponseData deleteDefault(@ParamName("paramCode") @PathVariable String paramCode,
+                                      HttpServletRequest request) {
         UserSetting userSetting = userSettingManager.getUserSetting("default", paramCode);
         if (userSetting != null) {
             userSettingManager.deleteObject(userSetting);
         } else {
-            return ResponseData.makeErrorMessage("值已为null！");
+            return ResponseData.makeErrorMessage(
+                ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
+                getI18nMessage("error.701.field_is_blank", request, paramCode));
         }
         return ResponseData.successResponse;
     }

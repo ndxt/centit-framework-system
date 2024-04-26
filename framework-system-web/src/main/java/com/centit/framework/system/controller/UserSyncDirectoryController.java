@@ -32,7 +32,8 @@ public class UserSyncDirectoryController extends BaseController {
     @ApiOperation(value = "新增用户同步目录信息")
     @PostMapping()
     @WrapUpResponseBody
-    public void saveUserSyncDirectory(@RequestBody UserSyncDirectory userSyncDirectory, HttpServletResponse response, HttpServletRequest request) {
+    public void saveUserSyncDirectory(@RequestBody UserSyncDirectory userSyncDirectory,
+                                      HttpServletResponse response, HttpServletRequest request) {
         String userCode = WebOptUtils.getCurrentUserCode(request);
         userSyncDirectoryManager.saveUserSyncDirectory(userSyncDirectory, userCode);
         JsonResultUtils.writeSingleDataJson(userSyncDirectory.getId(),response);
@@ -57,7 +58,8 @@ public class UserSyncDirectoryController extends BaseController {
     @WrapUpResponseBody
     public PageQueryResult<UserSyncDirectory> listObjects(HttpServletRequest request, PageDesc pageDesc) {
         String userCode = WebOptUtils.getCurrentUserCode(request);
-        List<UserSyncDirectory> list = userSyncDirectoryManager.listObjects(BaseController.collectRequestParameters(request), pageDesc, userCode);
+        List<UserSyncDirectory> list = userSyncDirectoryManager.listObjects(
+            BaseController.collectRequestParameters(request), pageDesc, userCode);
         return PageQueryResult.createResult(list, pageDesc);
     }
 

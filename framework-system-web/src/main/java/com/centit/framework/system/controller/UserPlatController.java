@@ -8,6 +8,7 @@ import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.model.basedata.UserPlat;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.service.UserPlatService;
+import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
 import io.swagger.annotations.Api;
@@ -57,7 +58,8 @@ public class UserPlatController extends BaseController {
         map.put("userCode", userPlat.getUserCode());
         List<UserPlat> list = userPlatService.listObjects(map, new PageDesc());
         if (!CollectionUtils.isEmpty(list)) {
-            return ResponseData.makeErrorMessage("该用户已存在");
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_DUPLICATE_OPERATION,
+                getI18nMessage("error.801.duplicate_operation", request));
         }
         userPlat.setCreator(WebOptUtils.getCurrentUserCode(request));
         userPlatService.saveUserPlat(userPlat);
@@ -89,7 +91,8 @@ public class UserPlatController extends BaseController {
         userPlat.setUpdator(WebOptUtils.getCurrentUserCode(request));
         UserPlat dbUserPlat = userPlatService.getObjectById(userPlatId);
         if (null == dbUserPlat) {
-            return ResponseData.makeErrorMessage("当前平台中无此用户");
+            return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_FOUND_EXCEPTION,
+               getI18nMessage("error.604.user_not_found", request, userPlat.getUserCode()));
         }
         userPlatService.updateUserPlat(userPlat);
         return ResponseData.makeResponseData(userPlat);
