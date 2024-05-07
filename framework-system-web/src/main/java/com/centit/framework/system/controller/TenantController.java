@@ -108,8 +108,8 @@ public class TenantController extends BaseController {
     @WrapUpResponseBody
     public ResponseData applyJoinTenant(@RequestBody @Validated TenantMemberApply tenantMemberApply,
                         HttpServletRequest request) {
-        String userCode = WebOptUtils.getCurrentUserCode(request);
-        tenantMemberApply.setUserCode(userCode);
+        UserInfo userInfo = WebOptUtils.assertUserLogin(request);
+        tenantMemberApply.setInviterUserCode(userInfo.getUserCode());
         ResponseData responseData = tenantService.applyJoinTenant(tenantMemberApply);
         return ResponseData.makeErrorMessage(responseData.getCode(),
             getI18nMessage(responseData.getMessage(), request, (Object[]) responseData.getData()));
@@ -128,18 +128,14 @@ public class TenantController extends BaseController {
     @RequestMapping(value = "/userApplyJoinTenant", method = RequestMethod.POST)
     @WrapUpResponseBody
     public ResponseData userApplyJoinTenant(@RequestBody TenantMemberApply tenantMemberApply,HttpServletRequest request) {
-
-        String userCode = WebOptUtils.getCurrentUserCode(request);
-        if (StringUtils.isBlank(userCode)){
-            return ResponseData.makeErrorMessage(ResponseData.ERROR_USER_NOT_LOGIN,
-               getI18nMessage( "error.302.user_not_login", request));
-        }
+        UserInfo userInfo = WebOptUtils.assertUserLogin(request);
         if (StringUtils.isBlank(tenantMemberApply.getTopUnit())){
             return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
                 getI18nMessage("error.701.field_is_blank", request, "topUnit"));
         }
-        tenantMemberApply.setUserCode(userCode);
-        tenantMemberApply.setInviterUserCode(userCode);
+        tenantMemberApply.setUserCode(userInfo.getUserCode());
+        tenantMemberApply.setInviterUserCode(userInfo.getUserCode());
+
         ResponseData responseData = tenantService.userApplyJoinTenant(tenantMemberApply);
         return ResponseData.makeErrorMessage(responseData.getCode(),
             getI18nMessage(responseData.getMessage(), request, (Object[]) responseData.getData()));
@@ -255,7 +251,8 @@ public class TenantController extends BaseController {
     @WrapUpResponseBody
     public ResponseData userCancelApply(@RequestBody TenantMemberApply tenantMemberApply,HttpServletRequest request) {
         String topUnit = tenantMemberApply.getTopUnit();
-        if (StringUtils.isBlank(topUnit)){
+        String topUnit2 = WebOptUtils.getCurrentTopUnit(request);
+        if (StringUtils.isBlank(topUnit) || !StringUtils.equals(topUnit, topUnit2)){
             return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
                 getI18nMessage( "error.701.field_is_blank", request, "topUnit"));
         }
@@ -613,7 +610,7 @@ public class TenantController extends BaseController {
             return PageQueryResult.createResult(jsonArray, pageDesc);
         }
         if (StringUtils.isNotBlank(MapUtils.getString(map,"otherTenant"))){
-            map.put("userCode",WebOptUtils.getCurrentUserCode(request));
+            map.put("userCode", WebOptUtils.getCurrentUserCode(request));
         }
         return tenantService.pageListTenants(map, pageDesc);
 
