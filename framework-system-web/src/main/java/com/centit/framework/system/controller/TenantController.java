@@ -318,24 +318,6 @@ public class TenantController extends BaseController {
     }
 
     @ApiOperation(
-        value = "同意加入租户",
-        notes = "可以是平台管理员审核用户的加入,也可以是普通用户同意管理员的邀请 ***废弃接口"
-    )
-    @RequestMapping(value = "/agreeJoin", method = RequestMethod.POST)
-    @WrapUpResponseBody
-    public ResponseData agreeJoin(@RequestBody @Validated TenantMemberApplyVo tenantMemberApply, HttpServletRequest request) {
-        if (StringUtils.isBlank(WebOptUtils.getCurrentUserCode(request))){
-            throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN,
-                getI18nMessage( "error.302.user_not_login", request));
-        }
-        if (StringUtils.isBlank(tenantMemberApply.getTopUnit())){
-            throw new ObjectException(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
-                getI18nMessage( "error.701.field_is_blank", request, "topUnit"));
-        }
-        return tenantService.agreeJoin(tenantMemberApply);
-    }
-
-    @ApiOperation(
         value = "用户同意加入租户",
         notes = "用户同意加入租户"
     )

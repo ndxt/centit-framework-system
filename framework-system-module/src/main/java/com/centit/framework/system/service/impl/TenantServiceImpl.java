@@ -1207,7 +1207,7 @@ public class TenantServiceImpl implements TenantService {
         }
         List<UserUnit> userUnits = userUnitDao.listObjectByUserUnit(oldTenantMemberApply.getUserCode(),
             oldTenantMemberApply.getUnitCode());
-        if (userUnits.size() == 0) {
+        if (userUnits.isEmpty()) {
             UserUnit userUnit = new UserUnit();
             //设置被邀请的单位为主机构
             userUnit.setRelType("T");
