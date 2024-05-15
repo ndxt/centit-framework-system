@@ -445,15 +445,15 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     public OptMethod mergeOptMethod(OptMethod optMethod) {
         optMethodDao.mergeObject((OptMethod) optMethod);
-        List<RolePower> rolePowers = rolePowerDao.listObjectsByProperties(CollectionsOpt.createHashMap("optCode", optMethod.getOptCode()));
-        if(rolePowers==null || rolePowers.size()==0){
-            RolePower rolePower=new RolePower();
-            rolePower.setOptCode(optMethod.getOptCode());
-            rolePower.setRoleCode("public");
-            rolePower.setCreateDate(new Date());
-            rolePower.setUpdateDate(new Date());
-            rolePowerDao.saveNewRolePower(rolePower);
-        }
+//        List<RolePower> rolePowers = rolePowerDao.listObjectsByProperties(CollectionsOpt.createHashMap("optCode", optMethod.getOptCode()));
+//        if(rolePowers==null || rolePowers.size()==0){
+//            RolePower rolePower=new RolePower();
+//            rolePower.setOptCode(optMethod.getOptCode());
+//            rolePower.setRoleCode("public");
+//            rolePower.setCreateDate(new Date());
+//            rolePower.setUpdateDate(new Date());
+//            rolePowerDao.saveNewRolePower(rolePower);
+//        }
         return optMethod;
     }
 
