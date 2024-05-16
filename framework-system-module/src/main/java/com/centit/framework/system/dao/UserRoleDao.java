@@ -172,7 +172,7 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
     @Transactional
     public List<FVUserRoles> listUserRolesByTopUnit(String topUnit, String userCode) {
         Map<String,Object> map = CollectionsOpt.createHashMap("userCode",userCode,
-            "currentDateTime", DatetimeOpt.currentSqlDate(),
+            "currentDateTime", DatetimeOpt.currentUtilDate(),
             "unitCode", topUnit);
         //topUnit
         return jdbcTemplate.execute(
