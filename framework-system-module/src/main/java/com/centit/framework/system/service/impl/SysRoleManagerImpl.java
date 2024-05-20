@@ -98,9 +98,13 @@ public class SysRoleManagerImpl implements SysRoleManager {
     @Override
     @Transactional
     public void updateRoleInfo(RoleInfo o) {
+        if(StringUtils.equalsAny(o.getRoleCode(),
+            SecurityContextUtils.ANONYMOUS_ROLE_CODE,
+            SecurityContextUtils.PUBLIC_ROLE_CODE) ){
+            return;
+        }
         roleInfoDao.updateRole(o);
         CodeRepositoryCache.evictCache("RoleInfo");
-        CodeRepositoryCache.evictCache("RolePower");
     }
 
     @Override
@@ -122,11 +126,13 @@ public class SysRoleManagerImpl implements SysRoleManager {
 
     @Override
     @Transactional
-    public List<RolePower> updateRolePower(RoleInfo roleInfo,String topUnit) {
-        boolean isAPCode = StringUtils.equalsAny(roleInfo.getRoleCode(), SecurityContextUtils.ANONYMOUS_ROLE_CODE,SecurityContextUtils.PUBLIC_ROLE_CODE);
-        if (!isAPCode){
+    public List<RolePower> updateRolePower(RoleInfo roleInfo, String topUnit) {
+        boolean isAPCode = StringUtils.equalsAny(roleInfo.getRoleCode(),
+            SecurityContextUtils.ANONYMOUS_ROLE_CODE,
+            SecurityContextUtils.PUBLIC_ROLE_CODE);
+        /*if (!isAPCode){
             roleInfoDao.updateRole(roleInfo);
-        }
+        }*/
         List<RolePower> newRPs = roleInfo.getRolePowers();
         List<RolePower> rps = isAPCode ? rolePowerDao.listRolePowerByTopUnitAndRoleCode(topUnit,roleInfo.getRoleCode()):
             rolePowerDao.listRolePowersByRoleCode(roleInfo.getRoleCode());

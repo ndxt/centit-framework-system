@@ -379,7 +379,7 @@ public class RoleInfoController extends BaseController {
         tag = "{roleCode}")
     @WrapUpResponseBody
     public void updateRole(@ParamName("roleCode") @PathVariable String roleCode,
-                           @Valid RoleInfo roleInfo, HttpServletRequest request) {
+                           @RequestBody @Valid RoleInfo roleInfo, HttpServletRequest request) {
         RoleInfo dbRoleInfo = sysRoleManager.getObjectById(roleCode);
         if (null == dbRoleInfo) {
             throw new ObjectException(roleInfo, ObjectException.DATA_NOT_FOUND_EXCEPTION,
