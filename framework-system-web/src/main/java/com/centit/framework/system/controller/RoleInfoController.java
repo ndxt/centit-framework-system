@@ -493,7 +493,8 @@ public class RoleInfoController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新角色权限",
         tag = "{roleCode}")
     @WrapUpResponseBody
-    public void updateRolePower(@ParamName("roleCode") @PathVariable String roleCode, RoleInfo roleInfo, HttpServletRequest request) {
+    public void updateRolePower(@ParamName("roleCode") @PathVariable String roleCode,
+                                @RequestBody RoleInfo roleInfo, HttpServletRequest request) {
         if (StringUtils.isBlank(WebOptUtils.getCurrentUserCode(request))) {
             throw new ObjectException(ResponseData.ERROR_USER_NOT_LOGIN, "您还未登录!");
         }
