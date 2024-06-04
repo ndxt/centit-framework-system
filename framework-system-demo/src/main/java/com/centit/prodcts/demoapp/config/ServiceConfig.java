@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.context.annotation.*;
 import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
@@ -79,6 +81,13 @@ public class ServiceConfig {
     @Bean
     public FindByIndexNameSessionRepository sessionRepository() {
         return new SimpleMapSessionRepository();
+    }
+
+
+    @Bean
+    public CsrfTokenRepository csrfTokenRepository() {
+        return //new LazyCsrfTokenRepository(
+            new HttpSessionCsrfTokenRepository();
     }
 
     @Bean

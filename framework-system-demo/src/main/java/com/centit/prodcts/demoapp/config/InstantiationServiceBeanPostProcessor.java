@@ -29,9 +29,6 @@ public class InstantiationServiceBeanPostProcessor implements ApplicationListene
     @Autowired(required = false)
     private OperationLogWriter optLogManager;
 
-    /*@Autowired(required = false)
-    private OperationLogWriter operationLogWriter;
-    */
 
     @Autowired
     @NotNull
