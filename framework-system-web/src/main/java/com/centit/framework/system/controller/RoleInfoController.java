@@ -422,7 +422,7 @@ public class RoleInfoController extends BaseController {
                     "RoleInfo",  roleCode));
             // "角色信息不存在");
         }
-        roleInfo.setRoleType("D");
+        // roleInfo.setRoleType("D");
         roleInfo.setUnitCode(WebOptUtils.getCurrentTopUnit(request));
 
         if (!StringUtils.equals(dbRoleInfo.getUnitCode(), roleInfo.getUnitCode())) {
@@ -435,7 +435,7 @@ public class RoleInfoController extends BaseController {
         sysRoleManager.updateRoleInfo(roleInfo);
     }
 
-    @ApiOperation(value = "更新应用系统角色", notes = "更新应用系统角色。")
+    @ApiOperation(value = "更新应用角色", notes = "更新应用角色。")
     @ApiImplicitParams({
         @ApiImplicitParam(
             name = "osId", value = "业务系统ID（OS_ID），为系统顶级菜单编码",
