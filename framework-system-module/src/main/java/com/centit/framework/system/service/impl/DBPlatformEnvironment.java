@@ -788,63 +788,6 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         return opts;
     }
 
-    /**
-     * 新增或修改菜单和操作
-     *
-     * @param optInfos   菜单对象集合
-     * @param optMethods 操作对象集合
-     */
-    //@Override
-    @Transactional
-    public void insertOrUpdateMenu(List<OptInfo> optInfos, List<OptMethod> optMethods) {
-        List<OptMethod> dbMethods = new ArrayList<>();
-        for (OptInfo optInfo : optInfos) {
-            if (StringUtils.isEmpty(optInfo.getPreOptId())) {
-                optInfo.setPreOptId("0");
-            }
-            optInfo.setOptType("O");//普通业务
-            optInfo.setCreator("import");//外部导入
-            OptInfo dbOptInfo = optInfoDao.getObjectById(optInfo.getOptId());
-            if (dbOptInfo == null) {
-                optInfo.setCreateDate(new Date());
-                optInfoDao.saveNewObject(optInfo);
-            } else {
-                dbOptInfo.copy(optInfo);
-                dbOptInfo.setUpdateDate(new Date());
-                optInfoDao.updateOptInfo(dbOptInfo);
-            }
-            dbMethods.addAll(optMethodDao.listOptMethodByOptID(optInfo.getOptId()));
-        }
-        Triple<List<OptMethod>, List<Pair<OptMethod, OptMethod>>, List<OptMethod>> triple = CollectionsOpt.compareTwoList(
-            dbMethods, (List<OptMethod>) optMethods,
-            (o1, o2) -> StringUtils.compare(o1.getOptId() + o1.getOptMethod(), o2.getOptId() + o2.getOptMethod()));
-        //新增
-        if (triple.getLeft() != null && triple.getLeft().size() > 0) {
-            for (OptMethod om : triple.getLeft()) {
-                if (StringUtils.isEmpty(om.getOptReq())) {
-                    om.setOptReq("CRUD");
-                }
-                om.setOptCode(UuidOpt.getUuidAsString22());
-                optMethodDao.saveNewObject(om);
-            }
-        }
-        //更新
-        if (triple.getMiddle() != null && triple.getMiddle().size() > 0) {
-            for (Pair<OptMethod, OptMethod> p : triple.getMiddle()) {
-                OptMethod oldMethod = p.getLeft();
-                OptMethod newMethod = p.getRight();
-                newMethod.setOptCode(oldMethod.getOptCode());
-                optMethodDao.updateOptMethod(newMethod);
-            }
-        }
-        //删除
-        if (triple.getRight() != null && triple.getRight().size() > 0) {
-            for (OptMethod om : triple.getRight()) {
-                optMethodDao.deleteObject(om);
-            }
-        }
-    }
-
     @Override
     public List<OsInfo> listOsInfos(String topUnit) {
         return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
