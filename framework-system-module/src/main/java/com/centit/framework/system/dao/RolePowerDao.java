@@ -105,8 +105,8 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
             "from F_ROLEPOWER a join F_ROLEINFO b on a.ROLE_CODE=b.ROLE_CODE " +
             "join f_optdef c on a.opt_code=c.opt_code join f_optinfo d on c.opt_id=d.opt_id " +
             "where  d.top_opt_id='system'";
-        JSONArray jsonArray=DatabaseOptUtils.listObjectsByNamedSqlAsJson(this,sql,CollectionsOpt.createHashMap());
-        for(Object jsonObject:jsonArray){
+        JSONArray jsonArray=DatabaseOptUtils.listObjectsByNamedSqlAsJson(this, sql, CollectionsOpt.createHashMap());
+        for(Object jsonObject : jsonArray){
             rolePowers.add(JSON.to(RolePower.class, jsonObject));
         }
         return rolePowers;
@@ -119,7 +119,8 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
             "from F_ROLEPOWER a join F_ROLEINFO b on a.ROLE_CODE=b.ROLE_CODE " +
             "join f_optdef c on a.opt_code=c.opt_code join f_optinfo d on c.opt_id=d.opt_id " +
             "join f_os_info e on d.top_opt_id=e.os_id where  c.api_id=:apiId";
-        JSONArray jsonArray=DatabaseOptUtils.listObjectsByNamedSqlAsJson(this,sql,CollectionsOpt.createHashMap("apiId",apiId));
+        JSONArray jsonArray=DatabaseOptUtils.listObjectsByNamedSqlAsJson(this, sql,
+            CollectionsOpt.createHashMap("apiId",apiId));
         for(Object jsonObject:jsonArray){
             rolePowers.add(JSON.to(RolePower.class, jsonObject));
         }
@@ -128,7 +129,7 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
 
     @Transactional
     public List<RolePower> listRolePowerByTopUnitAndRoleCode(String topUnit, String roleCode) {
-        String sql = " SELECT DISTINCT " +
+        String sql = "SELECT DISTINCT " +
             " A.ROLE_CODE, " +
             " A.OPT_CODE, " +
             " A.OPT_SCOPE_CODES, " +
@@ -153,9 +154,10 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
 
 
     public JSONArray listRoleInfoAndPowerByOptCode(String optCode) {
-        String querySql = " SELECT  A.OPT_CODE, A.OPT_SCOPE_CODES,  B.ROLE_CODE, B.ROLE_NAME, B.ROLE_TYPE, B.UNIT_CODE, B.ROLE_DESC, B.UPDATE_DATE, B.CREATE_DATE, B.CREATOR, B.UPDATOR " +
+        String querySql = "SELECT  A.OPT_CODE, A.OPT_SCOPE_CODES,  B.ROLE_CODE, B.ROLE_NAME, B.ROLE_TYPE, " +
+            " B.UNIT_CODE, B.ROLE_DESC, B.UPDATE_DATE, B.CREATE_DATE, B.CREATOR, B.UPDATOR " +
             " FROM F_ROLEPOWER A JOIN F_ROLEINFO B ON A.ROLE_CODE = B.ROLE_CODE " +
-            "WHERE  [  :optCode | A.OPT_CODE = :optCode  ] ";
+            " WHERE  [  :optCode | A.OPT_CODE = :optCode  ] ";
         QueryAndNamedParams qap = QueryUtils.translateQuery(querySql, CollectionsOpt.createHashMap("optCode", optCode));
         return DatabaseOptUtils.listObjectsByNamedSqlAsJson(this, qap.getQuery(), qap.getParams());
     }
