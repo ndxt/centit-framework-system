@@ -107,7 +107,7 @@ public class ServiceConfig implements EnvironmentAware {
     }
 
     @Bean
-    MessageSource messageSource() {
+    public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource ms = new ReloadableResourceBundleMessageSource();
         ms.setUseCodeAsDefaultMessage(true);
         //"classpath:org/springframework/security/messages"
