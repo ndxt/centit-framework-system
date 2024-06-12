@@ -24,6 +24,7 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     public static final Logger logger = LoggerFactory.getLogger(DBPlatformEnvironment.class);
     public static final String SYSTEM = "system";
+
+    @Value("${userinfo.password.expired_days:183}")
+    protected int passwordExpiredDays;
 
     @Autowired
     private CentitPasswordEncoder passwordEncoder;
@@ -302,6 +306,8 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     public void changeUserPassword(String userCode, String userPassword) {
         UserInfo user = userInfoDao.getUserByCode(userCode);
         user.setUserPin(passwordEncoder.encodePassword(userPassword, user.getUserCode()));
+        // 设置密码有效期
+        user.setPwdExpiredTime(DatetimeOpt.addDays(DatetimeOpt.currentUtilDate(), passwordExpiredDays));
         userInfoDao.updateUser(user);
     }
 

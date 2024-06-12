@@ -10,6 +10,7 @@ import com.centit.framework.system.dao.UserInfoDao;
 import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.dao.UserUnitDao;
 import com.centit.framework.system.service.SysUserManager;
+import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.UuidOpt;
 import com.centit.support.common.ObjectException;
 import com.centit.support.compiler.Pretreatment;
@@ -160,6 +161,8 @@ public class SysUserManagerImpl implements SysUserManager {
         forceSetPasswordPermissionCheck(userCode);
         UserInfo user = userInfoDao.getUserByCode(userCode);
         user.setUserPin(passwordEncoder.encodePassword(newPassword, user.getUserCode()));
+        // 设置密码已过期，必须修改
+        user.setPwdExpiredTime(DatetimeOpt.addDays(DatetimeOpt.currentUtilDate(),-1));
         userInfoDao.updateUser(user);
     }
 
