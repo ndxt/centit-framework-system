@@ -82,9 +82,9 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
         Map<String, Object> param = new HashMap<>();
         if(StringUtils.isNotBlank(groupId))
             param.put("groupId", groupId);
-        if(StringUtils.isNotBlank(groupId))
+        if(StringUtils.isNotBlank(userCode))
             param.put("userCode", userCode);
-        if(StringUtils.isNotBlank(groupId))
+        if(StringUtils.isNotBlank(roleCode))
             param.put("roleCode", roleCode);
         if(param.isEmpty())
             return Collections.emptyList();
