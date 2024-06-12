@@ -38,6 +38,8 @@ public interface WorkGroupManager{
      */
     boolean  loginUserIsExistWorkGroup(String osId,String userCode);
 
+    boolean loginUserIsWorkGroupLeader(String osId,String userCode);
+
     void leaderHandOver(WorkGroupParames workGroupParames);
 
 }

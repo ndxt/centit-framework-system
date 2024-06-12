@@ -848,6 +848,11 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
+    public boolean loginUserIsWorkGroupLeader(String osId, String userCode) {
+        return workGroupManager.loginUserIsWorkGroupLeader(osId, userCode);
+    }
+
+    @Override
     public List<ConfigAttribute> getRolesWithApiId(String apiId) {
         List<RolePower> rolePowers = rolePowerDao.listRolePowerUseApiId(apiId);
         List<ConfigAttribute> roles = new ArrayList<>();

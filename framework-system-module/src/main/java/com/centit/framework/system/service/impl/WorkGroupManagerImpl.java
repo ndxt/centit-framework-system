@@ -107,6 +107,18 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
         }
         return false;
     }
+    @Override
+    public boolean loginUserIsWorkGroupLeader(String osId, String userCode) {
+        if (StringUtils.isBlank(osId) || StringUtils.isBlank(userCode)) {
+            return false;
+        }
+        Map<String, Object> param = new HashMap<>();
+        param.put("groupId", osId);
+        param.put("userCode",userCode);
+        param.put("roleCode",WorkGroup.WORKGROUP_ROLE_CODE_LEADER);
+        List<WorkGroup> workGroups = workGroupDao.listObjectsByProperties(param);
+        return workGroups.size() > 0;
+    }
 
     @Override
     @Transactional
