@@ -18,13 +18,15 @@ import java.util.Map;
 public interface WorkGroupManager{
     void updateWorkGroup(WorkGroup workGroup);
 
-    void deleteWorkGroup(String groupId ,String userCode,String roleCode);
+    void deleteWorkGroup(String groupId, String userCode, String roleCode);
 
-    WorkGroup getWorkGroup(String groupId ,String userCode,String roleCode);
+    WorkGroup getWorkGroup(String groupId, String userCode, String roleCode);
 
     void createWorkGroup(WorkGroup workGroup);
 
     void batchWorkGroup(List<WorkGroup> workGroups);
+
+    List<WorkGroup>  listWorkGroup(String groupId, String userCode, String roleCode);
 
     List<WorkGroup> listWorkGroup(Map<String, Object> param, PageDesc pageDesc);
 

@@ -16,7 +16,6 @@ import com.centit.framework.system.dao.*;
 import com.centit.framework.system.service.*;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.DatetimeOpt;
-import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -827,12 +826,12 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
-    public List<WorkGroup> listWorkGroup(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return workGroupManager.listWorkGroup(filterMap, pageDesc);
+    public List<WorkGroup> listWorkGroup(String groupId, String userCode, String roleCode) {
+        return workGroupManager.listWorkGroup(groupId, userCode, roleCode);
     }
 
     @Override
-    public void batchWorkGroup(List<WorkGroup> workGroups) {
+    public void batchSaveWorkGroup(List<WorkGroup> workGroups) {
         ArrayList<WorkGroup> workGroups1 = new ArrayList<>();
         for (WorkGroup workGroup : workGroups) {
             if (workGroup instanceof WorkGroup) {
@@ -842,15 +841,6 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         workGroupManager.batchWorkGroup(workGroups1);
     }
 
-    @Override
-    public boolean loginUserIsExistWorkGroup(String osId, String userCode) {
-        return workGroupManager.loginUserIsExistWorkGroup(osId, userCode);
-    }
-
-    @Override
-    public boolean loginUserIsWorkGroupLeader(String osId, String userCode) {
-        return workGroupManager.loginUserIsWorkGroupLeader(osId, userCode);
-    }
 
     @Override
     public List<ConfigAttribute> getRolesWithApiId(String apiId) {

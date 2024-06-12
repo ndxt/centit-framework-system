@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 工作组
@@ -78,6 +75,20 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
             UserRole userRole = getUserRole(workGroup);
             userRoleDao.mergeUserRole(userRole);
         }
+    }
+
+    @Override
+    public List<WorkGroup>  listWorkGroup(String groupId, String userCode, String roleCode){
+        Map<String, Object> param = new HashMap<>();
+        if(StringUtils.isNotBlank(groupId))
+            param.put("groupId", groupId);
+        if(StringUtils.isNotBlank(groupId))
+            param.put("userCode", userCode);
+        if(StringUtils.isNotBlank(groupId))
+            param.put("roleCode", roleCode);
+        if(param.isEmpty())
+            return Collections.emptyList();
+        return workGroupDao.listObjectsByProperties(param);
     }
 
     @Override

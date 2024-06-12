@@ -379,19 +379,15 @@ public abstract class AbstractStaticPlatformEnvironment
         return false;
     }
 
+
     @Override
-    public List<WorkGroup> listWorkGroup(Map<String, Object> filterMap, PageDesc pageDesc)  {
+    public void batchSaveWorkGroup(List<WorkGroup> workGroups) {
+
+    }
+
+    @Override
+    public List<WorkGroup> listWorkGroup(String groupId, String userCode, String roleCode) {
         return Collections.emptyList();
-    }
-
-    @Override
-    public void batchWorkGroup(List<WorkGroup> workGroups) {
-
-    }
-
-    @Override
-    public boolean loginUserIsExistWorkGroup(String osId, String userCode) {
-        return false;
     }
 
     @Override
