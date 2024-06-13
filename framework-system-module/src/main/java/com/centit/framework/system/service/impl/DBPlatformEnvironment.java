@@ -439,14 +439,14 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     public OptMethod addOptMethod(OptMethod optMethod) {
-        optMethodDao.saveNewObject((OptMethod) optMethod);
+        optMethodDao.saveNewObject(optMethod);
         return optMethod;
     }
 
 
     @Override
     public OptMethod mergeOptMethod(OptMethod optMethod) {
-        optMethodDao.mergeObject((OptMethod) optMethod);
+        optMethodDao.mergeObject(optMethod);
 //        List<RolePower> rolePowers = rolePowerDao.listObjectsByProperties(CollectionsOpt.createHashMap("optCode", optMethod.getOptCode()));
 //        if(rolePowers==null || rolePowers.size()==0){
 //            RolePower rolePower=new RolePower();
