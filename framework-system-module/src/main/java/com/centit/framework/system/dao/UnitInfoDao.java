@@ -36,7 +36,7 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
         filterField.put("parentUnit", CodeBook.EQUAL_HQL_ID);
         filterField.put("NP_TOPUnit", "(parentUnit is null or parentUnit='0' or parentUnit='')");
         filterField.put("depNo", CodeBook.EQUAL_HQL_ID);
-        filterField.put(CodeBook.ORDER_BY_HQL_ID, " UNIT_ORDER, UNIT_CODE ");
+        filterField.put(CodeBook.SELF_ORDER_BY, " UNIT_ORDER, UNIT_CODE ");
         filterField.put("(STARTWITH)unitPath", CodeBook.LIKE_HQL_ID);
         filterField.put("topUnit", CodeBook.EQUAL_HQL_ID);
         return filterField;
