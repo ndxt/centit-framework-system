@@ -42,6 +42,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -381,7 +383,7 @@ public class ThirdLogin extends BaseController {
                 return ResponseData.makeErrorMessageWithData(sessionMap, 500, "请在登陆后绑定微信。");
             }
             CentitUserDetails ud = platformEnvironment.loadUserDetailsByUserCode(userPlat.getUserCode());
-            if(ud==null){
+            if (ud == null) {
                 throw new ObjectException(ResponseData.ERROR_USER_NOTFOUND, "user not found--" + userPlat.getUserCode());
             }
             SecurityContextHolder.getContext().setAuthentication(ud);
@@ -445,7 +447,8 @@ public class ThirdLogin extends BaseController {
             ud = platformEnvironment.loadUserDetailsByUserCode(userCode);
         } else if (StringUtils.isNotBlank(loginName)) {
             ud = platformEnvironment.loadUserDetailsByLoginName(loginName);
-        } if (StringUtils.isNotBlank(regCellPhone)) {
+        }
+        if (StringUtils.isNotBlank(regCellPhone)) {
             ud = platformEnvironment.loadUserDetailsByRegCellPhone(regCellPhone);
         }
         if (null == ud) {
@@ -454,5 +457,39 @@ public class ThirdLogin extends BaseController {
         SecurityContextHolder.getContext().setAuthentication(ud);
         return ResponseData.makeResponseData(
             SecurityContextUtils.SecurityContextTokenName, request.getSession().getId());
+    }
+
+    @ApiOperation(value = "水务集团单点登陆", notes = "水务集团单点登陆")
+    @GetMapping(value = "/waterlogin")
+    public String waterLogin(HttpServletRequest request, HttpServletResponse response) {
+        CentitUserDetails userDetails = WebOptUtils.getCurrentUserDetails(request);
+        String returnUrl = request.getParameter("returnUrl");
+        if (null == userDetails) {
+            String loginName = request.getHeader("oam_remote_user");
+            if (null == loginName) {
+                loginName = request.getParameter("testUserCode");
+            }
+            String errorMsg = "";
+            CentitUserDetails ud = platformEnvironment.loadUserDetailsByLoginName(loginName);
+            if (null != ud) {
+                SecurityContextHolder.getContext().setAuthentication(ud);
+            } else {
+                errorMsg = "登录名" + loginName + "不存在！";
+            }
+            if (StringUtils.isNotBlank(errorMsg)) {
+                String errorUrl = "redirect:redirecterror";
+                try {
+                    errorUrl = errorUrl + "?msg=" + URLEncoder.encode(errorMsg, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    logger.error("URLEncoder异常", e);
+                }
+                return errorUrl;
+            }
+        }
+        if (StringUtils.isNotBlank(returnUrl) && returnUrl.indexOf("/A/") > -1) {
+            returnUrl = returnUrl.replace("/A/", "/#/");
+        }
+        response.setHeader("x-auth-token", request.getSession().getId());
+        return "redirect:" + returnUrl;
     }
 }
