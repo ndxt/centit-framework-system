@@ -15,6 +15,7 @@ import com.centit.support.algorithm.UuidOpt;
 import com.centit.support.common.ObjectException;
 import com.centit.support.compiler.Pretreatment;
 import com.centit.support.database.utils.PageDesc;
+import com.centit.support.security.SecurityOptUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -69,34 +70,6 @@ public class SysUserManagerImpl implements SysUserManager {
         String rawPass = UuidOpt.randomString(passwordMinLength);
         if(StringUtils.isNotBlank(defaultPassWorkFormat)){
             rawPass = Pretreatment.mapTemplateString(defaultPassWorkFormat,userCode);
-        }
-        return passwordEncoder.createPassword(rawPass, userCode);
-    }
-
-    private String getPasswordOnCondition(UserInfo userInfo) {
-        String userCode = userInfo.getUserCode();
-        String userPwd = userInfo.getUserPwd();
-
-        if (StringUtils.isBlank(userCode)){
-            //新注册用户
-            if (StringUtils.isNotBlank(userPwd)){
-                return passwordEncoder.createPassword(userPwd, userCode);
-            }
-        }else {
-            //用户没有已经注册的手机号或邮箱号
-            UserInfo dbUserInfo = userInfoDao.getUserByCode(userCode);
-            if (null != dbUserInfo && !StringUtils.isAllBlank(dbUserInfo.getRegEmail(),dbUserInfo.getRegCellPhone())){
-                //如果已经存在联系方式，不允许设置密码
-                return null;
-            }else if (StringUtils.isNotBlank(userPwd)){
-                // CentitPasswordEncoder.checkPasswordStrength(userPwd, passwordMinLength ) > passwordStrength){
-                // 密码必须符合一定的复杂度，否则自动生成
-                return passwordEncoder.createPassword(userPwd, userCode);
-            }
-        }
-        String rawPass = UuidOpt.randomString(passwordMinLength);
-        if(StringUtils.isNotBlank(defaultPassWorkFormat)){
-            rawPass = Pretreatment.mapTemplateString(defaultPassWorkFormat, userCode);
         }
         return passwordEncoder.createPassword(rawPass, userCode);
     }
@@ -218,10 +191,16 @@ public class SysUserManagerImpl implements SysUserManager {
     @Override
     @Transactional
     public void saveNewUserInfo(UserInfo userInfo, UserUnit userUnit){
-
-        userInfo.setUserPin(getPasswordOnCondition(userInfo));
-
+        String userCode = userInfo.getUserCode();
+        if(StringUtils.isBlank(userCode)){
+            userCode = "U" + UuidOpt.randomString(11);
+            userInfo.setUserCode(userCode);
+        }
+        String userPwd = SecurityOptUtils.decodeSecurityString(userInfo.getUserPwd());
+        userInfo.setUserPin(passwordEncoder.createPassword(userPwd, userCode));
+        userInfo.setPwdExpiredTime(DatetimeOpt.addDays(DatetimeOpt.currentUtilDate(),-1));
         userInfo.setUserPwd(null);
+
         UnitInfo unitInfo = unitInfoDao.getObjectById(userInfo.getPrimaryUnit());
         if (null != unitInfo && StringUtils.isNotBlank(unitInfo.getTopUnit())) {
             userInfo.setTopUnit(unitInfo.getTopUnit());
@@ -232,6 +211,7 @@ public class SysUserManagerImpl implements SysUserManager {
                 userInfo.setTopUnit(unitCodeArray[1]);
             }
         }
+
         userInfoDao.saveNewObject(userInfo);
         //resetPwd(userInfo.getUserCode());
         userUnit.setUserUnitId(userUnitDao.getNextKey());
@@ -239,6 +219,7 @@ public class SysUserManagerImpl implements SysUserManager {
         userUnit.setUnitCode(userInfo.getPrimaryUnit());
         userUnit.setRelType("T");
         userUnit.setTopUnit(userInfo.getTopUnit());
+
         userUnitDao.saveNewObject(userUnit);
 
         if(null!=userInfo.getUserRoles()){
