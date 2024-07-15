@@ -363,10 +363,6 @@ public class TenantServiceImpl implements TenantService {
         if (!StringUtils.equalsAny(applyState, "3", "4")) {
             return ResponseData.makeErrorMessage(ResponseData.ERROR_INTERNAL_SERVER_ERROR, "applyState属性值有误");
         }
-        UserInfo userInfo = CodeRepositoryUtil.getUserInfoByCode(tenantMemberApplyVo.getTopUnit(), tenantMemberApplyVo.getUserCode());
-        if (Objects.nonNull(userInfo)) {
-            return ResponseData.makeErrorMessage("用户已加入租户，无需重复审核!");
-        }
         TenantMemberApply tenantMemberApply = new TenantMemberApply();
         BeanUtils.copyProperties(tenantMemberApplyVo, tenantMemberApply);
         tenantMemberApplyDao.updateObject(tenantMemberApply);
