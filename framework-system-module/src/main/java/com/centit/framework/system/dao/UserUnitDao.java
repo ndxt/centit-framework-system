@@ -182,6 +182,7 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
             "[:(like)userName | and USER_CODE in (select USER_CODE from f_userinfo where USER_NAME like :userName or LOGIN_NAME like :userName)]" +
             //"[:isValid | and USER_CODE in (select us.USER_CODE from f_userinfo us where us.IS_VALID = :isValid)]"+
             "[:userCode | and USER_CODE = :userCode]"+
+            "[:relType | and rel_type = :relType]"+
             "[:unitIsValid | and UNIT_CODE IN (select UNIT_CODE from f_unitinfo where IS_VALID = :unitIsValid)]";
 
         QueryAndNamedParams qap = QueryUtils.translateQuery(sql, filterDescMap);
@@ -197,6 +198,7 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
           "[:(like)userName | and USER_CODE in (select USER_CODE from f_userinfo where USER_NAME like :userName or LOGIN_NAME like :userName)]" +
           //"[:isValid | and USER_CODE in (select us.USER_CODE from f_userinfo us where us.IS_VALID = :isValid)]"+
           "[:userCode | and USER_CODE = :userCode]"+
+            "[:relType | and rel_type = :relType]"+
           "[:unitIsValid | and UNIT_CODE IN (select UNIT_CODE from f_unitinfo where IS_VALID = :unitIsValid)]";
 
 
