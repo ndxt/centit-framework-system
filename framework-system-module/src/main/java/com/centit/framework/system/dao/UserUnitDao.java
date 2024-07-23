@@ -41,8 +41,7 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
                 " us.USER_NAME like :userName)");
         filterField.put("isValid", "userCode in (select us.USER_CODE from f_userinfo us where " +
                 "us.IS_VALID = :isValid)");
-        filterField.put("userCode_isValid", "userCode in (select us.USER_CODE" +
-            " from f_userinfo us where us.IS_VALID = :userCode_isValid)");
+        filterField.put("(STARTWITH)unitPath","UNIT_CODE IN (select UNIT_CODE from f_unitinfo where UNIT_PATH like :unitPath)]");
         filterField.put(CodeBook.SELF_ORDER_BY, "userOrder asc");
         return filterField;
     }
@@ -180,7 +179,7 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
         String sql = "select count(*) FROM F_USERUNIT WHERE 1=1 " +
             "[:(STARTWITH)unitPath | and UNIT_CODE IN (select UNIT_CODE from f_unitinfo where UNIT_PATH like :unitPath)]"+
             "[:(like)userName | and USER_CODE in (select USER_CODE from f_userinfo where USER_NAME like :userName or LOGIN_NAME like :userName)]" +
-            //"[:isValid | and USER_CODE in (select us.USER_CODE from f_userinfo us where us.IS_VALID = :isValid)]"+
+            "[:isValid | and USER_CODE in (select us.USER_CODE from f_userinfo us where us.IS_VALID = :isValid)]"+
             "[:userCode | and USER_CODE = :userCode]"+
             "[:relType | and rel_type = :relType]"+
             "[:unitIsValid | and UNIT_CODE IN (select UNIT_CODE from f_unitinfo where IS_VALID = :unitIsValid)]";
@@ -196,7 +195,7 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
           "FROM F_USERUNIT WHERE 1=1 " +
           "[:(STARTWITH)unitPath | and UNIT_CODE IN (select UNIT_CODE from f_unitinfo where UNIT_PATH like :unitPath)]"+
           "[:(like)userName | and USER_CODE in (select USER_CODE from f_userinfo where USER_NAME like :userName or LOGIN_NAME like :userName)]" +
-          //"[:isValid | and USER_CODE in (select us.USER_CODE from f_userinfo us where us.IS_VALID = :isValid)]"+
+          "[:isValid | and USER_CODE in (select us.USER_CODE from f_userinfo us where us.IS_VALID = :isValid)]"+
           "[:userCode | and USER_CODE = :userCode]"+
             "[:relType | and rel_type = :relType]"+
           "[:unitIsValid | and UNIT_CODE IN (select UNIT_CODE from f_unitinfo where IS_VALID = :unitIsValid)]";
