@@ -108,25 +108,26 @@ public class JsonPlatformEnvironment extends AbstractStaticPlatformEnvironment {
         }
     }
 
-    protected void reloadDictionaryData(){
-        String dictionaryDir = appHome + File.separator +  "config" + File.separator + "dictionary";
+    protected void reloadDictionaryData() {
+        String dictionaryDir = appHome + File.separator + "config" + File.separator + "dictionary";
         List<File> files = FileSystemOpt.findFiles(dictionaryDir, "*.json");
-        List<DataCatalog> dataCatalogs = new ArrayList<>(files.size()+1);
-
-        for(File f :files) {
-            //String catalog = StringUtils.substringBefore(f.getName(), '.');
-            try {
-                JSONObject catalogJson = JSON.parseObject(new FileInputStream(f));
-                DataCatalog dataCatalog = catalogJson.toJavaObject(DataCatalog.class);
-                Object josnArray = catalogJson.get("details");
-                if (josnArray instanceof JSONArray) {
-                    JSONArray details = (JSONArray) josnArray;
-                    List<DataDictionary> dictionaries = details.toJavaList(DataDictionary.class);
-                    dataCatalog.setDataDictionaries(dictionaries);
+        List<DataCatalog> dataCatalogs = new ArrayList<>(32);
+        if (files != null) {
+            for (File f : files) {
+                //String catalog = StringUtils.substringBefore(f.getName(), '.');
+                try {
+                    JSONObject catalogJson = JSON.parseObject(new FileInputStream(f));
+                    DataCatalog dataCatalog = catalogJson.toJavaObject(DataCatalog.class);
+                    Object josnArray = catalogJson.get("details");
+                    if (josnArray instanceof JSONArray) {
+                        JSONArray details = (JSONArray) josnArray;
+                        List<DataDictionary> dictionaries = details.toJavaList(DataDictionary.class);
+                        dataCatalog.setDataDictionaries(dictionaries);
+                    }
+                    dataCatalogs.add(dataCatalog);
+                } catch (IOException e) {
+                    logger.error(e.getMessage());
                 }
-                dataCatalogs.add(dataCatalog);
-            } catch (IOException e){
-                logger.error(e.getMessage());
             }
         }
         catalogRepo.setFreshData(dataCatalogs);
