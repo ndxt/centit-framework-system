@@ -37,10 +37,12 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
         filterField.put("unitName", CodeBook.LIKE_HQL_ID);
         filterField.put("topUnit", CodeBook.EQUAL_HQL_ID);
         filterField.put("relType", CodeBook.EQUAL_HQL_ID);
-        filterField.put("(like)userName", "userCode in (select us.USER_CODE from f_userinfo us where" +
+        filterField.put("(like)userName", "user_code in (select us.USER_CODE from f_userinfo us where" +
                 " us.USER_NAME like :userName)");
-        filterField.put("isValid", "userCode in (select us.USER_CODE from f_userinfo us where " +
+        filterField.put("isValid", "user_code in (select us.USER_CODE from f_userinfo us where " +
                 "us.IS_VALID = :isValid)");
+        filterField.put("userType", "user_code in (select us.USER_CODE from f_userinfo us where " +
+            "us.user_type = :userType)");
         filterField.put("(STARTWITH)unitPath","UNIT_CODE IN (select UNIT_CODE from f_unitinfo where UNIT_PATH like :unitPath)]");
         filterField.put(CodeBook.SELF_ORDER_BY, "userOrder asc");
         return filterField;
