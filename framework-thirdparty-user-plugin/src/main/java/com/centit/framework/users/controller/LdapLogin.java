@@ -103,7 +103,9 @@ public class LdapLogin extends BaseController {
                     throw new AuthenticationServiceException("验证码输入有误，请检查后重新输入！");
             }
         }
-
+        //清除临时验证码，避免多次重复验证
+        request.getSession().setAttribute(
+            CaptchaImageUtil.SESSIONCHECKCODE, CaptchaImageUtil.getRandomString(6));
         request.getSession().setAttribute(
             SecurityContextUtils.AJAX_CHECK_CAPTCHA_RESULT, false);
 
