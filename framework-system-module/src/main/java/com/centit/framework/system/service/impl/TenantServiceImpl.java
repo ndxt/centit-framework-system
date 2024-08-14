@@ -410,9 +410,6 @@ public class TenantServiceImpl implements TenantService {
     @Override
     @Transactional
     public ResponseData removeTenantMember(String topUnit, String userCode) {
-        if (!isTenantManger(userCode, topUnit)) {
-            return ResponseData.makeErrorMessage("该用户没有操作权限!");
-        }
         if (!tenantPowerManage.userIsTenantMember(userCode, topUnit)) {
             return ResponseData.makeErrorMessage("该用户不在租户内!");
         }
