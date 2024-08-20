@@ -188,7 +188,7 @@ public class VateCodeController extends BaseController {
     }
 
     /**
-     * 校验验证码并且更新用户信息
+     * 校验验证码并且更新用户手机号码
      * @param userCode 用户编码
      * @param key 手机号或者邮箱
      * @param code 验证码

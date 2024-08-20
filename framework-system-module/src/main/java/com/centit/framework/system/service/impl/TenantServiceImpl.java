@@ -387,7 +387,11 @@ public class TenantServiceImpl implements TenantService {
             return ResponseData.makeErrorMessage(ResponseData.ERROR_USER_NOT_LOGIN, "userCode不能为空");
         }
         //由于需要根据邮箱或这手机号确认用户身份，所以不允许用户直接修改邮箱和手机号码
-        userInfoDao.updateObject(new String[]{"topUnit", "primaryUnit", "currentStationId"}, userinfo);
+        if(StringUtils.isNotBlank(userinfo.getUserName())) {
+            userInfoDao.updateObject(new String[]{"topUnit", "userName", "primaryUnit", "currentStationId"}, userinfo);
+        } else {
+            userInfoDao.updateObject(new String[]{"topUnit", "primaryUnit", "currentStationId"}, userinfo);
+        }
         //刷新缓存中的人员信息
         reloadAuthentication(userinfo.getUserCode());
         //人员新增更新成功后刷新缓存
