@@ -748,4 +748,8 @@ public abstract class AbstractStaticPlatformEnvironment
     public UserInfo getUserInfoByUserWord(String userWord) {
         return null;
     }
+
+    @Override
+    public void saveUserLoginInfo(UserInfo userInfo) {
+    }
 }

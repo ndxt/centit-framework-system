@@ -171,7 +171,7 @@ public class JsonPlatformEnvironment extends AbstractStaticPlatformEnvironment {
      */
     @Override
     public void changeUserPassword(String userCode, String userPassword) {
-        UserInfo ui= (UserInfo)CodeRepositoryCache.userInfoRepo
+        UserInfo ui= CodeRepositoryCache.userInfoRepo
             .getCachedValue(GlobalConstValue.NO_TENANT_TOP_UNIT)
             .getAppendMap().get(userCode);
         if(ui==null)

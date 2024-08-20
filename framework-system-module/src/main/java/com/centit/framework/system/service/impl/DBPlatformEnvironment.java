@@ -715,6 +715,12 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         userInfoDao.updateUser(ui);
     }
 
+    @Override
+    @Transactional
+    public void saveUserLoginInfo(UserInfo userInfo) {
+        userInfoDao.saveUserLoginInfo(userInfo);
+    }
+
     public static List<OptInfo> getMenuFuncs(List<OptInfo> preOpts, List<OptInfo> ls) {
         boolean isNeeds[] = new boolean[preOpts.size()];
         for (int i = 0; i < preOpts.size(); i++) {

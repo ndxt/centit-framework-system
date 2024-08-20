@@ -275,4 +275,10 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
         }
         return Pair.of(stringBuilder.toString(),params);
     }
+
+    public void saveUserLoginInfo(UserInfo userInfo) {
+        DatabaseOptUtils.doExecuteSql(this,
+            "update f_userinfo set ACTIVE_TIME=? , LAST_ACCESS_TOKEN = ? where USER_CODE = ?",
+            new Object[]{userInfo.getActiveTime(), userInfo.getLastAccessToken(), userInfo.getUserCode()});
+    }
 }
