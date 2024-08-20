@@ -131,7 +131,8 @@ public class VateCodeController extends BaseController {
     )
     @RequestMapping(value = "/getEmailCode", method = RequestMethod.POST)
     @WrapUpResponseBody
-    public ResponseData getEmailCode(@RequestParam("email") String email, HttpServletRequest request) {
+    public ResponseData getEmailCode(@RequestParam("email") String email,
+                                     @RequestParam("userCode") String userCode, HttpServletRequest request) {
         VotaCode votaCode = fetchVotaCode(email);
         if(votaCode != null){
             if ((System.currentTimeMillis() - votaCode.getCreateTime()) < 1000 * 60) {
@@ -147,7 +148,7 @@ public class VateCodeController extends BaseController {
             return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
                 getI18nMessage("error.702.field_conflict", request, "UserInfo", "邮件/Email"));
         }
-        return sendEmail(userInfo.getUserCode(), email);
+        return sendEmail(userCode, email);
     }
 
     @ApiOperation(
