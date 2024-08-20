@@ -292,8 +292,6 @@ public class VateCodeController extends BaseController {
             e.printStackTrace();
             return ResponseData.errorResponse;
         }
-
-
     }
 
     @ApiOperation(
@@ -345,7 +343,7 @@ public class VateCodeController extends BaseController {
         String message = "您的验证码为:" + verifyCode + "，该码有效期为5分钟，该码只能使用一次!\n" +
             "Your verify code is :" + verifyCode + ", validity period is 5 minutes, and the code can only be used once!";
         ResponseData result = notificationCenter.sendMessageAppointedType("email",
-            "system", userCode,
+            "system", email,
             NoticeMessage.create().operation("system").method("post")
                 .subject("Locode verify code/平台验证码")
                 .content(message));
