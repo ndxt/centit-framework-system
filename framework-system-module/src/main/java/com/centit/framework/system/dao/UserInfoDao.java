@@ -177,32 +177,38 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
 
     @Transactional
     public UserInfo getUserByLoginName(String loginName) {
+        if(StringUtils.isBlank(loginName)) return null;
         return super.getObjectByProperties(CollectionsOpt.createHashMap(
             "loginName", loginName));
     }
 
     @Transactional
     public UserInfo getUserByRegEmail(String regEmail) {
+        if(StringUtils.isBlank(regEmail)) return null;
         return super.getObjectByProperties(CollectionsOpt.createHashMap("regEmail", regEmail));
     }
 
     @Transactional
     public UserInfo getUserByRegCellPhone(String regCellPhone) {
+        if(StringUtils.isBlank(regCellPhone)) return null;
         return super.getObjectByProperties(CollectionsOpt.createHashMap("regCellPhone", regCellPhone));
     }
 
     @Transactional
     public UserInfo getUserByTag(String userTag) {
+        if(StringUtils.isBlank(userTag)) return null;
         return super.getObjectByProperties(CollectionsOpt.createHashMap("userTag", userTag));
     }
 
     @Transactional
     public UserInfo getUserByUserWord(String userWord) {
+        if(StringUtils.isBlank(userWord)) return null;
         return super.getObjectByProperties(CollectionsOpt.createHashMap("userWord", userWord));
     }
 
     @Transactional
     public UserInfo getUserByIdCardNo(String idCardNo) {
+        if(StringUtils.isBlank(idCardNo)) return null;
         return super.getObjectByProperties(CollectionsOpt.createHashMap("idCardNo", idCardNo));
     }
 

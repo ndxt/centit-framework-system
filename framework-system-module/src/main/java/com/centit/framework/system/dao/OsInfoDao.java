@@ -4,6 +4,7 @@ import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
 import com.centit.framework.model.basedata.OsInfo;
 import com.centit.support.algorithm.CollectionsOpt;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,10 +38,12 @@ public class OsInfoDao extends BaseDaoImpl<OsInfo, String> {
 
     @Transactional
     public OsInfo getOsInfoByRelOpt(String relOptId){
+        if(StringUtils.isBlank(relOptId)) return null;
         return super.getObjectByProperties(CollectionsOpt.createHashMap("relOptId", relOptId));
     }
 
     public int countOsInfoByTopUnit(String topUnit) {
+        if(StringUtils.isBlank(topUnit)) return 0;
         return this.countObjectByProperties(CollectionsOpt.createHashMap("topUnit", topUnit));
     }
 }

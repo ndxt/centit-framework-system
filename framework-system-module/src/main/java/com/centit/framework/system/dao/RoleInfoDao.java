@@ -6,6 +6,7 @@ import com.centit.framework.jdbc.dao.DatabaseOptUtils;
 import com.centit.framework.model.basedata.RoleInfo;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,6 +94,7 @@ public class RoleInfoDao extends BaseDaoImpl<RoleInfo, String>{
     }
 
     public RoleInfo getObjectByProperty(String propertyName, Object propertyValue) {
+        if(StringUtils.isBlank(propertyName) || propertyValue==null) return null;
         return super.getObjectByProperties(CollectionsOpt.createHashMap(propertyName, propertyValue));
     }
 

@@ -96,21 +96,25 @@ public class UnitInfoDao extends BaseDaoImpl<UnitInfo, String> {
 
     @Transactional
     public UnitInfo getUnitByTag(String unitTag) {
+        if(StringUtils.isBlank(unitTag)) return null;
         return super.getObjectByProperties(CollectionsOpt.createHashMap("unitTag", unitTag));
     }
 
     @Transactional
     public UnitInfo getUnitByWord(String unitWord) {
+        if(StringUtils.isBlank(unitWord)) return null;
         return super.getObjectByProperties(CollectionsOpt.createHashMap("unitWord", unitWord));
     }
 
     @Transactional
     public List<UnitInfo> listSubUnits(String unitCode){
+        if(StringUtils.isBlank(unitCode)) return null;
         return super.listObjectsByProperties(CollectionsOpt.createHashMap("parentUnit", unitCode));
     }
 
     @Transactional
     public List<UnitInfo> listSubUnitsByUnitPaht(String unitPath){
+        if(StringUtils.isBlank(unitPath)) return null;
         return listObjectsByProperties(CollectionsOpt.createHashMap("unitPath", unitPath+"/%" ));
     }
 
