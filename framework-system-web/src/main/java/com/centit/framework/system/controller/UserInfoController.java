@@ -306,6 +306,9 @@ public class UserInfoController extends BaseController {
     public ResponseMapData getUserInfo(@PathVariable String userCode, HttpServletRequest request) {
         WebOptUtils.assertUserLogin(request);
         UserInfo userInfo = sysUserManager.getObjectById(userCode);
+        if(userInfo==null){
+            throw new ObjectException(ResponseData.ERROR_USER_NOTFOUND, "user not found--" + userCode);
+        }
         String topUnit = "";
         if (WebOptUtils.isTenantTopUnit(request)) {
             topUnit = WebOptUtils.getCurrentTopUnit(request);
