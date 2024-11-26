@@ -92,9 +92,7 @@ public class DataDictionaryController extends BaseController {
     @WrapUpResponseBody
     public PageQueryResult<Object> list(String[] field, PageDesc pageDesc, HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
+        searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         List<DataCatalog> listObjects = dataDictionaryManager.listObjects(searchColumn, pageDesc);
 
         return PageQueryResult.createJSONArrayResult(
@@ -620,9 +618,7 @@ public class DataDictionaryController extends BaseController {
     @WrapUpResponseBody
     public ResponseData getAllCatalog(HttpServletRequest request) {
         Map<String, Object> searchColumn = new HashMap<>();
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
+        searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         List<DataCatalog> catalogs = dataDictionaryManager.listAllDataCatalog(searchColumn);
         return ResponseData.makeResponseData(catalogs);
     }
@@ -638,9 +634,7 @@ public class DataDictionaryController extends BaseController {
     @WrapUpResponseBody
     public ResponseData getWholeDictionary(HttpServletRequest request) {
         Map<String, Object> searchColumn = new HashMap<>();
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
+        searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         List<DataCatalog> catalogs = dataDictionaryManager.listAllDataCatalog(searchColumn);
         List<String> catalogCodes = new ArrayList<>();
         catalogs.forEach(ca -> catalogCodes.add(ca.getCatalogCode()));
@@ -664,9 +658,7 @@ public class DataDictionaryController extends BaseController {
     @ResponseBody
     public ResponseEntity<byte[]> downloadProperties(HttpServletRequest request) throws IOException {
         Map<String, Object> searchColumn = new HashMap<>();
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
+        searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         List<DataCatalog> catalogs = dataDictionaryManager.listAllDataCatalog(searchColumn);
         List<String> catalogCodes = new ArrayList<>();
         catalogs.forEach(ca -> catalogCodes.add(ca.getCatalogCode()));

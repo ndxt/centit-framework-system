@@ -821,7 +821,7 @@ public class TenantServiceImpl implements TenantService {
     @Override
     @Transactional
     public ResponseData addTenantUnit(UnitInfo unitInfo) {
-        if (WebOptUtils.isTenant && tenantPowerManage.unitNumberLimitIsOver(unitInfo.getTopUnit())) {
+        if (tenantPowerManage.unitNumberLimitIsOver(unitInfo.getTopUnit())) {
             return ResponseData.makeErrorMessage("单位数量达到上限!");
         }
         if (sysUnitManager.hasSameName(unitInfo)) {
@@ -849,7 +849,7 @@ public class TenantServiceImpl implements TenantService {
     @Override
     @Transactional
     public ResponseData addTenantUser(UserInfo userInfo, UserUnit userUnit) {
-        if (WebOptUtils.isTenant && tenantPowerManage.userNumberLimitIsOver(userUnit.getTopUnit())) {
+        if (tenantPowerManage.userNumberLimitIsOver(userUnit.getTopUnit())) {
             return ResponseData.makeErrorMessage("用户数量达到上限!");
         }
         UserInfo dbUserInfo = sysUserManager.loadUserByLoginname(userInfo.getLoginName());

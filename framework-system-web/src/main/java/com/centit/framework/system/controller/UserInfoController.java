@@ -24,6 +24,7 @@ import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
+import com.centit.support.network.HtmlFormUtils;
 import com.centit.support.security.SecurityOptUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -116,9 +117,7 @@ public class UserInfoController extends BaseController {
             return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
         }
 
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            searchColumn.put("topUnit", topUnit);
-        }
+        searchColumn.put("topUnit", topUnit);
         //name = "_search", value = "强制关闭分页查询",
         if (BooleanBaseOpt.castObjectToBoolean(_search,false)) {
             listObjects = sysUserManager.listObjects(searchColumn);
@@ -146,9 +145,7 @@ public class UserInfoController extends BaseController {
     public PageQueryResult<Object> listQueryByUnit(PageDesc pageDesc, HttpServletRequest request) {
         WebOptUtils.assertUserLogin(request);
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
+        searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         JSONArray jsonArray = sysUserManager.listObjectsByUnit(searchColumn, pageDesc);
         return PageQueryResult.createJSONArrayResult(jsonArray,pageDesc, UserInfo.class);
     }
@@ -309,19 +306,16 @@ public class UserInfoController extends BaseController {
         if(userInfo==null){
             throw new ObjectException(ResponseData.ERROR_USER_NOTFOUND, "user not found--" + userCode);
         }
-        String topUnit = "";
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            topUnit = WebOptUtils.getCurrentTopUnit(request);
-        }
+        String topUnit = WebOptUtils.getCurrentTopUnit(request);
         UserUnit userUnit = sysUserUnitManager.getPrimaryUnitByUserCode(userCode, topUnit);
 
         //针对输入框类型做的反转译
-        userInfo.setUserCode(StringEscapeUtils.unescapeHtml4(userInfo.getUserCode()));
-        userInfo.setLoginName(StringEscapeUtils.unescapeHtml4(userInfo.getLoginName()));
-        userInfo.setUserWord(StringEscapeUtils.unescapeHtml4(userInfo.getUserWord()));
-        userInfo.setEnglishName(StringEscapeUtils.unescapeHtml4(userInfo.getEnglishName()));
-        userInfo.setUserName(StringEscapeUtils.unescapeHtml4(userInfo.getUserName()));
-        userInfo.setUserDesc(StringEscapeUtils.unescapeHtml4(userInfo.getUserDesc()));
+        userInfo.setUserCode(HtmlFormUtils.htmlString(userInfo.getUserCode()));
+        userInfo.setLoginName(HtmlFormUtils.htmlString(userInfo.getLoginName()));
+        userInfo.setUserWord(HtmlFormUtils.htmlString(userInfo.getUserWord()));
+        userInfo.setEnglishName(HtmlFormUtils.htmlString(userInfo.getEnglishName()));
+        userInfo.setUserName(HtmlFormUtils.htmlString(userInfo.getUserName()));
+        userInfo.setUserDesc(HtmlFormUtils.htmlString(userInfo.getUserDesc()));
         //脱敏操作
         //UserInfo desensitizeUserInfo = Sensitive.desensitize(userInfo);
 

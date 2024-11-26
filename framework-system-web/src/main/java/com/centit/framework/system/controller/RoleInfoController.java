@@ -15,7 +15,6 @@ import com.centit.framework.system.service.OptMethodManager;
 import com.centit.framework.system.service.SysRoleManager;
 import com.centit.framework.system.service.SysUnitRoleManager;
 import com.centit.framework.system.service.SysUserRoleManager;
-import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
@@ -147,12 +146,7 @@ public class RoleInfoController extends BaseController {
     @GetMapping(value = "/currentunit")
     @WrapUpResponseBody()
     public PageQueryResult<RoleInfo> listUnitAndPublicRole(PageDesc pageDesc, HttpServletRequest request) {
-        String currentUnit;
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            currentUnit = WebOptUtils.getCurrentTopUnit(request);
-        } else {
-            currentUnit = WebOptUtils.getCurrentUnitCode(request);
-        }
+        String currentUnit = WebOptUtils.getCurrentTopUnit(request);
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("publicUnitRole", currentUnit);
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
@@ -697,12 +691,9 @@ public class RoleInfoController extends BaseController {
 //        filterMap.put("roleType", type);
         filterMap.put("isValid", "T");
         filterMap.put("roleType", type);
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
+        filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
 
         if ("D".equals(type) && StringUtils.isBlank(owner)) {
-
             UserUnit unit = CodeRepositoryUtil.getUserPrimaryUnit(
                 WebOptUtils.getCurrentTopUnit(request),
                 WebOptUtils.getCurrentUserCode(request));

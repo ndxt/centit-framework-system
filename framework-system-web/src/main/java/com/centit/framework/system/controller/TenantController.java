@@ -642,14 +642,12 @@ public class TenantController extends BaseController {
         tag="{ui.unitCode}:{ui.unitName}")
     @WrapUpResponseBody
     public ResponseData addTenantUnit(@ParamName("ui")@Valid UnitInfo unitInfo,HttpServletRequest request) {
-        if (WebOptUtils.isTenant){
-            String topUnit = WebOptUtils.getCurrentTopUnit(request);
-            if (StringUtils.isBlank(topUnit)){
-                throw new ObjectException(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
-                    getI18nMessage( "error.701.field_is_blank", request, "topUnit"));
-            }
-            unitInfo.setTopUnit(topUnit);
+        String topUnit = WebOptUtils.getCurrentTopUnit(request);
+        if (StringUtils.isBlank(topUnit)){
+            throw new ObjectException(ResponseData.ERROR_FIELD_INPUT_NOT_VALID,
+                getI18nMessage( "error.701.field_is_blank", request, "topUnit"));
         }
+        unitInfo.setTopUnit(topUnit);
         return tenantService.addTenantUnit(unitInfo);
 
     }

@@ -90,9 +90,7 @@ public class OsInfoController extends BaseController {
     public PageQueryResult<Object> list(PageDesc pageDesc, HttpServletRequest request) {
         WebOptUtils.assertUserLogin(request);
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
+        searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         JSONArray listObjects = osInfoMag.listOsInfoAsJson(searchColumn, pageDesc);
         return PageQueryResult.createJSONArrayResult(listObjects,pageDesc, OsInfo.class);
     }

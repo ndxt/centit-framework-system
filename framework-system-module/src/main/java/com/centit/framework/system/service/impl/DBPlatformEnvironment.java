@@ -96,14 +96,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Autowired
     private UserPlatService userPlatService;
 
-    private boolean supportTenant;
-
     public DBPlatformEnvironment() {
-        supportTenant = true;
-    }
-
-    public void setSupportTenant(boolean supportTenant) {
-        this.supportTenant = supportTenant;
     }
 
     @Override
@@ -272,17 +265,13 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(readOnly = true)
     public List<UserRole> listUserRoles(String topUnit, String userCode) {
-        return supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
-            ? FVUserRoles.mapToUserRoles(userRoleDao.listUserRolesByTopUnit(topUnit, userCode))
-            : userRoleDao.listUserRoles(userCode);
+        return FVUserRoles.mapToUserRoles(userRoleDao.listUserRolesByTopUnit(topUnit, userCode));
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<UserRole> listRoleUsers(String topUnit, String roleCode) {
-        return supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
-            ? FVUserRoles.mapToUserRoles(userRoleDao.listRoleUsersByTopUnit(topUnit, roleCode))
-            : userRoleDao.listRoleUsers(roleCode);
+        return FVUserRoles.mapToUserRoles(userRoleDao.listRoleUsersByTopUnit(topUnit, roleCode));
     }
 
     @Override
@@ -318,11 +307,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(readOnly = true)
     public List<UserInfo> listAllUsers(String topUnit) {
-        if (supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)) {
-            return userInfoDao.listObjects(CollectionsOpt.createHashMap("topUnit", topUnit));
-        } else {
-            return userInfoDao.listObjects();
-        }
+        return userInfoDao.listObjects(CollectionsOpt.createHashMap("topUnit", topUnit));
     }
 
     /*@Override
@@ -337,13 +322,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(readOnly = true)
     public List<UnitInfo> listAllUnits(String topUnit) {
-        if (supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)) {
-            Map<String, Object> filterMap = new HashMap<>();
-            filterMap.put("topUnit", topUnit);
-            return unitInfoDao.listObjectsByProperties(filterMap);
-        } else {
-            return unitInfoDao.listObjects();
-        }
+        Map<String, Object> filterMap = new HashMap<>();
+        filterMap.put("topUnit", topUnit);
+        return unitInfoDao.listObjectsByProperties(filterMap);
     }
 
     /*@Override
@@ -358,13 +339,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(readOnly = true)
     public List<UserUnit> listAllUserUnits(String topUnit) {
-        if (supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)) {
-            Map<String, Object> filterMap = new HashMap<>();
-            filterMap.put("topUnit", topUnit);
-            return userUnitDao.listObjectsAll(filterMap);
-        } else {
-            return userUnitDao.listObjects();
-        }
+        Map<String, Object> filterMap = new HashMap<>();
+        filterMap.put("topUnit", topUnit);
+        return userUnitDao.listObjectsAll(filterMap);
     }
 
     /**
@@ -375,18 +352,13 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
      */
     @Override
     public List<UnitInfo> listUserTopUnits(String userCode) {
-        return supportTenant ? unitInfoDao.listUserTopUnits(userCode)
-            : CollectionsOpt.createList(
-            new UnitInfo(GlobalConstValue.NO_TENANT_TOP_UNIT,
-                "T", "不支持租户时的默认顶级机构"));
+        return unitInfoDao.listUserTopUnits(userCode);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<UserUnit> listUserUnits(String topUnit, String userCode) {
-        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
-            ? userUnitDao.listUserUnitsByUserCode(topUnit, userCode)
-            : userUnitDao.listUserUnitsByUserCode(userCode);
+        return userUnitDao.listUserUnitsByUserCode(topUnit, userCode);
     }
 
     @Override
@@ -398,25 +370,19 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(readOnly = true)
     public List<RoleInfo> listAllRoleInfo(String topUnit) {
-        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
-            ? roleInfoDao.listAllRoleByUnit(topUnit)
-            : roleInfoDao.listObjectsAll();
+        return roleInfoDao.listAllRoleByUnit(topUnit);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<RolePower> listAllRolePower(String topUnit) {
-        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit) ?
-            rolePowerDao.listAllRolePowerByUnit(topUnit)
-            : rolePowerDao.listObjectsAll();
+        return rolePowerDao.listAllRolePowerByUnit(topUnit);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<OptInfo> listAllOptInfo(String topUnit) {
-        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
-            ? optInfoDao.listAllOptInfoByUnit(topUnit)
-            : optInfoDao.listObjectsAll();
+        return optInfoDao.listAllOptInfoByUnit(topUnit);
     }
 
     @Override
@@ -427,9 +393,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(readOnly = true)
     public List<OptMethod> listAllOptMethod(String topUnit) {
-        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit) ?
-            optMethodDao.listAllOptMethodByUnit(topUnit)
-            : optMethodDao.listObjectsAll();
+        return optMethodDao.listAllOptMethodByUnit(topUnit);
     }
 
     @Override
@@ -464,17 +428,13 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
      */
     @Override
     public List<OptDataScope> listAllOptDataScope(String topUnit) {
-        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
-            ? dataScopeDao.listAllDataScopeByUnit(topUnit)
-            : dataScopeDao.listAllDataScope();
+        return dataScopeDao.listAllDataScopeByUnit(topUnit);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<DataCatalog> listAllDataCatalogs(String topUnit) {
-        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
-            ? dataCatalogDao.listDataCatalogByUnit(topUnit)
-            : dataCatalogDao.listObjects();
+        return dataCatalogDao.listDataCatalogByUnit(topUnit);
     }
 
     @Override
@@ -524,11 +484,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         if (StringUtils.isEmpty(userinfo.getCurrentStationId())) {
             for (UserUnit uu : userUnits) {
                 if ("T".equals(uu.getRelType())) {
-                    if (!supportTenant) {
-                        userDetails.setCurrentStationId(uu.getUserUnitId());
-                        currentUnitCode = uu.getUnitCode();
-                        break;
-                    } else if (StringUtils.isNotBlank(userinfo.getTopUnit()) && StringUtils.isNotBlank(uu.getTopUnit())
+                    if (StringUtils.isNotBlank(userinfo.getTopUnit()) && StringUtils.isNotBlank(uu.getTopUnit())
                         && userinfo.getTopUnit().equals(uu.getTopUnit())) {
                         userDetails.setCurrentStationId(uu.getUserUnitId());
                         currentUnitCode = uu.getUnitCode();
@@ -798,9 +754,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     public List<OsInfo> listOsInfos(String topUnit) {
-        return this.supportTenant && !GlobalConstValue.NO_TENANT_TOP_UNIT.equals(topUnit)
-            ? osInfoDao.listOsInfoByUnit(topUnit)
-            : osInfoDao.listObjects();
+        return osInfoDao.listOsInfoByUnit(topUnit);
     }
 
     @Override
@@ -838,13 +792,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     public void batchSaveWorkGroup(List<WorkGroup> workGroups) {
-        ArrayList<WorkGroup> workGroups1 = new ArrayList<>();
-        for (WorkGroup workGroup : workGroups) {
-            if (workGroup instanceof WorkGroup) {
-                workGroups1.add((WorkGroup) workGroup);
-            }
-        }
-        workGroupManager.batchWorkGroup(workGroups1);
+        workGroupManager.batchWorkGroup(workGroups);
     }
 
 
@@ -942,7 +890,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         paramsMap.put("userCode", userCode);
         List<UserPlat> userPlats = userPlatService.listObjects(paramsMap, null);
         //第三方登录信息
-        jsonObj.put("userPlats", (userPlats != null && userPlats.size() > 0) ? userPlats : new ArrayList<>());
+        jsonObj.put("userPlats", (userPlats != null && !userPlats.isEmpty()) ? userPlats : new ArrayList<>());
         return jsonObj;
     }
 

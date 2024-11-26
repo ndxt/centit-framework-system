@@ -12,7 +12,6 @@ import com.centit.framework.security.SecurityContextUtils;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.common.CachedObject;
 import com.centit.support.common.ListAppendMap;
-import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.ConfigAttribute;
 
@@ -63,7 +62,6 @@ public abstract class AbstractStaticPlatformEnvironment
 
     @SuppressWarnings("unchecked")
     protected void organizePlatformData() {
-
         for (RoleInfo ri : CodeRepositoryCache.roleInfoRepo.getCachedValue(GlobalConstValue.NO_TENANT_TOP_UNIT)) {
             for (RolePower rp : CodeRepositoryCache.rolePowerMap
                 .getCachedValue(GlobalConstValue.NO_TENANT_TOP_UNIT).get(ri.getRoleCode())) {

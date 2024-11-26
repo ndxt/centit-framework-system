@@ -92,9 +92,7 @@ public class UnitInfoController extends BaseController {
         WebOptUtils.assertUserLogin(request);
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         String unitName = (String) searchColumn.get("unitName");
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
+        searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         if (StringUtils.isNotBlank(unitName) && StringUtils.isBlank(id)) {
 
             List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn);
@@ -131,9 +129,7 @@ public class UnitInfoController extends BaseController {
     public PageQueryResult<UnitInfo> list(PageDesc pageDesc, HttpServletRequest request) {
         WebOptUtils.assertUserLogin(request);
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
+        searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn, pageDesc);
         return PageQueryResult.createResultMapDict(listObjects, pageDesc);
     }
@@ -155,9 +151,7 @@ public class UnitInfoController extends BaseController {
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         String currentUnitCode = WebOptUtils.getCurrentUnitCode(request);
         searchColumn.put("parentUnit", StringUtils.isNotBlank(id) ? id : currentUnitCode);
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
+        searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         String unitName = StringBaseOpt.castObjectToString(searchColumn.get("unitName"));
         if (StringUtils.isNotBlank(unitName)) {
             List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn);
@@ -427,10 +421,7 @@ public class UnitInfoController extends BaseController {
     public JSONArray listChildren(@PathVariable String unitCode, String[] field, HttpServletRequest request) {
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         searchColumn.put("parentUnit", unitCode);
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
-
+        searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn);
         return DictionaryMapUtils.objectsToJSONArray(listObjects, field);
     }
@@ -453,10 +444,7 @@ public class UnitInfoController extends BaseController {
 
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         searchColumn.put("unitCode", currentUnitCode);
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
-
+        searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         //特殊字符转义
         if (searchColumn.get("userName") != null) {
             searchColumn.put("likeUserOrLoginName", StringEscapeUtils.escapeHtml4(searchColumn.get("userName").toString()));
@@ -484,11 +472,9 @@ public class UnitInfoController extends BaseController {
         Map<String, Object> filterMap = new HashMap<>();
         filterMap.put("unitCode", unitCode);
         filterMap.put("isValid", "T");
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
-        List<UserInfo> listObjects = sysUserMag.listObjects(filterMap);
+        filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
 
+        List<UserInfo> listObjects = sysUserMag.listObjects(filterMap);
         return ResponseData.makeResponseData(listObjects);
     }
 
@@ -512,9 +498,7 @@ public class UnitInfoController extends BaseController {
         filterMap.put("unitPath", currentUnitInfo.getUnitPath());
 
         filterMap.put("isValid", state);
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
+        filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         List<UserInfo> listObjects = sysUserMag.listObjects(filterMap);
 
         return ResponseData.makeResponseData(listObjects);
@@ -605,9 +589,7 @@ public class UnitInfoController extends BaseController {
         Map<String, Object> filterMap = new HashMap<>(4);
         filterMap.put("publicUnitRole", currentUnitCode);
         filterMap.put("isValid", "T");
-        if (WebOptUtils.isTenantTopUnit(request)) {
-            filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        }
+        filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap);
         return ResponseData.makeResponseData(roleInfos);
     }
