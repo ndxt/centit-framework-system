@@ -62,10 +62,10 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
         filterField.put("USERCODE_EQ", CodeBook.EQUAL_HQL_ID);
         filterField.put("userName", CodeBook.LIKE_HQL_ID);
         filterField.put("isValid", CodeBook.EQUAL_HQL_ID);
-        filterField.put("LOGINNAME", CodeBook.LIKE_HQL_ID);
+        filterField.put("(like)loginName", CodeBook.LIKE_HQL_ID);
         filterField.put("USERSTATE", CodeBook.EQUAL_HQL_ID);
         filterField.put("USERORDER", CodeBook.EQUAL_HQL_ID);
-        filterField.put("USERTAG", CodeBook.LIKE_HQL_ID);
+        filterField.put("(like)userTag", CodeBook.LIKE_HQL_ID);
         filterField.put("USERWORD", CodeBook.EQUAL_HQL_ID);
 
         filterField.put("topUnit", ( " USER_CODE IN ( SELECT DISTINCT UN.USER_CODE FROM F_USERUNIT UN WHERE UN.TOP_UNIT = :topUnit ) " ));
