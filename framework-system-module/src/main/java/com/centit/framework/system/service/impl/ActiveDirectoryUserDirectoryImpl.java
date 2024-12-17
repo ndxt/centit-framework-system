@@ -98,7 +98,8 @@ public class ActiveDirectoryUserDirectoryImpl implements UserDirectory{
          loginName : "sAMAccountName",
          regEmail : "mail",
          regCellPhone : "mobilePhone",
-         userDesc : "description"
+         userDesc : "description",
+     userValid : "userAccountControl"
      },
      unitFieldMap : {
          unitTag : "distinguishedName",
@@ -210,39 +211,40 @@ public class ActiveDirectoryUserDirectoryImpl implements UserDirectory{
                 SearchResult sr = answer.next();
                 Attributes attrs = sr.getAttributes();
 
-                Map<String, String> userMap = fetchAttributeMap( attrs, userFields);
-                if(StringUtils.isBlank(userMap.get("userName"))|| StringUtils.isBlank(userMap.get("loginName"))){
+                Map<String, String> userMap = fetchAttributeMap(attrs, userFields);
+                if (StringUtils.isBlank(userMap.get("userName")) || StringUtils.isBlank(userMap.get("loginName"))) {
                     continue;
                 }
 
-                boolean createUser=false;
+                boolean createUser = false;
                 UserInfo userInfo = userInfoDao.getUserByLoginName(userMap.get("loginName"));
-                if(userInfo==null) {
+                if (userInfo == null) {
                     userInfo = new UserInfo();
 //                    userInfo.setUserCode(userInfoDao.getNextKey());
-                    userInfo.setIsValid("T");
+                    boolean isDisable = StringUtils.equalsAny(userMap.get("userValid"), "514", "546", "66050", "66080", "66082");
+                    userInfo.setIsValid(isDisable ? "F" : "T");
                     userInfo.setLoginName(userMap.get("loginName"));
                     userInfo.setCreateDate(now);
                     userInfo.setUserPin(getDefaultPassword());
                     createUser = true;
                 }
-                for(Map.Entry<String, String> ent : userMap.entrySet()){
+                for (Map.Entry<String, String> ent : userMap.entrySet()) {
                     String fieldKey = ent.getKey();
-                    if("loginName".equals(fieldKey)) continue;
-                    if("regEmail".equals(fieldKey)) {
+                    if ("loginName".equals(fieldKey)) continue;
+                    if ("regEmail".equals(fieldKey)) {
                         String regEmail = ent.getValue();
                         if (StringUtils.isNotBlank(regEmail) && regEmail.length() < 60 &&
-                             !regEmail.equals(userInfo.getRegEmail()) &&
-                            userInfoDao.getUserByRegEmail(regEmail) == null){
+                            !regEmail.equals(userInfo.getRegEmail()) &&
+                            userInfoDao.getUserByRegEmail(regEmail) == null) {
                             userInfo.setRegEmail(regEmail);
                         }
                         continue;
                     }
-                    if("regCellPhone".equals(fieldKey)) {
+                    if ("regCellPhone".equals(fieldKey)) {
                         String regCellPhone = ent.getValue();
                         if (StringUtils.isNotBlank(regCellPhone) && regCellPhone.length() <= 15 &&
                             !regCellPhone.equals(userInfo.getRegCellPhone()) &&
-                            userInfoDao.getUserByRegCellPhone(regCellPhone)  == null){
+                            userInfoDao.getUserByRegCellPhone(regCellPhone) == null) {
                             userInfo.setRegCellPhone(regCellPhone);
                         }
                         continue;
@@ -251,22 +253,22 @@ public class ActiveDirectoryUserDirectoryImpl implements UserDirectory{
                 }
 
                 userInfo.setUpdateDate(now);
-                if(createUser) {
+                if (createUser) {
                     userInfoDao.saveNewObject(userInfo);
-                }else{
+                } else {
                     userInfoDao.updateUser(userInfo);
                 }
                 // 如果已经是禁用的用户，不再同步用户的其他信息
-                if("T".equals( userInfo.getIsValid())) {
-                    if(createUser && StringUtils.isNoneBlank(directory.getDefaultUserRole())){
+                if ("T".equals(userInfo.getIsValid())) { // 新建用户 设置角色
+                    if (createUser && StringUtils.isNotBlank(directory.getDefaultUserRole())) {
                         UserRole role = new UserRole(
-                                new UserRoleId(userInfo.getUserCode(), directory.getDefaultUserRole()));
+                            new UserRoleId(userInfo.getUserCode(), directory.getDefaultUserRole()));
                         role.setObtainDate(now);
                         role.setCreateDate(now);
                         role.setChangeDesc("LDAP同步时默认设置。");
                         userRoleDao.mergeUserRole(role);
                     }
-
+                    // 同步机构
                     Attribute members = attrs.get(userUnitField);
                     if (members != null) {
                         NamingEnumeration<?> ms = members.getAll();
@@ -313,6 +315,7 @@ public class ActiveDirectoryUserDirectoryImpl implements UserDirectory{
                     }
                 }
             }
+
             ctx.close();
             return 0;
         }catch (NamingException e) {
