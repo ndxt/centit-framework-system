@@ -221,7 +221,8 @@ public class ActiveDirectoryUserDirectoryImpl implements UserDirectory{
                 if (userInfo == null) {
                     userInfo = new UserInfo();
 //                    userInfo.setUserCode(userInfoDao.getNextKey());
-                    boolean isDisable = StringUtils.equalsAny(userMap.get("userValid"), "514", "546", "66050", "66080", "66082");
+                    boolean isDisable = StringUtils.equalsAny(userMap.get("userValid"),
+                        "F", "false", "514", "546", "66050", "66080", "66082");
                     userInfo.setIsValid(isDisable ? "F" : "T");
                     userInfo.setLoginName(userMap.get("loginName"));
                     userInfo.setCreateDate(now);
