@@ -220,10 +220,7 @@ public class ActiveDirectoryUserDirectoryImpl implements UserDirectory{
                 UserInfo userInfo = userInfoDao.getUserByLoginName(userMap.get("loginName"));
                 if (userInfo == null) {
                     userInfo = new UserInfo();
-//                    userInfo.setUserCode(userInfoDao.getNextKey());
-                    boolean isDisable = StringUtils.equalsAny(userMap.get("userValid"),
-                        "F", "false", "514", "546", "66050", "66080", "66082");
-                    userInfo.setIsValid(isDisable ? "F" : "T");
+                    userInfo.setIsValid("T");
                     userInfo.setLoginName(userMap.get("loginName"));
                     userInfo.setCreateDate(now);
                     userInfo.setUserPin(getDefaultPassword());
@@ -248,6 +245,12 @@ public class ActiveDirectoryUserDirectoryImpl implements UserDirectory{
                             userInfoDao.getUserByRegCellPhone(regCellPhone) == null) {
                             userInfo.setRegCellPhone(regCellPhone);
                         }
+                        continue;
+                    }
+                    if ("userValid".equals(fieldKey)) {
+                        boolean isDisable = StringUtils.equalsAny(ent.getValue(),
+                            "F", "false", "514", "546", "66050", "66080", "66082");
+                        userInfo.setIsValid(isDisable ? "F" : "T");
                         continue;
                     }
                     ReflectionOpt.setFieldValue(userInfo, fieldKey, ent.getValue(), String.class);
