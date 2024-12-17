@@ -99,7 +99,7 @@ public class ActiveDirectoryUserDirectoryImpl implements UserDirectory{
          regEmail : "mail",
          regCellPhone : "mobilePhone",
          userDesc : "description",
-     userValid : "userAccountControl"
+         userValid : "userAccountControl"
      },
      unitFieldMap : {
          unitTag : "distinguishedName",

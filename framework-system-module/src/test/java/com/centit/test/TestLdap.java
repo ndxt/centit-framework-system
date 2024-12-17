@@ -10,6 +10,7 @@ import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.compiler.Pretreatment;
+import com.centit.support.json.JSONOpt;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.naming.Context;
@@ -117,7 +118,9 @@ public class TestLdap {
 
                 UserInfo userInfo =  new UserInfo();
 //                    userInfo.setUserCode(userInfoDao.getNextKey());
-                userInfo.setIsValid("T");
+                boolean isDisable = StringUtils.equalsAny(userMap.get("userValid"),
+                    "F", "false", "514", "546", "66050", "66080", "66082");
+                userInfo.setIsValid(isDisable ? "F" : "T");
                 userInfo.setLoginName(userMap.get("loginName"));
                 userInfo.setCreateDate(now);
                 String regEmail = userMap.get("regEmail");
@@ -144,6 +147,7 @@ public class TestLdap {
 
 
     public static void main(String[] args) {
+        JSONOpt.fastjsonGlobalConfig();
         UserSyncDirectory directory = new UserSyncDirectory();
         directory.setTopUnit("centit");
         directory.setUrl("LDAP://192.168.128.5:389");
@@ -160,7 +164,8 @@ public class TestLdap {
             " loginName : \"sAMAccountName\", "+
             " regEmail : \"mail\", "+
             " regCellPhone : \"mobilePhone\", "+
-            " userDesc : \"description\" "+
+            " userDesc : \"description\", " +
+            " userValid : \"userAccountControl\" "+
             " }, "+
             " unitFieldMap : { "+
             " unitTag : \"distinguishedName\", "+
