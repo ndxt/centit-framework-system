@@ -69,7 +69,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
         filterField.put("USERWORD", CodeBook.EQUAL_HQL_ID);
 
         filterField.put("topUnit", ( " USER_CODE IN ( SELECT DISTINCT UN.USER_CODE FROM F_USERUNIT UN WHERE UN.TOP_UNIT = :topUnit ) " ));
-        filterField.put("(like)likeUserOrLoginName", "(User_Name LIKE :likeUserOrLoginName OR LOGIN_NAME LIKE :likeUserOrLoginName)");
+        filterField.put("(like)likeUserOrLoginName", "(User_Name LIKE :likeUserOrLoginName OR LOGIN_NAME LIKE :likeUserOrLoginName or user_code like :likeUserOrLoginName)");
         filterField.put("byUnderUnit", "userCode in " +
             "(select us.USER_CODE from f_userunit us where us.UNIT_CODE = :byUnderUnit ) ");
         filterField.put("roleCode", "[(isNotEmpty(roleCode))(roleCode, currentDateTime) | and USER_CODE in " +
