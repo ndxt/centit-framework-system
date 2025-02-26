@@ -481,28 +481,27 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         userDetails.setUserInfo(userinfo);
         //userDetails.getUserInfo().put("userPin", userinfo.getUserPin());
         userDetails.setUserUnits(userUnits);
-        if (StringUtils.isEmpty(userinfo.getCurrentStationId())) {
+        // 确保 currentUnitCode 是正确的
+        if (StringUtils.isNotBlank(userinfo.getCurrentStationId())) {
             for (UserUnit uu : userUnits) {
-                if ("T".equals(uu.getRelType())) {
-                    if (StringUtils.isNotBlank(userinfo.getTopUnit()) && StringUtils.isNotBlank(uu.getTopUnit())
-                        && userinfo.getTopUnit().equals(uu.getTopUnit())) {
-                        userDetails.setCurrentStationId(uu.getUserUnitId());
-                        currentUnitCode = uu.getUnitCode();
-                        break;
-                    }
-                }
-            }
-        }
-        if (StringUtils.isEmpty(userDetails.getCurrentStationId())) {
-            for (UserUnit uu : userUnits) {
-                if (StringUtils.isNotBlank(userinfo.getTopUnit()) && StringUtils.isNotBlank(uu.getTopUnit())
-                    && userinfo.getTopUnit().equals(uu.getTopUnit())) {
+                if(userinfo.getCurrentStationId().equals(uu.getUserUnitId())){
                     userDetails.setCurrentStationId(uu.getUserUnitId());
                     currentUnitCode = uu.getUnitCode();
                     break;
                 }
             }
         }
+
+        if (StringUtils.isBlank(userDetails.getCurrentStationId())) {
+            for (UserUnit uu : userUnits) {
+                if ("T".equals(uu.getRelType()) && StringUtils.equals(userinfo.getTopUnit(), uu.getTopUnit())) {
+                    userDetails.setCurrentStationId(uu.getUserUnitId());
+                    currentUnitCode = uu.getUnitCode();
+                    break;
+                }
+            }
+        }
+
         //edit by zhuxw  代码从原框架迁移过来，可和其它地方合并
         List<RoleInfo> roles = new ArrayList<>();
         //所有的用户 都要平台公共角色和所属租户公共角色
