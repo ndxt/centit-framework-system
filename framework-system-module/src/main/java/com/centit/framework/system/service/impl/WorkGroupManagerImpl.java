@@ -118,6 +118,7 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
         }
         return false;
     }
+
     @Override
     public boolean loginUserIsWorkGroupLeader(String osId, String userCode) {
         if (StringUtils.isBlank(osId) || StringUtils.isBlank(userCode)) {

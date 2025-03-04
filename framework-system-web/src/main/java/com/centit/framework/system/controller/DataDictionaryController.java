@@ -13,8 +13,11 @@ import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.model.basedata.DataCatalog;
 import com.centit.framework.model.basedata.DataDictionary;
 import com.centit.framework.model.basedata.DataDictionaryId;
+import com.centit.framework.model.basedata.WorkGroup;
+import com.centit.framework.model.security.CentitUserDetails;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.service.DataDictionaryManager;
+import com.centit.framework.system.service.WorkGroupManager;
 import com.centit.framework.system.service.impl.DBPlatformEnvironment;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;
@@ -61,6 +64,9 @@ public class DataDictionaryController extends BaseController {
 
     @Value("${app.local.multiLang:false}")
     private boolean multiLang;
+
+    @Autowired
+    private WorkGroupManager workGroupManager;
 
     @Autowired
     private DataDictionaryManager dataDictionaryManager;
@@ -260,6 +266,13 @@ public class DataDictionaryController extends BaseController {
     @WrapUpResponseBody
     public ResponseData updateDictionary(@ParamName("catalogCode") @PathVariable String catalogCode, @Valid DataCatalog dataCatalog,
                                          HttpServletRequest request) {
+        CentitUserDetails ud = WebOptUtils.assertUserDetails(request);
+        if(! ud.checkUserRole("platadmin") && ! ud.checkUserRole("tenantadmin") ){
+            String osId = request.getParameter("osId");
+            if(StringUtils.isBlank(osId) || ! workGroupManager.loginUserIsExistWorkGroup(osId, ud.getUserCode()))
+                throw new ObjectException(ResponseData.HTTP_UNAUTHORIZED, "您没有权限更新数据字典!");
+        }
+
         DataCatalog dbDataCatalog = dataDictionaryManager.getObjectById(catalogCode);
         if (null == dbDataCatalog) {
             return ResponseData.makeErrorMessage(604,
@@ -540,6 +553,7 @@ public class DataDictionaryController extends BaseController {
     public ResponseData deleteDictionary(@ParamName("catalogCode") @PathVariable String catalogCode,
                                          @ParamName("dataCode") @PathVariable String dataCode,
                                          HttpServletRequest request) {
+
         DataDictionary dataDictionary = dataDictionaryManager.getDataDictionaryPiece(new DataDictionaryId(catalogCode, dataCode));
         dictionaryPreDeleteHandler(dataDictionary, request);
         dataDictionaryManager.deleteDataDictionaryPiece(dataDictionary.getId());

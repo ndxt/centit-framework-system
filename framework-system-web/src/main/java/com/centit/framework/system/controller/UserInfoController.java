@@ -507,6 +507,6 @@ public class UserInfoController extends BaseController {
         if ( !"system".equals(topUnit) || StringUtils.isBlank(currentUserCode) ){
             return false;
         }
-        return workGroupManager.loginUserIsExistWorkGroup("system",currentUserCode);
+        return workGroupManager.loginUserIsExistWorkGroup("system", currentUserCode);
     }
 }

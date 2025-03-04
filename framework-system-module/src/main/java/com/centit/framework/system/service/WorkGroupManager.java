@@ -38,7 +38,7 @@ public interface WorkGroupManager{
      * @param userCode String
      * @return boolean
      */
-    boolean  loginUserIsExistWorkGroup(String osId,String userCode);
+    boolean loginUserIsExistWorkGroup(String osId, String userCode);
 
     boolean loginUserIsWorkGroupLeader(String osId,String userCode);
 
