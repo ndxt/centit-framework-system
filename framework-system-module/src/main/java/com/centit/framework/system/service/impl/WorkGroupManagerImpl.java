@@ -7,6 +7,7 @@ import com.centit.framework.model.basedata.WorkGroupParameter;
 import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.dao.WorkGroupDao;
 import com.centit.framework.system.service.WorkGroupManager;
+import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -156,12 +157,14 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
         workGroupParameter.setUserCode(workGroupParames.getNewUserCode());
         workGroup.setWorkGroupParameter(workGroupParameter);
         workGroupDao.saveNewObject(workGroup);
+        UserRole userRole = getUserRole(workGroup);
+        userRoleDao.mergeUserRole(userRole);
     }
 
     private UserRole getUserRole(WorkGroup workGroup) {
         UserRole userRole = new UserRole();
         userRole.setUserCode(workGroup.getWorkGroupParameter().getUserCode());
-        userRole.setObtainDate(new Date());
+        userRole.setObtainDate(DatetimeOpt.addDays(DatetimeOpt.currentUtilDate(), -1));
         userRole.setChangeDesc("工作组自动分配");
         userRole.setRoleCode(UserRole.OS_MEMBER);
         return userRole;
