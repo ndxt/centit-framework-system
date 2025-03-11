@@ -187,8 +187,8 @@ public class WorkGroupController extends BaseController {
             workGroup.setCreator(currentUserCode);
         }
         workGroupManager.batchWorkGroup(workGroups);
-        JsonResultUtils.writeSingleDataJson(workGroups, response);
-        if (!StringBaseOpt.isNvl(tioServer)) {
+        //对接谭聊
+        if (StringUtils.isNotBlank(tioServer)) {
             try (CloseableHttpClient httpClient = HttpExecutor.createHttpClient()) {
                 OsInfo osInfo = osInfoDao.getObjectById(workGroups.get(0).getGroupId());
                 Map<String, Object> requestParams = new HashMap<>(10);
@@ -247,6 +247,7 @@ public class WorkGroupController extends BaseController {
                 logger.info(e.getMessage());
             }
         }
+        JsonResultUtils.writeSingleDataJson(workGroups, response);
     }
 
     /*

@@ -85,13 +85,12 @@ public class RolePowerDao extends BaseDaoImpl<RolePower, RolePowerId> {
         super.deleteObjectById(id);
     }
 
-
     @Transactional
     public List<RolePower> listAllRolePowerByUnit(String topUnit) {
         String sql = "select distinct a.* " +
             "from F_ROLEPOWER a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE) " +
             "where b.ROLE_TYPE = 'G' or b.UNIT_CODE = ? or " +
-            "b.role_code in ('platadmin','tenantadmin','osmember')";
+            "b.role_code in ('platadmin','tenantadmin','osmember','orgadmin')";
         return getJdbcTemplate().execute(
             (ConnectionCallback<List<RolePower>>) conn ->
                 OrmDaoUtils.queryObjectsByParamsSql(conn, sql,
