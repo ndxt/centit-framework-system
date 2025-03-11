@@ -91,7 +91,7 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
             "where a.USER_CODE = :userCode and a.OBTAIN_DATE <= :currentDateTime and " +
              " (a.SECEDE_DATE is null  or a.SECEDE_DATE > :currentDateTime) " +
                 "and b.IS_VALID='T' " +
-            " and (b.ROLE_TYPE = 'G' or b.UNIT_CODE = :unitCode)";
+            " and (b.UNIT_CODE = 'system' or b.UNIT_CODE = :unitCode)";
 
     private static final String f_v_topunit_role_user =
         "select b.ROLE_CODE, b.ROLE_NAME, b.IS_VALID, 'D' as OBTAIN_TYPE, b.ROLE_TYPE, " +
