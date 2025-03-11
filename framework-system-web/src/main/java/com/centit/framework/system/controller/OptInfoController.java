@@ -12,9 +12,13 @@ import com.centit.framework.core.dao.DictionaryMapUtils;
 import com.centit.framework.model.basedata.OptDataScope;
 import com.centit.framework.model.basedata.OptInfo;
 import com.centit.framework.model.basedata.OptMethod;
+import com.centit.framework.model.basedata.OsInfo;
+import com.centit.framework.model.security.CentitUserDetails;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.service.OptInfoManager;
 import com.centit.framework.system.service.OptMethodManager;
+import com.centit.framework.system.service.OsInfoManager;
+import com.centit.framework.system.service.WorkGroupManager;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
@@ -46,6 +50,11 @@ public class OptInfoController extends BaseController {
     @Autowired
     private OptMethodManager optMethodManager;
 
+    @Autowired
+    private OsInfoManager osInfoMag;
+
+    @Autowired
+    private WorkGroupManager workGroupManager;
     /*
      * 系统日志中记录
      *
@@ -159,6 +168,21 @@ public class OptInfoController extends BaseController {
         return ResponseData.makeResponseData(makeMenuFuncsJson(listObjects));
     }
 
+    private void judgePower(String osId, HttpServletRequest request){
+        CentitUserDetails userDetails = WebOptUtils.assertUserDetails(request);
+        OsInfo osInfo = osInfoMag.getObjectById(osId);
+        if (osInfo == null) {
+            throw new ObjectException("业务系统不存在");
+        }
+        if(!StringUtils.equals(osInfo.getTopUnit(), userDetails.getTopUnitCode())){
+            throw new ObjectException(ResponseData.ERROR_UNAUTHORIZED,
+                getI18nMessage("error.401.unauthorized", request));
+        }
+        if(! userDetails.checkUserRole("platadmin") && ! userDetails.checkUserRole("tenantadmin") ){
+            if( ! workGroupManager.loginUserIsExistWorkGroup(osId, userDetails.getUserCode()))
+                throw new ObjectException(ResponseData.HTTP_UNAUTHORIZED, "您没有权限更新菜单!");
+        }
+    }
     /*
      * 新增菜单
      *
@@ -173,7 +197,8 @@ public class OptInfoController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}新增{optInfo.optName}菜单",
         tag = "{optInfo.optId}:{optInfo.optName}")
     @WrapUpResponseBody
-    public OptInfo createOptInfo(@ParamName("optInfo") @Valid OptInfo optInfo) {
+    public OptInfo createOptInfo(@Valid OptInfo optInfo, HttpServletRequest request) {
+        judgePower(optInfo.getOsId(), request);
         optInfo.setOptName(StringEscapeUtils.unescapeHtml4(optInfo.getOptName()));
         optInfoManager.saveNewOptInfo(optInfo);
         return optInfo;
@@ -216,7 +241,8 @@ public class OptInfoController extends BaseController {
     @RecordOperationLog(content = "操作IP地址:{loginIp},用户{loginUser.userName}更新菜单",
         tag = "{optId}")
     @WrapUpResponseBody
-    public ResponseData edit(@ParamName("optId") @PathVariable String optId, @Valid OptInfo optInfo) {
+    public ResponseData edit(@ParamName("optId") @PathVariable String optId, @Valid OptInfo optInfo, HttpServletRequest request) {
+        judgePower(optInfo.getOsId(), request);
         optInfo.setOptName(StringEscapeUtils.unescapeHtml4(optInfo.getOptName()));
         OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
         if (null == dbOptInfo) {
