@@ -5,10 +5,12 @@ import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.Date;
+import lombok.Data;
 
 /**
  * 租户列表分页查询的请求参数
  */
+@Data
 @ApiModel(value = "租户列表分页查询实体类", description = "租户列表分页查询实体类")
 public class PageListTenantInfoQo {
 
@@ -42,87 +44,6 @@ public class PageListTenantInfoQo {
 
     @ApiModelProperty(value = "租户所有者;", name = "ownUser")
     private String ownUser;
-
-
-    public String getUnitName() {
-        return unitName;
-    }
-
-    public void setUnitName(String unitName) {
-        this.unitName = unitName;
-    }
-
-    public String getCheckState() {
-        return checkState;
-    }
-
-    public void setCheckState(String checkState) {
-        this.checkState = checkState;
-    }
-
-    public Date getStartApplyTime() {
-        return startApplyTime;
-    }
-
-    public void setStartApplyTime(Date startApplyTime) {
-        this.startApplyTime = startApplyTime;
-    }
-
-    public Date getEndApplyTime() {
-        return endApplyTime;
-    }
-
-    public void setEndApplyTime(Date endApplyTime) {
-        this.endApplyTime = endApplyTime;
-    }
-
-    public Date getStartUseLimittime() {
-        return startUseLimittime;
-    }
-
-    public void setStartUseLimittime(Date startUseLimittime) {
-        this.startUseLimittime = startUseLimittime;
-    }
-
-    public Date getEndUseLimittime() {
-        return endUseLimittime;
-    }
-
-    public void setEndUseLimittime(Date endUseLimittime) {
-        this.endUseLimittime = endUseLimittime;
-    }
-
-    public Date getStartPassTime() {
-        return startPassTime;
-    }
-
-    public void setStartPassTime(Date startPassTime) {
-        this.startPassTime = startPassTime;
-    }
-
-    public Date getEndPassTime() {
-        return endPassTime;
-    }
-
-    public void setEndPassTime(Date endPassTime) {
-        this.endPassTime = endPassTime;
-    }
-
-    public String getIsAvailable() {
-        return isAvailable;
-    }
-
-    public void setIsAvailable(String isAvailable) {
-        this.isAvailable = isAvailable;
-    }
-
-    public String getOwnUser() {
-        return ownUser;
-    }
-
-    public void setOwnUser(String ownUser) {
-        this.ownUser = ownUser;
-    }
 
     @Override
     public String toString() {

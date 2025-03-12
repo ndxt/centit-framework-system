@@ -5,7 +5,9 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
 import java.sql.Date;
+import lombok.Data;
 
+@Data
 public class TenantMemberApplyVo {
 
     @ApiModelProperty(value = "用户代码", name = "userCode")
@@ -56,107 +58,4 @@ public class TenantMemberApplyVo {
     @Length(max = 1)
     private String optUserType;
 
-    public String getUserCode() {
-        return userCode;
-    }
-
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getTopUnit() {
-        return topUnit;
-    }
-
-    public void setTopUnit(String topUnit) {
-        this.topUnit = topUnit;
-    }
-
-    public String getInviterUserCode() {
-        return inviterUserCode;
-    }
-
-    public void setInviterUserCode(String inviterUserCode) {
-        this.inviterUserCode = inviterUserCode;
-    }
-
-    public String getInviterUserName() {
-        return inviterUserName;
-    }
-
-    public void setInviterUserName(String inviterUserName) {
-        this.inviterUserName = inviterUserName;
-    }
-
-    public String getApplyType() {
-        return applyType;
-    }
-
-    public void setApplyType(String applyType) {
-        this.applyType = applyType;
-    }
-
-    public Date getApplyTime() {
-        return applyTime;
-    }
-
-    public void setApplyTime(Date applyTime) {
-        this.applyTime = applyTime;
-    }
-
-    public String getApplyState() {
-        return applyState;
-    }
-
-    public void setApplyState(String applyState) {
-        this.applyState = applyState;
-    }
-
-    public String getApplyRemark() {
-        return applyRemark;
-    }
-
-    public void setApplyRemark(String applyRemark) {
-        this.applyRemark = applyRemark;
-    }
-
-    public String getApproveRemark() {
-        return approveRemark;
-    }
-
-    public void setApproveRemark(String approveRemark) {
-        this.approveRemark = approveRemark;
-    }
-
-    public String getUnitCode() {
-        return unitCode;
-    }
-
-    public void setUnitCode(String unitCode) {
-        this.unitCode = unitCode;
-    }
-
-    public String getUnitName() {
-        return unitName;
-    }
-
-    public void setUnitName(String unitName) {
-        this.unitName = unitName;
-    }
-
-    public String getOptUserType() {
-        return optUserType;
-    }
-
-    public void setOptUserType(String optUserType) {
-        this.optUserType = optUserType;
-    }
 }

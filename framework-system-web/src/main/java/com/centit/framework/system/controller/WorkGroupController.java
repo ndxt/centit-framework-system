@@ -15,6 +15,7 @@ import com.centit.framework.filter.RequestThreadLocal;
 import com.centit.framework.model.basedata.*;
 import com.centit.framework.system.dao.OsInfoDao;
 import com.centit.framework.system.service.WorkGroupManager;
+import com.centit.framework.system.vo.WorkGroupParames;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.common.ObjectException;

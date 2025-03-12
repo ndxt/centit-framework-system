@@ -2,7 +2,7 @@ package com.centit.framework.system.service.impl;
 
 import com.centit.framework.model.basedata.UserRole;
 import com.centit.framework.model.basedata.WorkGroup;
-import com.centit.framework.model.basedata.WorkGroupParames;
+import com.centit.framework.system.vo.WorkGroupParames;
 import com.centit.framework.model.basedata.WorkGroupParameter;
 import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.dao.WorkGroupDao;
