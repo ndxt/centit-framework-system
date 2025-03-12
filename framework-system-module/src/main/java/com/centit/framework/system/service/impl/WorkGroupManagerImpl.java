@@ -2,11 +2,12 @@ package com.centit.framework.system.service.impl;
 
 import com.centit.framework.model.basedata.UserRole;
 import com.centit.framework.model.basedata.WorkGroup;
-import com.centit.framework.system.vo.WorkGroupParames;
 import com.centit.framework.model.basedata.WorkGroupParameter;
+import com.centit.framework.system.constant.TenantConstant;
 import com.centit.framework.system.dao.UserRoleDao;
 import com.centit.framework.system.dao.WorkGroupDao;
 import com.centit.framework.system.service.WorkGroupManager;
+import com.centit.framework.system.vo.WorkGroupParames;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.database.utils.PageDesc;
 import org.apache.commons.lang3.StringUtils;
@@ -15,7 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 工作组
@@ -53,7 +57,7 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
     @Override
     public void deleteWorkGroup(String groupId, String userCode, String roleCode) {
         workGroupDao.deleteObjectForceById(new WorkGroupParameter(groupId, userCode, roleCode));
-        userRoleDao.deleteByRoleCodeAndUserCode(UserRole.OS_MEMBER,userCode);
+        userRoleDao.deleteByRoleCodeAndUserCode(TenantConstant.OS_MEMBER,userCode);
     }
 
     @Override
@@ -128,7 +132,7 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
         Map<String, Object> param = new HashMap<>();
         param.put("groupId", osId);
         param.put("userCode",userCode);
-        param.put("roleCode",WorkGroup.WORKGROUP_ROLE_CODE_LEADER);
+        param.put("roleCode",TenantConstant.WORKGROUP_ROLE_CODE_LEADER);
         List<WorkGroup> workGroups = workGroupDao.listObjectsByProperties(param);
         return workGroups.size() > 0;
     }
@@ -139,13 +143,13 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
         //组长更新为组员(只能有一个组长)
         String sql = "UPDATE  work_group  SET ROLE_CODE ='组员'  WHERE group_id=? and role_code=?  ";
         workGroupDao.getJdbcTemplate().update(sql,
-            new Object[]{workGroupParames.getGroupId(), WorkGroup.WORKGROUP_ROLE_CODE_LEADER});
+            new Object[]{workGroupParames.getGroupId(), TenantConstant.WORKGROUP_ROLE_CODE_LEADER});
 
         //删除原始组员数据
         WorkGroup delWorkGroup = new WorkGroup();
         WorkGroupParameter delWorkGroupParameter = new WorkGroupParameter();
         delWorkGroupParameter.setGroupId(workGroupParames.getGroupId());
-        delWorkGroupParameter.setRoleCode(WorkGroup.WORKGROUP_ROLE_CODE_MEMBER);
+        delWorkGroupParameter.setRoleCode(TenantConstant.WORKGROUP_ROLE_CODE_MEMBER);
         delWorkGroupParameter.setUserCode(workGroupParames.getNewUserCode());
         delWorkGroup.setWorkGroupParameter(delWorkGroupParameter);
         workGroupDao.deleteObject(delWorkGroup);
@@ -153,7 +157,7 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
         WorkGroup workGroup = new WorkGroup();
         WorkGroupParameter workGroupParameter = new WorkGroupParameter();
         workGroupParameter.setGroupId(workGroupParames.getGroupId());
-        workGroupParameter.setRoleCode(WorkGroup.WORKGROUP_ROLE_CODE_LEADER);
+        workGroupParameter.setRoleCode(TenantConstant.WORKGROUP_ROLE_CODE_LEADER);
         workGroupParameter.setUserCode(workGroupParames.getNewUserCode());
         workGroup.setWorkGroupParameter(workGroupParameter);
         workGroupDao.saveNewObject(workGroup);
@@ -166,7 +170,7 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
         userRole.setUserCode(workGroup.getWorkGroupParameter().getUserCode());
         userRole.setObtainDate(DatetimeOpt.addDays(DatetimeOpt.currentUtilDate(), -1));
         userRole.setChangeDesc("工作组自动分配");
-        userRole.setRoleCode(UserRole.OS_MEMBER);
+        userRole.setRoleCode(TenantConstant.OS_MEMBER);
         return userRole;
     }
 }

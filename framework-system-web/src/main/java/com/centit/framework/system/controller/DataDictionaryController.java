@@ -13,7 +13,6 @@ import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.model.basedata.DataCatalog;
 import com.centit.framework.model.basedata.DataDictionary;
 import com.centit.framework.model.basedata.DataDictionaryId;
-import com.centit.framework.model.basedata.WorkGroup;
 import com.centit.framework.model.security.CentitUserDetails;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.service.DataDictionaryManager;

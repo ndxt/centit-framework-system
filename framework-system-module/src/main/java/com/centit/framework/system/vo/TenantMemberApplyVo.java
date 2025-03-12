@@ -1,11 +1,11 @@
 package com.centit.framework.system.vo;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
 import java.sql.Date;
-import lombok.Data;
 
 @Data
 public class TenantMemberApplyVo {

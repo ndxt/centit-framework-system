@@ -12,7 +12,11 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.PageQueryResult;
 import com.centit.framework.filter.RequestThreadLocal;
-import com.centit.framework.model.basedata.*;
+import com.centit.framework.model.basedata.OsInfo;
+import com.centit.framework.model.basedata.UserInfo;
+import com.centit.framework.model.basedata.WorkGroup;
+import com.centit.framework.model.basedata.WorkGroupParameter;
+import com.centit.framework.system.constant.TenantConstant;
 import com.centit.framework.system.dao.OsInfoDao;
 import com.centit.framework.system.service.WorkGroupManager;
 import com.centit.framework.system.vo.WorkGroupParames;
@@ -103,7 +107,7 @@ public class WorkGroupController extends BaseController {
         }
         Map<String, Object> parameters = BaseController.collectRequestParameters(request);
         parameters.put("groupId", topUnit);
-        parameters.put("roleCode", WorkGroup.WORKGROUP_ROLE_CODE_ADMIN);
+        // parameters.put("roleCode", TenantConstant.TENANT_ADMIN_ROLE_CODE);
         List<WorkGroup> list = workGroupManager.listWorkGroup(parameters, pageDesc);
         if (CollectionUtils.sizeIsEmpty(list)) {
             return PageQueryResult.createResult(list, pageDesc);
@@ -128,10 +132,10 @@ public class WorkGroupController extends BaseController {
             Map workGroupParameterMap = JSONObject.from(workGroup.getWorkGroupParameter());
             map.putAll(workGroupMap);
             map.putAll(workGroupParameterMap);
-            if (WorkGroup.WORKGROUP_ROLE_CODE_ADMIN.equals(workGroupParameter.getRoleCode())) {
+            if (TenantConstant.TENANT_ADMIN_ROLE_CODE.equals(workGroupParameter.getRoleCode())) {
                 map.put("roleName", "管理员");
             } else {
-                map.put("roleName", WorkGroup.WORKGROUP_ROLE_CODE_MEMBER);
+                map.put("roleName", "组织管理员" );// TenantConstant.WORKGROUP_ROLE_CODE_MEMBER);
             }
             jsonArray.add(map);
         }
@@ -160,11 +164,10 @@ public class WorkGroupController extends BaseController {
         if (StringUtils.isNotBlank(currentUserCode)) {
             workGroup.setCreator(currentUserCode);//创建人  当前登录人
         }
-        workGroup.getWorkGroupParameter().setRoleCode(WorkGroup.WORKGROUP_ROLE_CODE_MEMBER);
+        workGroup.getWorkGroupParameter().setRoleCode(TenantConstant.WORKGROUP_ROLE_CODE_MEMBER);
         workGroupManager.createWorkGroup(workGroup);
         JsonResultUtils.writeSingleDataJson(workGroup, response);
     }
-
 
     /*
      * 新增 项目组成员
@@ -184,7 +187,7 @@ public class WorkGroupController extends BaseController {
         }
         String currentUserCode = WebOptUtils.getCurrentUserCode(request);
         for (WorkGroup workGroup : workGroups) {
-            workGroup.getWorkGroupParameter().setRoleCode(WorkGroup.WORKGROUP_ROLE_CODE_MEMBER);
+            workGroup.getWorkGroupParameter().setRoleCode(TenantConstant.WORKGROUP_ROLE_CODE_MEMBER);
             workGroup.setCreator(currentUserCode);
         }
         workGroupManager.batchWorkGroup(workGroups);
@@ -202,7 +205,7 @@ public class WorkGroupController extends BaseController {
                         StringBuilder users = new StringBuilder();
                         StringBuilder allUsers = new StringBuilder();
                         for (WorkGroup workGroup : allWorkGroup) {
-                            if (workGroup.getRoleCode().equals(WorkGroup.WORKGROUP_ROLE_CODE_LEADER)) {
+                            if (workGroup.getRoleCode().equals(TenantConstant.WORKGROUP_ROLE_CODE_LEADER)) {
                                 if (allUsers.length() > 0) {
                                     allUsers.append(",");
                                 }
@@ -236,7 +239,7 @@ public class WorkGroupController extends BaseController {
                         requestParams.put("uids", users.toString());
                         requestParams.put("groupid", osInfo.getGroupId());
                         List<WorkGroup> leaderWorkGroup = workGroupManager.listWorkGroup(CollectionsOpt.createHashMap(
-                            "groupId", workGroups.get(0).getGroupId(), "roleCode", WorkGroup.WORKGROUP_ROLE_CODE_LEADER), null);
+                            "groupId", workGroups.get(0).getGroupId(), "roleCode", TenantConstant.WORKGROUP_ROLE_CODE_LEADER), null);
                         if (leaderWorkGroup != null) {
                             requestParams.put("applyuid", leaderWorkGroup.get(0).getUserCode());
                         }
@@ -266,8 +269,8 @@ public class WorkGroupController extends BaseController {
             throw new ObjectException(ResponseData.HTTP_MOVE_TEMPORARILY,
                 getI18nMessage( "error.302.user_not_login", request));
         }
-        WorkGroup workGroup = workGroupManager.getWorkGroup(groupId, loginUser, WorkGroup.WORKGROUP_ROLE_CODE_LEADER);
-        if (workGroup == null || !WorkGroup.WORKGROUP_ROLE_CODE_LEADER.equals(workGroup.getWorkGroupParameter().getRoleCode())) {
+        WorkGroup workGroup = workGroupManager.getWorkGroup(groupId, loginUser, TenantConstant.WORKGROUP_ROLE_CODE_LEADER);
+        if (workGroup == null || !TenantConstant.WORKGROUP_ROLE_CODE_LEADER.equals(workGroup.getWorkGroupParameter().getRoleCode())) {
             throw new ObjectException(ResponseData.ERROR_FORBIDDEN,
                 getI18nMessage( "error.403.access_forbidden", request)); //"你非组长不能删除成员！");
         }
@@ -275,7 +278,7 @@ public class WorkGroupController extends BaseController {
             throw new ObjectException(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
                 getI18nMessage( "error.702.operate_conflict", request)); //组长不能删除组长！");
         }
-        workGroupManager.deleteWorkGroup(groupId, userCode, WorkGroup.WORKGROUP_ROLE_CODE_MEMBER);
+        workGroupManager.deleteWorkGroup(groupId, userCode, TenantConstant.WORKGROUP_ROLE_CODE_MEMBER);
     }
 
     /*
@@ -292,7 +295,7 @@ public class WorkGroupController extends BaseController {
         if (StringUtils.isNotBlank(currentUserCode)) {
             workGroup.setUpdator(currentUserCode);//更新人  当前登录人
         }
-        workGroup.getWorkGroupParameter().setRoleCode(WorkGroup.WORKGROUP_ROLE_CODE_MEMBER);
+        workGroup.getWorkGroupParameter().setRoleCode(TenantConstant.WORKGROUP_ROLE_CODE_MEMBER);
         workGroupManager.updateWorkGroup(workGroup);
     }
 

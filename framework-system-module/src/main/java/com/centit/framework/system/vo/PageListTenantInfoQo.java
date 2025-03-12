@@ -2,10 +2,10 @@ package com.centit.framework.system.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 租户列表分页查询的请求参数

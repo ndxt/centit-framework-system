@@ -12,6 +12,7 @@ import com.centit.framework.model.security.CentitUserDetails;
 import com.centit.framework.model.security.OptTreeNode;
 import com.centit.framework.security.CentitSecurityMetadata;
 import com.centit.framework.security.SecurityContextUtils;
+import com.centit.framework.system.constant.TenantConstant;
 import com.centit.framework.system.dao.*;
 import com.centit.framework.system.service.*;
 import com.centit.support.algorithm.CollectionsOpt;
@@ -595,12 +596,34 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         if (StringUtils.isBlank(topUnit)) {
             return;
         }
-        WorkGroup admin = workGroupManager.getWorkGroup(topUnit, userInfo.getUserCode(), WorkGroup.WORKGROUP_ROLE_CODE_ADMIN);
-        if (null != admin || tenantPowerManage.userIsTenantOwner(userInfo.getUserCode(), topUnit)) {
+        if (tenantPowerManage.userIsTenantOwner(userInfo.getUserCode(), topUnit)) {
             if(SYSTEM.equals(topUnit)){
-                roles.add(new RoleInfo("platadmin" , "平台管理员", "G", topUnit, "T", "平台管理员"));
+                roles.add(new RoleInfo(TenantConstant.PLAT_ADMIN, "平台管理员", "G", topUnit, "T", "平台管理员"));
             }
-            roles.add(new RoleInfo("tenantadmin", "租户管理员", "G", topUnit, "T", "租户管理员"));
+            roles.add(new RoleInfo(TenantConstant.TENANT_ADMIN, "租户管理员", "G", topUnit, "T", "租户管理员"));
+            return;
+        }
+
+        //TenantConstant.TENANT_ADMIN_ROLE_CODE
+        List<WorkGroup> adminRols = workGroupManager.listWorkGroup(topUnit, userInfo.getUserCode(), null);
+        if(null == adminRols || adminRols.isEmpty()) return;
+        int admin = 0;
+        for (WorkGroup workGroup : adminRols){
+            if (TenantConstant.TENANT_ADMIN_ROLE_CODE.equals(workGroup.getRoleCode())){
+                admin = 2;
+                break;
+            } else if (TenantConstant.ORGANIZE_ADMIN.equals(workGroup.getRoleCode())){
+                admin = 1;
+            }
+        }
+
+        if (admin==2) {
+            if(SYSTEM.equals(topUnit)){
+                roles.add(new RoleInfo(TenantConstant.PLAT_ADMIN, "平台管理员", "G", topUnit, "T", "平台管理员"));
+            }
+            roles.add(new RoleInfo(TenantConstant.TENANT_ADMIN, "租户管理员", "G", topUnit, "T", "租户管理员"));
+        } else  if (admin==1) {
+            roles.add(new RoleInfo(TenantConstant.ORGANIZE_ADMIN, "组织管理员", "G", topUnit, "T", "组织管理员"));
         }
     }
 
