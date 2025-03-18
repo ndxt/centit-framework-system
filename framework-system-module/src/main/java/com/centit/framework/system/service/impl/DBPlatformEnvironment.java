@@ -469,10 +469,10 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteOptMethod(String optCode) {
+        if(StringUtils.isBlank(optCode)) return;
         optMethodDao.deleteOptMethodById(optCode);
         rolePowerDao.deleteRolePowersByOptCode(optCode);
     }
-
 
     //@Transactional
     private CentitUserDetails fillUserDetailsField(UserInfo userinfo) {
