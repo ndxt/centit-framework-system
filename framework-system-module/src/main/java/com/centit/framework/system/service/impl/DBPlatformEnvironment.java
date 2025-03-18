@@ -403,6 +403,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public OptMethod addOptMethod(OptMethod optMethod) {
         optMethodDao.saveNewObject(optMethod);
         return optMethod;
@@ -410,6 +411,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public OptMethod mergeOptMethod(OptMethod optMethod) {
         optMethodDao.mergeObject(optMethod);
 //        List<RolePower> rolePowers = rolePowerDao.listObjectsByProperties(CollectionsOpt.createHashMap("optCode", optMethod.getOptCode()));
@@ -445,6 +447,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteDataDictionary(String catalogCode) {
         dataDictionaryDao.deleteDictionary(catalogCode);
         dataCatalogDao.deleteObjectById(catalogCode);
@@ -457,6 +460,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteOptInfoByOptId(String optId) {
         if(StringUtils.isBlank(optId)) return false;
         optInfoManager.deleteOptInfoById(optId);
