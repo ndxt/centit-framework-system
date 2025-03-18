@@ -73,4 +73,20 @@ public interface SysUserRoleManager{
      * @return 角色列表
      */
     JSONArray pageQueryUserRole( Map<String, Object> filterMap, PageDesc pageDesc);
+
+    /**
+     * 获取用户在指定租户下能够访问的系统
+     * @param topUnit 租户代码
+     * @param userCode 用户代码
+     * @return 能访问的系统列表
+     */
+    List<String> listUserCanAccessSystem(String topUnit, String userCode);
+
+    /**
+     * 验证用户是否有权限访问当前系统
+     * @param osId 系统代码
+     * @param userCode 用户代码
+     * @return 是否有权限
+     */
+    boolean checkUserSystemPower(String osId, String userCode);
 }

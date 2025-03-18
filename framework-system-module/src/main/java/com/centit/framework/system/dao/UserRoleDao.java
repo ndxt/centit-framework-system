@@ -9,6 +9,7 @@ import com.centit.framework.model.basedata.UserRole;
 import com.centit.framework.model.basedata.UserRoleId;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.DatetimeOpt;
+import com.centit.support.algorithm.NumberBaseOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.PageDesc;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,6 +106,19 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
             "and b.IS_VALID='T' " +
             " and (b.ROLE_TYPE = 'G' or b.UNIT_CODE = :unitCode)";
 
+    private static final String user_system_power_map_sql =
+        "select distinct oi.TOP_OPT_ID from f_userrole ur join f_roleinfo fr on (ur.ROLE_CODE=fr.ROLE_CODE) " +
+        " join f_rolepower rp on (ur.ROLE_CODE = rp.ROLE_CODE) " +
+        " join f_optdef fo on (rp.OPT_CODE = fo.OPT_CODE) " +
+        " join f_optinfo oi on (fo.OPT_ID = oi.OPT_ID) " +
+        "where ur.USER_CODE = ? and fr.UNIT_CODE = ? ";
+
+    private static final String check_user_system_power_sql =
+        "select count(oi.TOP_OPT_ID) as hasPowers from f_userrole ur " +
+            " join f_rolepower rp on (ur.ROLE_CODE = rp.ROLE_CODE) " +
+            " join f_optdef fo on (rp.OPT_CODE = fo.OPT_CODE) " +
+            " join f_optinfo oi on (fo.OPT_ID = oi.OPT_ID) " +
+            " where ur.USER_CODE = ? and oi.TOP_OPT_ID = ? ";
     @Transactional
     public List<UserRole> listUserRoles(String userCode) {
         return super.listObjectsByProperties(CollectionsOpt.createHashMap("userCode",userCode));
@@ -272,4 +287,22 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
         super.mergeObject(dbUserRole);
     }
 
+    public List<String> listUserCanAccessSystem(String topUnit, String userCode){
+        //TOP_OPT_ID
+        List<Object[]> objects = DatabaseOptUtils.listObjectsBySql(this, user_system_power_map_sql,
+            new Object[] {userCode, topUnit});
+        List<String> systemCodes = new ArrayList<>();
+        for(Object[] obj : objects){
+            if(obj != null && obj.length > 0){
+                systemCodes.add(StringBaseOpt.castObjectToString(obj[0]));
+            }
+        }
+        return systemCodes;
+    }
+
+    public boolean checkUserSystemPower(String osId, String userCode){
+        Object obj = DatabaseOptUtils.getScalarObjectQuery(this, check_user_system_power_sql,
+            new Object[] {userCode, osId});
+        return NumberBaseOpt.castObjectToInteger(obj,0)>0;
+    }
 }

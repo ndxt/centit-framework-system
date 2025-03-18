@@ -12,6 +12,7 @@ import com.centit.framework.model.basedata.RoleInfo;
 import com.centit.framework.model.basedata.UnitInfo;
 import com.centit.framework.model.basedata.UserRole;
 import com.centit.framework.model.basedata.UserRoleId;
+import com.centit.framework.model.security.CentitUserDetails;
 import com.centit.framework.operationlog.RecordOperationLog;
 import com.centit.framework.system.service.SysRoleManager;
 import com.centit.framework.system.service.SysUnitManager;
@@ -35,9 +36,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-/*
+/**
+ * @author codefan@sina.com
  * 用户角色关联操作，此操作是双向操作。
  */
 @Controller
@@ -439,5 +442,23 @@ public class UserRoleController extends BaseController {
         UserRoleId a = new UserRoleId(userCode, roleCode);
         sysUserRoleManager.deleteObjectById(a);
         return ResponseData.successResponse;
+    }
+
+    @ApiOperation(value = "获取用户在当前租户下能够访问的业务系统列表", notes = "获取用户在当前租户下能够访问的业务系统列表")
+    @RequestMapping(value = "/oslist", method = RequestMethod.GET)
+    @WrapUpResponseBody
+    public List<String> listUserCanAccessSystem(HttpServletRequest request) {
+        CentitUserDetails ud = WebOptUtils.assertUserDetails(request);
+        return sysUserRoleManager.listUserCanAccessSystem(ud.getTopUnitCode(), ud.getUserCode());
+    }
+
+    @ApiOperation(value = "验证用户是否有权限访问应用系统", notes = "验证用户是否有权限访问应用系统")
+    @RequestMapping(value = "/ospower/{osId}", method = RequestMethod.GET)
+    @ApiImplicitParam(name = "osId", value = "应用ID applicationId/osId/topOptId",
+        required = true, paramType = "path", dataType = "String")
+    @WrapUpResponseBody
+    public Boolean checkUserSystemPower(@PathVariable String osId, HttpServletRequest request) {
+        CentitUserDetails ud = WebOptUtils.assertUserDetails(request);
+        return sysUserRoleManager.checkUserSystemPower(osId, ud.getUserCode());
     }
 }

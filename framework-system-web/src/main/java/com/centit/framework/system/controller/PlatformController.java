@@ -5,7 +5,6 @@ import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpContentType;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.PageQueryResult;
-import com.centit.framework.model.adapter.PlatformEnvironment;
 import com.centit.framework.model.basedata.Platform;
 import com.centit.framework.model.basedata.UserPlat;
 import com.centit.framework.operationlog.RecordOperationLog;
@@ -34,7 +33,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/plat")
 @Api(value = "登录平台管理操作接口", tags = "登录平台管理操作接口")
-public class PlaformController extends BaseController {
+public class PlatformController extends BaseController {
 
     @Autowired
     private PlatformService platformService;
@@ -42,8 +41,6 @@ public class PlaformController extends BaseController {
     @Autowired
     private UserPlatService userPlatService;
 
-    @Autowired
-    protected PlatformEnvironment platformEnvironment;
 
     @ApiOperation(value = "分页查询平台信息", notes = "分页查询平台信息。")
     @ApiImplicitParam(

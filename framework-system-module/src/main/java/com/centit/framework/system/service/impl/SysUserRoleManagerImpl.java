@@ -106,6 +106,18 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
         return userRoleDao.pageQueryUserRole(filterMap, pageDesc);
     }
 
+    @Override
+    @Transactional
+    public List<String> listUserCanAccessSystem(String topUnit, String userCode) {
+        return userRoleDao.listUserCanAccessSystem(topUnit, userCode);
+    }
+
+    @Override
+    @Transactional
+    public boolean checkUserSystemPower(String osId, String userCode) {
+        return userRoleDao.checkUserSystemPower(osId, userCode);
+    }
+
     /**
      * 查询全部
      *
