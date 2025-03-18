@@ -803,8 +803,9 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public OsInfo addOsInfo(OsInfo osInfo) {
-        osInfoDao.saveNewObject((OsInfo) osInfo);
+        osInfoDao.saveNewObject(osInfo);
         return osInfo;
     }
 
@@ -814,6 +815,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void batchSaveWorkGroup(List<WorkGroup> workGroups) {
         workGroupManager.batchWorkGroup(workGroups);
     }
