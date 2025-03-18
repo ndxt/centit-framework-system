@@ -458,11 +458,8 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
 
     @Override
     public boolean deleteOptInfoByOptId(String optId) {
+        if(StringUtils.isBlank(optId)) return false;
         optInfoManager.deleteOptInfoById(optId);
-        OptInfo optInfo = optInfoDao.getObjectById(optId);
-        if (optInfo != null) {
-            return false;
-        }
         return true;
     }
 
