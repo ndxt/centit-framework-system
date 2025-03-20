@@ -615,6 +615,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                 break;
             } else if (TenantConstant.ORGANIZE_ADMIN.equals(workGroup.getRoleCode())){
                 admin = 1;
+                topUnit = workGroup.getRunToken();
             }
         }
 
