@@ -66,7 +66,7 @@ public class TenantPowerManageImpl implements TenantPowerManage {
             return TenantConstant.TENANT_ADMIN_ROLE_CODE;
         }
         if (this.userIsTenantMember(userCode, topUnit)) {
-            return TenantConstant.TENANT_NORMAL_MEMBER_ROLE_CODE;
+            return TenantConstant.ORGANIZE_ADMIN;
         }
         return "";
     }

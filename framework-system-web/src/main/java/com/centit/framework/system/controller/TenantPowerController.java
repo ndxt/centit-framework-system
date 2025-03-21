@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Deprecated
 @Controller
 @RequestMapping("/tenantPower")
 @Api(
@@ -79,7 +80,7 @@ public class TenantPowerController extends BaseController {
     )
     @RequestMapping(value = "/userTenantRole", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public ResponseData userTenantRole(@RequestParam("topUnit")String topUnit, HttpServletRequest request) {
+    public ResponseData userTenantRole(@RequestParam("topUnit") String topUnit, HttpServletRequest request) {
 
         if (StringUtils.isBlank(topUnit)){
             throw new ObjectException(ObjectException.DATA_VALIDATE_ERROR, "输入的参数topUnit为空！");
