@@ -19,9 +19,13 @@ public class TenantMemberQo {
     @ApiModelProperty(value = "用户姓名", name = "userName")
     private String userName;
 
-    @ApiModelProperty(value = "用户角色，管理员:ZHGLY,组员：ZHZY", name = "roleCode")
+    @ApiModelProperty(value = "用户角色，租户管理员:ZHGLY, 部门管理员 orgadmin ", name = "roleCode")
     @Length(max = 32)
     private String roleCode;
+
+    @ApiModelProperty(value = "管理部门, 部门管理员 orgadmin ", name = "unitCode")
+    @Length(max = 32)
+    private String unitCode;
 
     @ApiModelProperty(value = "待分配角色用户code", name = "memberUserCode")
     private String memberUserCode;
@@ -33,6 +37,7 @@ public class TenantMemberQo {
             "topUnit='" + topUnit + '\'' +
             ", userName='" + userName + '\'' +
             ", roleCode='" + roleCode + '\'' +
+            ", unitCode='" + unitCode + '\'' +
             ", memberUserCode='" + memberUserCode + '\'' +
             '}';
     }

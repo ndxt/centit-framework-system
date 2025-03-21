@@ -559,6 +559,7 @@ public class TenantServiceImpl implements TenantService {
         WorkGroupParameter workGroupParameter = new WorkGroupParameter(dbTenantInfo.getTopUnit(), tenantBusinessLog.getAssigneeUserCode(), TenantConstant.TENANT_ADMIN_ROLE_CODE);
         WorkGroup workGroup = new WorkGroup();
         workGroup.setWorkGroupParameter(workGroupParameter);
+        workGroup.setUpdator(userCode);
         updateWorkGroupRole(workGroup);
         return ResponseData.makeSuccessResponse("转让申请提交成功!");
     }
@@ -583,6 +584,7 @@ public class TenantServiceImpl implements TenantService {
             WorkGroupParameter groupParameter = new WorkGroupParameter(tenantInfo.getTopUnit(), tenantInfo.getOwnUser(), TenantConstant.TENANT_ADMIN_ROLE_CODE);
             WorkGroup workGroup = new WorkGroup();
             workGroup.setWorkGroupParameter(groupParameter);
+            workGroup.setUpdator(tenantBusinessLog.getAssigneeUserCode());
             updateWorkGroupRole(workGroup);
         }
         return ResponseData.makeSuccessResponse();
@@ -620,10 +622,11 @@ public class TenantServiceImpl implements TenantService {
         if (StringUtils.isNotBlank(checkString)) {
             return ResponseData.makeErrorMessage(checkString);
         }
-        if (!StringUtils.equals(tenantMemberQo.getRoleCode(), TenantConstant.TENANT_ADMIN_ROLE_CODE)) {
+        if (!StringUtils.equalsAny(tenantMemberQo.getRoleCode(),
+                TenantConstant.TENANT_ADMIN_ROLE_CODE, TenantConstant.ORGANIZE_ADMIN)) {
             return ResponseData.makeErrorMessage("角色代码有误!");
         }
-        updateWorkGroupRole(tenantMemberQo, tenantMemberQo.getTopUnit());
+        updateWorkGroupRole(userCode, tenantMemberQo, tenantMemberQo.getTopUnit());
         return ResponseData.makeSuccessResponse("操作成功!");
     }
 
@@ -1055,20 +1058,18 @@ public class TenantServiceImpl implements TenantService {
 
     /**
      * 更新角色
-     *
+     * @param optUserCode 操作人员
      * @param tenantMemberQo 租户成员查询实体类
      * @param topUnit        租户id
      */
-    private void updateWorkGroupRole(TenantMemberQo tenantMemberQo, String topUnit) {
+    private void updateWorkGroupRole(String optUserCode, TenantMemberQo tenantMemberQo, String topUnit) {
         WorkGroup workGroup = new WorkGroup();
-        WorkGroupParameter workGroupParameter = new WorkGroupParameter();
-        workGroupParameter.setGroupId(topUnit);
-        workGroupParameter.setUserCode(tenantMemberQo.getMemberUserCode());
-        workGroupParameter.setRoleCode(tenantMemberQo.getRoleCode());
-        workGroup.setWorkGroupParameter(workGroupParameter);
+        workGroup.setGroupId(topUnit);
+        workGroup.setUserCode(tenantMemberQo.getMemberUserCode());
+        workGroup.setRoleCode(tenantMemberQo.getRoleCode());
+        workGroup.setRunToken(tenantMemberQo.getUnitCode());
         workGroup.setUpdateDate(DatetimeOpt.currentUtilDate());
-
-        workGroup.setUpdator(WebOptUtils.getCurrentUserCode(RequestThreadLocal.getLocalThreadWrapperRequest()));
+        workGroup.setUpdator(optUserCode);
         updateWorkGroupRole(workGroup);
     }
 
@@ -1082,24 +1083,21 @@ public class TenantServiceImpl implements TenantService {
             workGroup.getWorkGroupParameter().getGroupId(),
             "userCode", workGroup.getWorkGroupParameter().getUserCode());
         List<WorkGroup> workGroups = workGroupDao.listObjectsByProperties(hashMap);
-        if (workGroups.size() > 1) {
-            throw new ObjectException("检测到该人员在一个租户中的角色个数大于一个，操作停止!");
-        }
-        if (workGroups.size() == 1) {
-            WorkGroupParameter workGroupParameter = workGroups.get(0).getWorkGroupParameter();
-            workGroup.getWorkGroupParameter().setRoleCode(workGroupParameter.getRoleCode());
-            workGroupManager.updateWorkGroup(workGroup);
-        }
-        if (workGroups.size() == 0) {
-            workGroup.setCreator(WebOptUtils.getCurrentUserCode(RequestThreadLocal.getLocalThreadWrapperRequest()));
+        if (workGroups == null || workGroups.isEmpty()) {
+            workGroup.setCreator(workGroup.getUpdator());
             workGroup.setAuthTime(DatetimeOpt.currentUtilDate());
             workGroupDao.saveNewObject(workGroup);
+            return ;
         }
+        if (workGroups.size() == 1) {
+            workGroupManager.updateWorkGroup(workGroup);
+            return ;
+        }
+        throw new ObjectException("检测到该人员在一个租户中的角色个数大于一个，操作停止!");
     }
 
      /**
      * 根据userInfo信息验证账户是否存在
-     *
      * @param userInfo
      * @return true:用户已经存在 false：用户不存在
      */
