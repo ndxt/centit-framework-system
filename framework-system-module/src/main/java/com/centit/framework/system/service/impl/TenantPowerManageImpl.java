@@ -62,13 +62,14 @@ public class TenantPowerManageImpl implements TenantPowerManage {
         if (this.userIsTenantOwner(userCode, topUnit)) {
             return TenantConstant.TENANT_OWNE_ROLE_CODE;
         }
-        if (this.userIsTenantAdmin(userCode, topUnit)) {
-            return TenantConstant.TENANT_ADMIN_ROLE_CODE;
+
+        WorkGroup workGroup = workGroupDao.getObjectByProperties(
+            CollectionsOpt.createHashMap("groupId",topUnit,  "userCode", userCode));
+        if(workGroup == null) return "";
+        if (TenantConstant.ORGANIZE_ADMIN.equals(workGroup.getRoleCode())) {
+            return TenantConstant.ORGANIZE_ADMIN+":"+workGroup.getRunToken();
         }
-        if (this.userIsTenantMember(userCode, topUnit)) {
-            return TenantConstant.ORGANIZE_ADMIN;
-        }
-        return "";
+        return workGroup.getRoleCode();
     }
 
     @Override
