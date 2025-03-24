@@ -6,7 +6,6 @@ import com.centit.framework.appclient.HttpReceiveJSON;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.WebOptUtils;
-import com.centit.framework.components.CodeRepositoryCache;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
@@ -115,23 +114,16 @@ public class WorkGroupController extends BaseController {
         JSONArray jsonArray = new JSONArray();
         for (WorkGroup workGroup : list) {
             //补充用户信息 groupId对应租户topUnit
-            HashMap<String, Object> map = new HashMap<>(32);
+            HashMap<String, Object> map = JSONObject.from(workGroup);
             WorkGroupParameter workGroupParameter = workGroup.getWorkGroupParameter();
-            UserInfo UserInfo = CodeRepositoryUtil.getUserInfoByCode(topUnit, workGroupParameter.getUserCode());
-            //如果缓存中不存在,重新刷新缓存
-            if (null == UserInfo) {
-                CodeRepositoryCache.evictCache("UserInfo");
-                UserInfo = CodeRepositoryUtil.getUserInfoByCode(topUnit, workGroupParameter.getUserCode());
-            }
-            if (null != UserInfo) {
-                Map userInfoMap = JSONObject.from(UserInfo);
-                map.putAll(userInfoMap);
-            }
-            Map workGroupMap = JSONObject.from(workGroup);
+            UserInfo ui = CodeRepositoryUtil.getUserInfoByCode(topUnit, workGroupParameter.getUserCode());
 
-            Map workGroupParameterMap = JSONObject.from(workGroup.getWorkGroupParameter());
-            map.putAll(workGroupMap);
-            map.putAll(workGroupParameterMap);
+            if (null != ui) {
+                map.put("userName", ui.getUserName());
+                map.put("loginName", ui.getLoginName());
+                map.put("userWord", ui.getUserWord());
+            }
+            map.put("unitCode", workGroup.getRunToken());
             if (TenantConstant.TENANT_ADMIN_ROLE_CODE.equals(workGroupParameter.getRoleCode())) {
                 map.put("roleName", "管理员");
             } else {
