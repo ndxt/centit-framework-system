@@ -123,7 +123,12 @@ public class WorkGroupController extends BaseController {
                 map.put("loginName", ui.getLoginName());
                 map.put("userWord", ui.getUserWord());
             }
-            map.put("unitCode", workGroup.getRunToken());
+
+            if(StringUtils.isNotBlank(workGroup.getRunToken())){
+                map.put("unitCode", workGroup.getRunToken());
+                map.put("unitName", CodeRepositoryUtil.getValue(
+                    CodeRepositoryUtil.UNIT_CODE, workGroup.getRunToken(), workGroup.getRunToken(), "zh-CN") );
+            }
             if (TenantConstant.TENANT_ADMIN_ROLE_CODE.equals(workGroupParameter.getRoleCode())) {
                 map.put("roleName", "管理员");
             } else {
