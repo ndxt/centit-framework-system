@@ -122,6 +122,8 @@ public class WorkGroupController extends BaseController {
                 map.put("userName", ui.getUserName());
                 map.put("loginName", ui.getLoginName());
                 map.put("userWord", ui.getUserWord());
+                map.put("regCellPhone" , ui.getRegCellPhone());
+                map.put("regEmail" , ui.getRegEmail());
             }
 
             if(StringUtils.isNotBlank(workGroup.getRunToken())){
