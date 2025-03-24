@@ -521,6 +521,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         //userDetails.setUserFuncs(functionDao.getMenuFuncByUserID(userDetails.getUserCode()));
         appendAdminRoles(userinfo, roles);
         userDetails.mapAuthoritiesByRoles(roles);
+
         List<OptMethod> publicOptMethod = optMethodDao.listPublicOptMethodByUnit(userinfo.getTopUnit());
         Map<String, String> userOptList = new HashMap<>();
         if (publicOptMethod != null) {
@@ -604,7 +605,6 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             roles.add(new RoleInfo(TenantConstant.TENANT_ADMIN, "租户管理员", "G", topUnit, "T", "租户管理员"));
             return;
         }
-
         //TenantConstant.TENANT_ADMIN_ROLE_CODE
         List<WorkGroup> adminRols = workGroupManager.listWorkGroup(topUnit, userInfo.getUserCode(), null);
         if(null == adminRols || adminRols.isEmpty()) return;
@@ -612,7 +612,6 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         for (WorkGroup workGroup : adminRols){
             if (TenantConstant.TENANT_ADMIN_ROLE_CODE.equals(workGroup.getRoleCode())){
                 admin = 2;
-                break;
             } else if (TenantConstant.ORGANIZE_ADMIN.equals(workGroup.getRoleCode())){
                 admin = 1;
                 topUnit = workGroup.getRunToken();

@@ -72,7 +72,6 @@ public class WorkGroupManagerImpl implements WorkGroupManager {
         userRoleDao.mergeUserRole(userRole);
     }
 
-
     @Override
     public void batchWorkGroup(List<WorkGroup> workGroups) {
         for (WorkGroup workGroup : workGroups) {

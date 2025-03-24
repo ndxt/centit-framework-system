@@ -64,7 +64,7 @@ public class TenantPowerManageImpl implements TenantPowerManage {
         }
 
         WorkGroup workGroup = workGroupDao.getObjectByProperties(
-            CollectionsOpt.createHashMap("groupId",topUnit,  "userCode", userCode));
+            CollectionsOpt.createHashMap("groupId", topUnit,  "userCode", userCode));
         if(workGroup == null) return "";
         if (TenantConstant.ORGANIZE_ADMIN.equals(workGroup.getRoleCode())) {
             return TenantConstant.ORGANIZE_ADMIN+":"+workGroup.getRunToken();
