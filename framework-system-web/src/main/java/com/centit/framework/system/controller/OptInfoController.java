@@ -198,7 +198,11 @@ public class OptInfoController extends BaseController {
         tag = "{optInfo.optId}:{optInfo.optName}")
     @WrapUpResponseBody
     public OptInfo createOptInfo(@Valid OptInfo optInfo, HttpServletRequest request) {
-        judgePower(optInfo.getOsId(), request);
+        String optOsId = optInfo.getOsId();
+        if(StringUtils.isBlank(optOsId)){
+            optOsId = optInfo.getTopOptId();
+        }
+        judgePower(optOsId, request);
         optInfo.setOptName(StringEscapeUtils.unescapeHtml4(optInfo.getOptName()));
         optInfoManager.saveNewOptInfo(optInfo);
         return optInfo;
@@ -242,7 +246,11 @@ public class OptInfoController extends BaseController {
         tag = "{optId}")
     @WrapUpResponseBody
     public ResponseData edit(@ParamName("optId") @PathVariable String optId, @Valid OptInfo optInfo, HttpServletRequest request) {
-        judgePower(optInfo.getOsId(), request);
+        String optOsId = optInfo.getOsId();
+        if(StringUtils.isBlank(optOsId)){
+            optOsId = optInfo.getTopOptId();
+        }
+        judgePower(optOsId, request);
         optInfo.setOptName(StringEscapeUtils.unescapeHtml4(optInfo.getOptName()));
         OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
         if (null == dbOptInfo) {
