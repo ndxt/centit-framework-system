@@ -106,12 +106,13 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
             "and b.IS_VALID='T' " +
             " and (b.ROLE_TYPE = 'G' or b.UNIT_CODE = :unitCode)";
 
+    /** 根据 功能所在业务判断*/
     private static final String user_system_power_map_sql =
         "select distinct oi.TOP_OPT_ID from f_userrole ur join f_roleinfo fr on (ur.ROLE_CODE=fr.ROLE_CODE) " +
-        " join f_rolepower rp on (ur.ROLE_CODE = rp.ROLE_CODE) " +
-        " join f_optdef fo on (rp.OPT_CODE = fo.OPT_CODE) " +
-        " join f_optinfo oi on (fo.OPT_ID = oi.OPT_ID) " +
-        "where ur.USER_CODE = ? and fr.UNIT_CODE = ? ";
+            " join f_rolepower rp on (ur.ROLE_CODE = rp.ROLE_CODE) " +
+            " join f_optdef fo on (rp.OPT_CODE = fo.OPT_CODE) " +
+            " join f_optinfo oi on (fo.OPT_ID = oi.OPT_ID) " +
+            "where ur.USER_CODE = ? and fr.UNIT_CODE = ? ";
 
     private static final String check_user_system_power_sql =
         "select count(oi.TOP_OPT_ID) as hasPowers from f_userrole ur " +
@@ -119,6 +120,18 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
             " join f_optdef fo on (rp.OPT_CODE = fo.OPT_CODE) " +
             " join f_optinfo oi on (fo.OPT_ID = oi.OPT_ID) " +
             " where ur.USER_CODE = ? and oi.TOP_OPT_ID = ? ";
+
+    /** 根据角色判断，
+     private static final String user_system_power_map_sql =
+     "select distinct fr.OS_ID from f_userrole ur join f_roleinfo fr on (ur.ROLE_CODE=fr.ROLE_CODE) " +
+     "where ur.USER_CODE = ? and fr.UNIT_CODE = ? ";
+
+
+     private static final String check_user_system_power_sql =
+     "select COUNT(fr.role_code) as hasPowers from f_userrole ur " +
+     "  join f_roleinfo fr on (ur.ROLE_CODE=fr.ROLE_CODE)" +
+     " where ur.USER_CODE = ? and fr.os_id = ? ";
+     */
     @Transactional
     public List<UserRole> listUserRoles(String userCode) {
         return super.listObjectsByProperties(CollectionsOpt.createHashMap("userCode",userCode));
