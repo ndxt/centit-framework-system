@@ -96,7 +96,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
 
     @Transactional
     public List<UserInfo> listObjects(Map<String, Object> filterMap) {
-        filterMap.put("currentDateTime", DatetimeOpt.currentSqlDate());
+        filterMap.put("currentDateTime", DatetimeOpt.currentUtilDate());
         return super.listObjectsByProperties(filterMap);
     }
 
@@ -116,7 +116,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     @Transactional
     public List<FVUserOptList> listUserPowers(String topUnit, String userCode) {
         Map<String, Object> map = CollectionsOpt.createHashMap("userCode", userCode,
-            "currentDateTime", DatetimeOpt.currentSqlDate(),
+            "currentDateTime", DatetimeOpt.currentUtilDate(),
             "unitCode", topUnit);
         return jdbcTemplate.execute(
             (ConnectionCallback<List<FVUserOptList>>) conn -> OrmDaoUtils
@@ -220,7 +220,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     public List<UserInfo> listUsersByRoleCode(String roleCode) {
         return super.listObjectsByProperties(
             CollectionsOpt.createHashMap("roleCode", roleCode,
-                "currentDateTime", DatetimeOpt.currentSqlDate()));
+                "currentDateTime", DatetimeOpt.currentUtilDate()));
     }
 
     public int isLoginNameExist(String userCode, String loginName) {

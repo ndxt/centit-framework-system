@@ -172,7 +172,7 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
               FVUserRoles.class));*/
 
         Map<String,Object> map = CollectionsOpt.createHashMap("userCode",userCode,
-            "currentDateTime", DatetimeOpt.currentSqlDate());
+            "currentDateTime", DatetimeOpt.currentUtilDate());
         QueryAndNamedParams qap = QueryUtils.translateQuery(f_v_userroles_sql, map);
         return jdbcTemplate.execute(
             (ConnectionCallback<List<FVUserRoles>>) conn -> OrmDaoUtils
@@ -190,7 +190,7 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
             FVUserRoles.class));*/
 
         Map<String,Object> map = CollectionsOpt.createHashMap("roleCode",roleCode,
-            "currentDateTime", DatetimeOpt.currentSqlDate());
+            "currentDateTime", DatetimeOpt.currentUtilDate());
         QueryAndNamedParams qap = QueryUtils.translateQuery(f_v_userroles_sql, map);
         return jdbcTemplate.execute(
             (ConnectionCallback<List<FVUserRoles>>) conn -> OrmDaoUtils
@@ -211,7 +211,7 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
     @Transactional
     public List<FVUserRoles> listRoleUsersByTopUnit(String topUnit, String roleCode) {
         Map<String,Object> map = CollectionsOpt.createHashMap("roleCode", roleCode,
-            "currentDateTime", DatetimeOpt.currentSqlDate(),
+            "currentDateTime", DatetimeOpt.currentUtilDate(),
             "unitCode", topUnit);
         //topUnit
         return jdbcTemplate.execute(
@@ -231,7 +231,7 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
             sql = sql + f_v_userroles_sql + ") u ";
         }
 
-        filterDescMap.put("currentDateTime", DatetimeOpt.currentSqlDate());
+        filterDescMap.put("currentDateTime", DatetimeOpt.currentUtilDate());
         QueryAndNamedParams qap = QueryUtils.translateQuery(sql , filterDescMap);
         return jdbcTemplate.execute(
             (ConnectionCallback<Integer>) conn ->
@@ -249,7 +249,7 @@ public class UserRoleDao extends BaseDaoImpl<UserRole, UserRoleId> {
         } else{
             querySql = f_v_userroles_sql;
         }
-        filterMap.put("currentDateTime", DatetimeOpt.currentSqlDate());
+        filterMap.put("currentDateTime", DatetimeOpt.currentUtilDate());
         QueryAndNamedParams qap = QueryUtils.translateQuery(querySql, filterMap);
         return
             DatabaseOptUtils.listObjectsByNamedSqlAsJson(this,qap.getQuery(), qap.getParams(), pageDesc);
