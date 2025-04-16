@@ -2,6 +2,7 @@ package com.centit.framework.system.controller;
 
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.WebOptUtils;
+import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.controller.BaseController;
 import com.centit.framework.core.controller.WrapUpResponseBody;
 import com.centit.framework.core.dao.DictionaryMapUtils;
@@ -14,6 +15,7 @@ import com.centit.framework.system.service.SysUnitManager;
 import com.centit.framework.system.service.SysUserManager;
 import com.centit.framework.system.service.SysUserUnitManager;
 import com.centit.support.algorithm.BooleanBaseOpt;
+import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
@@ -258,6 +260,11 @@ public class UserUnitController extends BaseController {
         tag = "{userUnit.userUnitId}:{userUnit.userCode}:{userUnit.unitCode}")
     @WrapUpResponseBody
     public ResponseData create(@ParamName("userUnit") @Valid UserUnit userUnit, HttpServletRequest request) {
+        UnitInfo unitInfo = sysUnitManager.getObjectById(userUnit.getUnitCode());
+        if (!StringUtils.equals(userUnit.getTopUnit(), unitInfo.getTopUnit())) {
+            return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
+                "此机构不在"+ userUnit.getTopUnit()+"租户下");
+        }
         HashMap<String, Object> map = new HashMap();
         map.put("unitCode", userUnit.getUnitCode());
         map.put("userRank", userUnit.getUserRank());
