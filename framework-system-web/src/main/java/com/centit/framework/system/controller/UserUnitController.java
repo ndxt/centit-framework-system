@@ -262,8 +262,8 @@ public class UserUnitController extends BaseController {
     public ResponseData create(@ParamName("userUnit") @Valid UserUnit userUnit, HttpServletRequest request) {
         UnitInfo unitInfo = sysUnitManager.getObjectById(userUnit.getUnitCode());
         if (!StringUtils.equals(userUnit.getTopUnit(), unitInfo.getTopUnit())) {
-            return ResponseData.makeErrorMessage(ResponseData.ERROR_FIELD_INPUT_CONFLICT,
-                "此机构不在"+ userUnit.getTopUnit()+"租户下");
+            return ResponseData.makeErrorMessage(ObjectException.DATA_VALIDATE_ERROR,
+                getI18nMessage("error.611.data_invalid",request, userUnit.getTopUnit()));
         }
         HashMap<String, Object> map = new HashMap();
         map.put("unitCode", userUnit.getUnitCode());
