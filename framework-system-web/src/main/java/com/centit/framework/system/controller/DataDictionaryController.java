@@ -1,5 +1,6 @@
 package com.centit.framework.system.controller;
 
+import com.alibaba.fastjson2.JSONArray;
 import com.centit.fileserver.utils.UploadDownloadUtils;
 import com.centit.framework.common.JsonResultUtils;
 import com.centit.framework.common.ResponseData;
@@ -24,6 +25,7 @@ import com.centit.support.common.JavaBeanMetaData;
 import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
+import com.centit.support.report.ExcelExportUtil;
 import com.centit.support.report.ExcelImportUtil;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -45,6 +47,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+
+import static com.centit.support.report.ExcelExportUtil.*;
 
 /**
  * 数据字典
@@ -722,5 +726,16 @@ public class DataDictionaryController extends BaseController {
             JsonResultUtils.writeMessageJson(e.getMessage(), response);
         }
         return null;
+    }
+    @ApiOperation(value = "导出数据字典明细", notes = "导出数据字典明细")
+    @ApiImplicitParam(name = "catalogCode", type = "path", value = "字典code")
+    @GetMapping("/export/{catalogCode}")
+    public void exportDictionary(@PathVariable String catalogCode, HttpServletRequest request, HttpServletResponse response)
+        throws IOException{
+        Map<String, Object> searchColumn = new HashMap<>();
+        searchColumn.put("catalogCode", catalogCode);
+        List<DataDictionary> data = dataDictionaryManager.listDataDictionarys(searchColumn);
+        InputStream inputStream = ExcelExportUtil.generateExcelStream(data, DataDictionary.class);
+        UploadDownloadUtils.downloadFile(inputStream, catalogCode+"数据字典明细.xlsx", request, response);
     }
 }
