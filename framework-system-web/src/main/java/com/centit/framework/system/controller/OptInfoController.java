@@ -20,6 +20,7 @@ import com.centit.framework.system.service.OptMethodManager;
 import com.centit.framework.system.service.OsInfoManager;
 import com.centit.framework.system.service.WorkGroupManager;
 import com.centit.support.algorithm.CollectionsOpt;
+import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
 import io.swagger.annotations.Api;
@@ -204,6 +205,9 @@ public class OptInfoController extends BaseController {
         }
         judgePower(optOsId, request);
         optInfo.setOptName(StringEscapeUtils.unescapeHtml4(optInfo.getOptName()));
+        if(StringBaseOpt.isNvl(optInfo.getOptType())){
+            optInfo.setOptType(optInfo.OPT_INFO_OPT_TYPE_COMMON);
+        }
         optInfoManager.saveNewOptInfo(optInfo);
         return optInfo;
     }
@@ -268,7 +272,7 @@ public class OptInfoController extends BaseController {
         }
 
         optInfoManager.updateOptInfo(optInfo);
-        return ResponseData.makeResponseData(dbOptInfo);
+        return ResponseData.makeResponseData(optInfo);
     }
 
     /*
