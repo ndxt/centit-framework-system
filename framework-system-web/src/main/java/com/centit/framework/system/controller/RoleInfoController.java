@@ -148,7 +148,7 @@ public class RoleInfoController extends BaseController {
     public PageQueryResult<RoleInfo> listUnitAndPublicRole(PageDesc pageDesc, HttpServletRequest request) {
         String currentUnit = WebOptUtils.getCurrentTopUnit(request);
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
-        filterMap.put("publicUnitRole", currentUnit);
+        filterMap.put("topUnit", currentUnit);
         List<RoleInfo> roleInfos = sysRoleManager.listObjects(filterMap, pageDesc);
         return PageQueryResult.createResultMapDict(roleInfos, pageDesc);
     }
@@ -756,11 +756,12 @@ public class RoleInfoController extends BaseController {
     @ApiOperation(value = "查询所有 当前部门角色", notes = "查询所有 当前部门角色。")
     @GetMapping(value = "/topUnit")
     @WrapUpResponseBody()
-    public List<RoleInfo> listTopUnitRole(HttpServletRequest request) {
+    public JSONArray listTopUnitRole(HttpServletRequest request) {
         String currentUnit = WebOptUtils.getCurrentTopUnit(request);
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("topUnit", currentUnit);
-        return sysRoleManager.listObjects(filterMap);
+        List<RoleInfo> roleInfoList= sysRoleManager.listObjects(filterMap);
+       return DictionaryMapUtils.objectsToJSONArray(roleInfoList);
     }
 
     @ApiOperation(value = "查询系统应用角色角色", notes = "查询系统应用角色角色。")
