@@ -150,15 +150,16 @@ public class UnitInfoController extends BaseController {
         WebOptUtils.assertUserLogin(request);
         Map<String, Object> searchColumn = BaseController.collectRequestParameters(request);
         String currentUnitCode = WebOptUtils.getCurrentUnitCode(request);
-        searchColumn.put("parentUnit", StringUtils.isNotBlank(id) ? id : currentUnitCode);
+        String parentUnit= StringUtils.isNotBlank(id) ? id : currentUnitCode;
         searchColumn.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
         String unitName = StringBaseOpt.castObjectToString(searchColumn.get("unitName"));
         if (StringUtils.isNotBlank(unitName)) {
+            searchColumn.put("unitPath", sysUnitManager.getObjectById(parentUnit).getUnitPath());
             List<UnitInfo> listObjects = sysUnitManager.listObjects(searchColumn);
             JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
             return ResponseData.makeResponseData(ja);
         } else {
-            List<UnitInfo> listObjects = sysUnitManager.listAllSubUnits((String) searchColumn.get("parentUnit"));
+            List<UnitInfo> listObjects = sysUnitManager.listAllSubUnits(parentUnit);
             JSONArray ja = DictionaryMapUtils.objectsToJSONArray(listObjects);
             for (Object o : ja) {
                 ((JSONObject) o).put("state", "open");
