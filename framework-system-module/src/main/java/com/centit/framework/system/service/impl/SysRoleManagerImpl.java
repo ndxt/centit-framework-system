@@ -134,6 +134,18 @@ public class SysRoleManagerImpl implements SysRoleManager {
             roleInfoDao.updateRole(roleInfo);
         }*/
         List<RolePower> newRPs = roleInfo.getRolePowers();
+        if(!CollectionUtils.sizeIsEmpty(newRPs)){
+            // 创建一个新的集合来存储需要保留的对象
+            List<RolePower> filteredRPs = new ArrayList<>();
+            for(RolePower rp : newRPs){
+                OptMethod optMethod = optMethodDao.getObjectById(rp.getOptCode());
+                if(optMethod!=null && optMethod.getOptCode()!=null){
+                    filteredRPs.add(rp);
+                }
+            }
+            // 将过滤后的集合赋值给 newRPs
+            newRPs = filteredRPs;
+        }
         List<RolePower> rps = isAPCode ? rolePowerDao.listRolePowerByTopUnitAndRoleCode(topUnit,roleInfo.getRoleCode()):
             rolePowerDao.listRolePowersByRoleCode(roleInfo.getRoleCode());
         if(CollectionUtils.sizeIsEmpty(newRPs)) {
