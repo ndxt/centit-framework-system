@@ -23,6 +23,7 @@ import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.common.ObjectException;
 import com.centit.support.common.ParamName;
+import com.centit.support.network.HtmlFormUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.html.HTML;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -204,9 +206,9 @@ public class OptInfoController extends BaseController {
             optOsId = optInfo.getTopOptId();
         }
         judgePower(optOsId, request);
-        optInfo.setOptName(StringEscapeUtils.unescapeHtml4(optInfo.getOptName()));
+        optInfo.setOptName(HtmlFormUtils.htmlString(optInfo.getOptName()));
         if(StringBaseOpt.isNvl(optInfo.getOptType())){
-            optInfo.setOptType(optInfo.OPT_INFO_OPT_TYPE_COMMON);
+            optInfo.setOptType(OptInfo.OPT_INFO_OPT_TYPE_COMMON);
         }
         optInfoManager.saveNewOptInfo(optInfo);
         return optInfo;
@@ -255,7 +257,7 @@ public class OptInfoController extends BaseController {
             optOsId = optInfo.getTopOptId();
         }
         judgePower(optOsId, request);
-        optInfo.setOptName(StringEscapeUtils.unescapeHtml4(optInfo.getOptName()));
+        optInfo.setOptName(HtmlFormUtils.htmlString(optInfo.getOptName()));
         OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
         if (null == dbOptInfo) {
             return ResponseData.makeErrorMessage("当前对象不存在");
@@ -270,7 +272,9 @@ public class OptInfoController extends BaseController {
                 optInfo.setPreOptId(dbOptInfo.getPreOptId());
             }
         }
-
+        if(StringBaseOpt.isNvl(optInfo.getOptType())){
+            optInfo.setOptType(OptInfo.OPT_INFO_OPT_TYPE_COMMON);
+        }
         optInfoManager.updateOptInfo(optInfo);
         return ResponseData.makeResponseData(optInfo);
     }
@@ -296,7 +300,7 @@ public class OptInfoController extends BaseController {
     @WrapUpResponseBody
     public ResponseData editPower(@ParamName("optId") @PathVariable String optId, @Valid OptInfo optInfo,
                                   HttpServletRequest request) {
-        optInfo.setOptName(StringEscapeUtils.unescapeHtml4(optInfo.getOptName()));
+        optInfo.setOptName(HtmlFormUtils.htmlString(optInfo.getOptName()));
         OptInfo dbOptInfo = optInfoManager.getObjectById(optId);
         if (null == dbOptInfo) {
             return ResponseData.makeErrorMessage(ObjectException.DATA_NOT_FOUND_EXCEPTION,
@@ -318,7 +322,7 @@ public class OptInfoController extends BaseController {
             }
         }
         for (OptDataScope optDef : optInfo.getDataScopes()) {
-           optDef.setFilterCondition(StringEscapeUtils.unescapeHtml4(optDef.getFilterCondition()));
+           optDef.setFilterCondition(HtmlFormUtils.htmlString(optDef.getFilterCondition()));
         }
     /*  dbOptInfo.addAllOptMethods(optInfo.getOptMethods());
         dbOptInfo.addAllDataScopes(optInfo.getDataScopes());*/
