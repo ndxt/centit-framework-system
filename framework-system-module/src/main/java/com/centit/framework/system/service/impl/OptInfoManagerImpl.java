@@ -62,10 +62,6 @@ public class OptInfoManagerImpl implements OptInfoManager {
             List<OptInfo> allSubOpts = findSubOptInfo(optInfo.getOptId());
             for (OptInfo o : allSubOpts) {
                 boolean needUpdate = false;
-                if (!StringUtils.equals(o.getOptType(), optInfo.getOptType())) {
-                    needUpdate = true;
-                    o.setOptType(optInfo.getOptType());
-                }
                 if ("N".equals(optInfo.getIsInToolbar())) {
                     if (!"N".equals(o.getIsInToolbar())) {
                         o.setIsInToolbar("N");
@@ -73,7 +69,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
                     }
                 }
                 if (needUpdate) {
-                    optInfoDao.updateObject(new String[]{"isInToolbar", "optType"}, o);
+                    optInfoDao.updateObject(new String[]{"isInToolbar"}, o);
                 }
             }
         }
@@ -81,10 +77,6 @@ public class OptInfoManagerImpl implements OptInfoManager {
         List<OptInfo> allPreOpts = findPreOptInfo(optInfo.getPreOptId());
         for (OptInfo o : allPreOpts) {
             boolean needUpdate = false;
-            if (!StringUtils.equals(o.getOptType(), optInfo.getOptType())) {
-                needUpdate = true;
-                o.setOptType(optInfo.getOptType());
-            }
             if ("Y".equals(optInfo.getIsInToolbar())) {
                 if (!"Y".equals(o.getIsInToolbar())) {
                     o.setIsInToolbar("Y");
@@ -92,7 +84,7 @@ public class OptInfoManagerImpl implements OptInfoManager {
                 }
             }
             if (needUpdate) {
-                optInfoDao.updateObject(new String[]{"isInToolbar", "optType"}, o);
+                optInfoDao.updateObject(new String[]{"isInToolbar"}, o);
             }
         }
 
