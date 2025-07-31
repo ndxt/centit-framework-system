@@ -212,7 +212,7 @@ public class SysUserManagerImpl implements SysUserManager {
             }
         }
 
-        userInfoDao.saveNewObject(userInfo);
+        userInfoDao.saveUserInfo(userInfo);
         //resetPwd(userInfo.getUserCode());
         userUnit.setUserUnitId(userUnitDao.getNextKey());
         userUnit.setUserCode(userInfo.getUserCode());

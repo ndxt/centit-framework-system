@@ -429,7 +429,7 @@ public class DingTalkLoginServiceImpl implements DingTalkLoginService {
                     userInfo.setUpdateDate(now);
                     userInfo.setUserTag(jsonObject.getString("unionid"));
                     if(createUser){
-                        userInfoDao.saveNewObject(userInfo);
+                        userInfoDao.saveUserInfo(userInfo);
                     }else{
                         userInfoDao.updateUser(userInfo);
                     }

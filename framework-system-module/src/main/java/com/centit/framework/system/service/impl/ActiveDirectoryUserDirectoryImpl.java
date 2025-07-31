@@ -258,7 +258,7 @@ public class ActiveDirectoryUserDirectoryImpl implements UserDirectory{
 
                 userInfo.setUpdateDate(now);
                 if (createUser) {
-                    userInfoDao.saveNewObject(userInfo);
+                    userInfoDao.saveUserInfo(userInfo);
                 } else {
                     userInfoDao.updateUser(userInfo);
                 }

@@ -176,7 +176,7 @@ public class TenantServiceImpl implements TenantService {
         userInfo.setTopUnit("");
         userInfo.setUserOrder(1L);
         userInfo.setUserPwd(null);
-        userInfoDao.saveNewObject(userInfo);
+        userInfoDao.saveUserInfo(userInfo);
         return ResponseData.makeSuccessResponse("info.200.success");
     }
 

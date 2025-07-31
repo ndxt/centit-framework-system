@@ -10,12 +10,15 @@ import com.centit.framework.model.basedata.UserInfo;
 import com.centit.support.algorithm.CollectionsOpt;
 import com.centit.support.algorithm.DatetimeOpt;
 import com.centit.support.algorithm.NumberBaseOpt;
+import com.centit.support.algorithm.StringBaseOpt;
 import com.centit.support.database.orm.OrmDaoUtils;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.database.utils.QueryAndNamedParams;
 import com.centit.support.database.utils.QueryUtils;
+import com.centit.support.security.SecurityOptUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +29,9 @@ import java.util.Map;
 
 @Repository("userInfoDao")
 public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
+
+    @Value("${userinfo.cellphone.encrypt:none}")
+    protected String phoneEncryptType;
 
     // 将F_V_USERROLES试图提出增加条件查询提高性能
     //private static String currentDateTime = QueryUtils.buildDatetimeStringForQuery(DatetimeOpt.currentUtilDate());
@@ -96,6 +102,14 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
 
     @Transactional
     public List<UserInfo> listObjects(Map<String, Object> filterMap) {
+        if(filterMap.containsKey("regCellPhone") && !"none".equals(phoneEncryptType)){
+            String cellPhone = StringBaseOpt.castObjectToString( filterMap.get("regCellPhone"));
+            if(StringUtils.isNotBlank(cellPhone)) {
+                cellPhone = SecurityOptUtils.decodeSecurityString(cellPhone);
+                cellPhone = SecurityOptUtils.encodeSecurityString(cellPhone, phoneEncryptType);
+                filterMap.put("regCellPhone", cellPhone);
+            }
+        }
         filterMap.put("currentDateTime", DatetimeOpt.currentUtilDate());
         return super.listObjectsByProperties(filterMap);
     }
@@ -191,6 +205,10 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     @Transactional
     public UserInfo getUserByRegCellPhone(String regCellPhone) {
         if(StringUtils.isBlank(regCellPhone)) return null;
+        if(!"none".equals(phoneEncryptType)){
+            regCellPhone = SecurityOptUtils.decodeSecurityString(regCellPhone);
+            regCellPhone = SecurityOptUtils.encodeSecurityString(regCellPhone, phoneEncryptType);
+        }
         return super.getObjectByProperties(CollectionsOpt.createHashMap("regCellPhone", regCellPhone));
     }
 
@@ -231,6 +249,10 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     }
 
     public int isCellPhoneExist(String userCode, String cellPhone) {
+        if(!"none".equals(phoneEncryptType)){
+            cellPhone = SecurityOptUtils.decodeSecurityString(cellPhone);
+            cellPhone = SecurityOptUtils.encodeSecurityString(cellPhone, phoneEncryptType);
+        }
         String sql = "select count(*) as usersCount from F_USERINFO t " +
             "where t.USER_CODE <> ? and t.REG_CELL_PHONE = ?";
         return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, sql,
@@ -245,16 +267,6 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     }
 
     public int isAnyOneExist(String userCode, String loginName, String regPhone, String regEmail) {
-        Pair<String, Object[]> slqAndParams = anyOneExistSqlAndParams(userCode, loginName, regPhone, regEmail);
-        return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(this, slqAndParams.getLeft(),slqAndParams.getRight()));
-    }
-
-    @Transactional
-    public void updateUser(UserInfo userInfo) {
-        super.updateObject(userInfo);
-    }
-
-    private  Pair<String,Object[]> anyOneExistSqlAndParams(String userCode, String loginName, String regPhone, String regEmail){
         HashMap<String, String> map = new HashMap<>();
         if (StringUtils.isNotBlank(userCode)){
             map.put("USER_CODE",userCode);
@@ -263,6 +275,10 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
             map.put("LOGIN_NAME",loginName);
         }
         if (StringUtils.isNotBlank(regPhone)){
+            if(!"none".equals(phoneEncryptType)){
+                regPhone = SecurityOptUtils.decodeSecurityString(regPhone);
+                regPhone = SecurityOptUtils.encodeSecurityString(regPhone, phoneEncryptType);
+            }
             map.put("REG_CELL_PHONE",regPhone);
         }
         if (StringUtils.isNotBlank(regEmail)){
@@ -279,12 +295,31 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
             params[i] = entry.getValue();
             i++;
         }
-        return Pair.of(stringBuilder.toString(),params);
+        return NumberBaseOpt.castObjectToInteger(DatabaseOptUtils.getScalarObjectQuery(
+            this, stringBuilder.toString(), params));
     }
 
     public void saveUserLoginInfo(UserInfo userInfo) {
         DatabaseOptUtils.doExecuteSql(this,
             "update f_userinfo set ACTIVE_TIME=? , LAST_ACCESS_TOKEN = ? where USER_CODE = ?",
             new Object[]{userInfo.getActiveTime(), userInfo.getLastAccessToken(), userInfo.getUserCode()});
+    }
+
+    @Transactional
+    public void updateUser(UserInfo userInfo) {
+        if(!"none".equals(phoneEncryptType) && StringUtils.isNotBlank(userInfo.getRegCellPhone())){
+            String cellPhone = SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone());
+            userInfo.setRegCellPhone(SecurityOptUtils.encodeSecurityString(cellPhone, phoneEncryptType));
+        }
+        super.updateObject(userInfo);
+    }
+
+    @Transactional
+    public void saveUserInfo(UserInfo userInfo) {
+        if(!"none".equals(phoneEncryptType) && StringUtils.isNotBlank(userInfo.getRegCellPhone())){
+            String cellPhone = SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone());
+            userInfo.setRegCellPhone(SecurityOptUtils.encodeSecurityString(cellPhone, phoneEncryptType));
+        }
+        super.updateObject(userInfo);
     }
 }
