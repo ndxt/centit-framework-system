@@ -320,6 +320,6 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
             String cellPhone = SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone());
             userInfo.setRegCellPhone(SecurityOptUtils.encodeSecurityString(cellPhone, phoneEncryptType));
         }
-        super.updateObject(userInfo);
+        super.saveNewObject(userInfo);
     }
 }
