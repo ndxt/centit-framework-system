@@ -140,7 +140,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     }
 
     private void decryptPhoneInList(List<UserInfo> list) {
-        if (list == null || list.isEmpty()) {
+        if (list == null || list.isEmpty() || NONE_ENCRYPT_TYPE.equals(phoneEncryptType)) {
             return;
         }
         for (UserInfo userInfo : list) {
