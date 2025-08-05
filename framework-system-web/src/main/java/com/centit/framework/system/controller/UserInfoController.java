@@ -135,7 +135,6 @@ public class UserInfoController extends BaseController {
                 userInfo.setIdCardNo("");
                 userInfo.setUserPwd("");
                 userInfo.setUserPin("");
-                userInfo.setRegCellPhone(SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone()));
             }
         }
         return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
@@ -317,7 +316,6 @@ public class UserInfoController extends BaseController {
         userInfo.setEnglishName(HtmlFormUtils.htmlString(userInfo.getEnglishName()));
         userInfo.setUserName(HtmlFormUtils.htmlString(userInfo.getUserName()));
         userInfo.setUserDesc(HtmlFormUtils.htmlString(userInfo.getUserDesc()));
-        userInfo.setRegCellPhone(SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone()));
         //脱敏操作
         //UserInfo desensitizeUserInfo = Sensitive.desensitize(userInfo);
 

@@ -57,10 +57,10 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
             "JOIN F_ROLEPOWER b ON ( a.Role_Code = b.Role_Code ) " +
             "JOIN F_OPTDEF c ON ( b.OPT_CODE = c.OPT_CODE ) " +
             "where USER_CODE= :userCode and OPT_METHOD is not null and a.role_code in ( " +
-                "select b.ROLE_CODE from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE) " +
-                "where a.USER_CODE = :userCode and a.OBTAIN_DATE <= :currentDateTime and " +
-                " (a.SECEDE_DATE is null  or a.SECEDE_DATE > :currentDateTime) and b.IS_VALID='T' " +
-                " and (b.ROLE_TYPE = 'G' or b.UNIT_CODE = :unitCode) )";
+            "select b.ROLE_CODE from F_USERROLE a join F_ROLEINFO b on (a.ROLE_CODE=b.ROLE_CODE) " +
+            "where a.USER_CODE = :userCode and a.OBTAIN_DATE <= :currentDateTime and " +
+            " (a.SECEDE_DATE is null  or a.SECEDE_DATE > :currentDateTime) and b.IS_VALID='T' " +
+            " and (b.ROLE_TYPE = 'G' or b.UNIT_CODE = :unitCode) )";
 
     public Map<String, String> getFilterField() {
         Map<String, String> filterField = new HashMap<>();
@@ -74,7 +74,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
         filterField.put("(like)userTag", CodeBook.LIKE_HQL_ID);
         filterField.put("USERWORD", CodeBook.EQUAL_HQL_ID);
 
-        filterField.put("topUnit", ( " USER_CODE IN ( SELECT DISTINCT UN.USER_CODE FROM F_USERUNIT UN WHERE UN.TOP_UNIT = :topUnit ) " ));
+        filterField.put("topUnit", (" USER_CODE IN ( SELECT DISTINCT UN.USER_CODE FROM F_USERUNIT UN WHERE UN.TOP_UNIT = :topUnit ) "));
         filterField.put("(like)likeUserOrLoginName", "(User_Name LIKE :likeUserOrLoginName OR LOGIN_NAME LIKE :likeUserOrLoginName or user_code like :likeUserOrLoginName)");
         filterField.put("byUnderUnit", "userCode in " +
             "(select us.USER_CODE from f_userunit us where us.UNIT_CODE = :byUnderUnit ) ");
@@ -100,19 +100,61 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
         return filterField;
     }
 
-    @Transactional
+    private static final String REG_CELL_PHONE_KEY = "regCellPhone";
+    private static final String NONE_ENCRYPT_TYPE = "none";
+
     public List<UserInfo> listObjects(Map<String, Object> filterMap) {
-        if(filterMap.containsKey("regCellPhone") && !"none".equals(phoneEncryptType)){
-            String cellPhone = StringBaseOpt.castObjectToString( filterMap.get("regCellPhone"));
-            if(StringUtils.isNotBlank(cellPhone)) {
-                cellPhone = SecurityOptUtils.decodeSecurityString(cellPhone);
-                cellPhone = SecurityOptUtils.encodeSecurityString(cellPhone, phoneEncryptType);
-                filterMap.put("regCellPhone", cellPhone);
+        Map<String, Object> processedFilterMap = processFilterMap(filterMap);
+        List<UserInfo> list = super.listObjectsByProperties(processedFilterMap);
+        decryptPhoneInList(list);
+        return list;
+    }
+
+    public List<UserInfo> listObjectsByProperties(Map<String, Object> filterMap, PageDesc pageDesc) {
+        Map<String, Object> processedFilterMap = processFilterMap(filterMap);
+        List<UserInfo> list = super.listObjectsByProperties(processedFilterMap, pageDesc);
+        decryptPhoneInList(list);
+        return list;
+    }
+
+    private Map<String, Object> processFilterMap(Map<String, Object> filterMap) {
+        Map<String, Object> newFilterMap = new HashMap<>(filterMap);
+        if (newFilterMap.containsKey(REG_CELL_PHONE_KEY) && !NONE_ENCRYPT_TYPE.equals(phoneEncryptType)) {
+            Object phoneObj = newFilterMap.get(REG_CELL_PHONE_KEY);
+            if (phoneObj != null) {
+                String cellPhone = StringBaseOpt.castObjectToString(phoneObj);
+                if (StringUtils.isNotBlank(cellPhone)) {
+                    try {
+                        cellPhone = SecurityOptUtils.decodeSecurityString(cellPhone);
+                        cellPhone = SecurityOptUtils.encodeSecurityString(cellPhone, phoneEncryptType);
+                        newFilterMap.put(REG_CELL_PHONE_KEY, cellPhone);
+                    } catch (Exception e) {
+                        // 记录日志或抛出自定义异常
+                        throw new RuntimeException("手机号加解密失败", e);
+                    }
+                }
             }
         }
-        filterMap.put("currentDateTime", DatetimeOpt.currentUtilDate());
-        return super.listObjectsByProperties(filterMap);
+        newFilterMap.put("currentDateTime", DatetimeOpt.currentUtilDate());
+        return newFilterMap;
     }
+
+    private void decryptPhoneInList(List<UserInfo> list) {
+        if (list == null || list.isEmpty()) {
+            return;
+        }
+        for (UserInfo userInfo : list) {
+            if (userInfo != null && StringUtils.isNotBlank(userInfo.getRegCellPhone())) {
+                try {
+                    userInfo.setRegCellPhone(SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone()));
+                } catch (Exception e) {
+                    // 日志记录或抛出异常
+                    throw new RuntimeException("手机号解密失败", e);
+                }
+            }
+        }
+    }
+
 
     @SuppressWarnings("unchecked")
     @Transactional
@@ -164,8 +206,9 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     /**
      * 根据 topUnit，userName，queryByUnit 查询用户信息
      * 用户信息包括用户基本信息，用户所属单位code和名称
+     *
      * @param filterMap 过滤条件
-     * @param pageDesc PageDesc
+     * @param pageDesc  PageDesc
      * @return JSONArray
      */
     @Transactional
@@ -184,28 +227,31 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
         return DatabaseOptUtils.listObjectsByNamedSqlAsJson(this, qap.getQuery(), qap.getParams(), pageDesc);
 
     }
+
     @Transactional
     public UserInfo getUserByCode(String userCode) {
-        return super.getObjectById(userCode);
+        UserInfo userInfo = super.getObjectById(userCode);
+        userInfo.setRegCellPhone(SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone()));
+        return userInfo;
     }
 
     @Transactional
     public UserInfo getUserByLoginName(String loginName) {
-        if(StringUtils.isBlank(loginName)) return null;
+        if (StringUtils.isBlank(loginName)) return null;
         return super.getObjectByProperties(CollectionsOpt.createHashMap(
             "loginName", loginName));
     }
 
     @Transactional
     public UserInfo getUserByRegEmail(String regEmail) {
-        if(StringUtils.isBlank(regEmail)) return null;
+        if (StringUtils.isBlank(regEmail)) return null;
         return super.getObjectByProperties(CollectionsOpt.createHashMap("regEmail", regEmail));
     }
 
     @Transactional
     public UserInfo getUserByRegCellPhone(String regCellPhone) {
-        if(StringUtils.isBlank(regCellPhone)) return null;
-        if(!"none".equals(phoneEncryptType)){
+        if (StringUtils.isBlank(regCellPhone)) return null;
+        if (!"none".equals(phoneEncryptType)) {
             regCellPhone = SecurityOptUtils.decodeSecurityString(regCellPhone);
             regCellPhone = SecurityOptUtils.encodeSecurityString(regCellPhone, phoneEncryptType);
         }
@@ -214,19 +260,19 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
 
     @Transactional
     public UserInfo getUserByTag(String userTag) {
-        if(StringUtils.isBlank(userTag)) return null;
+        if (StringUtils.isBlank(userTag)) return null;
         return super.getObjectByProperties(CollectionsOpt.createHashMap("userTag", userTag));
     }
 
     @Transactional
     public UserInfo getUserByUserWord(String userWord) {
-        if(StringUtils.isBlank(userWord)) return null;
+        if (StringUtils.isBlank(userWord)) return null;
         return super.getObjectByProperties(CollectionsOpt.createHashMap("userWord", userWord));
     }
 
     @Transactional
     public UserInfo getUserByIdCardNo(String idCardNo) {
-        if(StringUtils.isBlank(idCardNo)) return null;
+        if (StringUtils.isBlank(idCardNo)) return null;
         return super.getObjectByProperties(CollectionsOpt.createHashMap("idCardNo", idCardNo));
     }
 
@@ -249,7 +295,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     }
 
     public int isCellPhoneExist(String userCode, String cellPhone) {
-        if(!"none".equals(phoneEncryptType)){
+        if (!"none".equals(phoneEncryptType)) {
             cellPhone = SecurityOptUtils.decodeSecurityString(cellPhone);
             cellPhone = SecurityOptUtils.encodeSecurityString(cellPhone, phoneEncryptType);
         }
@@ -268,27 +314,27 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
 
     public int isAnyOneExist(String userCode, String loginName, String regPhone, String regEmail) {
         HashMap<String, String> map = new HashMap<>();
-        if (StringUtils.isNotBlank(userCode)){
-            map.put("USER_CODE",userCode);
+        if (StringUtils.isNotBlank(userCode)) {
+            map.put("USER_CODE", userCode);
         }
-        if (StringUtils.isNotBlank(loginName)){
-            map.put("LOGIN_NAME",loginName);
+        if (StringUtils.isNotBlank(loginName)) {
+            map.put("LOGIN_NAME", loginName);
         }
-        if (StringUtils.isNotBlank(regPhone)){
-            if(!"none".equals(phoneEncryptType)){
+        if (StringUtils.isNotBlank(regPhone)) {
+            if (!"none".equals(phoneEncryptType)) {
                 regPhone = SecurityOptUtils.decodeSecurityString(regPhone);
                 regPhone = SecurityOptUtils.encodeSecurityString(regPhone, phoneEncryptType);
             }
-            map.put("REG_CELL_PHONE",regPhone);
+            map.put("REG_CELL_PHONE", regPhone);
         }
-        if (StringUtils.isNotBlank(regEmail)){
-            map.put("REG_EMAIL",regEmail);
+        if (StringUtils.isNotBlank(regEmail)) {
+            map.put("REG_EMAIL", regEmail);
         }
         Object[] params = new String[map.size()];
         StringBuilder stringBuilder = new StringBuilder(" SELECT COUNT(1) AS USERSCOUNT FROM F_USERINFO WHERE ");
         int i = 0;
         for (Map.Entry<String, String> entry : map.entrySet()) {
-            if (i != 0){
+            if (i != 0) {
                 stringBuilder.append(" OR ");
             }
             stringBuilder.append(entry.getKey()).append(" = ? ");
@@ -307,7 +353,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
 
     @Transactional
     public void updateUser(UserInfo userInfo) {
-        if(!"none".equals(phoneEncryptType) && StringUtils.isNotBlank(userInfo.getRegCellPhone())){
+        if (!"none".equals(phoneEncryptType) && StringUtils.isNotBlank(userInfo.getRegCellPhone())) {
             String cellPhone = SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone());
             userInfo.setRegCellPhone(SecurityOptUtils.encodeSecurityString(cellPhone, phoneEncryptType));
         }
@@ -316,7 +362,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
 
     @Transactional
     public void saveUserInfo(UserInfo userInfo) {
-        if(!"none".equals(phoneEncryptType) && StringUtils.isNotBlank(userInfo.getRegCellPhone())){
+        if (!"none".equals(phoneEncryptType) && StringUtils.isNotBlank(userInfo.getRegCellPhone())) {
             String cellPhone = SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone());
             userInfo.setRegCellPhone(SecurityOptUtils.encodeSecurityString(cellPhone, phoneEncryptType));
         }
