@@ -599,7 +599,7 @@ public class DataDictionaryController extends BaseController {
         searchColumn.put("catalogCode", catalogCode);
         List<DataDictionary> datas = dataDictionaryManager.listDataDictionarys(searchColumn);
         DataCatalog catalog = dataDictionaryManager.getObjectById(catalogCode);
-        if ("T".equals(catalog.getCatalogType())) {
+        if (catalog !=null && "T".equals(catalog.getCatalogType())) {
             CollectionsOpt.sortAsTree(datas,
                 (p, c) -> StringUtils.equals(p.getDataCode(), c.getExtraCode()));
         }
