@@ -241,6 +241,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     @Transactional
     public UserInfo getUserByCode(String userCode) {
         UserInfo userInfo = super.getObjectById(userCode);
+        if(userInfo == null) return null;
         userInfo.setRegCellPhone(SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone()));
         return userInfo;
     }
@@ -250,6 +251,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
         if (StringUtils.isBlank(loginName)) return null;
         UserInfo userInfo = super.getObjectByProperties(CollectionsOpt.createHashMap(
             "loginName", loginName));
+        if(userInfo == null) return null;
         userInfo.setRegCellPhone(SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone()));
         return userInfo;
     }
@@ -258,6 +260,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     public UserInfo getUserByRegEmail(String regEmail) {
         if (StringUtils.isBlank(regEmail)) return null;
         UserInfo userInfo = super.getObjectByProperties(CollectionsOpt.createHashMap("regEmail", regEmail));
+        if(userInfo == null) return null;
         userInfo.setRegCellPhone(SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone()));
         return userInfo;
     }
@@ -270,6 +273,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
             regCellPhone = SecurityOptUtils.encodeSecurityString(regCellPhone, phoneEncryptType);
         }
         UserInfo userInfo =super.getObjectByProperties(CollectionsOpt.createHashMap("regCellPhone", regCellPhone));
+        if(userInfo == null) return null;
         userInfo.setRegCellPhone(SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone()));
         return userInfo;
     }
@@ -278,6 +282,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     public UserInfo getUserByTag(String userTag) {
         if (StringUtils.isBlank(userTag)) return null;
         UserInfo userInfo =super.getObjectByProperties(CollectionsOpt.createHashMap("userTag", userTag));
+        if(userInfo == null) return null;
         userInfo.setRegCellPhone(SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone()));
         return userInfo;
     }
@@ -286,6 +291,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     public UserInfo getUserByUserWord(String userWord) {
         if (StringUtils.isBlank(userWord)) return null;
         UserInfo userInfo =super.getObjectByProperties(CollectionsOpt.createHashMap("userWord", userWord));
+        if(userInfo == null) return null;
         userInfo.setRegCellPhone(SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone()));
         return userInfo;
     }
@@ -294,6 +300,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     public UserInfo getUserByIdCardNo(String idCardNo) {
         if (StringUtils.isBlank(idCardNo)) return null;
         UserInfo userInfo =super.getObjectByProperties(CollectionsOpt.createHashMap("idCardNo", idCardNo));
+        if(userInfo == null) return null;
         userInfo.setRegCellPhone(SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone()));
         return userInfo;
     }
