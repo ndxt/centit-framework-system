@@ -1,6 +1,7 @@
 package com.centit.framework.system.dao;
 
 import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.centit.framework.components.CodeRepositoryUtil;
 import com.centit.framework.core.dao.CodeBook;
 import com.centit.framework.jdbc.dao.BaseDaoImpl;
@@ -179,14 +180,21 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
                 .queryObjectsByNamedParamsSql(conn, f_v_topunit_user_powers, map, FVUserOptList.class));
     }
 
-    @Transactional
-    public List<UserInfo> listUnderUnit(Map<String, Object> filterMap) {
-        return this.listObjects(filterMap);
-    }
-
-    @Transactional
-    public List<UserInfo> listUnderUnit(Map<String, Object> filterMap, PageDesc pageDesc) {
-        return this.listObjectsByProperties(filterMap, pageDesc);
+    private void decryptPhoneInList(JSONArray list) {
+        if (list == null || list.isEmpty() || NONE_ENCRYPT_TYPE.equals(phoneEncryptType)) {
+            return;
+        }
+        for (Object obj : list) {
+            JSONObject userInfo = (JSONObject) obj;
+            if (userInfo != null && StringUtils.isNotBlank(userInfo.getString("regCellPhone"))) {
+                try {
+                    userInfo.put("regCellPhone",SecurityOptUtils.decodeSecurityString(userInfo.getString("regCellPhone")));
+                } catch (Exception e) {
+                    // 日志记录或抛出异常
+                    throw new RuntimeException("手机号解密失败", e);
+                }
+            }
+        }
     }
 
     @Transactional
@@ -199,8 +207,9 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
             "where 1=1 [:(like)userName | and (User_Name LIKE :userName OR LOGIN_NAME LIKE :userName)]" +
             "ORDER BY b.user_order";
         QueryAndNamedParams qap = QueryUtils.translateQuery(querySql, filterMap);
-        return DatabaseOptUtils.listObjectsByNamedSqlAsJson(this, qap.getQuery(), qap.getParams(), pageDesc);
-
+        JSONArray list = DatabaseOptUtils.listObjectsByNamedSqlAsJson(this, qap.getQuery(), qap.getParams(), pageDesc);
+        decryptPhoneInList(list);
+        return list;
     }
 
     /**
@@ -224,8 +233,9 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
             " [:queryByUnit | AND B.UNIT_CODE = :queryByUnit ] " +
             " ORDER BY A.USER_ORDER ";
         QueryAndNamedParams qap = QueryUtils.translateQuery(querySql, filterMap);
-        return DatabaseOptUtils.listObjectsByNamedSqlAsJson(this, qap.getQuery(), qap.getParams(), pageDesc);
-
+        JSONArray list = DatabaseOptUtils.listObjectsByNamedSqlAsJson(this, qap.getQuery(), qap.getParams(), pageDesc);
+        decryptPhoneInList(list);
+        return list;
     }
 
     @Transactional
@@ -238,14 +248,18 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     @Transactional
     public UserInfo getUserByLoginName(String loginName) {
         if (StringUtils.isBlank(loginName)) return null;
-        return super.getObjectByProperties(CollectionsOpt.createHashMap(
+        UserInfo userInfo = super.getObjectByProperties(CollectionsOpt.createHashMap(
             "loginName", loginName));
+        userInfo.setRegCellPhone(SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone()));
+        return userInfo;
     }
 
     @Transactional
     public UserInfo getUserByRegEmail(String regEmail) {
         if (StringUtils.isBlank(regEmail)) return null;
-        return super.getObjectByProperties(CollectionsOpt.createHashMap("regEmail", regEmail));
+        UserInfo userInfo = super.getObjectByProperties(CollectionsOpt.createHashMap("regEmail", regEmail));
+        userInfo.setRegCellPhone(SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone()));
+        return userInfo;
     }
 
     @Transactional
@@ -255,25 +269,33 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
             regCellPhone = SecurityOptUtils.decodeSecurityString(regCellPhone);
             regCellPhone = SecurityOptUtils.encodeSecurityString(regCellPhone, phoneEncryptType);
         }
-        return super.getObjectByProperties(CollectionsOpt.createHashMap("regCellPhone", regCellPhone));
+        UserInfo userInfo =super.getObjectByProperties(CollectionsOpt.createHashMap("regCellPhone", regCellPhone));
+        userInfo.setRegCellPhone(SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone()));
+        return userInfo;
     }
 
     @Transactional
     public UserInfo getUserByTag(String userTag) {
         if (StringUtils.isBlank(userTag)) return null;
-        return super.getObjectByProperties(CollectionsOpt.createHashMap("userTag", userTag));
+        UserInfo userInfo =super.getObjectByProperties(CollectionsOpt.createHashMap("userTag", userTag));
+        userInfo.setRegCellPhone(SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone()));
+        return userInfo;
     }
 
     @Transactional
     public UserInfo getUserByUserWord(String userWord) {
         if (StringUtils.isBlank(userWord)) return null;
-        return super.getObjectByProperties(CollectionsOpt.createHashMap("userWord", userWord));
+        UserInfo userInfo =super.getObjectByProperties(CollectionsOpt.createHashMap("userWord", userWord));
+        userInfo.setRegCellPhone(SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone()));
+        return userInfo;
     }
 
     @Transactional
     public UserInfo getUserByIdCardNo(String idCardNo) {
         if (StringUtils.isBlank(idCardNo)) return null;
-        return super.getObjectByProperties(CollectionsOpt.createHashMap("idCardNo", idCardNo));
+        UserInfo userInfo =super.getObjectByProperties(CollectionsOpt.createHashMap("idCardNo", idCardNo));
+        userInfo.setRegCellPhone(SecurityOptUtils.decodeSecurityString(userInfo.getRegCellPhone()));
+        return userInfo;
     }
 
     @Transactional
@@ -282,9 +304,11 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
     }
 
     public List<UserInfo> listUsersByRoleCode(String roleCode) {
-        return super.listObjectsByProperties(
+        List<UserInfo> userInfos = super.listObjectsByProperties(
             CollectionsOpt.createHashMap("roleCode", roleCode,
                 "currentDateTime", DatetimeOpt.currentUtilDate()));
+        decryptPhoneInList(userInfos);
+        return userInfos;
     }
 
     public int isLoginNameExist(String userCode, String loginName) {
