@@ -11,3 +11,5 @@
 7. framework-system-demo 是一个可以运行的示例。
 
 如果我们需要开发一个单应用系统[framework-system-demo](./framework-system-demo)是一个最好不过的开发起点。开发人员可以复制这个项目的源代码作为自己项目的基础工程，记得修改java的包名。
+11
+
