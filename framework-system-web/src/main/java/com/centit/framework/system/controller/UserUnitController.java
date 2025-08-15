@@ -1,5 +1,7 @@
 package com.centit.framework.system.controller;
 
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.centit.framework.common.ResponseData;
 import com.centit.framework.common.WebOptUtils;
 import com.centit.framework.components.CodeRepositoryUtil;
@@ -170,15 +172,29 @@ public class UserUnitController extends BaseController {
     })
     @RequestMapping(value = "/userunits/{userCode}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult<UserUnit> listUnitsByUser(@PathVariable String userCode, PageDesc pageDesc,
+    public PageQueryResult<Object> listUnitsByUser(@PathVariable String userCode, PageDesc pageDesc,
                                                      HttpServletRequest request) {
-//        UserInfo user = sysUserManager.getObjectById(this.WebOptUtils.getCurrentUserCode(request));
+        String topUnit=WebOptUtils.getCurrentTopUnit(request);
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("userCode", userCode);
-        filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-//        filterMap.put("unitCode", user.getPrimaryUnit());
+        filterMap.put("topUnit", topUnit);
         List<UserUnit> listObjects = sysUserUnitManager.listObjects(filterMap, pageDesc);
-        return PageQueryResult.createResultMapDict(listObjects, pageDesc);
+        JSONArray jsonArray = JSONArray.from(listObjects);
+        jsonArray=DictionaryMapUtils.mapJsonArray(jsonArray,UserUnit.class);
+        for(int i = 0; i < jsonArray.size(); i++){
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            String unitCode = jsonObject.getString("unitCode");
+            if (unitCode == null || unitCode.isEmpty()) {
+                continue;
+            }
+            UnitInfo ui = CodeRepositoryUtil.getUnitInfoByCode(topUnit,unitCode);
+            if(ui!=null) {
+                String unitPath = ui.getUnitPath();
+                jsonObject.put("unitPath", unitPath);
+                jsonObject.put("unitPathName", CodeRepositoryUtil.transExpression("unitCode", unitPath));
+            }
+        }
+        return PageQueryResult.createJSONArrayResult(jsonArray, pageDesc);
     }
 
     @ApiOperation(value = "获取用户所在机构列表（在当前用户可见范围内）")

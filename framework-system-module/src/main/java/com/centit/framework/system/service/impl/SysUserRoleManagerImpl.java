@@ -60,6 +60,8 @@ public class SysUserRoleManagerImpl implements SysUserRoleManager {
             if(userinfo!=null) {
                 String loginName = userinfo.getLoginName();
                 aa.put("loginName", loginName);
+                aa.put("unitCode", userinfo.getPrimaryUnit());
+                aa.put("unitName",CodeRepositoryUtil.getValue("unitCode",userinfo.getPrimaryUnit()));
             }
         }
         return DictionaryMapUtils.mapJsonArray(userRoles, UserRole.class);
