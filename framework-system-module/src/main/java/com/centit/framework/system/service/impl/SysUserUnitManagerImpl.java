@@ -169,28 +169,27 @@ public class SysUserUnitManagerImpl
 
     @Override
     public void updateUserUnit(UserUnit userunit) {
+        // 参数校验
+        if (userunit == null || userunit.getUserCode() == null || userunit.getTopUnit() == null
+            || userunit.getUnitCode() == null || userunit.getRelType() == null) {
+            throw new IllegalArgumentException("UserUnit or required fields cannot be null");
+        }
         UserUnit origPrimUnit = userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode(), userunit.getTopUnit());
-        String relType = userunit.getRelType();
-        if(origPrimUnit == null){
+        UserInfo user = userInfoDao.getUserByCode(userunit.getUserCode());
+        if (origPrimUnit == null || origPrimUnit.getUserUnitId().equals(userunit.getUserUnitId())) {
             userunit.setRelType("T");
-        }else {
-            if ("T".equals(relType)) {
-                if (!origPrimUnit.getUserUnitId().equals(userunit.getUserUnitId())) {
-                    origPrimUnit.setRelType("F");
-                    userUnitDao.updateUserUnit(origPrimUnit);
-                }
-                UserInfo user = userInfoDao.getUserByCode(userunit.getUserCode());
-                if (user != null) {
-                    user.setPrimaryUnit(userunit.getUnitCode());
-                    user.setTopUnit(userunit.getTopUnit());
-                    user.setUserOrder(userunit.getUserOrder());
-                    userInfoDao.updateUser(user);
-                }
-            } else {
-                if (origPrimUnit.getUserUnitId().equals(userunit.getUserUnitId())) {
-                    userunit.setRelType("T");
-                }
+        } else {
+            if ("T".equals(userunit.getRelType())) {
+                origPrimUnit.setRelType("F");
+                userUnitDao.updateUserUnit(origPrimUnit);
             }
+        }
+        if (user != null && StringUtils.isBlank(user.getPrimaryUnit())) {
+            user.setPrimaryUnit(userunit.getUnitCode());
+            user.setTopUnit(userunit.getTopUnit());
+            user.setUserOrder(userunit.getUserOrder());
+            user.setCurrentStationId(userunit.getUserStation());
+            userInfoDao.updateUser(user);
         }
         userUnitDao.updateUserUnit(userunit);
         CodeRepositoryCache.evictCache("UserUnit");
