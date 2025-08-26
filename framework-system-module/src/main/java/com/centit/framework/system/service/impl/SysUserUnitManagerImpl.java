@@ -169,8 +169,10 @@ public class SysUserUnitManagerImpl
 
     @Override
     public void updateUserUnit(UserUnit userunit) {
-        if ("T".equals(userunit.getRelType())) {
-            UserUnit origPrimUnit = userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode(), userunit.getTopUnit());
+        UserUnit origPrimUnit = userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode(), userunit.getTopUnit());
+        String relType = userunit.getRelType();
+
+        if ("T".equals(relType)) {
             if (origPrimUnit != null && !origPrimUnit.getUserUnitId().equals(userunit.getUserUnitId())) {
                 origPrimUnit.setRelType("F");
                 userUnitDao.updateUserUnit(origPrimUnit);
@@ -182,10 +184,15 @@ public class SysUserUnitManagerImpl
                 user.setUserOrder(userunit.getUserOrder());
                 userInfoDao.updateUser(user);
             }
+        } else {
+            if (origPrimUnit != null && origPrimUnit.getUserUnitId().equals(userunit.getUserUnitId())) {
+                userunit.setRelType("T");
+            }
         }
         userUnitDao.updateUserUnit(userunit);
         CodeRepositoryCache.evictCache("UserUnit");
     }
+
 
     @Override
     public UserUnit getObjectById(String userUnitId) {
