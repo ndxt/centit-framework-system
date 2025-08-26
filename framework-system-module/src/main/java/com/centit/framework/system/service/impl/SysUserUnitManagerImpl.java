@@ -171,22 +171,25 @@ public class SysUserUnitManagerImpl
     public void updateUserUnit(UserUnit userunit) {
         UserUnit origPrimUnit = userUnitDao.getPrimaryUnitByUserId(userunit.getUserCode(), userunit.getTopUnit());
         String relType = userunit.getRelType();
-
-        if ("T".equals(relType)) {
-            if (origPrimUnit != null && !origPrimUnit.getUserUnitId().equals(userunit.getUserUnitId())) {
-                origPrimUnit.setRelType("F");
-                userUnitDao.updateUserUnit(origPrimUnit);
-            }
-            UserInfo user = userInfoDao.getUserByCode(userunit.getUserCode());
-            if (user != null) {
-                user.setPrimaryUnit(userunit.getUnitCode());
-                user.setTopUnit(userunit.getTopUnit());
-                user.setUserOrder(userunit.getUserOrder());
-                userInfoDao.updateUser(user);
-            }
-        } else {
-            if (origPrimUnit != null && origPrimUnit.getUserUnitId().equals(userunit.getUserUnitId())) {
-                userunit.setRelType("T");
+        if(origPrimUnit == null){
+            userunit.setRelType("T");
+        }else {
+            if ("T".equals(relType)) {
+                if (!origPrimUnit.getUserUnitId().equals(userunit.getUserUnitId())) {
+                    origPrimUnit.setRelType("F");
+                    userUnitDao.updateUserUnit(origPrimUnit);
+                }
+                UserInfo user = userInfoDao.getUserByCode(userunit.getUserCode());
+                if (user != null) {
+                    user.setPrimaryUnit(userunit.getUnitCode());
+                    user.setTopUnit(userunit.getTopUnit());
+                    user.setUserOrder(userunit.getUserOrder());
+                    userInfoDao.updateUser(user);
+                }
+            } else {
+                if (origPrimUnit.getUserUnitId().equals(userunit.getUserUnitId())) {
+                    userunit.setRelType("T");
+                }
             }
         }
         userUnitDao.updateUserUnit(userunit);
