@@ -149,7 +149,7 @@ public class SysUserUnitManagerImpl
         if (null != dd) {
             addUserRoleWhenNotExist(userunit.getUserCode(), dd.getExtraCode2(), userRoles);
         }
-        CodeRepositoryCache.evictCache("UserUnit");
+        CodeRepositoryCache.evictCache("UserUnit",userunit.getUserCode());
         return userunit.getUserUnitId();
     }
 
@@ -192,7 +192,7 @@ public class SysUserUnitManagerImpl
             userInfoDao.updateUser(user);
         }
         userUnitDao.updateUserUnit(userunit);
-        CodeRepositoryCache.evictCache("UserUnit");
+        CodeRepositoryCache.evictCache("UserUnit",userunit.getUserCode());
     }
 
 
@@ -212,7 +212,7 @@ public class SysUserUnitManagerImpl
             user.setCurrentStationId("");
             userInfoDao.updateUser(user);
         }
-        CodeRepositoryCache.evictCache("UserUnit");
+        CodeRepositoryCache.evictCache("UserUnit",userUnit.getUserCode());
     }
 
     @Override
