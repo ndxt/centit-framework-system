@@ -531,7 +531,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
                 }
             }
         }
-        if (userRolesList != null && userRolesList.size()>0) {
+        if (userRolesList != null && !userRolesList.isEmpty()) {
             String[] userRole = new String[userRolesList.size()];
             for (int i = 0; i < userRolesList.size(); i++) {
                 userRole[i] = userRolesList.get(i).getRoleCode();
@@ -573,23 +573,12 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
             if (currentUnit != null) {
                 userDetails.setTopUnitCode(currentUnit.getTopUnit());
             }
-            if (StringUtils.isBlank(userDetails.getTopUnitCode())) {
-                //userDetails.setTopUnitCode(GlobalConstValue.SYSTEM_TENANT_TOP_UNIT);
-            } else {
-                UnitInfo topUnit = unitInfoDao.getObjectById(userDetails.getTopUnitCode());
-                if (null != topUnit) {
-                    userDetails.setTopUnitName(topUnit.getUnitName());//.getUserInfo().put("topUnitName", topUnit.getUnitName());
-                }
-            }
-        } else {
-            UnitInfo ui = unitInfoDao.getObjectById(userDetails.getTopUnitCode());
-            if (GlobalConstValue.NO_TENANT_TOP_UNIT.equals(userDetails.getTopUnitCode())) {
-                ui = unitInfoDao.getObjectById(currentUnitCode);
-            }
-            if (null != ui) {
-                userDetails.setTopUnitName(ui.getUnitName());
-            }
         }
+
+        if (StringUtils.isNotBlank(userDetails.getTopUnitCode())) {
+            userDetails.setTopUnitName( CodeRepositoryUtil.getUnitName(userDetails.getTopUnitCode(), userDetails.getTopUnitCode()));
+        }
+
         return userDetails;
     }
 
