@@ -388,6 +388,7 @@ public class RoleInfoController extends BaseController {
                     "RoleInfo",  "unitCode"));
                 //"不能修改部门角色的所属机构");
         }
+        roleInfo.setUpdator(WebOptUtils.getCurrentUserCode(request));
         sysRoleManager.updateRoleInfo(roleInfo);
     }
 
