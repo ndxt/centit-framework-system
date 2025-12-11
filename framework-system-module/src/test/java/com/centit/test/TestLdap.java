@@ -162,6 +162,7 @@ public class TestLdap {
             " userFieldMap : { "+
             " userName : \"displayName\", "+
             " loginName : \"sAMAccountName\", "+
+            " userTag : \"distinguishedName\", "+
             " regEmail : \"mail\", "+
             " regCellPhone : \"mobilePhone\", "+
             " userDesc : \"description\", " +
