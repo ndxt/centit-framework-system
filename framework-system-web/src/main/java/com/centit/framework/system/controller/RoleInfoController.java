@@ -762,6 +762,14 @@ public class RoleInfoController extends BaseController {
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
         filterMap.put("topUnit", currentUnit);
         List<RoleInfo> roleInfoList= sysRoleManager.listObjects(filterMap);
+
+        // 按 roleName 排序
+        roleInfoList.sort((r1, r2) -> {
+            String name1 = r1.getRoleName() != null ? r1.getRoleName() : "";
+            String name2 = r2.getRoleName() != null ? r2.getRoleName() : "";
+            return name1.compareTo(name2);
+        });
+
        return DictionaryMapUtils.objectsToJSONArray(roleInfoList);
     }
 
