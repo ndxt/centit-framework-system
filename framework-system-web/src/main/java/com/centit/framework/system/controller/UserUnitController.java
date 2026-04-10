@@ -124,32 +124,63 @@ public class UserUnitController extends BaseController {
     /*
      * 通过机构代码获取机构及其子机构下用户组
      *
-     * @param unitCode 机构代码
+     * @param unitCodes 机构代码，多个机构代码用逗号分隔
      *                 参数 s_isPaimary 是否为主机构，是T F否，为空不限定
      * @param pageDesc PageDesc
      * @param request  {@link HttpServletRequest}
      */
-    @ApiOperation(value = "通过机构代码获取机构及其子机构下用户组", notes = "通过机构代码获取机构及其子机构下用户组。")
+    @ApiOperation(value = "通过机构代码获取机构及其子机构下用户组", notes = "通过机构代码获取机构及其子机构下用户组。支持传入多个机构代码，用逗号分隔。")
     @ApiImplicitParams({
         @ApiImplicitParam(
-            name = "unitCode", value = "机构代码",
+            name = "unitCodes", value = "机构代码，多个机构代码用逗号分隔",
             required = true, paramType = "path", dataType = "String"),
         @ApiImplicitParam(
             name = "pageDesc", value = "json格式的分页对象信息",
             paramType = "body", dataTypeClass = PageDesc.class)
     })
-    @RequestMapping(value = "/unitusers/{unitCode}", method = RequestMethod.GET)
+    @RequestMapping(value = "/unitusers/{unitCodes}", method = RequestMethod.GET)
     @WrapUpResponseBody
-    public PageQueryResult<UserUnit> listUsersByUnit(@PathVariable String unitCode,
+    public PageQueryResult<UserUnit> listUsersByUnit(@PathVariable String unitCodes,
                                                      PageDesc pageDesc, HttpServletRequest request) {
         boolean withSubUnit = BooleanBaseOpt.castObjectToBoolean(
             request.getParameter("withSubUnit"),false);
         Map<String, Object> filterMap = BaseController.collectRequestParameters(request);
-        filterMap.put("unitCode", unitCode);
+        
+        // 处理多个机构代码
+        if (StringUtils.isNotBlank(unitCodes)) {
+            String[] unitCodeArray = unitCodes.split(",");
+            if (unitCodeArray.length == 1) {
+                // 单个机构代码，保持原有逻辑
+                filterMap.put("unitCode", unitCodes.trim());
+            } else {
+                // 多个机构代码，使用 in 查询
+                List<String> unitCodeList = new ArrayList<>();
+                for (String code : unitCodeArray) {
+                    if (StringUtils.isNotBlank(code)) {
+                        unitCodeList.add(code.trim());
+                    }
+                }
+                if (!unitCodeList.isEmpty()) {
+                    filterMap.put("unitCode_in", unitCodeList.toArray(new String[0]));
+                }
+            }
+        }
+        
         filterMap.put("topUnit", WebOptUtils.getCurrentTopUnit(request));
-        List<UserUnit> listObjects = withSubUnit?
-            sysUserUnitManager.listSubUsersByUnitCode(unitCode, filterMap, pageDesc) :
-            sysUserUnitManager.listObjects(filterMap, pageDesc);
+        
+        List<UserUnit> listObjects;
+        if (withSubUnit && StringUtils.isNotBlank(unitCodes)) {
+            // 如果包含子机构，且只有一个机构代码，使用原有的子机构查询逻辑
+            String[] unitCodeArray = unitCodes.split(",");
+            if (unitCodeArray.length == 1 && StringUtils.isNotBlank(unitCodeArray[0])) {
+                listObjects = sysUserUnitManager.listSubUsersByUnitCode(unitCodeArray[0].trim(), filterMap, pageDesc);
+            } else {
+                // 多个机构代码时，不支持子机构查询，使用普通查询
+                listObjects = sysUserUnitManager.listObjects(filterMap, pageDesc);
+            }
+        } else {
+            listObjects = sysUserUnitManager.listObjects(filterMap, pageDesc);
+        }
         return PageQueryResult.createResultMapDict(listObjects, pageDesc);
     }
 

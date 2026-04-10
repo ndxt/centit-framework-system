@@ -30,6 +30,7 @@ public class UserUnitDao extends BaseDaoImpl<UserUnit, String> {
     public Map<String, String> getFilterField() {
         Map<String, String> filterField = new HashMap<>(20);
         filterField.put("unitCode", CodeBook.EQUAL_HQL_ID);
+        filterField.put("unitCode_in", "UNIT_CODE IN (:unitCode_in)");
         filterField.put("userStation", CodeBook.EQUAL_HQL_ID);
         filterField.put("userRank", CodeBook.EQUAL_HQL_ID);
         filterField.put("userCode", CodeBook.EQUAL_HQL_ID);
