@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.text.Collator;
 import java.util.*;
 
 @Controller
@@ -767,7 +768,8 @@ public class RoleInfoController extends BaseController {
         roleInfoList.sort((r1, r2) -> {
             String name1 = r1.getRoleName() != null ? r1.getRoleName() : "";
             String name2 = r2.getRoleName() != null ? r2.getRoleName() : "";
-            return name1.compareTo(name2);
+            Collator collator = Collator.getInstance(Locale.CHINA);
+            return collator.compare(name1, name2);
         });
 
        return DictionaryMapUtils.objectsToJSONArray(roleInfoList);
