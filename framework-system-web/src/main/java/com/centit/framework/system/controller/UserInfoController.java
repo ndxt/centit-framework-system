@@ -25,6 +25,7 @@ import com.centit.support.common.ParamName;
 import com.centit.support.database.utils.PageDesc;
 import com.centit.support.json.JsonPropertyUtils;
 import com.centit.support.network.HtmlFormUtils;
+import com.centit.support.security.DesensitizeOptUtils;
 import com.centit.support.security.SecurityOptUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -135,6 +136,11 @@ public class UserInfoController extends BaseController {
                 userInfo.setIdCardNo("");
                 userInfo.setUserPwd("");
                 userInfo.setUserPin("");
+                userInfo.setRegCellPhone(DesensitizeOptUtils.desensitize(userInfo.getRegCellPhone(), 
+                                DesensitizeOptUtils.SensitiveTypeEnum.PHONE));
+                userInfo.setRegEmail(DesensitizeOptUtils.desensitize(userInfo.getRegEmail(), 
+                                DesensitizeOptUtils.SensitiveTypeEnum.EMAIL));
+
             }
         }
         return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
