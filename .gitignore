@@ -11,3 +11,4 @@ out.*
 .flattened-pom.xml
 .DS_Store
 */.DS_Store
+test-java.cmd
