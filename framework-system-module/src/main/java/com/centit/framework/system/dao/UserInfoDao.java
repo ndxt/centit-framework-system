@@ -78,7 +78,7 @@ public class UserInfoDao extends BaseDaoImpl<UserInfo, String> {
         filterField.put("topUnit", (" USER_CODE IN ( SELECT DISTINCT UN.USER_CODE FROM F_USERUNIT UN WHERE UN.TOP_UNIT = :topUnit ) "));
 
         filterField.put("topUnitValidUser", (" USER_CODE IN ( SELECT DISTINCT UN.USER_CODE FROM F_USERUNIT UN join F_UNITINFO UI on (UN.UNIT_CODE=UI.UNIT_CODE)" +
-            " WHERE UN.TOP_UNIT = :topUnit and UI.IS_VALID='T') "));
+            " WHERE UN.TOP_UNIT = :topUnitValidUser and UI.IS_VALID='T') "));
 
         filterField.put("(like)likeUserOrLoginName", "(User_Name LIKE :likeUserOrLoginName OR LOGIN_NAME LIKE :likeUserOrLoginName or user_code like :likeUserOrLoginName)");
         filterField.put("byUnderUnit", "userCode in " +
