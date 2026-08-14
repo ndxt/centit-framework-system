@@ -117,8 +117,12 @@ public class UserInfoController extends BaseController {
             listObjects = sysUserManager.listObjects(searchColumn);
             return PageQueryResult.createResultMapDict(listObjects, pageDesc, field);
         }
-
-        searchColumn.put("topUnit", topUnit);
+        if(searchColumn.containsKey("topUnitValidUser")){
+            searchColumn.put("topUnitValidUser", topUnit);
+            searchColumn.remove("topUnit");
+        } else {
+            searchColumn.put("topUnit", topUnit);
+        }
         //name = "_search", value = "强制关闭分页查询",
         if (BooleanBaseOpt.castObjectToBoolean(_search,false)) {
             listObjects = sysUserManager.listObjects(searchColumn);
@@ -136,9 +140,9 @@ public class UserInfoController extends BaseController {
                 userInfo.setIdCardNo("");
                 userInfo.setUserPwd("");
                 userInfo.setUserPin("");
-                userInfo.setRegCellPhone(DesensitizeOptUtils.desensitize(userInfo.getRegCellPhone(), 
+                userInfo.setRegCellPhone(DesensitizeOptUtils.desensitize(userInfo.getRegCellPhone(),
                                 DesensitizeOptUtils.SensitiveTypeEnum.PHONE));
-                userInfo.setRegEmail(DesensitizeOptUtils.desensitize(userInfo.getRegEmail(), 
+                userInfo.setRegEmail(DesensitizeOptUtils.desensitize(userInfo.getRegEmail(),
                                 DesensitizeOptUtils.SensitiveTypeEnum.EMAIL));
 
             }
