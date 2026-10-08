@@ -39,6 +39,10 @@ public class ActiveDirectoryUserDirectoryImpl implements UserDirectory{
 
     private static Logger logger = LoggerFactory.getLogger(ActiveDirectoryUserDirectoryImpl.class);
 
+    private static final String LDAP_CONNECT_TIMEOUT = "com.sun.jndi.ldap.connect.timeout";
+    private static final String LDAP_READ_TIMEOUT = "com.sun.jndi.ldap.read.timeout";
+    private static final String LDAP_TIMEOUT_MILLIS = "5000";
+
     @Autowired
     @NotNull
     private UserUnitDao userUnitDao;
@@ -160,9 +164,13 @@ public class ActiveDirectoryUserDirectoryImpl implements UserDirectory{
         env.put(Context.SECURITY_PRINCIPAL, userURI);
         env.put(Context.SECURITY_CREDENTIALS, directory.getClearPassword());
         env.put(Context.PROVIDER_URL, directory.getUrl());
+        //设置连接和读取超时，避免LDAP服务异常时同步任务长时间挂起
+        env.put(LDAP_CONNECT_TIMEOUT, LDAP_TIMEOUT_MILLIS);
+        env.put(LDAP_READ_TIMEOUT, LDAP_TIMEOUT_MILLIS);
         Date now = DatetimeOpt.currentUtilDate();
+        LdapContext ctx = null;
         try {
-            LdapContext ctx = new InitialLdapContext(env, null);
+            ctx = new InitialLdapContext(env, null);
             SearchControls searchCtls = new SearchControls();
             searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
             Map<String,UnitInfo> allUnits = new HashMap<>();
@@ -205,7 +213,11 @@ public class ActiveDirectoryUserDirectoryImpl implements UserDirectory{
                 allUnits.put(unitMap.get("unitTag"), unitInfo);
             }
 
-            searchCtls.setReturningAttributes(userFieldNames);
+            //机构关联属性独立于用户字段映射，必须显式请求才能从 LDAP 返回。
+            String[] userAllFieldNames = new String[userFieldNames.length + 1];
+            System.arraycopy(userFieldNames, 0, userAllFieldNames, 0, userFieldNames.length);
+            userAllFieldNames[userFieldNames.length] = userUnitField;
+            searchCtls.setReturningAttributes(userAllFieldNames);
             answer = ctx.search(userSearchBase, userSearchFilter, searchCtls);
             while (answer.hasMoreElements()) {
                 SearchResult sr = answer.next();
@@ -224,7 +236,13 @@ public class ActiveDirectoryUserDirectoryImpl implements UserDirectory{
                     userInfo.setLoginName(userMap.get("loginName"));
                     userInfo.setCreateDate(now);
                     userInfo.setUserPin(getDefaultPassword());
+                    userInfo.setTopUnit(directory.getTopUnit());
                     createUser = true;
+                } else if (StringUtils.isNotBlank(userInfo.getTopUnit())
+                    && !StringUtils.equals(userInfo.getTopUnit(), directory.getTopUnit())) {
+                    //登录名已被其他租户的用户占用，跳过避免跨租户覆盖用户信息
+                    logger.warn("LDAP同步跳过用户 {}，登录名已属于租户 {}", userMap.get("loginName"), userInfo.getTopUnit());
+                    continue;
                 }
                 for (Map.Entry<String, String> ent : userMap.entrySet()) {
                     String fieldKey = ent.getKey();
@@ -273,6 +291,7 @@ public class ActiveDirectoryUserDirectoryImpl implements UserDirectory{
                         userRoleDao.mergeUserRole(role);
                     }
                     // 同步机构
+                    int linkedUnitCount = 0;
                     Attribute members = attrs.get(userUnitField);
                     if (members != null) {
                         NamingEnumeration<?> ms = members.getAll();
@@ -282,6 +301,7 @@ public class ActiveDirectoryUserDirectoryImpl implements UserDirectory{
                             UnitInfo u = allUnits.get(groupName);
 
                             if (u != null && "T".equals(u.getIsValid())) {
+                                linkedUnitCount++;
                                 if ((StringUtils.isNotBlank(u.getUnitCode())) && (StringUtils.isBlank(userInfo.getPrimaryUnit()))) {
                                     userInfo.setPrimaryUnit(u.getUnitCode());
                                     userInfoDao.updateUser(userInfo);
@@ -317,14 +337,42 @@ public class ActiveDirectoryUserDirectoryImpl implements UserDirectory{
                             }
                         }
                     }
+                    //没有关联到任何机构的新建用户，默认加入租户机构，供管理员处理
+                    if (createUser && linkedUnitCount == 0) {
+                        UserUnit uu = new UserUnit();
+                        uu.setUserUnitId(UuidOpt.getUuidAsString());
+                        uu.setTopUnit(directory.getTopUnit());
+                        uu.setUnitCode(directory.getTopUnit());
+                        uu.setUserCode(userInfo.getUserCode());
+                        uu.setCreateDate(now);
+                        uu.setRelType("T");
+                        uu.setUserRank(directory.getDefaultRank());
+                        uu.setUserStation(directory.getDefaultStation());
+                        userUnitDao.saveNewObject(uu);
+                        if (StringUtils.isBlank(userInfo.getPrimaryUnit())) {
+                            userInfo.setPrimaryUnit(directory.getTopUnit());
+                            userInfoDao.updateUser(userInfo);
+                        }
+                    }
                 }
             }
 
-            ctx.close();
             return 0;
         }catch (NamingException e) {
             logger.error(e.getMessage(),e);
             return -1;
+        } finally {
+            closeLdapContext(ctx);
+        }
+    }
+
+    private void closeLdapContext(LdapContext ctx) {
+        if (ctx != null) {
+            try {
+                ctx.close();
+            } catch (NamingException e) {
+                logger.error(e.getMessage(), e);
+            }
         }
     }
 
