@@ -294,7 +294,7 @@ public class DBPlatformEnvironment implements PlatformEnvironment {
         user.setUserPin(passwordEncoder.encodePassword(userPassword, user.getUserCode()));
         // 设置密码有效期
         user.setPwdExpiredTime(DatetimeOpt.addDays(DatetimeOpt.currentUtilDate(), passwordExpiredDays));
-        userInfoDao.updateUser(user);
+        userInfoDao.updateObject(new String[]{"userPin", "pwdExpiredTime"} , user);
     }
 
     @Override
